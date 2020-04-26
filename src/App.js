@@ -1,8 +1,8 @@
 import React from 'react';
-import HelloWorld from './components/HelloWorld';
+import Main from './components/NavBar/core/main';
 
 function App() {
-	return <HelloWorld />
+	return <Main />;
 }
 
 export default App;
