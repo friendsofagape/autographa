@@ -99,50 +99,8 @@ const SetUp = () => {
         AutographaStore.chunkGroup = chunkGroup;
     }
 
-    const getValue = (chapter, bookId) => {
-        AutographaStore.translationContent = "";
-        AutographaStore.chapterId = chapter;
-        AutographaStore.bookId = bookId;
-        const cookiechapter = { url: 'http://chapter.autographa.com', name: 'chapter' , value: chapter.toString() };
-        session.defaultSession.cookies.set(cookiechapter, (error) => {
-            if (error)
-            console.log(error);
-        });
-
-        const cookieRef = { url: 'http://book.autographa.com', name: 'book' , value: bookId.toString() };
-        session.defaultSession.cookies.set(cookieRef, (error) => {
-            if (error)
-            console.log(error);
-        });
-
-        session.defaultSession.cookies.get({ url: 'http://refs.autographa.com' }, (error, refCookie) => {
-            if(refCookie.length > 0){
-                var that = this;   
-                var chapter;
-                var bkId = AutographaStore.bookId.toString();
-                db.get(bkId).then(function(doc) {
-                    refDb.get('refChunks').then(function(chunkDoc) {
-                    AutographaStore.verses = doc.chapters[parseInt(AutographaStore.chapterId, 10) - 1].verses;
-                    AutographaStore.chunks = chunkDoc.chunks[parseInt(AutographaStore.bookId, 10) - 1];
-                    chapter = AutographaStore.chapterId;
-                    getRefContents(AutographaStore.refId+'_'+Constant.bookCodeList[parseInt(AutographaStore.bookId, 10) - 1],chapter.toString());
-                    
-                });
-            })
-            }else{
-                AutographaStore.bookName = Constant.booksList[parseInt(AutographaStore.bookId, 10) - 1] 
-                db.get(AutographaStore.bookId.toString()).then((doc) => {
-                    refDb.get('refChunks').then((chunkDoc) => {
-                        AutographaStore.verses = doc.chapters[parseInt(AutographaStore.chapterId, 10) - 1].verses;
-                        AutographaStore.chunks = chunkDoc.chunks[parseInt(AutographaStore.bookId, 10) - 1];
-                        getRefContents(`eng_ult_${Constant.bookCodeList[parseInt(AutographaStore.bookId, 10) - 1]}`, AutographaStore.chapterId.toString());
-                    });
-                })
-            }    
-        })
-    }
-
     const handleRefChange = (refDropDownPos, event) => {
+        console.log(refDropDownPos, event)
         // event.persist();
         AutographaStore.activeRefs[refDropDownPos] = event.target.value;
         refDb.get('activeRefs').then((doc) => {
@@ -176,7 +134,7 @@ const SetUp = () => {
 
     return (
         <div>
-            <ReferenceSelector onClick={handleRefChange} refIds={AutographaStore.activeRefs[0]} id = {1} getValue={(AutographaStore.chapterId, AutographaStore.bookId)}/>
+            <ReferenceSelector onClick={handleRefChange} refIds={AutographaStore.activeRefs[0]} id = {1} />
             <ReferencePanel refContent ={AutographaStore.content}  />
         </div>
     );
