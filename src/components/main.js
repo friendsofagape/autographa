@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import AppBar from '../AppBar';
-import { observer } from 'mobx-react';
-import AutographaStore from '../../AutographaStore';
-import dbUtil from '../../../core/DbUtil';
-const refDb = require('../../../core/data-provider').referenceDb();
+import AppBar from './NavBar/AppBar';
+import AutographaStore from './AutographaStore';
+import dbUtil from '../core/DbUtil';
+const refDb = require('../core/data-provider').referenceDb();
 
 function Main() {
 	const [dbsetup, Setdbsetup] = useState(false);

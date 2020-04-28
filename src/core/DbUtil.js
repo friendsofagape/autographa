@@ -84,8 +84,8 @@ async function dbSetupAll() {
 }
 
 const destroyDbs = async () => {
-	const targetDb = dataProvider.targetDb();
 	let response;
+	const targetDb = dataProvider.targetDb();
 	try {
 		response = await targetDb.destroy();
 		response = await targetDb.close();

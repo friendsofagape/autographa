@@ -1,5 +1,5 @@
 import React from 'react';
-import Main from './components/NavBar/core/main';
+import Main from './components/main';
 
 function App() {
 	return <Main />;
