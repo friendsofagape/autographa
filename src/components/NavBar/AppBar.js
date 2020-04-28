@@ -14,6 +14,7 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
+import SetUp from '../Content/Reference/core/setup';
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -162,6 +163,7 @@ export default function PrimarySearchAppBar() {
   );
 
   return (
+    <React.Fragment>
     <div className={classes.grow}>
       <AppBar position="static">
         <Toolbar>
@@ -228,5 +230,7 @@ export default function PrimarySearchAppBar() {
       {renderMobileMenu}
       {renderMenu}
     </div>
+    <SetUp />
+    </React.Fragment>
   );
 }
