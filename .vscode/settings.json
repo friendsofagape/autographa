@@ -2,6 +2,11 @@
 	"[javascript]": {
 		"editor.formatOnSave": false
 	},
+	"editor.fontFamily": "'Droid Sans Mono', 'monospace', monospace, 'Droid Sans Fallback'",
+	"editor.fontWeight": "500",
+	"editor.rulers": [80],
+	"editor.fontLigatures": true,
+	"prettier.tabWidth": 4,
 	"eslint.alwaysShowStatus": true,
 	"prettier.disableLanguages": ["js"],
 	"files.autoSave": "onFocusChange",
@@ -25,6 +30,5 @@
 	"editor.codeActionsOnSave": {
 		"source.fixAll.eslint": true
 	},
-	"editor.fontLigatures": null,
 	"eslint.workingDirectories": []
 }
