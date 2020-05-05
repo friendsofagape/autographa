@@ -1,4 +1,15 @@
 {
-    "eslint.codeAction.disableRuleComment": {},
-    "prettier.tabWidth": 4
+	"editor.formatOnSave": true,
+	"[javascript]": {
+		"editor.formatOnSave": false
+	},
+	"eslint.alwaysShowStatus": true,
+	"eslint.codeActionsOnSave.mode": "problems",
+	"prettier.disableLanguages": ["js"],
+	"files.autoSave": "onFocusChange",
+	"editor.fontFamily": "'Droid Sans Mono', 'monospace', monospace, 'Droid Sans Fallback'",
+	"editor.fontWeight": "500",
+	"editor.rulers": [80],
+	"editor.fontLigatures": true,
+	"prettier.tabWidth": 4
 }
