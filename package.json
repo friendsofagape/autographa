@@ -47,7 +47,6 @@
 		"react-build": "craco build",
 		"build": "npm run build:electron",
 		"build:electron": "craco build --config craco.config.js main=build/electron.js",
-		"precommit": "pretty-quick --staged",
 		"electron-pack": "electron-builder --x64 --win --linux -p never"
 	},
 	"browserslist": {
@@ -72,10 +71,7 @@
 		"electron-builder": "^22.5.1",
 		"eslint-config-prettier": "^6.11.0",
 		"eslint-plugin-prettier": "^3.1.3",
-		"husky": "^4.2.5",
-		"lint-staged": "^10.2.2",
 		"prettier": "^2.0.5",
-		"pretty-quick": "^2.0.1",
 		"wait-on": "^4.0.2"
 	}
 }
