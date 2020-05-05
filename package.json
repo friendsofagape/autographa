@@ -47,14 +47,8 @@
 		"react-build": "craco build",
 		"build": "npm run build:electron",
 		"build:electron": "craco build --config craco.config.js main=build/electron.js",
-		"precommit": "lint-staged",
+		"precommit": "pretty-quick --staged",
 		"electron-pack": "electron-builder --x64 --win --linux -p never"
-	},
-	"lint-staged": {
-		"src/**/*,{js,jsx,json,css}": [
-			"prettier --write",
-			"git add"
-		]
 	},
 	"browserslist": {
 		"production": [
@@ -81,6 +75,7 @@
 		"husky": "^4.2.5",
 		"lint-staged": "^10.2.2",
 		"prettier": "^2.0.5",
+		"pretty-quick": "^2.0.1",
 		"wait-on": "^4.0.2"
 	}
 }
