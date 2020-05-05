@@ -3,4 +3,4 @@
  * server. e.g. with `yarn start`.
  * The main.js inside the `public/` folder is used by electron after building.
  */
-require('./public/electron');
+require("./public/electron");
