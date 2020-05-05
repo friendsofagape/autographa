@@ -15,6 +15,7 @@ import MailIcon from "@material-ui/icons/Mail";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import MoreIcon from "@material-ui/icons/MoreVert";
 import SetUp from "../Content/Reference/core/setup";
+import TranslationSetUp from "../Content/Translation/core/TranslationSetUp";
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -234,6 +235,7 @@ export default function PrimarySearchAppBar() {
         {renderMenu}
       </div>
       <SetUp />
+      <TranslationSetUp />
     </React.Fragment>
   );
 }

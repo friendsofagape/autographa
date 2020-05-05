@@ -8,13 +8,14 @@ export class AutographaStore {
   @observable activeTab = 1;
   @observable chunkGroup = "";
   @observable content = "";
-  // @observable contentThree =''
   @observable bookActive = 1;
   @observable chapterActive = 1;
   @observable currentRef = "eng_ult";
   @observable bookData = Constant.booksList;
   @observable bookName = "";
+  @observable translationContent = "";
   @observable selectId = 1;
+  @observable setDiff = false;
   @observable chunks = "";
   @observable verses = "";
   @observable layout = 1;
