@@ -4,7 +4,7 @@ const ReferencePanel = (props) => {
   console.log("panel", props);
   return (
     <div>
-      <div dangerouslySetInnerHTML={{ __html: props.refContent }}></div>
+      {/* <div dangerouslySetInnerHTML={{ __html: props.refContent }}></div> */}
     </div>
   );
 };

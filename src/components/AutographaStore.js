@@ -16,6 +16,9 @@ export class AutographaStore {
   @observable translationContent = "";
   @observable selectId = 1;
   @observable setDiff = false;
+  @observable emptyChapter = [];
+  @observable incompleteVerse = {};
+  @observable multipleSpaces = {};
   @observable chunks = "";
   @observable verses = "";
   @observable layout = 1;

@@ -2,6 +2,7 @@ import React from "react";
 import AutographaStore from "../../../AutographaStore";
 import TranslationPanel from "../TranslationPanel";
 import * as mobx from "mobx";
+import { Observer } from "mobx-react";
 const db = require(`${__dirname}/../../../../core/data-provider`).targetDb();
 
 const TranslationSetUp = () => {
@@ -14,7 +15,7 @@ const TranslationSetUp = () => {
         verses.forEach((verse, index) => {
           let vId = "v" + (index + 1);
           // translationContent.push(document.getElementById(vId).textContent.toString());
-          verse.verse = cleanVerse(document.getElementById(vId).innerHTML);
+          verse.verse = cleanVerse(document.getElementById(vId).innerText);
           doc.chapters[
             parseInt(AutographaStore.chapterId, 10) - 1
           ].verses = verses;
@@ -62,12 +63,16 @@ const TranslationSetUp = () => {
   };
 
   return (
-    <div>
-      <TranslationPanel
-        onSave={saveTarget}
-        chunkGroup={mobx.toJS(AutographaStore.chunkGroup)}
-      />
-    </div>
+    <React.Fragment>
+      <Observer>
+        {() => (
+          <TranslationPanel
+            onSave={saveTarget}
+            chunkGroup={mobx.toJS(AutographaStore.chunkGroup)}
+          />
+        )}
+      </Observer>
+    </React.Fragment>
   );
 };
 
