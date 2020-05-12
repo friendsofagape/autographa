@@ -1,8 +1,7 @@
-const {BrowserWindow} = require('electron');
-const path = require('path');
+const { BrowserWindow } = require("electron");
+const path = require("path");
 
-
-const IS_DEVELOPMENT = process.env.NODE_ENV === 'development';
+const IS_DEVELOPMENT = process.env.NODE_ENV === "development";
 
 // global reference to windows (necessary to prevent windows from being garbage collected)
 const windows = [];
@@ -25,7 +24,7 @@ function getWindowId() {
   if (window) {
     for (const arg of window.process.argv) {
       if (/--window-id/.test(arg)) {
-        return arg.split('=')[1];
+        return arg.split("=")[1];
       }
     }
   }
@@ -53,12 +52,13 @@ function defineWindow(windowId, options = {}) {
       ...options.webPreferences,
       additionalArguments: [
         ...options.webPreferences.additionalArguments,
-        `--window-id=${windowId}`]
-    }
+        `--window-id=${windowId}`,
+      ],
+    },
   };
   const window = new BrowserWindow(windowOptions);
 
-  window.on('closed', () => {
+  window.on("closed", () => {
     windows[windowId] = null;
   });
 
@@ -78,12 +78,12 @@ function createWindow(windowId, options = {}) {
   const window = defineWindow(windowId, options);
 
   if (IS_DEVELOPMENT) {
-    window.loadURL('http://localhost:3000');
+    window.loadURL("http://localhost:3000");
   } else {
-    window.loadURL(`file://${path.join(__dirname, '../build/index.html')}`);
+    window.loadURL(`file://${path.join(__dirname, "../build/index.html")}`);
   }
 
-  window.webContents.on('devtools-opened', () => {
+  window.webContents.on("devtools-opened", () => {
     window.focus();
     setImmediate(() => {
       window.focus();
@@ -97,5 +97,5 @@ module.exports = {
   getWindow,
   getWindowId,
   defineWindow,
-  createWindow
+  createWindow,
 };

@@ -10,7 +10,7 @@ import FormControl from "@material-ui/core/FormControl";
 import FormLabel from "@material-ui/core/FormLabel";
 import BackupIcon from "@material-ui/icons/Backup";
 import InsertDriveFileIcon from "@material-ui/icons/InsertDriveFile";
-import LanguageIcon from "@material-ui/icons/Language";
+import GetAppIcon from "@material-ui/icons/GetApp";
 import SaveIcon from "@material-ui/icons/Save";
 import SettingsIcon from "@material-ui/icons/Settings";
 import ListSubheader from "@material-ui/core/ListSubheader";
@@ -30,6 +30,7 @@ import {
   TextField,
   Paper,
 } from "@material-ui/core";
+import TranslationImport from "./TranslationImport";
 const lookupsDb = require(`${__dirname}/../../../core/data-provider`).lookupsDb();
 
 const useStyles = makeStyles((theme) => ({
@@ -62,26 +63,41 @@ export default function TranslationSettings() {
     right: false,
   });
   const [language, setlanguage] = useState("");
-  const [password, setPassword] = useState("");
+  const [languageCode, setlanguageCode] = useState("");
+  const [langVersion, setlangVersion] = useState("");
   const [location, setlocation] = useState("");
   const [open, setOpen] = React.useState(true);
+  const [tab2, setTab2] = useState(false);
   const [helperText, sethelperText] = useState("");
-  const [isvalid, setIsvalid] = useState(false);
+  const [helperTextVersion, sethelperTextVersion] = useState("");
+  const [islangcodevalid, setIslangcodevalid] = useState(false);
+  const [islanvervalid, setIslangvervalid] = useState(false);
   const [listlang, setListlang] = useState([]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(language, password);
-    toggleDrawer("right", false);
+    if (helperText !== "") {
+      setIslangcodevalid(true);
+    } else if (helperTextVersion !== "") {
+      setIslangvervalid(true);
+    }
   };
 
   const handleClick = () => {
     setOpen(!open);
   };
+  const ExpandTab2 = () => {
+    setTab2(!tab2);
+  };
 
   const toggleDrawer = (anchor, open) => (event) => {
-    handleSubmit(event);
     setState({ ...state, [anchor]: open });
+  };
+  const toggleDrawerClose = (anchor, open) => (event) => {
+    handleSubmit(event);
+    if (helperText === "" && helperTextVersion === "") {
+      setState({ ...state, [anchor]: open });
+    }
   };
   const handleDirChange = (event) => {
     setDir(event.target.value);
@@ -89,13 +105,12 @@ export default function TranslationSettings() {
 
   const setMessage = (msgid, isValid) => {
     sethelperText(msgid);
-    setIsvalid(isValid);
+    setIslangcodevalid(isValid);
     return isValid;
   };
 
   const listLanguage = (val) => {
     setlanguage(val);
-    console.log(language);
     if (val.length >= 2) {
       var autoCompleteResult = matchCode(val);
       autoCompleteResult.then((res) => {
@@ -103,7 +118,6 @@ export default function TranslationSettings() {
           listArray = Object.entries(res).map((e) => ({
             title: e[1] + " (" + [e[0]] + ")",
           }));
-          console.log(listArray);
           if (listArray) {
             setListlang(listArray);
           }
@@ -149,33 +163,48 @@ export default function TranslationSettings() {
         console.log(err);
       });
   };
-  const target_setting = (value) => {
-    const langCode = language ? language.lang_code : undefined;
-    console.log(langCode);
-    // let version = langVersion;
-    // let path = folderPath;
-    let isValid = false;
-    if (langCode === null || langCode === "") {
-      isValid = setMessage("dynamic-msg-bib-code-validation", true);
-    } else if (langCode.match(/^\d/)) {
-      isValid = setMessage("dynamic-msg-bib-code-start-with-number", true);
-    } else if (/^([a-zA-Z0-9_-]){2,8}$/.test(langCode) === false) {
-      isValid = setMessage("dynamic-msg-bib-code-start-with-number", true);
-    }
-    // else if (version === null || version === "") {
-    //   isValid = this.setMessage("dynamic-msg-bib-version-validation", false);
-    // } else if (path === null || path === "") {
-    //   isValid = this.setMessage("dynamic-msg-bib-path-validation", false);
-    // }
-    else {
-      isValid = false;
-    }
-    return isValid;
-  };
 
   useEffect(() => {
-    console.log(language);
-  });
+    const target_setting = (lang, langVersion) => {
+      const regExp = /\(([^)]+)\)/;
+      let langCode;
+      let _langCode = regExp.exec(lang);
+      if (_langCode) {
+        langCode = _langCode[1];
+      } else langCode = language;
+      setlanguageCode(langCode);
+      let version = langVersion;
+      // let path = folderPath;
+      if (langCode === null || langCode === "") {
+        sethelperText("The Bible language code is required.");
+      } else if (langCode.match(/^\d/)) {
+        sethelperText(
+          "The Bible language code length should be between 2 and 8 characters and can’t start with a number."
+        );
+      } else if (/^([a-zA-Z0-9_-]){2,8}$/.test(langCode) === false) {
+        sethelperText(
+          "The Bible language code length should be between 2 and 8 characters and can’t start with a number"
+        );
+      }
+      // else if (path === null || path === "") {
+      //   isValid = this.setMessage("dynamic-msg-bib-path-validation", false);
+      // }
+      else {
+        setIslangcodevalid(false);
+        sethelperText("");
+      }
+      if (version === null || version === "") {
+        sethelperTextVersion("The Bible version is required");
+      } else {
+        setIslangvervalid(false);
+        sethelperTextVersion("");
+      }
+    };
+    target_setting(language, langVersion);
+    if (setIslangcodevalid === false && language !== undefined) {
+      sethelperText("");
+    }
+  }, [language, langVersion]);
 
   const list = (anchor) => (
     <div className={clsx(classes.list)} role="presentation">
@@ -202,7 +231,7 @@ export default function TranslationSettings() {
               <Paper className={classes.root}>
                 <form
                   className={classes.container}
-                  onSubmit={toggleDrawer("right", false)}
+                  onSubmit={toggleDrawerClose("right", false)}
                 >
                   <div>
                     <Autocomplete
@@ -212,17 +241,24 @@ export default function TranslationSettings() {
                       }
                       value={language || ""}
                       onChange={(event, newValue) => {
-                        if (newValue) setlanguage(newValue.title);
+                        if (newValue) {
+                          setlanguage(newValue.title);
+                        }
                       }}
+                      noOptionsText={helperText}
                       style={{ width: 300 }}
                       renderInput={(params) => (
                         <TextField
                           {...params}
+                          error={islangcodevalid}
+                          helperText={helperText}
                           label="Language Code"
                           margin="normal"
                           className={classes.margin}
                           variant="outlined"
-                          onInput={(e) => listLanguage(e.target.value)}
+                          onInput={(e) => {
+                            listLanguage(e.target.value);
+                          }}
                         />
                       )}
                     />
@@ -231,9 +267,11 @@ export default function TranslationSettings() {
                       variant="outlined"
                       id="input-with-icon-textfield"
                       label="Version"
+                      error={islanvervalid}
+                      helperText={helperTextVersion}
                       placeholder="NET-S3"
-                      value={password}
-                      onInput={(e) => setPassword(e.target.value)}
+                      value={langVersion}
+                      onInput={(e) => setlangVersion(e.target.value)}
                       InputProps={{
                         startAdornment: (
                           <InputAdornment position="start">
@@ -248,6 +286,7 @@ export default function TranslationSettings() {
                       id="input-with-icon-textfield"
                       style={{ width: "70%" }}
                       label="Export Folder Location"
+                      required
                       value={location}
                       placeholder="Path of folder for saving USFM files"
                       onInput={(e) => setlocation(e.target.value)}
@@ -294,6 +333,25 @@ export default function TranslationSettings() {
                     Save
                   </Button>
                 </form>
+              </Paper>
+            </ListItem>
+          </List>
+        </Collapse>
+        <ListItem button onClick={ExpandTab2}>
+          <ListItemIcon>
+            <GetAppIcon />
+          </ListItemIcon>
+          <ListItemText primary="Translation Import" />
+          {tab2 ? <ExpandLess /> : <ExpandMore />}
+        </ListItem>
+        <Collapse in={tab2} timeout="auto" unmountOnExit>
+          <List component="div" disablePadding>
+            <ListItem className={classes.nested}>
+              <Paper className={classes.root}>
+                <TranslationImport
+                  langCode={languageCode}
+                  langVersion={langVersion}
+                />
               </Paper>
             </ListItem>
           </List>
