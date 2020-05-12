@@ -20,9 +20,9 @@ const ReferenceSelector = (props) => {
   });
 
   return (
-    <Observer>
-      {() => (
-        <div>
+    <div>
+      <Observer>
+        {() => (
           <Select
             className={classes.ref_drop_down}
             onChange={props.onClick}
@@ -37,9 +37,9 @@ const ReferenceSelector = (props) => {
               );
             })}
           </Select>
-        </div>
-      )}
-    </Observer>
+        )}
+      </Observer>
+    </div>
   );
 };
 

@@ -3,6 +3,7 @@ import AutographaStore from "../../../AutographaStore";
 import ReferenceSelector from "../ReferenceSelector";
 import ReferencePanel from "../ReferencePanel";
 import { useStyles } from "../useStyles";
+import { Observer } from "mobx-react";
 const session = require("electron").remote.session;
 const refDb = require(`${__dirname}/../../../../core/data-provider`).referenceDb();
 const db = require(`${__dirname}/../../../../core/data-provider`).targetDb();
@@ -193,14 +194,20 @@ const SetUp = () => {
   };
 
   return (
-    <div className={classes.root}>
-      <ReferenceSelector
-        onClick={handleRefChange}
-        refIds={AutographaStore.activeRefs[0]}
-        id={1}
-      />
-      <ReferencePanel refContent={AutographaStore.content} />
-    </div>
+    <React.Fragment>
+      <Observer>
+        {() => (
+          <div className={classes.root}>
+            <ReferenceSelector
+              onClick={handleRefChange}
+              refIds={AutographaStore.activeRefs[0]}
+              id={1}
+            />
+            <ReferencePanel refContent={AutographaStore.content} />
+          </div>
+        )}
+      </Observer>
+    </React.Fragment>
   );
 };
 
