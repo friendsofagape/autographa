@@ -16,6 +16,7 @@ import NotificationsIcon from "@material-ui/icons/Notifications";
 import MoreIcon from "@material-ui/icons/MoreVert";
 import SetUp from "../Content/Reference/core/setup";
 import About from "../About";
+import ImportReport from "../Reports/ImportReport";
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -196,10 +197,13 @@ export default function PrimarySearchAppBar() {
             <div className={classes.sectionDesktop}>
               <IconButton aria-label="show 4 new mails" color="inherit">
                 <Badge badgeContent={4} color="secondary">
-                  <MailIcon />
+                  <ImportReport />
                 </Badge>
               </IconButton>
-              <About />
+              <IconButton color="inherit">
+                <About />
+              </IconButton>
+
               <IconButton
                 aria-label="show 17 new notifications"
                 color="inherit"
