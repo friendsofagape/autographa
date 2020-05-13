@@ -31,5 +31,6 @@ export class AutographaStore {
   @observable refListEdit = [];
   @observable refListExist = [];
   @observable activeRefs = { 0: "eng_ult", 1: "eng_ult", 2: "eng_ult" };
+  @observable translatedBookNames = null;
 }
 export default new AutographaStore();

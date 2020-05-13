@@ -326,7 +326,11 @@ export default function TranslationSettings() {
                     type="submit"
                     variant="contained"
                     color="primary"
-                    size="small"
+                    size="medium"
+                    style={{
+                      float: "right",
+                      marginRight: "33px",
+                    }}
                     className={classes.button}
                     startIcon={<SaveIcon />}
                   >

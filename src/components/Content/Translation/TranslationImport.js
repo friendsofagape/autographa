@@ -73,7 +73,7 @@ const TranslationImport = (props) => {
       .then((err) => {
         console.log(err);
       })
-      .finally(() => console.log("done"));
+      .finally(() => window.location.reload());
   };
 
   //   const transImport = () => {
@@ -110,10 +110,10 @@ const TranslationImport = (props) => {
       </div>
       <Button
         size="medium"
-        style={{ float: "right", marginRight: "33px", marginTop: "257px" }}
-        primary={true}
+        variant="contained"
+        color="primary"
+        style={{ float: "right", marginTop: "-61px" }}
         onClick={importTranslation}
-        id="btn-import-trans"
         className={classes.margin}
       >
         Import

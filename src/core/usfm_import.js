@@ -9,11 +9,14 @@ export const getStuffAsync = (param) =>
   new Promise(function (resolve, reject) {
     bibUtil_to_json.toJson(param, (err, data) => {
       if (err !== null) reject(err);
-      else resolve(data);
+      else {
+        console.log(data);
+        resolve(data);
+      }
     });
   });
 
-export const importTranslation = (importDir, langCode, langVersion) =>
+export const importTranslation = (importDir, langCode, langVersion) => {
   getNonDotFiles(importDir)
     .then((filePaths) =>
       filePaths.map((filePath) =>
@@ -27,6 +30,7 @@ export const importTranslation = (importDir, langCode, langVersion) =>
       )
     )
     .then((ps) => Promise.all(ps));
+};
 
 export const importTranslationFiles = (importFiles, langCode, langVersion) => {
   return Promise.all(
@@ -39,10 +43,10 @@ export const importTranslationFiles = (importFiles, langCode, langVersion) => {
         scriptDirection: AutographaStore.refScriptDirection,
       })
         .then((res) => {
-          if (res !== undefined) AutographaStore.successFile.push(res);
+          if (res !== undefined) console.log(res);
         })
         .catch((err) => {
-          AutographaStore.errorFile.push(err);
+          console.log(err);
         });
     })
   );

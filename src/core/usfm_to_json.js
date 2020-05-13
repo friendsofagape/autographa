@@ -36,6 +36,7 @@ module.exports = {
       book["scriptDirection"] = options.scriptDirection;
       book.chapters = [];
     } catch (err) {
+      console.log(err);
       // return callback(new Error('usfm parser error'));
       return callback(
         new Error(
@@ -134,14 +135,16 @@ module.exports = {
         }
       } else if (splitLine[0].startsWith("\\s")) {
         //Do nothing for section headers now.
-      } else if (splitLine[0].match(new RegExp(/\\mt$/gm))) {
-        let cleanedStr = replaceMarkers(line);
-        let bookid = book._id.split(/_+/);
-        if (booksCodes.includes(bookid[3].toUpperCase())) {
-          let userBookList = AutographaStore.translatedBookNames;
-          userBookList.splice(booksCodes.indexOf(bookid[3]), 1, cleanedStr);
-        }
-      } else if (splitLine.length === 1) {
+      }
+      // else if (splitLine[0].match(new RegExp(/\\mt$/gm))) {
+      // let cleanedStr = replaceMarkers(line);
+      // let bookid = book._id.split(/_+/);
+      // if (booksCodes.includes(bookid[3].toUpperCase())) {
+      // let userBookList = AutographaStore.translatedBookNames;
+      // userBookList.splice(booksCodes.indexOf(bookid[3]), 1, cleanedStr);
+      // }
+      // }
+      else if (splitLine.length === 1) {
         // Do nothing here for now.
       } else if (splitLine[0].match(new RegExp(/\\m$/gm))) {
         let cleanedStr = replaceMarkers(line);
