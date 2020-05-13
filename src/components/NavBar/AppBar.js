@@ -135,7 +135,7 @@ export default function PrimarySearchAppBar() {
                 aria-label="show 17 new notifications"
                 color="inherit"
               >
-                  <TranslationSettings />
+                <TranslationSettings />
               </IconButton>
             </div>
           </Toolbar>

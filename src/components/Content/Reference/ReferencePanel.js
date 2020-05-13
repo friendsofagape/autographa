@@ -7,7 +7,7 @@ const ReferencePanel = (props) => {
 
   return (
     <div className={classes.root}>
-      <Paper
+      <div
         dangerouslySetInnerHTML={{
           __html: props.refContent,
         }}
