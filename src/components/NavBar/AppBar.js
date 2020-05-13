@@ -17,6 +17,7 @@ import MoreIcon from "@material-ui/icons/MoreVert";
 import SetUp from "../Content/Reference/core/setup";
 import About from "../About";
 import ImportReport from "../Reports/ImportReport";
+import Search from "../Search";
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -204,13 +205,8 @@ export default function PrimarySearchAppBar() {
                 <About />
               </IconButton>
 
-              <IconButton
-                aria-label="show 17 new notifications"
-                color="inherit"
-              >
-                <Badge badgeContent={17} color="secondary">
-                  <NotificationsIcon />
-                </Badge>
+              <IconButton color="inherit">
+                <Search />
               </IconButton>
               <IconButton
                 edge="end"
