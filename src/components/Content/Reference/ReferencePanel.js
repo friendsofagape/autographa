@@ -3,7 +3,6 @@ import Paper from "@material-ui/core/Paper";
 import { useStyles } from "./useStyles";
 
 const ReferencePanel = (props) => {
-  console.log(props);
   const classes = useStyles();
 
   return (

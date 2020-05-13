@@ -1,0 +1,54 @@
+# '#' mean a comment line and blank lines are ignored.
+# Regex search and replace is done in the order specified below. Remember order is important!
+
+# Expected format is:
+# >pattern
+# replacement<
+# with no spaces, unless intended. Both the pattern and replacement values need to be in new lines. Every line starting with > should be followed by a line containing < at the end else output maybe unpredictable.
+
+# Matches \f..\f* and \x..\x* markers.
+>\\[fx] [+-?]? ?.*?\\[fx]\* ?($)?
+<
+
+# Matches \ef..\ef* and \ex..\ex* markers.
+>\\e[fx] [+-?]? ?.*?\\e[fx]\* ?($)?
+<
+
+# Matches \r..\r*
+>\\rq.*?\\rq\*
+<
+
+# Matches all markers starting with \r
+>\\r.*
+<
+
+# Matches \va..\va* and \vp..\vp* and their alternate pairs too (unintended but good enough).
+>\\v[ap].*?\\v[ap]\*
+<
+
+# Matches all introduction tags starting with \i..\i*
+>\\i[belmopqs].*
+
+# Matches \lit
+>\\lit.*
+<
+
+# Matches \fig..\fig*
+>\\[+]?fig (.*?)\\[+]?fig\*
+<
+
+# Matches \add..\add* or \+add..\+add*
+>\\[+]?add (.*?)\\[+]?add\*
+($1)<
+
+# Matches all other pair markers.
+>\\.+? (.*?)\\.+?\*
+$1<
+
+# Matches all markers at start of line.
+>^\\.+? 
+<
+
+# Matches all marker ends at end-of-line.
+>\\.+?$
+<

@@ -131,6 +131,20 @@ const SetUp = () => {
       chunkGroup.push(spanVerse);
     }
     AutographaStore.chunkGroup = chunkGroup;
+    updateTransContent();
+  };
+
+  const updateTransContent = () => {
+    let translationContent = [];
+    db.get(AutographaStore.bookId.toString()).then((doc) => {
+      let verses =
+        doc.chapters[parseInt(AutographaStore.chapterId, 10) - 1].verses;
+      AutographaStore.verses = verses;
+      verses.forEach((verse, index) => {
+        translationContent.push(verse.verse);
+      });
+      AutographaStore.translationContent = translationContent;
+    });
   };
 
   const handleRefChange = (refDropDownPos, event) => {

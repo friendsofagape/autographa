@@ -1,21 +1,19 @@
-const path = require('path');
-const { app, Menu } = require('electron');
+const path = require("path");
+const { app, Menu } = require("electron");
 
 // import settings from 'electron-settings';
-const {
-  createWindow,
-  defineWindow,
-  getWindow
-} = require(path.join(__dirname, 'electronWindows.js'));
+const { createWindow, defineWindow, getWindow } = require(path.join(
+  __dirname,
+  "electronWindows.js"
+));
 
 //const dbUtil = require('../src/util/DbUtil');
 
 //dbUtil.dbSetupAll()
 
-
-const isMac = process.platform === 'darwin'
-const IS_DEVELOPMENT = process.env.NODE_ENV === 'development';
-const MAIN_WINDOW_ID = 'main';
+const isMac = process.platform === "darwin";
+const IS_DEVELOPMENT = process.env.NODE_ENV === "development";
+const MAIN_WINDOW_ID = "main";
 
 /**
  * Creates a window for the main application.
@@ -31,9 +29,9 @@ function createMainWindow() {
     center: true,
     autoHideMenuBar: true,
     webPreferences: {
-      nodeIntegration: true
+      nodeIntegration: true,
     },
-    title: app.getName()
+    title: app.getName(),
   };
   return createWindow(MAIN_WINDOW_ID, windowOptions);
 }
@@ -50,88 +48,81 @@ function createSplashWindow() {
     resizable: false,
     autoHideMenuBar: true,
     webPreferences: {
-      nodeIntegration: false
+      nodeIntegration: false,
     },
     frame: false,
     show: true,
     center: true,
-    title: app.name
+    title: app.name,
   };
-  const window = defineWindow('splash', windowOptions);
+  const window = defineWindow("splash", windowOptions);
 
   if (IS_DEVELOPMENT) {
-    window.loadURL('http://localhost:3000/splash.html');
+    window.loadURL("http://localhost:3000/splash.html");
   } else {
-    window.loadURL(`file://${path.join(__dirname, '/splash.html')}`);
+    window.loadURL(`file://${path.join(__dirname, "/splash.html")}`);
   }
 
   return window;
 }
 
 const menuTemplate = [
-    {
-        label: 'File',
-        submenu: [
-          isMac ? { role: 'close' } : { role: 'quit' }
-        ]
-      },
-      {
-        label: 'Edit',
-        submenu: [
-          { role: 'undo' },
-          { role: 'redo' },
-          { type: 'separator' },
-          { role: 'cut' },
-          { role: 'copy' },
-          { role: 'paste' },
-          ...(isMac ? [
-            { role: 'delete' },
-            { role: 'selectAll' },
-            { type: 'separator' },
+  {
+    label: "File",
+    submenu: [isMac ? { role: "close" } : { role: "quit" }],
+  },
+  {
+    label: "Edit",
+    submenu: [
+      { role: "undo" },
+      { role: "redo" },
+      { type: "separator" },
+      { role: "cut" },
+      { role: "copy" },
+      { role: "paste" },
+      ...(isMac
+        ? [
+            { role: "delete" },
+            { role: "selectAll" },
+            { type: "separator" },
             {
-              label: 'Speech',
-              submenu: [
-                { role: 'startspeaking' },
-                { role: 'stopspeaking' }
-              ]
-            }
-          ] : [
-            { role: 'delete' },
-            { type: 'separator' },
-            { role: 'selectAll' }
-          ])
-        ]
-      },
-    {
-    label: 'Window',
-    role: 'window',
+              label: "Speech",
+              submenu: [{ role: "startspeaking" }, { role: "stopspeaking" }],
+            },
+          ]
+        : [{ role: "delete" }, { type: "separator" }, { role: "selectAll" }]),
+    ],
+  },
+  {
+    label: "Window",
+    role: "window",
     submenu: [
       {
-        label: 'Minimize',
-        accelerator: 'CmdOrCtrl+M',
-        role: 'minimize'
+        label: "Minimize",
+        accelerator: "CmdOrCtrl+M",
+        role: "minimize",
       },
       {
-        label: 'Reload',
-        accelerator: 'CmdOrCtrl+R',
+        label: "Reload",
+        accelerator: "CmdOrCtrl+R",
         click: function (item, focusedWindow) {
           if (focusedWindow) {
-            focusedWindow.reload()
+            focusedWindow.reload();
           }
-        }
+        },
       },
       {
-        label: 'Toggle Developer Tools',
+        label: "Toggle Developer Tools",
         accelerator:
-          process.platform === 'darwin' ? 'Alt+Command+I' : 'Ctrl+Shift+I',
+          process.platform === "darwin" ? "Alt+Command+I" : "Ctrl+Shift+I",
         click: function (item, focusedWindow) {
           if (focusedWindow) {
-            focusedWindow.webContents.toggleDevTools()
+            focusedWindow.webContents.toggleDevTools();
           }
-        }
-      }
-    ]
-  }
+        },
+      },
+    ],
+  },
 ];
 const menu = Menu.buildFromTemplate(menuTemplate);
 Menu.setApplicationMenu(menu);
@@ -139,7 +130,7 @@ Menu.setApplicationMenu(menu);
 // prevent multiple instances of the main window
 app.requestSingleInstanceLock();
 
-app.on('second-instance', () => {
+app.on("second-instance", () => {
   const window = getWindow(MAIN_WINDOW_ID);
   if (window) {
     if (window.isMinimized()) {
@@ -150,14 +141,14 @@ app.on('second-instance', () => {
 });
 
 // quit application when all windows are closed
-app.on('window-all-closed', () => {
+app.on("window-all-closed", () => {
   // on macOS it is common for applications to stay open until the user explicitly quits
-  if (process.platform !== 'darwin') {
+  if (process.platform !== "darwin") {
     app.quit();
   }
 });
 
-app.on('activate', () => {
+app.on("activate", () => {
   // on macOS it is common to re-create a window even after all windows have been closed
   const window = getWindow(MAIN_WINDOW_ID);
   if (window === null) {
@@ -175,11 +166,11 @@ app.on('activate', () => {
 // };
 
 // create main BrowserWindow with a splash screen when electron is ready
-app.on('ready', async () => {
+app.on("ready", async () => {
   // dbUtil.dbSetupAll();
   const splashWindow = createSplashWindow();
   const mainWindow = createMainWindow();
-  mainWindow.once('ready-to-show', () => {
+  mainWindow.once("ready-to-show", () => {
     setTimeout(() => {
       splashWindow.close();
       mainWindow.show();
