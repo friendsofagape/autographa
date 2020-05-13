@@ -18,6 +18,12 @@ const useStyles = makeStyles((theme) => ({
     alignSelf: "self-start",
     marginTop: 6,
   },
+  paper: {
+    position: "absolute",
+  },
+  list: {
+    paddingTop: 42,
+  },
 }));
 
 const TranslationPanel = (props) => {
@@ -42,8 +48,11 @@ const TranslationPanel = (props) => {
     <React.Fragment>
       <Observer>
         {() => (
-          <Paper>
-            <List>
+          <Paper
+            className={classes.paper}
+            style={{ width: "48.5%", left: "51.5%" }}
+          >
+            <List className={classes.list}>
               {props.chunkGroup &&
                 props.chunkGroup.map((value, index) => {
                   return (
@@ -51,7 +60,7 @@ const TranslationPanel = (props) => {
                       dense
                       className={classes.root}
                       key={index}
-                      selected={selectedIndex === index}
+                      selected={selectedIndex === index + 1}
                       id={`versediv${index + 1}`}
                       onClick={(event) => handleListItemClick(event, index)}
                       style={{ cursor: "text", whiteSpace: "pre-wrap" }}

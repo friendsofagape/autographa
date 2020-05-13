@@ -4,6 +4,7 @@ import ReferenceSelector from "../ReferenceSelector";
 import ReferencePanel from "../ReferencePanel";
 import { useStyles } from "../useStyles";
 import { Observer } from "mobx-react";
+import { Paper } from "@material-ui/core";
 const session = require("electron").remote.session;
 const refDb = require(`${__dirname}/../../../../core/data-provider`).referenceDb();
 const db = require(`${__dirname}/../../../../core/data-provider`).targetDb();
@@ -212,12 +213,14 @@ const SetUp = () => {
       <Observer>
         {() => (
           <div className={classes.root}>
-            <ReferenceSelector
-              onClick={handleRefChange}
-              refIds={AutographaStore.activeRefs[0]}
-              id={1}
-            />
-            <ReferencePanel refContent={AutographaStore.content} />
+            <Paper>
+              <ReferenceSelector
+                onClick={handleRefChange}
+                refIds={AutographaStore.activeRefs[0]}
+                id={1}
+              />
+              <ReferencePanel refContent={AutographaStore.content} />
+            </Paper>
           </div>
         )}
       </Observer>

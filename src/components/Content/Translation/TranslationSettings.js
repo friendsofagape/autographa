@@ -31,6 +31,8 @@ import {
   Paper,
 } from "@material-ui/core";
 import TranslationImport from "./TranslationImport";
+import { BrowserWindow } from "electron";
+const { dialog, getCurrentWindow } = require("electron").remote;
 const lookupsDb = require(`${__dirname}/../../../core/data-provider`).lookupsDb();
 
 const useStyles = makeStyles((theme) => ({
@@ -53,6 +55,10 @@ const useStyles = makeStyles((theme) => ({
   button: {
     margin: theme.spacing(1),
   },
+  subheader: {
+    fontSize: "larger",
+    fontWeight: 900,
+  },
 }));
 
 export default function TranslationSettings() {
@@ -65,7 +71,7 @@ export default function TranslationSettings() {
   const [language, setlanguage] = useState("");
   const [languageCode, setlanguageCode] = useState("");
   const [langVersion, setlangVersion] = useState("");
-  const [location, setlocation] = useState("");
+  const [folderPath, setFolderPath] = useState("");
   const [open, setOpen] = React.useState(true);
   const [tab2, setTab2] = useState(false);
   const [helperText, sethelperText] = useState("");
@@ -107,6 +113,20 @@ export default function TranslationSettings() {
     sethelperText(msgid);
     setIslangcodevalid(isValid);
     return isValid;
+  };
+
+  const openFileDialogSettingData = (event) => {
+    dialog
+      .showOpenDialog(BrowserWindow, {
+        properties: ["openDirectory"],
+        filters: [{ name: "All Files", extensions: ["*"] }],
+        title: "Export Location",
+      })
+      .then((result) => {
+        if (result != null) {
+          setFolderPath(result.filePaths);
+        }
+      });
   };
 
   const listLanguage = (val) => {
@@ -212,7 +232,11 @@ export default function TranslationSettings() {
         component="nav"
         aria-labelledby="nested-list-subheader"
         subheader={
-          <ListSubheader component="div" id="nested-list-subheader">
+          <ListSubheader
+            className={classes.subheader}
+            component="div"
+            id="nested-list-subheader"
+          >
             Settings
           </ListSubheader>
         }
@@ -286,14 +310,16 @@ export default function TranslationSettings() {
                       id="input-with-icon-textfield"
                       style={{ width: "70%" }}
                       label="Export Folder Location"
-                      required
-                      value={location}
+                      value={folderPath || ""}
                       placeholder="Path of folder for saving USFM files"
-                      onInput={(e) => setlocation(e.target.value)}
+                      onInput={(e) => setFolderPath(e.target.value)}
                       InputProps={{
                         startAdornment: (
                           <InputAdornment position="start">
-                            <BackupIcon />
+                            <BackupIcon
+                              onClick={openFileDialogSettingData}
+                              style={{ cursor: "pointer" }}
+                            />
                           </InputAdornment>
                         ),
                       }}
