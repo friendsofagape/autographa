@@ -2,17 +2,20 @@ import React, { useState, useEffect } from "react";
 import AutographaStore from "../../../AutographaStore";
 import ReferenceSelector from "../ReferenceSelector";
 import ReferencePanel from "../ReferencePanel";
+import { useStyles } from "../useStyles";
+import { Observer } from "mobx-react";
 const session = require("electron").remote.session;
 const refDb = require(`${__dirname}/../../../../core/data-provider`).referenceDb();
 const db = require(`${__dirname}/../../../../core/data-provider`).targetDb();
 const Constant = require("../../../../core/constants");
 
 const SetUp = () => {
+  const classes = useStyles();
   const [data, setData] = useState(Constant);
   const [chapData, setChapData] = useState([]);
   const [defaultRef, setdefaultRef] = useState("eng_ult");
   const [defaultRefOne, setdefaultRefOne] = useState("eng_ult");
-  const [refList, setrefList] = useState([]);
+  // const [refList, setrefList] = useState([]);
   let verses, chapter;
 
   useEffect(() => {
@@ -145,7 +148,9 @@ const SetUp = () => {
   };
 
   const handleRefChange = (refDropDownPos, event) => {
-    AutographaStore.activeRefs[refDropDownPos] = event.target.value;
+    console.log(refDropDownPos, event);
+    // event.persist();
+    AutographaStore.activeRefs[0] = event.props.value;
     refDb.get("activeRefs").then(
       (doc) => {
         // doc._rev = doc._rev;
@@ -166,15 +171,15 @@ const SetUp = () => {
           );
       }
     );
-    AutographaStore.selectId = event.target.id;
-    AutographaStore.layoutContent = parseInt(
-      event.currentTarget.dataset.layout
-    );
-    let referenceValue = event.target.value;
+    AutographaStore.selectId = event.key;
+    // AutographaStore.layoutContent = parseInt(
+    //   event.currentTarget.dataset.layout
+    // );
+    let referenceValue = event.props.value;
     AutographaStore.currentRef = referenceValue;
-    session.defaultSession.cookies.get(
-      { url: "http://book.autographa.com" },
-      (error, bookCookie) => {
+    session.defaultSession.cookies
+      .get({ url: "http://book.autographa.com" })
+      .then((bookCookie) => {
         if (bookCookie.length > 0) {
           getRefContents(
             referenceValue +
@@ -188,12 +193,14 @@ const SetUp = () => {
             AutographaStore.chapterId
           );
         }
-      }
-    );
+      })
+      .catch((error) => {
+        console.log(error);
+      });
     var cookieRef = {
       url: "http://refs.autographa.com",
       name: "0",
-      value: event.target.value,
+      value: event.props.value,
     };
     session.defaultSession.cookies.set(cookieRef, (error) => {
       if (error) console.log(error);
@@ -201,14 +208,20 @@ const SetUp = () => {
   };
 
   return (
-    <div>
-      <ReferenceSelector
-        onClick={handleRefChange}
-        refIds={AutographaStore.activeRefs[0]}
-        id={1}
-      />
-      <ReferencePanel refContent={AutographaStore.content} />
-    </div>
+    <React.Fragment>
+      <Observer>
+        {() => (
+          <div className={classes.root}>
+            <ReferenceSelector
+              onClick={handleRefChange}
+              refIds={AutographaStore.activeRefs[0]}
+              id={1}
+            />
+            <ReferencePanel refContent={AutographaStore.content} />
+          </div>
+        )}
+      </Observer>
+    </React.Fragment>
   );
 };
 

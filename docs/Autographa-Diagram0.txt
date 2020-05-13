@@ -1,0 +1,35 @@
+alias App="Autographa"
+alias Index="IndexJS"
+alias download="Download"
+alias Navbar="Navbar"
+alias Reference="Refernece"
+alias Settings="Settings"
+alias Translation="Translation"
+alias Sync="Sync"
+alias components="Components"
+alias Core="Core"
+alias lib="library"
+
+App->Index
+App->Core
+App->lib
+App->AudioComponent
+App->Public
+Index->AppJS
+AppJS->components
+
+Public->electron, electronWindow, index.html, loader, splash
+download->USFM, 1colHTML, 2colHTML
+Navbar->BookChapter_Nav, Diff_Checker
+Reference->Reference_Panel,Reference_Content,Reference_Settings, Reference_MenuList
+Translation->Translation_Panel, Translation_Settings, TranslationImport, TranslationContentLoader,ContextMenu_JointVerse
+Sync-> Paratext_Sync, Door43
+Paratext_Sync-> Signin_form, ProjectListRow, Search, helpers, ProjectCreate, ProjectList
+helpers->paratext_Adapter
+Translation_Helps->LanguageMenu
+
+components->AutograhaStore, About, Ahref, BookNameEditor, Footer, Loader, Statistics, Search, ImportReport, AppLanguage, Translations
+components->download,Navbar,Reference,Translation, Sync, Translation_Helps
+
+lib->arb_vdt,chunks,eng_ult,eng_ust,full_bible_skel,hin_irv,language_code,refs_config
+Core->constants,data_provider,DbUtil,export_css,export_html,getNumberFormat,json_to_usfm,string_replace,usfm_import,usfm_to_json

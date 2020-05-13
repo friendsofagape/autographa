@@ -1,10 +1,17 @@
 import React from "react";
+import Paper from "@material-ui/core/Paper";
+import { useStyles } from "./useStyles";
 
 const ReferencePanel = (props) => {
-  console.log("panel", props);
+  const classes = useStyles();
+
   return (
-    <div>
-      {/* <div dangerouslySetInnerHTML={{ __html: props.refContent }}></div> */}
+    <div className={classes.root}>
+      <Paper
+        dangerouslySetInnerHTML={{
+          __html: props.refContent,
+        }}
+      />
     </div>
   );
 };
