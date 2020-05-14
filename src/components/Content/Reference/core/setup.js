@@ -4,6 +4,7 @@ import ReferenceSelector from "../ReferenceSelector";
 import ReferencePanel from "../ReferencePanel";
 import { useStyles } from "../useStyles";
 import { Observer } from "mobx-react";
+import { Paper } from "@material-ui/core";
 const session = require("electron").remote.session;
 const refDb = require(`${__dirname}/../../../../core/data-provider`).referenceDb();
 const db = require(`${__dirname}/../../../../core/data-provider`).targetDb();
@@ -131,6 +132,20 @@ const SetUp = () => {
       chunkGroup.push(spanVerse);
     }
     AutographaStore.chunkGroup = chunkGroup;
+    updateTransContent();
+  };
+
+  const updateTransContent = () => {
+    let translationContent = [];
+    db.get(AutographaStore.bookId.toString()).then((doc) => {
+      let verses =
+        doc.chapters[parseInt(AutographaStore.chapterId, 10) - 1].verses;
+      AutographaStore.verses = verses;
+      verses.forEach((verse, index) => {
+        translationContent.push(verse.verse);
+      });
+      AutographaStore.translationContent = translationContent;
+    });
   };
 
   const handleRefChange = (refDropDownPos, event) => {
@@ -198,12 +213,14 @@ const SetUp = () => {
       <Observer>
         {() => (
           <div className={classes.root}>
-            <ReferenceSelector
-              onClick={handleRefChange}
-              refIds={AutographaStore.activeRefs[0]}
-              id={1}
-            />
-            <ReferencePanel refContent={AutographaStore.content} />
+            <Paper>
+              <ReferenceSelector
+                onClick={handleRefChange}
+                refIds={AutographaStore.activeRefs[0]}
+                id={1}
+              />
+              <ReferencePanel refContent={AutographaStore.content} />
+            </Paper>
           </div>
         )}
       </Observer>

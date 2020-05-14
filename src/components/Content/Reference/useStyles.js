@@ -4,16 +4,16 @@ export const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
     flexWrap: "wrap",
+    float: "left",
     "& > *": {
-      backgroundColor: "#f5f8fa",
       margin: "0px",
       width: "50vw",
       // height: '100vh',
-      paddingTop: "26px",
-      borderRight: "1px solid #d3e0e9",
+      paddingTop: "8px",
     },
   },
   ref_drop_down: {
+    left: "30%",
     backgroundColor: "#0b82ff",
     textAlign: "center",
     color: "#fff",
@@ -22,5 +22,6 @@ export const useStyles = makeStyles((theme) => ({
     borderRadius: "6px",
     height: "34px",
     paddingLeft: "9px",
+    borderBottom: "none",
   },
 }));

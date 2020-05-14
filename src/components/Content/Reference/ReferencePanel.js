@@ -3,12 +3,11 @@ import Paper from "@material-ui/core/Paper";
 import { useStyles } from "./useStyles";
 
 const ReferencePanel = (props) => {
-  console.log(props);
   const classes = useStyles();
 
   return (
     <div className={classes.root}>
-      <Paper
+      <div
         dangerouslySetInnerHTML={{
           __html: props.refContent,
         }}
