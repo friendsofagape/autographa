@@ -74,18 +74,22 @@ export default function TranslationSettings() {
   const [folderPath, setFolderPath] = useState("");
   const [open, setOpen] = React.useState(true);
   const [tab2, setTab2] = useState(false);
-  const [helperText, sethelperText] = useState("");
+  const [helperTextlanguage, sethelperTextlanguage] = useState("");
   const [helperTextVersion, sethelperTextVersion] = useState("");
+  const [helperTextfolderpath, setHelperTextfolderpath] = useState("");
   const [islangcodevalid, setIslangcodevalid] = useState(false);
   const [islanvervalid, setIslangvervalid] = useState(false);
+  const [ispathvalid, setIspathvalid] = useState(false);
   const [listlang, setListlang] = useState([]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (helperText !== "") {
+    if (helperTextlanguage !== "") {
       setIslangcodevalid(true);
     } else if (helperTextVersion !== "") {
       setIslangvervalid(true);
+    } else if (setHelperTextfolderpath !== "") {
+      setIspathvalid(true);
     }
   };
 
@@ -101,18 +105,16 @@ export default function TranslationSettings() {
   };
   const toggleDrawerClose = (anchor, open) => (event) => {
     handleSubmit(event);
-    if (helperText === "" && helperTextVersion === "") {
+    if (
+      helperTextlanguage === "" &&
+      helperTextVersion === "" &&
+      helperTextfolderpath === ""
+    ) {
       setState({ ...state, [anchor]: open });
     }
   };
   const handleDirChange = (event) => {
     setDir(event.target.value);
-  };
-
-  const setMessage = (msgid, isValid) => {
-    sethelperText(msgid);
-    setIslangcodevalid(isValid);
-    return isValid;
   };
 
   const openFileDialogSettingData = (event) => {
@@ -194,24 +196,20 @@ export default function TranslationSettings() {
       } else langCode = language;
       setlanguageCode(langCode);
       let version = langVersion;
-      // let path = folderPath;
+      let path = folderPath;
       if (langCode === null || langCode === "") {
-        sethelperText("The Bible language code is required.");
+        sethelperTextlanguage("The Bible language code is required.");
       } else if (langCode.match(/^\d/)) {
-        sethelperText(
+        sethelperTextlanguage(
           "The Bible language code length should be between 2 and 8 characters and can’t start with a number."
         );
       } else if (/^([a-zA-Z0-9_-]){2,8}$/.test(langCode) === false) {
-        sethelperText(
+        sethelperTextlanguage(
           "The Bible language code length should be between 2 and 8 characters and can’t start with a number"
         );
-      }
-      // else if (path === null || path === "") {
-      //   isValid = this.setMessage("dynamic-msg-bib-path-validation", false);
-      // }
-      else {
+      } else {
         setIslangcodevalid(false);
-        sethelperText("");
+        sethelperTextlanguage("");
       }
       if (version === null || version === "") {
         sethelperTextVersion("The Bible version is required");
@@ -219,12 +217,18 @@ export default function TranslationSettings() {
         setIslangvervalid(false);
         sethelperTextVersion("");
       }
+      if (path === null || path === "") {
+        setHelperTextfolderpath("The folder location is required.");
+      } else {
+        setIspathvalid(false);
+        setHelperTextfolderpath("");
+      }
     };
     target_setting(language, langVersion);
     if (setIslangcodevalid === false && language !== undefined) {
-      sethelperText("");
+      sethelperTextlanguage("");
     }
-  }, [language, langVersion]);
+  }, [language, langVersion, folderPath, ispathvalid]);
 
   const list = (anchor) => (
     <div className={clsx(classes.list)} role="presentation">
@@ -269,13 +273,12 @@ export default function TranslationSettings() {
                           setlanguage(newValue.title);
                         }
                       }}
-                      noOptionsText={helperText}
                       style={{ width: 300 }}
                       renderInput={(params) => (
                         <TextField
                           {...params}
                           error={islangcodevalid}
-                          helperText={helperText}
+                          helperText={helperTextlanguage}
                           label="Language Code"
                           margin="normal"
                           className={classes.margin}
@@ -311,6 +314,8 @@ export default function TranslationSettings() {
                       style={{ width: "70%" }}
                       label="Export Folder Location"
                       value={folderPath || ""}
+                      error={ispathvalid}
+                      helperText={helperTextfolderpath}
                       placeholder="Path of folder for saving USFM files"
                       onInput={(e) => setFolderPath(e.target.value)}
                       InputProps={{
@@ -330,6 +335,7 @@ export default function TranslationSettings() {
                     >
                       <FormLabel component="legend">Script Direction</FormLabel>
                       <RadioGroup
+                        style={{ display: "inline" }}
                         aria-label="Script Direction"
                         name="dir"
                         value={dir}

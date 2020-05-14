@@ -50,7 +50,7 @@ const TranslationPanel = (props) => {
         {() => (
           <Paper
             className={classes.paper}
-            style={{ width: "48.5%", left: "51.5%" }}
+            style={{ width: "49%", left: "50.7%" }}
           >
             <List className={classes.list}>
               {props.chunkGroup &&
@@ -62,7 +62,7 @@ const TranslationPanel = (props) => {
                       key={index}
                       selected={selectedIndex === index + 1}
                       id={`versediv${index + 1}`}
-                      onClick={(event) => handleListItemClick(event, index)}
+                      onClick={(event) => handleListItemClick(event, index + 1)}
                       style={{ cursor: "text", whiteSpace: "pre-wrap" }}
                     >
                       <ListItemIcon className={classes.listItemIcon}>
