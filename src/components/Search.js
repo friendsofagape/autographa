@@ -109,40 +109,40 @@ export default function Search() {
     // let that = this;
     let allChapterReplaceCount = [];
 
-    db.get(AutographaStore.bookId.toString()).then((doc) => {
-      let totalReplacedWord = 0;
-      if (option === "chapter") {
-        totalReplacedWord = findReplaceSearchInputs(
-          doc.chapters[parseInt(AutographaStore.chapterId, 10) - 1].verses,
-          AutographaStore.chapterId - 1,
-          searchVal,
-          replaceVal,
-          option
-        );
-        allChapterReplaceCount.push(totalReplacedWord);
-      } else {
-        for (let i = 0; i < doc.chapters.length; i++) {
-          let replaceWord = findReplaceSearchInputs(
-            doc.chapters[parseInt(i + 1, 10) - 1].verses,
-            i,
-            searchVal,
-            replaceVal,
-            option
-          );
-          allChapterReplaceCount.push(replaceWord);
-          replaceWord = 0;
-        }
-      }
-      var replacedCount = allChapterReplaceCount.reduce(function (a, b) {
-        return a + b;
-      }, 0);
-      this.setState({ replaceCount: replacedCount, replaceInfo: true });
-      if (this.state.replaceCount === 0) {
-        this.setState({ disableSave: true });
-      }
-      totalReplacedWord = 0;
-      allChapterReplaceCount = [];
-    });
+    // db.get(AutographaStore.bookId.toString()).then((doc) => {
+    //   let totalReplacedWord = 0;
+    //   if (option === "chapter") {
+    //     totalReplacedWord = findReplaceSearchInputs(
+    //       doc.chapters[parseInt(AutographaStore.chapterId, 10) - 1].verses,
+    //       AutographaStore.chapterId - 1,
+    //       searchVal,
+    //       replaceVal,
+    //       option
+    //     );
+    //     allChapterReplaceCount.push(totalReplacedWord);
+    //   } else {
+    //     for (let i = 0; i < doc.chapters.length; i++) {
+    //       let replaceWord = findReplaceSearchInputs(
+    //         doc.chapters[parseInt(i + 1, 10) - 1].verses,
+    //         i,
+    //         searchVal,
+    //         replaceVal,
+    //         option
+    //       );
+    //       allChapterReplaceCount.push(replaceWord);
+    //       replaceWord = 0;
+    //     }
+    //   }
+    //   var replacedCount = allChapterReplaceCount.reduce(function (a, b) {
+    //     return a + b;
+    //   }, 0);
+    //   this.setState({ replaceCount: replacedCount, replaceInfo: true });
+    //   if (this.state.replaceCount === 0) {
+    //     this.setState({ disableSave: true });
+    //   }
+    //   totalReplacedWord = 0;
+    //   allChapterReplaceCount = [];
+    // });
   };
 
   const findReplaceSearchInputs = (
@@ -224,43 +224,43 @@ export default function Search() {
 
   const saveReplacedText = () => {
     const that = this;
-    db.get(AutographaStore.bookId.toString()).then((doc) => {
-      if (AutographaStore.replaceOption === "chapter") {
-        for (var c in replacedChapter) {
-          var verses = doc.chapters[AutographaStore.chapterId - 1].verses;
-          verses.forEach((verse, index) => {
-            verse.verse = replacedChapter[c][index + 1];
-          });
-          doc.chapters[parseInt(c, 10)].verses = verses;
-          db.put(doc, function (err, response) {
-            if (err) {
-              // $("#replaced-text-change").modal('toggle');
-              // alertModal("dynamic-msg-error", "dynamic-msg-went-wrong");
-            } else {
-              that.setState({ loader: true });
-              window.location.reload();
-            }
-          });
-        }
-        replacedChapter = {};
-        replacedVerse = {};
-      } else {
-        doc.chapters = chapter_arr;
-        db.put(doc, function (err, res) {
-          if (err) {
-            chapter_arr = [];
-            // $("#replaced-text-change").modal('toggle');
-            // alertModal("dynamic-msg-error", "dynamic-msg-went-wrong");
-          } else {
-            chapter_arr = [];
-            replacedChapter = {};
-            replacedVerse = {};
-            that.setState({ loader: true });
-            window.location.reload();
-          }
-        });
-      }
-    });
+    // db.get(AutographaStore.bookId.toString()).then((doc) => {
+    //   if (AutographaStore.replaceOption === "chapter") {
+    //     for (var c in replacedChapter) {
+    //       var verses = doc.chapters[AutographaStore.chapterId - 1].verses;
+    //       verses.forEach((verse, index) => {
+    //         verse.verse = replacedChapter[c][index + 1];
+    //       });
+    //       doc.chapters[parseInt(c, 10)].verses = verses;
+    //       db.put(doc, function (err, response) {
+    //         if (err) {
+    //           // $("#replaced-text-change").modal('toggle');
+    //           // alertModal("dynamic-msg-error", "dynamic-msg-went-wrong");
+    //         } else {
+    //           that.setState({ loader: true });
+    //           window.location.reload();
+    //         }
+    //       });
+    //     }
+    //     replacedChapter = {};
+    //     replacedVerse = {};
+    //   } else {
+    //     doc.chapters = chapter_arr;
+    //     db.put(doc, function (err, res) {
+    //       if (err) {
+    //         chapter_arr = [];
+    //         // $("#replaced-text-change").modal('toggle');
+    //         // alertModal("dynamic-msg-error", "dynamic-msg-went-wrong");
+    //       } else {
+    //         chapter_arr = [];
+    //         replacedChapter = {};
+    //         replacedVerse = {};
+    //         that.setState({ loader: true });
+    //         window.location.reload();
+    //       }
+    //     });
+    //   }
+    // });
   };
 
   return (
