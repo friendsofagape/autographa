@@ -7,6 +7,7 @@ const bibUtil_to_json = require(`${__dirname}/../core/usfm_to_json`);
 
 export const getStuffAsync = (param) =>
   new Promise(function (resolve, reject) {
+    console.log(param);
     bibUtil_to_json.toJson(param, (err, data) => {
       if (err !== null) reject(err);
       else {
@@ -50,6 +51,37 @@ export const importTranslationFiles = (importFiles, langCode, langVersion) => {
         });
     })
   );
+};
+
+export const saveJsonToDb = (importFiles, bibleName, langCode, langVersion) => {
+  console.log(importFiles, bibleName, langCode, langVersion);
+  return Promise.all(
+    filterFiles(importFiles).map((filePath) => {
+      return getStuffAsync({
+        bibleName: bibleName,
+        lang: langCode.toLowerCase(),
+        version: langVersion.toLowerCase(),
+        usfmFile: filePath,
+        targetDb: "refs",
+        scriptDirection: AutographaStore.refScriptDirection,
+      })
+        .then((res) => {
+          if (res !== undefined) console.log(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    })
+  );
+  // fs.readFileAsync = function (filename, enc) {
+  //   console.log(filename, enc);
+  //   return new Promise(function (resolve, reject) {
+  //     fs.readFile(filename, enc, function (err, data) {
+  //       if (err) reject(err);
+  //       else resolve(data);
+  //     });
+  //   });
+  // };
 };
 
 /* filter out nondot files from the directory and its return promise  */

@@ -15,6 +15,7 @@ import TranslationSetUp from "../Content/Translation/core/TranslationSetUp";
 import About from "../About";
 import ImportReport from "../Reports/ImportReport";
 import Search from "../Search";
+import ReferenceSettings from "../Content/Reference/ReferenceSettings";
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -137,6 +138,9 @@ export default function PrimarySearchAppBar() {
               </IconButton>
               <IconButton color="inherit">
                 <TranslationSettings />
+              </IconButton>
+              <IconButton color="inherit">
+                <ReferenceSettings />
               </IconButton>
             </div>
           </Toolbar>
