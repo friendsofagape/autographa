@@ -1,13 +1,18 @@
 import React, { useEffect, useState } from "react";
 import AutographaStore from "../../AutographaStore.js";
 import { Observer } from "mobx-react";
+import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
+import { TextField } from "@material-ui/core";
 
+// const theme = createMuiTheme({
+//   direction: "rtl", // Both here and <body dir="rtl">
+// });
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
@@ -52,6 +57,8 @@ const TranslationPanel = (props) => {
             className={classes.paper}
             style={{ width: "49%", left: "50.7%" }}
           >
+            {/* <ThemeProvider theme={theme}> */}
+            {/* <div dir="rtl"> */}
             <List className={classes.list}>
               {props.chunkGroup &&
                 props.chunkGroup.map((value, index) => {
@@ -78,13 +85,15 @@ const TranslationPanel = (props) => {
                         primary={
                           AutographaStore.translationContent[index]
                             ? AutographaStore.translationContent[index]
-                            : " "
+                            : ""
                         }
                       />
                     </ListItem>
                   );
                 })}
             </List>
+            {/* </div> */}
+            {/* </ThemeProvider> */}
           </Paper>
         )}
       </Observer>

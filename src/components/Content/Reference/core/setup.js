@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import AutographaStore from "../../../AutographaStore";
 import ReferenceSelector from "../ReferenceSelector";
 import ReferencePanel from "../ReferencePanel";
 import { useStyles } from "../useStyles";
 import { Observer } from "mobx-react";
 import { Paper } from "@material-ui/core";
+import BookChapterNavigation from "../../../NavBar/BookChapterNavigation";
 const session = require("electron").remote.session;
 const refDb = require(`${__dirname}/../../../../core/data-provider`).referenceDb();
 const db = require(`${__dirname}/../../../../core/data-provider`).targetDb();
@@ -79,6 +80,16 @@ const SetUp = () => {
       }
     );
   };
+
+  useEffect(() => {
+    let chapter = AutographaStore.chapterId;
+    getRefContents(
+      AutographaStore.refId +
+        "_" +
+        Constant.bookCodeList[parseInt(AutographaStore.bookId, 10) - 1],
+      chapter.toString()
+    );
+  });
 
   const getRefContents = (id, chapter) => {
     refDb.get("targetReferenceLayout").then((doc) => {
