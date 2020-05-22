@@ -81,16 +81,6 @@ const SetUp = () => {
     );
   };
 
-  useEffect(() => {
-    let chapter = AutographaStore.chapterId;
-    getRefContents(
-      AutographaStore.refId +
-        "_" +
-        Constant.bookCodeList[parseInt(AutographaStore.bookId, 10) - 1],
-      chapter.toString()
-    );
-  });
-
   const getRefContents = (id, chapter) => {
     refDb.get("targetReferenceLayout").then((doc) => {
       AutographaStore.layout = doc.layout;
@@ -160,7 +150,6 @@ const SetUp = () => {
   };
 
   const handleRefChange = (refDropDownPos, event) => {
-    console.log(refDropDownPos, event);
     // event.persist();
     AutographaStore.activeRefs[0] = event.props.value;
     refDb.get("activeRefs").then(

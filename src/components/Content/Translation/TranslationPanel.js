@@ -85,7 +85,7 @@ const TranslationPanel = (props) => {
                         primary={
                           AutographaStore.translationContent[index]
                             ? AutographaStore.translationContent[index]
-                            : ""
+                            : " "
                         }
                       />
                     </ListItem>
