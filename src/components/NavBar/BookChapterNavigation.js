@@ -5,6 +5,7 @@ import Container from "@material-ui/core/Container";
 import * as mobx from "mobx";
 import Tabs from "@material-ui/core/Tabs";
 import BookIcon from "@material-ui/icons/Book";
+import EditIcon from "@material-ui/icons/Edit";
 import Tab from "@material-ui/core/Tab";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
@@ -15,6 +16,9 @@ import {
   List,
   ListItemText,
   ListItem,
+  ListItemIcon,
+  Tooltip,
+  Zoom,
 } from "@material-ui/core";
 import AutographaStore from "../AutographaStore";
 import { useState } from "react";
@@ -74,6 +78,7 @@ const useStyles = makeStyles((theme) => ({
   list: {
     width: "max-content",
     margin: theme.spacing(1),
+    cursor: "pointer",
   },
   dialog: {
     height: "inherit",
@@ -147,6 +152,7 @@ export default function BookChapterNavigation(props) {
   };
 
   const handleClickOpenChapters = (event) => {
+    event.preventDefault();
     setOpen(true);
     openpopupBooks(2);
     handleChange(event, 1);
@@ -408,6 +414,13 @@ export default function BookChapterNavigation(props) {
     });
   };
 
+  const handlepopper = (event, bookName) => {
+    event.preventDefault();
+    console.log(bookName);
+    AutographaStore.bookIndex = bookName;
+    console.log(AutographaStore.bookIndex);
+  };
+
   return (
     <React.Fragment>
       <Fab
@@ -448,35 +461,58 @@ export default function BookChapterNavigation(props) {
                   aria-label="nav tabs example"
                 >
                   <LinkTab label="Books" href="/Book" {...TabNumber(0)} />
-                  <LinkTab label="Chapter" href="/Chapter" {...TabNumber(1)} />
+                  <LinkTab
+                    label="Chapter"
+                    href="/Chapter"
+                    onClick={handleClickOpenChapters}
+                    {...TabNumber(1)}
+                  />
                 </Tabs>
               </AppBar>
               <TabPanel value={value} index={0}>
                 <Container style={{ columnCount: "4" }} fixed>
-                  <List className={classes.list}>
-                    {bookdata.map((value, index) => {
-                      return (
+                  {bookdata.map((value, index) => {
+                    return (
+                      <List className={classes.list}>
                         <ListItem
+                          onMouseEnter={(event) => handlepopper(event, index)}
                           key={index}
                           selected={
                             index === mobx.toJS(AutographaStore.bookId) - 1
                           }
-                          onClick={(event) =>
-                            handleListItemClick(event, index + 1, value)
-                          }
                         >
-                          <ListItemText primary={value} />
+                          <ListItemText
+                            onClick={(event) =>
+                              handleListItemClick(event, index + 1, value)
+                            }
+                            primary={value}
+                          />
+                          {AutographaStore.bookIndex === index && (
+                            <ListItemIcon onClick={() => console.log("edit")}>
+                              <Tooltip
+                                TransitionComponent={Zoom}
+                                placement="top"
+                                title="edit"
+                              >
+                                <EditIcon
+                                  key={index}
+                                  style={{ cursor: "pointer" }}
+                                  hidden={AutographaStore.bookIndex !== index}
+                                />
+                              </Tooltip>
+                            </ListItemIcon>
+                          )}
                         </ListItem>
-                      );
-                    })}
-                  </List>
+                      </List>
+                    );
+                  })}
                 </Container>
               </TabPanel>
               <TabPanel value={value} index={1}>
-                <Container style={{ columnCount: "4" }} fixed>
-                  <List className={classes.list}>
-                    {chapterList.map((value, selected) => {
-                      return (
+                <Container style={{ columnCount: "5" }} fixed>
+                  {chapterList.map((value, selected) => {
+                    return (
+                      <List className={classes.list}>
                         <ListItem
                           key={selected}
                           selected={
@@ -493,9 +529,9 @@ export default function BookChapterNavigation(props) {
                         >
                           <ListItemText primary={value} />
                         </ListItem>
-                      );
-                    })}
-                  </List>
+                      </List>
+                    );
+                  })}
                 </Container>
               </TabPanel>
             </div>

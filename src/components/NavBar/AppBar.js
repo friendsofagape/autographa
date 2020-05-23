@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   nav: {
-    marginLeft: theme.spacing(40),
+    marginLeft: theme.spacing(50),
   },
 }));
 
