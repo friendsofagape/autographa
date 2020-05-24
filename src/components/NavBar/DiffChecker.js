@@ -3,6 +3,7 @@ import { Tooltip, IconButton, Zoom } from "@material-ui/core";
 import AutographaStore from "../AutographaStore";
 import { tokenize } from "string-punctuation-tokenizer";
 import * as mobx from "mobx";
+import swal from "sweetalert";
 const Constant = require("../../core/constants");
 const refDb = require(`${__dirname}/../../core/data-provider`).referenceDb();
 const db = require(`${__dirname}/../../core/data-provider`).targetDb();
@@ -77,6 +78,11 @@ const DiffChecker = () => {
       if (!_isSameLanguage) {
         AutographaStore.toggle = false;
         setToggle(false);
+        swal(
+          "Unable to Show Comparison",
+          "Compare mode is not meaningful across different languages. Please ensure you have set the translation details in Settings and selected the same language across all panes.",
+          "warning"
+        );
         return;
       }
     } else {

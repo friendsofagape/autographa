@@ -41,6 +41,11 @@ export class AutographaStore {
   @observable aId = "";
   @observable currentTrans = {};
   @observable translatedBookNames = null;
+  @observable openBookNameEditor = false;
+  @observable updatedTranslatedBookNames = "";
+  @observable editBookNamesMode = false;
+  @observable bookNameEditorPopup = false;
   @observable bookIndex = null;
+  @observable RequiredIndex = null;
 }
 export default new AutographaStore();

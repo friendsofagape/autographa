@@ -281,28 +281,16 @@ export default function TranslationSettings() {
       (doc) => {
         settingData._rev = doc._rev;
         db.put(settingData).then((res) => {
-          swal(
-            currentTrans["dynamic-msg-trans-data"],
-            currentTrans["dynamic-msg-saved-change"],
-            "success"
-          );
+          swal("Translation Data", "Successfully saved changes", "success");
         });
       },
       (err) => {
         db.put(settingData).then(
           (res) => {
-            swal(
-              currentTrans["dynamic-msg-trans-data"],
-              currentTrans["dynamic-msg-saved-change"],
-              "success"
-            );
+            swal("Translation Data", "Successfully saved changes", "success");
           },
           (err) => {
-            swal(
-              currentTrans["dynamic-msg-trans-data"],
-              currentTrans["dynamic-msg-went-wrong"],
-              "success"
-            );
+            swal("Translation Data", "Successfully saved changes", "success");
           }
         );
       }

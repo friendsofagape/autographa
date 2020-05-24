@@ -23,6 +23,7 @@ import {
 import AutographaStore from "../AutographaStore";
 import { useState } from "react";
 import { Observer } from "mobx-react";
+import BookNameEditor from "./BookNameEditor";
 const session = require("electron").remote.session;
 const Constant = require("../../core/constants");
 const bibleJson = require(`${__dirname}/../../lib/bible_Silhouette.json`);
@@ -137,6 +138,32 @@ export default function BookChapterNavigation(props) {
       });
   });
 
+  useEffect(() => {
+    db.get("translatedBookNames", function (err, doc) {
+      if (err) {
+        localStorage.setItem("editBookNamesMode", false);
+        let doc = {
+          _id: "translatedBookNames",
+          books: Constant.booksEditList,
+        };
+        db.put(doc, function (err, response) {
+          if (err) {
+            return console.log(err);
+          } else {
+            window.location.reload();
+          }
+        });
+        return console.log(err);
+      } else {
+        AutographaStore.translatedBookNames = doc.books;
+        setBookdata(doc.books);
+      }
+    });
+    AutographaStore.editBookNamesMode = localStorage.getItem(
+      "editBookNamesMode"
+    );
+  }, []);
+
   const handleListItemClick = (event, index, value) => {
     onItemClick(index, value);
     handleChange(event, 1);
@@ -179,19 +206,16 @@ export default function BookChapterNavigation(props) {
   };
 
   const onItemClick = (requiredIndex, bookName) => {
-    if (AutographaStore.openBookNameEditor === true) {
-      AutographaStore.bookNameEditorPopup = true;
-      AutographaStore.RequiredIndex = requiredIndex;
-    }
     AutographaStore.bookName = bookName;
     AutographaStore.chapterActive = 0;
     // getting chapter list
     let bookIndex = AutographaStore.editBookNamesMode
-      ? AutographaStore.bookindex
+      ? AutographaStore.bookIndex
       : Constant.booksList.findIndex(
           (book) => book.toLowerCase() === bookName.toLowerCase()
         );
     const bookSkel = bibleJson[bookIndex + 1];
+    console.log(bookIndex);
     AutographaStore.bookActive = bookIndex + 1;
     AutographaStore.bookChapter["chapterLength"] = bookSkel.chapters.length;
     AutographaStore.bookChapter["bookId"] = bookIndex + 1;
@@ -296,7 +320,6 @@ export default function BookChapterNavigation(props) {
     AutographaStore.bookName =
       Constant.booksList[parseInt(AutographaStore.bookId, 10) - 1];
     AutographaStore.chapterActive = AutographaStore.chapterId;
-    console.log(AutographaStore.bookActive);
     getData();
   };
 
@@ -414,11 +437,27 @@ export default function BookChapterNavigation(props) {
     });
   };
 
-  const handlepopper = (event, bookName) => {
+  const editbooks = (event, index, bookName) => {
+    console.log("edit books");
+    AutographaStore.RequiredIndex = index;
+    AutographaStore.bookName = bookName;
+    AutographaStore.editBookNamesMode = true;
+    AutographaStore.bookNameEditorPopup = true;
+    localStorage.setItem(
+      "editBookNamesMode",
+      AutographaStore.editBookNamesMode
+    );
+    AutographaStore.openBookNameEditor = !AutographaStore.openBookNameEditor;
+    setBookdata(AutographaStore.translatedBookNames);
+  };
+
+  useEffect(() => {
+    console.log(AutographaStore.translatedBookNames);
+  });
+
+  const handlepopper = (event, index) => {
     event.preventDefault();
-    console.log(bookName);
-    AutographaStore.bookIndex = bookName;
-    console.log(AutographaStore.bookIndex);
+    AutographaStore.bookIndex = index;
   };
 
   return (
@@ -440,102 +479,111 @@ export default function BookChapterNavigation(props) {
       </Fab>
       <Observer>
         {() => (
-          <Dialog
-            fullWidth={true}
-            maxWidth="lg"
-            className={classes.dialog}
-            onClose={handleClose}
-            aria-labelledby="customized-dialog-title"
-            open={open}
-          >
-            <DialogTitle id="customized-dialog-title" onClose={handleClose}>
-              Book And Chapter
-            </DialogTitle>
-            <div className={classes.root}>
-              <AppBar position="static">
-                <Tabs
-                  variant="fullWidth"
-                  width={1000}
-                  value={value}
-                  onChange={handleChange}
-                  aria-label="nav tabs example"
-                >
-                  <LinkTab label="Books" href="/Book" {...TabNumber(0)} />
-                  <LinkTab
-                    label="Chapter"
-                    href="/Chapter"
-                    onClick={handleClickOpenChapters}
-                    {...TabNumber(1)}
-                  />
-                </Tabs>
-              </AppBar>
-              <TabPanel value={value} index={0}>
-                <Container style={{ columnCount: "4" }} fixed>
-                  {bookdata.map((value, index) => {
-                    return (
-                      <List className={classes.list}>
-                        <ListItem
-                          onMouseEnter={(event) => handlepopper(event, index)}
-                          key={index}
-                          selected={
-                            index === mobx.toJS(AutographaStore.bookId) - 1
-                          }
-                        >
-                          <ListItemText
-                            onClick={(event) =>
-                              handleListItemClick(event, index + 1, value)
+          <div>
+            <Dialog
+              fullWidth={true}
+              maxWidth="lg"
+              className={classes.dialog}
+              onClose={handleClose}
+              aria-labelledby="customized-dialog-title"
+              open={open}
+            >
+              <DialogTitle id="customized-dialog-title" onClose={handleClose}>
+                Book And Chapter
+              </DialogTitle>
+              <div className={classes.root}>
+                <AppBar position="static">
+                  <Tabs
+                    variant="fullWidth"
+                    width={1000}
+                    value={value}
+                    onChange={handleChange}
+                    aria-label="nav tabs example"
+                  >
+                    <LinkTab label="Books" href="/Book" {...TabNumber(0)} />
+                    <LinkTab
+                      label="Chapter"
+                      href="/Chapter"
+                      onClick={handleClickOpenChapters}
+                      {...TabNumber(1)}
+                    />
+                  </Tabs>
+                </AppBar>
+                <TabPanel value={value} index={0}>
+                  <Container style={{ columnCount: "4" }} fixed>
+                    {bookdata.map((value, index) => {
+                      return (
+                        <List className={classes.list}>
+                          <ListItem
+                            onMouseEnter={(event) => handlepopper(event, index)}
+                            key={index}
+                            selected={
+                              index === mobx.toJS(AutographaStore.bookId) - 1
                             }
-                            primary={value}
-                          />
-                          {AutographaStore.bookIndex === index && (
-                            <ListItemIcon onClick={() => console.log("edit")}>
-                              <Tooltip
-                                TransitionComponent={Zoom}
-                                placement="top"
-                                title="edit"
-                              >
-                                <EditIcon
-                                  key={index}
-                                  style={{ cursor: "pointer" }}
-                                  hidden={AutographaStore.bookIndex !== index}
-                                />
-                              </Tooltip>
-                            </ListItemIcon>
-                          )}
-                        </ListItem>
-                      </List>
-                    );
-                  })}
-                </Container>
-              </TabPanel>
-              <TabPanel value={value} index={1}>
-                <Container style={{ columnCount: "5" }} fixed>
-                  {chapterList.map((value, selected) => {
-                    return (
-                      <List className={classes.list}>
-                        <ListItem
-                          key={selected}
-                          selected={
-                            selected ===
-                            mobx.toJS(AutographaStore.chapterId) - 1
-                          }
-                          onClick={(event) =>
-                            getValue(
-                              event,
-                              selected + 1,
-                              AutographaStore.bookChapter["bookId"]
-                            )
-                          }
-                        >
-                          <ListItemText primary={value} />
-                        </ListItem>
-                      </List>
-                    );
-                  })}
-                </Container>
-              </TabPanel>
-            </div>
-          </Dialog>
+                          >
+                            <ListItemText
+                              onClick={(event) =>
+                                handleListItemClick(event, index, value)
+                              }
+                              primary={value}
+                            />
+                            {AutographaStore.bookIndex === index && (
+                              <ListItemIcon onClick={() => console.log("edit")}>
+                                <Tooltip
+                                  TransitionComponent={Zoom}
+                                  placement="top"
+                                  title="edit"
+                                >
+                                  <EditIcon
+                                    key={index}
+                                    style={{ cursor: "pointer" }}
+                                    hidden={AutographaStore.bookIndex !== index}
+                                    onClick={(event) =>
+                                      editbooks(event, index, value)
+                                    }
+                                  />
+                                </Tooltip>
+                              </ListItemIcon>
+                            )}
+                          </ListItem>
+                        </List>
+                      );
+                    })}
+                  </Container>
+                </TabPanel>
+                <TabPanel value={value} index={1}>
+                  <Container style={{ columnCount: "5" }} fixed>
+                    {chapterList.map((value, selected) => {
+                      return (
+                        <List className={classes.list}>
+                          <ListItem
+                            key={selected}
+                            selected={
+                              selected ===
+                              mobx.toJS(AutographaStore.chapterId) - 1
+                            }
+                            onClick={(event) =>
+                              getValue(
+                                event,
+                                selected + 1,
+                                AutographaStore.bookChapter["bookId"]
+                              )
+                            }
+                          >
+                            <ListItemText primary={value} />
+                          </ListItem>
+                        </List>
+                      );
+                    })}
+                  </Container>
+                </TabPanel>
+              </div>
+            </Dialog>
+            <BookNameEditor
+              show={AutographaStore.bookNameEditorPopup}
+              translatedBookNames={AutographaStore.translatedBookNames}
+            />
+          </div>
         )}
       </Observer>
     </React.Fragment>
