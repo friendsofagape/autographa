@@ -16,6 +16,7 @@ import About from "../About";
 import ImportReport from "../Reports/ImportReport";
 import Search from "../Search";
 import ReferenceSettings from "../Content/Reference/ReferenceSettings";
+import DiffChecker from "./DiffChecker";
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -61,6 +62,9 @@ export default function PrimarySearchAppBar() {
               </IconButton>
               <IconButton color="inherit">
                 <About />
+              </IconButton>
+              <IconButton color="inherit">
+                <DiffChecker />
               </IconButton>
               <IconButton color="inherit">
                 <Search />

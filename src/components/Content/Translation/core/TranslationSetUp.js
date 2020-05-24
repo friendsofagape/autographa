@@ -3,6 +3,7 @@ import AutographaStore from "../../../AutographaStore";
 import TranslationPanel from "../TranslationPanel";
 import * as mobx from "mobx";
 import { Observer } from "mobx-react";
+import { useEffect } from "react";
 const db = require(`${__dirname}/../../../../core/data-provider`).targetDb();
 
 const TranslationSetUp = () => {

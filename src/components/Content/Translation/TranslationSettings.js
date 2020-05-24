@@ -32,6 +32,9 @@ import {
 } from "@material-ui/core";
 import TranslationImport from "./TranslationImport";
 import { BrowserWindow } from "electron";
+import swal from "sweetalert";
+import AutographaStore from "../../AutographaStore";
+const db = require(`${__dirname}/../../../core/data-provider`).targetDb();
 const { dialog, getCurrentWindow } = require("electron").remote;
 const lookupsDb = require(`${__dirname}/../../../core/data-provider`).lookupsDb();
 
@@ -82,6 +85,33 @@ export default function TranslationSettings() {
   const [ispathvalid, setIspathvalid] = useState(false);
   const [listlang, setListlang] = useState([]);
 
+  useEffect(() => {
+    db.get("targetBible").then(
+      (doc) => {
+        AutographaStore.scriptDirection = doc.langScript.toUpperCase();
+      },
+      (err) => {
+        AutographaStore.scriptDirection = "LTR";
+      }
+    );
+    AutographaStore.refList = [];
+    loadSetting();
+  }, []);
+
+  const loadSetting = () => {
+    db.get("targetBible").then(
+      (doc) => {
+        setlanguage(doc.targetLang);
+        setlanguageCode(doc.targetLang);
+        setlangVersion(doc.targetVersion);
+        setFolderPath(doc.targetPath);
+      },
+      (err) => {
+        // console.log(err);
+      }
+    );
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     if (helperTextlanguage !== "") {
@@ -111,6 +141,7 @@ export default function TranslationSettings() {
       helperTextfolderpath === ""
     ) {
       setState({ ...state, [anchor]: open });
+      saveSetting();
     }
   };
   const handleDirChange = (event) => {
@@ -230,6 +261,54 @@ export default function TranslationSettings() {
     }
   }, [language, langVersion, folderPath, ispathvalid]);
 
+  const saveSetting = () => {
+    const currentTrans = AutographaStore.currentTrans;
+    // const {
+    //   langCode,
+    //   langVersion,
+    //   folderPath,
+    //   backupFrequency,
+    // } = this.state.settingData;
+    const settingData = {
+      _id: "targetBible",
+      targetLang: languageCode.toLowerCase(),
+      targetVersion: langVersion,
+      targetPath: folderPath,
+      langScript: AutographaStore.scriptDirection.toUpperCase(),
+      // backupFrequency: backupFrequency,
+    };
+    db.get("targetBible").then(
+      (doc) => {
+        settingData._rev = doc._rev;
+        db.put(settingData).then((res) => {
+          swal(
+            currentTrans["dynamic-msg-trans-data"],
+            currentTrans["dynamic-msg-saved-change"],
+            "success"
+          );
+        });
+      },
+      (err) => {
+        db.put(settingData).then(
+          (res) => {
+            swal(
+              currentTrans["dynamic-msg-trans-data"],
+              currentTrans["dynamic-msg-saved-change"],
+              "success"
+            );
+          },
+          (err) => {
+            swal(
+              currentTrans["dynamic-msg-trans-data"],
+              currentTrans["dynamic-msg-went-wrong"],
+              "success"
+            );
+          }
+        );
+      }
+    );
+  };
+
   const list = (anchor) => (
     <div className={clsx(classes.list)} role="presentation">
       <List
@@ -267,7 +346,7 @@ export default function TranslationSettings() {
                       getOptionLabel={(option) =>
                         option.title ? option.title : language
                       }
-                      value={language || ""}
+                      value={languageCode}
                       onChange={(event, newValue) => {
                         if (newValue) {
                           setlanguage(newValue.title);
