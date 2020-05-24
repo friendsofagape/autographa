@@ -3,7 +3,7 @@ import { useStyles } from "./useStyles";
 
 const ReferencePanel = (props) => {
   const classes = useStyles();
-
+  console.log(props);
   return (
     <div className={classes.root}>
       <div

@@ -17,6 +17,7 @@ import ImportReport from "../Reports/ImportReport";
 import Search from "../Search";
 import ReferenceSettings from "../Content/Reference/ReferenceSettings";
 import DiffChecker from "./DiffChecker";
+import TranslationHelp from "../TranslationHelp/TranslationHelp";
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -47,6 +48,7 @@ export default function PrimarySearchAppBar() {
       <div className={classes.grow}>
         <AppBar position="static">
           <Toolbar>
+            <TranslationHelp />
             <Typography className={classes.title} variant="h6" noWrap>
               Autographa
             </Typography>

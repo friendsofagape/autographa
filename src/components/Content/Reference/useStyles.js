@@ -24,4 +24,19 @@ export const useStyles = makeStyles((theme) => ({
     paddingLeft: "9px",
     borderBottom: "none",
   },
+  listroot: {
+    width: "100%",
+    backgroundColor: theme.palette.background.paper,
+  },
+  listItemIcon: {
+    minWidth: 20,
+    alignSelf: "self-start",
+    marginTop: 6,
+  },
+  paper: {
+    position: "absolute",
+  },
+  list: {
+    paddingTop: 42,
+  },
 }));
