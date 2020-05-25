@@ -212,10 +212,10 @@ module.exports = {
                 book.chapters.forEach((_value, index) => {
                   if (_value.verses.length === 0) {
                     missingChapterbook = fileName(options.usfmFile);
-                    // AutographaStore.warningMsg.push([
-                    //   fileName(options.usfmFile),
-                    //   index + 1,
-                    // ]);
+                    AutographaStore.warningMsg.push([
+                      fileName(options.usfmFile),
+                      index + 1,
+                    ]);
                   }
                 });
                 if (missingChapterbook !== fileName(options.usfmFile)) {

@@ -1,6 +1,5 @@
 import React from "react";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
-import MailIcon from "@material-ui/icons/Mail";
 import Dialog from "@material-ui/core/Dialog";
 import MuiDialogTitle from "@material-ui/core/DialogTitle";
 import MuiDialogContent from "@material-ui/core/DialogContent";
@@ -94,9 +93,10 @@ const DialogTitle = withStyles(styles)((props) => {
   );
 });
 
-export default function ImportReport() {
+const ImportReport = (props) => {
+  // console.log("import Report", props, props.show);
   const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(props.show);
   const [value, setValue] = React.useState(0);
   const [successFile, setSuccessFile] = React.useState(["sf1", "sf2", "sf3"]);
   const [warningFile, setWarningFile] = React.useState(["wf1", "wf2"]);
@@ -106,21 +106,15 @@ export default function ImportReport() {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-  const handleClose = () => {
-    setOpen(false);
-  };
+
   return (
     <div>
-      <MailIcon onClick={handleClickOpen} />
       <Dialog
-        onClose={handleClose}
+        onClose={props.importClose}
         aria-labelledby="customized-dialog-title"
-        open={open}
+        open={props.show}
       >
-        <DialogTitle id="customized-dialog-title" onClose={handleClose}>
+        <DialogTitle id="customized-dialog-title" onClose={props.importClose}>
           Import Report
         </DialogTitle>
         <MuiDialogContent>
@@ -203,4 +197,5 @@ export default function ImportReport() {
       </Dialog>
     </div>
   );
-}
+};
+export default ImportReport;
