@@ -28,9 +28,10 @@ import {
   Paper,
 } from "@material-ui/core";
 import { BrowserWindow } from "electron";
+import * as mobx from "mobx";
 import * as usfm_import from "../../../core/usfm_import";
 import FolderIcon from "@material-ui/icons/Folder";
-import { AutographaStore } from "../../AutographaStore";
+import AutographaStore from "../../AutographaStore";
 import ImportReport from "../../Reports/ImportReport";
 const { dialog, getCurrentWindow } = require("electron").remote;
 const lookupsDb = require(`${__dirname}/../../../core/data-provider`).lookupsDb();
@@ -319,13 +320,7 @@ export default function ReferenceSettings(props) {
       .saveJsonToDb(dir, bibleName, language, langVersion)
       .then((res) => {
         console.log(res);
-        console.log(
-          AutographaStore.warningMsg,
-          "---",
-          AutographaStore.successFile,
-          "===",
-          AutographaStore.errorFile
-        );
+        console.log(mobx.toJS(AutographaStore.successFile));
         return res;
       })
       .then((err) => {
