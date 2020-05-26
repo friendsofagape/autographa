@@ -53,35 +53,41 @@ export const importTranslationFiles = (importFiles, langCode, langVersion) => {
   );
 };
 
-export const saveJsonToDb = (importFiles, bibleName, langCode, langVersion) => {
-  console.log(importFiles, bibleName, langCode, langVersion);
-  return Promise.all(
-    filterFiles(importFiles).map((filePath) => {
-      return getStuffAsync({
+export const saveJsonToDb = (
+  importDir,
+  bibleName,
+  refLangCodeValue,
+  refVersion
+) =>
+  Promise.all(
+    filterFiles(importDir).map((filePath) =>
+      getStuffAsync({
         bibleName: bibleName,
-        lang: langCode.toLowerCase(),
-        version: langVersion.toLowerCase(),
+        lang: refLangCodeValue.toLowerCase(),
+        version: refVersion.toLowerCase(),
         usfmFile: filePath,
         targetDb: "refs",
         scriptDirection: AutographaStore.refScriptDirection,
       })
         .then((res) => {
-          if (res !== undefined) console.log(res);
+          if (res !== undefined) AutographaStore.successFile.push(res);
         })
         .catch((err) => {
-          console.log(err);
-        });
-    })
-  );
-  // fs.readFileAsync = function (filename, enc) {
-  //   console.log(filename, enc);
-  //   return new Promise(function (resolve, reject) {
-  //     fs.readFile(filename, enc, function (err, data) {
-  //       if (err) reject(err);
-  //       else resolve(data);
-  //     });
-  //   });
-  // };
+          AutographaStore.errorFile.push(err);
+        })
+    )
+  ).then((ps) => Promise.all(ps));
+
+fs.readFileAsync = function (filename, enc) {
+  return new Promise(function (resolve, reject) {
+    fs.readFile(filename, enc, function (err, data) {
+      if (err) reject(err);
+      else {
+        console.log(data);
+        resolve(data);
+      }
+    });
+  });
 };
 
 /* filter out nondot files from the directory and its return promise  */
