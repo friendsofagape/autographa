@@ -320,7 +320,6 @@ export default function ReferenceSettings(props) {
       .saveJsonToDb(dir, bibleName, language, langVersion)
       .then((res) => {
         console.log(res);
-        console.log(mobx.toJS(AutographaStore.successFile));
         return res;
       })
       .then((err) => {
@@ -331,6 +330,9 @@ export default function ReferenceSettings(props) {
 
   const importClose = () => {
     setShowReport(false);
+    AutographaStore.warningMsg = [];
+    AutographaStore.successFile = [];
+    AutographaStore.errorFile = [];
     window.location.reload();
   };
 

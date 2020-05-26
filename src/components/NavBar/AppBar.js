@@ -13,7 +13,6 @@ import SetUp from "../Content/Reference/core/setup";
 import Statistics from "../Content/Translation/Statistics";
 import TranslationSetUp from "../Content/Translation/core/TranslationSetUp";
 import About from "../About";
-import ImportReport from "../Reports/ImportReport";
 import Search from "../Search";
 import ReferenceSettings from "../Content/Reference/ReferenceSettings";
 
@@ -117,11 +116,6 @@ export default function PrimarySearchAppBar() {
             </div>
             <div className={classes.grow} />
             <div className={classes.sectionDesktop}>
-              <IconButton aria-label="show 4 new mails" color="inherit">
-                <Badge badgeContent={4} color="secondary">
-                  <ImportReport />
-                </Badge>
-              </IconButton>
               <IconButton color="inherit">
                 <About />
               </IconButton>

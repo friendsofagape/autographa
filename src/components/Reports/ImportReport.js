@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import Dialog from "@material-ui/core/Dialog";
 import MuiDialogTitle from "@material-ui/core/DialogTitle";
@@ -15,6 +15,9 @@ import ExpansionPanel from "@material-ui/core/ExpansionPanel";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import * as mobx from "mobx";
+import AutographaStore from "../AutographaStore";
+import * as numberFormat from "../../core/FormatNumber";
 
 const styles = (theme) => ({
   root: {
@@ -94,15 +97,69 @@ const DialogTitle = withStyles(styles)((props) => {
 });
 
 const ImportReport = (props) => {
-  // console.log("import Report", props, props.show);
   const classes = useStyles();
-  const [open, setOpen] = React.useState(props.show);
   const [value, setValue] = React.useState(0);
-  const [successFile, setSuccessFile] = React.useState(["sf1", "sf2", "sf3"]);
-  const [warningFile, setWarningFile] = React.useState(["wf1", "wf2"]);
-  const [errorFile, setErrorFile] = React.useState(["EF1", "EF2", "EF3"]);
-  const totalFiles = successFile.length + warningFile.length + errorFile.length;
+  const successFiles = mobx.toJS(AutographaStore.successFile);
+  const [warningFile, setWarningFile] = React.useState([]);
+  const [errorFile, setErrorFile] = React.useState([]);
 
+  const handleWarning = () => {
+    const warningFiles = mobx.toJS(AutographaStore.warningMsg);
+    let objWarnArray = [];
+    let preValue = undefined;
+    let book = "";
+    let chapters = [];
+    warningFiles.map((value) => {
+      if (value[0] !== preValue) {
+        if (value[0] !== preValue && preValue !== undefined) {
+          const obj = { filename: book, chapter: chapters };
+          objWarnArray.push(obj);
+          book = "";
+          chapters = [];
+        }
+        book = value[0];
+        chapters.push(value[1]);
+        preValue = value[0];
+      } else {
+        chapters.push(value[1]);
+      }
+    });
+    if (book !== "" && chapters.length !== 0) {
+      const obj = { filename: book, chapter: chapters };
+      objWarnArray.push(obj);
+    }
+    let finalWarnArray = Array.from(new Set(objWarnArray));
+    setWarningFile(finalWarnArray);
+  };
+
+  const handleError = () => {
+    // var errorpath = `${appPath}/report/error${date.getDate()}${
+    //   date.getMonth() + 1
+    // }${date.getFullYear()}.log`;
+    const errorFiles = mobx.toJS(AutographaStore.errorFile);
+    let objErrArray = [];
+    errorFiles.map((value) => {
+      // fs.appendFile(errorpath, value + "\n", (value) => {
+      //   if (value) {
+      //   } else {
+      //     console.log("succesfully created error.log file");
+      //   }
+      // });
+      let file = value.toString().replace("Error:", "");
+      file = file.toString().trim();
+      let err = file.split(/ +/);
+      const obj = { filename: err[0], error: err[1] };
+      objErrArray.push(obj);
+    });
+    setErrorFile(objErrArray);
+  };
+
+  useEffect(() => {
+    if (props.show) {
+      handleWarning();
+      handleError();
+    }
+  }, [props.show]);
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -127,16 +184,24 @@ const ImportReport = (props) => {
               <Tab
                 label={
                   "Successfully Imported (" +
-                  (successFile.length + warningFile.length) +
+                  (successFiles.length + warningFile.length) +
                   "/" +
-                  totalFiles +
+                  (successFiles.length +
+                    warningFile.length +
+                    errorFile.length) +
                   ")"
                 }
                 {...a11yProps(0)}
               />
               <Tab
                 label={
-                  "Failed Import (" + errorFile.length + "/" + totalFiles + ")"
+                  "Failed Import (" +
+                  errorFile.length +
+                  "/" +
+                  (successFiles.length +
+                    warningFile.length +
+                    errorFile.length) +
+                  ")"
                 }
                 {...a11yProps(1)}
               />
@@ -144,7 +209,7 @@ const ImportReport = (props) => {
           </AppBar>
           <Typography>
             <TabPanel value={value} index={0}>
-              {successFile.map((success, key) => (
+              {successFiles.map((success, key) => (
                 <div id={key} key={key} className={classes.expandPanel}>
                   <ExpansionPanelSummary
                     aria-controls="panel1a-content"
@@ -155,7 +220,7 @@ const ImportReport = (props) => {
                   </ExpansionPanelSummary>
                 </div>
               ))}
-              {warningFile.map((_warning, key) => (
+              {warningFile.map((warning, key) => (
                 <div id={key} key={key} className={classes.expandPanel}>
                   <ExpansionPanel>
                     <ExpansionPanelSummary
@@ -164,10 +229,13 @@ const ImportReport = (props) => {
                       id="panel1a-header"
                       style={{ backgroundColor: "yellow" }}
                     >
-                      <Typography>{_warning}</Typography>
+                      <Typography>{warning.filename}</Typography>
                     </ExpansionPanelSummary>
                     <ExpansionPanelDetails>
-                      <Typography>warningFile</Typography>
+                      <Typography>
+                        Chapter {numberFormat.FormatNumber(warning.chapter)}{" "}
+                        missing
+                      </Typography>
                     </ExpansionPanelDetails>
                   </ExpansionPanel>
                 </div>
@@ -175,7 +243,7 @@ const ImportReport = (props) => {
             </TabPanel>
             <TabPanel value={value} index={1}>
               {errorFile.map((error, key) => (
-                <div id={key} key={key} className={classes.expandPanel}>
+                <div className={classes.expandPanel}>
                   <ExpansionPanel>
                     <ExpansionPanelSummary
                       expandIcon={<ExpandMoreIcon />}
@@ -183,10 +251,10 @@ const ImportReport = (props) => {
                       id="panel1a-header"
                       style={{ backgroundColor: "red" }}
                     >
-                      <Typography>{error}</Typography>
+                      <Typography>{error.filename}</Typography>
                     </ExpansionPanelSummary>
                     <ExpansionPanelDetails>
-                      <Typography>Error File</Typography>
+                      <Typography>ID is missing</Typography>
                     </ExpansionPanelDetails>
                   </ExpansionPanel>
                 </div>
