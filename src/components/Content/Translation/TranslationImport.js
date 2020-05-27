@@ -9,6 +9,8 @@ import {
 import FolderIcon from "@material-ui/icons/Folder";
 import * as usfm_import from "../../../core/usfm_import";
 import { BrowserWindow } from "electron";
+import ImportReport from "../../Reports/ImportReport";
+import AutographaStore from "../../AutographaStore";
 
 const { dialog, getCurrentWindow } = require("electron").remote;
 
@@ -29,6 +31,7 @@ const TranslationImport = (props) => {
   const classes = useStyles();
   const [folderPathImport, setFolderPathImport] = useState("");
   const [totalFile, setTotalFile] = useState([]);
+  const [showReport, setShowReport] = useState(false);
 
   const openFileDialogImportTrans = (event) => {
     dialog
@@ -73,9 +76,16 @@ const TranslationImport = (props) => {
       .then((err) => {
         console.log(err);
       })
-      .finally(() => window.location.reload());
+      .finally(() => setShowReport(true));
   };
 
+  const importClose = () => {
+    setShowReport(false);
+    AutographaStore.warningMsg = [];
+    AutographaStore.successFile = [];
+    AutographaStore.errorFile = [];
+    window.location.reload();
+  };
   //   const transImport = () => {
   //     props.loadData();
   //     setFolderPathImport("");
@@ -118,6 +128,7 @@ const TranslationImport = (props) => {
       >
         Import
       </Button>
+      <ImportReport show={showReport} importClose={importClose} />
     </div>
   );
 };

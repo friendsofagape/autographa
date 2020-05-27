@@ -15,7 +15,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormControl from "@material-ui/core/FormControl";
 import TextField from "@material-ui/core/TextField";
 import AutographaStore from "./AutographaStore";
-
+const db = require(`${__dirname}/../core/data-provider`).targetDb();
 const styles = (theme) => ({
   root: {
     margin: 0,
@@ -72,11 +72,13 @@ const DialogActions = withStyles((theme) => ({
 export default function Search() {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
-  var [searchValue, setSearchValue] = React.useState("");
-  var [replaceValue, setReplaceValue] = React.useState("");
-  var [replaceOption, setReplaceOption] = React.useState("chapter");
-  var replacedChapter = {},
-    replacedVerse = {},
+  const [replaceInfo, setReplaceInfo] = React.useState(false);
+  const [searchValue, setSearchValue] = React.useState("");
+  const [replaceValue, setReplaceValue] = React.useState("");
+  const [replaceOption, setReplaceOption] = React.useState("chapter");
+  const [replaceCount, setReplaceCount] = React.useState();
+  const [replacedChapters, setReplacedChapters] = React.useState({});
+  var replacedVerse = {},
     allChapters = {},
     chapter_hash = {},
     verses_arr = [],
@@ -87,6 +89,7 @@ export default function Search() {
   };
   const handleClose = () => {
     setOpen(false);
+    window.location.reload();
   };
 
   const handleFindChange = (event) => {
@@ -100,72 +103,54 @@ export default function Search() {
     setReplaceOption(event.target.value);
   };
 
-  const replaceContentAndSave = () => {
-    findAndReplaceText(searchValue, replaceValue, replaceOption);
-    // AutographaStore.showModalSearch = false;
-  };
-
-  const findAndReplaceText = (searchVal, replaceVal, option) => {
-    // let that = this;
+  const findAndReplaceText = () => {
     let allChapterReplaceCount = [];
 
-    // db.get(AutographaStore.bookId.toString()).then((doc) => {
-    //   let totalReplacedWord = 0;
-    //   if (option === "chapter") {
-    //     totalReplacedWord = findReplaceSearchInputs(
-    //       doc.chapters[parseInt(AutographaStore.chapterId, 10) - 1].verses,
-    //       AutographaStore.chapterId - 1,
-    //       searchVal,
-    //       replaceVal,
-    //       option
-    //     );
-    //     allChapterReplaceCount.push(totalReplacedWord);
-    //   } else {
-    //     for (let i = 0; i < doc.chapters.length; i++) {
-    //       let replaceWord = findReplaceSearchInputs(
-    //         doc.chapters[parseInt(i + 1, 10) - 1].verses,
-    //         i,
-    //         searchVal,
-    //         replaceVal,
-    //         option
-    //       );
-    //       allChapterReplaceCount.push(replaceWord);
-    //       replaceWord = 0;
-    //     }
-    //   }
-    //   var replacedCount = allChapterReplaceCount.reduce(function (a, b) {
-    //     return a + b;
-    //   }, 0);
-    //   this.setState({ replaceCount: replacedCount, replaceInfo: true });
-    //   if (this.state.replaceCount === 0) {
-    //     this.setState({ disableSave: true });
-    //   }
-    //   totalReplacedWord = 0;
-    //   allChapterReplaceCount = [];
-    // });
+    db.get(AutographaStore.bookId.toString()).then((doc) => {
+      let totalReplacedWord = 0;
+      if (replaceOption === "chapter") {
+        totalReplacedWord = findReplaceSearchInputs(
+          doc.chapters[parseInt(AutographaStore.chapterId, 10) - 1].verses,
+          AutographaStore.chapterId - 1,
+          replaceOption
+        );
+        allChapterReplaceCount.push(totalReplacedWord);
+      } else {
+        for (let i = 0; i < doc.chapters.length; i++) {
+          let replaceWord = findReplaceSearchInputs(
+            doc.chapters[parseInt(i + 1, 10) - 1].verses,
+            i,
+            replaceOption
+          );
+          allChapterReplaceCount.push(replaceWord);
+          replaceWord = 0;
+        }
+      }
+      var replacedCount = allChapterReplaceCount.reduce(function (a, b) {
+        return a + b;
+      }, 0);
+
+      setReplaceCount(replacedCount);
+      setReplaceInfo(true);
+      totalReplacedWord = 0;
+      allChapterReplaceCount = [];
+    });
   };
 
-  const findReplaceSearchInputs = (
-    verses,
-    chapter,
-    searchVal,
-    replaceVal,
-    option
-  ) => {
-    let replacedVerse = {};
+  const findReplaceSearchInputs = (verses, chapter, option) => {
+    let replacedChapter = {};
     var i;
-    // let that = this;
     let replaceCount = 0;
     for (i = 1; i <= verses.length; i++) {
       if (option === "chapter") {
         let originalVerse = verses[i - 1].verse;
         replacedVerse[i] = i;
         if (
-          originalVerse.search(new RegExp(searchRegExp(searchVal), "g")) >= 0
+          originalVerse.search(new RegExp(searchRegExp(searchValue), "g")) >= 0
         ) {
           let modifiedVerse = originalVerse.replace(
-            new RegExp(searchRegExp(searchVal), "g"),
-            replaceVal
+            new RegExp(searchRegExp(searchValue), "g"),
+            replaceValue
           );
           replacedVerse[i] = modifiedVerse;
           chapter_hash["verse"] = modifiedVerse;
@@ -173,7 +158,7 @@ export default function Search() {
           verses_arr.push(chapter_hash);
           chapter_hash = {};
           replaceCount += originalVerse.match(
-            new RegExp(searchRegExp(searchVal), "g")
+            new RegExp(searchRegExp(searchValue), "g")
           ).length;
         } else {
           replacedVerse[i] = originalVerse;
@@ -187,17 +172,17 @@ export default function Search() {
         let originalVerse = verses[i - 1].verse;
         replacedVerse[i] = i;
         if (
-          originalVerse.search(new RegExp(searchRegExp(searchVal), "g")) >= 0
+          originalVerse.search(new RegExp(searchRegExp(searchValue), "g")) >= 0
         ) {
           let modifiedVerse = originalVerse.replace(
-            new RegExp(searchRegExp(searchVal), "g"),
-            replaceVal
+            new RegExp(searchRegExp(searchValue), "g"),
+            replaceValue
           );
           chapter_hash["verse"] = modifiedVerse;
           chapter_hash["verse_number"] = i;
           verses_arr.push(chapter_hash);
           chapter_hash = {};
-          replaceCount += originalVerse.match(new RegExp(searchVal, "g"))
+          replaceCount += originalVerse.match(new RegExp(searchValue, "g"))
             .length;
         } else {
           chapter_hash["verse"] = originalVerse;
@@ -209,12 +194,12 @@ export default function Search() {
       }
     }
     replacedChapter[chapter] = replacedVerse;
+    setReplacedChapters(replacedChapter);
     allChapters["chapter"] = chapter + 1;
     allChapters["verses"] = verses_arr;
     chapter_arr.push(allChapters);
     verses_arr = [];
     allChapters = {};
-    // highlightRef();
     return replaceCount;
   };
 
@@ -222,45 +207,51 @@ export default function Search() {
     return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
   };
 
+  const handleSummaryClose = () => {
+    setOpen(false);
+    setReplaceInfo(false);
+    setReplaceOption("chapter");
+    window.location.reload();
+  };
+
   const saveReplacedText = () => {
-    const that = this;
-    // db.get(AutographaStore.bookId.toString()).then((doc) => {
-    //   if (AutographaStore.replaceOption === "chapter") {
-    //     for (var c in replacedChapter) {
-    //       var verses = doc.chapters[AutographaStore.chapterId - 1].verses;
-    //       verses.forEach((verse, index) => {
-    //         verse.verse = replacedChapter[c][index + 1];
-    //       });
-    //       doc.chapters[parseInt(c, 10)].verses = verses;
-    //       db.put(doc, function (err, response) {
-    //         if (err) {
-    //           // $("#replaced-text-change").modal('toggle');
-    //           // alertModal("dynamic-msg-error", "dynamic-msg-went-wrong");
-    //         } else {
-    //           that.setState({ loader: true });
-    //           window.location.reload();
-    //         }
-    //       });
-    //     }
-    //     replacedChapter = {};
-    //     replacedVerse = {};
-    //   } else {
-    //     doc.chapters = chapter_arr;
-    //     db.put(doc, function (err, res) {
-    //       if (err) {
-    //         chapter_arr = [];
-    //         // $("#replaced-text-change").modal('toggle');
-    //         // alertModal("dynamic-msg-error", "dynamic-msg-went-wrong");
-    //       } else {
-    //         chapter_arr = [];
-    //         replacedChapter = {};
-    //         replacedVerse = {};
-    //         that.setState({ loader: true });
-    //         window.location.reload();
-    //       }
-    //     });
-    //   }
-    // });
+    db.get(AutographaStore.bookId.toString()).then((doc) => {
+      if (replaceOption === "chapter") {
+        for (var c in replacedChapters) {
+          var verses = doc.chapters[AutographaStore.chapterId - 1].verses;
+          verses.forEach((verse, index) => {
+            verse.verse = replacedChapters[c][index + 1];
+          });
+          doc.chapters[parseInt(c, 10)].verses = verses;
+          db.put(doc, function (err, response) {
+            if (err) {
+              console.log("Error");
+              // $("#replaced-text-change").modal('toggle');
+              // alertModal("dynamic-msg-error", "dynamic-msg-went-wrong");
+            } else {
+              // that.setState({ loader: true });
+              window.location.reload();
+            }
+          });
+        }
+        setReplacedChapters({});
+        replacedVerse = {};
+      } else {
+        doc.chapters = chapter_arr;
+        db.put(doc, function (err, res) {
+          if (err) {
+            chapter_arr = [];
+            // $("#replaced-text-change").modal('toggle');
+            // alertModal("dynamic-msg-error", "dynamic-msg-went-wrong");
+          } else {
+            chapter_arr = [];
+            replacedVerse = {};
+            // that.setState({ loader: true });
+            window.location.reload();
+          }
+        });
+      }
+    });
   };
 
   return (
@@ -321,11 +312,38 @@ export default function Search() {
         <DialogActions>
           <Button
             autoFocus
-            onClick={handleClose}
+            onClick={findAndReplaceText}
             color="primary"
             disabled={searchValue ? false : true}
           >
             Replace
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog
+        onClose={handleSummaryClose}
+        aria-labelledby="customized-dialog-title"
+        open={replaceInfo}
+      >
+        <DialogTitle id="customized-dialog-title" onClose={handleSummaryClose}>
+          Replacement Summary
+        </DialogTitle>
+        <DialogContent dividers>
+          <Typography>
+            <p>{replaceCount} occurrences replaced.</p>
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            autoFocus
+            onClick={saveReplacedText}
+            color="primary"
+            disabled={replaceCount === 0}
+          >
+            Save
+          </Button>
+          <Button autoFocus onClick={handleSummaryClose} color="primary">
+            Cancel
           </Button>
         </DialogActions>
       </Dialog>

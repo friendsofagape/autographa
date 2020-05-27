@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
@@ -8,10 +8,7 @@ import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormControl from "@material-ui/core/FormControl";
 import FormLabel from "@material-ui/core/FormLabel";
-import BackupIcon from "@material-ui/icons/Backup";
 import InsertDriveFileIcon from "@material-ui/icons/InsertDriveFile";
-import GetAppIcon from "@material-ui/icons/GetApp";
-import SaveIcon from "@material-ui/icons/Save";
 import SettingsIcon from "@material-ui/icons/Settings";
 import ListSubheader from "@material-ui/core/ListSubheader";
 import List from "@material-ui/core/List";
@@ -31,9 +28,11 @@ import {
   Paper,
 } from "@material-ui/core";
 import { BrowserWindow } from "electron";
+import * as mobx from "mobx";
 import * as usfm_import from "../../../core/usfm_import";
 import FolderIcon from "@material-ui/icons/Folder";
-import { Observer } from "mobx-react";
+import AutographaStore from "../../AutographaStore";
+import ImportReport from "../../Reports/ImportReport";
 const { dialog, getCurrentWindow } = require("electron").remote;
 const lookupsDb = require(`${__dirname}/../../../core/data-provider`).lookupsDb();
 const refDb = require(`${__dirname}/../../../core/data-provider`).referenceDb();
@@ -75,7 +74,6 @@ export default function ReferenceSettings(props) {
   const [language, setlanguage] = useState("");
   const [languageCode, setlanguageCode] = useState("");
   const [langVersion, setlangVersion] = useState("");
-  //   const [folderPath, setFolderPath] = useState("");
   const [open, setOpen] = React.useState(true);
   const [tab2, setTab2] = useState(false);
   const [helperTextbible, sethelperTextbible] = useState("");
@@ -89,6 +87,7 @@ export default function ReferenceSettings(props) {
   const [listlang, setListlang] = useState([]);
   const [folderPathImport, setFolderPathImport] = useState("");
   const [totalFile, setTotalFile] = useState([]);
+  const [showReport, setShowReport] = useState(false);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -199,9 +198,15 @@ export default function ReferenceSettings(props) {
 
   const importReference = () => {
     if (!reference_setting()) return;
-    if (!languageCode) return;
+    const regExp = /\(([^)]+)\)/;
+    let _langCode = regExp.exec(language);
+    let langCode = "";
+    if (_langCode) {
+      langCode = _langCode[1];
+    } else langCode = language;
+    setlanguageCode(langCode);
     var ref_id_value =
-        languageCode.toLowerCase() +
+        langCode.toLowerCase() +
         "_" +
         langVersion.toLowerCase() +
         "_" +
@@ -255,35 +260,9 @@ export default function ReferenceSettings(props) {
     );
   };
 
-  const saveJsonToDB = (dir) => {
-    // const currentTrans = AutographaStore.currentTrans;
-    // let date = new Date();
-    // if (
-    //   !fs.existsSync(
-    //     `${appPath}/report/error${date.getDate()}${date.getMonth()}${date.getFullYear()}.log`
-    //   )
-    // )
-    //   fs.mkdirSync(`${appPath}/report`, { recursive: true });
-    usfm_import
-      .saveJsonToDb(dir, bibleName, languageCode, langVersion)
-      .then((res) => {
-        return res;
-      })
-      .then((err) => {
-        console.log(err);
-      })
-      .finally(() => window.location.reload());
-  };
-
   const reference_setting = () => {
-    const regExp = /\(([^)]+)\)/;
     let name = bibleName;
-    let langCode;
-    let _langCode = regExp.exec(languageCode);
-    if (_langCode) {
-      langCode = _langCode[1];
-    } else langCode = language;
-    setlanguageCode(langCode);
+    let langCode = language;
     let version = langVersion;
     let path = folderPathImport;
     let isValid = true;
@@ -326,6 +305,35 @@ export default function ReferenceSettings(props) {
       setHelperTextfolderpath("");
     }
     return isValid;
+  };
+
+  const saveJsonToDB = (dir) => {
+    // const currentTrans = AutographaStore.currentTrans;
+    // let date = new Date();
+    // if (
+    //   !fs.existsSync(
+    //     `${appPath}/report/error${date.getDate()}${date.getMonth()}${date.getFullYear()}.log`
+    //   )
+    // )
+    //   fs.mkdirSync(`${appPath}/report`, { recursive: true });
+    usfm_import
+      .saveJsonToDb(dir, bibleName, language, langVersion)
+      .then((res) => {
+        console.log(res);
+        return res;
+      })
+      .then((err) => {
+        console.log(err);
+      })
+      .finally(() => setShowReport(true));
+  };
+
+  const importClose = () => {
+    setShowReport(false);
+    AutographaStore.warningMsg = [];
+    AutographaStore.successFile = [];
+    AutographaStore.errorFile = [];
+    window.location.reload();
   };
 
   const list = (anchor) => (
@@ -431,6 +439,8 @@ export default function ReferenceSettings(props) {
                       name="folderPathImport"
                       variant="outlined"
                       label="Import Translation"
+                      error={ispathvalid}
+                      helperText={helperTextfolderpath}
                       placeholder="select the USFM files"
                       className={classes.margin}
                       id="import-file-trans"
@@ -472,6 +482,7 @@ export default function ReferenceSettings(props) {
                     </FormControl>
                   </div>
                   <Button
+                    type="submit"
                     size="medium"
                     variant="contained"
                     color="primary"
@@ -504,6 +515,7 @@ export default function ReferenceSettings(props) {
         >
           {list("right")}
         </SwipeableDrawer>
+        <ImportReport show={showReport} importClose={importClose} />
       </React.Fragment>
     </div>
   );

@@ -46,6 +46,9 @@ export class AutographaStore {
   @observable editBookNamesMode = false;
   @observable bookNameEditorPopup = false;
   @observable bookIndex = null;
-  @observable RequiredIndex = null;
+  @observable RequiredIndex = null
+  @observable successFile = [];
+  @observable errorFile = [];
+  @observable warningMsg = [];
 }
 export default new AutographaStore();
