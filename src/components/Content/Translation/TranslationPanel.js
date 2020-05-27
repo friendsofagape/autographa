@@ -7,6 +7,7 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
+import JointVerse from "./JointVerse";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -26,9 +27,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const initialState = {
+  mouseX: null,
+  mouseY: null,
+};
+
 const TranslationPanel = (props) => {
   const classes = useStyles();
-  const [selectedIndex, setSelectedIndex] = React.useState(1);
+  const [selectedIndex, setSelectedIndex] = useState(1);
+  const [pointer, setPointer] = useState(initialState);
+  const [index, setIndex] = useState();
 
   const handleListItemClick = (event, index) => {
     setSelectedIndex(index);
@@ -42,6 +50,21 @@ const TranslationPanel = (props) => {
         props.onSave();
       }
     }, 3000);
+  };
+
+  const handleJoint = (event, i) => {
+    console.log(AutographaStore.jointVerse[i]);
+    console.log(event, i);
+    setIndex(i);
+    setPointer({
+      mouseX: event.clientX - 2,
+      mouseY: event.clientY - 4,
+    });
+    console.log("working");
+  };
+
+  const closeJoint = () => {
+    setPointer(initialState);
   };
 
   return (
@@ -72,8 +95,13 @@ const TranslationPanel = (props) => {
                         id={`v${index + 1}`}
                         onKeyUp={handleKeyUp}
                         data-chunk-group={AutographaStore.chunkGroup[index]}
-                        contentEditable
+                        contentEditable={
+                          AutographaStore.jointVerse[index] === undefined
+                            ? true
+                            : false
+                        }
                         style={{ outline: "none" }}
+                        onContextMenu={(event) => handleJoint(event, index)}
                         suppressContentEditableWarning={true}
                         primary={
                           AutographaStore.translationContent[index]
@@ -88,6 +116,7 @@ const TranslationPanel = (props) => {
           </Paper>
         )}
       </Observer>
+      <JointVerse show={pointer} index={index} close={closeJoint} />
     </React.Fragment>
   );
 };

@@ -35,5 +35,6 @@ export class AutographaStore {
   @observable successFile = [];
   @observable errorFile = [];
   @observable warningMsg = [];
+  @observable jointVerse = "";
 }
 export default new AutographaStore();

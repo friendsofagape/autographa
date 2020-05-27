@@ -137,14 +137,17 @@ const SetUp = () => {
 
   const updateTransContent = () => {
     let translationContent = [];
+    let jointVerse = [];
     db.get(AutographaStore.bookId.toString()).then((doc) => {
       let verses =
         doc.chapters[parseInt(AutographaStore.chapterId, 10) - 1].verses;
       AutographaStore.verses = verses;
       verses.forEach((verse, index) => {
         translationContent.push(verse.verse);
+        jointVerse.push(verse.joint_verse);
       });
       AutographaStore.translationContent = translationContent;
+      AutographaStore.jointVerse = jointVerse;
     });
   };
 
