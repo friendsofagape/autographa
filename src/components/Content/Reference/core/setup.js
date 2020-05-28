@@ -170,9 +170,10 @@ const SetUp = () => {
     });
   };
 
-  const handleRefChange = (refDropDownPos, event) => {
+  const handleRefChange = (event, refDropDownPos) => {
     // event.persist();
-    AutographaStore.activeRefs[0] = event.props.value;
+    console.log(refDropDownPos, event);
+    AutographaStore.activeRefs[refDropDownPos] = event.target.value;
     refDb.get("activeRefs").then(
       (doc) => {
         // doc._rev = doc._rev;
@@ -194,10 +195,10 @@ const SetUp = () => {
       }
     );
     AutographaStore.selectId = event.key;
-    // AutographaStore.layoutContent = parseInt(
-    //   event.currentTarget.dataset.layout
-    // );
-    let referenceValue = event.props.value;
+    AutographaStore.layoutContent = parseInt(
+      event.currentTarget.dataset.layout
+    );
+    let referenceValue = event.target.value;
     AutographaStore.currentRef = referenceValue;
     session.defaultSession.cookies
       .get({ url: "http://book.autographa.com" })
@@ -222,7 +223,7 @@ const SetUp = () => {
     var cookieRef = {
       url: "http://refs.autographa.com",
       name: "0",
-      value: event.props.value,
+      value: event.target.value,
     };
     session.defaultSession.cookies.set(cookieRef, (error) => {
       if (error) console.log(error);
@@ -244,9 +245,10 @@ const SetUp = () => {
                   style={{ width: "50%", float: "left" }}
                 >
                   <ReferenceSelector
-                    onClick={handleRefChange}
+                    onClick={(event) => handleRefChange(event, 0)}
                     refIds={AutographaStore.activeRefs[0]}
                     id={1}
+                    layout={1}
                   />
                   <ReferencePanel refContent={AutographaStore.content} />
                 </div>
@@ -268,7 +270,7 @@ const SetUp = () => {
                   style={{ width: "31.33%", float: "left" }}
                 >
                   <ReferenceSelector
-                    onClick={handleRefChange}
+                    onClick={(event) => handleRefChange(event, 0)}
                     refIds={AutographaStore.activeRefs[0]}
                     id={21}
                     layout={1}
@@ -284,7 +286,7 @@ const SetUp = () => {
                   style={{ width: "33.33%", float: "left" }}
                 >
                   <ReferenceSelector
-                    onClick={handleRefChange}
+                    onClick={(event) => handleRefChange(event, 1)}
                     refIds={AutographaStore.activeRefs[1]}
                     id={22}
                     layout={2}
@@ -312,7 +314,7 @@ const SetUp = () => {
                   style={{ width: "25%", float: "left" }}
                 >
                   <ReferenceSelector
-                    onClick={handleRefChange}
+                    onClick={(event) => handleRefChange(event, 0)}
                     refIds={AutographaStore.activeRefs[0]}
                     id={31}
                     layout={1}
@@ -327,7 +329,7 @@ const SetUp = () => {
                   style={{ width: "25%", float: "left" }}
                 >
                   <ReferenceSelector
-                    onClick={handleRefChange}
+                    onClick={(event) => handleRefChange(event, 1)}
                     refIds={AutographaStore.activeRefs[1]}
                     id={32}
                     layout={2}
@@ -344,7 +346,7 @@ const SetUp = () => {
                   style={{ width: "25%", float: "left" }}
                 >
                   <ReferenceSelector
-                    onClick={handleRefChange}
+                    onClick={(event) => handleRefChange(event, 2)}
                     refIds={AutographaStore.activeRefs[2]}
                     id={33}
                     layout={3}

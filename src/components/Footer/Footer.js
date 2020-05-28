@@ -4,10 +4,13 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Button from "@material-ui/core/Button";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
-import { Slide } from "@material-ui/core";
+import { Slide, IconButton } from "@material-ui/core";
+import SaveIcon from "@material-ui/icons/Save";
 import CustomizedSlider from "./FontSlider";
 import AutographaStore from "../AutographaStore";
 import ChromeReaderModeIcon from "@material-ui/icons/ChromeReaderMode";
+import { useEffect } from "react";
+import { Observer } from "mobx-react";
 const refDb = require(`${__dirname}/../../core/data-provider`).referenceDb();
 
 const useStyles = makeStyles((theme) => ({
@@ -24,13 +27,15 @@ const useStyles = makeStyles((theme) => ({
   layout: {
     margin: theme.spacing(1),
   },
+  save: {
+    float: "right",
+  },
 }));
 
-export default function Footer() {
+export default function Footer(props) {
   const classes = useStyles();
 
   const handleChange = (key) => {
-    console.log(key);
     let translationContent = [];
     if (key === 4) {
       AutographaStore.disablediff = true;
@@ -65,39 +70,65 @@ export default function Footer() {
           .catch(function (err) {});
       });
   };
+  useEffect(() => {
+    console.log(AutographaStore.transSaveTime);
+  });
 
   return (
-    <React.Fragment>
-      <Slide direction="up" in={true} mountOnEnter unmountOnExit>
-        <AppBar position="fixed" color="primary" className={classes.appBar}>
-          <Toolbar>
-            <CustomizedSlider />
-            <div style={{ width: "65%" }}>
-              <div className={classes.root}>
-                <ButtonGroup
-                  size="large"
-                  variant="contained"
-                  color="secondary"
-                  aria-label="large outlined primary button group"
-                >
-                  <Button onClick={() => handleChange(1)}>
-                    2x
-                    <ChromeReaderModeIcon className={classes.layout} />
-                  </Button>
-                  <Button onClick={() => handleChange(2)}>
-                    3x
-                    <ChromeReaderModeIcon className={classes.layout} />
-                  </Button>
-                  <Button onClick={() => handleChange(3)}>
-                    4x
-                    <ChromeReaderModeIcon className={classes.layout} />
-                  </Button>
-                </ButtonGroup>
+    <Observer>
+      {() => (
+        <React.Fragment>
+          {/* <Slide direction="up" in={true} mountOnEnter unmountOnExit> */}
+          <AppBar position="fixed" color="primary" className={classes.appBar}>
+            <Toolbar>
+              <CustomizedSlider />
+              <div style={{ width: "65%" }}>
+                <div className={classes.root}>
+                  <ButtonGroup
+                    size="large"
+                    variant="contained"
+                    color="secondary"
+                    aria-label="large outlined primary button group"
+                  >
+                    <Button onClick={() => handleChange(1)}>
+                      2x
+                      <ChromeReaderModeIcon className={classes.layout} />
+                    </Button>
+                    <Button onClick={() => handleChange(2)}>
+                      3x
+                      <ChromeReaderModeIcon className={classes.layout} />
+                    </Button>
+                    <Button onClick={() => handleChange(3)}>
+                      4x
+                      <ChromeReaderModeIcon className={classes.layout} />
+                    </Button>
+                  </ButtonGroup>
+                </div>
               </div>
-            </div>
-          </Toolbar>
-        </AppBar>
-      </Slide>
-    </React.Fragment>
+              <div style={{ width: "18%", color: "#000" }}>
+                <span
+                  id="saved-time"
+                  style={{ color: "#000", margin: "10px", float: "left" }}
+                >
+                  {AutographaStore.transSaveTime
+                    ? `Saved ${AutographaStore.transSaveTime}`
+                    : ""}
+                </span>
+                <Button
+                  className={classes.save}
+                  variant="contained"
+                  color="primary"
+                  onClick={props.onSave}
+                >
+                  <SaveIcon style={{ marginRight: "2px" }} />
+                  Save
+                </Button>
+              </div>
+            </Toolbar>
+          </AppBar>
+          {/* </Slide> */}
+        </React.Fragment>
+      )}
+    </Observer>
   );
 }

@@ -83,7 +83,7 @@ export default function PrimarySearchAppBar() {
       </div>
       <SetUp />
       {/* <TranslationSetUp /> */}
-      <Footer />
+      {/* <Footer /> */}
     </React.Fragment>
   );
 }
