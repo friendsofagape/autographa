@@ -17,6 +17,7 @@ import Search from "../Search";
 import ReferenceSettings from "../Content/Reference/ReferenceSettings";
 import DiffChecker from "./DiffChecker";
 import TranslationHelp from "../TranslationHelp/TranslationHelp";
+import Footer from "../Footer/Footer";
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -81,7 +82,8 @@ export default function PrimarySearchAppBar() {
         </AppBar>
       </div>
       <SetUp />
-      <TranslationSetUp />
+      {/* <TranslationSetUp /> */}
+      <Footer />
     </React.Fragment>
   );
 }

@@ -39,4 +39,20 @@ export const useStyles = makeStyles((theme) => ({
   list: {
     paddingTop: 42,
   },
+  parentdiv: {
+    width: "100%",
+    float: "left",
+  },
+  layoutx: {
+    width: "50%",
+    float: "left",
+  },
+  layout2x: {
+    width: "33.33%",
+    float: "left",
+  },
+  layout3x: {
+    width: "25%",
+    float: "left",
+  },
 }));

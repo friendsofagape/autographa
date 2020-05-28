@@ -21,13 +21,15 @@ const useStyles = makeStyles((theme) => ({
   listItemIcon: {
     minWidth: 20,
     alignSelf: "self-start",
-    marginTop: 6,
   },
   paper: {
     position: "absolute",
   },
   list: {
     paddingTop: 42,
+  },
+  listItemText: {
+    fontSize: "0.7em", //Insert your required size
   },
 }));
 
@@ -54,46 +56,55 @@ const TranslationPanel = (props) => {
       <Observer>
         {() => (
           <Paper
-            className={classes.paper}
-            style={{ width: "49%", left: "50.7%" }}
+          // className={classes.paper}
+          // style={{ width: "49%", left: "50.7%" }}
           >
-            {/* <ThemeProvider theme={theme}> */}
-            {/* <div dir="rtl"> */}
-            <List className={classes.list}>
-              {props.chunkGroup &&
-                props.chunkGroup.map((value, index) => {
-                  return (
-                    <ListItem
-                      dense
-                      className={classes.root}
-                      key={index}
-                      selected={selectedIndex === index + 1}
-                      id={`versediv${index + 1}`}
-                      onClick={(event) => handleListItemClick(event, index + 1)}
-                      style={{ cursor: "text", whiteSpace: "pre-wrap" }}
-                    >
-                      <ListItemIcon className={classes.listItemIcon}>
-                        {index + 1}
-                      </ListItemIcon>
-                      <ListItemText
-                        id={`v${index + 1}`}
-                        onKeyUp={handleKeyUp}
-                        data-chunk-group={AutographaStore.chunkGroup[index]}
-                        contentEditable
-                        style={{ outline: "none" }}
-                        suppressContentEditableWarning={true}
-                        primary={
-                          AutographaStore.translationContent[index]
-                            ? AutographaStore.translationContent[index]
-                            : " "
+            <div
+              className={`col-12 col-ref verse-input ${AutographaStore.scriptDirection.toLowerCase()}`}
+            >
+              {/* <ThemeProvider theme={theme}> */}
+              {/* <div dir="rtl"> */}
+              <List className={classes.list}>
+                {props.chunkGroup &&
+                  props.chunkGroup.map((value, index) => {
+                    return (
+                      <ListItem
+                        dense
+                        className={classes.root}
+                        key={index}
+                        selected={selectedIndex === index + 1}
+                        id={`versediv${index + 1}`}
+                        onClick={(event) =>
+                          handleListItemClick(event, index + 1)
                         }
-                      />
-                    </ListItem>
-                  );
-                })}
-            </List>
-            {/* </div> */}
-            {/* </ThemeProvider> */}
+                        style={{ cursor: "text", whiteSpace: "pre-wrap" }}
+                      >
+                        <ListItemIcon className={classes.listItemIcon}>
+                          {index + 1}
+                        </ListItemIcon>
+                        <span
+                          id={`v${index + 1}`}
+                          onKeyUp={handleKeyUp}
+                          data-chunk-group={AutographaStore.chunkGroup[index]}
+                          contentEditable
+                          className={classes.listItemText}
+                          style={{
+                            outline: "none",
+                            marginLeft: "10px",
+                          }}
+                          suppressContentEditableWarning={true}
+                        >
+                          {AutographaStore.translationContent[index]
+                            ? AutographaStore.translationContent[index]
+                            : " "}
+                        </span>
+                      </ListItem>
+                    );
+                  })}
+              </List>
+              {/* </div> */}
+              {/* </ThemeProvider> */}
+            </div>
           </Paper>
         )}
       </Observer>
