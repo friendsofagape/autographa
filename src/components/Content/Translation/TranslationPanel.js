@@ -105,7 +105,13 @@ const TranslationPanel = (props) => {
                             : false
                         }
                         style={{ outline: "none" }}
-                        onContextMenu={(event) => handleJoint(event, index)}
+                        onContextMenu={
+                          index !== 0
+                            ? (event) => {
+                                handleJoint(event, index);
+                              }
+                            : false
+                        }
                         suppressContentEditableWarning={true}
                         primary={
                           AutographaStore.jointVerse[index] === undefined
