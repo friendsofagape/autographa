@@ -5,9 +5,6 @@ import AutographaStore from "../../AutographaStore";
 const db = require(`${__dirname}/../../../core/data-provider`).targetDb();
 
 const JointVerse = (props) => {
-  console.log("Joint", props);
-  //   let option =
-  //     AutographaStore.jointVerse[props.index] === undefined ? "true" : "false";
   const addJoint = () => {
     let verseNumber = props.index + 1;
     db.get(AutographaStore.bookId.toString()).then((doc) => {
@@ -93,7 +90,6 @@ const JointVerse = (props) => {
       });
     });
   };
-  //   console.log(option);
   return (
     <div>
       <Menu
@@ -108,8 +104,18 @@ const JointVerse = (props) => {
             : undefined
         }
       >
-        <MenuItem onClick={addJoint}>Join to the preceding verse</MenuItem>
-        <MenuItem onClick={removeJoint}>Unjoin this verse</MenuItem>
+        <MenuItem
+          onClick={addJoint}
+          disabled={AutographaStore.jointVerse[props.index] !== undefined}
+        >
+          Join to the preceding verse
+        </MenuItem>
+        <MenuItem
+          onClick={removeJoint}
+          disabled={AutographaStore.jointVerse[props.index] === undefined}
+        >
+          Unjoin this verse
+        </MenuItem>
       </Menu>
     </div>
   );

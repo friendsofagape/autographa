@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import AutographaStore from "../../AutographaStore.js";
 import { Observer } from "mobx-react";
 import List from "@material-ui/core/List";
@@ -53,14 +53,11 @@ const TranslationPanel = (props) => {
   };
 
   const handleJoint = (event, i) => {
-    console.log(AutographaStore.jointVerse[i]);
-    console.log(event, i);
     setIndex(i);
     setPointer({
       mouseX: event.clientX - 2,
       mouseY: event.clientY - 4,
     });
-    console.log("working");
   };
 
   const closeJoint = () => {
@@ -104,9 +101,11 @@ const TranslationPanel = (props) => {
                         onContextMenu={(event) => handleJoint(event, index)}
                         suppressContentEditableWarning={true}
                         primary={
-                          AutographaStore.translationContent[index]
+                          AutographaStore.jointVerse[index] === undefined
                             ? AutographaStore.translationContent[index]
-                            : " "
+                              ? AutographaStore.translationContent[index]
+                              : " "
+                            : "----- Joint with the preceding verse(s) -----"
                         }
                       />
                     </ListItem>
