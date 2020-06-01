@@ -58,7 +58,6 @@ export default function BookNameEditor({ show }) {
   const classes = useStyles();
   const [updatedValue, setUpdatedValue] = useState("");
   const [anchorEl, setAnchorEl] = useState(null);
-  console.log(show);
   const handleClose = () => {
     AutographaStore.openBookNameEditor = false;
     AutographaStore.bookNameEditorPopup = false;

@@ -4,6 +4,7 @@ import TranslationPanel from "../TranslationPanel";
 import * as mobx from "mobx";
 import { Observer } from "mobx-react";
 import { useEffect } from "react";
+import Footer from "../../../Footer/Footer";
 const db = require(`${__dirname}/../../../../core/data-provider`).targetDb();
 
 const TranslationSetUp = () => {
@@ -64,16 +65,17 @@ const TranslationSetUp = () => {
   };
 
   return (
-    <React.Fragment>
-      <Observer>
-        {() => (
+    <Observer>
+      {() => (
+        <React.Fragment>
           <TranslationPanel
             onSave={saveTarget}
             chunkGroup={mobx.toJS(AutographaStore.chunkGroup)}
           />
-        )}
-      </Observer>
-    </React.Fragment>
+          <Footer onSave={saveTarget} />
+        </React.Fragment>
+      )}
+    </Observer>
   );
 };
 
