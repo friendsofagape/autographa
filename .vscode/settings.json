@@ -21,7 +21,7 @@
 	"prettier.singleQuote": true,
 	"prettier.trailingComma": "all",
 	"javascript.implicitProjectConfig.experimentalDecorators": true,
-	"workbench.colorTheme": "Cobalt2",
+	"workbench.colorTheme": "Default Dark+",
 	"javascript.updateImportsOnFileMove.enabled": "always",
 	"explorer.confirmDelete": false,
 	"window.zoomLevel": 0,

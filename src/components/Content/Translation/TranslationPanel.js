@@ -107,9 +107,9 @@ const TranslationPanel = (props) => {
                           onKeyUp={handleKeyUp}
                           data-chunk-group={AutographaStore.chunkGroup[index]}
                           contentEditable={
-                          AutographaStore.jointVerse[index] === undefined
-                            ? true
-                            : false
+                            AutographaStore.jointVerse[index] === undefined
+                              ? true
+                              : false
                           }
                           className={classes.listItemText}
                           style={{
@@ -117,11 +117,11 @@ const TranslationPanel = (props) => {
                             marginLeft: "10px",
                           }}
                           onContextMenu={
-                          index !== 0
-                            ? (event) => {
-                                handleJoint(event, index);
-                              }
-                            : false
+                            index !== 0
+                              ? (event) => {
+                                  handleJoint(event, index);
+                                }
+                              : false
                           }
                           suppressContentEditableWarning={true}
                         >
