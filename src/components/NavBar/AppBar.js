@@ -17,6 +17,7 @@ import Search from "../Search";
 import ReferenceSettings from "../Content/Reference/ReferenceSettings";
 import DiffChecker from "./DiffChecker";
 import TranslationHelp from "../TranslationHelp/TranslationHelp";
+import Download from "../Download/Download";
 import Footer from "../Footer/Footer";
 
 const useStyles = makeStyles((theme) => ({
@@ -70,6 +71,9 @@ export default function PrimarySearchAppBar() {
                 <Badge badgeContent={17} color="secondary">
                   <Statistics />
                 </Badge>
+              </IconButton>
+              <IconButton color="inherit">
+                <Download />
               </IconButton>
               <IconButton color="inherit">
                 <TranslationSettings />
