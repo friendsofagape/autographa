@@ -87,18 +87,36 @@ export default function Footer(props) {
                   <ButtonGroup
                     size="large"
                     variant="contained"
-                    color="secondary"
+                    color="primary"
                     aria-label="large outlined primary button group"
                   >
-                    <Button onClick={() => handleChange(1)}>
+                    <Button
+                      style={{
+                        backgroundColor:
+                          AutographaStore.layout === 1 ? "#000096" : "",
+                      }}
+                      onClick={() => handleChange(1)}
+                    >
                       2x
                       <ChromeReaderModeIcon className={classes.layout} />
                     </Button>
-                    <Button onClick={() => handleChange(2)}>
+                    <Button
+                      style={{
+                        backgroundColor:
+                          AutographaStore.layout === 2 ? "#000096" : "",
+                      }}
+                      onClick={() => handleChange(2)}
+                    >
                       3x
                       <ChromeReaderModeIcon className={classes.layout} />
                     </Button>
-                    <Button onClick={() => handleChange(3)}>
+                    <Button
+                      style={{
+                        backgroundColor:
+                          AutographaStore.layout === 3 ? "#000096" : "",
+                      }}
+                      onClick={() => handleChange(3)}
+                    >
                       4x
                       <ChromeReaderModeIcon className={classes.layout} />
                     </Button>
