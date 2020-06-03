@@ -34,6 +34,10 @@ export class AutographaStore {
   @observable multipleSpaces = {};
   @observable chunks = "";
   @observable verses = "";
+  @observable fontStep = 1;
+  @observable fontMax = 50;
+  @observable fontMin = 14;
+  @observable currentFontValue = 16;
   @observable layout = 1;
   @observable layoutContent = 1;
   @observable layout3xDirect = true;
@@ -46,7 +50,7 @@ export class AutographaStore {
   @observable editBookNamesMode = false;
   @observable bookNameEditorPopup = false;
   @observable bookIndex = null;
-  @observable RequiredIndex = null
+  @observable RequiredIndex = null;
   @observable successFile = [];
   @observable errorFile = [];
   @observable warningMsg = [];

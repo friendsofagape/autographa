@@ -105,10 +105,19 @@ export default function BookChapterNavigation(props) {
       .then(function (doc) {
         var book = doc.visit_history[0].bookId;
         chapter = doc.visit_history[0].chapter;
+        let mode = mobx.toJS(AutographaStore.editBookNamesMode);
         if (selectedbook === "") {
-          setSelectedBook(
-            Constant.booksList[parseInt(book.toString(), 10) - 1]
-          );
+          if (AutographaStore.editBookNamesMode) {
+            setSelectedBook(
+              AutographaStore.translatedBookNames[
+                parseInt(AutographaStore.bookId, 10) - 1
+              ]
+            );
+          } else {
+            setSelectedBook(
+              Constant.booksList[parseInt(AutographaStore.bookId, 10) - 1]
+            );
+          }
           AutographaStore.bookId = book.toString();
         }
         if (selectedchapter === "") {
@@ -215,7 +224,6 @@ export default function BookChapterNavigation(props) {
           (book) => book.toLowerCase() === bookName.toLowerCase()
         );
     const bookSkel = bibleJson[bookIndex + 1];
-    console.log(bookIndex);
     AutographaStore.bookActive = bookIndex + 1;
     AutographaStore.bookChapter["chapterLength"] = bookSkel.chapters.length;
     AutographaStore.bookChapter["bookId"] = bookIndex + 1;
@@ -241,9 +249,15 @@ export default function BookChapterNavigation(props) {
     AutographaStore.chapterId = chapter;
     AutographaStore.chapterActive = chapter;
     AutographaStore.bookId = bookId;
-    setSelectedBook(
-      Constant.booksList[parseInt(AutographaStore.bookId, 10) - 1]
-    );
+    AutographaStore.editBookNamesMode
+      ? setSelectedBook(
+          AutographaStore.translatedBookNames[
+            parseInt(AutographaStore.bookId, 10) - 1
+          ]
+        )
+      : setSelectedBook(
+          Constant.booksList[parseInt(AutographaStore.bookId, 10) - 1]
+        );
     saveLastVisit(bookId, chapter);
     const cookiechapter = {
       url: "http://chapter.autographa.com",
@@ -384,6 +398,26 @@ export default function BookChapterNavigation(props) {
           ? content
           : AutographaStore.currentTrans["label-data-not-found"];
       });
+      getContent(
+        AutographaStore.activeRefs[1] +
+          "_" +
+          Constant.bookCodeList[parseInt(AutographaStore.bookId, 10) - 1],
+        chapter
+      ).then((content) => {
+        AutographaStore.contentOne = content
+          ? content
+          : AutographaStore.currentTrans["label-data-not-found"];
+      });
+      getContent(
+        AutographaStore.activeRefs[2] +
+          "_" +
+          Constant.bookCodeList[parseInt(AutographaStore.bookId, 10) - 1],
+        chapter
+      ).then((content) => {
+        AutographaStore.contentTwo = content
+          ? content
+          : AutographaStore.currentTrans["label-data-not-found"];
+      });
     });
     //  AutographaStore.aId  = "";
     var i;
@@ -438,7 +472,6 @@ export default function BookChapterNavigation(props) {
   };
 
   const editbooks = (event, index, bookName) => {
-    console.log("edit books");
     AutographaStore.RequiredIndex = index;
     AutographaStore.bookName = bookName;
     AutographaStore.editBookNamesMode = true;
@@ -450,10 +483,6 @@ export default function BookChapterNavigation(props) {
     AutographaStore.openBookNameEditor = !AutographaStore.openBookNameEditor;
     setBookdata(AutographaStore.translatedBookNames);
   };
-
-  useEffect(() => {
-    console.log(AutographaStore.translatedBookNames);
-  });
 
   const handlepopper = (event, index) => {
     event.preventDefault();

@@ -6,6 +6,7 @@ import { useStyles } from "../useStyles";
 import { Observer } from "mobx-react";
 import { Paper } from "@material-ui/core";
 import BookChapterNavigation from "../../../NavBar/BookChapterNavigation";
+import TranslationSetUp from "../../Translation/core/TranslationSetUp";
 const session = require("electron").remote.session;
 const refDb = require(`${__dirname}/../../../../core/data-provider`).referenceDb();
 const db = require(`${__dirname}/../../../../core/data-provider`).targetDb();
@@ -96,6 +97,26 @@ const SetUp = () => {
           ? content
           : AutographaStore.currentTrans["label-data-not-found"];
       });
+      getContent(
+        AutographaStore.activeRefs[1] +
+          "_" +
+          Constant.bookCodeList[parseInt(AutographaStore.bookId, 10) - 1],
+        chapter
+      ).then((content) => {
+        AutographaStore.contentOne = content
+          ? content
+          : AutographaStore.currentTrans["label-data-not-found"];
+      });
+      getContent(
+        AutographaStore.activeRefs[2] +
+          "_" +
+          Constant.bookCodeList[parseInt(AutographaStore.bookId, 10) - 1],
+        chapter
+      ).then((content) => {
+        AutographaStore.contentTwo = content
+          ? content
+          : AutographaStore.currentTrans["label-data-not-found"];
+      });
     });
     //  AutographaStore.aId  = "";
     var i;
@@ -152,9 +173,10 @@ const SetUp = () => {
     });
   };
 
-  const handleRefChange = (refDropDownPos, event) => {
+  const handleRefChange = (event, refDropDownPos) => {
     // event.persist();
-    AutographaStore.activeRefs[0] = event.props.value;
+    console.log(refDropDownPos, event);
+    AutographaStore.activeRefs[refDropDownPos] = event.target.value;
     refDb.get("activeRefs").then(
       (doc) => {
         // doc._rev = doc._rev;
@@ -176,10 +198,10 @@ const SetUp = () => {
       }
     );
     AutographaStore.selectId = event.key;
-    // AutographaStore.layoutContent = parseInt(
-    //   event.currentTarget.dataset.layout
-    // );
-    let referenceValue = event.props.value;
+    AutographaStore.layoutContent = parseInt(
+      event.currentTarget.dataset.layout
+    );
+    let referenceValue = event.target.value;
     AutographaStore.currentRef = referenceValue;
     session.defaultSession.cookies
       .get({ url: "http://book.autographa.com" })
@@ -204,7 +226,7 @@ const SetUp = () => {
     var cookieRef = {
       url: "http://refs.autographa.com",
       name: "0",
-      value: event.props.value,
+      value: event.target.value,
     };
     session.defaultSession.cookies.set(cookieRef, (error) => {
       if (error) console.log(error);
@@ -215,15 +237,138 @@ const SetUp = () => {
     <React.Fragment>
       <Observer>
         {() => (
-          <div className={classes.root}>
-            <Paper>
-              <ReferenceSelector
-                onClick={handleRefChange}
-                refIds={AutographaStore.activeRefs[0]}
-                id={1}
-              />
-              <ReferencePanel refContent={AutographaStore.content} />
-            </Paper>
+          <div>
+            {AutographaStore.layout === 1 && (
+              <Paper
+                className={useStyles.parentdiv}
+                style={{ width: "100%", float: "left" }}
+              >
+                <div
+                  className={useStyles.layoutx}
+                  style={{ width: "50%", float: "left" }}
+                >
+                  <ReferenceSelector
+                    onClick={(event) => handleRefChange(event, 0)}
+                    refIds={AutographaStore.activeRefs[0]}
+                    id={1}
+                    layout={1}
+                  />
+                  <ReferencePanel refContent={AutographaStore.content} />
+                </div>
+                <div
+                  style={{ width: "48%", float: "left" }}
+                  className="layoutx"
+                >
+                  <TranslationSetUp />
+                </div>
+              </Paper>
+            )}
+            {AutographaStore.layout === 2 && (
+              <Paper
+                className={useStyles.parentdiv}
+                style={{ width: "100%", float: "left" }}
+              >
+                <div
+                  className={useStyles.layout2x}
+                  style={{ width: "31.33%", float: "left" }}
+                >
+                  <ReferenceSelector
+                    onClick={(event) => handleRefChange(event, 0)}
+                    refIds={AutographaStore.activeRefs[0]}
+                    id={21}
+                    layout={1}
+                  />
+                  <ReferencePanel
+                    refContent={AutographaStore.content}
+                    refIds={AutographaStore.activeRefs[0]}
+                  />
+                </div>
+
+                <div
+                  className={useStyles.layout2x}
+                  style={{ width: "33.33%", float: "left" }}
+                >
+                  <ReferenceSelector
+                    onClick={(event) => handleRefChange(event, 1)}
+                    refIds={AutographaStore.activeRefs[1]}
+                    id={22}
+                    layout={2}
+                  />
+                  <ReferencePanel
+                    refContent={AutographaStore.contentOne}
+                    refIds={AutographaStore.activeRefs[1]}
+                  />
+                </div>
+                <div
+                  style={{ padding: "10px", width: "33.33%", float: "left" }}
+                  className="layout2x"
+                >
+                  <TranslationSetUp />
+                </div>
+              </Paper>
+            )}
+            {AutographaStore.layout === 3 && (
+              <Paper
+                className={useStyles.parentdiv}
+                style={{ width: "100%", float: "left" }}
+              >
+                <div
+                  className={useStyles.layout3x}
+                  style={{ width: "25%", float: "left" }}
+                >
+                  <ReferenceSelector
+                    onClick={(event) => handleRefChange(event, 0)}
+                    refIds={AutographaStore.activeRefs[0]}
+                    id={31}
+                    layout={1}
+                  />
+                  <ReferencePanel
+                    refContent={AutographaStore.content}
+                    refIds={AutographaStore.activeRefs[0]}
+                  />
+                </div>
+                <div
+                  className={useStyles.layout3x}
+                  style={{ width: "25%", float: "left" }}
+                >
+                  <ReferenceSelector
+                    onClick={(event) => handleRefChange(event, 1)}
+                    refIds={AutographaStore.activeRefs[1]}
+                    id={32}
+                    layout={2}
+                  />
+                  <ReferencePanel
+                    refContent={AutographaStore.contentOne}
+                    refIds={AutographaStore.activeRefs[1]}
+                    tIns={AutographaStore.tIns[1]}
+                    tDel={AutographaStore.tDel[1]}
+                  />
+                </div>
+                <div
+                  className={useStyles.layout3x}
+                  style={{ width: "25%", float: "left" }}
+                >
+                  <ReferenceSelector
+                    onClick={(event) => handleRefChange(event, 2)}
+                    refIds={AutographaStore.activeRefs[2]}
+                    id={33}
+                    layout={3}
+                  />
+                  <ReferencePanel
+                    refContent={AutographaStore.contentTwo}
+                    refIds={AutographaStore.activeRefs[2]}
+                    tIns={AutographaStore.tIns[2]}
+                    tDel={AutographaStore.tDel[2]}
+                  />
+                </div>
+                <div
+                  style={{ padding: "10px", width: "23%", float: "right" }}
+                  className="layout3x"
+                >
+                  <TranslationSetUp />
+                </div>
+              </Paper>
+            )}
           </div>
         )}
       </Observer>
