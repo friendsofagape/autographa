@@ -55,5 +55,7 @@ export class AutographaStore {
   @observable errorFile = [];
   @observable warningMsg = [];
   @observable jointVerse = "";
+  @observable appLang = "en";
+  @observable currentTrans = {};
 }
 export default new AutographaStore();

@@ -24,7 +24,9 @@
 		"react": "^16.13.1",
 		"react-detect-offline": "2.4.0",
 		"react-dom": "^16.13.1",
+		"react-intl": "^4.6.9",
 		"react-scripts": "3.4.1",
+		"rtl-detect": "1.0.0",
 		"string-punctuation-tokenizer": "^2.0.2",
 		"sweetalert": "2.1.2"
 	},
@@ -35,8 +37,25 @@
 			"build/**/*.*",
 			"public/**/*.*",
 			"node_modules/**/*",
-			"src/**/*.*"
-		]
+			"src/**/*.*",
+			"patterns.prop"
+		],
+		"directories": {
+			"buildResources": "resources"
+		},
+		"mac": {
+			"category": "public.app-category.Utilities",
+			"target": "dmg",
+			"icon": "resources/icon.icns",
+			"type": "distribution"
+		},
+		"linux": {
+			"target": [
+				"deb"
+			],
+			"icon": "resources/icon.png"
+		},
+		"publish": null
 	},
 	"keywords": [
 		"Desktop",
@@ -71,7 +90,7 @@
 	"devDependencies": {
 		"@rescripts/cli": "0.0.10",
 		"@rescripts/rescript-env": "0.0.12",
-		"babel-plugin-react-intl": "^7.5.0",
+		"babel-plugin-react-intl": "^3.0.1",
 		"concurrently": "^5.1.0",
 		"cross-env": "^7.0.2",
 		"electron": "^8.2.3",

@@ -115,6 +115,7 @@ const TranslationPanel = (props) => {
                           style={{
                             outline: "none",
                             marginLeft: "10px",
+                            paddingRight: "50px ",
                           }}
                           onContextMenu={
                             index !== 0
@@ -128,7 +129,7 @@ const TranslationPanel = (props) => {
                           {AutographaStore.jointVerse[index] === undefined
                             ? AutographaStore.translationContent[index]
                               ? AutographaStore.translationContent[index]
-                              : " "
+                              : ""
                             : "----- Joint with the preceding verse(s) -----"}
                         </span>
                       </ListItem>

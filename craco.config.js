@@ -56,7 +56,7 @@ module.exports = {
       [
         "react-intl",
         {
-          messagesDir: "/src/translation",
+          messagesDir: "/src/translations",
         },
       ],
       ["@babel/plugin-proposal-decorators", { legacy: true }],
