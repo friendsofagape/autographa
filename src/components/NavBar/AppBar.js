@@ -78,9 +78,6 @@ export default function PrimarySearchAppBar() {
               <IconButton color="inherit">
                 <TranslationSettings />
               </IconButton>
-              <IconButton color="inherit">
-                <ReferenceSettings />
-              </IconButton>
             </div>
           </Toolbar>
         </AppBar>
