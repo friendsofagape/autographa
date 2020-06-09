@@ -137,7 +137,7 @@ export default function TranslationSettings() {
   const ExpandTab2 = () => {
     setTab2(!tab2);
   };
-  
+
   const ExpandTab3 = () => {
     setTab3(!tab3);
   };
@@ -493,11 +493,26 @@ export default function TranslationSettings() {
             </ListItem>
           </List>
         </Collapse>
-        <ListItem button onClick={ExpandTab4}>
+        <ListItem button onClick={ExpandTab3}>
           <ListItemIcon>
             <LibraryBooksIcon />
           </ListItemIcon>
-          <ListItemText primary="Reference Settings" />
+          <ListItemText
+            primary={<FormattedMessage id="label-import-ref-text" />}
+          />
+          {tab3 ? <ExpandLess /> : <ExpandMore />}
+        </ListItem>
+        <Collapse in={tab3} timeout="auto" unmountOnExit>
+          <List component="div" disablePadding>
+            <ListItem className={classes.nested}>
+              <Paper className={classes.root}>
+                <ReferenceSettings open={tab3} />
+              </Paper>
+            </ListItem>
+          </List>
+        </Collapse>
+        <ListItem button onClick={ExpandTab4}>
+          <ListItemIcon>
             <LanguageIcon />
           </ListItemIcon>
           <FormattedMessage id="label-language">
@@ -509,7 +524,6 @@ export default function TranslationSettings() {
           <List component="div" disablePadding>
             <ListItem className={classes.nested}>
               <Paper className={classes.root}>
-                <ReferenceSettings open={tab4} />
                 <AppLanguage />
               </Paper>
             </ListItem>
