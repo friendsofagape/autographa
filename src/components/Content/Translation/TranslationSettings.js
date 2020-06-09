@@ -12,6 +12,7 @@ import BackupIcon from "@material-ui/icons/Backup";
 import InsertDriveFileIcon from "@material-ui/icons/InsertDriveFile";
 import GetAppIcon from "@material-ui/icons/GetApp";
 import SaveIcon from "@material-ui/icons/Save";
+import LibraryBooksIcon from "@material-ui/icons/LibraryBooks";
 import LanguageIcon from "@material-ui/icons/Language";
 import SettingsIcon from "@material-ui/icons/Settings";
 import ListSubheader from "@material-ui/core/ListSubheader";
@@ -35,6 +36,7 @@ import TranslationImport from "./TranslationImport";
 import { BrowserWindow } from "electron";
 import swal from "sweetalert";
 import AutographaStore from "../../AutographaStore";
+import ReferenceSettings from "../Reference/ReferenceSettings";
 import AppLanguage from "../../AppLanguage";
 import { FormattedMessage } from "react-intl";
 const db = require(`${__dirname}/../../../core/data-provider`).targetDb();
@@ -81,6 +83,7 @@ export default function TranslationSettings() {
   const [open, setOpen] = React.useState(true);
   const [tab2, setTab2] = useState(false);
   const [tab3, setTab3] = useState(false);
+  const [tab4, setTab4] = useState(false);
   const [helperTextlanguage, sethelperTextlanguage] = useState("");
   const [helperTextVersion, sethelperTextVersion] = useState("");
   const [helperTextfolderpath, setHelperTextfolderpath] = useState("");
@@ -134,9 +137,13 @@ export default function TranslationSettings() {
   const ExpandTab2 = () => {
     setTab2(!tab2);
   };
-
+  
   const ExpandTab3 = () => {
     setTab3(!tab3);
+  };
+
+  const ExpandTab4 = () => {
+    setTab4(!tab4);
   };
 
   const toggleDrawer = (anchor, open) => (event) => {
@@ -486,19 +493,23 @@ export default function TranslationSettings() {
             </ListItem>
           </List>
         </Collapse>
-        <ListItem button onClick={ExpandTab3}>
+        <ListItem button onClick={ExpandTab4}>
           <ListItemIcon>
+            <LibraryBooksIcon />
+          </ListItemIcon>
+          <ListItemText primary="Reference Settings" />
             <LanguageIcon />
           </ListItemIcon>
           <FormattedMessage id="label-language">
             {(message) => <ListItemText primary={message} />}
           </FormattedMessage>
-          {tab3 ? <ExpandLess /> : <ExpandMore />}
+          {tab4 ? <ExpandLess /> : <ExpandMore />}
         </ListItem>
-        <Collapse in={tab3} timeout="auto" unmountOnExit>
+        <Collapse in={tab4} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
             <ListItem className={classes.nested}>
               <Paper className={classes.root}>
+                <ReferenceSettings open={tab4} />
                 <AppLanguage />
               </Paper>
             </ListItem>
