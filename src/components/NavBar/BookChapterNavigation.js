@@ -24,6 +24,7 @@ import AutographaStore from "../AutographaStore";
 import { useState } from "react";
 import { Observer } from "mobx-react";
 import BookNameEditor from "./BookNameEditor";
+import { FormattedMessage } from "react-intl";
 const session = require("electron").remote.session;
 const Constant = require("../../core/constants");
 const bibleJson = require(`${__dirname}/../../lib/bible_Silhouette.json`);
@@ -518,7 +519,7 @@ export default function BookChapterNavigation(props) {
               open={open}
             >
               <DialogTitle id="customized-dialog-title" onClose={handleClose}>
-                Book And Chapter
+                <FormattedMessage id="label-book-chapter" />
               </DialogTitle>
               <div className={classes.root}>
                 <AppBar position="static">
