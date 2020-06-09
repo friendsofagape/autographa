@@ -11,6 +11,7 @@ import AutographaStore from "../AutographaStore";
 import ChromeReaderModeIcon from "@material-ui/icons/ChromeReaderMode";
 import { useEffect } from "react";
 import { Observer } from "mobx-react";
+import { FormattedMessage } from "react-intl";
 const refDb = require(`${__dirname}/../../core/data-provider`).referenceDb();
 
 const useStyles = makeStyles((theme) => ({
@@ -139,7 +140,7 @@ export default function Footer(props) {
                   onClick={props.onSave}
                 >
                   <SaveIcon style={{ marginRight: "2px" }} />
-                  Save
+                  <FormattedMessage id="btn-save" />
                 </Button>
               </div>
             </Toolbar>

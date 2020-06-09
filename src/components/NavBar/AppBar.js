@@ -7,6 +7,7 @@ import Typography from "@material-ui/core/Typography";
 import Fab from "@material-ui/core/Fab";
 import NavigationIcon from "@material-ui/icons/Navigation";
 import Badge from "@material-ui/core/Badge";
+import { FormattedMessage } from "react-intl";
 import TranslationSettings from "../Content/Translation/TranslationSettings";
 import BookChapterNavigation from "./BookChapterNavigation";
 import SetUp from "../Content/Reference/core/setup";
@@ -51,7 +52,7 @@ export default function PrimarySearchAppBar() {
           <Toolbar>
             <TranslationHelp />
             <Typography className={classes.title} variant="h6" noWrap>
-              Autographa
+              <FormattedMessage id="app-name" />
             </Typography>
             <div className={classes.nav}>
               <BookChapterNavigation />

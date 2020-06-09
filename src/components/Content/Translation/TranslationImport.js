@@ -11,6 +11,7 @@ import * as usfm_import from "../../../core/usfm_import";
 import { BrowserWindow } from "electron";
 import ImportReport from "../../Reports/ImportReport";
 import AutographaStore from "../../AutographaStore";
+import { FormattedMessage } from "react-intl";
 
 const { dialog, getCurrentWindow } = require("electron").remote;
 
@@ -94,29 +95,33 @@ const TranslationImport = (props) => {
   return (
     <div>
       <div>
-        <TextField
-          onChange={(event) => {
-            setFolderPathImport(event.target.value);
-          }}
-          value={folderPathImport || ""}
-          name="folderPathImport"
-          variant="outlined"
-          label="Import Translation"
-          placeholder="select the USFM files"
-          className={classes.margin}
-          id="import-file-trans"
-          style={{ width: "70%" }}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <FolderIcon
-                  style={{ cursor: "pointer" }}
-                  onClick={openFileDialogImportTrans}
-                />
-              </InputAdornment>
-            ),
-          }}
-        />
+        <FormattedMessage id="placeholder-select-usfm-files">
+          {(message) => (
+            <TextField
+              onChange={(event) => {
+                setFolderPathImport(event.target.value);
+              }}
+              value={folderPathImport || ""}
+              name="folderPathImport"
+              variant="outlined"
+              label={<FormattedMessage id="label-folder-location" />}
+              placeholder={message}
+              className={classes.margin}
+              id="import-file-trans"
+              style={{ width: "70%" }}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <FolderIcon
+                      style={{ cursor: "pointer" }}
+                      onClick={openFileDialogImportTrans}
+                    />
+                  </InputAdornment>
+                ),
+              }}
+            />
+          )}
+        </FormattedMessage>
       </div>
       <Button
         size="medium"
@@ -126,7 +131,7 @@ const TranslationImport = (props) => {
         onClick={importTranslation}
         className={classes.margin}
       >
-        Import
+        <FormattedMessage id="btn-import" />
       </Button>
       <ImportReport show={showReport} importClose={importClose} />
     </div>

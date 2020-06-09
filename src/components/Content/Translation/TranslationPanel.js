@@ -107,28 +107,29 @@ const TranslationPanel = (props) => {
                           onKeyUp={handleKeyUp}
                           data-chunk-group={AutographaStore.chunkGroup[index]}
                           contentEditable={
-                          AutographaStore.jointVerse[index] === undefined
-                            ? true
-                            : false
+                            AutographaStore.jointVerse[index] === undefined
+                              ? true
+                              : false
                           }
                           className={classes.listItemText}
                           style={{
                             outline: "none",
                             marginLeft: "10px",
+                            paddingRight: "50px ",
                           }}
                           onContextMenu={
-                          index !== 0
-                            ? (event) => {
-                                handleJoint(event, index);
-                              }
-                            : false
+                            index !== 0
+                              ? (event) => {
+                                  handleJoint(event, index);
+                                }
+                              : false
                           }
                           suppressContentEditableWarning={true}
                         >
                           {AutographaStore.jointVerse[index] === undefined
                             ? AutographaStore.translationContent[index]
                               ? AutographaStore.translationContent[index]
-                              : " "
+                              : ""
                             : "----- Joint with the preceding verse(s) -----"}
                         </span>
                       </ListItem>

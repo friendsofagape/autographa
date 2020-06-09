@@ -8,7 +8,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import ArrowDropDownCircleIcon from "@material-ui/icons/ArrowDropDownCircle";
 import ListItemText from "@material-ui/core/ListItemText";
 import { DialogTitle, Dialog } from "@material-ui/core";
-import { Observer } from "mobx-react";
+import { FormattedMessage } from "react-intl";
 const constants = require("../../core/constants");
 const db = require(`${__dirname}/../../core/data-provider`).targetDb();
 
@@ -127,7 +127,7 @@ export default function BookNameEditor({ show }) {
           }}
         >
           <DialogTitle id="customized-dialog-title" onClose={handleClose}>
-            Translate Book Names
+            <FormattedMessage id="modal-translate-book-name" />
           </DialogTitle>
 
           <div>
@@ -139,16 +139,20 @@ export default function BookNameEditor({ show }) {
                 id="defaultValue"
               />
               <ArrowRightAltIcon style={{ marginTop: "30px" }} />
-              <TextField
-                style={{ margin: "30px" }}
-                hintText="Translate Book Name"
-                onChange={onChange}
-                required
-                value={updatedValue || ""}
-                name="updatedValue"
-                id="updatedValue"
-                maxLength={20}
-              />
+              <FormattedMessage id="modal-translate-book-name">
+                {(message) => (
+                  <TextField
+                    style={{ margin: "30px" }}
+                    placeholder={message}
+                    onChange={onChange}
+                    required
+                    value={updatedValue || ""}
+                    name="updatedValue"
+                    id="updatedValue"
+                    maxLength={20}
+                  />
+                )}
+              </FormattedMessage>
             </span>
             <span>
               <IconButton
@@ -158,7 +162,6 @@ export default function BookNameEditor({ show }) {
                 color="primary"
                 style={{
                   transform: "rotateX(180deg)",
-                  //   marginTop: "-45px",
                   cursor: "pointer",
                 }}
                 onClick={handleClick}
@@ -178,7 +181,9 @@ export default function BookNameEditor({ show }) {
               onClose={handleCloseMenu}
             >
               <StyledMenuItem onClick={resetToDefault}>
-                <ListItemText primary="reset" />
+                <FormattedMessage id="label-button-reset">
+                  {(message) => <ListItemText primary={message} />}
+                </FormattedMessage>
               </StyledMenuItem>
             </StyledMenu>
             <Button
@@ -188,7 +193,7 @@ export default function BookNameEditor({ show }) {
               size="medium"
               onClick={updateBooks}
             >
-              Save
+              <FormattedMessage id="btn-save" />
             </Button>
             <Button
               variant="contained"
@@ -200,7 +205,7 @@ export default function BookNameEditor({ show }) {
               }}
               onClick={handleClose}
             >
-              Cancel
+              <FormattedMessage id="btn-cancel" />
             </Button>
           </div>
         </Dialog>
