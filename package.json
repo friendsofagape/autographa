@@ -71,6 +71,8 @@
 		"electron-start": "electron .",
 		"react-start": "craco start",
 		"react-build": "craco build",
+		"lint": "eslint ./src",
+		"lint:fix": "eslint ./src --fix",
 		"build": "npm run build:electron",
 		"build:electron": "craco build --config craco.config.js main=build/electron.js",
 		"electron-pack": "electron-builder --x64 --win --linux -p never"
