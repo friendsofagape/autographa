@@ -1,0 +1,11 @@
+#oscilloscope-scrim {
+    height: 125px;
+    margin-top: -135px;
+    
+    #scrim {
+      height: inherit;
+      opacity: 0.4;
+      background: url(./oscilloscope.png);
+      background-repeat: repeat;
+    }
+}

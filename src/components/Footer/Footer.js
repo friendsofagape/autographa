@@ -12,6 +12,7 @@ import ChromeReaderModeIcon from "@material-ui/icons/ChromeReaderMode";
 import { useEffect } from "react";
 import { Observer } from "mobx-react";
 import { FormattedMessage } from "react-intl";
+import AudioApp from "../../Audio/AudioApp";
 const refDb = require(`${__dirname}/../../core/data-provider`).referenceDb();
 
 const useStyles = makeStyles((theme) => ({
@@ -145,6 +146,18 @@ export default function Footer(props) {
               </div>
             </Toolbar>
           </AppBar>
+          <AudioApp
+            isOpen={AutographaStore.AudioMount}
+            isWarning={AutographaStore.isWarning}
+            audioImport={AutographaStore.audioImport}
+            isPlaying={AutographaStore.isPlaying}
+            Blob={AutographaStore.blobURL}
+            chapter={AutographaStore.chapterId}
+            bookName={AutographaStore.bookName}
+            showModalBooks={AutographaStore.showModalBooks}
+            currentRefverse={AutographaStore.currentRefverse}
+            savedTime={AutographaStore.savedTime}
+          />
           {/* </Slide> */}
         </React.Fragment>
       )}
