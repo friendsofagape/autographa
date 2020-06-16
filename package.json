@@ -1,0 +1,107 @@
+{
+	"name": "autographa",
+	"version": "0.1.0",
+	"author": "Friends of Agape <mathew.joel@protonmail.com>",
+	"license": "MIT",
+	"main": "public/electron.js",
+	"homepage": ".",
+	"dependencies": {
+		"@bit/unfoldingword.resources.viewer": "^0.1.5",
+		"@craco/craco": "5.6.4",
+		"@material-ui/core": "^4.9.12",
+		"@material-ui/icons": "^4.9.1",
+		"@material-ui/lab": "^4.0.0-alpha.52",
+		"@testing-library/jest-dom": "^4.2.4",
+		"@testing-library/react": "^9.5.0",
+		"@testing-library/user-event": "^7.2.1",
+		"axios": "^0.19.2",
+		"diff-match-patch": "^1.0.5",
+		"leveldown": "5.6.0",
+		"mobx": "5.15.4",
+		"mobx-react": "6.2.1",
+		"pouchdb": "7.2.1",
+		"pouchdb-quick-search": "^1.3.0",
+		"react": "^16.13.1",
+		"react-detect-offline": "2.4.0",
+		"react-dom": "^16.13.1",
+		"react-h5-audio-player": "1.2.1",
+		"react-intl": "^4.6.9",
+		"react-mic-plus": "1.3.1",
+		"react-scripts": "3.4.1",
+		"rtl-detect": "1.0.0",
+		"string-punctuation-tokenizer": "^2.0.2",
+		"sweetalert": "2.1.2"
+	},
+	"build": {
+		"extends": "react-cra",
+		"appId": "oa.autographa.live",
+		"files": [
+			"build/**/*.*",
+			"public/**/*.*",
+			"node_modules/**/*",
+			"src/**/*.*",
+			"patterns.prop"
+		],
+		"directories": {
+			"buildResources": "resources"
+		},
+		"mac": {
+			"category": "public.app-category.Utilities",
+			"target": "dmg",
+			"icon": "resources/icon.icns",
+			"type": "distribution"
+		},
+		"linux": {
+			"target": [
+				"deb"
+			],
+			"icon": "resources/icon.png"
+		},
+		"publish": null
+	},
+	"keywords": [
+		"Desktop",
+		"Bible Editor",
+		"USFM",
+		"USFM Editor",
+		"React.js",
+		"Translation",
+		"Open Source"
+	],
+	"scripts": {
+		"start": "concurrently \"npm run react-start\" \"wait-on http://localhost:3000/ && cross-env NODE_ENV=development npm run electron-start\"",
+		"electron-start": "electron .",
+		"react-start": "craco start",
+		"react-build": "craco build",
+		"lint": "eslint ./src",
+		"lint:fix": "eslint ./src --fix",
+		"build": "npm run build:electron",
+		"build:electron": "craco build --config craco.config.js main=build/electron.js",
+		"electron-pack": "electron-builder -p never"
+	},
+	"browserslist": {
+		"production": [
+			">0.2%",
+			"not dead",
+			"not op_mini all"
+		],
+		"development": [
+			"last 1 chrome version",
+			"last 1 firefox version",
+			"last 1 safari version"
+		]
+	},
+	"devDependencies": {
+		"@rescripts/cli": "0.0.10",
+		"@rescripts/rescript-env": "0.0.12",
+		"babel-plugin-react-intl": "^3.0.1",
+		"concurrently": "^5.1.0",
+		"cross-env": "^7.0.2",
+		"electron": "^8.2.3",
+		"electron-builder": "^22.5.1",
+		"eslint-config-prettier": "^6.11.0",
+		"eslint-plugin-prettier": "^3.1.3",
+		"prettier": "^2.0.5",
+		"wait-on": "^4.0.2"
+	}
+}
