@@ -8,6 +8,9 @@ import Fab from "@material-ui/core/Fab";
 import NavigationIcon from "@material-ui/icons/Navigation";
 import Badge from "@material-ui/core/Badge";
 import { FormattedMessage } from "react-intl";
+import swal from "sweetalert";
+import MicIcon from "@material-ui/icons/Mic";
+import AutographaStore from "../AutographaStore";
 import TranslationSettings from "../Content/Translation/TranslationSettings";
 import BookChapterNavigation from "./BookChapterNavigation";
 import SetUp from "../Content/Reference/core/setup";
@@ -20,6 +23,8 @@ import DiffChecker from "./DiffChecker";
 import TranslationHelp from "../TranslationHelp/TranslationHelp";
 import Download from "../Download/Download";
 import Footer from "../Footer/Footer";
+import AudioApp from "../../Audio/AudioApp";
+const db = require(`${__dirname}/../../core/data-provider`).targetDb();
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -45,6 +50,30 @@ const useStyles = makeStyles((theme) => ({
 export default function PrimarySearchAppBar() {
   const classes = useStyles();
 
+  const mountAudio = () => {
+    const currentTrans = AutographaStore.currentTrans;
+    db.get("targetBible")
+      .then((doc) => {
+        if (AutographaStore.layout !== 4) {
+          AutographaStore.AudioMount = true;
+          AutographaStore.audioImport = true;
+        } else
+          swal(
+            currentTrans["dynamic-msg-error"],
+            currentTrans["dynamic-not-compatible-with-translation-help"],
+            "error"
+          );
+      })
+      .catch(function (err) {
+        // handle any errors
+        swal(
+          currentTrans["dynamic-msg-error"],
+          currentTrans["dynamic-msg-enter-translation"],
+          "error"
+        );
+      });
+  };
+
   return (
     <React.Fragment>
       <div className={classes.grow}>
@@ -59,6 +88,9 @@ export default function PrimarySearchAppBar() {
             </div>
             <div className={classes.grow} />
             <div className={classes.sectionDesktop}>
+              <IconButton color="inherit" onClick={mountAudio}>
+                <MicIcon />
+              </IconButton>
               <IconButton color="inherit">
                 <About />
               </IconButton>
