@@ -1,1 +1,1 @@
-export {default} from './Recorder';
+export { default } from "./Recorder";

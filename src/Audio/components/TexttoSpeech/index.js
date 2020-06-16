@@ -1,1 +1,1 @@
-export {default} from './TexttoSpeech';
+export { default } from "./TexttoSpeech";

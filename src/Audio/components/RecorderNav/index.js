@@ -1,1 +1,1 @@
-export {default} from './RecorderNav';
+export { default } from "./RecorderNav";
