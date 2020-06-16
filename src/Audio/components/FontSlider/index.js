@@ -1,1 +1,1 @@
-export {default} from './FontSlider';
+export { default } from "./FontSlider";

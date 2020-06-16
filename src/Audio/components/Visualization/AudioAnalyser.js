@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import AudioVisualiser from './AudioVisualiser';
+import React, { Component } from "react";
+import AudioVisualiser from "./AudioVisualiser";
 
 class AudioAnalyser extends Component {
   constructor(props) {
@@ -13,7 +13,7 @@ class AudioAnalyser extends Component {
       window.webkitAudioContext)();
     this.analyser = this.audioContext.createAnalyser();
     this.dataArray = new Uint8Array(this.analyser.frequencyBinCount);
-    console.log(this.props.audio)
+    console.log(this.props.audio);
     this.source = this.audioContext.createMediaStreamSource(this.props.audio);
     this.source.connect(this.analyser);
     this.rafId = requestAnimationFrame(this.tick);
