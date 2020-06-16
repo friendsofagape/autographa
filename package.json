@@ -24,11 +24,10 @@
 		"react": "^16.13.1",
 		"react-detect-offline": "2.4.0",
 		"react-dom": "^16.13.1",
-		"react-intl": "^4.6.9",
 		"react-scripts": "3.4.1",
-		"rtl-detect": "1.0.0",
 		"string-punctuation-tokenizer": "^2.0.2",
-		"sweetalert": "2.1.2"
+		"sweetalert": "2.1.2",
+		"xml2js": "^0.4.23"
 	},
 	"build": {
 		"extends": "react-cra",
@@ -71,11 +70,9 @@
 		"electron-start": "electron .",
 		"react-start": "craco start",
 		"react-build": "craco build",
-		"lint": "eslint ./src",
-		"lint:fix": "eslint ./src --fix",
 		"build": "npm run build:electron",
 		"build:electron": "craco build --config craco.config.js main=build/electron.js",
-		"electron-pack": "electron-builder --x64 --win --linux -p never"
+		"electron-pack": "electron-builder -p never"
 	},
 	"browserslist": {
 		"production": [
@@ -92,7 +89,7 @@
 	"devDependencies": {
 		"@rescripts/cli": "0.0.10",
 		"@rescripts/rescript-env": "0.0.12",
-		"babel-plugin-react-intl": "^3.0.1",
+		"babel-plugin-react-intl": "^7.5.0",
 		"concurrently": "^5.1.0",
 		"cross-env": "^7.0.2",
 		"electron": "^8.2.3",
