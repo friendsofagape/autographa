@@ -16,6 +16,7 @@ import StopIcon from "@material-ui/icons/Stop";
 import SkipPreviousIcon from "@material-ui/icons/SkipPrevious";
 import SkipNextIcon from "@material-ui/icons/SkipNext";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
+import ChromeReaderModeIcon from "@material-ui/icons/ChromeReaderMode";
 import { StoreContext } from "../../context/StoreContext";
 import Player from "../AudioPlayer";
 import { ReactMicPlus } from "react-mic-plus";
@@ -24,7 +25,14 @@ import swal from "sweetalert";
 // import TexttoSpeech from '../TexttoSpeech/TexttoSpeech';
 import FontSlider from "../FontSlider/FontSlider";
 import RecorderNav from "../RecorderNav";
-import { Box, Tooltip, Zoom, useTheme, Button } from "@material-ui/core";
+import {
+  Box,
+  Tooltip,
+  Zoom,
+  useTheme,
+  Button,
+  ButtonGroup,
+} from "@material-ui/core";
 import AudioAnalyser from "../Visualization/AudioAnalyser";
 import { FormattedMessage } from "react-intl";
 const { app } = require("electron").remote;
@@ -77,6 +85,9 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: -7,
     backgroundColor: "rgba(346, 279, 296, 0.87)",
     top: 3,
+  },
+  layout: {
+    margin: theme.spacing(1),
   },
   start: {
     zIndex: 1,
@@ -354,40 +365,50 @@ function BottomBar(props) {
                   nonstop={true}
                 />
                 <FontSlider />
-                <Button
-                  edge="1x"
-                  disabled={isLoading === true}
-                  className={classes.menuButton}
-                  color="inherit"
-                  backgroundColor={
-                    AutographaStore.layout === 0 ? "rgba(0,0,0,.5)" : ""
-                  }
-                  onClick={() =>
-                    AutographaStore.layout !== 0
-                      ? (AutographaStore.layout = 0)
-                      : ""
-                  }
-                  aria-label="1x"
+                <ButtonGroup
+                  size="medium"
+                  variant="contained"
+                  aria-label="large outlined primary button group"
                 >
-                  1x&nbsp; <i className="fa fa-columns fa-lg" />
-                </Button>
-                <Button
-                  edge="2x"
-                  className={classes.menuButton}
-                  disabled={isLoading === true}
-                  color="inherit"
-                  backgroundColor={
-                    AutographaStore.layout !== 0 ? "rgba(0,0,0,.5)" : ""
-                  }
-                  onClick={() =>
-                    AutographaStore.layout === 0
-                      ? (AutographaStore.layout = 1)
-                      : ""
-                  }
-                  aria-label="2x"
-                >
-                  2x&nbsp; <i className="fa fa-columns fa-lg" />
-                </Button>
+                  <Button
+                    edge="1x"
+                    disabled={isLoading === true}
+                    className={classes.menuButton}
+                    color="inherit"
+                    style={{
+                      backgroundColor:
+                        AutographaStore.layout === 0 ? "rgba(0,0,0,.5)" : "",
+                    }}
+                    onClick={() =>
+                      AutographaStore.layout !== 0
+                        ? (AutographaStore.layout = 0)
+                        : ""
+                    }
+                    aria-label="1x"
+                  >
+                    1x
+                    <ChromeReaderModeIcon className={classes.layout} />
+                  </Button>
+                  <Button
+                    edge="2x"
+                    className={classes.menuButton}
+                    disabled={isLoading === true}
+                    color="inherit"
+                    style={{
+                      backgroundColor:
+                        AutographaStore.layout !== 0 ? "rgba(0,0,0,.5)" : "",
+                    }}
+                    onClick={() =>
+                      AutographaStore.layout === 0
+                        ? (AutographaStore.layout = 1)
+                        : ""
+                    }
+                    aria-label="2x"
+                  >
+                    2x
+                    <ChromeReaderModeIcon className={classes.layout} />
+                  </Button>
+                </ButtonGroup>
                 <span className={classes.bottomIcons} style={{ right: "50%" }}>
                   <span>
                     <FormattedMessage id="tooltip-previousverse">

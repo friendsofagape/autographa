@@ -87,7 +87,7 @@ export default function Footer(props) {
               <div style={{ width: "65%" }}>
                 <div className={classes.root}>
                   <ButtonGroup
-                    size="large"
+                    size="medium"
                     variant="contained"
                     color="primary"
                     aria-label="large outlined primary button group"
