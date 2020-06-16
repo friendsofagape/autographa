@@ -108,7 +108,10 @@ export default function BookChapterNavigation(props) {
         chapter = doc.visit_history[0].chapter;
         let mode = mobx.toJS(AutographaStore.editBookNamesMode);
         if (selectedbook === "") {
-          if (AutographaStore.editBookNamesMode) {
+          if (
+            AutographaStore.editBookNamesMode &&
+            AutographaStore.translatedBookNames
+          ) {
             setSelectedBook(
               AutographaStore.translatedBookNames[
                 parseInt(AutographaStore.bookId, 10) - 1

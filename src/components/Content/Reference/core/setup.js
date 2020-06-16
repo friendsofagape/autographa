@@ -238,6 +238,19 @@ const SetUp = () => {
       <Observer>
         {() => (
           <div>
+            {AutographaStore.layout === 0 && (
+              <Paper
+                className={useStyles.parentdiv}
+                style={{ width: "100%", float: "left" }}
+              >
+                <div
+                  style={{ width: "100%", float: "left" }}
+                  className="layoutx"
+                >
+                  <TranslationSetUp />
+                </div>
+              </Paper>
+            )}
             {AutographaStore.layout === 1 && (
               <Paper
                 className={useStyles.parentdiv}
