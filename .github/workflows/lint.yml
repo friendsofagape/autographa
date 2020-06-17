@@ -5,12 +5,19 @@ jobs:
         name: Test
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v1
+            - uses: actions/checkout@v2
+            - name: Use Node.js ${{ matrix.node-version }}
+              uses: actions/setup-node@v1
+              with:
+                  node-version: ${{ matrix.node-version }}
+            - run: |
+                  node --version
+                  npm --version
             - name: set @bitregistry translation-help
               run: npm config set '@bit:registry' https://node.bit.dev
-            - uses: borales/actions-yarn@v2.0.0
-              with:
-                  cmd: install # will run `yarn install` command
-            - uses: borales/actions-yarn@v2.0.0
-              with:
-                  cmd: eslint:github-action
+
+            - name: npm install
+              run: npm ci
+
+            - uses: actions/setup-node@v1
+              run: npm run eslint:github-action
