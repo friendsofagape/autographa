@@ -19,5 +19,5 @@ jobs:
             - name: npm install
               run: npm ci
 
-            - uses: actions/setup-node@v1
+            - name: run lint
               run: npm run eslint:github-action
