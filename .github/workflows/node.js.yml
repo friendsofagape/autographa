@@ -76,7 +76,7 @@ jobs:
               run: npm ci
             
             - name: set max memory allocation
-              run: set NODE_OPTIONS=–max_old_space_size=4096
+              run: set NODE_OPTIONS=–max_old_space_size=8000
 
             - name: build windows
               id: build
