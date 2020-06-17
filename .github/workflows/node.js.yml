@@ -30,6 +30,9 @@ jobs:
                   npm --version
             - name: set @bitregistry translation-help
               run: npm config set '@bit:registry' https://node.bit.dev
+            
+            - name: set max memory allocation
+              run: export NODE_OPTIONS=–max_old_space_size=4096
 
             - name: npm install
               run: npm ci
@@ -37,7 +40,6 @@ jobs:
             - name: build
               id: build
               run: |
-                  npm run build
                   npm run electron-pack
 
             - name: Cleanup artifacts
@@ -72,11 +74,13 @@ jobs:
             
             - name: npm install
               run: npm ci
+            
+            - name: set max memory allocation
+              run: set NODE_OPTIONS=–max_old_space_size=4096
 
             - name: build windows
               id: build
               run: |
-                  npm run build
                   npm run electron-pack
 
             - name: Cleanup artifacts
