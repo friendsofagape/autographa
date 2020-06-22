@@ -18,6 +18,7 @@ import ReferenceSettings from "../Content/Reference/ReferenceSettings";
 import DiffChecker from "./DiffChecker";
 import TranslationHelp from "../TranslationHelp/TranslationHelp";
 import Footer from "../Footer/Footer";
+import Sync from "../Sync/Sync";
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -57,6 +58,9 @@ export default function PrimarySearchAppBar() {
             </div>
             <div className={classes.grow} />
             <div className={classes.sectionDesktop}>
+              <IconButton color="inherit">
+                <Sync />
+              </IconButton>
               <IconButton color="inherit">
                 <About />
               </IconButton>

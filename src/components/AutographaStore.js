@@ -55,5 +55,7 @@ export class AutographaStore {
   @observable errorFile = [];
   @observable warningMsg = [];
   @observable jointVerse = "";
+  @observable paraUsername = "";
+  @observable paraPassword = "";
 }
 export default new AutographaStore();
