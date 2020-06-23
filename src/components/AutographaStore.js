@@ -57,5 +57,25 @@ export class AutographaStore {
   @observable jointVerse = "";
   @observable paraUsername = "";
   @observable paraPassword = "";
+  @observable appLang = "en";
+  @observable currentTrans = {};
+  @observable AudioMount = false;
+  @observable vId = 1;
+  @observable recVerse = null;
+  @observable isWarning = false;
+  @observable isRecording = false;
+  @observable savedTime = null;
+  @observable isPlaying = false;
+  @observable isPause = false;
+  @observable currentSession = true;
+  @observable currentRefverse = "";
+  @observable isAudioSave = true;
+  @observable blobURL = null;
+  @observable audioImport = false;
+  @observable multiplier = 0;
+  @observable Tab = null;
+  @observable recordedChapters = [];
+  @observable AudioJointVerse = [];
+  @observable ChapterComplete = false;
 }
 export default new AutographaStore();

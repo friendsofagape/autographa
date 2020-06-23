@@ -24,6 +24,7 @@ import AutographaStore from "../AutographaStore";
 import { useState } from "react";
 import { Observer } from "mobx-react";
 import BookNameEditor from "./BookNameEditor";
+import { FormattedMessage } from "react-intl";
 const session = require("electron").remote.session;
 const Constant = require("../../core/constants");
 const bibleJson = require(`${__dirname}/../../lib/bible_Silhouette.json`);
@@ -106,8 +107,12 @@ export default function BookChapterNavigation(props) {
         var book = doc.visit_history[0].bookId;
         chapter = doc.visit_history[0].chapter;
         let mode = mobx.toJS(AutographaStore.editBookNamesMode);
+        AutographaStore.bookId = book.toString();
         if (selectedbook === "") {
-          if (AutographaStore.editBookNamesMode) {
+          if (
+            mobx.toJS(AutographaStore.editBookNamesMode).toString() ===
+            true.toString()
+          ) {
             setSelectedBook(
               AutographaStore.translatedBookNames[
                 parseInt(AutographaStore.bookId, 10) - 1
@@ -118,7 +123,6 @@ export default function BookChapterNavigation(props) {
               Constant.booksList[parseInt(AutographaStore.bookId, 10) - 1]
             );
           }
-          AutographaStore.bookId = book.toString();
         }
         if (selectedchapter === "") {
           setSelectedChapter(chapter);
@@ -148,26 +152,26 @@ export default function BookChapterNavigation(props) {
   });
 
   useEffect(() => {
-    db.get("translatedBookNames", function (err, doc) {
-      if (err) {
+    db.get("translatedBookNames")
+      .then((doc) => {
+        console.log(doc);
+        AutographaStore.translatedBookNames = doc.books;
+        setBookdata(doc.books);
+      })
+      .catch((err) => {
+        console.log(err);
         localStorage.setItem("editBookNamesMode", false);
+        AutographaStore.editBookNamesMode = localStorage.getItem(
+          "editBookNamesMode"
+        );
         let doc = {
           _id: "translatedBookNames",
           books: Constant.booksEditList,
         };
-        db.put(doc, function (err, response) {
-          if (err) {
-            return console.log(err);
-          } else {
-            window.location.reload();
-          }
-        });
-        return console.log(err);
-      } else {
         AutographaStore.translatedBookNames = doc.books;
         setBookdata(doc.books);
-      }
-    });
+        db.put(doc);
+      });
     AutographaStore.editBookNamesMode = localStorage.getItem(
       "editBookNamesMode"
     );
@@ -518,7 +522,7 @@ export default function BookChapterNavigation(props) {
               open={open}
             >
               <DialogTitle id="customized-dialog-title" onClose={handleClose}>
-                Book And Chapter
+                <FormattedMessage id="label-book-chapter" />
               </DialogTitle>
               <div className={classes.root}>
                 <AppBar position="static">

@@ -1,15 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import AutographaStore from "../../AutographaStore.js";
 import { Observer } from "mobx-react";
+import * as mobx from "mobx";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
+import PlayCircleOutlineIcon from "@material-ui/icons/PlayCircleOutline";
+import StopIcon from "@material-ui/icons/Stop";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import JointVerse from "./JointVerse";
-import { TextField } from "@material-ui/core";
+import { TextField, Zoom, Tooltip } from "@material-ui/core";
+import { lastSavedtime, fetchAudio } from "./helpers.js";
 
 // const theme = createMuiTheme({
 //   direction: "rtl", // Both here and <body dir="rtl">
@@ -32,6 +36,9 @@ const useStyles = makeStyles((theme) => ({
   listItemText: {
     fontSize: "0.7em", //Insert your required size
   },
+  listItemPlayIcon: {
+    alignSelf: "normal",
+  },
 }));
 
 const initialState = {
@@ -46,7 +53,23 @@ const TranslationPanel = (props) => {
   const [index, setIndex] = useState();
 
   const handleListItemClick = (event, index) => {
-    setSelectedIndex(index);
+    let recordedVerse = mobx.toJS(AutographaStore.recVerse);
+    AutographaStore.vId = index;
+    setSelectedIndex(AutographaStore.vId);
+    if (
+      AutographaStore.recVerse !== null &&
+      AutographaStore.vId !== undefined
+    ) {
+      if (recordedVerse.indexOf(AutographaStore.vId) !== -1) {
+        AutographaStore.isWarning = true;
+        AutographaStore.currentSession = false;
+        lastSavedtime();
+      }
+      if (recordedVerse.indexOf(AutographaStore.vId) === -1) {
+        AutographaStore.isWarning = false;
+        AutographaStore.currentSession = true;
+      }
+    }
   };
 
   const handleKeyUp = (e) => {
@@ -75,10 +98,7 @@ const TranslationPanel = (props) => {
     <React.Fragment>
       <Observer>
         {() => (
-          <Paper
-          // className={classes.paper}
-          // style={{ width: "49%", left: "50.7%" }}
-          >
+          <Paper>
             <div
               className={`col-12 col-ref verse-input ${AutographaStore.scriptDirection.toLowerCase()}`}
             >
@@ -99,6 +119,67 @@ const TranslationPanel = (props) => {
                         }
                         style={{ cursor: "text", whiteSpace: "pre-wrap" }}
                       >
+                        {mobx.toJS(
+                          AutographaStore.AudioMount &&
+                            mobx.toJS(AutographaStore.recVerse)
+                        ) &&
+                          mobx
+                            .toJS(AutographaStore.recVerse)
+                            .map((recVerse, recIndex) => {
+                              if (recVerse - 1 === index)
+                                return (
+                                  <ListItemIcon
+                                    className={classes.listItemPlayIcon}
+                                    onClick={fetchAudio}
+                                  >
+                                    {AutographaStore.isPlaying === false && (
+                                      <Tooltip
+                                        title="Play/Stop"
+                                        TransitionComponent={Zoom}
+                                      >
+                                        <PlayCircleOutlineIcon
+                                          edge="start"
+                                          tabIndex={-1}
+                                          style={{
+                                            color: "red",
+                                            cursor: "pointer",
+                                          }}
+                                          onClick={() =>
+                                            index + 1 === AutographaStore.vId
+                                              ? (AutographaStore.isPlaying = true)
+                                              : (AutographaStore.isPlaying = false)
+                                          }
+                                        />
+                                      </Tooltip>
+                                    )}
+                                    {index + 1 === AutographaStore.vId &&
+                                    AutographaStore.isPlaying === true ? (
+                                      <StopIcon
+                                        edge="start"
+                                        tabIndex={-1}
+                                        style={{ cursor: "pointer" }}
+                                        onClick={() =>
+                                          (AutographaStore.isPlaying = false)
+                                        }
+                                      />
+                                    ) : (
+                                      AutographaStore.isPlaying === true && (
+                                        <PlayCircleOutlineIcon
+                                          edge="start"
+                                          tabIndex={-1}
+                                          style={{
+                                            color: "red",
+                                            cursor: "pointer",
+                                          }}
+                                          onClick={() =>
+                                            (AutographaStore.isPlaying = true)
+                                          }
+                                        />
+                                      )
+                                    )}
+                                  </ListItemIcon>
+                                );
+                            })}
                         <ListItemIcon className={classes.listItemIcon}>
                           {index + 1}
                         </ListItemIcon>
@@ -107,28 +188,29 @@ const TranslationPanel = (props) => {
                           onKeyUp={handleKeyUp}
                           data-chunk-group={AutographaStore.chunkGroup[index]}
                           contentEditable={
-                          AutographaStore.jointVerse[index] === undefined
-                            ? true
-                            : false
+                            AutographaStore.jointVerse[index] === undefined
+                              ? true
+                              : false
                           }
                           className={classes.listItemText}
                           style={{
                             outline: "none",
                             marginLeft: "10px",
+                            paddingRight: "50px ",
                           }}
                           onContextMenu={
-                          index !== 0
-                            ? (event) => {
-                                handleJoint(event, index);
-                              }
-                            : false
+                            index !== 0
+                              ? (event) => {
+                                  handleJoint(event, index);
+                                }
+                              : false
                           }
                           suppressContentEditableWarning={true}
                         >
                           {AutographaStore.jointVerse[index] === undefined
                             ? AutographaStore.translationContent[index]
                               ? AutographaStore.translationContent[index]
-                              : " "
+                              : ""
                             : "----- Joint with the preceding verse(s) -----"}
                         </span>
                       </ListItem>

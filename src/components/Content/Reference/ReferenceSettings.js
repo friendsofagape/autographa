@@ -337,184 +337,135 @@ export default function ReferenceSettings(props) {
   };
 
   const list = (anchor) => (
-    <div className={clsx(classes.list)} role="presentation">
-      <List
-        component="nav"
-        aria-labelledby="nested-list-subheader"
-        subheader={
-          <ListSubheader
-            className={classes.subheader}
-            component="div"
-            id="nested-list-subheader"
+    <List component="div" disablePadding>
+      <ListItem className={classes.nested}>
+        <form
+          className={classes.container}
+          onSubmit={toggleDrawerClose("right", false)}
+        >
+          <div>
+            <TextField
+              className={classes.margin}
+              variant="outlined"
+              id="input-with-icon-textfield"
+              label="Bible Name"
+              error={isbiblenamevalid}
+              helperText={helperTextbible}
+              placeholder="New English Translation"
+              value={bibleName}
+              onInput={(e) => setbibleName(e.target.value)}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <InsertDriveFileIcon />
+                  </InputAdornment>
+                ),
+              }}
+            />
+            <Autocomplete
+              options={listlang ? listlang : language}
+              getOptionLabel={(option) =>
+                option.title ? option.title : language
+              }
+              value={language || ""}
+              onChange={(event, newValue) => {
+                if (newValue) {
+                  setlanguage(newValue.title);
+                }
+              }}
+              style={{ width: 300 }}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  error={islangcodevalid}
+                  helperText={helperTextlanguage}
+                  label="Language Code"
+                  margin="normal"
+                  className={classes.margin}
+                  variant="outlined"
+                  onInput={(e) => {
+                    listLanguage(e.target.value);
+                  }}
+                />
+              )}
+            />
+            <TextField
+              className={classes.margin}
+              variant="outlined"
+              id="input-with-icon-textfield"
+              label="Version"
+              error={islanvervalid}
+              helperText={helperTextVersion}
+              placeholder="NET-S3"
+              value={langVersion}
+              onInput={(e) => setlangVersion(e.target.value)}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <InsertDriveFileIcon />
+                  </InputAdornment>
+                ),
+              }}
+            />
+            <TextField
+              onChange={(event) => {
+                setFolderPathImport(event.target.value);
+              }}
+              value={folderPathImport || ""}
+              name="folderPathImport"
+              variant="outlined"
+              label="Import Translation"
+              error={ispathvalid}
+              helperText={helperTextfolderpath}
+              placeholder="select the USFM files"
+              className={classes.margin}
+              id="import-file-trans"
+              style={{ width: "70%" }}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <FolderIcon
+                      style={{ cursor: "pointer" }}
+                      onClick={openFileDialogRefSetting}
+                    />
+                  </InputAdornment>
+                ),
+              }}
+            />
+            <FormControl className={classes.margin} component="fieldset">
+              <FormLabel component="legend">Script Direction</FormLabel>
+              <RadioGroup
+                style={{ display: "inline" }}
+                aria-label="Script Direction"
+                name="dir"
+                value={dir}
+                onChange={handleDirChange}
+              >
+                <FormControlLabel value="LTR" control={<Radio />} label="LTR" />
+                <FormControlLabel value="RTL" control={<Radio />} label="RTL" />
+              </RadioGroup>
+            </FormControl>
+          </div>
+          <Button
+            type="submit"
+            size="medium"
+            variant="contained"
+            color="primary"
+            style={{ float: "right", marginTop: "-61px" }}
+            onClick={importReference}
+            className={classes.margin}
           >
-            Settings
-          </ListSubheader>
-        }
-        className={classes.root}
-      >
-        <ListItem button onClick={handleClick}>
-          <ListItemIcon>
-            <TranslateIcon />
-          </ListItemIcon>
-          <ListItemText primary="Reference Settings" />
-          {open ? <ExpandLess /> : <ExpandMore />}
-        </ListItem>
-        <Collapse in={open} timeout="auto" unmountOnExit>
-          <List component="div" disablePadding>
-            <ListItem className={classes.nested}>
-              <Paper className={classes.root}>
-                <form
-                  className={classes.container}
-                  onSubmit={toggleDrawerClose("right", false)}
-                >
-                  <div>
-                    <TextField
-                      className={classes.margin}
-                      variant="outlined"
-                      id="input-with-icon-textfield"
-                      label="Bible Name"
-                      error={isbiblenamevalid}
-                      helperText={helperTextbible}
-                      placeholder="New English Translation"
-                      value={bibleName}
-                      onInput={(e) => setbibleName(e.target.value)}
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <InsertDriveFileIcon />
-                          </InputAdornment>
-                        ),
-                      }}
-                    />
-                    <Autocomplete
-                      options={listlang ? listlang : language}
-                      getOptionLabel={(option) =>
-                        option.title ? option.title : language
-                      }
-                      value={language || ""}
-                      onChange={(event, newValue) => {
-                        if (newValue) {
-                          setlanguage(newValue.title);
-                        }
-                      }}
-                      style={{ width: 300 }}
-                      renderInput={(params) => (
-                        <TextField
-                          {...params}
-                          error={islangcodevalid}
-                          helperText={helperTextlanguage}
-                          label="Language Code"
-                          margin="normal"
-                          className={classes.margin}
-                          variant="outlined"
-                          onInput={(e) => {
-                            listLanguage(e.target.value);
-                          }}
-                        />
-                      )}
-                    />
-                    <TextField
-                      className={classes.margin}
-                      variant="outlined"
-                      id="input-with-icon-textfield"
-                      label="Version"
-                      error={islanvervalid}
-                      helperText={helperTextVersion}
-                      placeholder="NET-S3"
-                      value={langVersion}
-                      onInput={(e) => setlangVersion(e.target.value)}
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <InsertDriveFileIcon />
-                          </InputAdornment>
-                        ),
-                      }}
-                    />
-                    <TextField
-                      onChange={(event) => {
-                        setFolderPathImport(event.target.value);
-                      }}
-                      value={folderPathImport || ""}
-                      name="folderPathImport"
-                      variant="outlined"
-                      label="Import Translation"
-                      error={ispathvalid}
-                      helperText={helperTextfolderpath}
-                      placeholder="select the USFM files"
-                      className={classes.margin}
-                      id="import-file-trans"
-                      style={{ width: "70%" }}
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <FolderIcon
-                              style={{ cursor: "pointer" }}
-                              onClick={openFileDialogRefSetting}
-                            />
-                          </InputAdornment>
-                        ),
-                      }}
-                    />
-                    <FormControl
-                      className={classes.margin}
-                      component="fieldset"
-                    >
-                      <FormLabel component="legend">Script Direction</FormLabel>
-                      <RadioGroup
-                        style={{ display: "inline" }}
-                        aria-label="Script Direction"
-                        name="dir"
-                        value={dir}
-                        onChange={handleDirChange}
-                      >
-                        <FormControlLabel
-                          value="LTR"
-                          control={<Radio />}
-                          label="LTR"
-                        />
-                        <FormControlLabel
-                          value="RTL"
-                          control={<Radio />}
-                          label="RTL"
-                        />
-                      </RadioGroup>
-                    </FormControl>
-                  </div>
-                  <Button
-                    type="submit"
-                    size="medium"
-                    variant="contained"
-                    color="primary"
-                    style={{ float: "right", marginTop: "-61px" }}
-                    onClick={importReference}
-                    className={classes.margin}
-                  >
-                    Import
-                  </Button>
-                </form>
-              </Paper>
-            </ListItem>
-          </List>
-        </Collapse>
-      </List>
-    </div>
+            Import
+          </Button>
+        </form>
+      </ListItem>
+    </List>
   );
 
   return (
     <div>
-      <React.Fragment key={"right"}>
-        <IconButton color="inherit" onClick={toggleDrawer("right", true)}>
-          <SettingsIcon />
-        </IconButton>
-        <SwipeableDrawer
-          anchor={"right"}
-          open={state["right"]}
-          onOpen={toggleDrawer("right", true)}
-          onClose={toggleDrawer("right", false)}
-        >
-          {list("right")}
-        </SwipeableDrawer>
+      <React.Fragment>
+        {list("right")}
         <ImportReport show={showReport} importClose={importClose} />
       </React.Fragment>
     </div>

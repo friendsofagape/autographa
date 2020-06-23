@@ -24,7 +24,11 @@
 		"react": "^16.13.1",
 		"react-detect-offline": "2.4.0",
 		"react-dom": "^16.13.1",
+		"react-h5-audio-player": "1.2.1",
+		"react-intl": "^4.6.9",
+		"react-mic-plus": "1.3.1",
 		"react-scripts": "3.4.1",
+		"rtl-detect": "1.0.0",
 		"string-punctuation-tokenizer": "^2.0.2",
 		"sweetalert": "2.1.2"
 	},
@@ -35,8 +39,25 @@
 			"build/**/*.*",
 			"public/**/*.*",
 			"node_modules/**/*",
-			"src/**/*.*"
-		]
+			"src/**/*.*",
+			"patterns.prop"
+		],
+		"directories": {
+			"buildResources": "resources"
+		},
+		"mac": {
+			"category": "public.app-category.Utilities",
+			"target": "dmg",
+			"icon": "resources/icon.icns",
+			"type": "distribution"
+		},
+		"linux": {
+			"target": [
+				"deb"
+			],
+			"icon": "resources/icon.png"
+		},
+		"publish": null
 	},
 	"keywords": [
 		"Desktop",
@@ -49,12 +70,18 @@
 	],
 	"scripts": {
 		"start": "concurrently \"npm run react-start\" \"wait-on http://localhost:3000/ && cross-env NODE_ENV=development npm run electron-start\"",
+		"build": "npm run build:electron",
 		"electron-start": "electron .",
 		"react-start": "craco start",
 		"react-build": "craco build",
-		"build": "npm run build:electron",
+		"test": "craco test",
+		"eject": "react-scripts eject",
+		"lint": "eslint ./src",
+		"lint:fix": "eslint ./src --fix",
 		"build:electron": "craco build --config craco.config.js main=build/electron.js",
-		"electron-pack": "electron-builder --x64 --win --linux -p never"
+		"preelectron-pack": "npm run build",
+		"maxmemory-allocation": "NODE_OPTIONS=--max_old_space_size=4096",
+		"electron-pack": "electron-builder -p never"
 	},
 	"browserslist": {
 		"production": [
@@ -71,7 +98,7 @@
 	"devDependencies": {
 		"@rescripts/cli": "0.0.10",
 		"@rescripts/rescript-env": "0.0.12",
-		"babel-plugin-react-intl": "^7.5.0",
+		"babel-plugin-react-intl": "^3.0.1",
 		"concurrently": "^5.1.0",
 		"cross-env": "^7.0.2",
 		"electron": "^8.2.3",

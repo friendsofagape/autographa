@@ -11,6 +11,8 @@ import AutographaStore from "../AutographaStore";
 import ChromeReaderModeIcon from "@material-ui/icons/ChromeReaderMode";
 import { useEffect } from "react";
 import { Observer } from "mobx-react";
+import { FormattedMessage } from "react-intl";
+import AudioApp from "../../Audio/AudioApp";
 const refDb = require(`${__dirname}/../../core/data-provider`).referenceDb();
 
 const useStyles = makeStyles((theme) => ({
@@ -85,20 +87,38 @@ export default function Footer(props) {
               <div style={{ width: "65%" }}>
                 <div className={classes.root}>
                   <ButtonGroup
-                    size="large"
+                    size="medium"
                     variant="contained"
-                    color="secondary"
+                    color="primary"
                     aria-label="large outlined primary button group"
                   >
-                    <Button onClick={() => handleChange(1)}>
+                    <Button
+                      style={{
+                        backgroundColor:
+                          AutographaStore.layout === 1 ? "#000096" : "",
+                      }}
+                      onClick={() => handleChange(1)}
+                    >
                       2x
                       <ChromeReaderModeIcon className={classes.layout} />
                     </Button>
-                    <Button onClick={() => handleChange(2)}>
+                    <Button
+                      style={{
+                        backgroundColor:
+                          AutographaStore.layout === 2 ? "#000096" : "",
+                      }}
+                      onClick={() => handleChange(2)}
+                    >
                       3x
                       <ChromeReaderModeIcon className={classes.layout} />
                     </Button>
-                    <Button onClick={() => handleChange(3)}>
+                    <Button
+                      style={{
+                        backgroundColor:
+                          AutographaStore.layout === 3 ? "#000096" : "",
+                      }}
+                      onClick={() => handleChange(3)}
+                    >
                       4x
                       <ChromeReaderModeIcon className={classes.layout} />
                     </Button>
@@ -121,11 +141,23 @@ export default function Footer(props) {
                   onClick={props.onSave}
                 >
                   <SaveIcon style={{ marginRight: "2px" }} />
-                  Save
+                  <FormattedMessage id="btn-save" />
                 </Button>
               </div>
             </Toolbar>
           </AppBar>
+          <AudioApp
+            isOpen={AutographaStore.AudioMount}
+            isWarning={AutographaStore.isWarning}
+            audioImport={AutographaStore.audioImport}
+            isPlaying={AutographaStore.isPlaying}
+            Blob={AutographaStore.blobURL}
+            chapter={AutographaStore.chapterId}
+            bookName={AutographaStore.bookName}
+            showModalBooks={AutographaStore.showModalBooks}
+            currentRefverse={AutographaStore.currentRefverse}
+            savedTime={AutographaStore.savedTime}
+          />
           {/* </Slide> */}
         </React.Fragment>
       )}

@@ -12,6 +12,8 @@ import BackupIcon from "@material-ui/icons/Backup";
 import InsertDriveFileIcon from "@material-ui/icons/InsertDriveFile";
 import GetAppIcon from "@material-ui/icons/GetApp";
 import SaveIcon from "@material-ui/icons/Save";
+import LibraryBooksIcon from "@material-ui/icons/LibraryBooks";
+import LanguageIcon from "@material-ui/icons/Language";
 import SettingsIcon from "@material-ui/icons/Settings";
 import ListSubheader from "@material-ui/core/ListSubheader";
 import List from "@material-ui/core/List";
@@ -34,6 +36,9 @@ import TranslationImport from "./TranslationImport";
 import { BrowserWindow } from "electron";
 import swal from "sweetalert";
 import AutographaStore from "../../AutographaStore";
+import ReferenceSettings from "../Reference/ReferenceSettings";
+import AppLanguage from "../../AppLanguage";
+import { FormattedMessage } from "react-intl";
 const db = require(`${__dirname}/../../../core/data-provider`).targetDb();
 const { dialog, getCurrentWindow } = require("electron").remote;
 const lookupsDb = require(`${__dirname}/../../../core/data-provider`).lookupsDb();
@@ -77,6 +82,8 @@ export default function TranslationSettings() {
   const [folderPath, setFolderPath] = useState("");
   const [open, setOpen] = React.useState(true);
   const [tab2, setTab2] = useState(false);
+  const [tab3, setTab3] = useState(false);
+  const [tab4, setTab4] = useState(false);
   const [helperTextlanguage, sethelperTextlanguage] = useState("");
   const [helperTextVersion, sethelperTextVersion] = useState("");
   const [helperTextfolderpath, setHelperTextfolderpath] = useState("");
@@ -126,8 +133,17 @@ export default function TranslationSettings() {
   const handleClick = () => {
     setOpen(!open);
   };
+
   const ExpandTab2 = () => {
     setTab2(!tab2);
+  };
+
+  const ExpandTab3 = () => {
+    setTab3(!tab3);
+  };
+
+  const ExpandTab4 = () => {
+    setTab4(!tab4);
   };
 
   const toggleDrawer = (anchor, open) => (event) => {
@@ -308,7 +324,7 @@ export default function TranslationSettings() {
             component="div"
             id="nested-list-subheader"
           >
-            Settings
+            <FormattedMessage id="modal-title-setting" />
           </ListSubheader>
         }
         className={classes.root}
@@ -317,7 +333,9 @@ export default function TranslationSettings() {
           <ListItemIcon>
             <TranslateIcon />
           </ListItemIcon>
-          <ListItemText primary="Translation Settings" />
+          <FormattedMessage id="label-translation-details">
+            {(message) => <ListItemText primary={message} />}
+          </FormattedMessage>
           {open ? <ExpandLess /> : <ExpandMore />}
         </ListItem>
         <Collapse in={open} timeout="auto" unmountOnExit>
@@ -342,65 +360,79 @@ export default function TranslationSettings() {
                       }}
                       style={{ width: 300 }}
                       renderInput={(params) => (
+                        <FormattedMessage id="label-language-code">
+                          {(message) => (
+                            <TextField
+                              {...params}
+                              error={islangcodevalid}
+                              helperText={helperTextlanguage}
+                              label={message}
+                              margin="normal"
+                              className={classes.margin}
+                              variant="outlined"
+                              onInput={(e) => {
+                                listLanguage(e.target.value);
+                              }}
+                            />
+                          )}
+                        </FormattedMessage>
+                      )}
+                    />
+                    <FormattedMessage id="label-version">
+                      {(message) => (
                         <TextField
-                          {...params}
-                          error={islangcodevalid}
-                          helperText={helperTextlanguage}
-                          label="Language Code"
-                          margin="normal"
                           className={classes.margin}
                           variant="outlined"
-                          onInput={(e) => {
-                            listLanguage(e.target.value);
+                          id="input-with-icon-textfield"
+                          label={message}
+                          error={islanvervalid}
+                          helperText={helperTextVersion}
+                          placeholder="NET-S3"
+                          value={langVersion}
+                          onInput={(e) => setlangVersion(e.target.value)}
+                          InputProps={{
+                            startAdornment: (
+                              <InputAdornment position="start">
+                                <InsertDriveFileIcon />
+                              </InputAdornment>
+                            ),
                           }}
                         />
                       )}
-                    />
-                    <TextField
-                      className={classes.margin}
-                      variant="outlined"
-                      id="input-with-icon-textfield"
-                      label="Version"
-                      error={islanvervalid}
-                      helperText={helperTextVersion}
-                      placeholder="NET-S3"
-                      value={langVersion}
-                      onInput={(e) => setlangVersion(e.target.value)}
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <InsertDriveFileIcon />
-                          </InputAdornment>
-                        ),
-                      }}
-                    />
-                    <TextField
-                      className={classes.margin}
-                      variant="outlined"
-                      id="input-with-icon-textfield"
-                      style={{ width: "70%" }}
-                      label="Export Folder Location"
-                      value={folderPath || ""}
-                      error={ispathvalid}
-                      helperText={helperTextfolderpath}
-                      placeholder="Path of folder for saving USFM files"
-                      onInput={(e) => setFolderPath(e.target.value)}
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <BackupIcon
-                              onClick={openFileDialogSettingData}
-                              style={{ cursor: "pointer" }}
-                            />
-                          </InputAdornment>
-                        ),
-                      }}
-                    />
+                    </FormattedMessage>
+                    <FormattedMessage id="label-export-folder-location">
+                      {(message) => (
+                        <TextField
+                          className={classes.margin}
+                          variant="outlined"
+                          id="input-with-icon-textfield"
+                          style={{ width: "70%" }}
+                          label={message}
+                          value={folderPath || ""}
+                          error={ispathvalid}
+                          helperText={helperTextfolderpath}
+                          placeholder="Path of folder for saving USFM files"
+                          onInput={(e) => setFolderPath(e.target.value)}
+                          InputProps={{
+                            startAdornment: (
+                              <InputAdornment position="start">
+                                <BackupIcon
+                                  onClick={openFileDialogSettingData}
+                                  style={{ cursor: "pointer" }}
+                                />
+                              </InputAdornment>
+                            ),
+                          }}
+                        />
+                      )}
+                    </FormattedMessage>
                     <FormControl
                       className={classes.margin}
                       component="fieldset"
                     >
-                      <FormLabel component="legend">Script Direction</FormLabel>
+                      <FormLabel component="legend">
+                        <FormattedMessage id="label-script-direction" />
+                      </FormLabel>
                       <RadioGroup
                         style={{ display: "inline" }}
                         aria-label="Script Direction"
@@ -411,12 +443,12 @@ export default function TranslationSettings() {
                         <FormControlLabel
                           value="LTR"
                           control={<Radio />}
-                          label="LTR"
+                          label={<FormattedMessage id="label-ltr" />}
                         />
                         <FormControlLabel
                           value="RTL"
                           control={<Radio />}
-                          label="RTL"
+                          label={<FormattedMessage id="label-rtl" />}
                         />
                       </RadioGroup>
                     </FormControl>
@@ -433,7 +465,7 @@ export default function TranslationSettings() {
                     className={classes.button}
                     startIcon={<SaveIcon />}
                   >
-                    Save
+                    <FormattedMessage id="btn-save" />
                   </Button>
                 </form>
               </Paper>
@@ -444,7 +476,9 @@ export default function TranslationSettings() {
           <ListItemIcon>
             <GetAppIcon />
           </ListItemIcon>
-          <ListItemText primary="Translation Import" />
+          <FormattedMessage id="label-import-translation">
+            {(message) => <ListItemText primary={message} />}
+          </FormattedMessage>
           {tab2 ? <ExpandLess /> : <ExpandMore />}
         </ListItem>
         <Collapse in={tab2} timeout="auto" unmountOnExit>
@@ -455,6 +489,42 @@ export default function TranslationSettings() {
                   langCode={languageCode}
                   langVersion={langVersion}
                 />
+              </Paper>
+            </ListItem>
+          </List>
+        </Collapse>
+        <ListItem button onClick={ExpandTab3}>
+          <ListItemIcon>
+            <LibraryBooksIcon />
+          </ListItemIcon>
+          <ListItemText
+            primary={<FormattedMessage id="label-import-ref-text" />}
+          />
+          {tab3 ? <ExpandLess /> : <ExpandMore />}
+        </ListItem>
+        <Collapse in={tab3} timeout="auto" unmountOnExit>
+          <List component="div" disablePadding>
+            <ListItem className={classes.nested}>
+              <Paper className={classes.root}>
+                <ReferenceSettings open={tab3} />
+              </Paper>
+            </ListItem>
+          </List>
+        </Collapse>
+        <ListItem button onClick={ExpandTab4}>
+          <ListItemIcon>
+            <LanguageIcon />
+          </ListItemIcon>
+          <FormattedMessage id="label-language">
+            {(message) => <ListItemText primary={message} />}
+          </FormattedMessage>
+          {tab4 ? <ExpandLess /> : <ExpandMore />}
+        </ListItem>
+        <Collapse in={tab4} timeout="auto" unmountOnExit>
+          <List component="div" disablePadding>
+            <ListItem className={classes.nested}>
+              <Paper className={classes.root}>
+                <AppLanguage />
               </Paper>
             </ListItem>
           </List>
