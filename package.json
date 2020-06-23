@@ -30,7 +30,8 @@
 		"react-scripts": "3.4.1",
 		"rtl-detect": "1.0.0",
 		"string-punctuation-tokenizer": "^2.0.2",
-		"sweetalert": "2.1.2"
+		"sweetalert": "2.1.2",
+		"xml2js": "^0.4.23"
 	},
 	"build": {
 		"extends": "react-cra",
