@@ -23,6 +23,7 @@ import DiffChecker from "./DiffChecker";
 import TranslationHelp from "../TranslationHelp/TranslationHelp";
 import Download from "../Download/Download";
 import Footer from "../Footer/Footer";
+import Sync from "../Sync/Sync";
 import AudioApp from "../../Audio/AudioApp";
 const db = require(`${__dirname}/../../core/data-provider`).targetDb();
 
@@ -90,6 +91,9 @@ export default function PrimarySearchAppBar() {
             <div className={classes.sectionDesktop}>
               <IconButton color="inherit" onClick={mountAudio}>
                 <MicIcon />
+              </IconButton>
+              <IconButton color="inherit">
+                <Sync />
               </IconButton>
               <IconButton color="inherit">
                 <About />

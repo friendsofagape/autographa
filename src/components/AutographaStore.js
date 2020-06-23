@@ -55,6 +55,8 @@ export class AutographaStore {
   @observable errorFile = [];
   @observable warningMsg = [];
   @observable jointVerse = "";
+  @observable paraUsername = "";
+  @observable paraPassword = "";
   @observable appLang = "en";
   @observable currentTrans = {};
   @observable AudioMount = false;
