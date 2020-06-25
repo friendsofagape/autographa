@@ -29,77 +29,53 @@ export default function CustomizedSlider() {
 
   const handleSliderChange = (event, newValue) => {
     if (newValue > 14) setValue(newValue);
-    var elements = document.getElementsByClassName("col-ref").length - 1;
-    for (var i = 0; i <= elements; i++) {
-      document.getElementsByClassName("col-ref")[i].style.fontSize =
-        value + "px";
-      let colRef = document.getElementsByClassName("col-ref")[i];
-      let verseNum = colRef.getElementsByClassName("verse-num");
-      for (let i = 0; i < verseNum.length; i++) {
-        verseNum[i].style.fontSize = value - 4 + "px";
-      }
-    }
+    AutographaStore.currentFontValue = newValue;
   };
 
   const fontChange = (multiplier) => {
-    console.log(multiplier);
-    var elements = document.getElementsByClassName("col-ref").length - 1;
     let fontSize = AutographaStore.fontMin;
-    if (document.getElementsByClassName("col-ref")[0] !== undefined) {
-      if (document.getElementsByClassName("col-ref")[0].style.fontSize === "") {
-        document.getElementsByClassName("col-ref")[0].style.fontSize = "14px";
+    if (multiplier < 0) {
+      if (value <= AutographaStore.fontMin) {
+        fontSize = AutographaStore.fontMin;
+        AutographaStore.currentFontValue = fontSize;
       } else {
-        fontSize = parseInt(
-          document.getElementsByClassName("col-ref")[0].style.fontSize
-        );
+        fontSize = multiplier + value;
+        AutographaStore.currentFontValue = fontSize;
       }
-      if (multiplier < 0) {
-        if (multiplier + fontSize <= AutographaStore.fontMin) {
-          fontSize = AutographaStore.fontMin;
-          AutographaStore.currentFontValue = fontSize;
-        } else {
-          fontSize = multiplier + fontSize;
-          AutographaStore.currentFontValue = fontSize;
-        }
+    } else {
+      if (multiplier + value >= AutographaStore.fontMax) {
+        fontSize = AutographaStore.fontMax;
+        AutographaStore.currentFontValue = fontSize;
       } else {
-        if (multiplier + fontSize >= AutographaStore.fontMax) {
-          fontSize = AutographaStore.fontMax;
-          AutographaStore.currentFontValue = fontSize;
-        } else {
-          fontSize = multiplier + fontSize;
-          AutographaStore.currentFontValue = fontSize;
-        }
-      }
-      AutographaStore.currentFontValue = fontSize;
-      setValue(fontSize);
-      for (var i = 0; i <= elements; i++) {
-        document.getElementsByClassName("col-ref")[i].style.fontSize =
-          fontSize + "px";
-        let colRef = document.getElementsByClassName("col-ref")[i];
-        let verseNum = colRef.getElementsByClassName("verse-num");
-        for (let i = 0; i < verseNum.length; i++) {
-          verseNum[i].style.fontSize = fontSize - 4 + "px";
-        }
+        fontSize = multiplier + value;
+        AutographaStore.currentFontValue = fontSize;
       }
     }
+    AutographaStore.currentFontValue = fontSize;
+    setValue(fontSize);
   };
   return (
-    <div className={classes.root}>
+    <div data-test="component-customized-slider" className={classes.root}>
       <span>
         <Grid container spacing={2} alignItems="center">
           <Grid item>
             <span>
-              <Button onClick={() => fontChange(-2)} variant="contained">
+              <Button
+                data-testid="decrement-button"
+                onClick={() => fontChange(-2)}
+                variant="contained"
+              >
                 A-
               </Button>
             </span>
           </Grid>
           <Grid item xs>
             <Slider
-              min={14}
-              max={40}
+              min={15}
+              max={50}
+              data-testid="Sliderbutton"
               color="secondary"
-              valueLabelDisplay={true}
+              valueLabelDisplay={"auto"}
               value={value}
               onChange={handleSliderChange}
               aria-labelledby="input-slider"
@@ -107,7 +83,13 @@ export default function CustomizedSlider() {
           </Grid>
           <Grid item>
             <span>
-              <Button onClick={() => fontChange(+2)} variant="contained">
+              <Button
+                data-testid="increment-button"
+                id="Inc"
+                value={value}
+                onClick={() => fontChange(+2)}
+                variant="contained"
+              >
                 A+
               </Button>
             </span>

@@ -100,6 +100,9 @@ const TranslationPanel = (props) => {
         {() => (
           <Paper>
             <div
+              style={{
+                fontSize: `${AutographaStore.currentFontValue}px`,
+              }}
               className={`col-12 col-ref verse-input ${AutographaStore.scriptDirection.toLowerCase()}`}
             >
               {/* <ThemeProvider theme={theme}> */}
@@ -117,7 +120,10 @@ const TranslationPanel = (props) => {
                         onClick={(event) =>
                           handleListItemClick(event, index + 1)
                         }
-                        style={{ cursor: "text", whiteSpace: "pre-wrap" }}
+                        style={{
+                          cursor: "text",
+                          whiteSpace: "pre-wrap",
+                        }}
                       >
                         {mobx.toJS(
                           AutographaStore.AudioMount &&
@@ -197,6 +203,7 @@ const TranslationPanel = (props) => {
                             outline: "none",
                             marginLeft: "10px",
                             paddingRight: "50px ",
+                            maxWidth: "-webkit-fill-available",
                           }}
                           onContextMenu={
                             index !== 0
