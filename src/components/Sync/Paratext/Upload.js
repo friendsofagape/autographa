@@ -13,7 +13,6 @@ const fs = require("fs");
 
 const Upload = (props) => {
   const [showLoader, setShowLoader] = React.useState(false);
-  console.log("upload", props);
   const uploadBookParatext = async () => {
     const dir = path.join(app.getPath("userData"), "paratext_projects");
     let currentTrans = AutographaStore.currentTrans;
@@ -22,8 +21,6 @@ const Upload = (props) => {
     var selectedBooks = Object.keys(props.books).filter(
       (key) => props.books[key] === true
     );
-    console.log(selectedBooks);
-    // let book = {};
     if (selectedBooks == null || Object.keys(selectedBooks).length === 0) {
       swal(
         'currentTrans["dynamic-msg-error"]',
@@ -93,7 +90,6 @@ const Upload = (props) => {
               }
             }
           } catch (err) {
-            console.log(err);
             return false;
           }
           let bookRevision = await props.syncAdapter.getBookRevision(
@@ -149,9 +145,9 @@ const Upload = (props) => {
                     v++;
                     // verseCount + 1 is used to check the length of the dbContent
                     if (
-                      xmlVerseNum === 1 &&
+                      xmlVerseNum == 1 &&
                       doc.chapters[currChapter.attributes["number"].value]
-                        .length !== 0 &&
+                        .length != 0 &&
                       verseCount + 1 > dbContent.length
                     ) {
                       currChapter = chapterNodes.snapshotItem(i);
@@ -196,7 +192,7 @@ const Upload = (props) => {
                       }
                     } else {
                       if (
-                        xmlVerseNum === 1 &&
+                        xmlVerseNum == 1 &&
                         verseCount + 1 <= dbContent.length
                       ) {
                         v = v - 2;
