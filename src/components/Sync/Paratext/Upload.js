@@ -355,7 +355,7 @@ const Upload = (props) => {
     }
   };
   return (
-    <div>
+    <React.Fragment>
       <Button
         variant="contained"
         color="primary"
@@ -365,7 +365,7 @@ const Upload = (props) => {
         Upload
       </Button>
       {showLoader === true ? <Loader /> : ""}
-    </div>
+      </React.Fragment>
   );
 };
 export default Upload;

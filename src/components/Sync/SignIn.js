@@ -19,7 +19,6 @@ import FormControl from "@material-ui/core/FormControl";
 import GetProjects from "./GetProjects";
 
 const SingIn = (props) => {
-  console.log(props);
   const classes = useStyles();
   const [formData, setFormData] = useState({
     username: "",
@@ -77,7 +76,6 @@ const SingIn = (props) => {
   //   console.log("callList", callList);
   //   setCallList(!callList);
   // };
-  console.log("SingIN", formData);
   return (
     <div className={classes.root}>
       <Avatar

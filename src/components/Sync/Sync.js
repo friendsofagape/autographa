@@ -65,11 +65,6 @@ const Sync = () => {
     setOpen(false);
   };
   const loadAuthentication = (value) => {
-    console.log(
-      "loadAuthentication",
-      AutographaStore.paraUsername,
-      AutographaStore.paraPassword
-    );
     if (AutographaStore.paraUsername && AutographaStore.paraPassword) {
       setParatext({
         username: AutographaStore.paraUsername,
@@ -78,16 +73,12 @@ const Sync = () => {
       });
       setCallList(true);
     }
-    console.log(value);
   };
   const handleError = (formData) => {
-    console.log(formData);
     if (formData.username === null || formData.username === "") {
-      console.log("formData.username");
       setError("Enter Username");
       return false;
     } else if (formData.password === null || formData.password === "") {
-      console.log("formData.password");
       setError("Enter Password");
       return false;
     } else {
@@ -104,12 +95,10 @@ const Sync = () => {
   };
   const onSubmit = (formData) => {
     if (!handleError(formData)) return;
-    console.log(formData);
-    console.log("callList", callList);
+
     setParatext(formData);
     setCallList(true);
   };
-  console.log(tabValue, tabValue === 0 ? "paratext" : "gitea");
   return (
     <div>
       <IconButton onClick={handleOpen}>
