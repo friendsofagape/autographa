@@ -7,29 +7,25 @@ import ProjectListRow from "./Paratext/ProjectListRow";
 import paratext from "./Paratext/core/ParatextAdapter";
 import swal from "sweetalert";
 import AutographaStore from "../AutographaStore";
+import Loader from "../Loader/Loader";
 const refDb = require(`${__dirname}/../../core/data-provider`).referenceDb();
 const GetProjects = (props) => {
+  const [showLoader, setShowLoader] = React.useState(false);
   const [open, setOpen] = React.useState(true);
   const [projectList, setProjectList] = React.useState([]);
   const [adapter, setAdapter] = React.useState(null);
 
   const getData = async () => {
-    console.log("inget data", props);
+    setShowLoader(true);
     AutographaStore.paraUsername = props.username;
     AutographaStore.paraPassword = props.password;
-    console.log(
-      "getdata",
-      AutographaStore.paraUsername,
-      "===",
-      AutographaStore.paraPassword
-    );
+
     const syncAdapter = await newSyncAdapter(
       props.syncProvider,
       props.username,
       props.password,
       null
     );
-    console.log(syncAdapter);
     if (syncAdapter.accessToken) {
       try {
         let projects = await syncAdapter.getProjects(3);
@@ -43,7 +39,6 @@ const GetProjects = (props) => {
             AutographaStore.paraUsername = props.username;
             AutographaStore.paraPassword = props.password;
 
-            console.log("setProjectList(projects);", projects);
             setProjectList(projects);
             setAdapter(syncAdapter);
             let newdoc = {
@@ -57,7 +52,6 @@ const GetProjects = (props) => {
             refDb.put(newdoc);
           })
           .catch((err) => {
-            console.log("err", err);
             let doc = {
               _id: "sync_credential",
               syncProvider: props.syncProvider,
@@ -68,26 +62,22 @@ const GetProjects = (props) => {
             refDb
               .put(doc)
               .then((res) => {
-                console.log("res", res);
                 setProjectList(projects);
                 setAdapter(syncAdapter);
               })
               .catch((err) => {
-                console.log(err);
-                // this.props.showLoader(false);
+                setShowLoader(false);
                 swal("Error", "Something went wrong90", "error");
               });
           });
       } catch (err) {
         swal("Error", "Something went wrong94", "error");
       } finally {
-        console.log("Done..", projectList);
         setOpen(true);
-        // this.props.showLoader(false);
+        setShowLoader(false);
       }
     } else {
-      // this.props.showLoader(false);
-      console.log("error");
+      setShowLoader(false);
       swal("Error", "Something went wrong102", "error");
     }
   };
@@ -98,10 +88,8 @@ const GetProjects = (props) => {
     endpoint = null
   ) => {
     const onFailure = (err) => {
-      console.log(err);
       swal("Error", "Something went wrong14", "error");
     };
-    console.log(syncProviderName, username, password);
 
     switch (syncProviderName) {
       case "paratext":
@@ -122,8 +110,6 @@ const GetProjects = (props) => {
   const handleClose = () => {
     setOpen(false);
   };
-  console.log(props);
-  console.log("AutographaStore.Adapter", adapter);
   return (
     <div>
       <Dialog
@@ -154,6 +140,7 @@ const GetProjects = (props) => {
           </Typography>
         </DialogContent>
       </Dialog>
+      {showLoader === true ? <Loader /> : ""}
     </div>
   );
 };

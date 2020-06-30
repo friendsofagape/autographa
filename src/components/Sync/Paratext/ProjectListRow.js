@@ -61,7 +61,6 @@ const ProjectListRow = (props) => {
   const [showLoader, setShowLoader] = React.useState(false);
 
   const handleSelect = (event) => {
-    console.log(event, event.target, event.target.checked);
     setSelectedbooks({
       ...selectedBooks,
       [event.target.value]: event.target.checked,
@@ -85,14 +84,11 @@ const ProjectListRow = (props) => {
           }
         })
         .filter((book) => book);
-      console.log("bookList", bookList);
       setBookList(booksList);
       //fetching book data done  and hiding the loader
       setShowLoader(false);
     } catch (err) {
-      console.log("err", err);
     } finally {
-      console.log("done", bookList);
       setShowLoader(false);
     }
   };
@@ -114,18 +110,20 @@ const ProjectListRow = (props) => {
             <BookList booksList={bookList} handleChange={handleSelect} />
             <Divider />
             {bookList.length > 0 ? (
-              <div>
-                <Import
-                  books={selectedBooks}
-                  projectId={props.project.projid[0]}
-                  syncAdapter={props.syncAdapter}
-                />
-                <Upload
-                  books={selectedBooks}
-                  projectId={props.project.projid[0]}
-                  projectName={props.project.proj[0]}
-                  syncAdapter={props.syncAdapter}
-                />
+              <div style={{ float: "right" }}>
+                <Typography>
+                  <Import
+                    books={selectedBooks}
+                    projectId={props.project.projid[0]}
+                    syncAdapter={props.syncAdapter}
+                  />
+                  <Upload
+                    books={selectedBooks}
+                    projectId={props.project.projid[0]}
+                    projectName={props.project.proj[0]}
+                    syncAdapter={props.syncAdapter}
+                  />
+                </Typography>
               </div>
             ) : null}
           </Typography>

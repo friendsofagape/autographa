@@ -202,7 +202,7 @@ const Import = (props) => {
   };
 
   return (
-    <div>
+    <React.Fragment>
       <Button
         variant="contained"
         color="primary"
@@ -212,7 +212,7 @@ const Import = (props) => {
         Import
       </Button>
       {showLoader === true ? <Loader /> : ""}
-    </div>
+    </React.Fragment>
   );
 };
 export default Import;
