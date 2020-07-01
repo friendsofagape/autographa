@@ -8,8 +8,6 @@ const Constant = require("../core/constants");
 export const SetupContext = createContext();
 
 const SetupContextProvider = (props) => {
-  const [testdata, setTestdata] = useState("hiiiii");
-
   const refdbSetup = () => {
     let verses, chapter;
     refDb

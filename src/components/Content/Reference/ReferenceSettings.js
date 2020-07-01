@@ -9,31 +9,16 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormControl from "@material-ui/core/FormControl";
 import FormLabel from "@material-ui/core/FormLabel";
 import InsertDriveFileIcon from "@material-ui/icons/InsertDriveFile";
-import SettingsIcon from "@material-ui/icons/Settings";
-import ListSubheader from "@material-ui/core/ListSubheader";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import Collapse from "@material-ui/core/Collapse";
-import TranslateIcon from "@material-ui/icons/Translate";
-import ExpandLess from "@material-ui/icons/ExpandLess";
-import ExpandMore from "@material-ui/icons/ExpandMore";
 import Autocomplete from "@material-ui/lab/Autocomplete";
-import {
-  IconButton,
-  Typography,
-  Button,
-  TextField,
-  Paper,
-} from "@material-ui/core";
+import { Button, TextField } from "@material-ui/core";
 import { BrowserWindow } from "electron";
-import * as mobx from "mobx";
 import * as usfm_import from "../../../core/usfm_import";
 import FolderIcon from "@material-ui/icons/Folder";
 import AutographaStore from "../../AutographaStore";
 import ImportReport from "../../Reports/ImportReport";
-const { dialog, getCurrentWindow } = require("electron").remote;
+const { dialog } = require("electron").remote;
 const lookupsDb = require(`${__dirname}/../../../core/data-provider`).lookupsDb();
 const refDb = require(`${__dirname}/../../../core/data-provider`).referenceDb();
 
@@ -102,16 +87,6 @@ export default function ReferenceSettings(props) {
     }
   };
 
-  const handleClick = () => {
-    setOpen(!open);
-  };
-  const ExpandTab2 = () => {
-    setTab2(!tab2);
-  };
-
-  const toggleDrawer = (anchor, open) => (event) => {
-    setState({ ...state, [anchor]: open });
-  };
   const toggleDrawerClose = (anchor, open) => (event) => {
     handleSubmit(event);
     if (

@@ -1,11 +1,14 @@
 import React from "react";
 import Main from "./components/main";
 import SetupContextProvider from "./contexts/SetupContext";
+import SettingContextProvider from "./contexts/SettingContext";
 
 function App() {
   return (
     <SetupContextProvider>
-      <Main />
+      <SettingContextProvider>
+        <Main />
+      </SettingContextProvider>
     </SetupContextProvider>
   );
 }
