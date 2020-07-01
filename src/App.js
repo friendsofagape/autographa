@@ -1,8 +1,13 @@
 import React from "react";
 import Main from "./components/main";
+import SetupContextProvider from "./contexts/SetupContext";
 
 function App() {
-  return <Main />;
+  return (
+    <SetupContextProvider>
+      <Main />
+    </SetupContextProvider>
+  );
 }
 
 export default App;

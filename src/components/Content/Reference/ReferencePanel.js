@@ -1,10 +1,8 @@
 import React from "react";
-import { useStyles } from "./useStyles";
 import AutographaStore from "../../AutographaStore";
 import { Observer } from "mobx-react";
 
 const ReferencePanel = (props) => {
-  const classes = useStyles();
   return (
     <React.Fragment>
       <Observer>
