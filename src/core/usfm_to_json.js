@@ -1,5 +1,4 @@
 import AutographaStore from "../components/AutographaStore";
-import * as mobx from "mobx";
 const booksCodes = require(`${__dirname}/constants.js`).bookCodeList;
 const bibleSkel = require(`${__dirname}/../lib/bible_Silhouette.json`);
 const path = require("path");

@@ -70,7 +70,6 @@ const DiffChecker = () => {
 
   const setDiff = async (toggled) => {
     let _isSameLanguage = await isSameLanguage();
-    console.log(_isSameLanguage, toggle);
     setToggle(toggled);
     if (toggled) {
       saveTarget();

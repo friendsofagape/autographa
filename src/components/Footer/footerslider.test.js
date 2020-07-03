@@ -1,11 +1,10 @@
 import React from "react";
 import "@testing-library/jest-dom";
-import Enzyme, { shallow } from "enzyme";
-import EnzymeAdapter from "enzyme-adapter-react-16";
+import { shallow } from "enzyme";
 import { cleanup, render, getByTestId } from "@testing-library/react";
 import CustomizedSlider from "./FontSlider";
+jest.mock("../../Audio/core/ConcatAudio");
 
-Enzyme.configure({ adapter: new EnzymeAdapter() });
 afterEach(cleanup);
 /**
  * Return node(s) with the given data-test attribute.
