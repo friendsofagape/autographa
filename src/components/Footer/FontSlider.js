@@ -61,7 +61,7 @@ export default function CustomizedSlider() {
           <Grid item>
             <span>
               <Button
-                data-testid="decrement-button"
+                data-test="decrement-button"
                 onClick={() => fontChange(-2)}
                 variant="contained"
               >
@@ -73,7 +73,7 @@ export default function CustomizedSlider() {
             <Slider
               min={15}
               max={50}
-              data-testid="Sliderbutton"
+              data-testid="slide-button"
               color="secondary"
               valueLabelDisplay={"auto"}
               value={value}
@@ -84,7 +84,7 @@ export default function CustomizedSlider() {
           <Grid item>
             <span>
               <Button
-                data-testid="increment-button"
+                data-test="increment-button"
                 id="Inc"
                 value={value}
                 onClick={() => fontChange(+2)}

@@ -534,7 +534,7 @@ export default function TranslationSettings() {
   );
 
   return (
-    <div>
+    <div data-test="component-panel">
       <React.Fragment key={"right"}>
         <IconButton color="inherit" onClick={toggleDrawer("right", true)}>
           <SettingsIcon />

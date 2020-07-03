@@ -2,17 +2,21 @@ import React from "react";
 import { useStyles } from "./useStyles";
 import AutographaStore from "../../AutographaStore";
 import { Observer } from "mobx-react";
+import PropTypes from "prop-types";
 
-const ReferencePanel = (props) => {
+const ReferencePanel = ({ refContent }) => {
   const classes = useStyles();
   return (
     <React.Fragment>
       <Observer>
         {() => (
-          <div style={{ fontSize: `${AutographaStore.currentFontValue}px` }}>
+          <div
+            style={{ fontSize: `${AutographaStore.currentFontValue}px` }}
+            data-test="reference-panel"
+          >
             <div
               dangerouslySetInnerHTML={{
-                __html: props.refContent,
+                __html: refContent,
               }}
             />
           </div>
@@ -20,6 +24,10 @@ const ReferencePanel = (props) => {
       </Observer>
     </React.Fragment>
   );
+};
+
+ReferencePanel.propTypes = {
+  refContent: PropTypes.string.isRequired,
 };
 
 export default ReferencePanel;

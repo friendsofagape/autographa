@@ -1,4 +1,5 @@
-const PouchDB = require("pouchdb").default;
+// const PouchDB = require("pouchdb").default;
+import PouchDB from "pouchdb";
 const path = require("path");
 const app = require("electron").remote.app;
 let basepath = app.getAppPath();
