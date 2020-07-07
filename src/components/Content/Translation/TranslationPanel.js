@@ -1,18 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import AutographaStore from "../../AutographaStore.js";
 import { Observer } from "mobx-react";
 import * as mobx from "mobx";
-import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
 import PlayCircleOutlineIcon from "@material-ui/icons/PlayCircleOutline";
 import StopIcon from "@material-ui/icons/Stop";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import JointVerse from "./JointVerse";
-import { TextField, Zoom, Tooltip } from "@material-ui/core";
+import { Zoom, Tooltip } from "@material-ui/core";
 import { lastSavedtime, fetchAudio } from "./helpers.js";
 
 // const theme = createMuiTheme({
