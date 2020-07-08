@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
-import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
-import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
@@ -9,16 +7,8 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormControl from "@material-ui/core/FormControl";
 import FormLabel from "@material-ui/core/FormLabel";
 import InsertDriveFileIcon from "@material-ui/icons/InsertDriveFile";
-import SettingsIcon from "@material-ui/icons/Settings";
-import ListSubheader from "@material-ui/core/ListSubheader";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import Collapse from "@material-ui/core/Collapse";
-import TranslateIcon from "@material-ui/icons/Translate";
-import ExpandLess from "@material-ui/icons/ExpandLess";
-import ExpandMore from "@material-ui/icons/ExpandMore";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import {
   IconButton,
@@ -28,7 +18,6 @@ import {
   Paper,
 } from "@material-ui/core";
 import { BrowserWindow } from "electron";
-import * as mobx from "mobx";
 import * as usfm_import from "../../../core/usfm_import";
 import FolderIcon from "@material-ui/icons/Folder";
 import AutographaStore from "../../AutographaStore";
@@ -75,8 +64,6 @@ export default function ReferenceSettings(props) {
   const [language, setlanguage] = useState("");
   const [languageCode, setlanguageCode] = useState("");
   const [langVersion, setlangVersion] = useState("");
-  const [open, setOpen] = React.useState(true);
-  const [tab2, setTab2] = useState(false);
   const [helperTextbible, sethelperTextbible] = useState("");
   const [helperTextlanguage, sethelperTextlanguage] = useState("");
   const [helperTextVersion, sethelperTextVersion] = useState("");
@@ -104,16 +91,6 @@ export default function ReferenceSettings(props) {
     }
   };
 
-  const handleClick = () => {
-    setOpen(!open);
-  };
-  const ExpandTab2 = () => {
-    setTab2(!tab2);
-  };
-
-  const toggleDrawer = (anchor, open) => (event) => {
-    setState({ ...state, [anchor]: open });
-  };
   const toggleDrawerClose = (anchor, open) => (event) => {
     handleSubmit(event);
     if (
