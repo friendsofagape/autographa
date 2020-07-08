@@ -1,5 +1,4 @@
 import React from "react";
-import { useStyles } from "./useStyles";
 import AutographaStore from "../../AutographaStore";
 import { Observer } from "mobx-react";
 import PropTypes from "prop-types";

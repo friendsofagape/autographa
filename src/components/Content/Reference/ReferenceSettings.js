@@ -10,13 +10,7 @@ import InsertDriveFileIcon from "@material-ui/icons/InsertDriveFile";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import Autocomplete from "@material-ui/lab/Autocomplete";
-import {
-  IconButton,
-  Typography,
-  Button,
-  TextField,
-  Paper,
-} from "@material-ui/core";
+import { Button, TextField } from "@material-ui/core";
 import { BrowserWindow } from "electron";
 import * as usfm_import from "../../../core/usfm_import";
 import FolderIcon from "@material-ui/icons/Folder";

@@ -112,9 +112,6 @@ export default function Statistics() {
   };
 
   useEffect(() => {
-    const incompleteVerse = mobx.toJS(AutographaStore.incompleteVerse);
-    const multipleSpaces = mobx.toJS(AutographaStore.multipleSpaces);
-    const emptyChapters = mobx.toJS(AutographaStore.emptyChapter);
     if (openStatistics) showReport();
   });
 
