@@ -1,7 +1,5 @@
-import React, { useState } from "react";
-import clsx from "clsx";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
@@ -18,7 +16,8 @@ import * as usfm_import from "../../../core/usfm_import";
 import FolderIcon from "@material-ui/icons/Folder";
 import AutographaStore from "../../AutographaStore";
 import ImportReport from "../../Reports/ImportReport";
-const { dialog } = require("electron").remote;
+import Loader from "../../Loader/Loader";
+const { dialog, getCurrentWindow } = require("electron").remote;
 const lookupsDb = require(`${__dirname}/../../../core/data-provider`).lookupsDb();
 const refDb = require(`${__dirname}/../../../core/data-provider`).referenceDb();
 
@@ -59,8 +58,6 @@ export default function ReferenceSettings(props) {
   const [language, setlanguage] = useState("");
   const [languageCode, setlanguageCode] = useState("");
   const [langVersion, setlangVersion] = useState("");
-  const [open, setOpen] = React.useState(true);
-  const [tab2, setTab2] = useState(false);
   const [helperTextbible, sethelperTextbible] = useState("");
   const [helperTextlanguage, sethelperTextlanguage] = useState("");
   const [helperTextVersion, sethelperTextVersion] = useState("");
@@ -73,6 +70,7 @@ export default function ReferenceSettings(props) {
   const [folderPathImport, setFolderPathImport] = useState("");
   const [totalFile, setTotalFile] = useState([]);
   const [showReport, setShowReport] = useState(false);
+  const [showLoader, setShowLoader] = React.useState(false);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -90,11 +88,13 @@ export default function ReferenceSettings(props) {
   const toggleDrawerClose = (anchor, open) => (event) => {
     handleSubmit(event);
     if (
+      helperTextbible === "" &&
       helperTextlanguage === "" &&
       helperTextVersion === "" &&
       helperTextfolderpath === ""
     ) {
       setState({ ...state, [anchor]: open });
+      importReference();
     }
   };
   const handleDirChange = (event) => {
@@ -172,14 +172,8 @@ export default function ReferenceSettings(props) {
   };
 
   const importReference = () => {
-    if (!reference_setting()) return;
-    const regExp = /\(([^)]+)\)/;
-    let _langCode = regExp.exec(language);
-    let langCode = "";
-    if (_langCode) {
-      langCode = _langCode[1];
-    } else langCode = language;
-    setlanguageCode(langCode);
+    setShowLoader(true);
+    let langCode = languageCode;
     var ref_id_value =
         langCode.toLowerCase() +
         "_" +
@@ -235,52 +229,56 @@ export default function ReferenceSettings(props) {
     );
   };
 
-  const reference_setting = () => {
-    let name = bibleName;
-    let langCode = language;
-    let version = langVersion;
-    let path = folderPathImport;
-    let isValid = true;
-    if (name === null || name === "") {
-      sethelperTextbible("The Bible name is required.");
-      isValid = false;
-    } else {
-      setIsbiblenamevalid(false);
-      sethelperTextbible("");
-    }
-    if (langCode === null || langCode === "") {
-      sethelperTextlanguage("The Bible language code is required.");
-      isValid = false;
-    } else if (langCode.match(/^\d/)) {
-      sethelperTextlanguage(
-        "The Bible language code length should be between 2 and 8 characters and can’t start with a number."
-      );
-      isValid = false;
-    } else if (/^([a-zA-Z0-9_-]){2,8}$/.test(langCode) === false) {
-      sethelperTextlanguage(
-        "The Bible language code length should be between 2 and 8 characters and can’t start with a number"
-      );
-      isValid = false;
-    } else {
-      setIslangcodevalid(false);
+  useEffect(() => {
+    const reference_setting = (lang, langVersion) => {
+      const regExp = /\(([^)]+)\)/;
+      let name = bibleName;
+      let langCode;
+      let _langCode = regExp.exec(lang);
+      if (_langCode) {
+        langCode = _langCode[1];
+      } else langCode = language;
+      setlanguageCode(langCode);
+      let version = langVersion;
+      let path = folderPathImport;
+      if (name === null || name === undefined || name === "") {
+        sethelperTextbible("The Bible name is required.");
+      } else {
+        setIsbiblenamevalid(false);
+        sethelperTextbible("");
+      }
+      if (langCode === null || langCode === undefined || langCode === "") {
+        sethelperTextlanguage("The Bible language code is required.");
+      } else if (langCode.match(/^\d/)) {
+        sethelperTextlanguage(
+          "The Bible language code length should be between 2 and 8 characters and can’t start with a number."
+        );
+      } else if (/^([a-zA-Z0-9_-]){2,8}$/.test(langCode) === false) {
+        sethelperTextlanguage(
+          "The Bible language code length should be between 2 and 8 characters and can’t start with a number"
+        );
+      } else {
+        setIslangcodevalid(false);
+        sethelperTextlanguage("");
+      }
+      if (version === null || version === undefined || version === "") {
+        sethelperTextVersion("The Bible version is required");
+      } else {
+        setIslangvervalid(false);
+        sethelperTextVersion("");
+      }
+      if (path === null || path === undefined || path === "") {
+        setHelperTextfolderpath("The folder location is required.");
+      } else {
+        setIspathvalid(false);
+        setHelperTextfolderpath("");
+      }
+    };
+    reference_setting(language, langVersion);
+    if (setIslangcodevalid === false && language !== undefined) {
       sethelperTextlanguage("");
     }
-    if (version === null || version === "") {
-      sethelperTextVersion("The Bible version is required");
-      isValid = false;
-    } else {
-      setIslangvervalid(false);
-      sethelperTextVersion("");
-    }
-    if (path === null || path === "") {
-      setHelperTextfolderpath("The folder location is required.");
-      isValid = false;
-    } else {
-      setIspathvalid(false);
-      setHelperTextfolderpath("");
-    }
-    return isValid;
-  };
+  }, [language, langVersion, ispathvalid, folderPathImport, bibleName]);
 
   const saveJsonToDB = (dir) => {
     // const currentTrans = AutographaStore.currentTrans;
@@ -292,15 +290,17 @@ export default function ReferenceSettings(props) {
     // )
     //   fs.mkdirSync(`${appPath}/report`, { recursive: true });
     usfm_import
-      .saveJsonToDb(dir, bibleName, language, langVersion)
+      .saveJsonToDb(dir, bibleName, languageCode, langVersion)
       .then((res) => {
-        console.log(res);
         return res;
       })
       .then((err) => {
         console.log(err);
       })
-      .finally(() => setShowReport(true));
+      .finally(() => {
+        setShowLoader(false);
+        setShowReport(true);
+      });
   };
 
   const importClose = () => {
@@ -427,7 +427,6 @@ export default function ReferenceSettings(props) {
             variant="contained"
             color="primary"
             style={{ float: "right", marginTop: "-61px" }}
-            onClick={importReference}
             className={classes.margin}
           >
             Import
@@ -441,6 +440,7 @@ export default function ReferenceSettings(props) {
     <div>
       <React.Fragment>
         {list("right")}
+        {showLoader === true ? <Loader /> : ""}
         <ImportReport show={showReport} importClose={importClose} />
       </React.Fragment>
     </div>
