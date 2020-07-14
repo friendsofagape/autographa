@@ -163,7 +163,6 @@ const SetupContextProvider = (props) => {
 
   const handleRefChange = (event, refDropDownPos) => {
     // event.persist();
-    console.log(refDropDownPos, event);
     AutographaStore.activeRefs[refDropDownPos] = event.target.value;
     refDb.get("activeRefs").then(
       (doc) => {

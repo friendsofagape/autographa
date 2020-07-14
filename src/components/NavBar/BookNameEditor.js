@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import AutographaStore from "../AutographaStore";
 import ArrowRightAltIcon from "@material-ui/icons/ArrowRightAlt";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
@@ -9,6 +9,7 @@ import ArrowDropDownCircleIcon from "@material-ui/icons/ArrowDropDownCircle";
 import ListItemText from "@material-ui/core/ListItemText";
 import { DialogTitle, Dialog } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
+import { NavigationContext } from "../../contexts/NavigationContext";
 const constants = require("../../core/constants");
 const db = require(`${__dirname}/../../core/data-provider`).targetDb();
 
@@ -58,6 +59,7 @@ export default function BookNameEditor({ show }) {
   const classes = useStyles();
   const [updatedValue, setUpdatedValue] = useState("");
   const [anchorEl, setAnchorEl] = useState(null);
+  const { setBookdata } = useContext(NavigationContext);
   const handleClose = () => {
     AutographaStore.openBookNameEditor = false;
     AutographaStore.bookNameEditorPopup = false;
@@ -86,6 +88,7 @@ export default function BookNameEditor({ show }) {
               return console.log(err);
             } else {
               AutographaStore.translatedBookNames = doc.books;
+              setBookdata(AutographaStore.translatedBookNames);
             }
           });
         });
@@ -129,7 +132,6 @@ export default function BookNameEditor({ show }) {
           <DialogTitle id="customized-dialog-title" onClose={handleClose}>
             <FormattedMessage id="modal-translate-book-name" />
           </DialogTitle>
-
           <div>
             <span>
               <TextField

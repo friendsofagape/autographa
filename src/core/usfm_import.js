@@ -46,12 +46,10 @@ export const importTranslationFiles = (importFiles, langCode, langVersion) => {
         .then((res) => {
           if (res !== undefined) {
             AutographaStore.successFile.push(res);
-            console.log(res);
           }
         })
         .catch((err) => {
           AutographaStore.errorFile.push(err);
-          console.log(err);
         });
     })
   );

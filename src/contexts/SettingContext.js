@@ -1,11 +1,8 @@
 import React, { createContext, useState, useEffect } from "react";
-import { SetupContext } from "./SetupContext";
 import AutographaStore from "../components/AutographaStore";
 import swal from "sweetalert";
-const refDb = require("../core/data-provider").referenceDb();
 const db = require(`${__dirname}/../core/data-provider`).targetDb();
 const lookupsDb = require(`${__dirname}/../core/data-provider`).lookupsDb();
-const Constant = require("../core/constants");
 
 export const SettingContext = createContext();
 

@@ -7,7 +7,6 @@ import * as mobx from "mobx";
 const refDb = require(`${__dirname}/../../core/data-provider`).referenceDb();
 const constants = require("../../core/constants");
 let saveRec = require("../core/savetodir");
-let timerfuction;
 export const StoreContext = createContext();
 
 class StoreContextProvider extends Component {
@@ -335,7 +334,6 @@ class StoreContextProvider extends Component {
   };
 
   render() {
-    console.log(this.state.record);
     return (
       <StoreContext.Provider
         value={{
