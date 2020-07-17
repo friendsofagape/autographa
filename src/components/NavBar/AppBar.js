@@ -11,7 +11,7 @@ import { FormattedMessage } from "react-intl";
 import swal from "sweetalert";
 import MicIcon from "@material-ui/icons/Mic";
 import AutographaStore from "../AutographaStore";
-import TranslationSettings from "../Content/Translation/TranslationSettings";
+import Settings from "../Settings";
 import BookChapterNavigation from "./BookChapterNavigation";
 import SetUp from "../Content/Reference/core/setup";
 import Statistics from "../Content/Translation/Statistics";
@@ -113,7 +113,7 @@ export default function PrimarySearchAppBar() {
                 <Download />
               </IconButton>
               <IconButton color="inherit">
-                <TranslationSettings />
+                <Settings />
               </IconButton>
             </div>
           </Toolbar>

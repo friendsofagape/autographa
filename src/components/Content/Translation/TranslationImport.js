@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   TextField,
   IconButton,
@@ -12,8 +12,9 @@ import { BrowserWindow } from "electron";
 import ImportReport from "../../Reports/ImportReport";
 import AutographaStore from "../../AutographaStore";
 import { FormattedMessage } from "react-intl";
+import { SettingContext } from "../../../contexts/SettingContext";
 
-const { dialog, getCurrentWindow } = require("electron").remote;
+const { dialog } = require("electron").remote;
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -33,7 +34,7 @@ const TranslationImport = (props) => {
   const [folderPathImport, setFolderPathImport] = useState("");
   const [totalFile, setTotalFile] = useState([]);
   const [showReport, setShowReport] = useState(false);
-
+  const { languageCode, langVersion } = useContext(SettingContext);
   const openFileDialogImportTrans = (event) => {
     dialog
       .showOpenDialog(BrowserWindow, {
@@ -63,14 +64,13 @@ const TranslationImport = (props) => {
 
   const importTranslation = () => {
     if (!import_sync_setting()) return;
-    console.log(props);
-    const { langCode, langVersion } = props;
+    console.log(languageCode, langVersion);
     let date = new Date();
     const importDir = Array.isArray(folderPathImport)
       ? folderPathImport
       : [folderPathImport];
     usfm_import
-      .importTranslationFiles(importDir, langCode, langVersion)
+      .importTranslationFiles(importDir, languageCode, langVersion)
       .then((res) => {
         return res;
       })

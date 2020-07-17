@@ -4,7 +4,6 @@ import { Observer } from "mobx-react";
 import PropTypes from "prop-types";
 
 const ReferencePanel = ({ refContent }) => {
-  const classes = useStyles();
   return (
     <React.Fragment>
       <Observer>

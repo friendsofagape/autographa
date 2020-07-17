@@ -17,6 +17,8 @@ import FolderIcon from "@material-ui/icons/Folder";
 import AutographaStore from "../../AutographaStore";
 import ImportReport from "../../Reports/ImportReport";
 import Loader from "../../Loader/Loader";
+import { SettingContext } from "../../../contexts/SettingContext";
+import { useContext } from "react";
 const { dialog, getCurrentWindow } = require("electron").remote;
 const lookupsDb = require(`${__dirname}/../../../core/data-provider`).lookupsDb();
 const refDb = require(`${__dirname}/../../../core/data-provider`).referenceDb();
@@ -71,6 +73,7 @@ export default function ReferenceSettings(props) {
   const [totalFile, setTotalFile] = useState([]);
   const [showReport, setShowReport] = useState(false);
   const [showLoader, setShowLoader] = React.useState(false);
+  const { matchCode } = useContext(SettingContext);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -131,44 +134,6 @@ export default function ReferenceSettings(props) {
         }
       });
     }
-  };
-
-  const matchCode = (input) => {
-    var filteredResults = {};
-    return lookupsDb
-      .allDocs({
-        startkey: input.toLowerCase(),
-        endkey: input.toLowerCase() + "\uffff",
-        include_docs: true,
-      })
-      .then(function (response) {
-        if (response !== undefined && response.rows.length > 0) {
-          Object.keys(response.rows).map((index, value) => {
-            if (response.rows) {
-              if (
-                !filteredResults.hasOwnProperty(
-                  response.rows[index].doc["lang_code"]
-                )
-              ) {
-                filteredResults[response.rows[index].doc["lang_code"]] =
-                  response.rows[index].doc["name"];
-              } else {
-                let existingValue =
-                  filteredResults[response.rows[index].doc["lang_code"]];
-                filteredResults[response.rows[index].doc["lang_code"]] =
-                  existingValue + " , " + response.rows[index].doc["name"];
-              }
-            }
-            return null;
-          });
-          return filteredResults;
-        } else {
-          return [];
-        }
-      })
-      .catch(function (err) {
-        console.log(err);
-      });
   };
 
   const importReference = () => {
