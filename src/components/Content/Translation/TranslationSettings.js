@@ -63,7 +63,6 @@ const useStyles = makeStyles((theme) => ({
 export default function TranslationSettings() {
   const classes = useStyles();
   const [dir, setDir] = React.useState("LTR");
-  // const [backup, setBackup] = useState("daily");
   const [state, setState] = useState({
     right: false,
   });
@@ -131,9 +130,6 @@ export default function TranslationSettings() {
   const handleDirChange = (event) => {
     setDir(event.target.value);
   };
-  // const handleBackupSetting = (event) => {
-  //   setBackup(event.target.value);
-  //   }
   const openFileDialogSettingData = (event) => {
     dialog
       .showOpenDialog(BrowserWindow, {
