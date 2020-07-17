@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
 import GetAppIcon from "@material-ui/icons/GetApp";
 import LibraryBooksIcon from "@material-ui/icons/LibraryBooks";
 import LanguageIcon from "@material-ui/icons/Language";
+import ListIcon from "@material-ui/icons/List";
 import SettingsIcon from "@material-ui/icons/Settings";
 import ListSubheader from "@material-ui/core/ListSubheader";
 import List from "@material-ui/core/List";
@@ -19,8 +20,10 @@ import { IconButton, Paper } from "@material-ui/core";
 import TranslationImport from "../components/Content/Translation/TranslationImport";
 import ReferenceSettings from "../components/Content/Reference/ReferenceSettings";
 import AppLanguage from "../components/AppLanguage";
+import ReferenceManage from "../components/Content/Reference/ReferenceManage";
 import { FormattedMessage } from "react-intl";
 import TranslationSettings from "./Content/Translation/TranslationSettings";
+import { SetupContext } from "../contexts/SetupContext";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -57,6 +60,8 @@ export default function Settings() {
   const [tab2, setTab2] = useState(false);
   const [tab3, setTab3] = useState(false);
   const [tab4, setTab4] = useState(false);
+  const [tab5, setTab5] = useState(false);
+  const { loadReference } = useContext(SetupContext);
 
   const handleClick = () => {
     setOpen(!open);
@@ -72,6 +77,9 @@ export default function Settings() {
 
   const ExpandTab4 = () => {
     setTab4(!tab4);
+  };
+  const ExpandTab5 = () => {
+    setTab5(!tab5);
   };
 
   const toggleDrawer = (anchor, open) => (event) => {
@@ -150,14 +158,32 @@ export default function Settings() {
         </Collapse>
         <ListItem button onClick={ExpandTab4}>
           <ListItemIcon>
-            <LanguageIcon />
+            <ListIcon />
           </ListItemIcon>
-          <FormattedMessage id="label-language">
+          <FormattedMessage id="label-manage-ref-texts">
             {(message) => <ListItemText primary={message} />}
           </FormattedMessage>
           {tab4 ? <ExpandLess /> : <ExpandMore />}
         </ListItem>
         <Collapse in={tab4} timeout="auto" unmountOnExit>
+          <List component="div" disablePadding>
+            <ListItem className={classes.nested}>
+              <Paper className={classes.root}>
+                <ReferenceManage />
+              </Paper>
+            </ListItem>
+          </List>
+        </Collapse>
+        <ListItem button onClick={ExpandTab5}>
+          <ListItemIcon>
+            <LanguageIcon />
+          </ListItemIcon>
+          <FormattedMessage id="label-language">
+            {(message) => <ListItemText primary={message} />}
+          </FormattedMessage>
+          {tab5 ? <ExpandLess /> : <ExpandMore />}
+        </ListItem>
+        <Collapse in={tab5} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
             <ListItem className={classes.nested}>
               <Paper className={classes.root}>

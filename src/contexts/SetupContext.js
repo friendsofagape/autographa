@@ -1,5 +1,7 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useState, useEffect, useCallback } from "react";
 import AutographaStore from "../components/AutographaStore";
+import constants from "../core/constants";
+import { toJS } from "mobx";
 const session = require("electron").remote.session;
 const refDb = require("../core/data-provider").referenceDb();
 const db = require(`${__dirname}/../core/data-provider`).targetDb();
@@ -8,6 +10,32 @@ const Constant = require("../core/constants");
 export const SetupContext = createContext();
 
 const SetupContextProvider = (props) => {
+  const [refListExist, setRefListExist] = useState([]);
+
+  const loadReference = useCallback(() => {
+    AutographaStore.refListExist = [];
+    AutographaStore.refListEdit = [];
+    AutographaStore.refList = [];
+    refDb.get("refs").then((doc) => {
+      doc.ref_ids.forEach((ref_doc) => {
+        AutographaStore.refList.push({
+          value: ref_doc.ref_id,
+          option: ref_doc.ref_name,
+        });
+        if (constants.defaultReferences.indexOf(ref_doc.ref_id) >= 0) {
+          console.log(ref_doc);
+          refListExist.push(ref_doc);
+          console.log(refListExist);
+        } else {
+          AutographaStore.refListEdit.push(ref_doc);
+        }
+      });
+    });
+  });
+
+  useEffect(() => {
+    loadReference();
+  }, [loadReference, refListExist]);
   const refdbSetup = () => {
     let verses, chapter;
     refDb
@@ -222,7 +250,9 @@ const SetupContextProvider = (props) => {
   };
 
   return (
-    <SetupContext.Provider value={{ refdbSetup, handleRefChange }}>
+    <SetupContext.Provider
+      value={{ refdbSetup, handleRefChange, loadReference, refListExist }}
+    >
       {props.children}
     </SetupContext.Provider>
   );
