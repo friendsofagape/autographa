@@ -9,9 +9,9 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
-import CancelIcon from "@material-ui/icons/Cancel";
+import ClearIcon from "@material-ui/icons/Clear";
 import Paper from "@material-ui/core/Paper";
-import CheckCircleIcon from "@material-ui/icons/CheckCircle";
+import DoneIcon from "@material-ui/icons/Done";
 import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -336,7 +336,7 @@ export default function ReferenceManage(props) {
                                   aria-label="save"
                                   onClick={() => onReferenceSave(ref.ref_id)}
                                 >
-                                  <CheckCircleIcon />
+                                  <DoneIcon />
                                 </IconButton>
                               </Tooltip>
                             </TableCell>
@@ -348,7 +348,7 @@ export default function ReferenceManage(props) {
                                     onReferenceCancel(ref.ref_name)
                                   }
                                 >
-                                  <CancelIcon />
+                                  <ClearIcon />
                                 </IconButton>
                               </Tooltip>
                             </TableCell>
