@@ -9,15 +9,19 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
+import CancelIcon from "@material-ui/icons/Cancel";
 import Paper from "@material-ui/core/Paper";
-import Checkbox from "@material-ui/core/Checkbox";
+import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 import AutographaStore from "../../AutographaStore";
+import swal from "sweetalert";
 import { toJS } from "mobx";
 import { SetupContext } from "../../../contexts/SetupContext";
+import { Observer } from "mobx-react";
+const refDb = require(`${__dirname}/../../../core/data-provider`).referenceDb();
 
 function createData(name, calories, fat, carbs, protein) {
   return { name, calories, fat, carbs, protein };
@@ -46,89 +50,26 @@ const headCells = [
 ];
 
 function EnhancedTableHead(props) {
-  const { order, orderBy } = props;
-
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding="checkbox" />
+        <TableCell padding="checkbox"></TableCell>
+        <TableCell padding="checkbox"></TableCell>
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
             align={headCell.numeric ? "right" : "left"}
             padding={headCell.disablePadding ? "none" : "default"}
-            sortDirection={orderBy === headCell.id ? order : false}
           >
             {headCell.label}
           </TableCell>
         ))}
+        <TableCell padding="checkbox" />
+        <TableCell padding="checkbox" />
       </TableRow>
     </TableHead>
   );
 }
-
-const useToolbarStyles = makeStyles((theme) => ({
-  root: {
-    paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(1),
-  },
-  highlight:
-    theme.palette.type === "light"
-      ? {
-          color: theme.palette.secondary.main,
-          backgroundColor: lighten(theme.palette.secondary.light, 0.85),
-        }
-      : {
-          color: theme.palette.text.primary,
-          backgroundColor: theme.palette.secondary.dark,
-        },
-  title: {
-    flex: "1 1 50%",
-  },
-}));
-
-const EnhancedTableToolbar = (props) => {
-  const classes = useToolbarStyles();
-  const { numSelected } = props;
-
-  return (
-    <Toolbar
-      className={clsx(classes.root, {
-        [classes.highlight]: numSelected > 0,
-      })}
-    >
-      {numSelected > 0 && (
-        <Typography
-          className={classes.title}
-          color="inherit"
-          variant="subtitle1"
-          component="div"
-        >
-          {numSelected} selected
-        </Typography>
-      )}
-
-      {numSelected > 0 && (
-        <div>
-          <span>
-            <Tooltip title="Delete">
-              <IconButton aria-label="delete">
-                <DeleteIcon />
-              </IconButton>
-            </Tooltip>
-          </span>
-          <span>
-            <Tooltip title="Edit Reference Name ">
-              <IconButton aria-label="filter list">
-                <EditIcon />
-              </IconButton>
-            </Tooltip>
-          </span>
-        </div>
-      )}
-    </Toolbar>
-  );
-};
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -154,99 +95,330 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ReferenceManage() {
+export default function ReferenceManage(props) {
   const classes = useStyles();
   const [selected, setSelected] = React.useState([]);
-  const { refListExist } = useContext(SetupContext);
+  const { refListExist, refListEdit, loadReference } = useContext(SetupContext);
+  const [edit, setEdit] = React.useState(false);
+  const [bibleReference, setBibleReference] = React.useState(true);
+  const [refIndex, setRefIndex] = React.useState(0);
+  const [refName, setRefName] = React.useState("");
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = rows.map((n) => n.name);
+      const newSelecteds = refListEdit.map((n) => n.name);
       setSelected(newSelecteds);
       return;
     }
     setSelected([]);
   };
 
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
-    let newSelected = [];
+  // const handleClick = (event, index) => {
+  //   console.log(selected);
+  // };
 
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-
-    setSelected(newSelected);
+  //Rename
+  const onReferenceRename = (name, index, e) => {
+    setSelected(index);
+    setBibleReference(!bibleReference);
+    setRefIndex(index);
   };
 
-  const isSelected = (name) => selected.indexOf(name) !== -1;
+  //Remove
+  const onReferenceRemove = (element) => {
+    var ref_ids = [];
+    const currentTrans = AutographaStore.currentTrans;
+    swal({
+      title: currentTrans["label-heading-confirmation"],
+      text: currentTrans["dynamic-msg-del-ref-text"],
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        refDb
+          .get("refs")
+          .then(
+            (doc) => {
+              doc.ref_ids.forEach((ref_doc) => {
+                if (ref_doc.ref_id != element) {
+                  ref_ids.push({
+                    ref_id: ref_doc.ref_id,
+                    ref_name: ref_doc.ref_name,
+                    isDefault: ref_doc.isDefault,
+                  });
+                }
+              });
+              doc.ref_ids = ref_ids;
+              return refDb.put(doc);
+            },
+            (err) => {
+              swal(
+                currentTrans["dynamic-msg-error"],
+                currentTrans["dynamic-msg-del-unable"],
+                "error"
+              );
+            }
+          )
+          .then((res) => {
+            window.location.reload();
+          });
+      }
+    });
+  };
+  //Save
+  const onReferenceSave = (docId, e) => {
+    // this.setState({bibleReference: !this.state.bibleReference});
+    const currentTrans = AutographaStore.currentTrans;
+    let bibleNameLen = refName.length;
+    if (bibleNameLen > 10) {
+      swal(
+        currentTrans["label-bible-name"],
+        currentTrans["ref_name_max_valid"],
+        "error"
+      );
+      return;
+    } else if (bibleNameLen < 3) {
+      swal(
+        currentTrans["label-bible-name"],
+        currentTrans["ref_name_min_valid"],
+        "error"
+      );
+      return;
+    } else if (bibleNameLen == 0) {
+      swal(
+        currentTrans["label-bible-name"],
+        currentTrans["ref_name_blank"],
+        "error"
+      );
+      return;
+    }
+    let ref_ids = [];
+    let result = false;
+    refDb
+      .get("refs")
+      .then((doc) => {
+        doc.ref_ids.forEach((ref_doc) => {
+          if (
+            ref_doc.ref_id != docId &&
+            ref_doc.ref_name.toLowerCase() === refName.toLowerCase()
+          ) {
+            result = true;
+            return;
+          }
+          if (ref_doc.ref_id != docId) {
+            ref_ids.push({
+              ref_id: ref_doc.ref_id,
+              ref_name: ref_doc.ref_name,
+              isDefault: ref_doc.isDefault,
+            });
+          } else {
+            ref_ids.push({
+              ref_id: ref_doc.ref_id,
+              ref_name: refName,
+              isDefault: ref_doc.isDefault,
+            });
+          }
+        });
+        if (result == true) {
+          return true;
+        } else {
+          doc.ref_ids = ref_ids;
+          return refDb.put(doc);
+        }
+      })
+      .then(
+        (res) => {
+          if (res == true) {
+            swal(
+              currentTrans["label-bible-name"],
+              currentTrans["dynamic-msg-name-taken"],
+              "warning"
+            );
+          } else {
+            swal(
+              currentTrans["label-bible-name"],
+              "Bible name changed",
+              "success"
+            );
+            loadReference();
+            setBibleReference(!bibleReference);
+          }
+        },
+        (err) => {
+          swal(
+            currentTrans["label-bible-name"],
+            currentTrans["dynamic-msg-ren-unable"],
+            "error"
+          );
+        }
+      );
+  };
+
+  //Cancel
+  const onReferenceCancel = (e) => {
+    setBibleReference(!bibleReference);
+  };
+
+  //onChange Bible
+  const onChangeBible = (e) => {
+    setRefName(e.target.value);
+  };
 
   return (
     <div className={classes.root}>
-      <Paper className={classes.paper}>
-        <EnhancedTableToolbar numSelected={selected.length} />
-        <TableContainer>
-          <Table
-            className={classes.table}
-            aria-labelledby="tableTitle"
-            aria-label="enhanced table"
-          >
-            <EnhancedTableHead
-              classes={classes}
-              numSelected={selected.length}
-              onSelectAllClick={handleSelectAllClick}
-              rowCount={rows.length}
-            />
-            <TableBody>
-              {refListExist.map((ref, index) => {
-                let ref_first = ref.ref_id.substr(0, ref.ref_id.indexOf("_"));
-                let ref_except_first = ref.ref_id.substr(
-                  ref.ref_id.indexOf("_") + 1
-                );
-                const isItemSelected = isSelected(ref.ref_name);
-                const labelId = `enhanced-table-checkbox-${index}`;
-                return (
-                  <TableRow
-                    hover
-                    onClick={(event) => handleClick(event, ref.ref_name)}
-                    role="checkbox"
-                    aria-checked={isItemSelected}
-                    tabIndex={-1}
-                    key={ref.ref_name}
-                    selected={isItemSelected}
-                  >
-                    <TableCell padding="checkbox">
-                      <Checkbox
-                        checked={isItemSelected}
-                        inputProps={{ "aria-labelledby": labelId }}
-                      />
-                    </TableCell>
-                    <TableCell
-                      component="th"
-                      id={labelId}
-                      scope="row"
-                      padding="none"
-                    >
-                      {ref.ref_name}
-                    </TableCell>
-                    <TableCell align="right">{ref.ref_lang_code}</TableCell>
-                    <TableCell align="right">{ref_except_first}</TableCell>
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </Paper>
+      <Observer>
+        {() => (
+          <Paper className={classes.paper}>
+            <TableContainer>
+              <Table
+                className={classes.table}
+                aria-labelledby="tableTitle"
+                aria-label="enhanced table"
+              >
+                <EnhancedTableHead
+                  classes={classes}
+                  numSelected={selected.length}
+                  onSelectAllClick={handleSelectAllClick}
+                  rowCount={AutographaStore.refListExist.length}
+                />
+                <TableBody>
+                  {AutographaStore.refListExist.map((ref, index) => {
+                    let ref_first = ref.ref_id.substr(
+                      0,
+                      ref.ref_id.indexOf("_")
+                    );
+                    let ref_except_first = ref.ref_id.substr(
+                      ref.ref_id.indexOf("_") + 1
+                    );
+                    const labelId = `enhanced-table-checkbox-${index}`;
+                    return (
+                      <TableRow hover tabIndex={-1} key={ref.ref_name}>
+                        <TableCell padding="checkbox"></TableCell>
+                        <TableCell padding="checkbox"></TableCell>
+                        <TableCell
+                          component="th"
+                          id={labelId}
+                          scope="row"
+                          padding="none"
+                        >
+                          {ref.ref_name}
+                        </TableCell>
+                        <TableCell align="right">{ref.ref_lang_code}</TableCell>
+                        <TableCell align="right">{ref_except_first}</TableCell>
+                        <TableCell padding="checkbox"></TableCell>
+                        <TableCell padding="checkbox"></TableCell>
+                      </TableRow>
+                    );
+                  })}
+                  {AutographaStore.refListEdit.map((ref, index) => {
+                    let ref_first = ref.ref_id.substr(
+                      0,
+                      ref.ref_id.indexOf("_")
+                    );
+                    let ref_except_first = ref.ref_id.substr(
+                      ref.ref_id.indexOf("_") + 1
+                    );
+                    const labelId = `enhanced-table-checkbox-${index}`;
+                    return (
+                      <TableRow
+                        hover
+                        role="checkbox"
+                        aria-checked={selected}
+                        tabIndex={-1}
+                        key={ref.ref_name}
+                      >
+                        {!bibleReference && selected === index ? (
+                          <React.Fragment>
+                            <TableCell padding="checkbox">
+                              <Tooltip title="save">
+                                <IconButton
+                                  aria-label="save"
+                                  onClick={() => onReferenceSave(ref.ref_id)}
+                                >
+                                  <CheckCircleIcon />
+                                </IconButton>
+                              </Tooltip>
+                            </TableCell>
+                            <TableCell padding="checkbox">
+                              <Tooltip title="cancel">
+                                <IconButton
+                                  aria-label="cancel"
+                                  onClick={() =>
+                                    onReferenceCancel(ref.ref_name)
+                                  }
+                                >
+                                  <CancelIcon />
+                                </IconButton>
+                              </Tooltip>
+                            </TableCell>
+                          </React.Fragment>
+                        ) : (
+                          <React.Fragment>
+                            <TableCell padding="checkbox"></TableCell>
+                            <TableCell padding="checkbox"></TableCell>
+                          </React.Fragment>
+                        )}
+                        <TableCell
+                          component="th"
+                          id={labelId}
+                          scope="row"
+                          padding="none"
+                        >
+                          {selected === index && !bibleReference ? (
+                            <React.Fragment>
+                              <input
+                                type="text"
+                                onChange={onChangeBible}
+                                value={refName}
+                                name="biblename"
+                              />
+                            </React.Fragment>
+                          ) : (
+                            <React.Fragment>{ref.ref_name}</React.Fragment>
+                          )}
+                        </TableCell>
+                        <TableCell align="right">{ref.ref_lang_code}</TableCell>
+                        <TableCell align="right">{ref_except_first}</TableCell>
+                        <TableCell padding="checkbox">
+                          <span>
+                            <Tooltip title="Edit Reference Name ">
+                              <IconButton
+                                aria-label="filter list"
+                                onClick={() =>
+                                  onReferenceRename(ref.ref_name, index)
+                                }
+                              >
+                                <EditIcon />
+                              </IconButton>
+                            </Tooltip>
+                          </span>
+                        </TableCell>
+                        <TableCell padding="checkbox">
+                          <span>
+                            <Tooltip title="Delete">
+                              <IconButton
+                                aria-label="delete"
+                                onClick={() =>
+                                  onReferenceRemove(
+                                    ref_first + "_" + ref_except_first
+                                  )
+                                }
+                              >
+                                <DeleteIcon />
+                              </IconButton>
+                            </Tooltip>
+                          </span>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Paper>
+        )}
+      </Observer>
     </div>
   );
 }

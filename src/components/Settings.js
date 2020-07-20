@@ -23,7 +23,6 @@ import AppLanguage from "../components/AppLanguage";
 import ReferenceManage from "../components/Content/Reference/ReferenceManage";
 import { FormattedMessage } from "react-intl";
 import TranslationSettings from "./Content/Translation/TranslationSettings";
-import { SetupContext } from "../contexts/SetupContext";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -61,7 +60,6 @@ export default function Settings() {
   const [tab3, setTab3] = useState(false);
   const [tab4, setTab4] = useState(false);
   const [tab5, setTab5] = useState(false);
-  const { loadReference } = useContext(SetupContext);
 
   const handleClick = () => {
     setOpen(!open);
@@ -169,7 +167,7 @@ export default function Settings() {
           <List component="div" disablePadding>
             <ListItem className={classes.nested}>
               <Paper className={classes.root}>
-                <ReferenceManage />
+                <ReferenceManage ExpandTab4={ExpandTab4} />
               </Paper>
             </ListItem>
           </List>

@@ -11,6 +11,7 @@ export const SetupContext = createContext();
 
 const SetupContextProvider = (props) => {
   const [refListExist, setRefListExist] = useState([]);
+  const [refListEdit, setRefListEdit] = useState([]);
 
   const loadReference = useCallback(() => {
     AutographaStore.refListExist = [];
@@ -23,9 +24,7 @@ const SetupContextProvider = (props) => {
           option: ref_doc.ref_name,
         });
         if (constants.defaultReferences.indexOf(ref_doc.ref_id) >= 0) {
-          console.log(ref_doc);
-          refListExist.push(ref_doc);
-          console.log(refListExist);
+          AutographaStore.refListExist.push(ref_doc);
         } else {
           AutographaStore.refListEdit.push(ref_doc);
         }
@@ -35,7 +34,8 @@ const SetupContextProvider = (props) => {
 
   useEffect(() => {
     loadReference();
-  }, [loadReference, refListExist]);
+  }, [loadReference]);
+
   const refdbSetup = () => {
     let verses, chapter;
     refDb
@@ -251,7 +251,11 @@ const SetupContextProvider = (props) => {
 
   return (
     <SetupContext.Provider
-      value={{ refdbSetup, handleRefChange, loadReference, refListExist }}
+      value={{
+        refdbSetup,
+        handleRefChange,
+        loadReference,
+      }}
     >
       {props.children}
     </SetupContext.Provider>
