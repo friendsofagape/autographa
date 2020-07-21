@@ -92,6 +92,8 @@ const SetUp = () => {
                   <ReferencePanel
                     refContent={AutographaStore.contentOne}
                     refIds={AutographaStore.activeRefs[1]}
+                    tIns={AutographaStore.tIns[1]}
+                    tDel={AutographaStore.tDel[1]}
                   />
                 </div>
                 <div
