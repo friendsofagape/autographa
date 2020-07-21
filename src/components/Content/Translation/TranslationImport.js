@@ -64,7 +64,6 @@ const TranslationImport = (props) => {
 
   const importTranslation = () => {
     if (!import_sync_setting()) return;
-    console.log(languageCode, langVersion);
     let date = new Date();
     const importDir = Array.isArray(folderPathImport)
       ? folderPathImport

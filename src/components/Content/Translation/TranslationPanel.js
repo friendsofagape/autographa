@@ -13,9 +13,6 @@ import JointVerse from "./JointVerse";
 import { Zoom, Tooltip } from "@material-ui/core";
 import { lastSavedtime, fetchAudio } from "./helpers.js";
 
-// const theme = createMuiTheme({
-//   direction: "rtl", // Both here and <body dir="rtl">
-// });
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
@@ -100,6 +97,7 @@ const TranslationPanel = (props) => {
         {() => (
           <Paper>
             <div
+              dir={AutographaStore.scriptDirection}
               style={{
                 fontSize: `${AutographaStore.currentFontValue}px`,
               }}
@@ -118,8 +116,6 @@ const TranslationPanel = (props) => {
               ) : (
                 ""
               )}
-              {/* <ThemeProvider theme={theme}> */}
-              {/* <div dir="rtl"> */}
               <List className={classes.list}>
                 {props.chunkGroup &&
                   props.chunkGroup.map((value, index) => {
@@ -237,8 +233,6 @@ const TranslationPanel = (props) => {
                     );
                   })}
               </List>
-              {/* </div> */}
-              {/* </ThemeProvider> */}
             </div>
           </Paper>
         )}

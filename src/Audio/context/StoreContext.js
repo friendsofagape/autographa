@@ -335,7 +335,6 @@ class StoreContextProvider extends Component {
   };
 
   render() {
-    console.log(this.state.record);
     return (
       <StoreContext.Provider
         value={{

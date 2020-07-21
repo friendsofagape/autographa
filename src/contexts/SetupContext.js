@@ -1,7 +1,6 @@
 import React, { createContext, useState, useEffect, useCallback } from "react";
 import AutographaStore from "../components/AutographaStore";
 import constants from "../core/constants";
-import { toJS } from "mobx";
 const session = require("electron").remote.session;
 const refDb = require("../core/data-provider").referenceDb();
 const db = require(`${__dirname}/../core/data-provider`).targetDb();
@@ -10,9 +9,6 @@ const Constant = require("../core/constants");
 export const SetupContext = createContext();
 
 const SetupContextProvider = (props) => {
-  const [refListExist, setRefListExist] = useState([]);
-  const [refListEdit, setRefListEdit] = useState([]);
-
   const loadReference = useCallback(() => {
     AutographaStore.refListExist = [];
     AutographaStore.refListEdit = [];
@@ -191,7 +187,6 @@ const SetupContextProvider = (props) => {
 
   const handleRefChange = (event, refDropDownPos) => {
     // event.persist();
-    console.log(refDropDownPos, event);
     AutographaStore.activeRefs[refDropDownPos] = event.target.value;
     refDb.get("activeRefs").then(
       (doc) => {
