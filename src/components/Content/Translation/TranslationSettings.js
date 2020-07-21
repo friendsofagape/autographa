@@ -72,6 +72,7 @@ export default function TranslationSettings() {
     languageCode,
     langVersion,
     folderPath,
+    backup,
     helperTextlanguage,
     helperTextVersion,
     helperTextfolderpath,
@@ -88,6 +89,7 @@ export default function TranslationSettings() {
     setlanguage,
     setlangVersion,
     setFolderPath,
+    setBackup,
     sethelperTextlanguage,
     setIslangcodevalid,
   } = useContext(SettingContext);
@@ -246,6 +248,36 @@ export default function TranslationSettings() {
                   value="RTL"
                   control={<Radio />}
                   label={<FormattedMessage id="label-rtl" />}
+                />
+              </RadioGroup>
+            </FormControl>
+          </div>
+          <div>
+            <FormControl className={classes.margin} component="fieldset">
+              <FormLabel component="legend">
+                <FormattedMessage id="label-auto-backup" />
+              </FormLabel>
+              <RadioGroup
+                style={{ display: "inline" }}
+                aria-label="Auto Backup"
+                name="autobackup"
+                value={backup === "" ? "daily" : backup}
+                onChange={(e) => setBackup(e.target.value)}
+              >
+                <FormControlLabel
+                  value="none"
+                  control={<Radio />}
+                  label={<FormattedMessage id="label-none" />}
+                />
+                <FormControlLabel
+                  value="daily"
+                  control={<Radio />}
+                  label={<FormattedMessage id="label-daily" />}
+                />
+                <FormControlLabel
+                  value="weekly"
+                  control={<Radio />}
+                  label={<FormattedMessage id="label-weekly" />}
                 />
               </RadioGroup>
             </FormControl>

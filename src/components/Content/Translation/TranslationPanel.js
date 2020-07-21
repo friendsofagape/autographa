@@ -46,6 +46,8 @@ const TranslationPanel = (props) => {
   const [selectedIndex, setSelectedIndex] = useState(1);
   const [pointer, setPointer] = useState(initialState);
   const [index, setIndex] = useState();
+  const tInsert = mobx.toJS(AutographaStore.tIns[0]);
+  const tDelete = mobx.toJS(AutographaStore.tDel[0]);
 
   const handleListItemClick = (event, index) => {
     let recordedVerse = mobx.toJS(AutographaStore.recVerse);
@@ -101,6 +103,19 @@ const TranslationPanel = (props) => {
               }}
               className={`col-12 col-ref verse-input ${AutographaStore.scriptDirection.toLowerCase()}`}
             >
+              {AutographaStore.toggle && (tInsert || tDelete) ? (
+                <div style={{ textAlign: "center" }}>
+                  <span style={{ color: "#27b97e", fontWeight: "bold" }}>
+                    (+) {tInsert}
+                  </span>{" "}
+                  |{" "}
+                  <span style={{ color: "#f50808", fontWeight: "bold" }}>
+                    (-) {tDelete}
+                  </span>
+                </div>
+              ) : (
+                ""
+              )}
               <List className={classes.list}>
                 {props.chunkGroup &&
                   props.chunkGroup.map((value, index) => {

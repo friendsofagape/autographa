@@ -2,6 +2,7 @@ import React, { createContext, useState, useEffect } from "react";
 import { SetupContext } from "./SetupContext";
 import AutographaStore from "../components/AutographaStore";
 import swal from "sweetalert";
+import * as AutoBackup from "../core/AutoBackup";
 const refDb = require("../core/data-provider").referenceDb();
 const db = require(`${__dirname}/../core/data-provider`).targetDb();
 const lookupsDb = require(`${__dirname}/../core/data-provider`).lookupsDb();
@@ -15,6 +16,7 @@ const SettingContextProvider = (props) => {
   const [languageCode, setlanguageCode] = useState("");
   const [langVersion, setlangVersion] = useState("");
   const [folderPath, setFolderPath] = useState("");
+  const [backup, setBackup] = useState("");
   const [helperTextlanguage, sethelperTextlanguage] = useState("");
   const [helperTextVersion, sethelperTextVersion] = useState("");
   const [helperTextfolderpath, setHelperTextfolderpath] = useState("");
@@ -36,6 +38,12 @@ const SettingContextProvider = (props) => {
     loadSetting();
   }, []);
 
+  useEffect(() => {
+    if (languageCode && langVersion && backup !== "none") {
+      AutoBackup.initializeBackUp();
+    }
+  }, [backup, langVersion, languageCode]);
+
   const loadSetting = () => {
     db.get("targetBible").then(
       (doc) => {
@@ -43,6 +51,7 @@ const SettingContextProvider = (props) => {
         setlanguageCode(doc.targetLang);
         setlangVersion(doc.targetVersion);
         setFolderPath(doc.targetPath);
+        setBackup(doc.backupFrequency);
       },
       (err) => {
         // console.log(err);
@@ -168,12 +177,15 @@ const SettingContextProvider = (props) => {
       targetVersion: langVersion,
       targetPath: folderPath,
       langScript: AutographaStore.scriptDirection.toUpperCase(),
-      // backupFrequency: backupFrequency,
+      backupFrequency: backup,
     };
     db.get("targetBible").then(
       (doc) => {
         settingData._rev = doc._rev;
         db.put(settingData).then((res) => {
+          if (languageCode && langVersion && backup !== "none") {
+            AutoBackup.initializeBackUp();
+          }
           swal("Translation Data", "Successfully saved changes", "success");
         });
       },
@@ -197,6 +209,7 @@ const SettingContextProvider = (props) => {
         languageCode,
         langVersion,
         folderPath,
+        backup,
         helperTextlanguage,
         helperTextVersion,
         helperTextfolderpath,
@@ -214,6 +227,7 @@ const SettingContextProvider = (props) => {
         setlanguageCode,
         setlangVersion,
         setFolderPath,
+        setBackup,
         sethelperTextlanguage,
         sethelperTextVersion,
         setHelperTextfolderpath,
