@@ -19,6 +19,7 @@ import ImportReport from "../../Reports/ImportReport";
 import Loader from "../../Loader/Loader";
 import { SettingContext } from "../../../contexts/SettingContext";
 import { useContext } from "react";
+import { SetupContext } from "../../../contexts/SetupContext";
 const { dialog, getCurrentWindow } = require("electron").remote;
 const lookupsDb = require(`${__dirname}/../../../core/data-provider`).lookupsDb();
 const refDb = require(`${__dirname}/../../../core/data-provider`).referenceDb();
@@ -74,6 +75,7 @@ export default function ReferenceSettings(props) {
   const [showReport, setShowReport] = useState(false);
   const [showLoader, setShowLoader] = React.useState(false);
   const { matchCode } = useContext(SettingContext);
+  const { loadReference } = useContext(SetupContext);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -265,7 +267,12 @@ export default function ReferenceSettings(props) {
       .finally(() => {
         setShowLoader(false);
         setShowReport(true);
+        referenceImport();
       });
+  };
+
+  const referenceImport = () => {
+    loadReference();
   };
 
   const importClose = () => {
