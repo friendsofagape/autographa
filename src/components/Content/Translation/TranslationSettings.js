@@ -32,6 +32,7 @@ import ReferenceSettings from "../Reference/ReferenceSettings";
 import AppLanguage from "../../AppLanguage";
 import { FormattedMessage } from "react-intl";
 import { SettingContext } from "../../../contexts/SettingContext";
+import AutographaStore from "../../AutographaStore";
 const { dialog } = require("electron").remote;
 
 const useStyles = makeStyles((theme) => ({
@@ -104,6 +105,7 @@ export default function TranslationSettings() {
   };
   const handleDirChange = (event) => {
     setDir(event.target.value);
+    AutographaStore.scriptDirection = event.target.value;
   };
 
   const openFileDialogSettingData = (event) => {
@@ -232,7 +234,7 @@ export default function TranslationSettings() {
                 style={{ display: "inline" }}
                 aria-label="Script Direction"
                 name="dir"
-                value={dir}
+                value={AutographaStore.scriptDirection}
                 onChange={handleDirChange}
               >
                 <FormControlLabel

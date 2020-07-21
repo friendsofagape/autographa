@@ -113,9 +113,9 @@ export default function ReferenceManage(props) {
     setSelected([]);
   };
 
-  // const handleClick = (event, index) => {
-  //   console.log(selected);
-  // };
+  useEffect(() => {
+    loadReference();
+  }, [loadReference]);
 
   //Rename
   const onReferenceRename = (name, index, e) => {
