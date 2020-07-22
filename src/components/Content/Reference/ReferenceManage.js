@@ -206,6 +206,7 @@ export default function ReferenceManage(props) {
             result = true;
             return;
           }
+          //Updating db on save
           if (ref_doc.ref_id != docId) {
             ref_ids.push({
               ref_id: ref_doc.ref_id,
