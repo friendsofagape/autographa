@@ -99,7 +99,6 @@ export default function ReferenceManage(props) {
   const classes = useStyles();
   const [selected, setSelected] = React.useState([]);
   const { refListExist, refListEdit, loadReference } = useContext(SetupContext);
-  const [edit, setEdit] = React.useState(false);
   const [bibleReference, setBibleReference] = React.useState(true);
   const [refIndex, setRefIndex] = React.useState(0);
   const [refName, setRefName] = React.useState("");
@@ -145,6 +144,7 @@ export default function ReferenceManage(props) {
                   ref_ids.push({
                     ref_id: ref_doc.ref_id,
                     ref_name: ref_doc.ref_name,
+                    ref_lang_code: ref_doc.ref_lang_code,
                     isDefault: ref_doc.isDefault,
                   });
                 }
@@ -206,16 +206,19 @@ export default function ReferenceManage(props) {
             result = true;
             return;
           }
+          //Updating db on save
           if (ref_doc.ref_id != docId) {
             ref_ids.push({
               ref_id: ref_doc.ref_id,
               ref_name: ref_doc.ref_name,
+              ref_lang_code: ref_doc.ref_lang_code,
               isDefault: ref_doc.isDefault,
             });
           } else {
             ref_ids.push({
               ref_id: ref_doc.ref_id,
               ref_name: refName,
+              ref_lang_code: ref_doc.ref_lang_code,
               isDefault: ref_doc.isDefault,
             });
           }

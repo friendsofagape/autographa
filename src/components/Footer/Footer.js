@@ -72,9 +72,6 @@ export default function Footer(props) {
           .catch(function (err) {});
       });
   };
-  useEffect(() => {
-    console.log(AutographaStore.transSaveTime);
-  });
 
   return (
     <Observer>
