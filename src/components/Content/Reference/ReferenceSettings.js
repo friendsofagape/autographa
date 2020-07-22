@@ -154,7 +154,8 @@ export default function ReferenceSettings(props) {
         : [folderPathImport];
     ref_entry.ref_id = ref_id_value;
     ref_entry.ref_name = bibleName;
-    ref_entry.ref_lang_code = langVersion.toLowerCase();
+    ref_entry.ref_lang_code = langCode.toLowerCase();
+    ref_entry.ref_version = langVersion.toLowerCase();
     ref_entry.isDefault = false;
     ref_arr.push(ref_entry);
     refDb.get("refs").then(
@@ -164,6 +165,7 @@ export default function ReferenceSettings(props) {
           ref_entry.ref_id = ref_doc.ref_id;
           ref_entry.ref_name = ref_doc.ref_name;
           ref_entry.ref_lang_code = ref_doc.ref_lang_code;
+          ref_entry.ref_version = ref_doc.ref_version;
           ref_entry.isDefault = ref_doc.isDefault;
           ref_arr.push(ref_entry);
           ref_entry = {};
