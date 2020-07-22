@@ -39,7 +39,7 @@ const SettingContextProvider = (props) => {
   }, []);
 
   useEffect(() => {
-    if (languageCode && langVersion && backup !== "none") {
+    if (languageCode && langVersion && backup && backup !== "none") {
       AutoBackup.initializeBackUp();
     }
   }, [backup, langVersion, languageCode]);
@@ -165,6 +165,7 @@ const SettingContextProvider = (props) => {
 
   const saveSetting = () => {
     const currentTrans = AutographaStore.currentTrans;
+    const _backup = backup ? backup : "daily";
     // const {
     //   langCode,
     //   langVersion,
@@ -177,13 +178,13 @@ const SettingContextProvider = (props) => {
       targetVersion: langVersion,
       targetPath: folderPath,
       langScript: AutographaStore.scriptDirection.toUpperCase(),
-      backupFrequency: backup,
+      backupFrequency: _backup,
     };
     db.get("targetBible").then(
       (doc) => {
         settingData._rev = doc._rev;
         db.put(settingData).then((res) => {
-          if (languageCode && langVersion && backup !== "none") {
+          if (languageCode && langVersion && _backup && _backup !== "none") {
             AutoBackup.initializeBackUp();
           }
           swal("Translation Data", "Successfully saved changes", "success");
@@ -192,6 +193,9 @@ const SettingContextProvider = (props) => {
       (err) => {
         db.put(settingData).then(
           (res) => {
+            if (languageCode && langVersion && _backup && _backup !== "none") {
+              AutoBackup.initializeBackUp();
+            }
             swal("Translation Data", "Successfully saved changes", "success");
           },
           (err) => {

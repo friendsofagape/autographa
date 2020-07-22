@@ -136,7 +136,6 @@ export default function TranslationSettings() {
     sethelperTextlanguage,
     target_setting,
   ]);
-
   const list = (anchor) => (
     <div className={clsx(classes.list)} role="presentation">
       <List
@@ -261,7 +260,7 @@ export default function TranslationSettings() {
                 style={{ display: "inline" }}
                 aria-label="Auto Backup"
                 name="autobackup"
-                value={backup === "" ? "daily" : backup}
+                value={backup ? backup : "daily"}
                 onChange={(e) => setBackup(e.target.value)}
               >
                 <FormControlLabel
