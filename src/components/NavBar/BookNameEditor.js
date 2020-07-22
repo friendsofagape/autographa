@@ -54,7 +54,7 @@ const StyledMenuItem = withStyles((theme) => ({
   },
 }))(MenuItem);
 
-export default function BookNameEditor({ show }) {
+export default function BookNameEditor({ show, setBookdata }) {
   const classes = useStyles();
   const [updatedValue, setUpdatedValue] = useState("");
   const [anchorEl, setAnchorEl] = useState(null);
@@ -93,6 +93,7 @@ export default function BookNameEditor({ show }) {
       AutographaStore.openBookNameEditor = false;
       AutographaStore.bookNameEditorPopup = false;
       setUpdatedValue("");
+      setBookdata(AutographaStore.translatedBookNames);
     }
   };
 
