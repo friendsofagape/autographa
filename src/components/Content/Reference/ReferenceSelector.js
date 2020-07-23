@@ -28,6 +28,7 @@ const ReferenceSelector = (props) => {
             onChange={props.onClick}
             value={props.refIds}
             id={String(props.id)}
+            disabled={`${AutographaStore.toggle ? "disabled" : ""}`}
           >
             {AutographaStore.refList.map(function (refDoc, index) {
               return (

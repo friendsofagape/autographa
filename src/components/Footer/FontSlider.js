@@ -64,6 +64,7 @@ export default function CustomizedSlider() {
                 data-test="decrement-button"
                 onClick={() => fontChange(-2)}
                 variant="contained"
+                disabled={`${AutographaStore.toggle ? "disabled" : ""}`}
               >
                 A-
               </Button>
@@ -79,6 +80,7 @@ export default function CustomizedSlider() {
               value={value}
               onChange={handleSliderChange}
               aria-labelledby="input-slider"
+              disabled={`${AutographaStore.toggle ? "disabled" : ""}`}
             />
           </Grid>
           <Grid item>
@@ -89,6 +91,7 @@ export default function CustomizedSlider() {
                 value={value}
                 onClick={() => fontChange(+2)}
                 variant="contained"
+                disabled={`${AutographaStore.toggle ? "disabled" : ""}`}
               >
                 A+
               </Button>
