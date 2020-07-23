@@ -88,6 +88,7 @@ export default function Footer(props) {
                     variant="contained"
                     color="primary"
                     aria-label="large outlined primary button group"
+                    disabled={`${AutographaStore.toggle ? "disabled" : ""}`}
                   >
                     <Button
                       style={{
@@ -136,6 +137,7 @@ export default function Footer(props) {
                   variant="contained"
                   color="primary"
                   onClick={props.onSave}
+                  disabled={`${AutographaStore.toggle ? "disabled" : ""}`}
                 >
                   <SaveIcon style={{ marginRight: "2px" }} />
                   <FormattedMessage id="btn-save" />

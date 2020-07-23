@@ -203,7 +203,8 @@ const TranslationPanel = (props) => {
                           onKeyUp={handleKeyUp}
                           data-chunk-group={AutographaStore.chunkGroup[index]}
                           contentEditable={
-                            AutographaStore.jointVerse[index] === undefined
+                            AutographaStore.jointVerse[index] === undefined &&
+                            AutographaStore.toggle !== true
                               ? true
                               : false
                           }

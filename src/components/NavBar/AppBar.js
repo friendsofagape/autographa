@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { fade, makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -25,6 +25,7 @@ import Download from "../Download/Download";
 import Footer from "../Footer/Footer";
 import Sync from "../Sync/Sync";
 import AudioApp from "../../Audio/AudioApp";
+import { Observer } from "mobx-react";
 const db = require(`${__dirname}/../../core/data-provider`).targetDb();
 
 const useStyles = makeStyles((theme) => ({
@@ -52,76 +53,82 @@ export default function PrimarySearchAppBar() {
   const classes = useStyles();
 
   const mountAudio = () => {
-    const currentTrans = AutographaStore.currentTrans;
-    db.get("targetBible")
-      .then((doc) => {
-        if (AutographaStore.layout !== 4) {
-          AutographaStore.AudioMount = true;
-          AutographaStore.audioImport = true;
-        } else
+    if (AutographaStore.toggle !== true) {
+      const currentTrans = AutographaStore.currentTrans;
+      db.get("targetBible")
+        .then((doc) => {
+          if (AutographaStore.layout !== 4) {
+            AutographaStore.AudioMount = true;
+            AutographaStore.audioImport = true;
+          } else
+            swal(
+              currentTrans["dynamic-msg-error"],
+              currentTrans["dynamic-not-compatible-with-translation-help"],
+              "error"
+            );
+        })
+        .catch(function (err) {
+          // handle any errors
           swal(
             currentTrans["dynamic-msg-error"],
-            currentTrans["dynamic-not-compatible-with-translation-help"],
+            currentTrans["dynamic-msg-enter-translation"],
             "error"
           );
-      })
-      .catch(function (err) {
-        // handle any errors
-        swal(
-          currentTrans["dynamic-msg-error"],
-          currentTrans["dynamic-msg-enter-translation"],
-          "error"
-        );
-      });
+        });
+    }
   };
 
   return (
-    <React.Fragment>
-      <div className={classes.grow}>
-        <AppBar position="static">
-          <Toolbar>
-            <TranslationHelp />
-            <Typography className={classes.title} variant="h6" noWrap>
-              <FormattedMessage id="app-name" />
-            </Typography>
-            <div className={classes.nav}>
-              <BookChapterNavigation />
-            </div>
-            <div className={classes.grow} />
-            <div className={classes.sectionDesktop}>
-              <IconButton color="inherit" onClick={mountAudio}>
-                <MicIcon />
-              </IconButton>
-              <IconButton color="inherit">
-                <Sync />
-              </IconButton>
-              <IconButton color="inherit">
-                <About />
-              </IconButton>
-              <IconButton color="inherit">
-                <DiffChecker />
-              </IconButton>
-              <IconButton color="inherit">
-                <Search />
-              </IconButton>
-              <IconButton color="inherit">
-                <Badge badgeContent={17} color="secondary">
-                  <Statistics />
-                </Badge>
-              </IconButton>
-              <IconButton color="inherit">
-                <Download />
-              </IconButton>
-              <IconButton color="inherit">
-                <Settings />
-              </IconButton>
-            </div>
-          </Toolbar>
-        </AppBar>
-      </div>
-      <SetUp />
-      {/* <TranslationSetUp /> */}
-      {/* <Footer /> */}
-    </React.Fragment>
+    <Observer>
+      {() => (
+        <React.Fragment>
+          <div className={classes.grow}>
+            <AppBar position="static">
+              <Toolbar>
+                <TranslationHelp />
+                <Typography className={classes.title} variant="h6" noWrap>
+                  <FormattedMessage id="app-name" />
+                </Typography>
+                <div className={classes.nav}>
+                  <BookChapterNavigation />
+                </div>
+                <div className={classes.grow} />
+                <div className={classes.sectionDesktop}>
+                  <IconButton color="inherit" onClick={mountAudio}>
+                    <MicIcon />
+                  </IconButton>
+                  <IconButton color="inherit">
+                    <Sync />
+                  </IconButton>
+                  <IconButton color="inherit">
+                    <About />
+                  </IconButton>
+                  <IconButton color="inherit">
+                    <DiffChecker />
+                  </IconButton>
+                  <IconButton color="inherit">
+                    <Search />
+                  </IconButton>
+                  <IconButton color="inherit">
+                    <Badge badgeContent={17} color="secondary">
+                      <Statistics />
+                    </Badge>
+                  </IconButton>
+                  <IconButton color="inherit">
+                    <Download />
+                  </IconButton>
+                  <IconButton color="inherit">
+                    <Settings />
+                  </IconButton>
+                </div>
+              </Toolbar>
+            </AppBar>
+          </div>
+          <SetUp />
+          {/* <TranslationSetUp /> */}
+          {/* <Footer /> */}
+        </React.Fragment>
+      )}
+    </Observer>
   );
 }

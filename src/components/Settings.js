@@ -23,6 +23,8 @@ import AppLanguage from "../components/AppLanguage";
 import ReferenceManage from "../components/Content/Reference/ReferenceManage";
 import { FormattedMessage } from "react-intl";
 import TranslationSettings from "./Content/Translation/TranslationSettings";
+import { Observer } from "mobx-react";
+import AutographaStore from "./AutographaStore";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -196,19 +198,27 @@ export default function Settings() {
 
   return (
     <div data-test="component-panel">
-      <React.Fragment key={"right"}>
-        <IconButton color="inherit" onClick={toggleDrawer("right", true)}>
-          <SettingsIcon />
-        </IconButton>
-        <SwipeableDrawer
-          anchor={"right"}
-          open={state["right"]}
-          onOpen={toggleDrawer("right", true)}
-          onClose={toggleDrawer("right", false)}
-        >
-          {list("right")}
-        </SwipeableDrawer>
-      </React.Fragment>
+      <Observer>
+        {() => (
+          <React.Fragment key={"right"}>
+            <IconButton
+              color="inherit"
+              disabled={AutographaStore.toggle}
+              onClick={toggleDrawer("right", true)}
+            >
+              <SettingsIcon />
+            </IconButton>
+            <SwipeableDrawer
+              anchor={"right"}
+              open={state["right"]}
+              onOpen={toggleDrawer("right", true)}
+              onClose={toggleDrawer("right", false)}
+            >
+              {list("right")}
+            </SwipeableDrawer>
+          </React.Fragment>
+        )}
+      </Observer>
     </div>
   );
 }

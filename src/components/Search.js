@@ -15,6 +15,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormControl from "@material-ui/core/FormControl";
 import TextField from "@material-ui/core/TextField";
 import AutographaStore from "./AutographaStore";
+import { Observer } from "mobx-react";
 const db = require(`${__dirname}/../core/data-provider`).targetDb();
 const styles = (theme) => ({
   root: {
@@ -255,98 +256,119 @@ export default function Search() {
   };
 
   return (
-    <div>
-      <SearchIcon onClick={handleClickOpen} />
-      <Dialog
-        onClose={handleClose}
-        aria-labelledby="customized-dialog-title"
-        open={open}
-      >
-        <DialogTitle id="customized-dialog-title" onClose={handleClose}>
-          Find and Replace
-        </DialogTitle>
-        <DialogContent dividers>
-          <Typography gutterBottom>
-            <FormControl component="fieldset">
-              <RadioGroup
-                row
-                aria-label="position"
-                name="FindAndReplace"
-                value={replaceOption}
-                onChange={handleOption}
+    <Observer>
+      {() => (
+        <div>
+          <IconButton
+            color="inherit"
+            disabled={AutographaStore.toggle}
+            onClick={handleClickOpen}
+          >
+            <SearchIcon onClick={handleClickOpen} />
+          </IconButton>
+          <Dialog
+            onClose={handleClose}
+            aria-labelledby="customized-dialog-title"
+            open={open}
+          >
+            <DialogTitle id="customized-dialog-title" onClose={handleClose}>
+              Find and Replace
+            </DialogTitle>
+            <DialogContent dividers>
+              <Typography gutterBottom>
+                <FormControl component="fieldset">
+                  <RadioGroup
+                    row
+                    aria-label="position"
+                    name="FindAndReplace"
+                    value={replaceOption}
+                    onChange={handleOption}
+                  >
+                    <FormControlLabel
+                      value="chapter"
+                      control={<Radio color="primary" />}
+                      label="Current Chapter"
+                    />
+                    <FormControlLabel
+                      value="book"
+                      control={<Radio color="primary" />}
+                      label="Current Book"
+                    />
+                  </RadioGroup>
+                </FormControl>
+              </Typography>
+              <Typography>
+                <form
+                  className={classes.formRoot}
+                  noValidate
+                  autoComplete="off"
+                >
+                  <TextField
+                    id="outlined-basic"
+                    label="Find"
+                    variant="outlined"
+                    value={searchValue}
+                    onChange={handleFindChange}
+                  />
+                </form>
+                <form
+                  className={classes.formRoot}
+                  noValidate
+                  autoComplete="off"
+                >
+                  <TextField
+                    id="outlined-basic"
+                    label="Replace"
+                    variant="outlined"
+                    value={replaceValue}
+                    onChange={handleReplaceChange}
+                  />
+                </form>
+              </Typography>
+            </DialogContent>
+            <DialogActions>
+              <Button
+                autoFocus
+                onClick={findAndReplaceText}
+                color="primary"
+                disabled={searchValue ? false : true}
               >
-                <FormControlLabel
-                  value="chapter"
-                  control={<Radio color="primary" />}
-                  label="Current Chapter"
-                />
-                <FormControlLabel
-                  value="book"
-                  control={<Radio color="primary" />}
-                  label="Current Book"
-                />
-              </RadioGroup>
-            </FormControl>
-          </Typography>
-          <Typography>
-            <form className={classes.formRoot} noValidate autoComplete="off">
-              <TextField
-                id="outlined-basic"
-                label="Find"
-                variant="outlined"
-                value={searchValue}
-                onChange={handleFindChange}
-              />
-            </form>
-            <form className={classes.formRoot} noValidate autoComplete="off">
-              <TextField
-                id="outlined-basic"
-                label="Replace"
-                variant="outlined"
-                value={replaceValue}
-                onChange={handleReplaceChange}
-              />
-            </form>
-          </Typography>
-        </DialogContent>
-        <DialogActions>
-          <Button
-            autoFocus
-            onClick={findAndReplaceText}
-            color="primary"
-            disabled={searchValue ? false : true}
+                Replace
+              </Button>
+            </DialogActions>
+          </Dialog>
+          <Dialog
+            onClose={handleSummaryClose}
+            aria-labelledby="customized-dialog-title"
+            open={replaceInfo}
           >
-            Replace
-          </Button>
-        </DialogActions>
-      </Dialog>
-      <Dialog
-        onClose={handleSummaryClose}
-        aria-labelledby="customized-dialog-title"
-        open={replaceInfo}
-      >
-        <DialogTitle id="customized-dialog-title" onClose={handleSummaryClose}>
-          Replacement Summary
-        </DialogTitle>
-        <DialogContent dividers>
-          <Typography>
-            <p>{replaceCount} occurrences replaced.</p>
-          </Typography>
-        </DialogContent>
-        <DialogActions>
-          <Button
-            autoFocus
-            onClick={saveReplacedText}
-            color="primary"
-            disabled={replaceCount === 0}
-          >
-            Save
-          </Button>
-          <Button autoFocus onClick={handleSummaryClose} color="primary">
-            Cancel
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </div>
+            <DialogTitle
+              id="customized-dialog-title"
+              onClose={handleSummaryClose}
+            >
+              Replacement Summary
+            </DialogTitle>
+            <DialogContent dividers>
+              <Typography>
+                <p>{replaceCount} occurrences replaced.</p>
+              </Typography>
+            </DialogContent>
+            <DialogActions>
+              <Button
+                autoFocus
+                onClick={saveReplacedText}
+                color="primary"
+                disabled={replaceCount === 0}
+              >
+                Save
+              </Button>
+              <Button autoFocus onClick={handleSummaryClose} color="primary">
+                Cancel
+              </Button>
+            </DialogActions>
+          </Dialog>
+        </div>
+      )}
+    </Observer>
   );
 }

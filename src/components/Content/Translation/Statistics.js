@@ -120,7 +120,13 @@ export default function Statistics() {
       <Observer>
         {() => (
           <React.Fragment>
-            <NotificationsIcon onClick={StatisticsOpen} />
+            <IconButton
+              color="inherit"
+              disabled={AutographaStore.toggle}
+              onClick={StatisticsOpen}
+            >
+              <NotificationsIcon />
+            </IconButton>
             <Dialog
               maxWidth={"lg"}
               onClose={StatisticsClose}

@@ -5,6 +5,7 @@ import { Offline, Online } from "react-detect-offline";
 import TranslateIcon from "@material-ui/icons/Translate";
 import AutographaStore from "../AutographaStore";
 import { IconButton, SwipeableDrawer } from "@material-ui/core";
+import { Observer } from "mobx-react";
 
 const TranslationHelp = (props) => {
   let defaultContext = {
@@ -65,25 +66,33 @@ const TranslationHelp = (props) => {
 
   return (
     <div>
-      <React.Fragment key={"left"}>
-        <IconButton color="inherit" onClick={toggleDrawer("left", true)}>
-          <TranslateIcon />
-        </IconButton>
-        <SwipeableDrawer
-          anchor={"left"}
-          open={state["left"]}
-          onOpen={toggleDrawer("left", true)}
-          onClose={toggleDrawer("left", false)}
-        >
-          <Online>{viewerComponent}</Online>
-          <Offline>
-            <p
-              className="offline"
-              dangerouslySetInnerHTML={{ __html: "message" }}
-            ></p>
-          </Offline>
-        </SwipeableDrawer>
-      </React.Fragment>
+      <Observer>
+        {() => (
+          <React.Fragment key={"left"}>
+            <IconButton
+              color="inherit"
+              disabled={`${AutographaStore.toggle ? "disabled" : ""}`}
+              onClick={toggleDrawer("left", true)}
+            >
+              <TranslateIcon />
+            </IconButton>
+            <SwipeableDrawer
+              anchor={"left"}
+              open={state["left"]}
+              onOpen={toggleDrawer("left", true)}
+              onClose={toggleDrawer("left", false)}
+            >
+              <Online>{viewerComponent}</Online>
+              <Offline>
+                <p
+                  className="offline"
+                  dangerouslySetInnerHTML={{ __html: "message" }}
+                ></p>
+              </Offline>
+            </SwipeableDrawer>
+          </React.Fragment>
+        )}
+      </Observer>
     </div>
   );
 };
