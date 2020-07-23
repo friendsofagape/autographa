@@ -10,8 +10,9 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import SignIn from "./SignIn";
-import { AutographaStore } from "../AutographaStore";
+import AutographaStore from "../AutographaStore";
 import GetProjects from "./GetProjects";
+import { Observer } from "mobx-react";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -100,56 +101,66 @@ const Sync = () => {
     setCallList(true);
   };
   return (
-    <div>
-      <IconButton onClick={handleOpen}>
-        <img alt="" src={require("../../assets/icons/sync.svg")} />
-      </IconButton>
-      <Dialog
-        onClose={handleClose}
-        aria-labelledby="customized-dialog-title"
-        open={open}
-        onEntered={loadAuthentication(tabValue)}
-      >
-        <DialogTitle id="customized-dialog-title" onClose={handleClose}>
-          Sync
-        </DialogTitle>
-        <DialogContent dividers>
-          <Typography>
-            <Tabs
-              style={{ borderBottom: "1px solid #0b82ff" }}
-              value={tabValue}
-              onChange={handleTabChange}
-              indicatorColor="primary"
-              textColor="primary"
-              centered
+    <Observer>
+      {() => (
+        <React.Fragment>
+          <div>
+            <IconButton
+              color="inherit"
+              disabled={AutographaStore.toggle}
+              onClick={handleOpen}
             >
-              <Tab label="Paratext" {...a11yProps(0)} />
+              <img alt="" src={require("../../assets/icons/sync.svg")} />
+            </IconButton>
+            <Dialog
+              onClose={handleClose}
+              aria-labelledby="customized-dialog-title"
+              open={open}
+              onEntered={loadAuthentication(tabValue)}
+            >
+              <DialogTitle id="customized-dialog-title" onClose={handleClose}>
+                Sync
+              </DialogTitle>
+              <DialogContent dividers>
+                <Typography>
+                  <Tabs
+                    style={{ borderBottom: "1px solid #0b82ff" }}
+                    value={tabValue}
+                    onChange={handleTabChange}
+                    indicatorColor="primary"
+                    textColor="primary"
+                    centered
+                  >
+                    <Tab label="Paratext" {...a11yProps(0)} />
 
-              <Tab label="Gitea" {...a11yProps(0)} />
-            </Tabs>
-            <TabPanel value={tabValue} index={0}>
-              <SignIn
-                syncProvider={"paratext"}
-                handleSubmit={onSubmit}
-                error={error}
-              />
-            </TabPanel>
-            <TabPanel value={tabValue} index={1}>
-              <SignIn syncProvider={"gitea"} />
-            </TabPanel>
-            {/* <SignIn syncProvider={tabValue === 0 ? "paratext" : "gitea"} /> */}
-            {callList === true ? (
-              <GetProjects
-                syncProvider={paratext.syncProvider}
-                username={paratext.username}
-                password={paratext.password}
-                start={callList}
-              />
-            ) : null}
-          </Typography>
-        </DialogContent>
-      </Dialog>
-    </div>
+                    <Tab label="Gitea" {...a11yProps(0)} />
+                  </Tabs>
+                  <TabPanel value={tabValue} index={0}>
+                    <SignIn
+                      syncProvider={"paratext"}
+                      handleSubmit={onSubmit}
+                      error={error}
+                    />
+                  </TabPanel>
+                  <TabPanel value={tabValue} index={1}>
+                    <SignIn syncProvider={"gitea"} />
+                  </TabPanel>
+                  {/* <SignIn syncProvider={tabValue === 0 ? "paratext" : "gitea"} /> */}
+                  {callList === true ? (
+                    <GetProjects
+                      syncProvider={paratext.syncProvider}
+                      username={paratext.username}
+                      password={paratext.password}
+                      start={callList}
+                    />
+                  ) : null}
+                </Typography>
+              </DialogContent>
+            </Dialog>
+          </div>
+        </React.Fragment>
+      )}
+    </Observer>
   );
 };
 export default Sync;

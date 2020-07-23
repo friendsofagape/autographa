@@ -8,6 +8,9 @@ import Tab from "@material-ui/core/Tab";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import PropTypes from "prop-types";
+import { Observer } from "mobx-react";
+import AutographaStore from "./AutographaStore";
+import { IconButton } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -136,37 +139,49 @@ const About = (props) => {
   );
 
   return (
-    <div>
-      <InfoIcon onClick={handleOpenModal} />
-      <Modal
-        open={openModal}
-        onClose={handleCloseModal}
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
-      >
-        <div className={classes.paper}>
-          <h2 id="modal-title">About</h2>
-          <Tabs
-            style={{ borderBottom: "1px solid #0b82ff" }}
-            value={tabValue}
-            onChange={handleTabChange}
-            indicatorColor="primary"
-            textColor="primary"
-            centered
-          >
-            <Tab label="Overview" {...a11yProps(0)} />
+    <Observer>
+      {() => (
+        <React.Fragment>
+          <div>
+            <IconButton
+              color="inherit"
+              disabled={AutographaStore.toggle}
+              onClick={handleOpenModal}
+            >
+              <InfoIcon />
+            </IconButton>
+            <Modal
+              open={openModal}
+              onClose={handleCloseModal}
+              aria-labelledby="simple-modal-title"
+              aria-describedby="simple-modal-description"
+            >
+              <div className={classes.paper}>
+                <h2 id="modal-title">About</h2>
+                <Tabs
+                  style={{ borderBottom: "1px solid #0b82ff" }}
+                  value={tabValue}
+                  onChange={handleTabChange}
+                  indicatorColor="primary"
+                  textColor="primary"
+                  centered
+                >
+                  <Tab label="Overview" {...a11yProps(0)} />
 
-            <Tab label="License" {...a11yProps(0)} />
-          </Tabs>
-          <TabPanel value={tabValue} index={0}>
-            {tabOneBody}
-          </TabPanel>
-          <TabPanel value={tabValue} index={1}>
-            {tabTwoBody}
-          </TabPanel>
-        </div>
-      </Modal>
-    </div>
+                  <Tab label="License" {...a11yProps(0)} />
+                </Tabs>
+                <TabPanel value={tabValue} index={0}>
+                  {tabOneBody}
+                </TabPanel>
+                <TabPanel value={tabValue} index={1}>
+                  {tabTwoBody}
+                </TabPanel>
+              </div>
+            </Modal>
+          </div>
+        </React.Fragment>
+      )}
+    </Observer>
   );
 };
 

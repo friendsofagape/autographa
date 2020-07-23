@@ -494,24 +494,26 @@ export default function BookChapterNavigation(props) {
   };
 
   return (
-    <React.Fragment>
-      <Fab
-        style={{ borderRadius: "4px", margin: "2px" }}
-        onClick={handleClickOpen}
-        variant="extended"
-      >
-        <BookIcon className={classes.extendedIcon} />
-        {selectedbook}
-      </Fab>
-      <Fab
-        style={{ borderRadius: "4px", margin: "2px" }}
-        onClick={handleClickOpenChapters}
-        variant="extended"
-      >
-        {selectedchapter}
-      </Fab>
-      <Observer>
-        {() => (
+    <Observer>
+      {() => (
+        <React.Fragment>
+          <Fab
+            style={{ borderRadius: "4px", margin: "2px" }}
+            onClick={handleClickOpen}
+            variant="extended"
+            disabled={`${AutographaStore.toggle ? "disabled" : ""}`}
+          >
+            <BookIcon className={classes.extendedIcon} />
+            {selectedbook}
+          </Fab>
+          <Fab
+            style={{ borderRadius: "4px", margin: "2px" }}
+            onClick={handleClickOpenChapters}
+            variant="extended"
+            disabled={`${AutographaStore.toggle ? "disabled" : ""}`}
+          >
+            {selectedchapter}
+          </Fab>
           <div>
             <Dialog
               fullWidth={true}
@@ -617,8 +619,8 @@ export default function BookChapterNavigation(props) {
               translatedBookNames={AutographaStore.translatedBookNames}
             />
           </div>
-        )}
-      </Observer>
-    </React.Fragment>
+        </React.Fragment>
+      )}
+    </Observer>
   );
 }
