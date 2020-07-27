@@ -1,9 +1,7 @@
-import React, { useContext, useEffect, useState, useCallback } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Typography, AppBar, Slide, Zoom, Tooltip } from "@material-ui/core";
 import Toolbar from "@material-ui/core/Toolbar";
-import IconButton from "@material-ui/core/IconButton";
-import MenuIcon from "@material-ui/icons/Menu";
 import CloudDownloadIcon from "@material-ui/icons/CloudDownload";
 import SettingsIcon from "@material-ui/icons/Settings";
 import CloseIcon from "@material-ui/icons/Close";
@@ -15,7 +13,6 @@ import swal from "sweetalert";
 import Timer from "../Timer";
 import { FormattedMessage } from "react-intl";
 import * as mobx from "mobx";
-const db = require(`${__dirname}/../../../core/data-provider`).targetDb();
 const constants = require("../../../core/constants");
 const { app } = require("electron").remote;
 const fs = require("fs");
@@ -94,23 +91,17 @@ export default function RecorderNav(props) {
   const classes = useStyles();
   const [chapter, setChapter] = useState(AutographaStore.chapterId);
   const [isOpen, SetisOpen] = useState(false);
-  const [done, setdone] = useState(false);
   const {
     exportAudio,
     recVerse,
     setRecverse,
     fetchTimer,
     updateJSON,
-    startRecording,
-    stopRecording,
-    findBook,
     findChapter,
     isLoading,
-    record,
   } = useContext(StoreContext);
   let bookId = AutographaStore.bookId.toString();
   let BookName = constants.booksList[parseInt(bookId, 10) - 1];
-  const [book, setbook] = useState(BookName);
 
   useEffect(() => {
     if (
@@ -135,10 +126,8 @@ export default function RecorderNav(props) {
           existing.push(chapter);
           localStorage.setItem(BookName, existing.toString());
         }
-        setdone(true);
         AutographaStore.ChapterComplete = true;
       } else {
-        setdone(false);
         AutographaStore.ChapterComplete = false;
       }
       let existingValue = localStorage.getItem(BookName);
@@ -180,7 +169,6 @@ export default function RecorderNav(props) {
     clearTimeout();
     localStorage.setItem("AudioMount", true);
     SetisOpen(true);
-    setbook(BookName);
     setChapter(AutographaStore.chapterId);
     AutographaStore.audioImport = false;
     var newfilepath = path.join(

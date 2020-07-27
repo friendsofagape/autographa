@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect, useCallback } from "react";
+import React, { createContext, useEffect, useCallback } from "react";
 import AutographaStore from "../components/AutographaStore";
 import constants from "../core/constants";
 const session = require("electron").remote.session;

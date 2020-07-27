@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useEffect, useContext } from "react";
 import { StoreContext } from "../../context/StoreContext";
-import AutographaStore from "../../../components/AutographaStore";
 const formattedSeconds = (sec) =>
   Math.floor(sec / 60) + ":" + ("0" + (sec % 60)).slice(-2);
 

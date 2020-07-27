@@ -20,8 +20,7 @@ import Loader from "../../Loader/Loader";
 import { SettingContext } from "../../../contexts/SettingContext";
 import { useContext } from "react";
 import { SetupContext } from "../../../contexts/SetupContext";
-const { dialog, getCurrentWindow } = require("electron").remote;
-const lookupsDb = require(`${__dirname}/../../../core/data-provider`).lookupsDb();
+const { dialog } = require("electron").remote;
 const refDb = require(`${__dirname}/../../../core/data-provider`).referenceDb();
 
 const useStyles = makeStyles((theme) => ({
@@ -71,7 +70,6 @@ export default function ReferenceSettings(props) {
   const [ispathvalid, setIspathvalid] = useState(false);
   const [listlang, setListlang] = useState([]);
   const [folderPathImport, setFolderPathImport] = useState("");
-  const [totalFile, setTotalFile] = useState([]);
   const [showReport, setShowReport] = useState(false);
   const [showLoader, setShowLoader] = React.useState(false);
   const { matchCode } = useContext(SettingContext);
@@ -116,7 +114,6 @@ export default function ReferenceSettings(props) {
       .then((result) => {
         if (result != null) {
           setFolderPathImport(result.filePaths);
-          setTotalFile(result.filePaths);
         }
       });
   };

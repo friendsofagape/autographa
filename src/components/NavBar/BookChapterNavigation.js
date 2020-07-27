@@ -107,7 +107,6 @@ export default function BookChapterNavigation(props) {
       .then(function (doc) {
         var book = doc.visit_history[0].bookId;
         chapter = doc.visit_history[0].chapter;
-        let mode = mobx.toJS(AutographaStore.editBookNamesMode);
         AutographaStore.bookId = book.toString();
         if (selectedbook === "") {
           if (
@@ -201,14 +200,6 @@ export default function BookChapterNavigation(props) {
 
   const handleClose = () => {
     setOpen(false);
-  };
-
-  const getbookCategory = (e, booksstart, booksend) => {
-    var booksCategory = [];
-    for (var i = 0; i <= 65; i++) {
-      booksCategory.push(Constant.booksList[i]);
-    }
-    setBookdata(booksCategory);
   };
 
   const goToTab = () => {

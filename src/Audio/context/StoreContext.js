@@ -7,7 +7,6 @@ import * as mobx from "mobx";
 const refDb = require(`${__dirname}/../../core/data-provider`).referenceDb();
 const constants = require("../../core/constants");
 let saveRec = require("../core/savetodir");
-let timerfuction;
 export const StoreContext = createContext();
 
 class StoreContextProvider extends Component {
@@ -140,8 +139,8 @@ class StoreContextProvider extends Component {
     let joint = mobx.toJS(AutographaStore.AudioJointVerse);
     let isJoint = joint.indexOf(this.state.onselect) !== -1;
     if (this.state.secondsElapsed > 0 && isJoint === false) {
+      // eslint-disable-next-line no-unused-vars
       let save,
-        mergetemp,
         previousSeconds,
         book = {};
       value["verse"] = this.state.onselect;
@@ -213,40 +212,16 @@ class StoreContextProvider extends Component {
     }
   };
 
-  // mergePause = async (save) => {
-  // 	let mergetemp,
-  // 		book = {};
-  // 	let chapter = 'Chapter' + AutographaStore.chapterId;
-  // 	book.bookNumber = AutographaStore.bookId.toString();
-  // 	book.bookName = constants.booksList[parseInt(book.bookNumber, 10) - 1];
-  // 	if (save) {
-  // 		setTimeout(() => {
-  // 			mergetemp = MergePause(
-  // 				book,
-  // 				chapter,
-  // 				this.state.onselect,
-  // 				this.state.secondsElapsed,
-  // 			);
-  // 			console.log('Merge and close', AutographaStore.MergeStatus);
-  // 			if (AutographaStore.MergeStatus === true) {
-  // 				console.log('Merge and close', mergetemp);
-  // 				this.SetLoader();
-  // 			}
-  // 		}, 2000);
-  // 	}
-  // };
-
   SetLoader = () => {
     this.setState({ isLoading: false });
   };
 
   exportAudio = async () => {
-    let save,
-      book = {};
+    let book = {};
     let chapter = "Chapter" + AutographaStore.chapterId;
     book.bookNumber = AutographaStore.bookId.toString();
     book.bookName = constants.booksList[parseInt(book.bookNumber, 10) - 1];
-    save = await mergeAudios(
+    await mergeAudios(
       book,
       chapter,
       this.state.recVerse,

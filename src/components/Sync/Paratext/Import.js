@@ -25,10 +25,10 @@ const Import = (props) => {
     }
     const currentTrans = AutographaStore.currentTrans;
     swal({
-      title: 'currentTrans["label-warning"]',
-      text: 'currentTrans["label-override-text"]',
+      title: currentTrans["label-warning"],
+      text: currentTrans["label-override-text"],
       icon: "warning",
-      buttons: ['currentTrans["btn-cancel"]', 'currentTrans["btn-ok"]'],
+      buttons: [currentTrans["btn-cancel"], currentTrans["btn-ok"]],
       dangerMode: false,
       closeOnClickOutside: false,
       closeOnEsc: false,
@@ -175,8 +175,8 @@ const Import = (props) => {
               .then((response) => {
                 setShowLoader(false);
                 swal({
-                  title: 'AutographaStore.currentTrans["btn-import"]',
-                  text: 'AutographaStore.currentTrans["label-imported-book"]',
+                  title: AutographaStore.currentTrans["btn-import"],
+                  text: AutographaStore.currentTrans["label-imported-book"],
                   icon: "success",
                   dangerMode: false,
                   closeOnClickOutside: false,
@@ -190,8 +190,8 @@ const Import = (props) => {
               .catch((err) => {
                 setShowLoader(false);
                 swal(
-                  'AutographaStore.currentTrans["dynamic-msg-error"]',
-                  'AutographaStore.currentTrans["dynamic-msg-went-wrong"]',
+                  AutographaStore.currentTrans["dynamic-msg-error"],
+                  AutographaStore.currentTrans["dynamic-msg-went-wrong"],
                   "error"
                 );
               });

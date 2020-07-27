@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
-import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
@@ -10,26 +9,11 @@ import FormControl from "@material-ui/core/FormControl";
 import FormLabel from "@material-ui/core/FormLabel";
 import BackupIcon from "@material-ui/icons/Backup";
 import InsertDriveFileIcon from "@material-ui/icons/InsertDriveFile";
-import GetAppIcon from "@material-ui/icons/GetApp";
 import SaveIcon from "@material-ui/icons/Save";
-import LibraryBooksIcon from "@material-ui/icons/LibraryBooks";
-import LanguageIcon from "@material-ui/icons/Language";
-import SettingsIcon from "@material-ui/icons/Settings";
-import ListSubheader from "@material-ui/core/ListSubheader";
 import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import Collapse from "@material-ui/core/Collapse";
-import TranslateIcon from "@material-ui/icons/Translate";
-import ExpandLess from "@material-ui/icons/ExpandLess";
-import ExpandMore from "@material-ui/icons/ExpandMore";
 import Autocomplete from "@material-ui/lab/Autocomplete";
-import { IconButton, Button, TextField, Paper } from "@material-ui/core";
-import TranslationImport from "./TranslationImport";
+import { Button, TextField } from "@material-ui/core";
 import { BrowserWindow } from "electron";
-import ReferenceSettings from "../Reference/ReferenceSettings";
-import AppLanguage from "../../AppLanguage";
 import { FormattedMessage } from "react-intl";
 import { SettingContext } from "../../../contexts/SettingContext";
 import AutographaStore from "../../AutographaStore";
@@ -63,7 +47,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function TranslationSettings() {
   const classes = useStyles();
-  const [dir, setDir] = React.useState("LTR");
   const [state, setState] = useState({
     right: false,
   });
@@ -106,7 +89,6 @@ export default function TranslationSettings() {
     }
   };
   const handleDirChange = (event) => {
-    setDir(event.target.value);
     AutographaStore.scriptDirection = event.target.value;
   };
 

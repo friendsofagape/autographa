@@ -1,14 +1,11 @@
 import React, { useEffect, useContext } from "react";
-import clsx from "clsx";
-import { lighten, makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
 import ClearIcon from "@material-ui/icons/Clear";
 import Paper from "@material-ui/core/Paper";
 import DoneIcon from "@material-ui/icons/Done";
@@ -18,20 +15,9 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 import AutographaStore from "../../AutographaStore";
 import swal from "sweetalert";
-import { toJS } from "mobx";
 import { SetupContext } from "../../../contexts/SetupContext";
 import { Observer } from "mobx-react";
 const refDb = require(`${__dirname}/../../../core/data-provider`).referenceDb();
-
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
-}
-
-const rows = [
-  createData("Cupcake", 305, 3.7),
-  createData("Donut", 452, 25.0),
-  createData("Eclair", 262, 16.0),
-];
 
 const headCells = [
   {
@@ -98,9 +84,8 @@ const useStyles = makeStyles((theme) => ({
 export default function ReferenceManage(props) {
   const classes = useStyles();
   const [selected, setSelected] = React.useState([]);
-  const { refListExist, refListEdit, loadReference } = useContext(SetupContext);
+  const { refListEdit, loadReference } = useContext(SetupContext);
   const [bibleReference, setBibleReference] = React.useState(true);
-  const [refIndex, setRefIndex] = React.useState(0);
   const [refName, setRefName] = React.useState("");
 
   const handleSelectAllClick = (event) => {
@@ -120,7 +105,6 @@ export default function ReferenceManage(props) {
   const onReferenceRename = (name, index, e) => {
     setSelected(index);
     setBibleReference(!bibleReference);
-    setRefIndex(index);
   };
 
   //Remove

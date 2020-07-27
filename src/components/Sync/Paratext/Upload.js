@@ -23,17 +23,17 @@ const Upload = (props) => {
     );
     if (selectedBooks == null || Object.keys(selectedBooks).length === 0) {
       swal(
-        'currentTrans["dynamic-msg-error"]',
-        'currentTrans["label-selection"]',
+        currentTrans["dynamic-msg-error"],
+        currentTrans["label-selection"],
         "error"
       );
       return;
     }
     swal({
-      title: 'currentTrans["label-warning"]',
-      text: 'currentTrans["label-uploading-warning"]',
+      title: currentTrans["label-warning"],
+      text: currentTrans["label-uploading-warning"],
       icon: "warning",
-      buttons: ['currentTrans["btn-cancel"]', 'currentTrans["btn-ok"]'],
+      buttons: [currentTrans["btn-cancel"], currentTrans["btn-ok"]],
       dangerMode: false,
       closeOnClickOutside: false,
       closeOnEsc: false,
@@ -307,12 +307,12 @@ const Upload = (props) => {
                   }
                 }
                 try {
-                  //   props.syncAdapter.updateBookData(
-                  //     projectId,
-                  //     bookId,
-                  //     revision,
-                  //     xmlDoc.getElementsByTagName("usx")[0].outerHTML
-                  //   );
+                  props.syncAdapter.updateBookData(
+                    projectId,
+                    bookId,
+                    revision,
+                    xmlDoc.getElementsByTagName("usx")[0].outerHTML
+                  );
                   fs.writeFileSync(
                     `${app.getPath(
                       "userData"
@@ -321,14 +321,14 @@ const Upload = (props) => {
                     "utf8"
                   );
                   swal(
-                    'currentTrans["dynamic-msg-book-exported"]',
-                    'currentTrans["label-exported-book"]',
+                    currentTrans["dynamic-msg-book-exported"],
+                    currentTrans["label-exported-book"],
                     "success"
                   );
                 } catch (err) {
                   swal(
-                    'currentTrans["dynamic-msg-error"]',
-                    'currentTrans["dynamic-msg-went-wrong"]',
+                    currentTrans["dynamic-msg-error"],
+                    currentTrans["dynamic-msg-went-wrong"],
                     "error"
                   );
                 } finally {
@@ -338,8 +338,8 @@ const Upload = (props) => {
               .catch((err) => {
                 setShowLoader(false);
                 swal(
-                  'currentTrans["dynamic-msg-error"]',
-                  'currentTrans["dynamic-msg-went-wrong"]',
+                  currentTrans["dynamic-msg-error"],
+                  currentTrans["dynamic-msg-went-wrong"],
                   "error"
                 );
               });
@@ -365,7 +365,7 @@ const Upload = (props) => {
         Upload
       </Button>
       {showLoader === true ? <Loader /> : ""}
-      </React.Fragment>
+    </React.Fragment>
   );
 };
 export default Upload;

@@ -1,12 +1,9 @@
 import React, { createContext, useState, useEffect } from "react";
-import { SetupContext } from "./SetupContext";
 import AutographaStore from "../components/AutographaStore";
 import swal from "sweetalert";
 import * as AutoBackup from "../core/AutoBackup";
-const refDb = require("../core/data-provider").referenceDb();
 const db = require(`${__dirname}/../core/data-provider`).targetDb();
 const lookupsDb = require(`${__dirname}/../core/data-provider`).lookupsDb();
-const Constant = require("../core/constants");
 
 export const SettingContext = createContext();
 
@@ -164,14 +161,8 @@ const SettingContextProvider = (props) => {
   };
 
   const saveSetting = () => {
-    const currentTrans = AutographaStore.currentTrans;
+    // const currentTrans = AutographaStore.currentTrans;
     const _backup = backup ? backup : "daily";
-    // const {
-    //   langCode,
-    //   langVersion,
-    //   folderPath,
-    //   backupFrequency,
-    // } = this.state.settingData;
     const settingData = {
       _id: "targetBible",
       targetLang: languageCode.toLowerCase(),

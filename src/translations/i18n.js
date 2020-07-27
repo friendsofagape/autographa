@@ -7,8 +7,8 @@ import pt from "./pt";
 let loadedLanguage;
 const rtlDetect = require("rtl-detect");
 const refDb = require(`${__dirname}/../core/data-provider`).referenceDb();
-const fs = require("fs");
-const path = require("path");
+// const fs = require("fs");
+// const path = require("path");
 
 function i18n() {
   loadedLanguage = refDb

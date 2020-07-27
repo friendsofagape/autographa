@@ -1,4 +1,3 @@
-import React from "react";
 import swal from "sweetalert";
 import AutographaStore from "../AutographaStore";
 import exportHtml from "../../core/convert/export_html";
@@ -33,16 +32,15 @@ const HtmlExport = (props) => {
     })
     .catch(function (err) {
       swal(
-        "Error",
-        "Please enter Translation Details in the Settings to continue with Export.",
+        currentTrans["dynamic-msg-error"],
+        currentTrans["dynamic-msg-enter-translation"],
         "error"
       );
-      // handle any errors
-      //   swal(
-      //     currentTrans["dynamic-msg-error"],
-      //     currentTrans["dynamic-msg-enter-translation"],
-      //     "error"
-      //   );
+      // swal(
+      //   "Error",
+      //   "Please enter Translation Details in the Settings to continue with Export.",
+      //   "error"
+      // );
     });
 
   return props.htmlClose;

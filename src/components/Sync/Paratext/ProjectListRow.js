@@ -5,7 +5,6 @@ import MuiExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import MuiExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import Typography from "@material-ui/core/Typography";
 import BookList from "./BookList";
-import paratext from "./core/ParatextAdapter";
 import Divider from "@material-ui/core/Divider";
 import Import from "./Import";
 import Upload from "./Upload";
