@@ -1,7 +1,6 @@
 import React, { useState, useContext } from "react";
 import {
   TextField,
-  IconButton,
   InputAdornment,
   makeStyles,
   Button,
@@ -32,7 +31,6 @@ const useStyles = makeStyles((theme) => ({
 const TranslationImport = (props) => {
   const classes = useStyles();
   const [folderPathImport, setFolderPathImport] = useState("");
-  const [totalFile, setTotalFile] = useState([]);
   const [showReport, setShowReport] = useState(false);
   const { languageCode, langVersion } = useContext(SettingContext);
   const openFileDialogImportTrans = (event) => {
@@ -45,7 +43,6 @@ const TranslationImport = (props) => {
       .then((result) => {
         if (result != null) {
           setFolderPathImport(result.filePaths);
-          setTotalFile(result.filePaths);
         }
       });
   };
@@ -64,7 +61,7 @@ const TranslationImport = (props) => {
 
   const importTranslation = () => {
     if (!import_sync_setting()) return;
-    let date = new Date();
+    // let date = new Date();
     const importDir = Array.isArray(folderPathImport)
       ? folderPathImport
       : [folderPathImport];

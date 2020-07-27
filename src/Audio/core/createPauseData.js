@@ -1,5 +1,3 @@
-import ConcatAudio from "./ConcatAudio";
-let audio = new ConcatAudio();
 const { app } = require("electron").remote;
 const fs = require("fs");
 const path = require("path");

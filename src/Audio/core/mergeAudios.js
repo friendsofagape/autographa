@@ -1,7 +1,6 @@
 import ConcatAudio from "./ConcatAudio";
 import swal from "sweetalert";
 import AutographaStore from "../../components/AutographaStore";
-import { FormattedMessage } from "react-intl";
 const { app } = require("electron").remote;
 const fs = require("fs");
 const path = require("path");

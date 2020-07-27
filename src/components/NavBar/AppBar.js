@@ -1,11 +1,9 @@
-import React, { useState } from "react";
-import { fade, makeStyles } from "@material-ui/core/styles";
+import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
-import Fab from "@material-ui/core/Fab";
-import NavigationIcon from "@material-ui/icons/Navigation";
 import Badge from "@material-ui/core/Badge";
 import { FormattedMessage } from "react-intl";
 import swal from "sweetalert";
@@ -15,16 +13,12 @@ import Settings from "../Settings";
 import BookChapterNavigation from "./BookChapterNavigation";
 import SetUp from "../Content/Reference/core/setup";
 import Statistics from "../Content/Translation/Statistics";
-import TranslationSetUp from "../Content/Translation/core/TranslationSetUp";
 import About from "../About";
 import Search from "../Search";
-import ReferenceSettings from "../Content/Reference/ReferenceSettings";
 import DiffChecker from "./DiffChecker";
 import TranslationHelp from "../TranslationHelp/TranslationHelp";
 import Download from "../Download/Download";
-import Footer from "../Footer/Footer";
 import Sync from "../Sync/Sync";
-import AudioApp from "../../Audio/AudioApp";
 import { Observer } from "mobx-react";
 const db = require(`${__dirname}/../../core/data-provider`).targetDb();
 
@@ -125,8 +119,6 @@ export default function PrimarySearchAppBar() {
             </AppBar>
           </div>
           <SetUp />
-          {/* <TranslationSetUp /> */}
-          {/* <Footer /> */}
         </React.Fragment>
       )}
     </Observer>

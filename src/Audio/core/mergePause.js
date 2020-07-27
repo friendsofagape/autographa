@@ -1,11 +1,5 @@
 // @flow
-import React, {
-  useState,
-  useEffect,
-  useCallback,
-  createContext,
-  useContext,
-} from "react";
+import React, { useEffect, useContext } from "react";
 import { StoreContext } from "../context/StoreContext";
 import Loader from "../components/Loader/Loader";
 import ConcatAudio from "./ConcatAudio";
@@ -17,18 +11,7 @@ const fs = require("fs");
 const path = require("path");
 
 const MergePause = () => {
-  const {
-    startRecording,
-    setTimer,
-    stopRecording,
-    saveRecord,
-    resetTimer,
-    recVerse,
-    recVerseTime,
-    onselect,
-    isLoading,
-    SetLoader,
-  } = useContext(StoreContext);
+  const { onselect, isLoading, SetLoader } = useContext(StoreContext);
   let book = {};
   let chapter = "Chapter" + AutographaStore.chapterId;
   book.bookNumber = AutographaStore.bookId.toString();

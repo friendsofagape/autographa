@@ -1,10 +1,4 @@
-import React, {
-  useState,
-  useEffect,
-  useCallback,
-  createContext,
-  useContext,
-} from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Slide from "@material-ui/core/Slide";
 import AppBar from "@material-ui/core/AppBar";
@@ -12,7 +6,6 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Fab from "@material-ui/core/Fab";
 // import Mic from '@material-ui/icons/Mic';
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
-import StopIcon from "@material-ui/icons/Stop";
 import SkipPreviousIcon from "@material-ui/icons/SkipPrevious";
 import SkipNextIcon from "@material-ui/icons/SkipNext";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
@@ -22,7 +15,6 @@ import Player from "../AudioPlayer";
 import { ReactMicPlus } from "react-mic-plus";
 import AutographaStore from "../../../components/AutographaStore";
 import swal from "sweetalert";
-// import TexttoSpeech from '../TexttoSpeech/TexttoSpeech';
 import FontSlider from "../FontSlider/FontSlider";
 import RecorderNav from "../RecorderNav";
 import {
@@ -33,7 +25,7 @@ import {
   Button,
   ButtonGroup,
 } from "@material-ui/core";
-import AudioAnalyser from "../Visualization/AudioAnalyser";
+// import AudioAnalyser from "../Visualization/AudioAnalyser";
 import { FormattedMessage } from "react-intl";
 const { app } = require("electron").remote;
 const fs = require("fs");
@@ -151,19 +143,15 @@ function BottomBar(props) {
   const classes = useStyles();
   const theme = useTheme();
   const [spacekey, setspacekey] = useState(false);
-  const [audio, setaudio] = useState(null);
   const [savedTime, setsavedTime] = useState(null);
-  const [newblob, setnewblob] = useState();
-  const { record, blob, onselect } = useContext(StoreContext);
+  const { record, onselect } = useContext(StoreContext);
   const { selectNext } = useContext(StoreContext);
   const {
     selectPrev,
     resetVal,
-    storeRecord,
     reduceTimer,
     totalTime,
     setOnselect,
-    exportAudio,
   } = useContext(StoreContext);
   const {
     startRecording,

@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import MenuItem from "@material-ui/core/MenuItem";
-import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import { FormattedMessage } from "react-intl";
 import AutographaStore from "./AutographaStore";
@@ -26,8 +25,8 @@ const useStyles = makeStyles((theme) => ({
 
 const AppLanguage = () => {
   const classes = useStyles();
-  const [appLang, setAppLang] = React.useState(AutographaStore.appLang);
-  const [message, setMessage] = useState("");
+  const [appLang, setAppLang] = useState(AutographaStore.appLang);
+  // const [message, setMessage] = useState("");
 
   useEffect(() => {
     setAppLang(AutographaStore.appLang);
@@ -44,7 +43,7 @@ const AppLanguage = () => {
       .then((doc) => {
         doc.appLang = appLang; //this.langRef.current.value//AutographaStore.appLang;
         refDb.put(doc);
-        setMessage("dynamic-msg-save-language");
+        // setMessage("dynamic-msg-save-language");
       })
       .then(function (res) {
         swal(

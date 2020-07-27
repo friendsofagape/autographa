@@ -87,9 +87,9 @@ const GetProjects = (props) => {
     password,
     endpoint = null
   ) => {
-    const onFailure = (err) => {
-      swal("Error", "Something went wrong14", "error");
-    };
+    // const onFailure = (err) => {
+    //   swal("Error", "Something went wrong14", "error");
+    // };
 
     switch (syncProviderName) {
       case "paratext":

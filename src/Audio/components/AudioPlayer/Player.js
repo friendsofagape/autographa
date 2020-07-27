@@ -1,7 +1,6 @@
-import React, { useState, useContext, useEffect } from "react";
+import React from "react";
 import AudioPlayer from "react-h5-audio-player";
 import { makeStyles } from "@material-ui/core/styles";
-import { StoreContext } from "../../context/StoreContext";
 import AutographaStore from "../../../components/AutographaStore";
 
 const useStyles = makeStyles((theme) => ({

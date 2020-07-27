@@ -84,6 +84,7 @@ async function dbSetupAll() {
 }
 
 const destroyDbs = async () => {
+  // eslint-disable-next-line no-unused-vars
   let response;
   const targetDb = dataProvider.targetDb();
   try {

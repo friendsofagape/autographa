@@ -136,7 +136,6 @@ export default class concatAudio {
   }
 
   _writeString(dataview, offset, header) {
-    let output;
     for (var i = 0; i < header.length; i++) {
       dataview.setUint8(offset + i, header.charCodeAt(i));
     }
