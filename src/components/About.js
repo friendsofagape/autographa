@@ -1,37 +1,28 @@
 import React from "react";
-import Modal from "@material-ui/core/Modal";
 import InfoIcon from "@material-ui/icons/Info";
 import { makeStyles } from "@material-ui/core/styles";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import PropTypes from "prop-types";
 import { Observer } from "mobx-react";
 import AutographaStore from "./AutographaStore";
 import { IconButton } from "@material-ui/core";
+import Dialog from "@material-ui/core/Dialog";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import { version } from "../../package.json";
+import { FormattedMessage } from "react-intl";
 
 const useStyles = makeStyles((theme) => ({
-  paper: {
-    position: "absolute",
-    width: 720,
-    backgroundColor: theme.palette.background.paper,
-    border: "1px solid rgba(0, 0, 0, 0.2)",
-    // boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3),
-    borderRadius: "6px",
-  },
   image: {
     borderRadius: "50%",
-    marginTop: "55px",
-    marginLeft: "30px",
     border: "5px solid #0b82ff",
   },
   col_xs_6: {
     position: "relative",
     minHeight: "1px",
-    paddingLeft: "15px",
     paddingRight: "15px",
     float: "left",
   },
@@ -72,18 +63,18 @@ function a11yProps(index) {
 
 const About = (props) => {
   const classes = useStyles();
-  const [openModal, setOpenModal] = React.useState(false);
+  const [open, setOpen] = React.useState(false);
   const [tabValue, setTabValue] = React.useState(0);
 
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
   };
-  const handleOpenModal = () => {
-    setOpenModal(true);
+  const handleOpen = () => {
+    setOpen(true);
   };
 
-  const handleCloseModal = () => {
-    setOpenModal(false);
+  const handleClose = () => {
+    setOpen(false);
   };
 
   const tabOneBody = (
@@ -93,22 +84,21 @@ const About = (props) => {
           className={classes.image}
           src={require("../assets/images/autographa_large.png")}
           alt="Autographa Logo"
-          width="215"
-          height="200"
+          width="175"
+          height="180"
         />
       </div>
-      <div className={classes.col_xs_6} style={{ padding: "5px" }}>
+      <div style={{ padding: "5px", width: "550px" }}>
         <h3>
-          Autographa
-          {/* <FormattedMessage id='app-name' /> */}
+          <FormattedMessage id="app-name" />
         </h3>
         <p>
-          0.0.1
-          {/* <FormattedMessage id='label-version' />{' '} */}
-          {/* <span>{version}</span> */}
+          <FormattedMessage id="label-version" /> <span>{version}</span>
         </p>
-        <p>{/* <FormattedMessage id='label-hosted-url' /> */}</p>
-        <p>https://github.com/friendsofagape/autographa.git</p>
+        <p>
+          <FormattedMessage id="label-hosted-url" />
+          <p>https://github.com/friendsofagape/autographa.git</p>
+        </p>
       </div>
     </div>
   );
@@ -117,7 +107,7 @@ const About = (props) => {
     <div style={{ overflowY: "scroll", height: "255px" }}>
       <h4>GNU General Public License v3.0</h4>
       <p>
-        Autographa Live, A Bible translation editor for everyone.
+        Autographa, A Bible translation editor for everyone.
         <br />
         Copyright (C) 2019 Friends of Agape
       </p>
@@ -146,18 +136,19 @@ const About = (props) => {
             <IconButton
               color="inherit"
               disabled={AutographaStore.toggle}
-              onClick={handleOpenModal}
+              onClick={handleOpen}
             >
               <InfoIcon />
             </IconButton>
-            <Modal
-              open={openModal}
-              onClose={handleCloseModal}
-              aria-labelledby="simple-modal-title"
-              aria-describedby="simple-modal-description"
+            <Dialog
+              onClose={handleClose}
+              aria-labelledby="customized-dialog-title"
+              open={open}
             >
-              <div className={classes.paper}>
-                <h2 id="modal-title">About</h2>
+              <DialogTitle id="customized-dialog-title" onClose={handleClose}>
+                <FormattedMessage id="tooltip-about" />
+              </DialogTitle>
+              <DialogContent>
                 <Tabs
                   style={{ borderBottom: "1px solid #0b82ff" }}
                   value={tabValue}
@@ -176,8 +167,8 @@ const About = (props) => {
                 <TabPanel value={tabValue} index={1}>
                   {tabTwoBody}
                 </TabPanel>
-              </div>
-            </Modal>
+              </DialogContent>
+            </Dialog>
           </div>
         </React.Fragment>
       )}
