@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Viewer from "@bit/unfoldingword.resources.viewer";
+// import Viewer from "@bit/unfoldingword.resources.viewer";
 import Constant from "../../core/constants";
 import { Offline, Online } from "react-detect-offline";
 import TranslateIcon from "@material-ui/icons/Translate";
@@ -48,17 +48,17 @@ const TranslationHelp = (props) => {
   // useEffect(() => {
   // 	setContext(defaultContext)
   // }, [props.onResourceChange])
-  useEffect(() => {
-    const viewer = (
-      <Viewer
-        {...props}
-        context={context}
-        history={[]}
-        setContext={setContext}
-      />
-    );
-    setViewerComponent(viewer);
-  }, [context, props]);
+  // useEffect(() => {
+  //   const viewer = (
+  //     <Viewer
+  //       {...props}
+  //       context={context}
+  //       history={[]}
+  //       setContext={setContext}
+  //     />
+  //   );
+  //   setViewerComponent(viewer);
+  // }, [context, props]);
 
   const toggleDrawer = (anchor, open) => (event) => {
     setState({ ...state, [anchor]: open });
@@ -82,7 +82,7 @@ const TranslationHelp = (props) => {
               onOpen={toggleDrawer("left", true)}
               onClose={toggleDrawer("left", false)}
             >
-              <Online>{viewerComponent}</Online>
+              {/* <Online>{viewerComponent}</Online> */}
               <Offline>
                 <p
                   className="offline"
