@@ -39,6 +39,7 @@ export default {
   "label-joint-with-the-preceding-verse(s)":
     "----- पिछले आयत(तों) के साथ जोड़े -----",
   "label-button-reset": "डिफ़ॉल्ट पर रीसेट",
+  "label-change-font": "फ़ॉन्ट बदलें",
   "placeholder-search-text": "विषय ढूंढें",
   "placeholder-replace-text": "प्रतिस्थापन",
   "placeholder-path-to-destination": "लक्षित फोल्डर की ओर मार्ग",
