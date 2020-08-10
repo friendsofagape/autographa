@@ -63,6 +63,7 @@ export default {
   "label-none": "None",
   "label-daily": "Daily",
   "label-weekly": "Weekly",
+  "label-change-font": "Change Font",
   "username-req": "Username is required.",
   "password-req": "Password is required.",
   "placeholder-search-text": "Search text",

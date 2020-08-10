@@ -77,5 +77,6 @@ export class AutographaStore {
   @observable recordedChapters = [];
   @observable AudioJointVerse = [];
   @observable ChapterComplete = false;
+  @observable fontselected = "";
 }
 export default new AutographaStore();

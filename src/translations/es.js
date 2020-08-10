@@ -40,6 +40,7 @@ export default {
   "label-joint-with-the-preceding-verse(s)":
     "----- Conjunta con los versos anteriores -----",
   "label-button-reset": "Restablecen a los predeterminados",
+  "label-change-font": "cambiar fuente",
   "placeholder-search-text": "Buscar texto",
   "placeholder-replace-text": "Reemplazo",
   "placeholder-path-to-destination": "Ruta a la carpeta de destino",

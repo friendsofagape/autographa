@@ -44,6 +44,7 @@ export default {
   "label-credentials": "شهاداته",
   "label-no-project": "لا توجد مشاريع لإظهارها.",
   "label-button-reset": "إعادة تعيين إلى الافتراضي",
+  "label-change-font": "تغيير الخط",
   "placeholder-search-text": "البحث عن النص",
   "placeholder-replace-text": "إستبدال",
   "placeholder-path-to-destination": "مسار إلى مجلد الوجهة",

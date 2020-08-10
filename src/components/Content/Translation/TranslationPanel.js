@@ -12,6 +12,7 @@ import Paper from "@material-ui/core/Paper";
 import JointVerse from "./JointVerse";
 import { Zoom, Tooltip } from "@material-ui/core";
 import { lastSavedtime, fetchAudio } from "./helpers.js";
+import FontChange from "./FontChange";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -25,8 +26,9 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     position: "absolute",
   },
-  list: {
-    paddingTop: 42,
+  fontMenu: {
+    paddingLeft: "25%",
+    paddingRight: "25%",
   },
   listItemText: {
     fontSize: "0.7em", //Insert your required size
@@ -90,7 +92,6 @@ const TranslationPanel = (props) => {
   const closeJoint = () => {
     setPointer(initialState);
   };
-
   return (
     <React.Fragment>
       <Observer>
@@ -100,9 +101,13 @@ const TranslationPanel = (props) => {
               dir={AutographaStore.scriptDirection}
               style={{
                 fontSize: `${AutographaStore.currentFontValue}px`,
+                paddingTop: "10px",
               }}
               className={`col-12 col-ref verse-input ${AutographaStore.scriptDirection.toLowerCase()}`}
             >
+              <div className={classes.fontMenu}>
+                <FontChange />
+              </div>
               {AutographaStore.toggle && (tInsert || tDelete) ? (
                 <div style={{ textAlign: "center" }}>
                   <span style={{ color: "#27b97e", fontWeight: "bold" }}>
@@ -116,7 +121,7 @@ const TranslationPanel = (props) => {
               ) : (
                 ""
               )}
-              <List className={classes.list}>
+              <List>
                 {props.chunkGroup &&
                   props.chunkGroup.map((value, index) => {
                     return (
@@ -132,6 +137,7 @@ const TranslationPanel = (props) => {
                         style={{
                           cursor: "text",
                           whiteSpace: "pre-wrap",
+                          fontFamily: AutographaStore.fontselected,
                         }}
                       >
                         {mobx.toJS(
