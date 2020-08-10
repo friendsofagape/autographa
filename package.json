@@ -5,6 +5,10 @@
 	"license": "MIT",
 	"main": "public/electron.js",
 	"homepage": ".",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/friendsofagape/autographa.git"
+	},
 	"dependencies": {
 		"@bit/unfoldingword.resources.viewer": "^0.1.5",
 		"@craco/craco": "5.6.4",
@@ -17,6 +21,7 @@
 		"axios": "^0.19.2",
 		"clsx": "1.1.1",
 		"diff-match-patch": "^1.0.5",
+		"electron-updater": "^4.3.4",
 		"font-list": "^1.2.11",
 		"leveldown": "5.6.0",
 		"mobx": "5.15.4",
@@ -39,6 +44,10 @@
 	"build": {
 		"extends": "react-cra",
 		"appId": "oa.autographa.live",
+		"publish": {
+			"provider": "github",
+			"token": "paste token here or set as env to publish"
+		},
 		"files": [
 			"build/**/*.*",
 			"public/**/*.*",
@@ -60,8 +69,7 @@
 				"deb"
 			],
 			"icon": "resources/icon.png"
-		},
-		"publish": null
+		}
 	},
 	"keywords": [
 		"Desktop",
@@ -86,7 +94,8 @@
 		"preelectron-pack": "npm run build",
 		"maxmemory-allocation": "NODE_OPTIONS=--max_old_space_size=4096",
 		"eslint:github-action": "node ./node_modules/eslint/bin/eslint . --ignore-path .gitignore --max-warnings 0",
-		"electron-pack": "electron-builder -p never"
+		"electron-pack": "electron-builder -p never",
+		"deploy": "electron-builder build --win --publish always"
 	},
 	"jest": {
 		"moduleNameMapper": {
@@ -112,8 +121,8 @@
 		"check-prop-types": "^1.1.2",
 		"concurrently": "^5.1.0",
 		"cross-env": "^7.0.2",
-		"electron": "^8.2.3",
-		"electron-builder": "^22.5.1",
+		"electron": "^9.1.2",
+		"electron-builder": "^22.8.0",
 		"enzyme": "^3.11.0",
 		"enzyme-adapter-react-16": "^1.15.2",
 		"eslint-config-prettier": "^6.11.0",
