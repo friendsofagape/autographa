@@ -46,7 +46,7 @@
 		"appId": "oa.autographa.live",
 		"publish": {
 			"provider": "github",
-			"token": "paste token here or set as env to publish"
+			"token": "[paste token here]"
 		},
 		"files": [
 			"build/**/*.*",
