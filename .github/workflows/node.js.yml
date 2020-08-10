@@ -34,9 +34,14 @@ jobs:
               
             - name: set max memory allocation
               run: export NODE_OPTIONS=–max_old_space_size=4096
-
+            
             - name: build
               id: build
+              run: |
+                  npm run build
+
+            - name: build package
+              id: build package
               run: |
                   npm run electron-pack
 
@@ -75,11 +80,17 @@ jobs:
             
             - name: set max memory allocation
               run: set NODE_OPTIONS=–max_old_space_size=4096
-
-            - name: build windows
+            
+            - name: build
               id: build
               run: |
+                  npm run build
+
+            - name: build windows package
+              id: build package
+              run: |
                   npm run electron-pack
+                  
             - name: Cleanup artifacts
               if: matrix.os != 'windows-latest'
               run: |
