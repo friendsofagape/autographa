@@ -40,8 +40,8 @@ jobs:
               run: |
                   npm run build
 
-            - name: build package
-              id: build package
+            - name: package
+              id: package
               run: |
                   npm run electron-pack
 
@@ -86,8 +86,8 @@ jobs:
               run: |
                   npm run build
 
-            - name: build windows package
-              id: build package
+            - name: packaging
+              id: packaging
               run: |
                   npm run electron-pack
                   
