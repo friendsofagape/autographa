@@ -50,7 +50,7 @@ class StoreContextProvider extends Component {
     if (this.state.onselect > 1 && AutographaStore.isRecording === false) {
       this.setState({ onselect: AutographaStore.vId - 1 });
       AutographaStore.vId = AutographaStore.vId - 1;
-      this.state.recVerse.map((value, index) => {
+      this.state.recVerse.forEach((value, index) => {
         if (value.toString() === AutographaStore.vId.toString()) {
           AutographaStore.isWarning = true;
           AutographaStore.currentSession = false;
@@ -89,7 +89,7 @@ class StoreContextProvider extends Component {
       this.setState({ onselect: AutographaStore.vId + 1 });
       this.resetTimer();
       AutographaStore.vId = AutographaStore.vId + 1;
-      this.state.recVerse.map((value, index) => {
+      this.state.recVerse.forEach((value, index) => {
         if (value.toString() === AutographaStore.vId.toString()) {
           AutographaStore.isWarning = true;
           AutographaStore.currentSession = false;
@@ -153,7 +153,7 @@ class StoreContextProvider extends Component {
         let FindIndexofverse = this.state.recVerseTime.findIndex(
           (verse) => verse.verse === this.state.onselect
         );
-        this.state.recVerseTime.map((val, index) => {
+        this.state.recVerseTime.forEach((val, index) => {
           if (FindIndexofverse === index) {
             previousSeconds = val.totaltime;
           }

@@ -192,7 +192,7 @@ function BottomBar(props) {
       }).then((willDelete) => {
         if (willDelete) {
           recVerse.splice(recVerse.indexOf(onselect), 1);
-          recVerseTime.map((value, index) => {
+          recVerseTime.forEach((value, index) => {
             if (value.verse === onselect) {
               recVerseTime.splice(index, 1);
               reduceTimer(value.totaltime);

@@ -28,7 +28,7 @@ export default class concatAudio {
       this._sampleRate * this._maxDuration(buffers),
       this._sampleRate
     );
-    buffers.map((buffer) => {
+    buffers.forEach((buffer) => {
       if (buffer.getChannelData(0) !== undefined) {
         for (let i = buffer.getChannelData(0).length - 1; i >= 0; i--) {
           output.getChannelData(0)[i] += buffer.getChannelData(0)[i];
@@ -45,7 +45,7 @@ export default class concatAudio {
         this._sampleRate
       ),
       offset = 0;
-    buffers.map((buffer) => {
+    buffers.forEach((buffer) => {
       output.getChannelData(0).set(buffer.getChannelData(0), offset);
       offset += buffer.length;
     });

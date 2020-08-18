@@ -109,7 +109,7 @@ const ImportReport = (props) => {
     let preValue = undefined;
     let book = "";
     let chapters = [];
-    warningFiles.map((value) => {
+    warningFiles.forEach((value) => {
       if (value[0] !== preValue) {
         if (value[0] !== preValue && preValue !== undefined) {
           const obj = { filename: book, chapter: chapters };
@@ -138,7 +138,7 @@ const ImportReport = (props) => {
     // }${date.getFullYear()}.log`;
     const errorFiles = mobx.toJS(AutographaStore.errorFile);
     let objErrArray = [];
-    errorFiles.map((value) => {
+    errorFiles.forEach((value) => {
       // fs.appendFile(errorpath, value + "\n", (value) => {
       //   if (value) {
       //   } else {
