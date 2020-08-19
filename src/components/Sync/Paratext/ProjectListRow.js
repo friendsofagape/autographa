@@ -77,7 +77,7 @@ const ProjectListRow = (props) => {
         props.project.projid[0]
       );
       booksList = booksList
-        .map((book) => {
+        .forEach((book) => {
           if (booksCodes.includes(book.id)) {
             return book.id;
           }

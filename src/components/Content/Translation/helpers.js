@@ -47,7 +47,7 @@ export const fetchAudio = () => {
   let recordedVerse = mobx.toJS(AutographaStore.recVerse);
   let BookName = constants.booksList[parseInt(bookId, 10) - 1];
   if (AutographaStore.isPlaying === true) {
-    recordedVerse.map((versenum, index) => {
+    recordedVerse.forEach((versenum, index) => {
       if (versenum === AutographaStore.vId) {
         // eslint-disable-next-line react-hooks/exhaustive-deps
         newfilepath = path.join(

@@ -146,7 +146,7 @@ const TranslationPanel = (props) => {
                         ) &&
                           mobx
                             .toJS(AutographaStore.recVerse)
-                            .map((recVerse, recIndex) => {
+                            .forEach((recVerse, recIndex) => {
                               if (recVerse - 1 === index)
                                 return (
                                   <ListItemIcon

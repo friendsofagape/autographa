@@ -2,7 +2,7 @@ export const FormatNumber = (arr) => {
   let result = ""; // track start and end
   let end = arr[0];
   let start = arr[0];
-  arr.map((res, i) => {
+  arr.forEach((res, i) => {
     if (arr[i + 1] === arr[i + 1 - 1] + 1) {
       end = arr[i + 1];
     } else {

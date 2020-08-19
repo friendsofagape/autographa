@@ -34,7 +34,7 @@ module.exports = {
 					<div class="newspaper">`;
       var contentFlag = false;
       db.get(currentBook._id).then(function (doc) {
-        doc.chapters.map((obj, i) => {
+        doc.chapters.forEach((obj, i) => {
           var count = 0;
           var verseNumber;
           var verses;
@@ -120,7 +120,7 @@ module.exports = {
 	                <div class="newspaper">`;
       let contentFlag = false;
       db.get(currentBook._id).then(function (doc) {
-        doc.chapters.map((obj, i) => {
+        doc.chapters.forEach((obj, i) => {
           var count = 0;
           var verseNumber;
           var verses;
