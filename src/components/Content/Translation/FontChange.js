@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import AutographaStore from "../../AutographaStore";
@@ -8,20 +8,23 @@ const fontList = require("font-list");
 export default function FontSelect() {
   const [font, setFont] = React.useState();
   const [value, setValue] = React.useState("");
+  const didMountRef = useRef(false);
   let filtered = [];
-
   useEffect(() => {
-    fontList
-      .getFonts()
-      .then((fonts) => {
-        fonts.forEach((element) => {
-          filtered.push(element.replace(/\"/gm, ""));
+    if (didMountRef.current) {
+      fontList
+        .getFonts()
+        .then((fonts) => {
+          fonts.forEach((element) => {
+            filtered.push(element.replace(/"/gm, ""));
+          });
+          setFont(filtered);
+          didMountRef.current = false;
+        })
+        .catch((err) => {
+          console.log(err);
         });
-        setFont(filtered);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    } else didMountRef.current = true;
   }, [filtered]);
 
   return (
