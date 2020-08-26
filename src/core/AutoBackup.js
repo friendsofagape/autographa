@@ -1,6 +1,6 @@
 import AutographaStore from "../components/AutographaStore";
 const path = require("path");
-const fs = require("fs");
+const fs = window.fs;
 const constants = require("./constants");
 const db = require(`${__dirname}/./data-provider`).targetDb();
 

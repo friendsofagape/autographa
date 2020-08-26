@@ -27,8 +27,9 @@ import {
 } from "@material-ui/core";
 // import AudioAnalyser from "../Visualization/AudioAnalyser";
 import { FormattedMessage } from "react-intl";
-const { app } = require("electron").remote;
-const fs = require("fs");
+const remote = window.remote;
+const app = remote.app;
+const fs = window.fs;
 const constants = require("../../../core/constants");
 const path = require("path");
 const formattedSeconds = (sec) =>

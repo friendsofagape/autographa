@@ -11,7 +11,6 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import { Button, TextField } from "@material-ui/core";
-import { BrowserWindow } from "electron";
 import * as usfm_import from "../../../core/usfm_import";
 import FolderIcon from "@material-ui/icons/Folder";
 import AutographaStore from "../../AutographaStore";
@@ -20,7 +19,9 @@ import Loader from "../../Loader/Loader";
 import { SettingContext } from "../../../contexts/SettingContext";
 import { useContext } from "react";
 import { SetupContext } from "../../../contexts/SetupContext";
-const { dialog } = require("electron").remote;
+const BrowserWindow = window.BrowserWindow;
+const remote = window.remote;
+const dialog = remote.dialog;
 const refDb = require(`${__dirname}/../../../core/data-provider`).referenceDb();
 
 const useStyles = makeStyles((theme) => ({

@@ -1,7 +1,8 @@
 import React, { createContext, useEffect, useCallback } from "react";
 import AutographaStore from "../components/AutographaStore";
 import constants from "../core/constants";
-const session = require("electron").remote.session;
+const remote = window.remote;
+const session = remote.session;
 const refDb = require("../core/data-provider").referenceDb();
 const db = require(`${__dirname}/../core/data-provider`).targetDb();
 const Constant = require("../core/constants");

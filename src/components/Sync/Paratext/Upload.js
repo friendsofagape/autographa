@@ -8,8 +8,9 @@ const path = require("path");
 const db = require(`${__dirname}/../../../core/data-provider`).targetDb();
 const booksCodes = require(`${__dirname}/../../../core/constants.js`)
   .bookCodeList;
-const { app } = require("electron").remote;
-const fs = require("fs");
+const remote = window.remote;
+const app = remote.app;
+const fs = window.fs;
 
 const Upload = (props) => {
   const [showLoader, setShowLoader] = React.useState(false);

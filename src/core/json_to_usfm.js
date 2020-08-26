@@ -1,5 +1,5 @@
 const path = require("path");
-const fs = require("fs");
+const fs = window.fs;
 const constants = require("../core/constants");
 const db = require(`${__dirname}/data-provider`).targetDb();
 

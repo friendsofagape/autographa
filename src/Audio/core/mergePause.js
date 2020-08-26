@@ -6,8 +6,9 @@ import ConcatAudio from "./ConcatAudio";
 import AutographaStore from "../../components/AutographaStore";
 let audio = new ConcatAudio();
 const constants = require("../../core/constants");
-const { app } = require("electron").remote;
-const fs = require("fs");
+const remote = window.remote;
+const app = remote.app;
+const fs = window.fs;
 const path = require("path");
 
 const MergePause = () => {

@@ -14,8 +14,9 @@ import Timer from "../Timer";
 import { FormattedMessage } from "react-intl";
 import * as mobx from "mobx";
 const constants = require("../../../core/constants");
-const { app } = require("electron").remote;
-const fs = require("fs");
+const remote = window.remote;
+const app = remote.app;
+const fs = window.fs;
 const path = require("path");
 
 const useStyles = makeStyles((theme) => ({

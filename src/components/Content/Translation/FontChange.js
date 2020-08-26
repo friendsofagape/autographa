@@ -3,7 +3,7 @@ import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import AutographaStore from "../../AutographaStore";
 import { FormattedMessage } from "react-intl";
-const fontList = require("font-list");
+const fontList = window.fontList;
 
 export default function FontSelect() {
   const [font, setFont] = React.useState();

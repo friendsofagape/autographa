@@ -1,5 +1,6 @@
-const { app } = require("electron").remote;
-const fs = require("fs");
+const remote = window.remote;
+const app = remote.app;
+const fs = window.fs;
 const path = require("path");
 module.exports = {
   recSave: async function (book, file, chapter, versenum, recVerse, rectime) {

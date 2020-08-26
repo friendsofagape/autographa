@@ -13,11 +13,12 @@ import SaveIcon from "@material-ui/icons/Save";
 import List from "@material-ui/core/List";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import { Button, TextField } from "@material-ui/core";
-import { BrowserWindow } from "electron";
 import { FormattedMessage } from "react-intl";
 import { SettingContext } from "../../../contexts/SettingContext";
 import AutographaStore from "../../AutographaStore";
-const { dialog } = require("electron").remote;
+const BrowserWindow = window.BrowserWindow;
+const remote = window.remote;
+const dialog = remote.dialog;
 
 const useStyles = makeStyles((theme) => ({
   root: {

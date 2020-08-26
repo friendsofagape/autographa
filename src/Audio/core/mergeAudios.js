@@ -1,8 +1,9 @@
 import ConcatAudio from "./ConcatAudio";
 import swal from "sweetalert";
 import AutographaStore from "../../components/AutographaStore";
-const { app } = require("electron").remote;
-const fs = require("fs");
+const remote = window.remote;
+const app = remote.app;
+const fs = window.fs;
 const path = require("path");
 let audio = new ConcatAudio();
 const db = require(`${__dirname}/../../core/data-provider`).targetDb();

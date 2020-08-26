@@ -1,14 +1,14 @@
 import AutographaStore from "../components/AutographaStore";
-import fs from "fs";
+import toJson from "./usfm_to_json";
 import path from "path";
 import { promisify } from "util";
+const fs = window.fs;
 const readdir = promisify(fs.readdir);
-const bibUtil_to_json = require(`${__dirname}/../core/usfm_to_json`);
 
 export const getStuffAsync = (param) =>
   new Promise(function (resolve, reject) {
     console.log(param);
-    bibUtil_to_json.toJson(param, (err, data) => {
+    toJson(param, (err, data) => {
       if (err !== null) reject(err);
       else {
         console.log(data);
