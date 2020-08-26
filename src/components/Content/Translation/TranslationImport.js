@@ -7,13 +7,13 @@ import {
 } from "@material-ui/core";
 import FolderIcon from "@material-ui/icons/Folder";
 import * as usfm_import from "../../../core/usfm_import";
-import { BrowserWindow } from "electron";
 import ImportReport from "../../Reports/ImportReport";
 import AutographaStore from "../../AutographaStore";
 import { FormattedMessage } from "react-intl";
 import { SettingContext } from "../../../contexts/SettingContext";
-
-const { dialog } = require("electron").remote;
+const BrowserWindow = window.BrowserWindow;
+const remote = window.remote;
+const dialog = remote.dialog;
 
 const useStyles = makeStyles((theme) => ({
   root: {

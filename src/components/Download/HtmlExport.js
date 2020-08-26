@@ -19,7 +19,7 @@ const HtmlExport = (props) => {
               parseInt(AutographaStore.bookId, 10) - 1
             ]
           : constants.booksList[parseInt(AutographaStore.bookId, 10) - 1];
-        exportHtml.exportHtml(
+        exportHtml(
           id,
           book,
           db,

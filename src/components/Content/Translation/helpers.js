@@ -1,9 +1,10 @@
 import ConcatAudio from "../../../Audio/core/ConcatAudio";
 import AutographaStore from "../../AutographaStore";
 import * as mobx from "mobx";
-const { app } = require("electron").remote;
+const remote = window.remote;
+const app = remote.app;
 const path = require("path");
-const fs = require("fs");
+const fs = window.fs;
 const constants = require("../../../core/constants");
 let audio = new ConcatAudio();
 
