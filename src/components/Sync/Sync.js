@@ -13,6 +13,7 @@ import SignIn from "./SignIn";
 import AutographaStore from "../AutographaStore";
 import GetProjects from "./GetProjects";
 import { Observer } from "mobx-react";
+import Gitea from "./Gitea/Gitea";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -143,7 +144,8 @@ const Sync = () => {
                     />
                   </TabPanel>
                   <TabPanel value={tabValue} index={1}>
-                    <SignIn syncProvider={"gitea"} />
+                    <Gitea />
+                    {/* <SignIn syncProvider={"gitea"} /> */}
                   </TabPanel>
                   {/* <SignIn syncProvider={tabValue === 0 ? "paratext" : "gitea"} /> */}
                   {callList === true ? (
