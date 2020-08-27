@@ -38,7 +38,7 @@ export const toUsfm = async (book, stage, targetLangDoc) => {
   return writeUsfm(usfmDoc, filePath);
 };
 
-async function toUsfmDoc(book, returnNullForEmptyBook = false) {
+export const toUsfmDoc = async (book, returnNullForEmptyBook = false) => {
   try {
     const usfmContent = [];
     var isEmpty = true;
@@ -81,7 +81,7 @@ async function toUsfmDoc(book, returnNullForEmptyBook = false) {
   } catch (err) {
     console.log(err);
   }
-}
+};
 
 function addMtag(verses) {
   let newVerse = verses;
