@@ -34,6 +34,14 @@ jobs:
               
             - name: set max memory allocation
               run: export NODE_OPTIONS=–max_old_space_size=4096
+            
+            - name: Read version and commit sha
+              run: |
+                echo "::set-env name=HASH::$(echo $GITHUB_SHA | cut -c1-7)"
+                echo "::set-env name=APP_VERSION::$(node -p -e "require('./package.json').version")"
+                
+            - name: Set artifact name
+              run: echo "::set-env name=ARTIFACT_NAME::$(echo "$APP_NAME-linux-x64-$APP_VERSION-$HASH.deb")"
 
             - name: package
               id: package
@@ -46,7 +54,7 @@ jobs:
             - name: Upload artifacts
               uses: actions/upload-artifact@v1
               with:
-                  name: ${{ matrix.os }}
+                  name: ${{ env.ARTIFACT_NAME }}
                   path: dist
 
     build-windows:
@@ -75,6 +83,14 @@ jobs:
             
             - name: set max memory allocation
               run: set NODE_OPTIONS=–max_old_space_size=4096
+              
+            - name: Read version and commit sha
+              run:
+                echo "::set-env name=HASH::$(node -p -e "'${{ github.sha }}'.substring(0, 7)")"
+                echo "::set-env name=APP_VERSION::$(node -p -e "require('./package.json').version")"
+                
+            - name: Set x64 artifact name
+              run: echo "::set-env name=ARTIFACT_X64::$(echo "${{ env.APP_NAME }}-win-x64-${{ env.APP_VERSION }}-${{ env.HASH }}.exe")"
 
             - name: packaging
               id: packaging
@@ -91,8 +107,8 @@ jobs:
               run: |
                   mkdir artifacts
                   mv dist/*.exe artifacts
-            - name: Upload artifacts
+            - name: Upload artifacts ${{ env.ARTIFACT_X64 }}
               uses: actions/upload-artifact@v1
               with:
-                  name: ${{matrix.os}}
+                  name: ${{ env.ARTIFACT_X64 }}
                   path: artifacts
