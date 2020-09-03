@@ -1,6 +1,6 @@
 {
 	"name": "autographa",
-	"version": "0.1.0",
+	"version": "2.0.0",
 	"author": "Friends of Agape <mathew.joel@protonmail.com>",
 	"license": "MIT",
 	"main": "public/electron.js",
@@ -10,38 +10,21 @@
 		"url": "https://github.com/friendsofagape/autographa.git"
 	},
 	"dependencies": {
-		"@bit/unfoldingword.resources.viewer": "^0.1.5",
-		"@craco/craco": "5.6.4",
 		"@material-ui/core": "^4.9.12",
 		"@material-ui/icons": "^4.9.1",
-		"@material-ui/lab": "^4.0.0-alpha.52",
 		"@testing-library/jest-dom": "^4.2.4",
 		"@testing-library/react": "^9.5.0",
 		"@testing-library/user-event": "^7.2.1",
-		"axios": "^0.19.2",
 		"clsx": "1.1.1",
-		"diff-match-patch": "^1.0.5",
 		"electron-updater": "^4.3.4",
-		"font-list": "^1.2.11",
-		"gitea-react-toolkit": "^1.1.1",
-		"leveldown": "5.6.0",
 		"markdown-translatable": "^1.0.3",
 		"mobx": "5.15.4",
 		"mobx-react": "6.2.1",
-		"pouchdb": "7.2.1",
-		"pouchdb-quick-search": "^1.3.0",
 		"prop-types": "15.7.2",
 		"react": "^16.13.1",
-		"react-detect-offline": "2.4.0",
 		"react-dom": "^16.13.1",
-		"react-h5-audio-player": "1.2.1",
-		"react-intl": "^4.7.6",
-		"react-mic-plus": "1.3.1",
 		"react-scripts": "3.4.1",
-		"rtl-detect": "1.0.0",
-		"string-punctuation-tokenizer": "^2.0.2",
-		"sweetalert": "2.1.2",
-		"xml2js": "^0.4.23"
+		"sweetalert": "2.1.2"
 	},
 	"build": {
 		"extends": "react-cra",
@@ -54,8 +37,7 @@
 			"build/**/*.*",
 			"public/**/*.*",
 			"node_modules/**/*",
-			"src/**/*.*",
-			"patterns.prop"
+			"src/**/*.*"
 		],
 		"directories": {
 			"buildResources": "resources"
@@ -119,7 +101,6 @@
 	"devDependencies": {
 		"@rescripts/cli": "0.0.10",
 		"@rescripts/rescript-env": "0.0.12",
-		"babel-plugin-react-intl": "^3.0.1",
 		"check-prop-types": "^1.1.2",
 		"concurrently": "^5.1.0",
 		"cross-env": "^7.0.2",

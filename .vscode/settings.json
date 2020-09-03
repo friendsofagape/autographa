@@ -34,5 +34,6 @@
 	"editor.codeActionsOnSave": {
 		"source.fixAll.eslint": true
 	},
-	"eslint.workingDirectories": []
+	"eslint.workingDirectories": [],
+	"editor.fontSize": 20
 }
