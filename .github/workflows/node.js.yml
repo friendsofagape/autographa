@@ -34,11 +34,6 @@ jobs:
               
             - name: set max memory allocation
               run: export NODE_OPTIONS=–max_old_space_size=4096
-            
-            - name: build
-              id: build
-              run: |
-                  npm run build
 
             - name: package
               id: package
@@ -80,11 +75,6 @@ jobs:
             
             - name: set max memory allocation
               run: set NODE_OPTIONS=–max_old_space_size=4096
-            
-            - name: build
-              id: build
-              run: |
-                  npm run build
 
             - name: packaging
               id: packaging
