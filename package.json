@@ -73,7 +73,7 @@
 		"lint": "eslint ./src",
 		"lint:fix": "eslint ./src --fix",
 		"build:react": "react-scripts build",
-		"build:electron": "cross-env NODE_ENV=production electron-builder",
+		"build:electron": "cross-env NODE_ENV=production electron-builder -p never",
 		"build": "npm run build:react && npm run build:electron",
 		"preelectron-pack": "npm run build",
 		"maxmemory-allocation": "NODE_OPTIONS=--max_old_space_size=4096",
