@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   Paper,
@@ -11,6 +11,9 @@ import {
   FormControl,
   InputLabel,
   InputAdornment,
+  Select,
+  MenuItem,
+  Input,
 } from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import clsx from "clsx";
@@ -19,6 +22,9 @@ import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import Avatar from "@material-ui/core/Avatar";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
+import { FormattedMessage } from "react-intl";
+import * as localForage from "localforage";
+import AutographaStore from "../AutographaStore";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -60,12 +66,6 @@ const region = [
   { id: 3, place: "New York, United States" },
   { id: 4, place: "Morocco, North Africa" },
 ];
-const Language = [
-  { id: 1, lang: "English" },
-  { id: 2, lang: "Hindi" },
-  { id: 3, lang: "Spanish" },
-  { id: 4, lang: "Arabic" },
-];
 
 const Profile = () => {
   const classes = useStyles();
@@ -73,6 +73,8 @@ const Profile = () => {
     password: "",
     showPassword: false,
   });
+  const [appLang, setAppLang] = React.useState(AutographaStore.appLang);
+  const [avatarPathImport, setavatarPathImport] = React.useState("");
 
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
@@ -86,6 +88,40 @@ const Profile = () => {
     event.preventDefault();
   };
 
+  const changeLangauge = (event, index, value) => {
+    setAppLang(event.target.value);
+    localForage.setItem("applang", event.target.value, function (err) {
+      console.log("App Language Changed");
+    });
+  };
+
+  const openFileDialogAvatarData = ({ target }) => {
+    const fileReader = new FileReader();
+    fileReader.readAsDataURL(target.files[0]);
+    fileReader.onload = async (e) => {
+      localForage.setItem("avatarPath", e.target.result, function (err) {
+        localForage.getItem("avatarPath", function (err, value) {
+          console.log(value);
+          setavatarPathImport(value);
+        });
+      });
+    };
+  };
+
+  const removeAvatar = () => {
+    localForage.setItem("avatarPath", "", function (err) {
+      localForage.getItem("avatarPath", function (err, value) {
+        setavatarPathImport(value);
+      });
+    });
+  };
+
+  useEffect(() => {
+    localForage.getItem("avatarPath", function (err, value) {
+      setavatarPathImport(value);
+    });
+  }, []);
+
   return (
     <>
       <Paper>
@@ -93,15 +129,21 @@ const Profile = () => {
           <Grid item xs={2}></Grid>
           <Grid item xs>
             <Avatar
-              src={require("../../static/images/avatar/1.jpg")}
-              alt="My Avatar"
+              src={avatarPathImport}
+              alt="Remy Sharp"
               className={classes.avatarlarge}
-            />
+            ></Avatar>
             <div className={classes.avataredits}>
-              <IconButton aria-label="delete">
+              <IconButton variant="contained" component="label">
                 <EditIcon />
+                <Input
+                  type="file"
+                  accept="image/*"
+                  style={{ display: "none" }}
+                  onChange={openFileDialogAvatarData}
+                />
               </IconButton>
-              <IconButton aria-label="delete">
+              <IconButton aria-label="delete" onClick={removeAvatar}>
                 <DeleteForeverIcon />
               </IconButton>
             </div>
@@ -118,25 +160,37 @@ const Profile = () => {
                 color="inherit"
               >
                 <Box fontWeight={600} m={1}>
-                  Personal Information
+                  <FormattedMessage id="label-personal-information" />
                 </Box>
               </Typography>
-              <TextField
-                className={classes.textfieldsmall}
-                label="First Name"
-                variant="outlined"
-              />
-              <TextField
-                className={classes.textfieldsmall}
-                label="Last Name"
-                variant="outlined"
-              />
+              <FormattedMessage id="label-first-name">
+                {(message) => (
+                  <TextField
+                    className={classes.textfieldsmall}
+                    label={message}
+                    variant="outlined"
+                  />
+                )}
+              </FormattedMessage>
+              <FormattedMessage id="label-last-name">
+                {(message) => (
+                  <TextField
+                    className={classes.textfieldsmall}
+                    label={message}
+                    variant="outlined"
+                  />
+                )}
+              </FormattedMessage>
               <div>
-                <TextField
-                  className={classes.textfieldlong}
-                  label="Email"
-                  variant="outlined"
-                />
+                <FormattedMessage id="label-email">
+                  {(message) => (
+                    <TextField
+                      className={classes.textfieldlong}
+                      label={message}
+                      variant="outlined"
+                    />
+                  )}
+                </FormattedMessage>
               </div>
               <div>
                 <FormControl
@@ -148,11 +202,15 @@ const Profile = () => {
                     options={region}
                     getOptionLabel={(option) => option.place}
                     renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label="Region"
-                        variant="outlined"
-                      />
+                      <FormattedMessage id="label-region">
+                        {(message) => (
+                          <TextField
+                            {...params}
+                            label={message}
+                            variant="outlined"
+                          />
+                        )}
+                      </FormattedMessage>
                     )}
                   />
                 </FormControl>
@@ -166,7 +224,7 @@ const Profile = () => {
                   variant="outlined"
                 >
                   <InputLabel htmlFor="outlined-adornment-password">
-                    Password
+                    <FormattedMessage id="label-password" />
                   </InputLabel>
                   <OutlinedInput
                     id="outlined-adornment-password"
@@ -199,7 +257,7 @@ const Profile = () => {
                 color="inherit"
               >
                 <Box fontWeight={600} m={2}>
-                  App Language
+                  <FormattedMessage id="label-language" />
                 </Box>
               </Typography>
               <div>
@@ -207,18 +265,18 @@ const Profile = () => {
                   variant="outlined"
                   className={classes.textfieldlong}
                 >
-                  <Autocomplete
-                    id="region"
-                    options={Language}
-                    getOptionLabel={(option) => option.lang}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label="Language"
-                        variant="outlined"
-                      />
-                    )}
-                  />
+                  <Select
+                    className={classes.formControl}
+                    id="localeList"
+                    value={appLang}
+                    onChange={changeLangauge}
+                  >
+                    {/* <MenuItem value={"ar"}>Arabic</MenuItem> */}
+                    <MenuItem value={"en"}>English</MenuItem>
+                    <MenuItem value={"hi"}>Hindi</MenuItem>
+                    {/* <MenuItem value={"pt"}>Portuguese</MenuItem>
+                    <MenuItem value={"es"}>Spanish</MenuItem> */}
+                  </Select>
                 </FormControl>
               </div>
             </form>

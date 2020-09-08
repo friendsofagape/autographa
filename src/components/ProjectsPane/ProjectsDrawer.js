@@ -14,7 +14,8 @@ import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
+import DescriptionIcon from "@material-ui/icons/Description";
+import { FormattedMessage } from "react-intl";
 import Profile from "./Profile";
 import { Box, Button, Avatar } from "@material-ui/core";
 
@@ -142,12 +143,12 @@ export default function ProjectsDrawer() {
           </IconButton>
           <Typography className={classes.title} variant="h5" color="inherit">
             <Box fontWeight={600} m={1}>
-              {title}
+              <FormattedMessage id={`label-${title}`} />
             </Box>
           </Typography>
           <Button size="small" variant="contained" color="primary">
             <Box fontWeight={600} m={1}>
-              Log out
+              <FormattedMessage id="btn-logout" />
             </Box>
           </Button>
         </Toolbar>
@@ -175,20 +176,26 @@ export default function ProjectsDrawer() {
           <div
             className={classes.avatarplacement}
             style={{
-              backgroundColor: title === "Inbox" ? "#ffffff" : "#212121",
+              backgroundColor: title === "Projects" ? "#ffffff" : "#212121",
             }}
           >
-            <ListItem onClick={() => titlechange("Inbox")} button>
+            <ListItem onClick={() => titlechange("Projects")} button>
               <ListItemIcon>
-                <InboxIcon
+                <DescriptionIcon
                   fontSize="large"
-                  color={title === "Inbox" ? "primary" : "secondary"}
+                  color={title === "Projects" ? "primary" : "secondary"}
                 />
               </ListItemIcon>
-              <ListItemText
-                primary="Inbox"
-                style={{ color: title === "Inbox" ? "#212121" : "#ffffff" }}
-              />
+              <FormattedMessage id="label-Projects">
+                {(message) => (
+                  <ListItemText
+                    primary={message}
+                    style={{
+                      color: title === "Projects" ? "#212121" : "#ffffff",
+                    }}
+                  />
+                )}
+              </FormattedMessage>
             </ListItem>
           </div>
           <div
@@ -209,11 +216,17 @@ export default function ProjectsDrawer() {
                 />
                 {/* <MailIcon fontSize="large" color="secondary" /> */}
               </ListItemIcon>
-              <ListItemText
-                color="inherit"
-                primary="Profile"
-                style={{ color: title === "Profile" ? "#212121" : "#ffffff" }}
-              />
+              <FormattedMessage id="label-Profile">
+                {(message) => (
+                  <ListItemText
+                    color="inherit"
+                    primary={message}
+                    style={{
+                      color: title === "Profile" ? "#212121" : "#ffffff",
+                    }}
+                  />
+                )}
+              </FormattedMessage>
             </ListItem>
           </div>
         </List>

@@ -18,12 +18,14 @@
 		"@testing-library/user-event": "^7.2.1",
 		"clsx": "1.1.1",
 		"electron-updater": "^4.3.4",
+		"localforage": "1.9.0",
 		"markdown-translatable": "^1.0.3",
 		"mobx": "5.15.4",
-		"mobx-react": "6.2.1",
+		"mobx-react": "6.3.0",
 		"prop-types": "15.7.2",
 		"react": "^16.13.1",
 		"react-dom": "^16.13.1",
+		"react-intl": "^4.7.6",
 		"react-scripts": "3.4.1",
 		"sweetalert": "2.1.2"
 	},
@@ -101,6 +103,7 @@
 	"devDependencies": {
 		"@rescripts/cli": "0.0.10",
 		"@rescripts/rescript-env": "0.0.12",
+		"babel-plugin-react-intl": "^3.0.1",
 		"check-prop-types": "^1.1.2",
 		"concurrently": "^5.1.0",
 		"cross-env": "^7.0.2",
