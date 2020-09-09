@@ -18,6 +18,7 @@ import DescriptionIcon from "@material-ui/icons/Description";
 import { FormattedMessage } from "react-intl";
 import Profile from "./Profile";
 import { Box, Button, Avatar } from "@material-ui/core";
+import Projects from "./Projects";
 
 const drawerWidth = 240;
 
@@ -233,7 +234,7 @@ export default function ProjectsDrawer() {
       </Drawer>
       <main className={classes.content}>
         <div className={classes.toolbar} />
-        <Profile />
+        {title === "Profile" ? <Profile /> : <Projects />}
       </main>
     </div>
   );
