@@ -17,10 +17,11 @@ import Typography from "@material-ui/core/Typography";
 // import Paper from "@material-ui/core/Paper";
 import StarBorderIcon from "@material-ui/icons/StarBorder";
 import StarIcon from "@material-ui/icons/Star";
-// import IconButton from '@material-ui/core/IconButton';
+import { IconButton } from "@material-ui/core";
+import EditIcon from '@material-ui/icons/Edit';
 // import Tooltip from '@material-ui/core/Tooltip';
-// import FormControlLabel from '@material-ui/core/FormControlLabel';
-// import DeleteIcon from '@material-ui/icons/Delete';
+import DeleteIcon from '@material-ui/icons/Delete';
+import InfoIcon from '@material-ui/icons/Info';
 
 function createData(name, language, date, view) {
   return { name, language, date, view };
@@ -236,6 +237,9 @@ const useStyles = makeStyles((theme) => ({
       },
     },
   },
+  container: {
+    maxHeight: 400
+  }
 }));
 
 export default function Projects() {
@@ -244,15 +248,17 @@ export default function Projects() {
   const [orderUnstarred, setOrderUnstarred] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("name");
   const [orderByUnstarred, setOrderByUnstarred] = React.useState("name");
-  //   const [selected, setSelected] = React.useState([]);
+    const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [pageUnstarred, setPageUnstarred] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState(1000);
   const [rowsPerPageUnstarred, setRowsPerPageUnstarred] = React.useState(5);
   const [query, setQuery] = React.useState("");
   const [starredrow, setStarredrow] = React.useState(starrted);
   const [unstarredrow, setUnStarredrow] = React.useState(unstarrted);
   const [defaultrownum, setdefaultrownum] = React.useState(5);
+  const [temparray, settemparray] = React.useState(null)
+  const [ active, setactive ] = React.useState("")
   
 
   const handleRequestSort = (event, property) => {
@@ -276,53 +282,19 @@ export default function Projects() {
   //   setSelected([]);
   // };
 
-  // const handleClick = (event, name) => {
-  //   const selectedIndex = selected.indexOf(name);
-  //   let newSelected = [];
-
-  //   if (selectedIndex === -1) {
-  //     newSelected = newSelected.concat(selected, name);
-  //   } else if (selectedIndex === 0) {
-  //     newSelected = newSelected.concat(selected.slice(1));
-  //   } else if (selectedIndex === selected.length - 1) {
-  //     newSelected = newSelected.concat(selected.slice(0, -1));
-  //   } else if (selectedIndex > 0) {
-  //     newSelected = newSelected.concat(
-  //       selected.slice(0, selectedIndex),
-  //       selected.slice(selectedIndex + 1),
-  //     );
-  //   }
-  //   setSelected(newSelected);
-  // };
+  const handleClickStarred = (event, name, property) => {
+    property === "starred" ? setactive("starred") : setactive("unstarred")
+    let selectedIndex = property==="starred" ? starredrow.findIndex(x => x.name === name) : unstarredrow.findIndex(x => x.name === name)
+    const copy = property==="starred" ? starredrow.splice(selectedIndex, 1) : unstarredrow.splice(selectedIndex, 1)
+    settemparray(copy[0])
+  };
 
   useEffect(() => {
-    (query)? setRowsPerPage(parseInt(25, 10)) : setRowsPerPage(defaultrownum)
-  },[query])
-
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-    setdefaultrownum(parseInt(event.target.value, 10))
-  };
-
-  const handleChangePageUnstarred = (event, newPage) => {
-    setPageUnstarred(newPage);
-  };
-
-  const handleChangeRowsPerPageUnstarred = (event) => {
-    setRowsPerPageUnstarred(parseInt(event.target.value, 10));
-    setPageUnstarred(0);
-  };
-
-  // const handleChangeDense = (event) => {
-  //   setDense(event.target.checked);
-  // };
-
-  // const isSelected = (name) => selected.indexOf(name) !== -1;
+    console.log(temparray)
+    if(temparray)
+    active=== "starred" ? unstarredrow.push(temparray) : starredrow.push(temparray)
+    handleRequestSortUnstarred("asc", "view")
+  },[temparray, active])
 
   return (
     <div className={classes.root}>
@@ -345,8 +317,9 @@ export default function Projects() {
         </Toolbar>
         <div>
         <EnhancedTableToolbar title={"Starred Projects"} />
-        <TableContainer>
+          <TableContainer className={classes.container}>
           <Table
+            stickyHeader
             className={classes.table}
             aria-labelledby="tableTitle"
             aria-label="enhanced table"
@@ -359,25 +332,25 @@ export default function Projects() {
               onRequestSort={handleRequestSort}
               rowCount={starredrow.length}
             />
+            {starredrow.length!==0 ? (
             <TableBody>
-              {console.log(starredrow),
-                stableSort(
+              {stableSort(
                   query ? starredrow.filter(x =>
                     (x.name).toLowerCase()
                       .includes(query)
                   ) : starredrow, getComparator(order, orderBy), orderBy, order)
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
                   return (
                     <TableRow
                       hover
-                      // onClick={(event) => handleClick(event, row.name)}
                       role="checkbox"
                       tabIndex={-1}
                       key={row.name}
                     >
                       <TableCell padding="checkbox">
+                      <IconButton onClick={(event) => handleClickStarred(event, row.name, "starred")} >
                       <StarIcon />
+                      </IconButton>
                       </TableCell>
                       <TableCell component="th" scope="row" padding="none">
                         {row.name}
@@ -385,13 +358,28 @@ export default function Projects() {
                       <TableCell >{row.language}</TableCell>
                       <TableCell align="right">{row.date}</TableCell>
                       <TableCell align="right">{row.view}</TableCell>
+                      <TableCell align="right">
+                      <IconButton>
+                      <EditIcon />
+                      </IconButton>
+                      <IconButton>
+                      <DeleteIcon />
+                      </IconButton>
+                      <IconButton>
+                      <InfoIcon />
+                      </IconButton>
+                      </TableCell>
                     </TableRow>
                   );
                 })}
             </TableBody>
+            ) : 
+        (<div>No data to display</div> ) }
           </Table>
         </TableContainer>
-        <TablePagination
+        
+        
+        {/* <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
           count={(starredrow.length)}
@@ -399,15 +387,16 @@ export default function Projects() {
           page={page}
           onChangePage={handleChangePage}
           onChangeRowsPerPage={handleChangeRowsPerPage}
-        />
+        /> */}
         </div>
         <div>
         <EnhancedTableToolbar title={"Everythings else"} />
-        <TableContainer>
+        <TableContainer className={classes.container}>
           <Table
             className={classes.table}
             aria-labelledby="tableTitle"
             aria-label="enhanced table"
+            stickyHeader
           >
             <EnhancedTableHead
               classes={classes}
@@ -423,7 +412,6 @@ export default function Projects() {
                     (x.name).toLowerCase()
                       .includes(query)
                   ) : unstarredrow, getComparator(orderUnstarred, orderByUnstarred), orderByUnstarred, orderUnstarred )
-                .slice(pageUnstarred * rowsPerPageUnstarred, pageUnstarred * rowsPerPageUnstarred + rowsPerPageUnstarred)
                 .map((row, index) => {
                   return (
                     <TableRow
@@ -434,7 +422,9 @@ export default function Projects() {
                       key={row.name}
                     >
                       <TableCell padding="checkbox">
+                      <IconButton onClick={(event) => handleClickStarred(event, row.name, "unstarred")} >
                       <StarBorderIcon />
+                      </IconButton>
                       </TableCell>
                       <TableCell component="th" scope="row" padding="none">
                         {row.name}
@@ -442,13 +432,24 @@ export default function Projects() {
                       <TableCell >{row.language}</TableCell>
                       <TableCell align="right">{row.date}</TableCell>
                       <TableCell align="right">{row.view}</TableCell>
+                      <TableCell align="right">
+                      <IconButton>
+                      <EditIcon />
+                      </IconButton>
+                      <IconButton>
+                      <DeleteIcon />
+                      </IconButton>
+                      <IconButton>
+                      <InfoIcon />
+                      </IconButton>
+                      </TableCell>
                     </TableRow>
                   );
                 })}
             </TableBody>
           </Table>
         </TableContainer>
-        <TablePagination
+        {/* <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
           count={unstarredrow.length}
@@ -456,7 +457,7 @@ export default function Projects() {
           page={pageUnstarred}
           onChangePage={handleChangePageUnstarred}
           onChangeRowsPerPage={handleChangeRowsPerPageUnstarred}
-        />
+        /> */}
         </div>
       {/* </Paper> */}
     </div>
