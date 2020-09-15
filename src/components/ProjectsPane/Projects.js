@@ -29,18 +29,63 @@ function createData(name, language, date, view) {
 }
 
 const starrted = [
-  createData("Project Arabic", "Arabic(arb)", "22 Apr 2020", "2020-09-15 14:33:26"),
-  createData("Hindi New Testment", "Hindi(hin)", "21 may 2020", "2020-09-13 14:33:26"),
-  createData("English NIV", "English(eng)", "2 May 2020", "2019-09-15 14:33:26"),
-  createData("Kannada Revised", "kannada(knd)", "31 Jun 2021", "2020-01-15 14:33:26"),
-  createData("new Malayalam", "Malayalam(mal)", "04 Jul 2020", "2020-03-15 6:33:26"),
-  createData("New Testment Oriya", "Oriya(or)", "23 Feb 2010", "2018-04-21 8:33:26"),
-  createData("English Old", "English(eng)", "17 Dec 2029", "2018-04-21 8:33:26"),
+  createData(
+    "Project Arabic",
+    "Arabic(arb)",
+    "22 Apr 2020",
+    "2020-09-15 14:33:26"
+  ),
+  createData(
+    "Hindi New Testment",
+    "Hindi(hin)",
+    "21 may 2020",
+    "2020-09-13 14:33:26"
+  ),
+  createData(
+    "English NIV",
+    "English(eng)",
+    "2 May 2020",
+    "2019-09-15 14:33:26"
+  ),
+  createData(
+    "Kannada Revised",
+    "kannada(knd)",
+    "31 Jun 2021",
+    "2020-01-15 14:33:26"
+  ),
+  createData(
+    "new Malayalam",
+    "Malayalam(mal)",
+    "04 Jul 2020",
+    "2020-03-15 6:33:26"
+  ),
+  createData(
+    "New Testment Oriya",
+    "Oriya(or)",
+    "23 Feb 2010",
+    "2018-04-21 8:33:26"
+  ),
+  createData(
+    "English Old",
+    "English(eng)",
+    "17 Dec 2029",
+    "2018-04-21 8:33:26"
+  ),
 ];
 
 const unstarrted = [
-  createData("Project Malayalam", "Malayalam(mal)", "21 Mar 2021", "2020-09-15 14:33:26"),
-  createData("Spanish Project", "Spanish(spa)", "1 Sep 2019", "2020-01-15 14:33:26"),
+  createData(
+    "Project Malayalam",
+    "Malayalam(mal)",
+    "21 Mar 2021",
+    "2020-09-15 14:33:26"
+  ),
+  createData(
+    "Spanish Project",
+    "Spanish(spa)",
+    "1 Sep 2019",
+    "2020-01-15 14:33:26"
+  ),
   createData("Arabic", "Arabic(arb)", "2 Aug 2020", "2020-05-15 14:34:26"),
   createData("Tamil IRV", "Tamil(tml)", "15 Aug 2018", "2018-04-21 8:33:26"),
 ];
@@ -65,16 +110,15 @@ function getComparator(order, orderBy) {
 
 function stableSort(array, comparator, orderBy, dateorder) {
   if (orderBy !== "date") {
-    if(orderBy !== "view") {
+    if (orderBy !== "view") {
       const stabilizedThis = array.map((el, index) => [el, index]);
-      stabilizedThis.sort(function compare(a, b) { 
-      let dateA = new Date(a.date).getTime();
-      let dateB = new Date(b.date).getTime();
-      return dateB - dateA;
-      })
+      stabilizedThis.sort(function compare(a, b) {
+        let dateA = new Date(a.date).getTime();
+        let dateB = new Date(b.date).getTime();
+        return dateB - dateA;
+      });
       return stabilizedThis.map((el) => el[0]);
-    }
-    else{
+    } else {
       const stabilizedThis = array.map((el, index) => [el, index]);
       stabilizedThis.sort((a, b) => {
         const order = comparator(a[0], b[0]);
@@ -124,8 +168,8 @@ function EnhancedTableHead(props) {
               direction={orderBy === headCell.id ? order : "asc"}
               onClick={createSortHandler(headCell.id)}
             >
-            <Box fontWeight={600} m={1}>
-            {headCell.label}
+              <Box fontWeight={600} m={1}>
+                {headCell.label}
               </Box>
               {orderBy === headCell.id ? (
                 <span className={classes.visuallyHidden}>
@@ -178,9 +222,9 @@ const EnhancedTableToolbar = ({ title }) => {
       id="tableTitle"
       component="div"
     >
-    <Box fontWeight={600} m={1}>
-      {title}
-    </Box>
+      <Box fontWeight={600} m={1}>
+        {title}
+      </Box>
     </Typography>
   );
 };
@@ -257,7 +301,7 @@ const useStyles = makeStyles((theme) => ({
   },
   iconbutton: {
     padding: 0,
-  }
+  },
 }));
 
 export default function Projects() {
@@ -277,7 +321,6 @@ export default function Projects() {
   const [hoverIndexStarred, sethoverIndexStarred] = React.useState("");
   const [actionsUnStarred, setActionsUnStarred] = React.useState(false);
   const [hoverIndexUnStarred, sethoverIndexUnStarred] = React.useState("");
-
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -310,9 +353,9 @@ export default function Projects() {
         ? starredrow.findIndex((x) => x.name === name)
         : unstarredrow.findIndex((x) => x.name === name);
 
-      property === "starred"
-        ? starredrow.splice(selectedIndex, 1)
-        : unstarredrow.splice(selectedIndex, 1);
+    property === "starred"
+      ? starredrow.splice(selectedIndex, 1)
+      : unstarredrow.splice(selectedIndex, 1);
   };
 
   // eslint-disable-next-line
@@ -326,19 +369,19 @@ export default function Projects() {
   }, [temparray, active]);
 
   const mouseEnterStarred = (index) => {
-    setActionsStarred(true)
-    sethoverIndexStarred(index)
-  }
+    setActionsStarred(true);
+    sethoverIndexStarred(index);
+  };
   const mouseLeaveStarred = (event) => {
-    setActionsStarred(false)
-  }
+    setActionsStarred(false);
+  };
   const mouseEnterUnStarred = (index) => {
-    setActionsUnStarred(true)
-    sethoverIndexUnStarred(index)
-  }
+    setActionsUnStarred(true);
+    sethoverIndexUnStarred(index);
+  };
   const mouseLeaveUnStarred = (event) => {
-    setActionsUnStarred(false)
-  }
+    setActionsUnStarred(false);
+  };
   return (
     <div className={classes.root}>
       <Toolbar>
@@ -392,11 +435,11 @@ export default function Projects() {
                       role="checkbox"
                       tabIndex={-1}
                       key={row.name}
-                      onMouseEnter={(event) => mouseEnterStarred(index)} 
+                      onMouseEnter={(event) => mouseEnterStarred(index)}
                       onMouseLeave={mouseLeaveStarred}
                     >
                       <TableCell padding="checkbox">
-                        <IconButton 
+                        <IconButton
                           color="inherit"
                           onClick={(event) =>
                             handleClickStarred(event, row.name, "starred")
@@ -408,36 +451,38 @@ export default function Projects() {
                       <TableCell component="th" scope="row" padding="none">
                         {row.name}
                       </TableCell>
-                      <TableCell component="th" scope="row" padding="none">{row.language}</TableCell>
+                      <TableCell component="th" scope="row" padding="none">
+                        {row.language}
+                      </TableCell>
                       <TableCell align="right">{row.date}</TableCell>
-                      <TableCell align="right">{moment(row.view, "YYYY-MM-DD h:mm:ss").fromNow()}</TableCell>
-                      
+                      <TableCell align="right">
+                        {moment(row.view, "YYYY-MM-DD h:mm:ss").fromNow()}
+                      </TableCell>
+
                       {actionsStarred && hoverIndexStarred === index ? (
                         <TableCell align="left">
-                        <IconButton className={classes.iconbutton}>
-                          <EditIcon />
+                          <IconButton className={classes.iconbutton}>
+                            <EditIcon />
                           </IconButton>
-                          <IconButton className={classes.iconbutton} 
-                          onClick={(event) =>
-                            handleDelete(event, row.name, "starred")
-                          }>
-                          <DeleteIcon 
-                          />
+                          <IconButton
+                            className={classes.iconbutton}
+                            onClick={(event) =>
+                              handleDelete(event, row.name, "starred")
+                            }
+                          >
+                            <DeleteIcon />
                           </IconButton>
                           <IconButton className={classes.iconbutton}>
-                          <InfoIcon />
+                            <InfoIcon />
                           </IconButton>
                         </TableCell>
-                      ) :
-                      <TableCell align="left">
-                        <IconButton>
-                        </IconButton>
-                        <IconButton>
-                        </IconButton>
-                        <IconButton>
-                        </IconButton>
+                      ) : (
+                        <TableCell align="left">
+                          <IconButton></IconButton>
+                          <IconButton></IconButton>
+                          <IconButton></IconButton>
                         </TableCell>
-                        }
+                      )}
                     </TableRow>
                   );
                 })}
@@ -478,7 +523,7 @@ export default function Projects() {
                 return (
                   <TableRow
                     hover
-                    onMouseEnter={(event) => mouseEnterUnStarred(index)} 
+                    onMouseEnter={(event) => mouseEnterUnStarred(index)}
                     onMouseLeave={mouseLeaveUnStarred}
                     tabIndex={-1}
                     key={row.name}
@@ -497,35 +542,36 @@ export default function Projects() {
                       {row.name}
                     </TableCell>
                     <TableCell component="th" scope="row" padding="none">
-                    {row.language}
+                      {row.language}
                     </TableCell>
                     <TableCell align="right">{row.date}</TableCell>
-                    <TableCell align="right">{moment(row.view, "YYYY-MM-DD h:mm:ss").fromNow()}</TableCell>
+                    <TableCell align="right">
+                      {moment(row.view, "YYYY-MM-DD h:mm:ss").fromNow()}
+                    </TableCell>
                     {actionsUnStarred && hoverIndexUnStarred === index ? (
-                        <TableCell align="left">
+                      <TableCell align="left">
                         <IconButton className={classes.iconbutton}>
                           <EditIcon />
-                          </IconButton>
-                          <IconButton className={classes.iconbutton}
+                        </IconButton>
+                        <IconButton
+                          className={classes.iconbutton}
                           onClick={(event) =>
-                          handleDelete(event, row.name, "unstarred")}
-                          >
+                            handleDelete(event, row.name, "unstarred")
+                          }
+                        >
                           <DeleteIcon />
-                          </IconButton>
-                          <IconButton className={classes.iconbutton}>
+                        </IconButton>
+                        <IconButton className={classes.iconbutton}>
                           <InfoIcon />
-                          </IconButton>
-                        </TableCell>
-                      ) :
+                        </IconButton>
+                      </TableCell>
+                    ) : (
                       <TableCell align="left">
-                        <IconButton>
-                        </IconButton>
-                        <IconButton>
-                        </IconButton>
-                        <IconButton>
-                        </IconButton>
-                        </TableCell>
-                        }
+                        <IconButton></IconButton>
+                        <IconButton></IconButton>
+                        <IconButton></IconButton>
+                      </TableCell>
+                    )}
                   </TableRow>
                 );
               })}

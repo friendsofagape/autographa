@@ -19,6 +19,8 @@ import { FormattedMessage } from "react-intl";
 import Profile from "./Profile";
 import { Box, Button, Avatar } from "@material-ui/core";
 import Projects from "./Projects";
+import { Observer } from "mobx-react";
+import AutographaStore from "../AutographaStore";
 
 const drawerWidth = 240;
 
@@ -122,120 +124,125 @@ export default function ProjectsDrawer() {
   };
 
   return (
-    <div className={classes.root}>
-      <CssBaseline />
-      <AppBar
-        color="inherit"
-        position="fixed"
-        className={clsx(classes.appBar, {
-          [classes.appBarShift]: open,
-        })}
-      >
-        <Toolbar>
-          <IconButton
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            className={clsx(classes.menuButton, {
-              [classes.hide]: open,
+    <Observer>
+      {() => (
+        <div className={classes.root}>
+          <CssBaseline />
+          <AppBar
+            color="inherit"
+            position="fixed"
+            className={clsx(classes.appBar, {
+              [classes.appBarShift]: open,
             })}
           >
-            <MenuIcon />
-          </IconButton>
-          <Typography className={classes.title} variant="h5" color="inherit">
-            <Box fontWeight={600} m={1}>
-              <FormattedMessage id={`label-${title}`} />
-            </Box>
-          </Typography>
-          <Button size="small" variant="contained" color="primary">
-            <Box fontWeight={600} m={1}>
-              <FormattedMessage id="btn-logout" />
-            </Box>
-          </Button>
-        </Toolbar>
-      </AppBar>
-      <Drawer
-        variant="permanent"
-        className={clsx(classes.drawer, {
-          [classes.drawerOpen]: open,
-          [classes.drawerClose]: !open,
-        })}
-        classes={{
-          paper: clsx({
-            [classes.drawerOpen]: open,
-            [classes.drawerClose]: !open,
-          }),
-        }}
-      >
-        <div className={classes.toolbar}>
-          <IconButton onClick={handleDrawerClose}>
-            {open === true && <ChevronLeftIcon color="secondary" />}
-          </IconButton>
+            <Toolbar>
+              <IconButton
+                aria-label="open drawer"
+                onClick={handleDrawerOpen}
+                edge="start"
+                className={clsx(classes.menuButton, {
+                  [classes.hide]: open,
+                })}
+              >
+                <MenuIcon />
+              </IconButton>
+              <Typography
+                className={classes.title}
+                variant="h5"
+                color="inherit"
+              >
+                <Box fontWeight={600} m={1}>
+                  <FormattedMessage id={`label-${title}`} />
+                </Box>
+              </Typography>
+              <Button size="small" variant="contained" color="primary">
+                <Box fontWeight={600} m={1}>
+                  <FormattedMessage id="btn-logout" />
+                </Box>
+              </Button>
+            </Toolbar>
+          </AppBar>
+          <Drawer
+            variant="permanent"
+            className={clsx(classes.drawer, {
+              [classes.drawerOpen]: open,
+              [classes.drawerClose]: !open,
+            })}
+            classes={{
+              paper: clsx({
+                [classes.drawerOpen]: open,
+                [classes.drawerClose]: !open,
+              }),
+            }}
+          >
+            <div className={classes.toolbar}>
+              <IconButton onClick={handleDrawerClose}>
+                {open === true && <ChevronLeftIcon color="secondary" />}
+              </IconButton>
+            </div>
+            <Divider />
+            <List>
+              <div
+                className={classes.avatarplacement}
+                style={{
+                  backgroundColor: title === "Projects" ? "#ffffff" : "#212121",
+                }}
+              >
+                <ListItem onClick={() => titlechange("Projects")} button>
+                  <ListItemIcon>
+                    <DescriptionIcon
+                      fontSize="large"
+                      color={title === "Projects" ? "primary" : "secondary"}
+                    />
+                  </ListItemIcon>
+                  <FormattedMessage id="label-Projects">
+                    {(message) => (
+                      <ListItemText
+                        primary={message}
+                        style={{
+                          color: title === "Projects" ? "#212121" : "#ffffff",
+                        }}
+                      />
+                    )}
+                  </FormattedMessage>
+                </ListItem>
+              </div>
+              <div
+                className={classes.avatarplacement}
+                style={{
+                  backgroundColor: title === "Profile" ? "#ffffff" : "#212121",
+                }}
+              >
+                <ListItem
+                  color="secondary"
+                  onClick={() => titlechange("Profile")}
+                  button
+                >
+                  <ListItemIcon className={classes.avatar}>
+                    <Avatar src={AutographaStore.avatarPath} alt="My Avatar" />
+                    {/* <MailIcon fontSize="large" color="secondary" /> */}
+                  </ListItemIcon>
+                  <FormattedMessage id="label-Profile">
+                    {(message) => (
+                      <ListItemText
+                        color="inherit"
+                        primary={message}
+                        style={{
+                          color: title === "Profile" ? "#212121" : "#ffffff",
+                        }}
+                      />
+                    )}
+                  </FormattedMessage>
+                </ListItem>
+              </div>
+            </List>
+          </Drawer>
+          <main className={classes.content}>
+            <div className={classes.toolbar} />
+            {title === "Profile" ? <Profile /> : <Projects />}
+          </main>
         </div>
-        <Divider />
-        <List>
-          <div
-            className={classes.avatarplacement}
-            style={{
-              backgroundColor: title === "Projects" ? "#ffffff" : "#212121",
-            }}
-          >
-            <ListItem onClick={() => titlechange("Projects")} button>
-              <ListItemIcon>
-                <DescriptionIcon
-                  fontSize="large"
-                  color={title === "Projects" ? "primary" : "secondary"}
-                />
-              </ListItemIcon>
-              <FormattedMessage id="label-Projects">
-                {(message) => (
-                  <ListItemText
-                    primary={message}
-                    style={{
-                      color: title === "Projects" ? "#212121" : "#ffffff",
-                    }}
-                  />
-                )}
-              </FormattedMessage>
-            </ListItem>
-          </div>
-          <div
-            className={classes.avatarplacement}
-            style={{
-              backgroundColor: title === "Profile" ? "#ffffff" : "#212121",
-            }}
-          >
-            <ListItem
-              color="secondary"
-              onClick={() => titlechange("Profile")}
-              button
-            >
-              <ListItemIcon className={classes.avatar}>
-                <Avatar
-                  src={require("../../static/images/avatar/1.jpg")}
-                  alt="My Avatar"
-                />
-                {/* <MailIcon fontSize="large" color="secondary" /> */}
-              </ListItemIcon>
-              <FormattedMessage id="label-Profile">
-                {(message) => (
-                  <ListItemText
-                    color="inherit"
-                    primary={message}
-                    style={{
-                      color: title === "Profile" ? "#212121" : "#ffffff",
-                    }}
-                  />
-                )}
-              </FormattedMessage>
-            </ListItem>
-          </div>
-        </List>
-      </Drawer>
-      <main className={classes.content}>
-        <div className={classes.toolbar} />
-        {title === "Profile" ? <Profile /> : <Projects />}
-      </main>
-    </div>
+      )}
+    </Observer>
   );
 }

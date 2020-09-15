@@ -95,23 +95,26 @@ const Profile = () => {
     });
   };
 
-  const openFileDialogAvatarData = ({ target }) => {
-    const fileReader = new FileReader();
-    fileReader.readAsDataURL(target.files[0]);
-    fileReader.onload = async (e) => {
-      localForage.setItem("avatarPath", e.target.result, function (err) {
-        localForage.getItem("avatarPath", function (err, value) {
-          console.log(value);
-          setavatarPathImport(value);
+  const openFileDialogAvatarData = async ({ target }) => {
+    if (target.files[0] !== undefined) {
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(target.files[0]);
+      fileReader.onload = async (e) => {
+        localForage.setItem("avatarPath", e.target.result, function (err) {
+          localForage.getItem("avatarPath", function (err, value) {
+            setavatarPathImport(value);
+            AutographaStore.avatarPath = value;
+          });
         });
-      });
-    };
+      };
+    }
   };
 
   const removeAvatar = () => {
     localForage.setItem("avatarPath", "", function (err) {
       localForage.getItem("avatarPath", function (err, value) {
         setavatarPathImport(value);
+        AutographaStore.avatarPath = value;
       });
     });
   };
@@ -119,6 +122,7 @@ const Profile = () => {
   useEffect(() => {
     localForage.getItem("avatarPath", function (err, value) {
       setavatarPathImport(value);
+      AutographaStore.avatarPath = value;
     });
   }, []);
 
