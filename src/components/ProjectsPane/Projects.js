@@ -17,31 +17,32 @@ import Typography from "@material-ui/core/Typography";
 // import Paper from "@material-ui/core/Paper";
 import StarBorderIcon from "@material-ui/icons/StarBorder";
 import StarIcon from "@material-ui/icons/Star";
-import { IconButton } from "@material-ui/core";
+import { IconButton, Box } from "@material-ui/core";
 import EditIcon from "@material-ui/icons/Edit";
 // import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from "@material-ui/icons/Delete";
 import InfoIcon from "@material-ui/icons/Info";
+import moment from "moment";
 
 function createData(name, language, date, view) {
   return { name, language, date, view };
 }
 
 const starrted = [
-  createData("Project Arabic", "arb", "22 Apr 2020", 51),
-  createData("Hindi New Testment", "hin", "21 may 2020", 24),
-  createData("English NIV", "eng", "2 May 2020", 24),
-  createData("Kannada Revised", "knd", "31 Jun 2021", 37),
-  createData("new Malayalam", "mal", "04 Jul 2020", 67),
-  createData("New Testment Oriya", "or", "23 Feb 2010", 24),
-  createData("English Old", "eng", "17 Dec 2029", 24),
+  createData("Project Arabic", "Arabic(arb)", "22 Apr 2020", "2020-09-15 14:33:26"),
+  createData("Hindi New Testment", "Hindi(hin)", "21 may 2020", "2020-09-13 14:33:26"),
+  createData("English NIV", "English(eng)", "2 May 2020", "2019-09-15 14:33:26"),
+  createData("Kannada Revised", "kannada(knd)", "31 Jun 2021", "2020-01-15 14:33:26"),
+  createData("new Malayalam", "Malayalam(mal)", "04 Jul 2020", "2020-03-15 6:33:26"),
+  createData("New Testment Oriya", "Oriya(or)", "23 Feb 2010", "2018-04-21 8:33:26"),
+  createData("English Old", "English(eng)", "17 Dec 2029", "2018-04-21 8:33:26"),
 ];
 
 const unstarrted = [
-  createData("Project Malayalam", "mal", "21 Mar 2021", 67),
-  createData("Spanish Project", "spa", "1 Sep 2019", 49),
-  createData("Arabic", "arb", "2 Aug 2020", 5),
-  createData("Tamil IRV", "tml", "15 Aug 2018", 87),
+  createData("Project Malayalam", "Malayalam(mal)", "21 Mar 2021", "2020-09-15 14:33:26"),
+  createData("Spanish Project", "Spanish(spa)", "1 Sep 2019", "2020-01-15 14:33:26"),
+  createData("Arabic", "Arabic(arb)", "2 Aug 2020", "2020-05-15 14:34:26"),
+  createData("Tamil IRV", "Tamil(tml)", "15 Aug 2018", "2018-04-21 8:33:26"),
 ];
 
 function descendingComparator(a, b, orderBy) {
@@ -57,7 +58,6 @@ function descendingComparator(a, b, orderBy) {
 }
 
 function getComparator(order, orderBy) {
-  console.log(order, orderBy);
   return order === "desc"
     ? (a, b) => descendingComparator(a, b, orderBy)
     : (a, b) => -descendingComparator(a, b, orderBy);
@@ -65,13 +65,24 @@ function getComparator(order, orderBy) {
 
 function stableSort(array, comparator, orderBy, dateorder) {
   if (orderBy !== "date") {
-    const stabilizedThis = array.map((el, index) => [el, index]);
-    stabilizedThis.sort((a, b) => {
-      const order = comparator(a[0], b[0]);
-      if (order !== 0) return order;
-      return a[1] - b[1];
-    });
-    return stabilizedThis.map((el) => el[0]);
+    if(orderBy !== "view") {
+      const stabilizedThis = array.map((el, index) => [el, index]);
+      stabilizedThis.sort(function compare(a, b) { 
+      let dateA = new Date(a.date).getTime();
+      let dateB = new Date(b.date).getTime();
+      return dateB - dateA;
+      })
+      return stabilizedThis.map((el) => el[0]);
+    }
+    else{
+      const stabilizedThis = array.map((el, index) => [el, index]);
+      stabilizedThis.sort((a, b) => {
+        const order = comparator(a[0], b[0]);
+        if (order !== 0) return order;
+        return a[1] - b[1];
+      });
+      return stabilizedThis.map((el) => el[0]);
+    }
   } else {
     const stabilizedThis = array.map((el, index) => [el, index]);
     stabilizedThis.sort(function compare(a, b) {
@@ -113,7 +124,9 @@ function EnhancedTableHead(props) {
               direction={orderBy === headCell.id ? order : "asc"}
               onClick={createSortHandler(headCell.id)}
             >
-              {headCell.label}
+            <Box fontWeight={600} m={1}>
+            {headCell.label}
+              </Box>
               {orderBy === headCell.id ? (
                 <span className={classes.visuallyHidden}>
                   {order === "desc" ? "sorted descending" : "sorted ascending"}
@@ -165,7 +178,9 @@ const EnhancedTableToolbar = ({ title }) => {
       id="tableTitle"
       component="div"
     >
+    <Box fontWeight={600} m={1}>
       {title}
+    </Box>
     </Typography>
   );
 };
@@ -240,6 +255,9 @@ const useStyles = makeStyles((theme) => ({
   container: {
     maxHeight: 400,
   },
+  iconbutton: {
+    padding: 0,
+  }
 }));
 
 export default function Projects() {
@@ -255,6 +273,11 @@ export default function Projects() {
   const [unstarredrow, setUnStarredrow] = React.useState(unstarrted);
   const [temparray, settemparray] = React.useState(null);
   const [active, setactive] = React.useState("");
+  const [actionsStarred, setActionsStarred] = React.useState(false);
+  const [hoverIndexStarred, sethoverIndexStarred] = React.useState("");
+  const [actionsUnStarred, setActionsUnStarred] = React.useState(false);
+  const [hoverIndexUnStarred, sethoverIndexUnStarred] = React.useState("");
+
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -281,6 +304,17 @@ export default function Projects() {
     settemparray(copy[0]);
   };
 
+  const handleDelete = (event, name, property) => {
+    let selectedIndex =
+      property === "starred"
+        ? starredrow.findIndex((x) => x.name === name)
+        : unstarredrow.findIndex((x) => x.name === name);
+
+      property === "starred"
+        ? starredrow.splice(selectedIndex, 1)
+        : unstarredrow.splice(selectedIndex, 1);
+  };
+
   // eslint-disable-next-line
   useEffect(() => {
     if (temparray)
@@ -291,6 +325,20 @@ export default function Projects() {
     // eslint-disable-next-line
   }, [temparray, active]);
 
+  const mouseEnterStarred = (index) => {
+    setActionsStarred(true)
+    sethoverIndexStarred(index)
+  }
+  const mouseLeaveStarred = (event) => {
+    setActionsStarred(false)
+  }
+  const mouseEnterUnStarred = (index) => {
+    setActionsUnStarred(true)
+    sethoverIndexUnStarred(index)
+  }
+  const mouseLeaveUnStarred = (event) => {
+    setActionsUnStarred(false)
+  }
   return (
     <div className={classes.root}>
       <Toolbar>
@@ -311,7 +359,7 @@ export default function Projects() {
         </div>
       </Toolbar>
       <div>
-        <EnhancedTableToolbar title={"Starred Projects"} />
+        <EnhancedTableToolbar title={"Starred"} />
         <TableContainer className={classes.container}>
           <Table
             stickyHeader
@@ -344,9 +392,12 @@ export default function Projects() {
                       role="checkbox"
                       tabIndex={-1}
                       key={row.name}
+                      onMouseEnter={(event) => mouseEnterStarred(index)} 
+                      onMouseLeave={mouseLeaveStarred}
                     >
                       <TableCell padding="checkbox">
-                        <IconButton
+                        <IconButton 
+                          color="inherit"
                           onClick={(event) =>
                             handleClickStarred(event, row.name, "starred")
                           }
@@ -357,20 +408,36 @@ export default function Projects() {
                       <TableCell component="th" scope="row" padding="none">
                         {row.name}
                       </TableCell>
-                      <TableCell>{row.language}</TableCell>
+                      <TableCell component="th" scope="row" padding="none">{row.language}</TableCell>
                       <TableCell align="right">{row.date}</TableCell>
-                      <TableCell align="right">{row.view}</TableCell>
-                      <TableCell align="right">
-                        <IconButton>
+                      <TableCell align="right">{moment(row.view, "YYYY-MM-DD h:mm:ss").fromNow()}</TableCell>
+                      
+                      {actionsStarred && hoverIndexStarred === index ? (
+                        <TableCell align="left">
+                        <IconButton className={classes.iconbutton}>
                           <EditIcon />
-                        </IconButton>
-                        <IconButton>
-                          <DeleteIcon />
-                        </IconButton>
-                        <IconButton>
+                          </IconButton>
+                          <IconButton className={classes.iconbutton} 
+                          onClick={(event) =>
+                            handleDelete(event, row.name, "starred")
+                          }>
+                          <DeleteIcon 
+                          />
+                          </IconButton>
+                          <IconButton className={classes.iconbutton}>
                           <InfoIcon />
+                          </IconButton>
+                        </TableCell>
+                      ) :
+                      <TableCell align="left">
+                        <IconButton>
                         </IconButton>
-                      </TableCell>
+                        <IconButton>
+                        </IconButton>
+                        <IconButton>
+                        </IconButton>
+                        </TableCell>
+                        }
                     </TableRow>
                   );
                 })}
@@ -380,16 +447,6 @@ export default function Projects() {
             )}
           </Table>
         </TableContainer>
-
-        {/* <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={(starredrow.length)}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onChangePage={handleChangePage}
-          onChangeRowsPerPage={handleChangeRowsPerPage}
-        /> */}
       </div>
       <div>
         <EnhancedTableToolbar title={"Everythings else"} />
@@ -421,13 +478,14 @@ export default function Projects() {
                 return (
                   <TableRow
                     hover
-                    // onClick={(event) => handleClick(event, row.name)}
-                    // role="checkbox"
+                    onMouseEnter={(event) => mouseEnterUnStarred(index)} 
+                    onMouseLeave={mouseLeaveUnStarred}
                     tabIndex={-1}
                     key={row.name}
                   >
                     <TableCell padding="checkbox">
                       <IconButton
+                        color="inherit"
                         onClick={(event) =>
                           handleClickStarred(event, row.name, "unstarred")
                         }
@@ -438,37 +496,43 @@ export default function Projects() {
                     <TableCell component="th" scope="row" padding="none">
                       {row.name}
                     </TableCell>
-                    <TableCell>{row.language}</TableCell>
-                    <TableCell align="right">{row.date}</TableCell>
-                    <TableCell align="right">{row.view}</TableCell>
-                    <TableCell align="right">
-                      <IconButton>
-                        <EditIcon />
-                      </IconButton>
-                      <IconButton>
-                        <DeleteIcon />
-                      </IconButton>
-                      <IconButton>
-                        <InfoIcon />
-                      </IconButton>
+                    <TableCell component="th" scope="row" padding="none">
+                    {row.language}
                     </TableCell>
+                    <TableCell align="right">{row.date}</TableCell>
+                    <TableCell align="right">{moment(row.view, "YYYY-MM-DD h:mm:ss").fromNow()}</TableCell>
+                    {actionsUnStarred && hoverIndexUnStarred === index ? (
+                        <TableCell align="left">
+                        <IconButton className={classes.iconbutton}>
+                          <EditIcon />
+                          </IconButton>
+                          <IconButton className={classes.iconbutton}
+                          onClick={(event) =>
+                          handleDelete(event, row.name, "unstarred")}
+                          >
+                          <DeleteIcon />
+                          </IconButton>
+                          <IconButton className={classes.iconbutton}>
+                          <InfoIcon />
+                          </IconButton>
+                        </TableCell>
+                      ) :
+                      <TableCell align="left">
+                        <IconButton>
+                        </IconButton>
+                        <IconButton>
+                        </IconButton>
+                        <IconButton>
+                        </IconButton>
+                        </TableCell>
+                        }
                   </TableRow>
                 );
               })}
             </TableBody>
           </Table>
         </TableContainer>
-        {/* <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={unstarredrow.length}
-          rowsPerPage={rowsPerPageUnstarred}
-          page={pageUnstarred}
-          onChangePage={handleChangePageUnstarred}
-          onChangeRowsPerPage={handleChangeRowsPerPageUnstarred}
-        /> */}
       </div>
-      {/* </Paper> */}
     </div>
   );
 }
