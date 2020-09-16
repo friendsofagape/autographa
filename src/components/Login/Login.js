@@ -42,8 +42,8 @@ export default function Login() {
   });
   const [validUser, setValidUser] = useState(false);
   const [validPassword, setValidPassword] = useState(false);
-  const fieldValidity = () => {
-    console.log("valid");
+
+  const handleValidation = () => {
     if (values.username) {
       setValidUser(false);
     } else {
@@ -57,7 +57,7 @@ export default function Login() {
   };
   const handleSubmit = () => {
     console.log("click");
-    fieldValidity();
+    handleValidation();
     console.log(values);
   };
   const handleUsername = (prop) => (event) => {
