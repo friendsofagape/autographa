@@ -133,12 +133,12 @@ const Profile = () => {
 
   useEffect(() => {
     localForage.getItem("profileSettings", async function (err, value) {
+      if(value)
       value.forEach(function (fields) {
         setFirstname(fields.firstname);
         setLastname(fields.lastname);
         setEmail(fields.email);
         setRegion(fields.region);
-
         setValues({ ...values, password: fields.password });
       });
     });
