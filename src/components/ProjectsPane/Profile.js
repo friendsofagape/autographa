@@ -14,6 +14,7 @@ import {
   Select,
   MenuItem,
   Input,
+  Button,
 } from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import clsx from "clsx";
@@ -58,6 +59,9 @@ const useStyles = makeStyles((theme) => ({
   avataredits: {
     marginLeft: theme.spacing(14),
   },
+  save: {
+    float: "right",
+  },
 }));
 
 const region = [
@@ -75,6 +79,10 @@ const Profile = () => {
   });
   const [appLang, setAppLang] = React.useState(AutographaStore.appLang);
   const [avatarPathImport, setavatarPathImport] = React.useState("");
+  const [firstname, setFirstname] = React.useState("");
+  const [lastname, setLastname] = React.useState("");
+  const [email, setEmail] = React.useState("");
+  const [selregion, setRegion] = React.useState("");
 
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
@@ -90,28 +98,28 @@ const Profile = () => {
 
   const changeLangauge = (event, index, value) => {
     setAppLang(event.target.value);
-    localForage.setItem("applang", event.target.value, function (err) {
-      console.log("App Language Changed");
-    });
   };
 
-  const openFileDialogAvatarData = ({ target }) => {
-    const fileReader = new FileReader();
-    fileReader.readAsDataURL(target.files[0]);
-    fileReader.onload = async (e) => {
-      localForage.setItem("avatarPath", e.target.result, function (err) {
-        localForage.getItem("avatarPath", function (err, value) {
-          console.log(value);
-          setavatarPathImport(value);
+  const openFileDialogAvatarData = async ({ target }) => {
+    if (target.files[0] !== undefined) {
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(target.files[0]);
+      fileReader.onload = async (e) => {
+        localForage.setItem("avatarPath", e.target.result, function (err) {
+          localForage.getItem("avatarPath", function (err, value) {
+            setavatarPathImport(value);
+            AutographaStore.avatarPath = value;
+          });
         });
-      });
-    };
+      };
+    }
   };
 
   const removeAvatar = () => {
     localForage.setItem("avatarPath", "", function (err) {
       localForage.getItem("avatarPath", function (err, value) {
         setavatarPathImport(value);
+        AutographaStore.avatarPath = value;
       });
     });
   };
@@ -119,12 +127,54 @@ const Profile = () => {
   useEffect(() => {
     localForage.getItem("avatarPath", function (err, value) {
       setavatarPathImport(value);
+      AutographaStore.avatarPath = value;
     });
   }, []);
 
+  useEffect(() => {
+    localForage.getItem("profileSettings", async function (err, value) {
+      value.forEach(function (fields) {
+        setFirstname(fields.firstname);
+        setLastname(fields.lastname);
+        setEmail(fields.email);
+        setRegion(fields.region);
+
+        setValues({ ...values, password: fields.password });
+      });
+    });
+    // eslint-disable-next-line
+  },[])
+
+
+  const handleSubmit = () => {
+    const profileSettings = [
+      {
+        password: values.password,
+        firstname: firstname,
+        lastname: lastname,
+        region: selregion,
+        email: email,
+        appLang: appLang,
+      },
+    ];
+    localForage.setItem("profileSettings", profileSettings, function (err) {
+      localForage.getItem("profileSettings", function (err, value) {
+        console.log("saved");
+      });
+    });
+    localForage.getItem("applang", function (err, value) {
+      if (value !== appLang) {
+        localForage.setItem("applang", appLang, function (err) {
+          console.log("App Language Changed");
+          window.location.reload();
+        });
+      }
+    });
+  };
+
   return (
     <>
-      <Paper>
+      <Paper data-test="component-profile">
         <Grid container spacing={3}>
           <Grid item xs={2}></Grid>
           <Grid item xs>
@@ -169,6 +219,12 @@ const Profile = () => {
                     className={classes.textfieldsmall}
                     label={message}
                     variant="outlined"
+                    type="text"
+                    inputProps={{
+                      "data-testid": "firstnamefield",
+                    }}
+                    value={firstname}
+                    onChange={(e) => setFirstname(e.target.value)}
                   />
                 )}
               </FormattedMessage>
@@ -178,6 +234,11 @@ const Profile = () => {
                     className={classes.textfieldsmall}
                     label={message}
                     variant="outlined"
+                    inputProps={{
+                      "data-testid": "lastnamefield",
+                    }}
+                    value={lastname}
+                    onChange={(e) => setLastname(e.target.value)}
                   />
                 )}
               </FormattedMessage>
@@ -188,6 +249,11 @@ const Profile = () => {
                       className={classes.textfieldlong}
                       label={message}
                       variant="outlined"
+                      inputProps={{
+                        "data-testid": "emailfield",
+                      }}
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
                     />
                   )}
                 </FormattedMessage>
@@ -201,6 +267,10 @@ const Profile = () => {
                     id="region"
                     options={region}
                     getOptionLabel={(option) => option.place}
+                    inputValue={selregion}
+                    onChange={(id, region) => {
+                      setRegion(region.place);
+                    }}
                     renderInput={(params) => (
                       <FormattedMessage id="label-region">
                         {(message) => (
@@ -279,6 +349,17 @@ const Profile = () => {
                   </Select>
                 </FormControl>
               </div>
+              <Button
+                className={classes.save}
+                variant="contained"
+                color="primary"
+                data-test="submit-button"
+                onClick={(e) => {
+                  handleSubmit(e);
+                }}
+              >
+                Save
+              </Button>
             </form>
           </Grid>
         </Grid>
