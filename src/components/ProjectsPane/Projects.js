@@ -483,7 +483,6 @@ export default function Projects() {
                       <TableCell align="right">
                         {moment(row.view, "YYYY-MM-DD h:mm:ss").fromNow()}
                       </TableCell>
-
                       {actionsStarred && hoverIndexStarred === index ? (
                         <TableCell align="left">
                           <IconButton className={classes.iconbutton}>
