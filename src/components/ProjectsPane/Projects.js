@@ -45,7 +45,7 @@ const starrted = [
     "English NIV",
     "English(eng)",
     "2 May 2020",
-    "2019-09-15 14:33:26"
+    "2020-08-29 14:33:26"
   ),
   createData(
     "Kannada Revised",
@@ -89,6 +89,31 @@ const unstarrted = [
   createData("Arabic", "Arabic(arb)", "2 Aug 2020", "2020-05-15 14:34:26"),
   createData("Tamil IRV", "Tamil(tml)", "15 Aug 2018", "2018-04-21 8:33:26"),
 ];
+
+moment.updateLocale("en", {
+  relativeTime: {
+    future: "in %s",
+    past: "%s ago",
+    s: "a few seconds",
+    m: "a minute",
+    mm: "%d minutes",
+    h: "an hour",
+    hh: "%d hours",
+    d: "a day",
+    dd: function (number) {
+      if (number < 7) {
+        return number + " days"; // Moment uses "d" when it's just 1 day.
+      } else {
+        var weeks = Math.round(number / 7);
+        return weeks + " " + (weeks > 1 ? "weeks" : "week");
+      }
+    },
+    M: "a month",
+    MM: "%d months",
+    y: "a year",
+    yy: "%d years",
+  },
+});
 
 function descendingComparator(a, b, orderBy) {
   if (orderBy !== "date") {

@@ -72,7 +72,7 @@
 		"start": "concurrently \"npm run react-start\" \"wait-on http://localhost:3000/ && cross-env NODE_ENV=development npm run electron-start\"",
 		"electron-start": "electron .",
 		"react-start": "react-scripts start",
-		"test": "craco test --testPathIgnorePatterns=./node_modules/ --logHeapUsage",
+		"test": "react-scripts test",
 		"eject": "react-scripts eject",
 		"lint": "eslint ./src",
 		"lint:fix": "eslint ./src --fix",
