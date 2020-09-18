@@ -268,8 +268,8 @@ const Profile = () => {
                     options={region}
                     getOptionLabel={(option) => option.place}
                     inputValue={selregion}
-                    onChange={(id, region) => {
-                      setRegion(region.place);
+                    onInputChange={(id, region) => {
+                      setRegion(region);
                     }}
                     renderInput={(params) => (
                       <FormattedMessage id="label-region">
@@ -282,6 +282,7 @@ const Profile = () => {
                         )}
                       </FormattedMessage>
                     )}
+                    ListboxProps={{ 'data-testid': 'list-box' }}
                   />
                 </FormControl>
               </div>
@@ -301,6 +302,9 @@ const Profile = () => {
                     type={values.showPassword ? "text" : "password"}
                     value={values.password}
                     onChange={handleChange("password")}
+                    inputProps={{
+                        "data-testid": "passwordbox",
+                      }}
                     endAdornment={
                       <InputAdornment position="end">
                         <IconButton
