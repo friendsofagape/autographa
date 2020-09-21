@@ -6,18 +6,16 @@ import '@testing-library/jest-dom/extend-expect';
 import userEvent from "@testing-library/user-event";
 import intl from './helper';
 import { act } from 'react-dom/test-utils';
-
+jest.mock('localforage')
+afterEach(cleanup);
 
 jest.useFakeTimers();
-/**
- * Setup funtion for app component 
- * @returns {ShallowWrapper}
- */
+
+    test("renders without fail", () => {
+       render(intl(<Profile />));
+    })
 
     describe('state controlled profile fields', () => {
-        afterEach(() => {
-            cleanup();
-        });
 
         test("state update on first name upon change", async() => {
             const { getByTestId } = render(intl(<Profile />));
@@ -75,8 +73,9 @@ jest.useFakeTimers();
         })
 
         test("should check language selector", async() => {
-            const mocks = jest.fn(); //this is data mock
-            let utils = render(intl(<Profile mocks={mocks} />));
+            const mockSetLanguage = jest.fn()
+            React.useState = jest.fn(() => ["", mockSetLanguage])
+            let utils = render(intl(<Profile />));
             await act(async () => {
             const selectButtons = utils.getAllByRole("button"); // get all button list
             const accessButton = selectButtons.find(button => button.id === "localeList"); // find by id
@@ -84,13 +83,25 @@ jest.useFakeTimers();
             const accessOption = await waitForElement(() => utils.getByText("English"));
             fireEvent.mouseDown(accessOption);
             utils.getByText("Hindi");
-            const { getByText } = render(intl(<Profile handler={mocks} />));
+            const { getByText } = render(intl(<Profile />));
             const selector = document.querySelector('#localeList');
             fireEvent.mouseDown(selector);
             const choice=getByText('Hindi');
             fireEvent.click(choice);
-            // expect(mocks).toHaveBeenCalledTimes(1)
+            expect(mockSetLanguage).toHaveBeenCalledWith("hi")
             });
+        })
+        
+
+        test("should save profile settings", async() => {
+            const mockSetProfile = jest.fn()
+            React.useState = jest.fn(() => ["", mockSetProfile])
+            const { getByTestId } = render(intl(<Profile />));
+            const saveButton = getByTestId("submit-button");
+            await act(async() => {
+                userEvent.click(saveButton);
+            })
+            expect(mockSetProfile).toHaveBeenCalled()
         })
 
         // test("should check language selector", async() => {

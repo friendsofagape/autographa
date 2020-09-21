@@ -83,6 +83,7 @@ const Profile = () => {
   const [lastname, setLastname] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [selregion, setRegion] = React.useState("");
+  const [saved, setSaved] = React.useState("");
 
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
@@ -147,7 +148,7 @@ const Profile = () => {
 
 
   const handleSubmit = () => {
-    const profileSettings = [
+   const profileSettings = [
       {
         password: values.password,
         firstname: firstname,
@@ -157,18 +158,17 @@ const Profile = () => {
         appLang: appLang,
       },
     ];
+    setSaved(profileSettings)
     localForage.setItem("profileSettings", profileSettings, function (err) {
       localForage.getItem("profileSettings", function (err, value) {
-        console.log("saved");
+        setSaved(value)
       });
     });
     localForage.getItem("applang", function (err, value) {
-      if (value !== appLang) {
         localForage.setItem("applang", appLang, function (err) {
           console.log("App Language Changed");
           window.location.reload();
         });
-      }
     });
   };
 
@@ -357,10 +357,8 @@ const Profile = () => {
                 className={classes.save}
                 variant="contained"
                 color="primary"
-                data-test="submit-button"
-                onClick={(e) => {
-                  handleSubmit(e);
-                }}
+                data-testid="submit-button"
+                onClick={handleSubmit}
               >
                 Save
               </Button>
