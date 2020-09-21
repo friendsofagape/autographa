@@ -1,15 +1,11 @@
+import { IntlProvider } from "react-intl";
+import React from "react";
 
-import { IntlProvider } from 'react-intl';
-import React from 'react';
-
-const enTranslationData = require('../../translations/en.json');
+const enTranslationData = require("../../translations/en.json");
 
 function intl(component, locale) {
   return (
-    <IntlProvider
-      locale={"en"}
-      messages={enTranslationData}
-    >
+    <IntlProvider locale={"en"} messages={enTranslationData}>
       {React.cloneElement(component)}
     </IntlProvider>
   );

@@ -134,21 +134,21 @@ const Profile = () => {
 
   useEffect(() => {
     localForage.getItem("profileSettings", async function (err, value) {
-      if(value)
-      value.forEach(function (fields) {
-        setFirstname(fields.firstname);
-        setLastname(fields.lastname);
-        setEmail(fields.email);
-        setRegion(fields.region);
-        setValues({ ...values, password: fields.password });
-      });
+      if (value)
+        value.forEach(function (fields) {
+          setFirstname(fields.firstname);
+          setLastname(fields.lastname);
+          setEmail(fields.email);
+          setRegion(fields.region);
+          setValues({ ...values, password: fields.password });
+        });
     });
     // eslint-disable-next-line
   },[])
 
 
   const handleSubmit = () => {
-   const profileSettings = [
+    const profileSettings = [
       {
         password: values.password,
         firstname: firstname,
@@ -158,17 +158,17 @@ const Profile = () => {
         appLang: appLang,
       },
     ];
-    setSaved(profileSettings)
+    if (!saved) setSaved(profileSettings);
     localForage.setItem("profileSettings", profileSettings, function (err) {
       localForage.getItem("profileSettings", function (err, value) {
-        setSaved(value)
+        setSaved(value);
       });
     });
     localForage.getItem("applang", function (err, value) {
-        localForage.setItem("applang", appLang, function (err) {
-          console.log("App Language Changed");
-          window.location.reload();
-        });
+      localForage.setItem("applang", appLang, function (err) {
+        console.log("App Language Changed");
+        window.location.reload();
+      });
     });
   };
 
@@ -282,7 +282,7 @@ const Profile = () => {
                         )}
                       </FormattedMessage>
                     )}
-                    ListboxProps={{ 'data-testid': 'list-box' }}
+                    ListboxProps={{ "data-testid": "list-box" }}
                   />
                 </FormControl>
               </div>
@@ -303,8 +303,8 @@ const Profile = () => {
                     value={values.password}
                     onChange={handleChange("password")}
                     inputProps={{
-                        "data-testid": "passwordbox",
-                      }}
+                      "data-testid": "passwordbox",
+                    }}
                     endAdornment={
                       <InputAdornment position="end">
                         <IconButton
