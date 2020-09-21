@@ -83,6 +83,7 @@ const Profile = () => {
   const [lastname, setLastname] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [selregion, setRegion] = React.useState("");
+  const [saved, setSaved] = React.useState("");
 
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
@@ -133,14 +134,14 @@ const Profile = () => {
 
   useEffect(() => {
     localForage.getItem("profileSettings", async function (err, value) {
-      value.forEach(function (fields) {
-        setFirstname(fields.firstname);
-        setLastname(fields.lastname);
-        setEmail(fields.email);
-        setRegion(fields.region);
-
-        setValues({ ...values, password: fields.password });
-      });
+      if (value)
+        value.forEach(function (fields) {
+          setFirstname(fields.firstname);
+          setLastname(fields.lastname);
+          setEmail(fields.email);
+          setRegion(fields.region);
+          setValues({ ...values, password: fields.password });
+        });
     });
     // eslint-disable-next-line
   },[])
@@ -157,18 +158,17 @@ const Profile = () => {
         appLang: appLang,
       },
     ];
+    if (!saved) setSaved(profileSettings);
     localForage.setItem("profileSettings", profileSettings, function (err) {
       localForage.getItem("profileSettings", function (err, value) {
-        console.log("saved");
+        setSaved(value);
       });
     });
     localForage.getItem("applang", function (err, value) {
-      if (value !== appLang) {
-        localForage.setItem("applang", appLang, function (err) {
-          console.log("App Language Changed");
-          window.location.reload();
-        });
-      }
+      localForage.setItem("applang", appLang, function (err) {
+        console.log("App Language Changed");
+        window.location.reload();
+      });
     });
   };
 
@@ -268,8 +268,8 @@ const Profile = () => {
                     options={region}
                     getOptionLabel={(option) => option.place}
                     inputValue={selregion}
-                    onChange={(id, region) => {
-                      setRegion(region.place);
+                    onInputChange={(id, region) => {
+                      setRegion(region);
                     }}
                     renderInput={(params) => (
                       <FormattedMessage id="label-region">
@@ -282,6 +282,7 @@ const Profile = () => {
                         )}
                       </FormattedMessage>
                     )}
+                    ListboxProps={{ "data-testid": "list-box" }}
                   />
                 </FormControl>
               </div>
@@ -301,6 +302,9 @@ const Profile = () => {
                     type={values.showPassword ? "text" : "password"}
                     value={values.password}
                     onChange={handleChange("password")}
+                    inputProps={{
+                      "data-testid": "passwordbox",
+                    }}
                     endAdornment={
                       <InputAdornment position="end">
                         <IconButton
@@ -353,10 +357,8 @@ const Profile = () => {
                 className={classes.save}
                 variant="contained"
                 color="primary"
-                data-test="submit-button"
-                onClick={(e) => {
-                  handleSubmit(e);
-                }}
+                data-testid="submit-button"
+                onClick={handleSubmit}
               >
                 Save
               </Button>
