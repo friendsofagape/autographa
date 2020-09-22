@@ -437,7 +437,7 @@ export default function Projects() {
                 {stableSort(
                   query
                     ? starredrow.filter((x) =>
-                        x.name.toLowerCase().includes(query)
+                        x.name.toLowerCase().includes(query.toLowerCase())
                       )
                     : starredrow,
                   getComparator(order, orderBy),
