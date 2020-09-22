@@ -1,94 +1,24 @@
 import React, { useEffect } from "react";
 import PropTypes from "prop-types";
-// import clsx from 'clsx';
 import { lighten, makeStyles, fade } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
-// import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
 import SearchIcon from "@material-ui/icons/Search";
 import InputBase from "@material-ui/core/InputBase";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
-// import Paper from "@material-ui/core/Paper";
 import StarBorderIcon from "@material-ui/icons/StarBorder";
 import StarIcon from "@material-ui/icons/Star";
 import { IconButton, Box } from "@material-ui/core";
 import EditIcon from "@material-ui/icons/Edit";
-// import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from "@material-ui/icons/Delete";
 import InfoIcon from "@material-ui/icons/Info";
 import moment from "moment";
-
-function createData(name, language, date, view) {
-  return { name, language, date, view };
-}
-
-const starrted = [
-  createData(
-    "Project Arabic",
-    "Arabic(arb)",
-    "22 Apr 2020",
-    "2020-09-15 14:33:26"
-  ),
-  createData(
-    "Hindi New Testment",
-    "Hindi(hin)",
-    "21 may 2020",
-    "2020-09-13 14:33:26"
-  ),
-  createData(
-    "English NIV",
-    "English(eng)",
-    "2 May 2020",
-    "2020-08-29 14:33:26"
-  ),
-  createData(
-    "Kannada Revised",
-    "kannada(knd)",
-    "31 Jun 2021",
-    "2020-01-15 14:33:26"
-  ),
-  createData(
-    "new Malayalam",
-    "Malayalam(mal)",
-    "04 Jul 2020",
-    "2020-03-15 6:33:26"
-  ),
-  createData(
-    "New Testment Oriya",
-    "Oriya(or)",
-    "23 Feb 2010",
-    "2018-04-21 8:33:26"
-  ),
-  createData(
-    "English Old",
-    "English(eng)",
-    "17 Dec 2029",
-    "2018-04-21 8:33:26"
-  ),
-];
-
-const unstarrted = [
-  createData(
-    "Project Malayalam",
-    "Malayalam(mal)",
-    "21 Mar 2021",
-    "2020-09-15 14:33:26"
-  ),
-  createData(
-    "Spanish Project",
-    "Spanish(spa)",
-    "1 Sep 2019",
-    "2020-01-15 14:33:26"
-  ),
-  createData("Arabic", "Arabic(arb)", "2 Aug 2020", "2020-05-15 14:34:26"),
-  createData("Tamil IRV", "Tamil(tml)", "15 Aug 2018", "2018-04-21 8:33:26"),
-];
 
 moment.updateLocale("en", {
   relativeTime: {
@@ -179,6 +109,7 @@ function EnhancedTableHead(props) {
             sortDirection={orderBy === headCell.id ? order : false}
           >
             <TableSortLabel
+              id="sorthead"
               active={orderBy === headCell.id}
               direction={orderBy === headCell.id ? order : "asc"}
               onClick={createSortHandler(headCell.id)}
@@ -319,17 +250,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Projects() {
+export default function Projects(props) {
   const classes = useStyles();
   const [order, setOrder] = React.useState("asc");
   const [orderUnstarred, setOrderUnstarred] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("name");
   const [orderByUnstarred, setOrderByUnstarred] = React.useState("name");
   const [query, setQuery] = React.useState("");
-  // eslint-disable-next-line
-  const [starredrow, setStarredrow] = React.useState(starrted);
-  // eslint-disable-next-line
-  const [unstarredrow, setUnStarredrow] = React.useState(unstarrted);
+  const [starredrow] = React.useState(props.starrted);
+  const [unstarredrow] = React.useState(props.unstarrted);
   const [temparray, settemparray] = React.useState(null);
   const [active, setactive] = React.useState("");
   const [actionsStarred, setActionsStarred] = React.useState(false);
@@ -410,70 +339,191 @@ export default function Projects() {
               root: classes.inputRoot,
               input: classes.inputInput,
             }}
-            inputProps={{ "aria-label": "search" }}
+            inputProps={{
+              "aria-label": "search",
+              "data-testid": "searchfield",
+            }}
             value={query}
             onChange={(e) => setQuery(e.target.value)}
           />
         </div>
       </Toolbar>
-      <div>
-        <EnhancedTableToolbar title={"Starred"} />
-        <TableContainer className={classes.container}>
-          <Table
-            stickyHeader
-            className={classes.table}
-            aria-labelledby="tableTitle"
-            aria-label="enhanced table"
-          >
-            <EnhancedTableHead
-              classes={classes}
-              order={order}
-              orderBy={orderBy}
-              onRequestSort={handleRequestSort}
-              rowCount={starredrow.length}
-            />
-            {starredrow.length !== 0 ? (
-              <TableBody>
+      {props.starrted && (
+        <div>
+          <EnhancedTableToolbar title={"Starred"} />
+          <TableContainer className={classes.container}>
+            <Table
+              stickyHeader
+              className={classes.table}
+              aria-labelledby="tableTitle"
+              aria-label="enhanced table"
+            >
+              <EnhancedTableHead
+                classes={classes}
+                order={order}
+                orderBy={orderBy}
+                onRequestSort={handleRequestSort}
+                rowCount={starredrow.length}
+              />
+              {starredrow.length !== 0 ? (
+                <TableBody id="starredrow">
+                  {stableSort(
+                    query
+                      ? starredrow.filter((x) =>
+                          x.name.toLowerCase().includes(query.toLowerCase())
+                        )
+                      : starredrow,
+                    getComparator(order, orderBy),
+                    orderBy,
+                    order
+                  ).map((row, index) => {
+                    return (
+                      <TableRow
+                        hover
+                        role="checkbox"
+                        tabIndex={-1}
+                        key={index}
+                        onMouseEnter={(event) => mouseEnterStarred(index)}
+                        onMouseLeave={mouseLeaveStarred}
+                      >
+                        <TableCell padding="checkbox">
+                          <IconButton
+                            color="inherit"
+                            id="starredicon"
+                            onClick={(event) =>
+                              handleClickStarred(event, row.name, "starred")
+                            }
+                          >
+                            <StarIcon />
+                          </IconButton>
+                        </TableCell>
+                        <TableCell
+                          id="starredrow-name"
+                          component="th"
+                          scope="row"
+                          padding="none"
+                        >
+                          {row.name}
+                        </TableCell>
+                        <TableCell
+                          id="starredrow-language"
+                          component="th"
+                          scope="row"
+                          padding="none"
+                        >
+                          {row.language}
+                        </TableCell>
+                        <TableCell id="starredrow-date" align="right">
+                          {row.date}
+                        </TableCell>
+                        <TableCell id="starredrow-time" align="right">
+                          {moment(row.view, "YYYY-MM-DD h:mm:ss").fromNow()}
+                        </TableCell>
+                        {actionsStarred && hoverIndexStarred === index ? (
+                          <TableCell align="left">
+                            <IconButton className={classes.iconbutton}>
+                              <EditIcon />
+                            </IconButton>
+                            <IconButton
+                              className={classes.iconbutton}
+                              onClick={(event) =>
+                                handleDelete(event, row.name, "starred")
+                              }
+                            >
+                              <DeleteIcon />
+                            </IconButton>
+                            <IconButton className={classes.iconbutton}>
+                              <InfoIcon />
+                            </IconButton>
+                          </TableCell>
+                        ) : (
+                          <TableCell align="left">
+                            <IconButton></IconButton>
+                            <IconButton></IconButton>
+                            <IconButton></IconButton>
+                          </TableCell>
+                        )}
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              ) : (
+                <div>No data to display</div>
+              )}
+            </Table>
+          </TableContainer>
+        </div>
+      )}
+      {props.starrted && (
+        <div>
+          <EnhancedTableToolbar title={"Everythings else"} />
+          <TableContainer className={classes.container}>
+            <Table
+              className={classes.table}
+              aria-labelledby="tableTitle"
+              aria-label="enhanced table"
+              stickyHeader
+            >
+              <EnhancedTableHead
+                classes={classes}
+                order={orderUnstarred}
+                orderBy={orderByUnstarred}
+                onRequestSort={handleRequestSortUnstarred}
+                rowCount={unstarredrow.length}
+              />
+              <TableBody id="unstarredrow">
                 {stableSort(
                   query
-                    ? starredrow.filter((x) =>
+                    ? unstarredrow.filter((x) =>
                         x.name.toLowerCase().includes(query.toLowerCase())
                       )
-                    : starredrow,
-                  getComparator(order, orderBy),
-                  orderBy,
-                  order
+                    : unstarredrow,
+                  getComparator(orderUnstarred, orderByUnstarred),
+                  orderByUnstarred,
+                  orderUnstarred
                 ).map((row, index) => {
                   return (
                     <TableRow
                       hover
-                      role="checkbox"
+                      onMouseEnter={(event) => mouseEnterUnStarred(index)}
+                      onMouseLeave={mouseLeaveUnStarred}
                       tabIndex={-1}
-                      key={row.name}
-                      onMouseEnter={(event) => mouseEnterStarred(index)}
-                      onMouseLeave={mouseLeaveStarred}
+                      key={index}
                     >
                       <TableCell padding="checkbox">
                         <IconButton
                           color="inherit"
+                          id="unstarredicon"
                           onClick={(event) =>
-                            handleClickStarred(event, row.name, "starred")
+                            handleClickStarred(event, row.name, "unstarred")
                           }
                         >
-                          <StarIcon />
+                          <StarBorderIcon />
                         </IconButton>
                       </TableCell>
-                      <TableCell component="th" scope="row" padding="none">
+                      <TableCell
+                        id="unstarredrow-name"
+                        component="th"
+                        scope="row"
+                        padding="none"
+                      >
                         {row.name}
                       </TableCell>
-                      <TableCell component="th" scope="row" padding="none">
+                      <TableCell
+                        id="unstarredrow-language"
+                        component="th"
+                        scope="row"
+                        padding="none"
+                      >
                         {row.language}
                       </TableCell>
-                      <TableCell align="right">{row.date}</TableCell>
-                      <TableCell align="right">
+                      <TableCell id="unstarredrow-date" align="right">
+                        {row.date}
+                      </TableCell>
+                      <TableCell id="unstarredrow-time" align="right">
                         {moment(row.view, "YYYY-MM-DD h:mm:ss").fromNow()}
                       </TableCell>
-                      {actionsStarred && hoverIndexStarred === index ? (
+                      {actionsUnStarred && hoverIndexUnStarred === index ? (
                         <TableCell align="left">
                           <IconButton className={classes.iconbutton}>
                             <EditIcon />
@@ -481,7 +531,7 @@ export default function Projects() {
                           <IconButton
                             className={classes.iconbutton}
                             onClick={(event) =>
-                              handleDelete(event, row.name, "starred")
+                              handleDelete(event, row.name, "unstarred")
                             }
                           >
                             <DeleteIcon />
@@ -501,98 +551,10 @@ export default function Projects() {
                   );
                 })}
               </TableBody>
-            ) : (
-              <div>No data to display</div>
-            )}
-          </Table>
-        </TableContainer>
-      </div>
-      <div>
-        <EnhancedTableToolbar title={"Everythings else"} />
-        <TableContainer className={classes.container}>
-          <Table
-            className={classes.table}
-            aria-labelledby="tableTitle"
-            aria-label="enhanced table"
-            stickyHeader
-          >
-            <EnhancedTableHead
-              classes={classes}
-              order={orderUnstarred}
-              orderBy={orderByUnstarred}
-              onRequestSort={handleRequestSortUnstarred}
-              rowCount={unstarredrow.length}
-            />
-            <TableBody>
-              {stableSort(
-                query
-                  ? unstarredrow.filter((x) =>
-                      x.name.toLowerCase().includes(query)
-                    )
-                  : unstarredrow,
-                getComparator(orderUnstarred, orderByUnstarred),
-                orderByUnstarred,
-                orderUnstarred
-              ).map((row, index) => {
-                return (
-                  <TableRow
-                    hover
-                    onMouseEnter={(event) => mouseEnterUnStarred(index)}
-                    onMouseLeave={mouseLeaveUnStarred}
-                    tabIndex={-1}
-                    key={row.name}
-                  >
-                    <TableCell padding="checkbox">
-                      <IconButton
-                        color="inherit"
-                        onClick={(event) =>
-                          handleClickStarred(event, row.name, "unstarred")
-                        }
-                      >
-                        <StarBorderIcon />
-                      </IconButton>
-                    </TableCell>
-                    <TableCell component="th" scope="row" padding="none">
-                      {row.name}
-                    </TableCell>
-                    <TableCell component="th" scope="row" padding="none">
-                      {row.language}
-                    </TableCell>
-                    <TableCell align="right">{row.date}</TableCell>
-                    <TableCell align="right">
-                      {moment(row.view, "YYYY-MM-DD h:mm:ss").fromNow()}
-                    </TableCell>
-                    {actionsUnStarred && hoverIndexUnStarred === index ? (
-                      <TableCell align="left">
-                        <IconButton className={classes.iconbutton}>
-                          <EditIcon />
-                        </IconButton>
-                        <IconButton
-                          className={classes.iconbutton}
-                          onClick={(event) =>
-                            handleDelete(event, row.name, "unstarred")
-                          }
-                        >
-                          <DeleteIcon />
-                        </IconButton>
-                        <IconButton className={classes.iconbutton}>
-                          <InfoIcon />
-                        </IconButton>
-                      </TableCell>
-                    ) : (
-                      <TableCell align="left">
-                        <IconButton></IconButton>
-                        <IconButton></IconButton>
-                        <IconButton></IconButton>
-                      </TableCell>
-                    )}
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </div>
+            </Table>
+          </TableContainer>
+        </div>
+      )}
     </div>
   );
 }
