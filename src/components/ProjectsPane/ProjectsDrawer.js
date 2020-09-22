@@ -18,9 +18,10 @@ import DescriptionIcon from "@material-ui/icons/Description";
 import { FormattedMessage } from "react-intl";
 import Profile from "./Profile";
 import { Box, Button, Avatar } from "@material-ui/core";
-import Projects from "./Projects";
+// import Projects from "./Projects";
 import { Observer } from "mobx-react";
 import AutographaStore from "../AutographaStore";
+import TableData from "./TableData";
 
 const drawerWidth = 240;
 
@@ -239,7 +240,7 @@ export default function ProjectsDrawer() {
           </Drawer>
           <main className={classes.content}>
             <div className={classes.toolbar} />
-            {title === "Profile" ? <Profile /> : <Projects />}
+            {title === "Profile" ? <Profile /> : <TableData />}
           </main>
         </div>
       )}

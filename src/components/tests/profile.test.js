@@ -1,17 +1,11 @@
 import React from "react";
-import {
-  render,
-  fireEvent,
-  waitForElement,
-  cleanup,
-} from "@testing-library/react";
+import { render, fireEvent, waitForElement } from "@testing-library/react";
 import Profile from "../ProjectsPane/Profile";
 import "@testing-library/jest-dom/extend-expect";
 import userEvent from "@testing-library/user-event";
 import intl from "./helper";
 import { act } from "react-dom/test-utils";
 jest.mock("localforage");
-afterEach(cleanup);
 
 jest.useFakeTimers();
 
