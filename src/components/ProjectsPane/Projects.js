@@ -135,23 +135,13 @@ function getComparator(order, orderBy) {
 
 function stableSort(array, comparator, orderBy, dateorder) {
   if (orderBy !== "date") {
-    if (orderBy !== "view") {
-      const stabilizedThis = array.map((el, index) => [el, index]);
-      stabilizedThis.sort(function compare(a, b) {
-        let dateA = new Date(a.date).getTime();
-        let dateB = new Date(b.date).getTime();
-        return dateB - dateA;
-      });
-      return stabilizedThis.map((el) => el[0]);
-    } else {
-      const stabilizedThis = array.map((el, index) => [el, index]);
-      stabilizedThis.sort((a, b) => {
-        const order = comparator(a[0], b[0]);
-        if (order !== 0) return order;
-        return a[1] - b[1];
-      });
-      return stabilizedThis.map((el) => el[0]);
-    }
+    const stabilizedThis = array.map((el, index) => [el, index]);
+    stabilizedThis.sort((a, b) => {
+      const order = comparator(a[0], b[0]);
+      if (order !== 0) return order;
+      return a[1] - b[1];
+    });
+    return stabilizedThis.map((el) => el[0]);
   } else {
     const stabilizedThis = array.map((el, index) => [el, index]);
     stabilizedThis.sort(function compare(a, b) {
@@ -168,7 +158,7 @@ const headCells = [
   { id: "name", numeric: false, disablePadding: true, label: "Project Name" },
   { id: "language", numeric: false, disablePadding: true, label: "Language" },
   { id: "date", numeric: true, disablePadding: false, label: "Date" },
-  { id: "view", numeric: true, disablePadding: false, label: "Last Viewed(H)" },
+  { id: "view", numeric: true, disablePadding: false, label: "Last Viewed" },
 ];
 
 function EnhancedTableHead(props) {
