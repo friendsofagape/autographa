@@ -76,10 +76,14 @@ const Main = () => {
       const value = await localForage.getItem("applang");
       // This code runs once the value has been loaded
       // from the offline store.
-      return value;
+      if(!value) {
+        logger.error("failed to fetch language from localforage, setting to default language");
+        return "en"
+      }
+      else return value;
     } catch (err) {
       // This code runs if there were any errors.
-      logger.error("failed to fetch language so setting to default language");
+      
       return "en";
     }
   };
