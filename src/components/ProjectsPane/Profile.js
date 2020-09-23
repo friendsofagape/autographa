@@ -166,7 +166,6 @@ const Profile = () => {
     });
     localForage.getItem("applang", function (err, value) {
       localForage.setItem("applang", appLang, function (err) {
-        console.log("App Language Changed");
         window.location.reload();
       });
     });

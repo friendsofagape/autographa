@@ -6,6 +6,7 @@ import { Observer } from "mobx-react";
 import * as localForage from "localforage";
 import AutographaStore from "./AutographaStore";
 import AutoUpdate from "./AutoUpdate";
+import { logger } from "../logger";
 
 let messages;
 const theme = createMuiTheme({
@@ -62,6 +63,7 @@ const theme = createMuiTheme({
 
 const Main = () => {
   useEffect(() => {
+    logger.info("setting up app with preferred language");
     getLocale().then(async (lang) => {
       AutographaStore.appLang = lang;
       messages = await loadLocaleData(lang);
@@ -77,7 +79,7 @@ const Main = () => {
       return value;
     } catch (err) {
       // This code runs if there were any errors.
-      console.log(err);
+      logger.error("failed to fetch language so setting to default language");
       return "en";
     }
   };
@@ -89,6 +91,10 @@ const Main = () => {
       case "hi":
         return import("../translations/hi.json");
       default:
+        logger.log({
+          level: "warn",
+          message: "Setting to default language",
+        });
         return import("../translations/en.json");
     }
   };
