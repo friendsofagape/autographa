@@ -6,11 +6,11 @@ const path = require("path");
 
 if (process.env.NODE_ENV === "test") {
   remote = require("electron").remote;
-  app = remote.app
+  app = remote.app;
   winston = require("winston");
   printf = require("winston").format.printf;
   fs = require("fs");
-  filepath = 'Ag-debug.log'
+  filepath = "Ag-debug.log";
 } else {
   fs = window.require("fs");
   remote = window.require("electron").remote;
@@ -20,13 +20,12 @@ if (process.env.NODE_ENV === "test") {
   filepath = path.join(
     app.getPath("userData"),
     "Autogrpha-log",
-    'Ag-debug.log'
+    "Ag-debug.log"
   );
-  fs.mkdirSync(path.join(
-    app.getPath("userData"),
-    "Autogrpha-log"), { recursive: true });
+  fs.mkdirSync(path.join(app.getPath("userData"), "Autogrpha-log"), {
+    recursive: true,
+  });
 }
-
 
 const myFormat = printf(({ level, message, label, timestamp }) => {
   const customMessage = message.split(",");
