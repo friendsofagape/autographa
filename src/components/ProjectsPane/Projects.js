@@ -19,8 +19,7 @@ import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import InfoIcon from "@material-ui/icons/Info";
 import moment from "moment";
-import { logger } from "../../logger";
-import { loggers } from "winston";
+// import { logger } from "../../logger";
 
 moment.updateLocale("en", {
   relativeTime: {
