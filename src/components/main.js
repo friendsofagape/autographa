@@ -72,6 +72,7 @@ const Main = () => {
   }, []);
 
   const getLocale = async function () {
+    logger.info("started work for getLocale")
     try {
       const value = await localForage.getItem("applang");
       // This code runs once the value has been loaded
@@ -83,7 +84,7 @@ const Main = () => {
       else return value;
     } catch (err) {
       // This code runs if there were any errors.
-      
+      logger.error("failed to fetch language from localforage, setting to default language");
       return "en";
     }
   };

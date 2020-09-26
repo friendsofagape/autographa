@@ -1,28 +1,28 @@
+import moment from "moment";
 const winston = window.winston;
+const { printf } = window.format
 
-module.exports.logger = winston.createLogger({
+const myFormat = printf(({ level, message, label, timestamp }) => {
+  return `${dateFormat()} [${level}]: ${message}`;
+});
+
+const dateFormat = () => {
+  let localTime = moment.utc().toDate();
+  localTime = moment(localTime).format('YYYY-MM-DD HH:mm:ss');
+  return localTime
+}
+export const logger = winston.createLogger({
   transports: [
-    new winston.transports.File({
-      level: "info",
-      filename: "Aglog-info.log",
-      json: true,
+  new winston.transports.File({
+      level: "debug",
+      filename: "Aglog-warn.log",
       format: winston.format.combine(
-        winston.format.timestamp(),
-        winston.format.json(),
-        winston.format.prettyPrint()
+        myFormat,
       ),
     }),
-    new winston.transports.File({
-      level: "error",
-      filename: "Aglog-error.log",
-      json: true,
-      format: winston.format.combine(
-        winston.format.timestamp(),
-        winston.format.json(),
-        winston.format.prettyPrint()
-      ),
-    }),
-    // new winston.transports.File({
+  ]
+});
+// new winston.transports.File({
     //   level: "warn",
     //   filename: "Aglog-warn.log",
     //   json: true,
@@ -32,5 +32,3 @@ module.exports.logger = winston.createLogger({
     //     winston.format.prettyPrint()
     //   ),
     // }),
-  ],
-});
