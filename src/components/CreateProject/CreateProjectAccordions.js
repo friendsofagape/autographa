@@ -7,20 +7,22 @@ import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import GeneralSettting from "./GeneralSettting";
 import { Box } from "@material-ui/core";
+import AdvancedSetttings from "./AdavancedSettings";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: "100%"
+    width: "100%",
   },
   heading: {
     fontSize: theme.typography.pxToRem(20),
     flexBasis: "33.33%",
-    flexShrink: 0
+    flexShrink: 0,
+    fontWeight: 600,
   },
   secondaryHeading: {
     fontSize: theme.typography.pxToRem(15),
-    color: theme.palette.text.secondary
-  }
+    color: theme.palette.text.secondary,
+  },
 }));
 
 export default function CreateProjectAccordions() {
@@ -32,40 +34,38 @@ export default function CreateProjectAccordions() {
   };
 
   return (
-    <div >
-      <Accordion
-        expanded={true}
-        onChange={handleChange("panel1")}
-      >
-        <AccordionSummary
-          aria-controls="panel1bh-content"
-          id="panel1bh-header"
+    <div>
+      <Accordion expanded={true}>
+        <AccordionSummary aria-controls="panel1bh-content" id="panel1bh-header">
+          <Box fontWeight={600} m={1}>
+            <Typography className={classes.heading}>
+              General Settings
+            </Typography>
+          </Box>
+        </AccordionSummary>
+        <AccordionDetails>
+          <GeneralSettting />
+        </AccordionDetails>
+        <Accordion
+          expanded={expanded === "panel3"}
+          onChange={handleChange("panel3")}
         >
-        <Box fontWeight={600} m={1}>
-          <Typography className={classes.heading}>
-          General settings
-          </Typography>
-          </Box>
-        </AccordionSummary>
-        <AccordionDetails>
-          <GeneralSettting />
-        </AccordionDetails>
-        <Accordion expanded={expanded === "panel3"} onChange={handleChange("panel3")}>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel3bh-content"
-          id="panel3bh-header"
-          style={{ width: "fit-content"}}
-        ><Box fontWeight={600} m={1}>
-          <Typography className={classes.heading}>
-            Advanced settings
-          </Typography>
-          </Box>
-        </AccordionSummary>
-        <AccordionDetails>
-          <GeneralSettting />
-        </AccordionDetails>
-      </Accordion>
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel3bh-content"
+            id="panel3bh-header"
+            style={{ width: "fit-content" }}
+          >
+            <Box fontWeight={600} m={1}>
+              <Typography className={classes.heading}>
+                Advanced Settings
+              </Typography>
+            </Box>
+          </AccordionSummary>
+          <AccordionDetails>
+            <AdvancedSetttings />
+          </AccordionDetails>
+        </Accordion>
       </Accordion>
     </div>
   );

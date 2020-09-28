@@ -1,6 +1,5 @@
 import React from "react";
 import clsx from "clsx";
-import { makeStyles } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -15,7 +14,7 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import DescriptionIcon from "@material-ui/icons/Description";
-import AddCircleIcon from '@material-ui/icons/AddCircle';
+import AddCircleIcon from "@material-ui/icons/AddCircle";
 import { FormattedMessage } from "react-intl";
 import { Box, Button, Avatar } from "@material-ui/core";
 import { Observer } from "mobx-react";
@@ -23,9 +22,8 @@ import AutographaStore from "../AutographaStore";
 import { ProjectsNav } from "../ProjectPaneNav/ProjectsNav";
 import { ProjectDrawerStyles } from "./useStyles/ProjectDrawerStyles";
 
-
 export default function ProjectsDrawer() {
-  const classes = ProjectDrawerStyles()
+  const classes = ProjectDrawerStyles();
   const [open, setOpen] = React.useState(false);
   const [title, setTitle] = React.useState("Create New Project");
 
@@ -73,19 +71,19 @@ export default function ProjectsDrawer() {
                   <FormattedMessage id={`label-${title}`} />
                 </Box>
               </Typography>
-              {title === 'Profile' && (
+              {title === "Profile" && (
                 <Button size="small" variant="contained" color="primary">
-                <Box fontWeight={600} m={1}>
-                  <FormattedMessage id="btn-logout" />
-                </Box>
-              </Button>
+                  <Box fontWeight={600} m={1}>
+                    <FormattedMessage id="btn-logout" />
+                  </Box>
+                </Button>
               )}
-              {title === 'Create New Project' && (
+              {title === "Create New Project" && (
                 <Button size="small" variant="contained" color="primary">
-                <Box fontWeight={600} m={1}>
-                  <FormattedMessage id="btn-create" />
-                </Box>
-              </Button>
+                  <Box fontWeight={600} m={1}>
+                    <FormattedMessage id="btn-create" />
+                  </Box>
+                </Button>
               )}
             </Toolbar>
           </AppBar>
@@ -109,17 +107,23 @@ export default function ProjectsDrawer() {
             </div>
             <Divider />
             <List>
-            <div
+              <div
                 className={classes.newproject}
                 style={{
-                  backgroundColor: title === "Create New Project" ? "#ffffff" : "#212121",
+                  backgroundColor:
+                    title === "Create New Project" ? "#ffffff" : "#212121",
                 }}
               >
-                <ListItem onClick={() => titlechange("Create New Project")} button>
+                <ListItem
+                  onClick={() => titlechange("Create New Project")}
+                  button
+                >
                   <ListItemIcon>
                     <AddCircleIcon
                       fontSize="large"
-                      color={title === "Create New Project" ? "primary" : "secondary"}
+                      color={
+                        title === "Create New Project" ? "primary" : "secondary"
+                      }
                     />
                   </ListItemIcon>
                   <FormattedMessage id="label-create-project">
@@ -127,14 +131,17 @@ export default function ProjectsDrawer() {
                       <ListItemText
                         primary={message}
                         style={{
-                          color: title === "Create New Project" ? "#212121" : "#ffffff",
+                          color:
+                            title === "Create New Project"
+                              ? "#212121"
+                              : "#ffffff",
                         }}
                       />
                     )}
                   </FormattedMessage>
                 </ListItem>
               </div>
-            <div
+              <div
                 className={classes.avatarplacement}
                 style={{
                   backgroundColor: title === "Projects" ? "#ffffff" : "#212121",

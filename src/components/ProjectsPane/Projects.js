@@ -143,7 +143,7 @@ EnhancedTableHead.propTypes = {
 };
 
 const EnhancedTableToolbar = ({ title }) => {
-  const classes = useToolbarStyles()
+  const classes = useToolbarStyles();
 
   return (
     <Typography
@@ -164,7 +164,7 @@ EnhancedTableToolbar.propTypes = {
 };
 
 export default function Projects(props) {
-  const classes = ProjectStyles()
+  const classes = ProjectStyles();
   const [order, setOrder] = React.useState("asc");
   const [orderUnstarred, setOrderUnstarred] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("name");

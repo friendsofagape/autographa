@@ -28,7 +28,6 @@ import AutographaStore from "../AutographaStore";
 import { logger } from "../../logger";
 import { ProfileStyles } from "./useStyles/ProfileStyles";
 
-
 const region = [
   { id: 1, place: "Delhi, India" },
   { id: 2, place: "Helsinki, Finland" },

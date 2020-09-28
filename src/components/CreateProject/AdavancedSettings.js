@@ -5,40 +5,11 @@ import {
   MenuItem,
   FormControl,
   Select,
-  Radio,
-  RadioGroup,
   FormLabel,
-  FormControlLabel,
-  TextField,
 } from "@material-ui/core";
-import clsx from "clsx";
 import { CreateProjectStyles } from "./useStyles/CreateProjectStyles";
-import { AutoComplete } from "./AutoComplete";
 
-const version = [
-  { id: 1, value: "IRV" },
-  { id: 2, value: "NLT" },
-  { id: 3, value: "UDB" },
-  { id: 4, value: "ULB" },
-  { id: 5, value: "UJNT" },
-];
-
-function StyledRadio(props) {
-  const classes = CreateProjectStyles();
-
-  return (
-    <Radio
-      className={classes.radioroot}
-      disableRipple
-      color="default"
-      checkedIcon={<span className={clsx(classes.icon, classes.checkedIcon)} />}
-      icon={<span className={classes.icon} />}
-      {...props}
-    />
-  );
-}
-
-const GeneralSettting = () => {
+const AdvancedSetttings = () => {
   const classes = CreateProjectStyles();
 
   return (
@@ -50,7 +21,7 @@ const GeneralSettting = () => {
               <FormControl component="fieldset">
                 <FormLabel component="legend">
                   <Box fontWeight={600} m={1}>
-                    Type
+                    Versification Scheme
                   </Box>
                 </FormLabel>
                 <Select
@@ -66,55 +37,52 @@ const GeneralSettting = () => {
                 <FormControl component="fieldset">
                   <FormLabel component="legend">
                     <Box fontWeight={600} m={1}>
-                      Bible Name
+                      Canon Specifications
                     </Box>
                   </FormLabel>
-                  <div>
-                    <TextField
-                      className={classes.biblename}
-                      variant="outlined"
-                      placeholder="Enter Bible Name"
-                    />
-                  </div>
+                  <Select
+                    className={classes.biblename}
+                    value="bi"
+                    variant="outlined"
+                  >
+                    <MenuItem value={"md"}>MdFile</MenuItem>
+                    <MenuItem value={"bi"}>Bible</MenuItem>
+                  </Select>
                 </FormControl>
               </span>
               <span className={classes.version}>
                 <FormControl component="fieldset">
                   <FormLabel component="legend">
                     <Box fontWeight={600} m={1}>
-                      Bible Version
+                      Content
                     </Box>
                   </FormLabel>
-                  <div>
-                    <AutoComplete version={version} />
-                  </div>
+                  <Select
+                    className={classes.biblename}
+                    value="bi"
+                    variant="outlined"
+                  >
+                    <MenuItem value={"md"}>MdFile</MenuItem>
+                    <MenuItem value={"bi"}>Bible</MenuItem>
+                  </Select>
                 </FormControl>
               </span>
 
               <div>
-                <FormControl className={classes.direction} component="fieldset">
+                <FormControl className={classes.license} component="fieldset">
                   <FormLabel component="legend">
                     <Box fontWeight={600} m={1}>
-                      Script Direction
+                      License
                     </Box>
                   </FormLabel>
-                  <RadioGroup
-                    style={{ display: "inline", marginLeft: "12px" }}
-                    defaultValue="LTR"
-                    aria-label="direction"
-                    name="customized-radios"
+                  <Select
+                    className={classes.licenseselect}
+                    value="bi"
+                    variant="outlined"
                   >
-                    <FormControlLabel
-                      value="LTR"
-                      control={<StyledRadio />}
-                      label="LTR"
-                    />
-                    <FormControlLabel
-                      value="RTL"
-                      control={<StyledRadio />}
-                      label="RTL"
-                    />
-                  </RadioGroup>
+                    <MenuItem value={"md"}>MdFile</MenuItem>
+                    <MenuItem value={"bi"}>Bible</MenuItem>
+                  </Select>
                 </FormControl>
               </div>
             </div>
@@ -124,4 +92,4 @@ const GeneralSettting = () => {
     </>
   );
 };
-export default GeneralSettting;
+export default AdvancedSetttings;
