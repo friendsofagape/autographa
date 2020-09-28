@@ -163,8 +163,8 @@ const Profile = () => {
     localForage.setItem("profileSettings", profileSettings, function (err) {
       localForage.getItem("profileSettings", function (err, value) {
         setSaved(value);
-        logger.info(`Profile fields are changed with ${value}`);
-        logger.debug(`Profile fields saved successfully`);
+        logger.info(`profile.js, Profile fields are changed`);
+        logger.debug(`profile.js, Profile fields saved successfully`);
       });
     });
     localForage.getItem("applang", function (err, value) {

@@ -33,7 +33,7 @@ const myFormat = printf(({ level, message, label, timestamp }) => {
   const filenameIndex = customMessage.indexOf(customMessage[0]);
   customMessage.splice(filenameIndex, 1);
   const resultingMessage = customMessage.join(",");
-  return `${dateFormat()} [${level}] ${fileName}:${resultingMessage}`;
+  return `${dateFormat()} [${level.toUpperCase()}] ${fileName}:${resultingMessage}`;
 });
 
 const dateFormat = () => {
@@ -44,7 +44,7 @@ const dateFormat = () => {
 export const logger = winston.createLogger({
   transports: [
     new winston.transports.File({
-      level: "debug",
+      level: process.env.NODE_ENV === "production" ? "warn" : "debug",
       filename: filepath,
       format: winston.format.combine(myFormat),
     }),

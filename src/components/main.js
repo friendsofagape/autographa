@@ -72,7 +72,7 @@ const Main = () => {
   }, []);
 
   const getLocale = async function () {
-    logger.info("main.js, started work for getLocale");
+    logger.debug("main.js, started work for getLocale");
     try {
       const value = await localForage.getItem("applang");
       // This code runs once the value has been loaded

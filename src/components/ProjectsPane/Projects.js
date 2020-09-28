@@ -65,13 +65,13 @@ function getComparator(order, orderBy) {
 }
 
 function stableSort(array, comparator, orderBy, dateorder) {
-  // loggers.debug("started for stablesort")
+  // logger.debug("project.js, started for stablesort")
   if (orderBy !== "date") {
-    // loggers.debug(`calling stable sort with value of orderBy=${orderBy}`)
+    // logger.debug(`project.js, calling stable sort with value of orderBy=${orderBy}`)
     const stabilizedThis = array.map((el, index) => [el, index]);
     stabilizedThis.sort((a, b) => {
       const order = comparator(a[0], b[0]);
-      // logger.debug("stablesort fn finished")
+      // logger.debug("project.js, stablesort fn finished")
       if (order !== 0) return order;
       return a[1] - b[1];
     });
