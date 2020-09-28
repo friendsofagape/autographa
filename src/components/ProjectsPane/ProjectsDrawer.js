@@ -15,102 +15,19 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import DescriptionIcon from "@material-ui/icons/Description";
+import AddCircleIcon from '@material-ui/icons/AddCircle';
 import { FormattedMessage } from "react-intl";
-import Profile from "./Profile";
 import { Box, Button, Avatar } from "@material-ui/core";
-// import Projects from "./Projects";
 import { Observer } from "mobx-react";
 import AutographaStore from "../AutographaStore";
-import TableData from "./TableData";
+import { ProjectsNav } from "../ProjectPaneNav/ProjectsNav";
+import { ProjectDrawerStyles } from "./useStyles/ProjectDrawerStyles";
 
-const drawerWidth = 240;
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: "flex",
-  },
-  title: {
-    flexGrow: 1,
-  },
-  appBar: {
-    zIndex: theme.zIndex.drawer + 1,
-    transition: theme.transitions.create(["width", "margin"], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-  },
-  appBarShift: {
-    marginLeft: drawerWidth,
-    width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(["width", "margin"], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
-  menuButton: {
-    marginRight: 36,
-  },
-  hide: {
-    display: "none",
-  },
-  drawer: {
-    width: drawerWidth,
-    flexShrink: 0,
-    whiteSpace: "nowrap",
-  },
-  drawerOpen: {
-    backgroundColor: "#212121",
-    color: "#ffffff",
-    width: drawerWidth,
-    transition: theme.transitions.create("width", {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
-  drawerClose: {
-    backgroundColor: "#212121",
-    color: "#ffffff",
-    transition: theme.transitions.create("width", {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-    overflowX: "hidden",
-    width: theme.spacing(7) + 1,
-    [theme.breakpoints.up("sm")]: {
-      width: theme.spacing(9) + 1,
-    },
-  },
-  toolbar: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "flex-end",
-    padding: theme.spacing(0, 1),
-    // necessary for content to be below app bar
-    ...theme.mixins.toolbar,
-  },
-  content: {
-    flexGrow: 1,
-    padding: theme.spacing(2),
-  },
-  tabs: {
-    marginTop: theme.spacing(20),
-    padding: theme.spacing(1),
-  },
-  avatarplacement: {
-    width: "100%",
-    height: theme.spacing(7),
-    marginTop: theme.spacing(40),
-  },
-  avatar: {
-    width: theme.spacing(5),
-    height: theme.spacing(5),
-  },
-}));
 
 export default function ProjectsDrawer() {
-  const classes = useStyles();
+  const classes = ProjectDrawerStyles()
   const [open, setOpen] = React.useState(false);
-  const [title, setTitle] = React.useState("Profile");
+  const [title, setTitle] = React.useState("Create New Project");
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -156,11 +73,20 @@ export default function ProjectsDrawer() {
                   <FormattedMessage id={`label-${title}`} />
                 </Box>
               </Typography>
-              <Button size="small" variant="contained" color="primary">
+              {title === 'Profile' && (
+                <Button size="small" variant="contained" color="primary">
                 <Box fontWeight={600} m={1}>
                   <FormattedMessage id="btn-logout" />
                 </Box>
               </Button>
+              )}
+              {title === 'Create New Project' && (
+                <Button size="small" variant="contained" color="primary">
+                <Box fontWeight={600} m={1}>
+                  <FormattedMessage id="btn-create" />
+                </Box>
+              </Button>
+              )}
             </Toolbar>
           </AppBar>
           <Drawer
@@ -183,7 +109,32 @@ export default function ProjectsDrawer() {
             </div>
             <Divider />
             <List>
-              <div
+            <div
+                className={classes.newproject}
+                style={{
+                  backgroundColor: title === "Create New Project" ? "#ffffff" : "#212121",
+                }}
+              >
+                <ListItem onClick={() => titlechange("Create New Project")} button>
+                  <ListItemIcon>
+                    <AddCircleIcon
+                      fontSize="large"
+                      color={title === "Create New Project" ? "primary" : "secondary"}
+                    />
+                  </ListItemIcon>
+                  <FormattedMessage id="label-create-project">
+                    {(message) => (
+                      <ListItemText
+                        primary={message}
+                        style={{
+                          color: title === "Create New Project" ? "#212121" : "#ffffff",
+                        }}
+                      />
+                    )}
+                  </FormattedMessage>
+                </ListItem>
+              </div>
+            <div
                 className={classes.avatarplacement}
                 style={{
                   backgroundColor: title === "Projects" ? "#ffffff" : "#212121",
@@ -221,7 +172,6 @@ export default function ProjectsDrawer() {
                 >
                   <ListItemIcon className={classes.avatar}>
                     <Avatar src={AutographaStore.avatarPath} alt="My Avatar" />
-                    {/* <MailIcon fontSize="large" color="secondary" /> */}
                   </ListItemIcon>
                   <FormattedMessage id="label-Profile">
                     {(message) => (
@@ -240,7 +190,7 @@ export default function ProjectsDrawer() {
           </Drawer>
           <main className={classes.content}>
             <div className={classes.toolbar} />
-            {title === "Profile" ? <Profile /> : <TableData />}
+            <ProjectsNav title={title} />
           </main>
         </div>
       )}

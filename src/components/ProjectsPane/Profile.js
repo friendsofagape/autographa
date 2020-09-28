@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import {
   Paper,
   Typography,
@@ -27,43 +26,8 @@ import { FormattedMessage } from "react-intl";
 import * as localForage from "localforage";
 import AutographaStore from "../AutographaStore";
 import { logger } from "../../logger";
+import { ProfileStyles } from "./useStyles/ProfileStyles";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-  },
-  title: {
-    flexGrow: 1,
-  },
-  textfieldsmall: {
-    textAlign: "center",
-    marginLeft: theme.spacing(1),
-    margin: theme.spacing(3),
-    width: 300,
-  },
-  textfieldlong: {
-    textAlign: "center",
-    marginLeft: theme.spacing(1),
-    margin: theme.spacing(3),
-    width: 635,
-  },
-  personalinfo: {
-    margin: theme.spacing(3),
-    float: "center",
-  },
-  avatarlarge: {
-    width: theme.spacing(30),
-    height: theme.spacing(30),
-    marginLeft: theme.spacing(5),
-    marginTop: theme.spacing(20),
-  },
-  avataredits: {
-    marginLeft: theme.spacing(14),
-  },
-  save: {
-    float: "right",
-  },
-}));
 
 const region = [
   { id: 1, place: "Delhi, India" },
@@ -73,7 +37,7 @@ const region = [
 ];
 
 const Profile = () => {
-  const classes = useStyles();
+  const classes = ProfileStyles();
   const [values, setValues] = React.useState({
     password: "",
     showPassword: false,
