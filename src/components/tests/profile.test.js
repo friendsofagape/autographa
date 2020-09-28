@@ -6,7 +6,6 @@ import userEvent from "@testing-library/user-event";
 import intl from "./helper";
 import { act } from "react-dom/test-utils";
 jest.mock("localforage");
-
 jest.useFakeTimers();
 
 test("renders without fail", () => {

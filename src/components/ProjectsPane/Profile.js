@@ -26,6 +26,7 @@ import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import { FormattedMessage } from "react-intl";
 import * as localForage from "localforage";
 import AutographaStore from "../AutographaStore";
+import { logger } from "../../logger";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -162,11 +163,12 @@ const Profile = () => {
     localForage.setItem("profileSettings", profileSettings, function (err) {
       localForage.getItem("profileSettings", function (err, value) {
         setSaved(value);
+        logger.info(`profile.js, Profile fields are changed`);
+        logger.debug(`profile.js, Profile fields saved successfully`);
       });
     });
     localForage.getItem("applang", function (err, value) {
       localForage.setItem("applang", appLang, function (err) {
-        console.log("App Language Changed");
         window.location.reload();
       });
     });

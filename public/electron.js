@@ -9,8 +9,8 @@ function createWindow() {
     width: 800,
     height: 600,
     webPreferences: {
-      nodeIntegration: false,
-      preload: __dirname + "/preload.js",
+      nodeIntegration: true,
+      // preload: __dirname + "/preload.js",
     },
   });
   if (IS_DEVELOPMENT) {
