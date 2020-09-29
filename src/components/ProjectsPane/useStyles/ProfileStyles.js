@@ -35,4 +35,7 @@ export const ProfileStyles = makeStyles((theme) => ({
   save: {
     float: "right",
   },
+  rootcolor: {
+    backgroundColor: "#EAEEF1",
+  },
 }));

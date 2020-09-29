@@ -89,4 +89,7 @@ export const ProjectStyles = makeStyles((theme) => ({
   iconbutton: {
     padding: 0,
   },
+  rootcolor: {
+    backgroundColor: "#EAEEF1",
+  },
 }));

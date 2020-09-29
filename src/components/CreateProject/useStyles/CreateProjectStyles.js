@@ -43,6 +43,27 @@ export const CreateProjectStyles = makeStyles((theme) => ({
     width: theme.spacing(30),
     marginTop: theme.spacing(4),
   },
+  paper: {
+    padding: theme.spacing(1),
+    textAlign: "center",
+    color: theme.palette.text.secondary,
+    border: "ridge",
+    borderRadius: 5,
+  },
+  Specification: {
+    marginLeft: theme.spacing(1),
+    width: theme.spacing(30),
+    marginBottom: theme.spacing(4),
+  },
+  rootcolor: {
+    backgroundColor: "#EAEEF1",
+  },
+  selected: {
+    borderColor: "turquoise !important",
+    border: "ridge",
+    borderRadius: 5,
+    fontWeight: 600,
+  },
   icon: {
     borderRadius: "50%",
     width: 16,

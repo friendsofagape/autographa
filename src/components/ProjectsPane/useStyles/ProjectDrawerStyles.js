@@ -67,7 +67,6 @@ export const ProjectDrawerStyles = makeStyles((theme) => ({
   },
   content: {
     flexGrow: 1,
-    padding: theme.spacing(2),
   },
   tabs: {
     marginTop: theme.spacing(20),

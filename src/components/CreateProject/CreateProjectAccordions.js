@@ -23,6 +23,10 @@ const useStyles = makeStyles((theme) => ({
     fontSize: theme.typography.pxToRem(15),
     color: theme.palette.text.secondary,
   },
+  rootcolor: {
+    backgroundColor: "#EAEEF1",
+    margin: 0,
+  },
 }));
 
 export default function CreateProjectAccordions() {
@@ -34,8 +38,12 @@ export default function CreateProjectAccordions() {
   };
 
   return (
-    <div>
-      <Accordion expanded={true}>
+    <>
+      <Accordion
+        className={classes.rootcolor}
+        style={{ boxShadow: "0 10px 20px rgba(0,0,0,0)", margin: "0px" }}
+        expanded={true}
+      >
         <AccordionSummary aria-controls="panel1bh-content" id="panel1bh-header">
           <Box fontWeight={600} m={1}>
             <Typography className={classes.heading}>
@@ -47,6 +55,8 @@ export default function CreateProjectAccordions() {
           <GeneralSettting />
         </AccordionDetails>
         <Accordion
+          className={classes.rootcolor}
+          style={{ boxShadow: "0 10px 20px rgba(0,0,0,0)" }}
           expanded={expanded === "panel3"}
           onChange={handleChange("panel3")}
         >
@@ -67,6 +77,6 @@ export default function CreateProjectAccordions() {
           </AccordionDetails>
         </Accordion>
       </Accordion>
-    </div>
+    </>
   );
 }
