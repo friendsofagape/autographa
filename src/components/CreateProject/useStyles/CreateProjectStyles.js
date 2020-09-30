@@ -64,6 +64,9 @@ export const CreateProjectStyles = makeStyles((theme) => ({
     borderRadius: 5,
     fontWeight: 600,
   },
+  listtext: {
+    fontWeight: 600,
+  },
   icon: {
     borderRadius: "50%",
     width: 16,

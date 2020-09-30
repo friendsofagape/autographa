@@ -23,10 +23,9 @@ const useStyles = makeStyles((theme) => ({
     fontSize: theme.typography.pxToRem(15),
     color: theme.palette.text.secondary,
   },
-  rootcolor: {
-    backgroundColor: "#EAEEF1",
-    margin: 0,
-  },
+  // rootcolor: {
+  //   backgroundColor: "#EAEEF1",
+  // },
 }));
 
 export default function CreateProjectAccordions() {

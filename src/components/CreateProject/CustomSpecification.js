@@ -195,7 +195,9 @@ export default function CustomSpecification({
                 style={{ backgroundColor: "white" }}
                 onClick={() => selectedBooks(bookname)}
               >
-                <ListItemText primary={bookname} />
+                <ListItemText>
+                  <span className={classes.listtext}>{bookname}</span>
+                </ListItemText>
               </ListItem>
             </Grid>
           );
