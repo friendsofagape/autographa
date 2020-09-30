@@ -10,6 +10,7 @@ import {
 import { CreateProjectStyles } from "./useStyles/CreateProjectStyles";
 import { AllBooks, NT, OT } from "../../lib/CanonSpecification";
 import CustomSpecification from "./CustomSpecification";
+import { MarkdownViewer } from "./MarkdownViewer";
 
 const canonItems = [
   { id: "OT", spec: "Old Testament (OT)" },
@@ -25,6 +26,8 @@ const AdvancedSetttings = () => {
   const [hideplaceholder, setHideplaceholder] = React.useState(false);
   const [custonOpen, setCustonOpen] = React.useState(false);
   const [updateCanonItems, setUpdateCanonItems] = React.useState(canonItems);
+  const [openmdviewer, setopenmdviewer] = React.useState(false);
+
   useEffect(() => {
     setContent(OT);
   }, []);
@@ -50,6 +53,12 @@ const AdvancedSetttings = () => {
       default:
         setHideplaceholder(false);
         return null;
+    }
+  };
+
+  const handleMdViewer = (event) => {
+    if (event.target.value === "md") {
+      setopenmdviewer(true);
     }
   };
 
@@ -137,6 +146,7 @@ const AdvancedSetttings = () => {
                     className={classes.licenseselect}
                     value="bi"
                     variant="outlined"
+                    onChange={(event) => handleMdViewer(event)}
                   >
                     <MenuItem value={"md"}>MdFile</MenuItem>
                     <MenuItem value={"bi"}>Bible</MenuItem>
@@ -156,6 +166,10 @@ const AdvancedSetttings = () => {
         updateCanonItems={updateCanonItems}
         setUpdateCanonItems={setUpdateCanonItems}
         setcanonSpecification={setcanonSpecification}
+      />
+      <MarkdownViewer
+        openmdviewer={openmdviewer}
+        setopenmdviewer={setopenmdviewer}
       />
     </>
   );

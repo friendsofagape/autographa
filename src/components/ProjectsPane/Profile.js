@@ -27,6 +27,21 @@ import * as localForage from "localforage";
 import AutographaStore from "../AutographaStore";
 import { logger } from "../../logger";
 import { ProfileStyles } from "./useStyles/ProfileStyles";
+import Router from "next/router";
+import NProgress from "nprogress";
+
+Router.onRouteChangeStart = () => {
+  console.log("ste");
+  NProgress.start();
+};
+
+Router.onRouteChangeComplete = () => {
+  NProgress.done();
+};
+
+Router.onRouteChangeError = () => {
+  NProgress.done();
+};
 
 const region = [
   { id: 1, place: "Delhi, India" },
