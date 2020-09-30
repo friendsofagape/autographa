@@ -52,7 +52,7 @@ export const CreateProjectStyles = makeStyles((theme) => ({
   },
   Specification: {
     marginLeft: theme.spacing(1),
-    width: theme.spacing(30),
+    width: theme.spacing(33),
     marginBottom: theme.spacing(4),
   },
   rootcolor: {

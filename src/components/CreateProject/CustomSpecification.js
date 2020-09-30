@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
@@ -10,12 +10,15 @@ import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
 import {
   Box,
+  FormControl,
+  FormLabel,
   Grid,
   ListItem,
   ListItemText,
   TextField,
   Zoom,
 } from "@material-ui/core";
+import * as localForage from "localforage";
 import { CreateProjectStyles } from "./useStyles/CreateProjectStyles";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -78,28 +81,87 @@ export default function CustomSpecification({
   setCustonOpen,
   allbooks,
   setContent,
+  canonSpecification,
   updateCanonItems,
   setUpdateCanonItems,
+  setcanonSpecification,
 }) {
   const classes = CreateProjectStyles();
+  const textRef = useRef();
   const [selectedbook, setSelectedbook] = React.useState([]);
   const [highlight, setHighlight] = React.useState(false);
-  const [canonspecName, setCanonspecName] = React.useState("");
-  const [duplicates, setduplicates] = React.useState(false);
+  const [customselectedbookObj, setCustomelectedbookObj] = React.useState([]);
 
-  const handleClose = () => {
-    setCustonOpen(false);
-    updateCanonItems.forEach((element) => {
-      if (element.spec.includes(canonspecName) === true) {
-        setduplicates(true);
+  useEffect(() => {
+    localForage.getItem("custonSpec", function (err, value) {
+      setCustomelectedbookObj(value);
+    });
+    if (customselectedbookObj) {
+      let result = customselectedbookObj.filter((obj) => {
+        return obj.id === canonSpecification;
+      });
+      if (result[0] !== undefined) {
+        setContent(result[0].books);
+      }
+    }
+    // eslint-disable-next-line
+  },[canonSpecification])
+
+  useEffect(() => {
+    localForage.getItem("custonSpec", function (err, value) {
+      let custonspec,
+        duplicate = false;
+      if (value !== null) {
+        value.forEach(function (fields) {
+          updateCanonItems.forEach((element) => {
+            if (element.spec.includes(fields.id) === true) {
+              duplicate = true;
+            }
+          });
+          if (duplicate === false) {
+            custonspec = { id: fields.id, spec: fields.id };
+            updateCanonItems.push(custonspec);
+            setUpdateCanonItems(updateCanonItems);
+            setCustomelectedbookObj(value);
+          }
+        });
       }
     });
-    if (duplicates === false) {
-      let custonspec = { id: canonspecName, spec: canonspecName };
+    // eslint-disable-next-line
+  },[])
+
+  const handleSave = () => {
+    let duplicates = false;
+    setCustonOpen(false);
+    if (selectedbook) {
+      let selectedbookObj = { id: textRef.current.value, books: selectedbook };
+      customselectedbookObj.push(selectedbookObj);
+      setCustomelectedbookObj(customselectedbookObj);
+    }
+
+    updateCanonItems.forEach((element) => {
+      if (element.spec.includes(textRef.current.value) === true) {
+        duplicates = true;
+      }
+    });
+    if (duplicates === false && textRef.current.value !== "") {
+      let custonspec = {
+        id: textRef.current.value,
+        spec: textRef.current.value,
+      };
       updateCanonItems.push(custonspec);
       setUpdateCanonItems(updateCanonItems);
-      setduplicates(false);
+      setcanonSpecification(textRef.current.value);
+      if (customselectedbookObj !== null)
+        localForage.setItem("custonSpec", customselectedbookObj, function (
+          err
+        ) {
+          localForage.getItem("custonSpec", function (err, value) {
+            console.log("saved in storage db", value);
+          });
+        });
     }
+    setSelectedbook([]);
   };
 
   const selectedBooks = (bookname) => {
@@ -112,6 +174,11 @@ export default function CustomSpecification({
       setSelectedbook(selectedbook);
       setHighlight(!highlight);
     }
+  };
+
+  const handleClose = () => {
+    setcanonSpecification("OT");
+    setCustonOpen(false);
   };
 
   function FormRow() {
@@ -153,20 +220,23 @@ export default function CustomSpecification({
           </Box>
         </DialogTitle>
         <DialogContent dividers>
-          <Box fontWeight={600} m={1}>
-            Enter Name
-          </Box>
-          <div>
-            <TextField
-              className={classes.Specification}
-              variant="outlined"
-              placeholder="Enter Specification Name"
-              value={canonspecName}
-              onChange={(e) => {
-                setCanonspecName(e.target.value);
-              }}
-            />
-          </div>
+          <form>
+            <FormControl component="fieldset">
+              <FormLabel component="legend">
+                <Box fontWeight={600} m={1}>
+                  Canon Specification Name
+                </Box>
+              </FormLabel>
+              <TextField
+                className={classes.Specification}
+                variant="outlined"
+                placeholder="Enter canon specification name"
+                type="text"
+                required
+                inputRef={textRef}
+              />
+            </FormControl>
+          </form>
           <div className={classes.root}>
             <Grid container spacing={1}>
               <Grid container item xs={12} spacing={3}>
@@ -176,8 +246,16 @@ export default function CustomSpecification({
           </div>
         </DialogContent>
         <DialogActions>
-          <Button autoFocus onClick={handleClose} color="primary">
-            Save changes
+          <Button autoFocus onClick={handleClose} variant="contained">
+            Cancel
+          </Button>
+          <Button
+            autoFocus
+            onClick={handleSave}
+            variant="contained"
+            color="primary"
+          >
+            Create
           </Button>
         </DialogActions>
       </Dialog>

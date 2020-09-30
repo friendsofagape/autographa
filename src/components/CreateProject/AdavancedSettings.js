@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Grid,
   Box,
@@ -21,10 +21,13 @@ const canonItems = [
 const AdvancedSetttings = () => {
   const classes = CreateProjectStyles();
   const [canonSpecification, setcanonSpecification] = React.useState("OT");
-  const [content, setContent] = React.useState(OT);
+  const [content, setContent] = React.useState([OT]);
   const [hideplaceholder, setHideplaceholder] = React.useState(false);
   const [custonOpen, setCustonOpen] = React.useState(false);
   const [updateCanonItems, setUpdateCanonItems] = React.useState(canonItems);
+  useEffect(() => {
+    setContent(OT);
+  }, []);
 
   const changeCanonSpecification = (event) => {
     setcanonSpecification(event.target.value);
@@ -42,8 +45,10 @@ const AdvancedSetttings = () => {
         setContent(NT);
         setHideplaceholder(false);
         setCustonOpen(!custonOpen);
+        console.log(custonOpen);
         break;
       default:
+        setHideplaceholder(false);
         return null;
     }
   };
@@ -147,8 +152,10 @@ const AdvancedSetttings = () => {
         setCustonOpen={setCustonOpen}
         allbooks={AllBooks}
         setContent={setContent}
+        canonSpecification={canonSpecification}
         updateCanonItems={updateCanonItems}
         setUpdateCanonItems={setUpdateCanonItems}
+        setcanonSpecification={setcanonSpecification}
       />
     </>
   );
