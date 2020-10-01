@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import FormControl from "@material-ui/core/FormControl";
@@ -33,15 +33,16 @@ const useStyles = makeStyles((theme) => ({
 export default function Login() {
   const classes = useStyles();
   const bgImage = ["img1", "img2", "img3"];
-  const [index, setIndex] = useState(0);
+  const [index, setIndex] = React.useState(0);
   const bgImg = bgImage[index % bgImage.length];
-  const [values, setValues] = useState({
+  const [values, setValues] = React.useState({
     username: "",
     password: "",
     showPassword: false,
   });
-  const [validUser, setValidUser] = useState(false);
-  const [validPassword, setValidPassword] = useState(false);
+  const [validUser, setValidUser] = React.useState(false);
+  const [validPassword, setValidPassword] = React.useState(false);
+  const [logged, setLogged] = React.useState(false);
 
   const handleValidation = () => {
     if (values.username) {
@@ -55,10 +56,10 @@ export default function Login() {
       setValidPassword(true);
     }
   };
-  const handleSubmit = () => {
-    console.log("click");
+  const handleSubmit = (event) => {
+    console.log("click", logged, values);
     handleValidation();
-    console.log(values);
+    setLogged(true);
   };
   const handleUsername = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
@@ -102,6 +103,9 @@ export default function Login() {
                 <Grid item>
                   <TextField
                     required
+                    inputProps={{
+                      "data-testid": "username-textfield",
+                    }}
                     className={classes.margin}
                     id="input-with-icon-textfield"
                     label="Username"
@@ -125,6 +129,7 @@ export default function Login() {
                     onChange={handlePassword("password")}
                     error={validPassword}
                     InputProps={{
+                      "data-testid": "password-textfield",
                       endAdornment: (
                         <InputAdornment position="end">
                           <IconButton
@@ -147,7 +152,11 @@ export default function Login() {
               <Typography variant="caption" align="right" gutterBottom>
                 Forgot Password?
               </Typography>
-              <Button variant="contained" onClick={handleSubmit}>
+              <Button
+                data-testid="login-button"
+                variant="contained"
+                onClick={handleSubmit}
+              >
                 Login
               </Button>
               <Typography variant="caption" gutterBottom>
