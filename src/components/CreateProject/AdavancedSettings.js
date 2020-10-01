@@ -10,7 +10,7 @@ import {
 import { CreateProjectStyles } from "./useStyles/CreateProjectStyles";
 import { AllBooks, NT, OT } from "../../lib/CanonSpecification";
 import CustomSpecification from "./CustomSpecification";
-import { MarkdownViewer } from "./MarkdownViewer";
+import { LicenseSelection } from "./LicenseSelection";
 
 const canonItems = [
   { id: "OT", spec: "Old Testament (OT)" },
@@ -48,17 +48,10 @@ const AdvancedSetttings = () => {
         setContent(NT);
         setHideplaceholder(false);
         setCustonOpen(!custonOpen);
-        console.log(custonOpen);
         break;
       default:
         setHideplaceholder(false);
         return null;
-    }
-  };
-
-  const handleMdViewer = (event) => {
-    if (event.target.value === "md") {
-      setopenmdviewer(true);
     }
   };
 
@@ -136,22 +129,10 @@ const AdvancedSetttings = () => {
                 </FormControl>
               </span>
               <div>
-                <FormControl className={classes.license} component="fieldset">
-                  <FormLabel component="legend">
-                    <Box fontWeight={600} m={1}>
-                      License
-                    </Box>
-                  </FormLabel>
-                  <Select
-                    className={classes.licenseselect}
-                    value="bi"
-                    variant="outlined"
-                    onChange={(event) => handleMdViewer(event)}
-                  >
-                    <MenuItem value={"md"}>MdFile</MenuItem>
-                    <MenuItem value={"bi"}>Bible</MenuItem>
-                  </Select>
-                </FormControl>
+                <LicenseSelection
+                  openmdviewer={openmdviewer}
+                  setopenmdviewer={setopenmdviewer}
+                />
               </div>
             </div>
           </form>
@@ -166,10 +147,6 @@ const AdvancedSetttings = () => {
         updateCanonItems={updateCanonItems}
         setUpdateCanonItems={setUpdateCanonItems}
         setcanonSpecification={setcanonSpecification}
-      />
-      <MarkdownViewer
-        openmdviewer={openmdviewer}
-        setopenmdviewer={setopenmdviewer}
       />
     </>
   );
