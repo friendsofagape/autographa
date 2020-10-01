@@ -1,5 +1,5 @@
 import React from "react";
-const ipcRenderer = window.ipcRenderer;
+const { ipcRenderer } = window.require("electron");
 
 const AutoUpdate = () => {
   const notification = document.getElementById("notification");

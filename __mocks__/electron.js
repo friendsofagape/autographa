@@ -5,7 +5,7 @@ export const electron = {
   shell: jest.fn(),
   dialog: jest.fn(),
   path: jest.fn(),
-  PouchDB: jest.genMockFromModule("pouchdb"),
+  getPath: jest.fn(),
 };
 
 export const remote = {

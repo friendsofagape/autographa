@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import {
   Paper,
   Typography,
@@ -26,43 +25,23 @@ import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import { FormattedMessage } from "react-intl";
 import * as localForage from "localforage";
 import AutographaStore from "../AutographaStore";
+import { logger } from "../../logger";
+import { ProfileStyles } from "./useStyles/ProfileStyles";
+import Router from "next/router";
+import NProgress from "nprogress";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-  },
-  title: {
-    flexGrow: 1,
-  },
-  textfieldsmall: {
-    textAlign: "center",
-    marginLeft: theme.spacing(1),
-    margin: theme.spacing(3),
-    width: 300,
-  },
-  textfieldlong: {
-    textAlign: "center",
-    marginLeft: theme.spacing(1),
-    margin: theme.spacing(3),
-    width: 635,
-  },
-  personalinfo: {
-    margin: theme.spacing(3),
-    float: "center",
-  },
-  avatarlarge: {
-    width: theme.spacing(30),
-    height: theme.spacing(30),
-    marginLeft: theme.spacing(5),
-    marginTop: theme.spacing(20),
-  },
-  avataredits: {
-    marginLeft: theme.spacing(14),
-  },
-  save: {
-    float: "right",
-  },
-}));
+Router.onRouteChangeStart = () => {
+  console.log("ste");
+  NProgress.start();
+};
+
+Router.onRouteChangeComplete = () => {
+  NProgress.done();
+};
+
+Router.onRouteChangeError = () => {
+  NProgress.done();
+};
 
 const region = [
   { id: 1, place: "Delhi, India" },
@@ -72,7 +51,7 @@ const region = [
 ];
 
 const Profile = () => {
-  const classes = useStyles();
+  const classes = ProfileStyles();
   const [values, setValues] = React.useState({
     password: "",
     showPassword: false,
@@ -162,11 +141,12 @@ const Profile = () => {
     localForage.setItem("profileSettings", profileSettings, function (err) {
       localForage.getItem("profileSettings", function (err, value) {
         setSaved(value);
+        logger.info(`profile.js, Profile fields are changed`);
+        logger.debug(`profile.js, Profile fields saved successfully`);
       });
     });
     localForage.getItem("applang", function (err, value) {
       localForage.setItem("applang", appLang, function (err) {
-        console.log("App Language Changed");
         window.location.reload();
       });
     });
