@@ -126,7 +126,7 @@ Let us know if face any bugs/problems by opening an [issue](https://github.com/f
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 [contributors-shield]: https://img.shields.io/github/contributors/friendsofagape/autographa.svg?style=flat-square
-[contributors-url]: https://github.com/othneildrew/Best-README-Template/graphs/contributors
+[contributors-url]: https://github.com/friendsofagape/autographa/graphs/contributors
 [issues-shield]: https://img.shields.io/github/issues/friendsofagape/autographa.svg?style=flat-square
 [issues-url]: https://github.com/friendsofagape/autographa/issues
 [license-shield]: https://img.shields.io/github/license/friendsofagape/autographa.svg?style=flat-square
