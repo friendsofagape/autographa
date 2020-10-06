@@ -114,6 +114,7 @@ This project is licensed under the MIT License. See [LICENSE](https://github.com
 <!-- CONTACT -->
 ## Contact
 Friends of Agape - mathew.joel@protonmail.com
+
 Let us know if face any bugs/problems by opening an [issue](https://github.com/friendsofagape/autographa/issues) in GitHub. We'll do our best to be prompt in our response. 
 
 <!-- ACKNOWLEDGEMENTS -->
