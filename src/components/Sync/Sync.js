@@ -89,36 +89,12 @@ function Sync(props) {
   const { classes } = props;
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
-  const projects = [
-    {
-      project: "Project Malayalam",
-      files: ["Gen.usfm", "Exo.usfm", "Readme.md"],
-    },
-    {
-      project: "Project Arabic",
-      files: [
-        "Lev.usfm",
-        "Psa.usfm",
-        "Isa.usfm",
-        "Mat.usfm",
-        "Luk.usfm",
-        "Tit.usfm",
-      ],
-    },
-    {
-      project: "Project English",
-      files: ["Mat.usfm", "Luk.usfm", "Tit.usfm"],
-    },
-    {
-      project: "Project Urdu",
-      files: [],
-    },
-  ];
   const [index, setIndex] = React.useState(-1);
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-  const handleProjects = (index, value) => {
+  const handleProjects = (index) => {
+    console.log("index", index);
     setIndex(index);
   };
   return (
@@ -130,12 +106,21 @@ function Sync(props) {
           </div>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails className={classes.details}>
-          <div className={classes.column}>
-            {projects.map((value, index) => (
+          <div
+            className={classes.column}
+            inputProps={{
+              "data-testid": "autographa-projects",
+            }}
+          >
+            {props.projects.map((value, index) => (
               <div>
                 <Button
+                  inputProps={{
+                    "data-testid": "ag-project",
+                  }}
+                  id="project-id"
                   key={index}
-                  onClick={(event) => handleProjects(index, value)}
+                  onClick={(event) => handleProjects(index)}
                   startIcon={<FolderOpenOutlinedIcon />}
                 >
                   {value.project}
@@ -146,10 +131,11 @@ function Sync(props) {
 
           <div className={classNames(classes.column, classes.helper)}>
             <Typography variant="caption">
-              {index !== -1 ? (
-                projects[index].files.map((value, index) => (
+              {index !== -1 && props.projects[index] !== undefined ? (
+                props.projects[index].files.map((value, index) => (
                   <div>
                     <Button
+                      id="file-id"
                       key={index}
                       startIcon={<InsertDriveFileOutlinedIcon />}
                     >
