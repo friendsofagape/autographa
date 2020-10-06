@@ -87,7 +87,7 @@ We really value our contributors whether they helped fix a bug, built a feature,
 The process for submitting pull requests.
 1. Fork the Project
 2. Create your Feature Branch (`git checkout -b feature/NewFeature`)
-3. Make sure your write logger as you make changes
+3. Create [logs](https://github.com/winstonjs/winston#readme) as you start making changes
 ```
 Logger level: 
 Production => warn
