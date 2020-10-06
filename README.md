@@ -103,7 +103,7 @@ Usage: logger.[level]("<filename>, <message>")
 6. Run `npm run lint:fix` for code to adapt our linting rules 
 7. Commit your Changes (`git commit -m 'Add some NewFeatures'`)
 8. Push to the Branch (`git push origin feature/NewFeature`)
-9. Open a Pull Request and make sure all checks passed
+9. Open a Pull Request and make sure all checks have passed
 
 
 <!-- LICENSE -->
