@@ -108,7 +108,7 @@ Usage: logger.[level]("<filename>, <message>")
 
 <!-- LICENSE -->
 ## License
-This project is licensed under the GNU GENERAL PUBLIC LICENSE (Version 3) License. See [LICENSE](https://github.com/friendsofagape/autographa-live/blob/master/LICENSE) for more details.
+This project is licensed under the MIT License. See [LICENSE](https://github.com/friendsofagape/autographa/blob/main/LICENSE) for more details.
 
 
 <!-- CONTACT -->
