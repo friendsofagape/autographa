@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { withStyles, useTheme } from "@material-ui/core/styles";
-import classNames from "classnames";
 import ExpansionPanel from "@material-ui/core/ExpansionPanel";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
@@ -94,7 +93,6 @@ function Sync(props) {
     setValue(newValue);
   };
   const handleProjects = (index) => {
-    console.log("index", index);
     setIndex(index);
   };
   return (
@@ -115,9 +113,6 @@ function Sync(props) {
             {props.projects.map((value, index) => (
               <div>
                 <Button
-                  inputProps={{
-                    "data-testid": "ag-project",
-                  }}
                   id="project-id"
                   key={index}
                   onClick={(event) => handleProjects(index)}
@@ -129,7 +124,7 @@ function Sync(props) {
             ))}
           </div>
 
-          <div className={classNames(classes.column, classes.helper)}>
+          <div className={(classes.column, classes.helper)}>
             <Typography variant="caption">
               {index !== -1 && props.projects[index] !== undefined ? (
                 props.projects[index].files.map((value, index) => (
