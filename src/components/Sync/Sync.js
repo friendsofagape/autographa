@@ -1,10 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { withStyles, useTheme } from "@material-ui/core/styles";
-import classNames from "classnames";
-import ExpansionPanel from "@material-ui/core/ExpansionPanel";
-import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
-import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
+import { useTheme, makeStyles } from "@material-ui/core/styles";
+import Accordion from "@material-ui/core/Accordion";
+import AccordionDetails from "@material-ui/core/AccordionDetails";
+import AccordionSummary from "@material-ui/core/AccordionSummary";
 import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
@@ -17,10 +16,9 @@ import Box from "@material-ui/core/Box";
 import SyncOutlinedIcon from "@material-ui/icons/SyncOutlined";
 import Gitea from "./Gitea/Gitea";
 import { GitHub } from "@material-ui/icons";
-const styles = (theme) => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
-    scroll: "paper",
   },
   heading: {
     fontSize: theme.typography.pxToRem(15),
@@ -38,11 +36,11 @@ const styles = (theme) => ({
     alignItems: "center",
   },
   column: {
-    flexBasis: "50%",
+    flexBasis: "33.33%",
   },
   helper: {
     borderLeft: `2px solid ${theme.palette.divider}`,
-    padding: `${theme.spacing.unit}px ${theme.spacing.unit * 2}px`,
+    padding: theme.spacing(1, 2),
   },
   link: {
     color: theme.palette.primary.main,
@@ -51,7 +49,8 @@ const styles = (theme) => ({
       textDecoration: "underline",
     },
   },
-});
+}));
+
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -85,8 +84,8 @@ function a11yProps(index) {
   };
 }
 
-function Sync(props) {
-  const { classes } = props;
+export default function Sync(props) {
+  const classes = useStyles();
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
   const [index, setIndex] = React.useState(-1);
@@ -94,30 +93,21 @@ function Sync(props) {
     setValue(newValue);
   };
   const handleProjects = (index) => {
-    console.log("index", index);
     setIndex(index);
   };
   return (
     <div className={classes.root}>
-      <ExpansionPanel defaultExpanded>
-        <ExpansionPanelSummary>
+      <Accordion defaultExpanded>
+        <AccordionSummary aria-controls="panel1c-content" id="panel1c-header">
           <div className={classes.column}>
             <Typography variant="h5">Autographa Projects</Typography>
           </div>
-        </ExpansionPanelSummary>
-        <ExpansionPanelDetails className={classes.details}>
-          <div
-            className={classes.column}
-            inputProps={{
-              "data-testid": "autographa-projects",
-            }}
-          >
+        </AccordionSummary>
+        <AccordionDetails className={classes.details}>
+          <div className={classes.column}>
             {props.projects.map((value, index) => (
-              <div>
+              <div key={index}>
                 <Button
-                  inputProps={{
-                    "data-testid": "ag-project",
-                  }}
                   id="project-id"
                   key={index}
                   onClick={(event) => handleProjects(index)}
@@ -129,7 +119,7 @@ function Sync(props) {
             ))}
           </div>
 
-          <div className={classNames(classes.column, classes.helper)}>
+          <div className={(classes.column, classes.helper)}>
             <Typography variant="caption">
               {index !== -1 && props.projects[index] !== undefined ? (
                 props.projects[index].files.map((value, index) => (
@@ -148,8 +138,8 @@ function Sync(props) {
               )}
             </Typography>
           </div>
-        </ExpansionPanelDetails>
-      </ExpansionPanel>
+        </AccordionDetails>
+      </Accordion>
       <div className={classes.root}>
         <Paper>
           <AppBar position="static" color="default">
@@ -186,9 +176,3 @@ function Sync(props) {
     </div>
   );
 }
-
-Sync.propTypes = {
-  classes: PropTypes.object.isRequired,
-};
-
-export default withStyles(styles)(Sync);
