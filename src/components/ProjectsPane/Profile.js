@@ -81,6 +81,7 @@ const Profile = () => {
   };
 
   const openFileDialogAvatarData = async ({ target }) => {
+    logger.debug("Profile.js, dialog opens to update avatar");
     if (target.files[0] !== undefined) {
       const fileReader = new FileReader();
       fileReader.readAsDataURL(target.files[0]);
@@ -89,6 +90,10 @@ const Profile = () => {
           localForage.getItem("avatarPath", function (err, value) {
             setavatarPathImport(value);
             AutographaStore.avatarPath = value;
+            logger.debug("Profile.js, updated avatar");
+            if (err) {
+              logger.error("Profile.js, failed to update avatar");
+            }
           });
         });
       };
@@ -96,11 +101,18 @@ const Profile = () => {
   };
 
   const removeAvatar = () => {
+    logger.debug("Profile.js, event to remove avatar");
     localForage.setItem("avatarPath", "", function (err) {
       localForage.getItem("avatarPath", function (err, value) {
         setavatarPathImport(value);
         AutographaStore.avatarPath = value;
+        if (err) {
+          logger.error("Profile.js, error while removing avatar");
+        }
       });
+      if (err) {
+        logger.error("Profile.js, error while removing avatar");
+      }
     });
   };
 
@@ -108,6 +120,9 @@ const Profile = () => {
     localForage.getItem("avatarPath", function (err, value) {
       setavatarPathImport(value);
       AutographaStore.avatarPath = value;
+      if (err) {
+        logger.error("Profile.js, error in setting avatar on mount");
+      }
     });
   }, []);
 
@@ -120,7 +135,11 @@ const Profile = () => {
           setEmail(fields.email);
           setRegion(fields.region);
           setValues({ ...values, password: fields.password });
+          logger.debug("Profile.js, setting the saved profile values");
         });
+      if (err) {
+        logger.error("Profile.js, error in getting saved values");
+      }
     });
     // eslint-disable-next-line
   },[])
@@ -141,12 +160,18 @@ const Profile = () => {
     localForage.setItem("profileSettings", profileSettings, function (err) {
       localForage.getItem("profileSettings", function (err, value) {
         setSaved(value);
-        logger.info(`profile.js, Profile fields are changed`);
-        logger.debug(`profile.js, Profile fields saved successfully`);
+        logger.debug(`Profile.js, Profile fields saved successfully`);
+        if (err) {
+          logger.error("Profile.js, Failed in saving field values");
+        }
       });
     });
     localForage.getItem("applang", function (err, value) {
       localForage.setItem("applang", appLang, function (err) {
+        if (err) {
+          logger.error("Profile.js, Failed to change language");
+        }
+        logger.debug("Profile.js, Language changed app reloads");
         window.location.reload();
       });
     });

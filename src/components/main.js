@@ -79,7 +79,7 @@ const Main = () => {
       // from the offline store.
       if (!value) {
         logger.error(
-          "_main.js_, failed to fetch language from localforage, setting to default language"
+          "main.js, failed to fetch language from localforage, setting to default language"
         );
         return "en";
       } else return value;
