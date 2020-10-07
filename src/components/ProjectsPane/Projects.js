@@ -19,7 +19,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import InfoIcon from "@material-ui/icons/Info";
 import moment from "moment";
 import { ProjectStyles, useToolbarStyles } from "./useStyles/ProjectStyles";
-// import { logger } from "../../logger";
+import { logger } from "../../logger";
 
 moment.updateLocale("en", {
   relativeTime: {
@@ -139,7 +139,6 @@ EnhancedTableHead.propTypes = {
   onRequestSort: PropTypes.func.isRequired,
   order: PropTypes.oneOf(["asc", "desc"]).isRequired,
   orderBy: PropTypes.string.isRequired,
-  //   rowCount: PropTypes.number.isRequired,
 };
 
 const EnhancedTableToolbar = ({ title }) => {
@@ -180,18 +179,25 @@ export default function Projects(props) {
   const [hoverIndexUnStarred, sethoverIndexUnStarred] = React.useState("");
 
   const handleRequestSort = (event, property) => {
+    logger.debug(
+      `project.js, calling starred stable sort with value of orderBy=${property}`
+    );
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
   };
 
   const handleRequestSortUnstarred = (event, property) => {
+    logger.debug(
+      `project.js, calling unstarred stable sort with value of orderBy=${property}`
+    );
     const isAsc = orderByUnstarred === property && orderUnstarred === "asc";
     setOrderUnstarred(isAsc ? "desc" : "asc");
     setOrderByUnstarred(property);
   };
 
   const handleClickStarred = (event, name, property) => {
+    logger.debug(`project.js, calling starred to be unstarred and viceversa`);
     property === "starred" ? setactive("starred") : setactive("unstarred");
     let selectedIndex =
       property === "starred"
@@ -205,11 +211,12 @@ export default function Projects(props) {
   };
 
   const handleDelete = (event, name, property) => {
+    logger.debug(`project.js, calling handleDelete event`);
     let selectedIndex =
       property === "starred"
         ? starredrow.findIndex((x) => x.name === name)
         : unstarredrow.findIndex((x) => x.name === name);
-
+    logger.debug(`project.js, removing the element with name=${name}`);
     property === "starred"
       ? starredrow.splice(selectedIndex, 1)
       : unstarredrow.splice(selectedIndex, 1);
