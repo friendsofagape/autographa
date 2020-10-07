@@ -14,6 +14,7 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import DescriptionIcon from "@material-ui/icons/Description";
+import SettingsIcon from "@material-ui/icons/Settings";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import { FormattedMessage } from "react-intl";
 import { Box, Button, Avatar } from "@material-ui/core";
@@ -160,6 +161,31 @@ export default function ProjectsDrawer() {
                         primary={message}
                         style={{
                           color: title === "Projects" ? "#212121" : "#ffffff",
+                        }}
+                      />
+                    )}
+                  </FormattedMessage>
+                </ListItem>
+              </div>
+              <div
+                className={classes.avatarplacement}
+                style={{
+                  backgroundColor: title === "Sync" ? "#ffffff" : "#212121",
+                }}
+              >
+                <ListItem onClick={() => titlechange("Sync")} button>
+                  <ListItemIcon>
+                    <SettingsIcon
+                      fontSize="large"
+                      color={title === "Sync" ? "primary" : "secondary"}
+                    />
+                  </ListItemIcon>
+                  <FormattedMessage id="label-Sync">
+                    {(message) => (
+                      <ListItemText
+                        primary={message}
+                        style={{
+                          color: title === "Sync" ? "#212121" : "#ffffff",
                         }}
                       />
                     )}
