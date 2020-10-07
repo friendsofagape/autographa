@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import FormControl from "@material-ui/core/FormControl";
 import TextField from "@material-ui/core/TextField";
@@ -35,9 +35,9 @@ const useStyles = makeStyles((theme) => ({
 export default function Signup() {
   const classes = useStyles();
   const bgImage = ["img1", "img2", "img3"];
-  const [index, setIndex] = useState(0);
+  const [index, setIndex] = React.useState(0);
   const bgImg = bgImage[index % bgImage.length];
-  const [values, setValues] = useState({
+  const [values, setValues] = React.useState({
     firstname: "",
     lastname: "",
     email: "",
@@ -46,8 +46,8 @@ export default function Signup() {
     organization: "",
     selectedregion: "",
   });
-  const [individual, setIndividual] = useState("true");
-  const [valid, setValid] = useState({
+  const [individual, setIndividual] = React.useState("true");
+  const [valid, setValid] = React.useState({
     validfirstname: false,
     validlastname: false,
     validemail: false,
@@ -129,7 +129,7 @@ export default function Signup() {
               <Typography variant="subtitle2" gutterBottom>
                 Be part of a great community & have fun with us
               </Typography>
-              <Typography>
+              <Typography component="span">
                 <Grid container spacing={1} alignItems="flex-end">
                   <Grid item>
                     <PersonOutlineIcon />
@@ -137,7 +137,9 @@ export default function Signup() {
                   <Grid item>
                     <TextField
                       className={classes.margin}
-                      id="input-with-icon-textfield"
+                      inputProps={{
+                        "data-testid": "firstnamefield",
+                      }}
                       label="First Name"
                       onChange={handleFirstname("firstname")}
                       error={valid.validfirstname}
@@ -146,7 +148,9 @@ export default function Signup() {
                   <Grid item>
                     <TextField
                       className={classes.margin}
-                      id="input-with-icon-textfield"
+                      inputProps={{
+                        "data-testid": "lastnamefield",
+                      }}
                       label="Last Name"
                       onChange={handleLastname("lastname")}
                       error={valid.validlastname}
@@ -161,7 +165,9 @@ export default function Signup() {
                 <Grid item>
                   <TextField
                     className={classes.margin}
-                    id="input-with-icon-textfield"
+                    inputProps={{
+                      "data-testid": "emailfield",
+                    }}
                     label="Enter Your Email"
                     onChange={handleEmail("email")}
                     error={valid.validemail}
@@ -170,6 +176,7 @@ export default function Signup() {
               </Grid>
               <RadioGroup
                 row
+                data-testid="radioButton"
                 style={{ justifyContent: "center" }}
                 value={individual}
                 onChange={handleRadio("individual")}
@@ -192,7 +199,9 @@ export default function Signup() {
                 <Grid item>
                   <TextField
                     className={classes.margin}
-                    id="input-with-icon-textfield"
+                    inputProps={{
+                      "data-testid": "orgfield",
+                    }}
                     label="Name of the Organization"
                     error={valid.validorganization}
                     onChange={handleOrganization("organization")}
@@ -200,7 +209,7 @@ export default function Signup() {
                   />
                 </Grid>
               </Grid>
-              <Typography>
+              <Typography component="span">
                 <Grid container spacing={1} alignItems="flex-end">
                   <Grid item>
                     <LanguageOutlinedIcon />
@@ -225,7 +234,7 @@ export default function Signup() {
                   </Grid>
                 </Grid>
               </Typography>
-              <Typography>
+              <Typography component="span">
                 <Grid container spacing={1} alignItems="flex-end">
                   <Grid item>
                     <LockOpenIcon />
@@ -233,7 +242,9 @@ export default function Signup() {
                   <Grid item>
                     <TextField
                       className={classes.margin}
-                      id="standard-adornment-password"
+                      inputProps={{
+                        "data-testid": "passwordfield",
+                      }}
                       label="Password"
                       type={"password"}
                       value={values.password}
@@ -244,7 +255,9 @@ export default function Signup() {
                   <Grid item>
                     <TextField
                       className={classes.margin}
-                      id="standard-adornment-password"
+                      inputProps={{
+                        "data-testid": "confirmpassfield",
+                      }}
                       label="Confirm Password"
                       type={"password"}
                       value={values.confirmpassword}
@@ -254,7 +267,11 @@ export default function Signup() {
                   </Grid>
                 </Grid>
               </Typography>
-              <Button variant="contained" onClick={handleSubmit}>
+              <Button
+                data-testid="submitButton"
+                variant="contained"
+                onClick={handleSubmit}
+              >
                 Sign Up
               </Button>
               <Typography variant="caption" gutterBottom>
