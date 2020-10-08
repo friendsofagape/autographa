@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import FormControl from "@material-ui/core/FormControl";
 import TextField from "@material-ui/core/TextField";
@@ -15,6 +15,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
+import { logger } from "../../logger";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -34,9 +35,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 export default function Signup() {
   const classes = useStyles();
-  const bgImage = ["img1", "img2", "img3"];
-  const [index, setIndex] = React.useState(0);
-  const bgImg = bgImage[index % bgImage.length];
+  // const bgImage = ["img1", "img2", "img3"];
+  // const [index, setIndex] = React.useState(0);
+  // const bgImg = bgImage[index % bgImage.length];
   const [values, setValues] = React.useState({
     firstname: "",
     lastname: "",
@@ -84,19 +85,27 @@ export default function Signup() {
   };
 
   const handleSubmit = () => {
-    setValid(false);
-    console.log("click");
+    logger.debug(`Singup.js, Into handleSubmit`);
     handleValidation();
+    Object.keys(valid).forEach(function (key) {
+      if (valid[key] === true) {
+        console.log("Failed");
+        logger.error(`Singup.js, Validation Failed`);
+        return;
+      }
+    });
+    logger.debug(`Singup.js, End handleSubmit`);
     console.log(values);
   };
   const handleValidation = () => {
+    logger.debug(`Singup.js, Into handleValidation`);
     if (!values.firstname) {
       setValid({ ...valid, validfirstname: true });
     } else if (!values.lastname) {
       setValid({ ...valid, validlastname: true });
     } else if (!values.email) {
       setValid({ ...valid, validemail: true });
-    } else if (!values.organization && values.individual === "false") {
+    } else if (!values.organization && individual === "false") {
       setValid({ ...valid, validorganization: true });
     } else if (!values.selectedregion) {
       setValid({ ...valid, validselectedregion: true });
@@ -107,17 +116,18 @@ export default function Signup() {
     } else {
       setValid(false);
     }
+    logger.debug(`Singup.js, End handleValidation`);
   };
-  useEffect(() => {
-    const timer = setInterval(() => setIndex((i) => i + 1), 5000);
-    return () => clearInterval(timer);
-  }, []);
+  // useEffect(() => {
+  //   const timer = setInterval(() => setIndex((i) => i + 1), 5000);
+  //   return () => clearInterval(timer);
+  // }, []);
 
   return (
     <div
-      style={{
-        backgroundImage: `url(${bgImg})`,
-      }}
+    // style={{
+    //   backgroundImage: `url(${bgImg})`,
+    // }}
     >
       <Grid container className={classes.root} justify="center">
         <Grid item xs={5}>
