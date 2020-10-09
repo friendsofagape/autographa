@@ -1,8 +1,8 @@
-name: Lint
+name: Lint Check
 on: [push]
 jobs:
     build:
-        name: Test
+        name: Test Run
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v2
