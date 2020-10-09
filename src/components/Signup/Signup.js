@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import FormControl from "@material-ui/core/FormControl";
 import TextField from "@material-ui/core/TextField";
@@ -15,6 +15,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
+import { logger } from "../../logger";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -34,10 +35,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 export default function Signup() {
   const classes = useStyles();
-  const bgImage = ["img1", "img2", "img3"];
-  const [index, setIndex] = useState(0);
-  const bgImg = bgImage[index % bgImage.length];
-  const [values, setValues] = useState({
+  // const bgImage = ["img1", "img2", "img3"];
+  // const [index, setIndex] = React.useState(0);
+  // const bgImg = bgImage[index % bgImage.length];
+  const [values, setValues] = React.useState({
     firstname: "",
     lastname: "",
     email: "",
@@ -46,8 +47,8 @@ export default function Signup() {
     organization: "",
     selectedregion: "",
   });
-  const [individual, setIndividual] = useState("true");
-  const [valid, setValid] = useState({
+  const [individual, setIndividual] = React.useState("true");
+  const [valid, setValid] = React.useState({
     validfirstname: false,
     validlastname: false,
     validemail: false,
@@ -84,19 +85,27 @@ export default function Signup() {
   };
 
   const handleSubmit = () => {
-    setValid(false);
-    console.log("click");
+    logger.debug(`Singup.js, Into handleSubmit`);
     handleValidation();
+    Object.keys(valid).forEach(function (key) {
+      if (valid[key] === true) {
+        console.log("Failed");
+        logger.error(`Singup.js, Validation Failed`);
+        return;
+      }
+    });
+    logger.debug(`Singup.js, End handleSubmit`);
     console.log(values);
   };
   const handleValidation = () => {
+    logger.debug(`Singup.js, Into handleValidation`);
     if (!values.firstname) {
       setValid({ ...valid, validfirstname: true });
     } else if (!values.lastname) {
       setValid({ ...valid, validlastname: true });
     } else if (!values.email) {
       setValid({ ...valid, validemail: true });
-    } else if (!values.organization && values.individual === "false") {
+    } else if (!values.organization && individual === "false") {
       setValid({ ...valid, validorganization: true });
     } else if (!values.selectedregion) {
       setValid({ ...valid, validselectedregion: true });
@@ -107,17 +116,18 @@ export default function Signup() {
     } else {
       setValid(false);
     }
+    logger.debug(`Singup.js, End handleValidation`);
   };
-  useEffect(() => {
-    const timer = setInterval(() => setIndex((i) => i + 1), 5000);
-    return () => clearInterval(timer);
-  }, []);
+  // useEffect(() => {
+  //   const timer = setInterval(() => setIndex((i) => i + 1), 5000);
+  //   return () => clearInterval(timer);
+  // }, []);
 
   return (
     <div
-      style={{
-        backgroundImage: `url(${bgImg})`,
-      }}
+    // style={{
+    //   backgroundImage: `url(${bgImg})`,
+    // }}
     >
       <Grid container className={classes.root} justify="center">
         <Grid item xs={5}>
@@ -129,7 +139,7 @@ export default function Signup() {
               <Typography variant="subtitle2" gutterBottom>
                 Be part of a great community & have fun with us
               </Typography>
-              <Typography>
+              <Typography component="span">
                 <Grid container spacing={1} alignItems="flex-end">
                   <Grid item>
                     <PersonOutlineIcon />
@@ -137,7 +147,9 @@ export default function Signup() {
                   <Grid item>
                     <TextField
                       className={classes.margin}
-                      id="input-with-icon-textfield"
+                      inputProps={{
+                        "data-testid": "firstnamefield",
+                      }}
                       label="First Name"
                       onChange={handleFirstname("firstname")}
                       error={valid.validfirstname}
@@ -146,7 +158,9 @@ export default function Signup() {
                   <Grid item>
                     <TextField
                       className={classes.margin}
-                      id="input-with-icon-textfield"
+                      inputProps={{
+                        "data-testid": "lastnamefield",
+                      }}
                       label="Last Name"
                       onChange={handleLastname("lastname")}
                       error={valid.validlastname}
@@ -161,7 +175,9 @@ export default function Signup() {
                 <Grid item>
                   <TextField
                     className={classes.margin}
-                    id="input-with-icon-textfield"
+                    inputProps={{
+                      "data-testid": "emailfield",
+                    }}
                     label="Enter Your Email"
                     onChange={handleEmail("email")}
                     error={valid.validemail}
@@ -170,6 +186,7 @@ export default function Signup() {
               </Grid>
               <RadioGroup
                 row
+                data-testid="radioButton"
                 style={{ justifyContent: "center" }}
                 value={individual}
                 onChange={handleRadio("individual")}
@@ -192,7 +209,9 @@ export default function Signup() {
                 <Grid item>
                   <TextField
                     className={classes.margin}
-                    id="input-with-icon-textfield"
+                    inputProps={{
+                      "data-testid": "orgfield",
+                    }}
                     label="Name of the Organization"
                     error={valid.validorganization}
                     onChange={handleOrganization("organization")}
@@ -200,7 +219,7 @@ export default function Signup() {
                   />
                 </Grid>
               </Grid>
-              <Typography>
+              <Typography component="span">
                 <Grid container spacing={1} alignItems="flex-end">
                   <Grid item>
                     <LanguageOutlinedIcon />
@@ -225,7 +244,7 @@ export default function Signup() {
                   </Grid>
                 </Grid>
               </Typography>
-              <Typography>
+              <Typography component="span">
                 <Grid container spacing={1} alignItems="flex-end">
                   <Grid item>
                     <LockOpenIcon />
@@ -233,7 +252,9 @@ export default function Signup() {
                   <Grid item>
                     <TextField
                       className={classes.margin}
-                      id="standard-adornment-password"
+                      inputProps={{
+                        "data-testid": "passwordfield",
+                      }}
                       label="Password"
                       type={"password"}
                       value={values.password}
@@ -244,7 +265,9 @@ export default function Signup() {
                   <Grid item>
                     <TextField
                       className={classes.margin}
-                      id="standard-adornment-password"
+                      inputProps={{
+                        "data-testid": "confirmpassfield",
+                      }}
                       label="Confirm Password"
                       type={"password"}
                       value={values.confirmpassword}
@@ -254,7 +277,11 @@ export default function Signup() {
                   </Grid>
                 </Grid>
               </Typography>
-              <Button variant="contained" onClick={handleSubmit}>
+              <Button
+                data-testid="submitButton"
+                variant="contained"
+                onClick={handleSubmit}
+              >
                 Sign Up
               </Button>
               <Typography variant="caption" gutterBottom>
