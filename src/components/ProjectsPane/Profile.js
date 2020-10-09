@@ -27,21 +27,7 @@ import * as localForage from "localforage";
 import AutographaStore from "../AutographaStore";
 import { logger } from "../../logger";
 import { ProfileStyles } from "./useStyles/ProfileStyles";
-import Router from "next/router";
-import NProgress from "nprogress";
-
-Router.onRouteChangeStart = () => {
-  console.log("ste");
-  NProgress.start();
-};
-
-Router.onRouteChangeComplete = () => {
-  NProgress.done();
-};
-
-Router.onRouteChangeError = () => {
-  NProgress.done();
-};
+import useUpdateValidator from "../Validation/useUpdatevalidator";
 
 const region = [
   { id: 1, place: "Delhi, India" },
@@ -63,9 +49,17 @@ const Profile = () => {
   const [email, setEmail] = React.useState("");
   const [selregion, setRegion] = React.useState("");
   const [saved, setSaved] = React.useState("");
+  const {
+    formValid,
+    errorCount,
+    errors,
+    handleChangeFields,
+    handleSubmitFields,
+  } = useUpdateValidator();
 
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
+    handleChangeFields(event);
   };
 
   const handleClickShowPassword = () => {
@@ -145,7 +139,8 @@ const Profile = () => {
   },[])
 
 
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
+    handleSubmitFields(e);
     const profileSettings = [
       {
         password: values.password,
@@ -157,24 +152,26 @@ const Profile = () => {
       },
     ];
     if (!saved) setSaved(profileSettings);
-    localForage.setItem("profileSettings", profileSettings, function (err) {
-      localForage.getItem("profileSettings", function (err, value) {
-        setSaved(value);
-        logger.debug(`Profile.js, Profile fields saved successfully`);
-        if (err) {
-          logger.error("Profile.js, Failed in saving field values");
-        }
+    if (errorCount !== null && formValid) {
+      localForage.setItem("profileSettings", profileSettings, function (err) {
+        localForage.getItem("profileSettings", function (err, value) {
+          setSaved(value);
+          logger.debug(`Profile.js, Profile fields saved successfully`);
+          if (err) {
+            logger.error("Profile.js, Failed in saving field values");
+          }
+        });
       });
-    });
-    localForage.getItem("applang", function (err, value) {
-      localForage.setItem("applang", appLang, function (err) {
-        if (err) {
-          logger.error("Profile.js, Failed to change language");
-        }
-        logger.debug("Profile.js, Language changed app reloads");
-        window.location.reload();
+      localForage.getItem("applang", function (err, value) {
+        localForage.setItem("applang", appLang, function (err) {
+          if (err) {
+            logger.error("Profile.js, Failed to change language");
+          }
+          logger.debug("Profile.js, Language changed app reloads");
+          window.location.reload();
+        });
       });
-    });
+    }
   };
 
   return (
@@ -208,6 +205,7 @@ const Profile = () => {
               className={classes.personalinfo}
               noValidate
               autoComplete="off"
+              onSubmit={(e) => handleSubmit(e)}
             >
               <Typography
                 className={classes.title}
@@ -221,15 +219,21 @@ const Profile = () => {
               <FormattedMessage id="label-first-name">
                 {(message) => (
                   <TextField
+                    // error={errors.namefield === "" ? false : true}
                     className={classes.textfieldsmall}
                     label={message}
+                    name="namefield"
                     variant="outlined"
                     type="text"
                     inputProps={{
                       "data-testid": "firstnamefield",
                     }}
                     value={firstname}
-                    onChange={(e) => setFirstname(e.target.value)}
+                    helperText={errors.namefield}
+                    onChange={(e) => {
+                      setFirstname(e.target.value);
+                      handleChangeFields(e);
+                    }}
                   />
                 )}
               </FormattedMessage>
@@ -238,12 +242,17 @@ const Profile = () => {
                   <TextField
                     className={classes.textfieldsmall}
                     label={message}
+                    name="lastname"
                     variant="outlined"
                     inputProps={{
                       "data-testid": "lastnamefield",
                     }}
                     value={lastname}
-                    onChange={(e) => setLastname(e.target.value)}
+                    helperText={errors.lastname}
+                    onChange={(e) => {
+                      setLastname(e.target.value);
+                      handleChangeFields(e);
+                    }}
                   />
                 )}
               </FormattedMessage>
@@ -253,12 +262,17 @@ const Profile = () => {
                     <TextField
                       className={classes.textfieldlong}
                       label={message}
+                      name="email"
                       variant="outlined"
                       inputProps={{
                         "data-testid": "emailfield",
                       }}
                       value={email}
-                      onChange={(e) => setEmail(e.target.value)}
+                      helperText={errors.email}
+                      onChange={(e) => {
+                        setEmail(e.target.value);
+                        handleChangeFields(e);
+                      }}
                     />
                   )}
                 </FormattedMessage>
@@ -306,6 +320,7 @@ const Profile = () => {
                     id="outlined-adornment-password"
                     type={values.showPassword ? "text" : "password"}
                     value={values.password}
+                    name="password"
                     onChange={handleChange("password")}
                     inputProps={{
                       "data-testid": "passwordbox",
@@ -328,6 +343,7 @@ const Profile = () => {
                     }
                     labelWidth={70}
                   />
+                  <span>{errors.password}</span>
                 </FormControl>
               </div>
               <Typography
@@ -363,7 +379,7 @@ const Profile = () => {
                 variant="contained"
                 color="primary"
                 data-testid="submit-button"
-                onClick={handleSubmit}
+                type="submit"
               >
                 Save
               </Button>
