@@ -15,6 +15,9 @@ jobs:
                   npm --version
             - name: set @bitregistry translation-help
               run: npm config set '@bit:registry' https://node.bit.dev
+            
+            - name: npm install
+              run: npm ci
 
             - name: run lint
               run: npm run eslint:github-action
