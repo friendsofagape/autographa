@@ -14,6 +14,7 @@ import {
 import clsx from "clsx";
 import { CreateProjectStyles } from "./useStyles/CreateProjectStyles";
 import { AutoComplete } from "./AutoComplete";
+import useUpdateValidator from "../Validation/useUpdatevalidator";
 
 const version = [
   { id: 1, value: "IRV" },
@@ -40,7 +41,8 @@ function StyledRadio(props) {
 
 const GeneralSettting = () => {
   const classes = CreateProjectStyles();
-
+  const [biblename, setBiblename] = React.useState("");
+  const { errors, handleChangeFields } = useUpdateValidator();
   return (
     <>
       <Grid container spacing={3}>
@@ -73,7 +75,14 @@ const GeneralSettting = () => {
                     <TextField
                       className={classes.biblename}
                       variant="outlined"
+                      name="namefield"
                       placeholder="Enter Bible Name"
+                      value={biblename}
+                      helperText={errors.namefield}
+                      onChange={(e) => {
+                        setBiblename(e.target.value);
+                        handleChangeFields(e);
+                      }}
                     />
                   </div>
                 </FormControl>
