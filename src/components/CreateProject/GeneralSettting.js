@@ -43,7 +43,6 @@ const GeneralSettting = () => {
   const classes = CreateProjectStyles();
   const [biblename, setBiblename] = React.useState("");
   const { errors, handleChangeFields } = useUpdateValidator();
-  console.log(errors);
   return (
     <>
       <Grid container spacing={3}>
@@ -78,6 +77,7 @@ const GeneralSettting = () => {
                       variant="outlined"
                       name="namefield"
                       placeholder="Enter Bible Name"
+                      value={biblename}
                       helperText={errors.namefield}
                       onChange={(e) => {
                         setBiblename(e.target.value);
