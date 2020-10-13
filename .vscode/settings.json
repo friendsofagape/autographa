@@ -4,15 +4,11 @@
 	},
 	"editor.fontFamily": "'Droid Sans Mono', 'monospace', monospace, 'Droid Sans Fallback'",
 	"editor.fontWeight": "500",
-	"editor.rulers": [
-		80
-	],
+	"editor.rulers": [80],
 	"editor.fontLigatures": true,
 	"prettier.tabWidth": 4,
 	"eslint.alwaysShowStatus": true,
-	"prettier.disableLanguages": [
-		"js"
-	],
+	"prettier.disableLanguages": ["js"],
 	"files.autoSave": "onFocusChange",
 	"prettier.useTabs": true,
 	"editor.formatOnSave": true,
@@ -28,7 +24,6 @@
 	"workbench.colorTheme": "Cobalt2",
 	"javascript.updateImportsOnFileMove.enabled": "always",
 	"explorer.confirmDelete": false,
-	"window.zoomLevel": 0,
 	"eslint.codeAction.disableRuleComment": {},
 	"eslint.codeAction.showDocumentation": {},
 	"editor.codeActionsOnSave": {
