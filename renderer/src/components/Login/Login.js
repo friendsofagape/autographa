@@ -152,18 +152,19 @@ export default function Login() {
               <Typography variant="caption" align="right" gutterBottom>
                 Forgot Password?
               </Typography>
-              <Link href="/index">
+              
               <Button
                 data-testid="login-button"
                 variant="contained"
                 onClick={handleSubmit}
               >
+              <Link href="/index">
                 Login
-              </Button>
               </Link>
+              </Button>
               <Typography variant="caption" gutterBottom>
                 Don't have an account?
-                <Link href="/signup">Sign Up</Link>
+                <a href="/signup">Sign Up</a>
               </Typography>
             </FormControl>
           </Paper>

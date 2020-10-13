@@ -39,7 +39,7 @@ describe("Login component tests", () => {
     await act(async () => {
       fireEvent.change(usernameTextfield, { target: { value: "testUser" } });
       fireEvent.change(passwordTextfield, {
-        target: { value: "" },
+        target: { value: "testPassword" },
       });
       fireEvent.click(loginButton);
     });

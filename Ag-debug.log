@@ -112,3 +112,22 @@
 2020-10-13 15:41:05 [DEBUG] project.js: calling unstarred stable sort with value of orderBy=view
 2020-10-13 15:41:05 [DEBUG] project.js: calling starred stable sort with value of orderBy=name
 2020-10-13 15:41:05 [DEBUG] project.js: calling starred stable sort with value of orderBy=name
+2020-10-13 15:42:22 [DEBUG] Singup.js: Into handleSubmit
+2020-10-13 15:42:22 [DEBUG] Singup.js: Into handleValidation
+2020-10-13 15:42:22 [DEBUG] Singup.js: End handleValidation
+2020-10-13 15:42:22 [DEBUG] Singup.js: End handleSubmit
+2020-10-13 15:42:20 [DEBUG] project.js: calling unstarred stable sort with value of orderBy=view
+2020-10-13 15:42:21 [DEBUG] project.js: calling unstarred stable sort with value of orderBy=view
+2020-10-13 15:42:21 [DEBUG] project.js: calling unstarred stable sort with value of orderBy=view
+2020-10-13 15:42:21 [DEBUG] project.js: calling starred to be unstarred and viceversa
+2020-10-13 15:42:22 [DEBUG] project.js: calling unstarred stable sort with value of orderBy=view
+2020-10-13 15:42:22 [DEBUG] project.js: calling unstarred stable sort with value of orderBy=view
+2020-10-13 15:42:23 [DEBUG] project.js: calling unstarred stable sort with value of orderBy=view
+2020-10-13 15:42:23 [DEBUG] project.js: calling unstarred stable sort with value of orderBy=view
+2020-10-13 15:42:23 [DEBUG] project.js: calling unstarred stable sort with value of orderBy=view
+2020-10-13 15:42:23 [DEBUG] project.js: calling starred to be unstarred and viceversa
+2020-10-13 15:42:23 [DEBUG] project.js: calling unstarred stable sort with value of orderBy=view
+2020-10-13 15:42:24 [DEBUG] project.js: calling unstarred stable sort with value of orderBy=view
+2020-10-13 15:42:24 [DEBUG] project.js: calling unstarred stable sort with value of orderBy=view
+2020-10-13 15:42:24 [DEBUG] project.js: calling starred stable sort with value of orderBy=name
+2020-10-13 15:42:24 [DEBUG] project.js: calling starred stable sort with value of orderBy=name
