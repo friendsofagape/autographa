@@ -14,7 +14,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import { logger } from "../../logger";
+// import { logger } from "../../logger";
 
 function a11yProps(index) {
   return {
@@ -59,14 +59,7 @@ export const MarkdownViewer = ({
     //   `markdownviewer.js, extracting text from files ${selectedLicense} on selection`
     // );
     const licensefile = require(`../../lib/license/${selectedLicense}.md`);
-    fetch(licensefile)
-      .then((response) => response.text())
-      .then((text) => {
-        settranslation(text);
-        // logger.debug(
-        //   `markdownviewer.js, text extracted and set to state for the viewer`
-        // );
-      });
+    settranslation(licensefile.default);
   }, [selectedLicense]);
 
   const handleChange = (event, newValue) => {
