@@ -7,11 +7,12 @@
 		"plugin:import/errors",
 		"plugin:import/warnings",
 		"plugin:jsx-a11y/recommended",
-		"plugin:react-hooks/recommended"
-		// "airbnb"
+		"plugin:react-hooks/recommended",
+		"airbnb"
 	],
 	"rules": {
-		"react/react-in-jsx-scope": "off"
+		"react/react-in-jsx-scope": "off",
+		"react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }]
 	},
 	"env": {
 		"browser": true,

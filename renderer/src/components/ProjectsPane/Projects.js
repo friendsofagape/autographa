@@ -242,13 +242,16 @@ export default function Projects(props) {
     setActionsStarred(true);
     sethoverIndexStarred(index);
   };
+
   const mouseLeaveStarred = (event) => {
     setActionsStarred(false);
   };
+
   const mouseEnterUnStarred = (index) => {
     setActionsUnStarred(true);
     sethoverIndexUnStarred(index);
   };
+
   const mouseLeaveUnStarred = (event) => {
     setActionsUnStarred(false);
   };

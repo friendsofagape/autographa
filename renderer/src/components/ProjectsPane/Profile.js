@@ -25,7 +25,7 @@ import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import { FormattedMessage } from 'react-intl';
 import * as localForage from 'localforage';
 import AutographaStore from '../AutographaStore';
-import { logger } from '../../logger';
+// import { logger } from '../../logger';
 import { ProfileStyles } from './useStyles/ProfileStyles';
 import useUpdateValidator from '../Validation/useUpdatevalidator';
 
