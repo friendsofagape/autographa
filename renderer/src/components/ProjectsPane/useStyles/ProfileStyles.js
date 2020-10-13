@@ -1,4 +1,4 @@
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from '@material-ui/core/styles';
 
 export const ProfileStyles = makeStyles((theme) => ({
   root: {
@@ -8,20 +8,20 @@ export const ProfileStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   textfieldsmall: {
-    textAlign: "center",
+    textAlign: 'center',
     marginLeft: theme.spacing(1),
     margin: theme.spacing(3),
     width: 300,
   },
   textfieldlong: {
-    textAlign: "center",
+    textAlign: 'center',
     marginLeft: theme.spacing(1),
     margin: theme.spacing(3),
     width: 635,
   },
   personalinfo: {
     margin: theme.spacing(3),
-    float: "center",
+    float: 'center',
   },
   avatarlarge: {
     width: theme.spacing(30),
@@ -33,9 +33,9 @@ export const ProfileStyles = makeStyles((theme) => ({
     marginLeft: theme.spacing(14),
   },
   save: {
-    float: "right",
+    float: 'right',
   },
   rootcolor: {
-    backgroundColor: "#EAEEF1",
+    backgroundColor: '#EAEEF1',
   },
 }));

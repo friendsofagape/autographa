@@ -1,30 +1,30 @@
-import React, { useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import FormControl from "@material-ui/core/FormControl";
-import TextField from "@material-ui/core/TextField";
-import PersonOutlineIcon from "@material-ui/icons/PersonOutline";
-import LockOpenIcon from "@material-ui/icons/LockOpen";
-import IconButton from "@material-ui/core/IconButton";
-import Visibility from "@material-ui/icons/Visibility";
-import VisibilityOff from "@material-ui/icons/VisibilityOff";
-import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
-import Paper from "@material-ui/core/Paper";
-import Grid from "@material-ui/core/Grid";
+import React, { useEffect } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import FormControl from '@material-ui/core/FormControl';
+import TextField from '@material-ui/core/TextField';
+import PersonOutlineIcon from '@material-ui/icons/PersonOutline';
+import LockOpenIcon from '@material-ui/icons/LockOpen';
+import IconButton from '@material-ui/core/IconButton';
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+import Paper from '@material-ui/core/Paper';
+import Grid from '@material-ui/core/Grid';
 import Link from 'next/link';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    height: "100vh",
-    overflow: "hidden",
+    height: '100vh',
+    overflow: 'hidden',
   },
   paper: {
     margin: theme.spacing(8, 4),
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    textAlign: "center",
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    textAlign: 'center',
   },
   margin: {
     margin: theme.spacing(1),
@@ -33,12 +33,12 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Login() {
   const classes = useStyles();
-  const bgImage = ["img1", "img2", "img3"];
+  const bgImage = ['img1', 'img2', 'img3'];
   const [index, setIndex] = React.useState(0);
   const bgImg = bgImage[index % bgImage.length];
   const [values, setValues] = React.useState({
-    username: "",
-    password: "",
+    username: '',
+    password: '',
     showPassword: false,
   });
   const [validUser, setValidUser] = React.useState(false);
@@ -104,12 +104,12 @@ export default function Login() {
                   <TextField
                     required
                     inputProps={{
-                      "data-testid": "username-textfield",
+                      'data-testid': 'username-textfield',
                     }}
                     className={classes.margin}
                     id="input-with-icon-textfield"
                     label="Username"
-                    onChange={handleUsername("username")}
+                    onChange={handleUsername('username')}
                     error={validUser}
                   />
                 </Grid>
@@ -124,12 +124,12 @@ export default function Login() {
                     className={classes.margin}
                     id="standard-adornment-password"
                     label="Password"
-                    type={values.showPassword ? "text" : "password"}
+                    type={values.showPassword ? 'text' : 'password'}
                     value={values.password}
-                    onChange={handlePassword("password")}
+                    onChange={handlePassword('password')}
                     error={validPassword}
                     InputProps={{
-                      "data-testid": "password-textfield",
+                      'data-testid': 'password-textfield',
                       endAdornment: (
                         <InputAdornment position="end">
                           <IconButton
@@ -152,15 +152,15 @@ export default function Login() {
               <Typography variant="caption" align="right" gutterBottom>
                 Forgot Password?
               </Typography>
-              
+
               <Button
                 data-testid="login-button"
                 variant="contained"
                 onClick={handleSubmit}
               >
-              <Link href="/index">
-                Login
-              </Link>
+                <Link href="/index">
+                  Login
+                </Link>
               </Button>
               <Typography variant="caption" gutterBottom>
                 Don't have an account?

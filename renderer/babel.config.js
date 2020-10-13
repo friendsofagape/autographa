@@ -1,4 +1,4 @@
-const { devDependencies } = require('../package.json')
+const { devDependencies } = require('../package.json');
 
 module.exports = {
   presets: [
@@ -13,4 +13,4 @@ module.exports = {
       },
     ],
   ],
-}
+};

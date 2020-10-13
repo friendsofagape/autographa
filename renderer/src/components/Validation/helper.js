@@ -10,6 +10,6 @@ export const validateForm = (errors) => {
 
 export const countErrors = (errors) => {
   let count = 0;
-  Object.values(errors).forEach((val) => val.length > 0 && (count = count + 1));
+  Object.values(errors).forEach((val) => val.length > 0 && (count += 1));
   return count;
 };

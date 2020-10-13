@@ -1,13 +1,13 @@
-import React, { useEffect, useRef } from "react";
-import { withStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
-import Dialog from "@material-ui/core/Dialog";
-import MuiDialogTitle from "@material-ui/core/DialogTitle";
-import MuiDialogContent from "@material-ui/core/DialogContent";
-import MuiDialogActions from "@material-ui/core/DialogActions";
-import IconButton from "@material-ui/core/IconButton";
-import CloseIcon from "@material-ui/icons/Close";
-import Typography from "@material-ui/core/Typography";
+import React, { useEffect, useRef } from 'react';
+import { withStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import MuiDialogTitle from '@material-ui/core/DialogTitle';
+import MuiDialogContent from '@material-ui/core/DialogContent';
+import MuiDialogActions from '@material-ui/core/DialogActions';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
+import Typography from '@material-ui/core/Typography';
 import {
   Box,
   FormControl,
@@ -17,21 +17,19 @@ import {
   ListItemText,
   TextField,
   Zoom,
-} from "@material-ui/core";
-import * as localForage from "localforage";
-import { CreateProjectStyles } from "./useStyles/CreateProjectStyles";
-import { logger } from "../../logger";
+} from '@material-ui/core';
+import * as localForage from 'localforage';
+import { CreateProjectStyles } from './useStyles/CreateProjectStyles';
+import { logger } from '../../logger';
 
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return (
-    <Zoom
-      style={{ transitionDelay: "50ms" }}
-      direction="up"
-      ref={ref}
-      {...props}
-    />
-  );
-});
+const Transition = React.forwardRef((props, ref) => (
+  <Zoom
+    style={{ transitionDelay: '50ms' }}
+    direction="up"
+    ref={ref}
+    {...props}
+  />
+));
 
 const styles = (theme) => ({
   root: {
@@ -39,7 +37,7 @@ const styles = (theme) => ({
     padding: theme.spacing(2),
   },
   closeButton: {
-    position: "absolute",
+    position: 'absolute',
     right: theme.spacing(1),
     top: theme.spacing(1),
     color: theme.palette.grey[500],
@@ -47,7 +45,9 @@ const styles = (theme) => ({
 });
 
 const DialogTitle = withStyles(styles)((props) => {
-  const { children, classes, onClose, ...other } = props;
+  const {
+    children, classes, onClose, ...other
+  } = props;
   return (
     <MuiDialogTitle disableTypography className={classes.root} {...other}>
       <Typography variant="h6">{children}</Typography>
@@ -94,18 +94,16 @@ export default function CustomSpecification({
   const [customselectedbookObj, setCustomelectedbookObj] = React.useState([]);
 
   useEffect(() => {
-    localForage.getItem("custonSpec", function (err, value) {
+    localForage.getItem('custonSpec', (err, value) => {
       setCustomelectedbookObj(value);
       // logger.debug(
       //   `customspecification.js, changed custom on canonSpec change with ${value}`
       // );
       // if (err)
-        // logger.error("customspecification.js, failed to get customspect");
+      // logger.error("customspecification.js, failed to get customspect");
     });
     if (customselectedbookObj) {
-      let result = customselectedbookObj.filter((obj) => {
-        return obj.id === canonSpecification;
-      });
+      const result = customselectedbookObj.filter((obj) => obj.id === canonSpecification);
       if (result[0] !== undefined) {
         setContent(result[0].books);
       }
@@ -114,11 +112,11 @@ export default function CustomSpecification({
   },[canonSpecification])
 
   useEffect(() => {
-    localForage.getItem("custonSpec", function (err, value) {
-      let custonspec,
-        duplicate = false;
+    localForage.getItem('custonSpec', (err, value) => {
+      let custonspec;
+      let duplicate = false;
       if (value !== null) {
-        value.forEach(function (fields) {
+        value.forEach((fields) => {
           updateCanonItems.forEach((element) => {
             if (element.spec.includes(fields.id) === true) {
               duplicate = true;
@@ -144,7 +142,7 @@ export default function CustomSpecification({
     let duplicates = false;
     setCustonOpen(false);
     if (selectedbook) {
-      let selectedbookObj = { id: textRef.current.value, books: selectedbook };
+      const selectedbookObj = { id: textRef.current.value, books: selectedbook };
       customselectedbookObj.push(selectedbookObj);
       setCustomelectedbookObj(customselectedbookObj);
     }
@@ -154,8 +152,8 @@ export default function CustomSpecification({
         duplicates = true;
       }
     });
-    if (duplicates === false && textRef.current.value !== "") {
-      let custonspec = {
+    if (duplicates === false && textRef.current.value !== '') {
+      const custonspec = {
         id: textRef.current.value,
         spec: textRef.current.value,
       };
@@ -165,18 +163,19 @@ export default function CustomSpecification({
       // logger.debug(
       //   `customspecification.js, updating canonitem name values with ${textRef.current.value} and updateCanonItems`
       // );
-      if (customselectedbookObj !== null)
-        localForage.setItem("custonSpec", customselectedbookObj, function (
-          err
-        ) {
-          localForage.getItem("custonSpec", function (err, value) {
-            console.log("saved in storage db", value);
-            // if (err)
-              // logger.error(
-              //   `customspecification.js, failed to update db with customSpecvalues on save`
-              // );
+      if (customselectedbookObj !== null) {
+        localForage.setItem('custonSpec', customselectedbookObj, (
+          err,
+        ) => {
+          localForage.getItem('custonSpec', (err, value) => {
+            console.log('saved in storage db', value);
+          // if (err)
+          // logger.error(
+          //   `customspecification.js, failed to update db with customSpecvalues on save`
+          // );
           });
         });
+      }
     }
     // logger.debug(
     //   `customspecification.js, handleSave is finished and selectedbook state to empty`
@@ -189,7 +188,7 @@ export default function CustomSpecification({
       selectedbook.push(bookname);
       setHighlight(!highlight);
     } else {
-      let selectedIndex = selectedbook.indexOf(bookname);
+      const selectedIndex = selectedbook.indexOf(bookname);
       selectedbook.splice(selectedIndex, 1);
       setSelectedbook(selectedbook);
       setHighlight(!highlight);
@@ -200,32 +199,30 @@ export default function CustomSpecification({
     // logger.debug(
     //   `customspecification.js, calling handleClose and setcanonSpecification to OT `
     // );
-    setcanonSpecification("OT");
+    setcanonSpecification('OT');
     setCustonOpen(false);
   };
 
   function FormRow() {
     return (
-      <React.Fragment>
-        {allbooks.map((bookname, index) => {
-          return (
-            <Grid key={index} item xs={2}>
-              <ListItem
-                button
-                className={classes.paper}
-                classes={{ selected: classes.selected }}
-                selected={selectedbook.includes(bookname)}
-                style={{ backgroundColor: "white" }}
-                onClick={() => selectedBooks(bookname)}
-              >
-                <ListItemText>
-                  <span className={classes.listtext}>{bookname}</span>
-                </ListItemText>
-              </ListItem>
-            </Grid>
-          );
-        })}
-      </React.Fragment>
+      <>
+        {allbooks.map((bookname, index) => (
+          <Grid key={index} item xs={2}>
+            <ListItem
+              button
+              className={classes.paper}
+              classes={{ selected: classes.selected }}
+              selected={selectedbook.includes(bookname)}
+              style={{ backgroundColor: 'white' }}
+              onClick={() => selectedBooks(bookname)}
+            >
+              <ListItemText>
+                <span className={classes.listtext}>{bookname}</span>
+              </ListItemText>
+            </ListItem>
+          </Grid>
+        ))}
+      </>
     );
   }
 
@@ -233,7 +230,7 @@ export default function CustomSpecification({
     <div>
       <Dialog
         maxWidth="xl"
-        fullWidth={true}
+        fullWidth
         TransitionComponent={Transition}
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect } from 'react';
 import {
   Paper,
   Typography,
@@ -14,41 +14,41 @@ import {
   MenuItem,
   Input,
   Button,
-} from "@material-ui/core";
-import Autocomplete from "@material-ui/lab/Autocomplete";
-import clsx from "clsx";
-import Visibility from "@material-ui/icons/Visibility";
-import VisibilityOff from "@material-ui/icons/VisibilityOff";
-import Avatar from "@material-ui/core/Avatar";
-import EditIcon from "@material-ui/icons/Edit";
-import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
-import { FormattedMessage } from "react-intl";
-import * as localForage from "localforage";
-import AutographaStore from "../AutographaStore";
-import { logger } from "../../logger";
-import { ProfileStyles } from "./useStyles/ProfileStyles";
-import useUpdateValidator from "../Validation/useUpdatevalidator";
+} from '@material-ui/core';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import clsx from 'clsx';
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import Avatar from '@material-ui/core/Avatar';
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+import { FormattedMessage } from 'react-intl';
+import * as localForage from 'localforage';
+import AutographaStore from '../AutographaStore';
+import { logger } from '../../logger';
+import { ProfileStyles } from './useStyles/ProfileStyles';
+import useUpdateValidator from '../Validation/useUpdatevalidator';
 
 const region = [
-  { id: 1, place: "Delhi, India" },
-  { id: 2, place: "Helsinki, Finland" },
-  { id: 3, place: "New York, United States" },
-  { id: 4, place: "Morocco, North Africa" },
+  { id: 1, place: 'Delhi, India' },
+  { id: 2, place: 'Helsinki, Finland' },
+  { id: 3, place: 'New York, United States' },
+  { id: 4, place: 'Morocco, North Africa' },
 ];
 
 const Profile = () => {
   const classes = ProfileStyles();
   const [values, setValues] = React.useState({
-    password: "",
+    password: '',
     showPassword: false,
   });
   const [appLang, setAppLang] = React.useState(AutographaStore.appLang);
-  const [avatarPathImport, setavatarPathImport] = React.useState("");
-  const [firstname, setFirstname] = React.useState("");
-  const [lastname, setLastname] = React.useState("");
-  const [email, setEmail] = React.useState("");
-  const [selregion, setRegion] = React.useState("");
-  const [saved, setSaved] = React.useState("");
+  const [avatarPathImport, setavatarPathImport] = React.useState('');
+  const [firstname, setFirstname] = React.useState('');
+  const [lastname, setLastname] = React.useState('');
+  const [email, setEmail] = React.useState('');
+  const [selregion, setRegion] = React.useState('');
+  const [saved, setSaved] = React.useState('');
   const {
     formValid,
     errorCount,
@@ -80,8 +80,8 @@ const Profile = () => {
       const fileReader = new FileReader();
       fileReader.readAsDataURL(target.files[0]);
       fileReader.onload = async (e) => {
-        localForage.setItem("avatarPath", e.target.result, function (err) {
-          localForage.getItem("avatarPath", function (err, value) {
+        localForage.setItem('avatarPath', e.target.result, (err) => {
+          localForage.getItem('avatarPath', (err, value) => {
             setavatarPathImport(value);
             AutographaStore.avatarPath = value;
             // logger.debug("Profile.js, updated avatar");
@@ -96,8 +96,8 @@ const Profile = () => {
 
   const removeAvatar = () => {
     // logger.debug("Profile.js, event to remove avatar");
-    localForage.setItem("avatarPath", "", function (err) {
-      localForage.getItem("avatarPath", function (err, value) {
+    localForage.setItem('avatarPath', '', (err) => {
+      localForage.getItem('avatarPath', (err, value) => {
         setavatarPathImport(value);
         AutographaStore.avatarPath = value;
         if (err) {
@@ -111,7 +111,7 @@ const Profile = () => {
   };
 
   useEffect(() => {
-    localForage.getItem("avatarPath", function (err, value) {
+    localForage.getItem('avatarPath', (err, value) => {
       setavatarPathImport(value);
       AutographaStore.avatarPath = value;
       if (err) {
@@ -121,16 +121,17 @@ const Profile = () => {
   }, []);
 
   useEffect(() => {
-    localForage.getItem("profileSettings", async function (err, value) {
-      if (value)
-        value.forEach(function (fields) {
+    localForage.getItem('profileSettings', async (err, value) => {
+      if (value) {
+        value.forEach((fields) => {
           setFirstname(fields.firstname);
           setLastname(fields.lastname);
           setEmail(fields.email);
           setRegion(fields.region);
           setValues({ ...values, password: fields.password });
-          // logger.debug("Profile.js, setting the saved profile values");
+        // logger.debug("Profile.js, setting the saved profile values");
         });
+      }
       if (err) {
         // logger.error("Profile.js, error in getting saved values");
       }
@@ -138,23 +139,22 @@ const Profile = () => {
     // eslint-disable-next-line
   },[])
 
-
   const handleSubmit = (e) => {
     handleSubmitFields(e);
     const profileSettings = [
       {
         password: values.password,
-        firstname: firstname,
-        lastname: lastname,
+        firstname,
+        lastname,
         region: selregion,
-        email: email,
-        appLang: appLang,
+        email,
+        appLang,
       },
     ];
     if (!saved) setSaved(profileSettings);
     if (errorCount !== null && formValid) {
-      localForage.setItem("profileSettings", profileSettings, function (err) {
-        localForage.getItem("profileSettings", function (err, value) {
+      localForage.setItem('profileSettings', profileSettings, (err) => {
+        localForage.getItem('profileSettings', (err, value) => {
           setSaved(value);
           // logger.debug(`Profile.js, Profile fields saved successfully`);
           if (err) {
@@ -162,8 +162,8 @@ const Profile = () => {
           }
         });
       });
-      localForage.getItem("applang", function (err, value) {
-        localForage.setItem("applang", appLang, function (err) {
+      localForage.getItem('applang', (err, value) => {
+        localForage.setItem('applang', appLang, (err) => {
           if (err) {
             // logger.error("Profile.js, Failed to change language");
           }
@@ -178,20 +178,20 @@ const Profile = () => {
     <>
       <Paper data-test="component-profile">
         <Grid container spacing={3}>
-          <Grid item xs={2}></Grid>
+          <Grid item xs={2} />
           <Grid item xs>
             <Avatar
               src={avatarPathImport}
               alt="Remy Sharp"
               className={classes.avatarlarge}
-            ></Avatar>
+            />
             <div className={classes.avataredits}>
               <IconButton variant="contained" component="label">
                 <EditIcon />
                 <Input
                   type="file"
                   accept="image/*"
-                  style={{ display: "none" }}
+                  style={{ display: 'none' }}
                   onChange={openFileDialogAvatarData}
                 />
               </IconButton>
@@ -226,7 +226,7 @@ const Profile = () => {
                     variant="outlined"
                     type="text"
                     inputProps={{
-                      "data-testid": "firstnamefield",
+                      'data-testid': 'firstnamefield',
                     }}
                     value={firstname}
                     helperText={errors.namefield}
@@ -245,7 +245,7 @@ const Profile = () => {
                     name="lastname"
                     variant="outlined"
                     inputProps={{
-                      "data-testid": "lastnamefield",
+                      'data-testid': 'lastnamefield',
                     }}
                     value={lastname}
                     helperText={errors.lastname}
@@ -265,7 +265,7 @@ const Profile = () => {
                       name="email"
                       variant="outlined"
                       inputProps={{
-                        "data-testid": "emailfield",
+                        'data-testid': 'emailfield',
                       }}
                       value={email}
                       helperText={errors.email}
@@ -301,7 +301,7 @@ const Profile = () => {
                         )}
                       </FormattedMessage>
                     )}
-                    ListboxProps={{ "data-testid": "list-box" }}
+                    ListboxProps={{ 'data-testid': 'list-box' }}
                   />
                 </FormControl>
               </div>
@@ -318,14 +318,14 @@ const Profile = () => {
                   </InputLabel>
                   <OutlinedInput
                     id="outlined-adornment-password"
-                    type={values.showPassword ? "text" : "password"}
+                    type={values.showPassword ? 'text' : 'password'}
                     value={values.password}
                     name="password"
-                    onChange={handleChange("password")}
+                    onChange={handleChange('password')}
                     inputProps={{
-                      "data-testid": "passwordbox",
+                      'data-testid': 'passwordbox',
                     }}
-                    endAdornment={
+                    endAdornment={(
                       <InputAdornment position="end">
                         <IconButton
                           aria-label="toggle password visibility"
@@ -340,7 +340,7 @@ const Profile = () => {
                           )}
                         </IconButton>
                       </InputAdornment>
-                    }
+                    )}
                     labelWidth={70}
                   />
                   <span>{errors.password}</span>
@@ -367,8 +367,8 @@ const Profile = () => {
                     onChange={changeLangauge}
                   >
                     {/* <MenuItem value={"ar"}>Arabic</MenuItem> */}
-                    <MenuItem value={"en"}>English</MenuItem>
-                    <MenuItem value={"hi"}>Hindi</MenuItem>
+                    <MenuItem value="en">English</MenuItem>
+                    <MenuItem value="hi">Hindi</MenuItem>
                     {/* <MenuItem value={"pt"}>Portuguese</MenuItem>
                     <MenuItem value={"es"}>Spanish</MenuItem> */}
                   </Select>

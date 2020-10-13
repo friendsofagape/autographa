@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Grid,
   Box,
@@ -10,18 +10,18 @@ import {
   FormLabel,
   FormControlLabel,
   TextField,
-} from "@material-ui/core";
-import clsx from "clsx";
-import { CreateProjectStyles } from "./useStyles/CreateProjectStyles";
-import { AutoComplete } from "./AutoComplete";
-import useUpdateValidator from "../Validation/useUpdatevalidator";
+} from '@material-ui/core';
+import clsx from 'clsx';
+import { CreateProjectStyles } from './useStyles/CreateProjectStyles';
+import { AutoComplete } from './AutoComplete';
+import useUpdateValidator from '../Validation/useUpdatevalidator';
 
 const version = [
-  { id: 1, value: "IRV" },
-  { id: 2, value: "NLT" },
-  { id: 3, value: "UDB" },
-  { id: 4, value: "ULB" },
-  { id: 5, value: "UJNT" },
+  { id: 1, value: 'IRV' },
+  { id: 2, value: 'NLT' },
+  { id: 3, value: 'UDB' },
+  { id: 4, value: 'ULB' },
+  { id: 5, value: 'UJNT' },
 ];
 
 function StyledRadio(props) {
@@ -41,7 +41,7 @@ function StyledRadio(props) {
 
 const GeneralSettting = () => {
   const classes = CreateProjectStyles();
-  const [biblename, setBiblename] = React.useState("");
+  const [biblename, setBiblename] = React.useState('');
   const { errors, handleChangeFields } = useUpdateValidator();
   return (
     <>
@@ -60,8 +60,8 @@ const GeneralSettting = () => {
                   value="bi"
                   variant="outlined"
                 >
-                  <MenuItem value={"md"}>MdFile</MenuItem>
-                  <MenuItem value={"bi"}>Bible</MenuItem>
+                  <MenuItem value="md">MdFile</MenuItem>
+                  <MenuItem value="bi">Bible</MenuItem>
                 </Select>
               </FormControl>
               <span className={classes.version}>
@@ -108,7 +108,7 @@ const GeneralSettting = () => {
                     </Box>
                   </FormLabel>
                   <RadioGroup
-                    style={{ display: "inline", marginLeft: "12px" }}
+                    style={{ display: 'inline', marginLeft: '12px' }}
                     defaultValue="LTR"
                     aria-label="direction"
                     name="customized-radios"

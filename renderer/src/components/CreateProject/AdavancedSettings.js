@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect } from 'react';
 import {
   Grid,
   Box,
@@ -6,23 +6,23 @@ import {
   FormControl,
   Select,
   FormLabel,
-} from "@material-ui/core";
-import { CreateProjectStyles } from "./useStyles/CreateProjectStyles";
-import { AllBooks, NT, OT } from "../../lib/CanonSpecification";
-import CustomSpecification from "./CustomSpecification";
-import { LicenseSelection } from "./LicenseSelection";
+} from '@material-ui/core';
+import { CreateProjectStyles } from './useStyles/CreateProjectStyles';
+import { AllBooks, NT, OT } from '../../lib/CanonSpecification';
+import CustomSpecification from './CustomSpecification';
+import { LicenseSelection } from './LicenseSelection';
 // import { logger } from "../../logger";
 
 const canonItems = [
-  { id: "OT", spec: "Old Testament (OT)" },
-  { id: "NT", spec: "New Testament (NT)" },
-  { id: "DC", spec: "Deutro Canon" },
-  { id: "OTDC", spec: "OT Deutro Canon" },
-  { id: "Custom", spec: "Custom" },
+  { id: 'OT', spec: 'Old Testament (OT)' },
+  { id: 'NT', spec: 'New Testament (NT)' },
+  { id: 'DC', spec: 'Deutro Canon' },
+  { id: 'OTDC', spec: 'OT Deutro Canon' },
+  { id: 'Custom', spec: 'Custom' },
 ];
 const AdvancedSetttings = () => {
   const classes = CreateProjectStyles();
-  const [canonSpecification, setcanonSpecification] = React.useState("OT");
+  const [canonSpecification, setcanonSpecification] = React.useState('OT');
   const [content, setContent] = React.useState([OT]);
   const [hideplaceholder, setHideplaceholder] = React.useState(false);
   const [custonOpen, setCustonOpen] = React.useState(false);
@@ -41,15 +41,15 @@ const AdvancedSetttings = () => {
     setcanonSpecification(event.target.value);
     setHideplaceholder(true);
     switch (event.target.value.toString()) {
-      case "OT":
+      case 'OT':
         setContent(OT);
         setHideplaceholder(false);
         break;
-      case "NT":
+      case 'NT':
         setContent(NT);
         setHideplaceholder(false);
         break;
-      case "Custom":
+      case 'Custom':
         setContent(NT);
         setHideplaceholder(false);
         setCustonOpen(!custonOpen);
@@ -77,8 +77,8 @@ const AdvancedSetttings = () => {
                   value="kjv"
                   variant="outlined"
                 >
-                  <MenuItem value={"kjv"}>King James Version (KJV)</MenuItem>
-                  <MenuItem value={"niv"}>
+                  <MenuItem value="kjv">King James Version (KJV)</MenuItem>
+                  <MenuItem value="niv">
                     New Internation Version (NIV)
                   </MenuItem>
                 </Select>
@@ -96,13 +96,11 @@ const AdvancedSetttings = () => {
                     onChange={(event) => changeCanonSpecification(event)}
                     variant="outlined"
                   >
-                    {updateCanonItems.map((value) => {
-                      return (
-                        <MenuItem key={value.id} value={value.id}>
-                          {value.spec}
-                        </MenuItem>
-                      );
-                    })}
+                    {updateCanonItems.map((value) => (
+                      <MenuItem key={value.id} value={value.id}>
+                        {value.spec}
+                      </MenuItem>
+                    ))}
                   </Select>
                 </FormControl>
               </span>
@@ -123,13 +121,11 @@ const AdvancedSetttings = () => {
                         {content[0]}
                       </MenuItem>
                     )}
-                    {content.map((bookname, index) => {
-                      return (
-                        <MenuItem value={bookname} key={index}>
-                          {bookname}
-                        </MenuItem>
-                      );
-                    })}
+                    {content.map((bookname, index) => (
+                      <MenuItem value={bookname} key={index}>
+                        {bookname}
+                      </MenuItem>
+                    ))}
                   </Select>
                 </FormControl>
               </span>

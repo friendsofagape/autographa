@@ -1,7 +1,7 @@
 // @flow
-import * as React from "react";
+import * as React from 'react';
 // import ReactMarkdown from "react-markdown";
-import { BlockEditable } from "markdown-translatable/dist/components";
+import { BlockEditable } from 'markdown-translatable/dist/components';
 import {
   Button,
   Dialog,
@@ -9,17 +9,17 @@ import {
   DialogContent,
   DialogTitle,
   Zoom,
-} from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import AppBar from "@material-ui/core/AppBar";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
+} from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import AppBar from '@material-ui/core/AppBar';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
 // import { logger } from "../../logger";
 
 function a11yProps(index) {
   return {
     id: `full-width-tab-${index}`,
-    "aria-controls": `full-width-tabpanel-${index}`,
+    'aria-controls': `full-width-tabpanel-${index}`,
   };
 }
 
@@ -33,16 +33,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return (
-    <Zoom
-      style={{ transitionDelay: "50ms" }}
-      direction="up"
-      ref={ref}
-      {...props}
-    />
-  );
-});
+const Transition = React.forwardRef((props, ref) => (
+  <Zoom
+    style={{ transitionDelay: '50ms' }}
+    direction="up"
+    ref={ref}
+    {...props}
+  />
+));
 
 export const MarkdownViewer = ({
   openmdviewer,
@@ -78,7 +76,7 @@ export const MarkdownViewer = ({
       <div>
         <Dialog
           maxWidth="xl"
-          fullWidth={true}
+          fullWidth
           TransitionComponent={Transition}
           onClose={handleClose}
           aria-labelledby="customized-dialog-title"
@@ -114,10 +112,10 @@ export const MarkdownViewer = ({
                   preview={preview}
                   onEdit={callback}
                   inputFilters={[
-                    [/<br>/gi, "\n"],
-                    [/(<u>|<\/u>)/gi, "__"],
+                    [/<br>/gi, '\n'],
+                    [/(<u>|<\/u>)/gi, '__'],
                   ]}
-                  outputFilters={[[/\n/gi, "<br>"]]}
+                  outputFilters={[[/\n/gi, '<br>']]}
                 />
               </div>
             ) : (
@@ -127,10 +125,10 @@ export const MarkdownViewer = ({
                   preview={preview}
                   onEdit={callback}
                   inputFilters={[
-                    [/<br>/gi, "\n"],
-                    [/(<u>|<\/u>)/gi, "__"],
+                    [/<br>/gi, '\n'],
+                    [/(<u>|<\/u>)/gi, '__'],
                   ]}
-                  outputFilters={[[/\n/gi, "<br>"]]}
+                  outputFilters={[[/\n/gi, '<br>']]}
                 />
               </div>
             )}
@@ -144,7 +142,7 @@ export const MarkdownViewer = ({
             {/* <ReactMarkdown source={translation} /> */}
 
             {/* <BlockTranslatable
-          
+
             translation={translation}
             preview={preview}
             onTranslation={(translation) => settranslation(translation)}

@@ -8,10 +8,17 @@
 		"clean": "rimraf dist renderer/.next renderer/out",
 		"start": "electron .",
 		"test": "jest",
+		"lint": "eslint ./renderer",
+		"lint:fix": "eslint ./renderer --fix",
 		"build": "next build renderer && next export renderer",
+		"maxmemory-allocation": "NODE_OPTIONS=--max_old_space_size=4096",
+		"eslint:github-action": "node ./node_modules/eslint/bin/eslint . --ignore-path .gitignore --max-warnings 0",
 		"pack-app": "npm run build && electron-builder --dir",
 		"dist": "npm run build && electron-builder"
 	},
+	"eslintIgnore": [
+		"*.test.js"
+	],
 	"build": {
 		"asar": true,
 		"files": [
@@ -24,17 +31,21 @@
 		"@testing-library/jest-dom": "^5.11.4",
 		"@testing-library/react": "^11.0.4",
 		"@testing-library/user-event": "12.1.7",
-		"babel-plugin-react-intl": "^3.0.1",
+		"babel-eslint": "^10.1.0",
 		"babel-jest": "^26.5.2",
+		"babel-plugin-react-intl": "^3.0.1",
 		"electron": "^10.1.3",
 		"electron-builder": "^22.9.1",
+		"eslint": "^7.11.0",
+		"eslint-config-airbnb": "^18.2.0",
+		"eslint-plugin-import": "^2.22.1",
+		"eslint-plugin-jsx-a11y": "^6.3.1",
+		"eslint-plugin-prettier": "^3.1.4",
+		"eslint-plugin-react": "^7.21.4",
+		"eslint-plugin-react-hooks": "^4.1.2",
 		"jest": "^26.5.3",
 		"jest-dom": "^4.0.0",
 		"next": "latest",
-		"react": "^16.13.1",
-		"react-dom": "^16.13.1",
-		"eslint-config-prettier": "^6.11.0",
-		"eslint-plugin-prettier": "^3.1.3",
 		"prettier": "^2.0.5"
 	},
 	"dependencies": {
@@ -55,6 +66,8 @@
 		"prop-types": "15.7.2",
 		"raw-loader": "^4.0.2",
 		"react-intl": "^4.7.6",
+		"react": "^16.13.1",
+		"react-dom": "^16.13.1",
 		"sweetalert": "2.1.2",
 		"winston": "^3.3.3"
 	}

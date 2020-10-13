@@ -1,12 +1,9 @@
-import Login from '../src/components/Login/Login'
+import Login from '../src/components/Login/Login';
 
-const login = () => {
+const login = () => (
+  <div>
+    <Login />
+  </div>
+);
 
-  return (
-    <div>
-      <Login />
-    </div>
-  )
-}
-
-export default login
+export default login;

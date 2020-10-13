@@ -1,9 +1,11 @@
-import { observable, decorate } from "mobx";
+import { observable, decorate } from 'mobx';
 
 class AutographaStore {
-  appLang = "en";
+  appLang = 'en';
+
   currentTrans = {};
-  avatarPath = "";
+
+  avatarPath = '';
 }
 decorate(AutographaStore, {
   currentTrans: observable,

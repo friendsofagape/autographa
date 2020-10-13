@@ -1,33 +1,33 @@
-import React, { useState, useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import FormControl from "@material-ui/core/FormControl";
-import TextField from "@material-ui/core/TextField";
-import PersonOutlineIcon from "@material-ui/icons/PersonOutline";
-import LockOpenIcon from "@material-ui/icons/LockOpen";
-import MailOutlineIcon from "@material-ui/icons/MailOutline";
-import AccountBalanceOutlinedIcon from "@material-ui/icons/AccountBalanceOutlined";
-import LanguageOutlinedIcon from "@material-ui/icons/LanguageOutlined";
-import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
-import Radio from "@material-ui/core/Radio";
-import RadioGroup from "@material-ui/core/RadioGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Autocomplete from "@material-ui/lab/Autocomplete";
-import Paper from "@material-ui/core/Paper";
-import Grid from "@material-ui/core/Grid";
-import Link from "next/link";
+import React, { useState, useEffect } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import FormControl from '@material-ui/core/FormControl';
+import TextField from '@material-ui/core/TextField';
+import PersonOutlineIcon from '@material-ui/icons/PersonOutline';
+import LockOpenIcon from '@material-ui/icons/LockOpen';
+import MailOutlineIcon from '@material-ui/icons/MailOutline';
+import AccountBalanceOutlinedIcon from '@material-ui/icons/AccountBalanceOutlined';
+import LanguageOutlinedIcon from '@material-ui/icons/LanguageOutlined';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import Paper from '@material-ui/core/Paper';
+import Grid from '@material-ui/core/Grid';
+import Link from 'next/link';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    height: "100vh",
-    overflow: "hidden",
+    height: '100vh',
+    overflow: 'hidden',
   },
   paper: {
     margin: theme.spacing(8, 4),
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    textAlign: "center",
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    textAlign: 'center',
   },
   margin: {
     margin: theme.spacing(1),
@@ -35,19 +35,19 @@ const useStyles = makeStyles((theme) => ({
 }));
 export default function Signup() {
   const classes = useStyles();
-  const bgImage = ["img1", "img2", "img3"];
+  const bgImage = ['img1', 'img2', 'img3'];
   const [index, setIndex] = useState(0);
   const bgImg = bgImage[index % bgImage.length];
   const [values, setValues] = useState({
-    firstname: "",
-    lastname: "",
-    email: "",
-    password: "",
-    confirmpassword: "",
-    organization: "",
-    selectedregion: "",
+    firstname: '',
+    lastname: '',
+    email: '',
+    password: '',
+    confirmpassword: '',
+    organization: '',
+    selectedregion: '',
   });
-  const [individual, setIndividual] = useState("true");
+  const [individual, setIndividual] = useState('true');
   const [valid, setValid] = useState({
     validfirstname: false,
     validlastname: false,
@@ -58,10 +58,10 @@ export default function Signup() {
     validselectedregion: false,
   });
   const region = [
-    { id: 1, place: "Delhi, India" },
-    { id: 2, place: "Helsinki, Finland" },
-    { id: 3, place: "New York, United States" },
-    { id: 4, place: "Morocco, North Africa" },
+    { id: 1, place: 'Delhi, India' },
+    { id: 2, place: 'Helsinki, Finland' },
+    { id: 3, place: 'New York, United States' },
+    { id: 4, place: 'Morocco, North Africa' },
   ];
   const handleFirstname = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
@@ -86,7 +86,7 @@ export default function Signup() {
 
   const handleSubmit = () => {
     setValid(false);
-    console.log("click");
+    console.log('click');
     handleValidation();
     console.log(values);
   };
@@ -97,7 +97,7 @@ export default function Signup() {
       setValid({ ...valid, validlastname: true });
     } else if (!values.email) {
       setValid({ ...valid, validemail: true });
-    } else if (!values.organization && values.individual === "false") {
+    } else if (!values.organization && values.individual === 'false') {
       setValid({ ...valid, validorganization: true });
     } else if (!values.selectedregion) {
       setValid({ ...valid, validselectedregion: true });
@@ -140,7 +140,7 @@ export default function Signup() {
                       className={classes.margin}
                       id="input-with-icon-textfield"
                       label="First Name"
-                      onChange={handleFirstname("firstname")}
+                      onChange={handleFirstname('firstname')}
                       error={valid.validfirstname}
                     />
                   </Grid>
@@ -149,7 +149,7 @@ export default function Signup() {
                       className={classes.margin}
                       id="input-with-icon-textfield"
                       label="Last Name"
-                      onChange={handleLastname("lastname")}
+                      onChange={handleLastname('lastname')}
                       error={valid.validlastname}
                     />
                   </Grid>
@@ -164,16 +164,16 @@ export default function Signup() {
                     className={classes.margin}
                     id="input-with-icon-textfield"
                     label="Enter Your Email"
-                    onChange={handleEmail("email")}
+                    onChange={handleEmail('email')}
                     error={valid.validemail}
                   />
                 </Grid>
               </Grid>
               <RadioGroup
                 row
-                style={{ justifyContent: "center" }}
+                style={{ justifyContent: 'center' }}
                 value={individual}
-                onChange={handleRadio("individual")}
+                onChange={handleRadio('individual')}
               >
                 <FormControlLabel
                   value="true"
@@ -196,8 +196,8 @@ export default function Signup() {
                     id="input-with-icon-textfield"
                     label="Name of the Organization"
                     error={valid.validorganization}
-                    onChange={handleOrganization("organization")}
-                    disabled={individual === "true" ? true : false}
+                    onChange={handleOrganization('organization')}
+                    disabled={individual === 'true'}
                   />
                 </Grid>
               </Grid>
@@ -236,10 +236,10 @@ export default function Signup() {
                       className={classes.margin}
                       id="standard-adornment-password"
                       label="Password"
-                      type={"password"}
+                      type="password"
                       value={values.password}
                       error={valid.validpassword}
-                      onChange={handlePassword("password")}
+                      onChange={handlePassword('password')}
                     />
                   </Grid>
                   <Grid item>
@@ -247,18 +247,18 @@ export default function Signup() {
                       className={classes.margin}
                       id="standard-adornment-password"
                       label="Confirm Password"
-                      type={"password"}
+                      type="password"
                       value={values.confirmpassword}
                       error={valid.validconfirmpassword}
-                      onChange={handlePassword("confirmpassword")}
+                      onChange={handlePassword('confirmpassword')}
                     />
                   </Grid>
                 </Grid>
               </Typography>
               <Link href="/login">
-              <Button variant="contained" onClick={handleSubmit}>
-                Sign Up
-              </Button>
+                <Button variant="contained" onClick={handleSubmit}>
+                  Sign Up
+                </Button>
               </Link>
               <Typography variant="caption" gutterBottom>
                 By signing up, you agree to our Terms and Conditions and
@@ -280,8 +280,8 @@ export default function Signup() {
           justify="flex-end"
           direction="row"
         >
-        <Link href="/login">
-          Go Back
+          <Link href="/login">
+            Go Back
           </Link>
         </Grid>
       </Grid>

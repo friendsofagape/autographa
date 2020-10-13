@@ -1,28 +1,29 @@
-import React from "react";
-import Sync from "./Sync";
+import React from 'react';
+import Sync from './Sync';
+
 const List = () => {
   const projects = [
     {
-      project: "Project Malayalam",
-      files: ["Gen.usfm", "Exo.usfm", "Readme.md"],
+      project: 'Project Malayalam',
+      files: ['Gen.usfm', 'Exo.usfm', 'Readme.md'],
     },
     {
-      project: "Project Arabic",
+      project: 'Project Arabic',
       files: [
-        "Lev.usfm",
-        "Psa.usfm",
-        "Isa.usfm",
-        "Mat.usfm",
-        "Luk.usfm",
-        "Tit.usfm",
+        'Lev.usfm',
+        'Psa.usfm',
+        'Isa.usfm',
+        'Mat.usfm',
+        'Luk.usfm',
+        'Tit.usfm',
       ],
     },
     {
-      project: "Project English",
-      files: ["Mat.usfm", "Luk.usfm", "Tit.usfm"],
+      project: 'Project English',
+      files: ['Mat.usfm', 'Luk.usfm', 'Tit.usfm'],
     },
     {
-      project: "Project Urdu",
+      project: 'Project Urdu',
       files: [],
     },
   ];

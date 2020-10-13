@@ -1,11 +1,11 @@
-import { TextField } from "@material-ui/core";
-import Autocomplete from "@material-ui/lab/Autocomplete";
-import * as React from "react";
-import { CreateProjectStyles } from "./useStyles/CreateProjectStyles";
+import { TextField } from '@material-ui/core';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import * as React from 'react';
+import { CreateProjectStyles } from './useStyles/CreateProjectStyles';
 
 export const AutoComplete = ({ version }) => {
   const classes = CreateProjectStyles();
-  const [selregion, setRegion] = React.useState("");
+  const [selregion, setRegion] = React.useState('');
 
   return (
     <Autocomplete
@@ -24,8 +24,8 @@ export const AutoComplete = ({ version }) => {
           margin="normal"
           variant="outlined"
           placeholder="Select the version"
-          style={{ marginTop: "5px" }}
-          InputProps={{ ...params.InputProps, type: "search" }}
+          style={{ marginTop: '5px' }}
+          InputProps={{ ...params.InputProps, type: 'search' }}
         />
       )}
     />

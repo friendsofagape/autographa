@@ -1,12 +1,9 @@
-import Main from '../src/components/main'
+import Main from '../src/components/main';
 
-const index = () => {
+const index = () => (
+  <div>
+    <Main />
+  </div>
+);
 
-  return (
-    <div>
-      <Main />
-    </div>
-  )
-}
-
-export default index
+export default index;
