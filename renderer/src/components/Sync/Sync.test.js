@@ -3,14 +3,6 @@ import { render, fireEvent } from "@testing-library/react";
 import Sync from "./Sync";
 // import intl from "./helper";
 import { act } from "react-dom/test-utils";
-import Enzyme from "enzyme";
-import EnzymeAdapter from "enzyme-adapter-react-16";
-Enzyme.configure({ adapter: new EnzymeAdapter() });
-
-/**
- * Setup funtion for app component
- * @returns {ShallowWrapper}
- */
 
 describe("Sync component tests", () => {
   const projects = [

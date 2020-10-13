@@ -1,5 +1,5 @@
 import React from "react";
-import { render, fireEvent, waitForElement } from "@testing-library/react";
+import { render, fireEvent, waitFor } from "@testing-library/react";
 import Profile from "../ProjectsPane/Profile";
 import "@testing-library/jest-dom/extend-expect";
 import userEvent from "@testing-library/user-event";
@@ -80,7 +80,7 @@ describe("state controlled profile fields", () => {
         (button) => button.id === "localeList"
       ); // find by id
       fireEvent.mouseDown(accessButton);
-      const accessOption = await waitForElement(() =>
+      const accessOption = await waitFor(() =>
         utils.getByText("English")
       );
       fireEvent.mouseDown(accessOption);

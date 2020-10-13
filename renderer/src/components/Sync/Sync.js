@@ -14,7 +14,7 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Box from "@material-ui/core/Box";
 import SyncOutlinedIcon from "@material-ui/icons/SyncOutlined";
-import Gitea from "./Gitea/Gitea";
+// import Gitea from "./Gitea/Gitea";
 import { GitHub } from "@material-ui/icons";
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -169,7 +169,7 @@ export default function Sync(props) {
             Paratext
           </TabPanel>
           <TabPanel value={value} index={2} dir={theme.direction}>
-            <Gitea />
+            Gitea
           </TabPanel>
         </Paper>
       </div>
