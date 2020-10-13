@@ -20,7 +20,7 @@ const licenseItems = [
   { id: 'Custom', license: 'Custom' },
 ];
 
-export const LicenseSelection = ({ openmdviewer, setopenmdviewer }) => {
+const LicenseSelection = ({ openmdviewer, setopenmdviewer }) => {
   const classes = CreateProjectStyles();
   const [selectedLicense, setselectedLicense] = React.useState(
     licenseItems[0].id,
@@ -61,3 +61,5 @@ export const LicenseSelection = ({ openmdviewer, setopenmdviewer }) => {
     </>
   );
 };
+
+export default LicenseSelection;
