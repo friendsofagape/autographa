@@ -58,6 +58,7 @@ export default function Signup() {
     validorganization: false,
     validselectedregion: false,
   });
+  const [errormsg, setErrormsg] = React.useState("");
   const region = [
     { id: 1, place: "Delhi, India" },
     { id: 2, place: "Helsinki, Finland" },
@@ -84,13 +85,29 @@ export default function Signup() {
     setValues({ ...values, [prop]: event.target.value });
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     logger.debug(`Singup.js, Into handleSubmit`);
     if (handleValidation()) {
       if (values.password === values.confirmpassword) {
-        delete values.confirmpassword;
-        handleJson(values);
-        logger.debug(`Singup.js, End handleSubmit`);
+        let obj = {
+          first_name: values.firstname,
+          last_name: values.lastname,
+          email: values.email,
+          work: values.work,
+          organization: values.organization,
+          region: values.selectedregion,
+          password: values.password,
+        };
+        const result = await handleJson(obj);
+        if (result.userExist === true) {
+          setValid({ ...valid, validemail: true });
+          setErrormsg("User exists with same Email");
+          logger.error(`Singup.js, User exist, use different Mail ID`);
+        } else if (result.fetchFile === true) {
+          logger.error(`Singup.js, Unable to fetch Data from file`);
+        } else {
+          logger.debug(`Singup.js, End handleSubmit`);
+        }
       } else {
         logger.debug(`Singup.js, Passwords do not match`);
         return;
@@ -157,6 +174,7 @@ export default function Signup() {
               <Typography variant="subtitle2" gutterBottom>
                 Be part of a great community & have fun with us
               </Typography>
+              <Typography color="error">{errormsg}</Typography>
               <Typography component="span">
                 <Grid container spacing={1} alignItems="flex-end">
                   <Grid item>
@@ -247,6 +265,9 @@ export default function Signup() {
                       id="region"
                       options={region}
                       getOptionLabel={(option) => option.place}
+                      getOptionSelected={(option, value) =>
+                        option.place === value.place
+                      }
                       onInputChange={(event, newInputValue) => {
                         setValues({ ...values, selectedregion: newInputValue });
                       }}
