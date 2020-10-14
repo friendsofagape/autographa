@@ -3,11 +3,25 @@ import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import { IntlProvider } from 'react-intl';
 // import { Observer } from "mobx-react";
 import * as localForage from 'localforage';
+import Router from 'next/router';
+import NProgress from 'nprogress';
 import ProjectsDrawer from './ProjectsPane/ProjectsDrawer';
 import Meta from '../Meta';
 // import AutographaStore from "./AutographaStore";
 // import AutoUpdate from "./AutoUpdate";
 // import { logger } from "../logger";
+
+Router.onRouteChangeStart = (url) => {
+  NProgress.start();
+};
+
+Router.onRouteChangeComplete = () => {
+  NProgress.done();
+};
+
+Router.onRouteChangeError = () => {
+  NProgress.done();
+};
 
 let messages;
 const theme = createMuiTheme({
@@ -74,6 +88,9 @@ const Main = () => {
       setmessage(messages);
       // AutographaStore.currentTrans = messages;
     });
+    NProgress.start();
+    NProgress.inc(0.4);
+    NProgress.done();
   }, []);
 
   const getLocale = async function () {

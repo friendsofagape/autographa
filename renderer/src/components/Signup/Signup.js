@@ -16,6 +16,20 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Link from 'next/link';
+import Router from 'next/router';
+import NProgress from 'nprogress';
+
+Router.onRouteChangeStart = () => {
+  NProgress.start();
+};
+
+Router.onRouteChangeComplete = () => {
+  NProgress.done();
+};
+
+Router.onRouteChangeError = () => {
+  NProgress.done();
+};
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -255,7 +269,7 @@ export default function Signup() {
                   </Grid>
                 </Grid>
               </Typography>
-              <Link href="/login">
+              <Link href="/index">
                 <Button variant="contained" onClick={handleSubmit}>
                   Sign Up
                 </Button>
@@ -280,7 +294,7 @@ export default function Signup() {
           justify="flex-end"
           direction="row"
         >
-          <Link href="/login">
+          <Link href="/index">
             Go Back
           </Link>
         </Grid>

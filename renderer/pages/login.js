@@ -1,8 +1,8 @@
-import Login from '../src/components/Login/Login';
+import Main from '../src/components/main';
 
 const login = () => (
   <div>
-    <Login />
+    <Main />
   </div>
 );
 

@@ -222,9 +222,10 @@ export default function Projects(props) {
       ? starredrow.findIndex((x) => x.name === name)
       : unstarredrow.findIndex((x) => x.name === name);
     // logger.debug(`project.js, removing the element with name=${name}`);
+    /* eslint no-unused-expressions: ["error", { "allowTernary": true }] */
     property === 'starred'
-      ? starredrow.splice(selectedIndex, 1)
-      : unstarredrow.splice(selectedIndex, 1);
+      ? (starredrow.splice(selectedIndex, 1))
+      : (unstarredrow.splice(selectedIndex, 1));
   };
 
   // eslint-disable-next-line

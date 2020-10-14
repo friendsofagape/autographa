@@ -52,6 +52,8 @@ export default function ProjectsDrawer() {
   };
 
   const titlechange = (value) => {
+    NProgress.start();
+    NProgress.done();
     setTitle(value);
   };
 
@@ -60,7 +62,6 @@ export default function ProjectsDrawer() {
       <CssBaseline />
       <AppBar
         color="inherit"
-        position="fixed"
         className={clsx(classes.appBar, {
           [classes.appBarShift]: open,
         })}
@@ -86,7 +87,7 @@ export default function ProjectsDrawer() {
             </Box>
           </Typography>
           {title === 'Profile' && (
-          <Link href="/login">
+          <Link href="/index">
             <Button size="small" variant="contained" color="primary">
               <Box fontWeight={600} m={1}>
                 <FormattedMessage id="btn-logout" />

@@ -1,8 +1,10 @@
-import Main from '../src/components/main';
+import Login from '../src/components/Login/Login';
+import Meta from '../src/Meta';
 
 const index = () => (
   <div>
-    <Main />
+    <Meta />
+    <Login />
   </div>
 );
 

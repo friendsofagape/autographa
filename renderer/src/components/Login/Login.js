@@ -13,6 +13,20 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Link from 'next/link';
+import Router from 'next/router';
+import NProgress from 'nprogress';
+
+Router.onRouteChangeStart = () => {
+  NProgress.start();
+};
+
+Router.onRouteChangeComplete = () => {
+  NProgress.done();
+};
+
+Router.onRouteChangeError = () => {
+  NProgress.done();
+};
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -34,8 +48,8 @@ const useStyles = makeStyles((theme) => ({
 export default function Login() {
   const classes = useStyles();
   const bgImage = ['img1', 'img2', 'img3'];
-  const [index, setIndex] = React.useState(0);
-  const bgImg = bgImage[index % bgImage.length];
+  // const [index, setIndex] = React.useState(0);
+  // const bgImg = bgImage[index % bgImage.length];
   const [values, setValues] = React.useState({
     username: '',
     password: '',
@@ -77,18 +91,14 @@ export default function Login() {
     event.preventDefault();
   };
   useEffect(() => {
-    const timer = setInterval(() => setIndex((i) => i + 1), 5000);
-    return () => clearInterval(timer);
+  //   const timer = setInterval(() => setIndex((i) => i + 1), 5000);
+  //   return () => clearInterval(timer);
   }, []);
   return (
-    <div
-      style={{
-        backgroundImage: `url(${bgImg})`,
-      }}
-    >
+    <div>
       <Grid container className={classes.root} justify="flex-end">
         <Grid item xs={12} sm={8} md={5}>
-          <Paper className={classes.paper} elevation={6} square>
+          <Paper className={classes.paper} elevation={5} square>
             <FormControl>
               <Typography variant="h5" gutterBottom>
                 Welcome!
@@ -110,7 +120,6 @@ export default function Login() {
                     id="input-with-icon-textfield"
                     label="Username"
                     onChange={handleUsername('username')}
-                    error={validUser}
                   />
                 </Grid>
               </Grid>
@@ -127,7 +136,6 @@ export default function Login() {
                     type={values.showPassword ? 'text' : 'password'}
                     value={values.password}
                     onChange={handlePassword('password')}
-                    error={validPassword}
                     InputProps={{
                       'data-testid': 'password-textfield',
                       endAdornment: (
@@ -158,7 +166,7 @@ export default function Login() {
                 variant="contained"
                 onClick={handleSubmit}
               >
-                <Link href="/index">
+                <Link href="/login">
                   Login
                 </Link>
               </Button>

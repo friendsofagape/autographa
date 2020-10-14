@@ -10,6 +10,7 @@ export const ProjectDrawerStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   appBar: {
+    marginTop: 4,
     zIndex: theme.zIndex.drawer + 1,
     transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
@@ -36,6 +37,7 @@ export const ProjectDrawerStyles = makeStyles((theme) => ({
     whiteSpace: 'nowrap',
   },
   drawerOpen: {
+    marginTop: 4,
     backgroundColor: '#212121',
     color: '#ffffff',
     width: drawerWidth,
@@ -45,6 +47,7 @@ export const ProjectDrawerStyles = makeStyles((theme) => ({
     }),
   },
   drawerClose: {
+    marginTop: 4,
     backgroundColor: '#212121',
     color: '#ffffff',
     transition: theme.transitions.create('width', {
