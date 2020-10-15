@@ -74,7 +74,7 @@ describe('Starred content table test', () => {
     const starredrowdate = document.querySelector('#starredrow-date');
     expect(starredrowdate.textContent).toBe('2 May 2020');
     const starredrowtime = document.querySelector('#starredrow-time');
-    expect(starredrowtime.textContent).toBe('a month ago');
+    expect(starredrowtime.textContent).toBe('2 months ago');
   });
 
   test('Check for starrred rows gets unstarred', () => {
@@ -112,7 +112,7 @@ describe('Starred content table test', () => {
     const starredrowdate = document.querySelector('#starredrow-date');
     expect(starredrowdate.textContent).toBe('7 Sep 2020');
     const starredrowtime = document.querySelector('#starredrow-time');
-    expect(starredrowtime.textContent).toBe('a month ago');
+    expect(starredrowtime.textContent).toBe('2 months ago');
   });
 });
 
@@ -128,7 +128,7 @@ describe('Unstarred content fields test', () => {
     const unstarredrowdate = document.querySelector('#unstarredrow-date');
     expect(unstarredrowdate.textContent).toBe('2 May 2020');
     const unstarredrowtime = document.querySelector('#unstarredrow-time');
-    expect(unstarredrowtime.textContent).toBe('a month ago');
+    expect(unstarredrowtime.textContent).toBe('2 months ago');
   });
   test('Check for unstarrred rows gets starred', () => {
     render(intl(<Projects starrted={starrted} unstarrted={unstarrted} />));
@@ -156,7 +156,7 @@ describe('Unstarred content fields test', () => {
     const unstarredrowdate = document.querySelector('#unstarredrow-date');
     expect(unstarredrowdate.textContent).toBe('5 Apr 2020');
     const unstarredrowtime = document.querySelector('#unstarredrow-time');
-    expect(unstarredrowtime.textContent).toBe('a month ago');
+    expect(unstarredrowtime.textContent).toBe('2 months ago');
   });
 });
 
@@ -172,11 +172,11 @@ describe('Sorting check', () => {
     expect(starredrowname.textContent).toBe('Malayalam NIV');
     expect(starredrowlanguage.textContent).toBe('Malyalam(mal)');
     expect(starredrowdate.textContent).toBe('7 Sep 2020');
-    expect(starredrowtime.textContent).toBe('a month ago');
+    expect(starredrowtime.textContent).toBe('2 months ago');
     fireEvent.click(sortbar);
     expect(starredrowname.textContent).toBe('Arabic NIV');
     expect(starredrowlanguage.textContent).toBe('Arabic(arb)');
     expect(starredrowdate.textContent).toBe('2 May 2020');
-    expect(starredrowtime.textContent).toBe('a month ago');
+    expect(starredrowtime.textContent).toBe('2 months ago');
   });
 });
