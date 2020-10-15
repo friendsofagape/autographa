@@ -16,6 +16,7 @@ import Autocomplete from "@material-ui/lab/Autocomplete";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import { logger } from "../../logger";
+import { handleJson } from "../../core/handleJson";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -42,12 +43,12 @@ export default function Signup() {
     firstname: "",
     lastname: "",
     email: "",
-    password: "",
-    confirmpassword: "",
+    work: "Individual",
     organization: "",
     selectedregion: "",
+    password: "",
+    confirmpassword: "",
   });
-  const [individual, setIndividual] = React.useState("true");
   const [valid, setValid] = React.useState({
     validfirstname: false,
     validlastname: false,
@@ -57,6 +58,7 @@ export default function Signup() {
     validorganization: false,
     validselectedregion: false,
   });
+  const [errormsg, setErrormsg] = React.useState("");
   const region = [
     { id: 1, place: "Delhi, India" },
     { id: 2, place: "Helsinki, Finland" },
@@ -73,7 +75,6 @@ export default function Signup() {
     setValues({ ...values, [prop]: event.target.value });
   };
   const handleRadio = (prop) => (event) => {
-    setIndividual(event.target.value);
     setValues({ ...values, [prop]: event.target.value });
   };
   const handleOrganization = (prop) => (event) => {
@@ -84,39 +85,73 @@ export default function Signup() {
     setValues({ ...values, [prop]: event.target.value });
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     logger.debug(`Singup.js, Into handleSubmit`);
-    handleValidation();
-    Object.keys(valid).forEach(function (key) {
-      if (valid[key] === true) {
-        console.log("Failed");
-        logger.error(`Singup.js, Validation Failed`);
+    if (handleValidation()) {
+      if (values.password === values.confirmpassword) {
+        let obj = {
+          first_name: values.firstname,
+          last_name: values.lastname,
+          email: values.email,
+          work: values.work,
+          organization: values.organization,
+          region: values.selectedregion,
+          password: values.password,
+        };
+        const result = await handleJson(obj);
+        if (result.userExist === true) {
+          setValid({ ...valid, validemail: true });
+          setErrormsg("User exists with same Email");
+          logger.error(`Singup.js, User exist, use different Mail ID`);
+        } else if (result.fetchFile === true) {
+          logger.error(`Singup.js, Unable to fetch Data from file`);
+        } else {
+          logger.debug(`Singup.js, End handleSubmit`);
+        }
+      } else {
+        logger.debug(`Singup.js, Passwords do not match`);
         return;
       }
-    });
-    logger.debug(`Singup.js, End handleSubmit`);
-    console.log(values);
+    } else {
+      Object.keys(valid).forEach(function (key) {
+        if (valid[key] === true) {
+          logger.error(`Singup.js, Validation Failed for ${key}`);
+          return;
+        }
+      });
+    }
   };
+
   const handleValidation = () => {
     logger.debug(`Singup.js, Into handleValidation`);
+    let validation;
     if (!values.firstname) {
       setValid({ ...valid, validfirstname: true });
+      validation = false;
     } else if (!values.lastname) {
       setValid({ ...valid, validlastname: true });
+      validation = false;
     } else if (!values.email) {
       setValid({ ...valid, validemail: true });
-    } else if (!values.organization && individual === "false") {
+      validation = false;
+    } else if (!values.organization && values.work === "Organization") {
       setValid({ ...valid, validorganization: true });
+      validation = false;
     } else if (!values.selectedregion) {
       setValid({ ...valid, validselectedregion: true });
+      validation = false;
     } else if (!values.password) {
       setValid({ ...valid, validpassword: true });
+      validation = false;
     } else if (!values.confirmpassword) {
       setValid({ ...valid, validconfirmpassword: true });
+      validation = false;
     } else {
       setValid(false);
+      validation = true;
     }
     logger.debug(`Singup.js, End handleValidation`);
+    return validation;
   };
   // useEffect(() => {
   //   const timer = setInterval(() => setIndex((i) => i + 1), 5000);
@@ -139,6 +174,7 @@ export default function Signup() {
               <Typography variant="subtitle2" gutterBottom>
                 Be part of a great community & have fun with us
               </Typography>
+              <Typography color="error">{errormsg}</Typography>
               <Typography component="span">
                 <Grid container spacing={1} alignItems="flex-end">
                   <Grid item>
@@ -188,16 +224,16 @@ export default function Signup() {
                 row
                 data-testid="radioButton"
                 style={{ justifyContent: "center" }}
-                value={individual}
-                onChange={handleRadio("individual")}
+                value={values.work}
+                onChange={handleRadio("work")}
               >
                 <FormControlLabel
-                  value="true"
+                  value="Individual"
                   control={<Radio color="primary" />}
                   label="Individual"
                 />
                 <FormControlLabel
-                  value="false"
+                  value="Organization"
                   control={<Radio color="primary" />}
                   label="Organization"
                 />
@@ -215,7 +251,7 @@ export default function Signup() {
                     label="Name of the Organization"
                     error={valid.validorganization}
                     onChange={handleOrganization("organization")}
-                    disabled={individual === "true" ? true : false}
+                    disabled={values.work === "Individual" ? true : false}
                   />
                 </Grid>
               </Grid>
@@ -229,6 +265,9 @@ export default function Signup() {
                       id="region"
                       options={region}
                       getOptionLabel={(option) => option.place}
+                      getOptionSelected={(option, value) =>
+                        option.place === value.place
+                      }
                       onInputChange={(event, newInputValue) => {
                         setValues({ ...values, selectedregion: newInputValue });
                       }}
