@@ -121,15 +121,14 @@ This project is licensed under the MIT License. See [LICENSE](https://github.com
 
 ## Contact
 
-Friends of Agape - mathew.joel@protonmail.com
-
-Let us know if face any bugs/problems by opening an [issue](https://github.com/friendsofagape/autographa/issues) in GitHub. We'll do our best to be prompt in our response.
+Let us know if you face any bugs/problems by opening an [issue](https://github.com/friendsofagape/autographa/issues) on GitHub. We'll do our best to be prompt in our response.
 
 <!-- ACKNOWLEDGEMENTS -->
 
 ## Acknowledgements
 
--   [Friends of Agape](http://friendsofagape.org/), for their support and contributions.
+- [Friends of Agape](http://friendsofagape.org/), for their support and contributions.
+- Developed by [Bridgeconn](https://bridgeconn.com/)
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
