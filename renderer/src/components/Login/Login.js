@@ -15,6 +15,7 @@ import Grid from '@material-ui/core/Grid';
 import Link from 'next/link';
 import Router from 'next/router';
 import NProgress from 'nprogress';
+import * as logger from '../../logger';
 
 Router.onRouteChangeStart = () => {
   NProgress.start();
@@ -72,6 +73,10 @@ export default function Login() {
     }
   };
   const handleSubmit = (event) => {
+    logger.error('login.js', 'error in sumitting');
+    logger.warn('login.js', 'check for routing');
+    logger.info('login.js', 'info for routing');
+    logger.debug('login.js', 'info for routing');
     handleValidation();
     setLogged(true);
   };
