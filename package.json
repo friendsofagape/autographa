@@ -2,11 +2,11 @@
 	"name": "autographa",
 	"productName": "autographa-editor",
 	"description": "A Bible translation editor for everyone.",
+	"author": "Friends of Agape <mathew.joel@protonmail.com>",
+	"email": "mathew.joel@protonmail.com",
 	"version": "2.0.0",
 	"license": "MIT",
 	"main": "main/index.js",
-	"author": "Friends of Agape <mathew.joel@protonmail.com>",
-	"email": "mathew.joel@protonmail.com",
 	"scripts": {
 		"clean": "rimraf dist renderer/.next renderer/out",
 		"start": "electron .",
