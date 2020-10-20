@@ -11,7 +11,7 @@ import { CreateProjectStyles } from './useStyles/CreateProjectStyles';
 import { AllBooks, NT, OT } from '../../lib/CanonSpecification';
 import CustomSpecification from './CustomSpecification';
 import { LicenseSelection } from './LicenseSelection';
-// import { logger } from "../../logger";
+import * as logger from '../../logger';
 
 const canonItems = [
   { id: 'OT', spec: 'Old Testament (OT)' },
@@ -30,14 +30,14 @@ const AdvancedSetttings = () => {
   const [openmdviewer, setopenmdviewer] = React.useState(false);
 
   useEffect(() => {
-    // logger.debug(`advancesettings.js, set content to ${OT} on mount`);
+    logger.debug('advancesettings.js', 'set content to OT on mount');
     setContent(OT);
   }, []);
 
   const changeCanonSpecification = (event) => {
-    // logger.debug(
-    //   `advancesettings.js, calling changeCanonSpecification event with value=${event.target.value}`
-    // );
+    logger.debug(
+      'advancesettings.js', `calling changeCanonSpecification event with value=${event.target.value}`,
+    );
     setcanonSpecification(event.target.value);
     setHideplaceholder(true);
     switch (event.target.value.toString()) {
