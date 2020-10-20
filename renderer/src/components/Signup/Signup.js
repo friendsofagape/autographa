@@ -16,7 +16,7 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Link from 'next/link';
-import { logger } from '../../logger';
+import * as logger from '../../logger';
 import { handleJson } from '../../core/handleJson';
 
 const useStyles = makeStyles((theme) => ({
@@ -24,16 +24,7 @@ const useStyles = makeStyles((theme) => ({
     height: '100vh',
     overflow: 'hidden',
   },
-  paper: {
-    margin: theme.spacing(8, 4),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    textAlign: 'center',
-  },
-  margin: {
-    margin: theme.spacing(1),
-  },
+
 }));
 export default function Signup() {
   const classes = useStyles();
@@ -159,9 +150,9 @@ export default function Signup() {
 
   return (
     <div>
-      <Grid container className={classes.root} justify="center">
+      <Grid container justify="center">
         <Grid item xs={5}>
-          <Paper className={classes.paper}>
+          <Paper>
             <FormControl>
               <Typography variant="h5" gutterBottom>
                 Sign Up
@@ -218,7 +209,7 @@ export default function Signup() {
               <RadioGroup
                 row
                 data-testid="radioButton"
-                style={{ justifyContent: 'center' }}
+                // style={{ justifyContent: 'center' }}
                 value={values.work}
                 onChange={handleRadio('work')}
               >
