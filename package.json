@@ -1,11 +1,12 @@
 {
 	"name": "autographa",
 	"productName": "autographa-editor",
+	"description": "A Bible translation editor for everyone.",
+	"email": "mathew.joel@protonmail.com",
+	"author": "Friends of Agape <mathew.joel@protonmail.com>",
 	"version": "2.0.0",
 	"license": "MIT",
 	"main": "main/index.js",
-	"author": "Friends of Agape <mathew.joel@protonmail.com>",
-	"email": "mathew.joel@protonmail.com",
 	"scripts": {
 		"clean": "rimraf dist renderer/.next renderer/out",
 		"start": "electron .",
@@ -16,7 +17,7 @@
 		"maxmemory-allocation": "NODE_OPTIONS=--max_old_space_size=4096",
 		"eslint:github-action": "node ./node_modules/eslint/bin/eslint . --ignore-path .gitignore --max-warnings 0",
 		"pack-app": "npm run build && electron-builder --dir",
-		"dist": "npm run build && electron-builder"
+		"dist": "npm run build && electron-builder -p never"
 	},
 	"eslintIgnore": [
 		"*.test.js"
@@ -60,9 +61,11 @@
 		"@material-ui/lab": "latest",
 		"clsx": "1.1.1",
 		"electron-is-dev": "^1.1.0",
+		"electron-log": "4.2.4",
 		"electron-next": "^3.1.5",
 		"electron-updater": "^4.3.4",
 		"gitea-react-toolkit": "^1.3.5",
+		"is-electron": "^2.2.0",
 		"localforage": "1.9.0",
 		"markdown-translatable": "^1.0.4",
 		"mobx": "5.15.4",
@@ -72,9 +75,9 @@
 		"nprogress": "^0.2.0",
 		"prop-types": "15.7.2",
 		"raw-loader": "^4.0.2",
-		"react-intl": "^4.7.6",
 		"react": "^16.13.1",
 		"react-dom": "^16.13.1",
+		"react-intl": "^4.7.6",
 		"sweetalert": "2.1.2",
 		"winston": "^3.3.3"
 	}
