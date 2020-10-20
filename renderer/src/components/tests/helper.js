@@ -3,7 +3,7 @@ import React from 'react';
 
 const enTranslationData = require('../../translations/en.json');
 
-function intl(component, locale) {
+function intl(component) {
   return (
     <IntlProvider locale="en" messages={enTranslationData}>
       {React.cloneElement(component)}

@@ -7,7 +7,7 @@ const TableData = () => {
       name, language, date, view,
     };
   }
-  const starrted = [
+  const starrtedData = [
     createData(
       'Project Arabic',
       'Arabic(arb)',
@@ -51,7 +51,7 @@ const TableData = () => {
       '2018-04-21 8:33:26',
     ),
   ];
-  const unstarrted = [
+  const unstarrtedData = [
     createData(
       'Project Malayalam',
       'Malayalam(mal)',
@@ -70,7 +70,7 @@ const TableData = () => {
 
   return (
     <div>
-      <Projects starrted={starrted} unstarrted={unstarrted} />
+      <Projects starrtedData={starrtedData} unstarrtedData={unstarrtedData} />
     </div>
   );
 };

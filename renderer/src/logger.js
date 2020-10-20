@@ -3,7 +3,6 @@ const isElectron = require('is-electron');
 let log;
 if (process.env.NODE_ENV === 'test') {
   // eslint-disable-next-line global-require
-  log = require('electron-log');
 } else if (isElectron()) log = global.log;
 
 const logger = () => {
@@ -19,19 +18,27 @@ const logger = () => {
 };
 export const error = async (filename, text) => {
   await logger();
-  log.error(`${filename}: ${text}`);
+  if (process.env.NODE_ENV !== 'test') {
+    log.error(`${filename}: ${text}`);
+  }
 };
 export const warn = async (filename, text) => {
   await logger();
-  log.warn(`${filename}: ${text}`);
+  if (process.env.NODE_ENV !== 'test') {
+    log.warn(`${filename}: ${text}`);
+  }
 };
 export const info = async (filename, text) => {
   await logger();
-  log.info(`${filename}: ${text}`);
+  if (process.env.NODE_ENV !== 'test') {
+    log.info(`${filename}: ${text}`);
+  }
 };
 export const debug = async (filename, text) => {
   await logger();
-  log.debug(`${filename}: ${text}`);
+  if (process.env.NODE_ENV !== 'test') {
+    log.debug(`${filename}: ${text}`);
+  }
 };
 export default logger;
 

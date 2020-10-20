@@ -18,7 +18,6 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import { FormattedMessage } from 'react-intl';
 import { Box, Button, Avatar } from '@material-ui/core';
-// import { Observer } from "mobx-react";
 import Link from 'next/link';
 import Router from 'next/router';
 import NProgress from 'nprogress';

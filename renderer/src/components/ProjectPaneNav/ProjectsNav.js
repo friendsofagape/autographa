@@ -1,4 +1,5 @@
 import * as React from 'react';
+import PropTypes from 'prop-types';
 import CreateProjectAccordions from '../CreateProject/CreateProjectAccordions';
 import Profile from '../ProjectsPane/Profile';
 import TableData from '../ProjectsPane/TableData';
@@ -22,3 +23,6 @@ export const ProjectsNav = ({ title }) => (
     })()}
   </>
 );
+ProjectsNav.propTypes = {
+  title: PropTypes.string.isRequired,
+};

@@ -1,6 +1,7 @@
+/* eslint-disable import/no-dynamic-require */
+/* eslint-disable global-require */
 // @flow
 import * as React from 'react';
-// import ReactMarkdown from "react-markdown";
 import { BlockEditable } from 'markdown-translatable/dist/components';
 import {
   Button,
@@ -14,7 +15,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-// import { logger } from "../../logger";
+import PropTypes from 'prop-types';
+import * as logger from '../../logger';
 
 function a11yProps(index) {
   return {
@@ -53,14 +55,14 @@ export const MarkdownViewer = ({
   const [translation, settranslation] = React.useState();
 
   React.useEffect(() => {
-    // logger.debug(
-    //   `markdownviewer.js, extracting text from files ${selectedLicense} on selection`
-    // );
+    logger.debug(
+      'markdownviewer.js', `extracting text from files ${selectedLicense} on selection`,
+    );
     const licensefile = require(`../../lib/license/${selectedLicense}.md`);
     settranslation(licensefile.default);
   }, [selectedLicense]);
 
-  const handleChange = (event, newValue) => {
+  const handleChange = (newValue) => {
     setValue(newValue);
   };
 
@@ -68,7 +70,7 @@ export const MarkdownViewer = ({
     setopenmdviewer(false);
   };
   const callback = (markdown) => {
-    // logger.debug(`markdownviewer.js, set translation as ${markdown}`);
+    logger.debug('markdownviewer.js', `set translation as ${markdown}`);
     settranslation(markdown);
   };
   return (
@@ -132,21 +134,6 @@ export const MarkdownViewer = ({
                 />
               </div>
             )}
-            {/* <Button
-            variant="contained"
-            color="primary"
-            onClick={() => setpreview(!preview)}
-          >
-            {!preview ? "Markdown" : "Preview (HTML EDIT)"}
-          </Button> */}
-            {/* <ReactMarkdown source={translation} /> */}
-
-            {/* <BlockTranslatable
-
-            translation={translation}
-            preview={preview}
-            onTranslation={(translation) => settranslation(translation)}
-          /> */}
           </DialogContent>
           <DialogActions>
             <Button autoFocus onClick={handleClose} variant="contained">
@@ -165,4 +152,9 @@ export const MarkdownViewer = ({
       </div>
     </div>
   );
+};
+MarkdownViewer.propTypes = {
+  openmdviewer: PropTypes.bool.isRequired,
+  setopenmdviewer: PropTypes.func,
+  selectedLicense: PropTypes.string,
 };

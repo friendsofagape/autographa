@@ -1,6 +1,7 @@
+import * as React from 'react';
+import PropTypes from 'prop-types';
 import { TextField } from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import * as React from 'react';
 import { CreateProjectStyles } from './useStyles/CreateProjectStyles';
 
 export const AutoComplete = ({ version }) => {
@@ -15,6 +16,7 @@ export const AutoComplete = ({ version }) => {
       options={version}
       getOptionLabel={(option) => option.value}
       inputValue={selregion}
+      // eslint-disable-next-line no-shadow
       onInputChange={(id, version) => {
         setRegion(version);
       }}
@@ -30,4 +32,11 @@ export const AutoComplete = ({ version }) => {
       )}
     />
   );
+};
+
+AutoComplete.propTypes = {
+  version: PropTypes.instanceOf(Array),
+};
+AutoComplete.defaultProps = {
+  version: PropTypes.instanceOf(Array),
 };

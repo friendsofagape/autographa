@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -20,7 +21,7 @@ import {
 } from '@material-ui/core';
 import * as localForage from 'localforage';
 import { CreateProjectStyles } from './useStyles/CreateProjectStyles';
-import { logger } from '../../logger';
+import * as logger from '../../logger';
 
 const Transition = React.forwardRef((props, ref) => (
   <Zoom
@@ -96,11 +97,10 @@ export default function CustomSpecification({
   useEffect(() => {
     localForage.getItem('custonSpec', (err, value) => {
       setCustomelectedbookObj(value);
-      // logger.debug(
-      //   `customspecification.js, changed custom on canonSpec change with ${value}`
-      // );
-      // if (err)
-      // logger.error("customspecification.js, failed to get customspect");
+      logger.debug(
+        'customspecification.js', `changed custom on canonSpec change with ${customselectedbookObj}`,
+      );
+      if (err) { logger.error('customspecification.js', 'failed to get customspec'); }
     });
     if (customselectedbookObj) {
       const result = customselectedbookObj.filter((obj) => obj.id === canonSpecification);
@@ -127,9 +127,9 @@ export default function CustomSpecification({
             updateCanonItems.push(custonspec);
             setUpdateCanonItems(updateCanonItems);
             setCustomelectedbookObj(value);
-            // logger.debug(
-            //   `customspecification.js, updated customSpec and canonItems on component mount`
-            // );
+            logger.debug(
+              'customspecification.js', 'updated customSpec and canonItems on component mount',
+            );
           }
         });
       }
@@ -138,7 +138,7 @@ export default function CustomSpecification({
   },[])
 
   const handleSave = () => {
-    // logger.debug(`customspecification.js, calling customSpec handleSave event`);
+    logger.debug('customspecification.js', 'calling customSpec handleSave event');
     let duplicates = false;
     setCustonOpen(false);
     if (selectedbook) {
@@ -160,26 +160,28 @@ export default function CustomSpecification({
       updateCanonItems.push(custonspec);
       setUpdateCanonItems(updateCanonItems);
       setcanonSpecification(textRef.current.value);
-      // logger.debug(
-      //   `customspecification.js, updating canonitem name values with ${textRef.current.value} and updateCanonItems`
-      // );
+      logger.debug(
+        'customspecification.js',
+        `updating canonitem name values with ${textRef.current.value} 
+        and updateCanonItems`,
+      );
       if (customselectedbookObj !== null) {
-        localForage.setItem('custonSpec', customselectedbookObj, (
-          err,
-        ) => {
-          localForage.getItem('custonSpec', (err, value) => {
-            console.log('saved in storage db', value);
-          // if (err)
-          // logger.error(
-          //   `customspecification.js, failed to update db with customSpecvalues on save`
-          // );
+        localForage.setItem('custonSpec', customselectedbookObj, () => {
+          localForage.getItem('custonSpec', (err) => {
+            if (err) {
+              logger.error(
+                'customspecification.js',
+                'failed to update db with customSpecvalues on save',
+              );
+            }
           });
         });
       }
     }
-    // logger.debug(
-    //   `customspecification.js, handleSave is finished and selectedbook state to empty`
-    // );
+    logger.debug(
+      'customspecification.js',
+      'handleSave is finished and selectedbook state to empty',
+    );
     setSelectedbook([]);
   };
 
@@ -196,9 +198,10 @@ export default function CustomSpecification({
   };
 
   const handleClose = () => {
-    // logger.debug(
-    //   `customspecification.js, calling handleClose and setcanonSpecification to OT `
-    // );
+    logger.debug(
+      'customspecification.js',
+      'calling handleClose and setcanonSpecification to OT ',
+    );
     setcanonSpecification('OT');
     setCustonOpen(false);
   };
@@ -206,8 +209,8 @@ export default function CustomSpecification({
   function FormRow() {
     return (
       <>
-        {allbooks.map((bookname, index) => (
-          <Grid key={index} item xs={2}>
+        {allbooks.map((bookname) => (
+          <Grid key={bookname} item xs={2}>
             <ListItem
               button
               className={classes.paper}
@@ -284,3 +287,13 @@ export default function CustomSpecification({
     </div>
   );
 }
+CustomSpecification.propTypes = {
+  opencustom: PropTypes.bool.isRequired,
+  setCustonOpen: PropTypes.func,
+  allbooks: PropTypes.array,
+  setContent: PropTypes.func,
+  canonSpecification: PropTypes.string,
+  updateCanonItems: PropTypes.array,
+  setUpdateCanonItems: PropTypes.func,
+  setcanonSpecification: PropTypes.func,
+};

@@ -5,6 +5,7 @@ import {
   MenuItem,
   Select,
 } from '@material-ui/core';
+import PropTypes from 'prop-types';
 import * as React from 'react';
 import { MarkdownViewer } from './MarkdownViewer';
 import { CreateProjectStyles } from './useStyles/CreateProjectStyles';
@@ -46,7 +47,7 @@ export const LicenseSelection = ({ openmdviewer, setopenmdviewer }) => {
           value={selectedLicense}
           onChange={(event) => handleMdViewer(event)}
         >
-          {updatelicenseItems.map((license, index) => (
+          {updatelicenseItems.map((license) => (
             <MenuItem value={license.id} key={license.id}>
               {license.license}
             </MenuItem>
@@ -60,4 +61,9 @@ export const LicenseSelection = ({ openmdviewer, setopenmdviewer }) => {
       />
     </>
   );
+};
+
+LicenseSelection.propTypes = {
+  openmdviewer: PropTypes.bool.isRequired,
+  setopenmdviewer: PropTypes.func,
 };

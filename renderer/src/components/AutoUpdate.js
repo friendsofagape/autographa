@@ -8,7 +8,7 @@ const AutoUpdate = () => {
   const restartButton = document.getElementById('restart-button');
 
   ipcRenderer.send('app_version');
-  ipcRenderer.on('app_version', (event, arg) => {
+  ipcRenderer.on('app_version', () => {
     ipcRenderer.removeAllListeners('app_version');
   });
 
@@ -36,10 +36,10 @@ const AutoUpdate = () => {
     <div>
       <div id="notification" className="hidden">
         <p id="message" />
-        <button id="close-button" onClick={closeNotification}>
+        <button id="close-button" type="button" onClick={closeNotification}>
           Close
         </button>
-        <button id="restart-button" onClick={restartApp} className="hidden">
+        <button id="restart-button" type="button" onClick={restartApp} className="hidden">
           Restart
         </button>
       </div>

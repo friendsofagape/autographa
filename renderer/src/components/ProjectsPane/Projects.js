@@ -19,7 +19,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import InfoIcon from '@material-ui/icons/Info';
 import moment from 'moment';
 import { ProjectStyles, useToolbarStyles } from './useStyles/ProjectStyles';
-// import { logger } from "../../logger";
+import * as logger from '../../logger';
 
 moment.updateLocale('en', {
   relativeTime: {
@@ -55,6 +55,7 @@ function descendingComparator(a, b, orderBy) {
     }
     return 0;
   }
+  return 0;
 }
 
 function getComparator(order, orderBy) {
@@ -64,13 +65,10 @@ function getComparator(order, orderBy) {
 }
 
 function stableSort(array, comparator, orderBy, dateorder) {
-  // logger.debug("project.js, started for stablesort")
   if (orderBy !== 'date') {
-    // logger.debug(`project.js, calling stable sort with value of orderBy=${orderBy}`)
     const stabilizedThis = array.map((el, index) => [el, index]);
     stabilizedThis.sort((a, b) => {
       const order = comparator(a[0], b[0]);
-      // logger.debug("project.js, stablesort fn finished")
       if (order !== 0) return order;
       return a[1] - b[1];
     });
@@ -78,10 +76,10 @@ function stableSort(array, comparator, orderBy, dateorder) {
   }
   const stabilizedThis = array.map((el, index) => [el, index]);
   stabilizedThis.sort((a, b) => {
-    const date_a = new Date(a[0].date);
-    const date_b = new Date(b[0].date);
-    if (dateorder === 'desc') return date_b - date_a;
-    return date_a - date_b;
+    const dateA = new Date(a[0].date);
+    const dateB = new Date(b[0].date);
+    if (dateorder === 'desc') return dateB - dateA;
+    return dateA - dateB;
   });
   return stabilizedThis.map((el) => el[0]);
 }
@@ -170,15 +168,15 @@ EnhancedTableToolbar.propTypes = {
   title: PropTypes.string.isRequired,
 };
 
-export default function Projects(props) {
+export default function Projects({ starrtedData, unstarrtedData }) {
   const classes = ProjectStyles();
   const [order, setOrder] = React.useState('asc');
   const [orderUnstarred, setOrderUnstarred] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('name');
   const [orderByUnstarred, setOrderByUnstarred] = React.useState('name');
   const [query, setQuery] = React.useState('');
-  const [starredrow] = React.useState(props.starrted);
-  const [unstarredrow] = React.useState(props.unstarrted);
+  const [starredrow] = React.useState(starrtedData);
+  const [unstarredrow] = React.useState(unstarrtedData);
   const [temparray, settemparray] = React.useState(null);
   const [active, setactive] = React.useState('');
   const [actionsStarred, setActionsStarred] = React.useState(false);
@@ -187,25 +185,27 @@ export default function Projects(props) {
   const [hoverIndexUnStarred, sethoverIndexUnStarred] = React.useState('');
 
   const handleRequestSort = (event, property) => {
-    // logger.debug(
-    //   `project.js, calling starred stable sort with value of orderBy=${property}`
-    // );
+    logger.debug(
+      'project.js',
+      `calling starred stable sort with value of orderBy=${property}`,
+    );
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(property);
   };
 
   const handleRequestSortUnstarred = (event, property) => {
-    // logger.debug(
-    //   `project.js, calling unstarred stable sort with value of orderBy=${property}`
-    // );
+    logger.debug(
+      'project.js',
+      `calling unstarred stable sort with value of orderBy=${property}`,
+    );
     const isAsc = orderByUnstarred === property && orderUnstarred === 'asc';
     setOrderUnstarred(isAsc ? 'desc' : 'asc');
     setOrderByUnstarred(property);
   };
 
   const handleClickStarred = (event, name, property) => {
-    // logger.debug(`project.js, calling starred to be unstarred and viceversa`);
+    logger.debug('project.js', 'calling starred to be unstarred and viceversa');
     property === 'starred' ? setactive('starred') : setactive('unstarred');
     const selectedIndex = property === 'starred'
       ? starredrow.findIndex((x) => x.name === name)
@@ -217,11 +217,11 @@ export default function Projects(props) {
   };
 
   const handleDelete = (event, name, property) => {
-    // logger.debug(`project.js, calling handleDelete event`);
+    logger.debug('project.js', 'calling handleDelete event');
     const selectedIndex = property === 'starred'
       ? starredrow.findIndex((x) => x.name === name)
       : unstarredrow.findIndex((x) => x.name === name);
-    // logger.debug(`project.js, removing the element with name=${name}`);
+    logger.debug('project.js', `removing the element with name=${name}`);
     /* eslint no-unused-expressions: ["error", { "allowTernary": true }] */
     property === 'starred'
       ? (starredrow.splice(selectedIndex, 1))
@@ -244,7 +244,7 @@ export default function Projects(props) {
     sethoverIndexStarred(index);
   };
 
-  const mouseLeaveStarred = (event) => {
+  const mouseLeaveStarred = () => {
     setActionsStarred(false);
   };
 
@@ -253,7 +253,7 @@ export default function Projects(props) {
     sethoverIndexUnStarred(index);
   };
 
-  const mouseLeaveUnStarred = (event) => {
+  const mouseLeaveUnStarred = () => {
     setActionsUnStarred(false);
   };
   return (
@@ -278,7 +278,7 @@ export default function Projects(props) {
           />
         </div>
       </Toolbar>
-      {props.starrted && (
+      {starrtedData && (
         <div>
           <EnhancedTableToolbar title="Starred" />
           <TableContainer className={classes.container}>
@@ -309,8 +309,8 @@ export default function Projects(props) {
                       hover
                       role="checkbox"
                       tabIndex={-1}
-                      key={index}
-                      onMouseEnter={(event) => mouseEnterStarred(index)}
+                      key={row.name}
+                      onMouseEnter={() => mouseEnterStarred(index)}
                       onMouseLeave={mouseLeaveStarred}
                     >
                       <TableCell padding="checkbox">
@@ -376,7 +376,7 @@ export default function Projects(props) {
           </TableContainer>
         </div>
       )}
-      {props.starrted && (
+      {unstarrtedData && (
         <div>
           <EnhancedTableToolbar title="Everythings else" />
           <TableContainer className={classes.container}>
@@ -404,10 +404,10 @@ export default function Projects(props) {
                 ).map((row, index) => (
                   <TableRow
                     hover
-                    onMouseEnter={(event) => mouseEnterUnStarred(index)}
+                    onMouseEnter={() => mouseEnterUnStarred(index)}
                     onMouseLeave={mouseLeaveUnStarred}
                     tabIndex={-1}
-                    key={index}
+                    key={row.name}
                   >
                     <TableCell padding="checkbox">
                       <IconButton
@@ -472,3 +472,7 @@ export default function Projects(props) {
     </div>
   );
 }
+Projects.propTypes = {
+  starrtedData: PropTypes.array,
+  unstarrtedData: PropTypes.array,
+};

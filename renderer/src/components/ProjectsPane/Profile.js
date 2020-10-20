@@ -25,7 +25,7 @@ import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import { FormattedMessage } from 'react-intl';
 import * as localForage from 'localforage';
 import AutographaStore from '../AutographaStore';
-// import { logger } from '../../logger';
+import * as logger from '../../logger';
 import { ProfileStyles } from './useStyles/ProfileStyles';
 import useUpdateValidator from '../Validation/useUpdatevalidator';
 
@@ -70,23 +70,23 @@ const Profile = () => {
     event.preventDefault();
   };
 
-  const changeLangauge = (event, index, value) => {
+  const changeLangauge = (event) => {
     setAppLang(event.target.value);
   };
 
   const openFileDialogAvatarData = async ({ target }) => {
-    // logger.debug("Profile.js, dialog opens to update avatar");
+    logger.debug('Profile.js', 'dialog opens to update avatar');
     if (target.files[0] !== undefined) {
       const fileReader = new FileReader();
       fileReader.readAsDataURL(target.files[0]);
       fileReader.onload = async (e) => {
         localForage.setItem('avatarPath', e.target.result, (err) => {
-          localForage.getItem('avatarPath', (err, value) => {
+          localForage.getItem('avatarPath', (value) => {
             setavatarPathImport(value);
             AutographaStore.avatarPath = value;
-            // logger.debug("Profile.js, updated avatar");
+            logger.debug('Profile.js', 'updated avatar');
             if (err) {
-              // logger.error("Profile.js, failed to update avatar");
+              logger.error('Profile.js', 'failed to update avatar');
             }
           });
         });
@@ -95,17 +95,17 @@ const Profile = () => {
   };
 
   const removeAvatar = () => {
-    // logger.debug("Profile.js, event to remove avatar");
+    logger.debug('Profile.js', 'event to remove avatar');
     localForage.setItem('avatarPath', '', (err) => {
-      localForage.getItem('avatarPath', (err, value) => {
+      localForage.getItem('avatarPath', (value) => {
         setavatarPathImport(value);
         AutographaStore.avatarPath = value;
         if (err) {
-          // logger.error("Profile.js, error while removing avatar");
+          logger.error('Profile.js', 'error while removing avatar');
         }
       });
       if (err) {
-        // logger.error("Profile.js, error while removing avatar");
+        logger.error('Profile.js', 'error while removing avatar');
       }
     });
   };
@@ -115,7 +115,7 @@ const Profile = () => {
       setavatarPathImport(value);
       AutographaStore.avatarPath = value;
       if (err) {
-        // logger.error("Profile.js, error in setting avatar on mount");
+        logger.error('Profile.js', 'error in setting avatar on mount');
       }
     });
   }, []);
@@ -129,11 +129,11 @@ const Profile = () => {
           setEmail(fields.email);
           setRegion(fields.region);
           setValues({ ...values, password: fields.password });
-        // logger.debug("Profile.js, setting the saved profile values");
+          logger.debug('Profile.js', 'setting the saved profile values');
         });
       }
       if (err) {
-        // logger.error("Profile.js, error in getting saved values");
+        logger.error('Profile.js', 'error in getting saved values');
       }
     });
     // eslint-disable-next-line
@@ -153,21 +153,21 @@ const Profile = () => {
     ];
     if (!saved) setSaved(profileSettings);
     if (errorCount !== null && formValid) {
-      localForage.setItem('profileSettings', profileSettings, (err) => {
+      localForage.setItem('profileSettings', profileSettings, () => {
         localForage.getItem('profileSettings', (err, value) => {
           setSaved(value);
-          // logger.debug(`Profile.js, Profile fields saved successfully`);
+          logger.debug('Profile.js', 'Profile fields saved successfully');
           if (err) {
-            // logger.error("Profile.js, Failed in saving field values");
+            logger.error('Profile.js', 'Failed in saving field values');
           }
         });
       });
-      localForage.getItem('applang', (err, value) => {
-        localForage.setItem('applang', appLang, (err) => {
+      localForage.getItem('applang', (err) => {
+        localForage.setItem('applang', appLang, () => {
           if (err) {
-            // logger.error("Profile.js, Failed to change language");
+            logger.error('Profile.js', 'Failed to change language');
           }
-          // logger.debug("Profile.js, Language changed app reloads");
+          logger.debug('Profile.js', 'Language changed app reloads');
           window.location.reload();
         });
       });
@@ -287,6 +287,7 @@ const Profile = () => {
                     options={region}
                     getOptionLabel={(option) => option.place}
                     inputValue={selregion}
+                    // eslint-disable-next-line no-shadow
                     onInputChange={(id, region) => {
                       setRegion(region);
                     }}
