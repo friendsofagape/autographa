@@ -66,7 +66,7 @@ const unstarrted = [
 
 describe('Starred content table test', () => {
   test('Check each content in the starred row', () => {
-    render(intl(<Projects starrted={starrted} unstarrted={unstarrted} />));
+    render(intl(<Projects starrtedData={starrted} unstarrtedData={unstarrted} />));
     const starredrowname = document.querySelector('#starredrow-name');
     expect(starredrowname.textContent).toBe('English NIV');
     const starredrowlanguage = document.querySelector('#starredrow-language');
@@ -78,7 +78,7 @@ describe('Starred content table test', () => {
   });
 
   test('Check for starrred rows gets unstarred', () => {
-    render(intl(<Projects starrted={starrted} unstarrted={unstarrted} />));
+    render(intl(<Projects starrtedData={starrted} unstarrtedData={unstarrted} />));
     const starredrow = document.querySelector('#starredrow');
     expect(starredrow.children.length).toBe(4);
     const starredbutton = document.querySelector('#starredicon');
@@ -88,7 +88,7 @@ describe('Starred content table test', () => {
 
   test('check for search state change', async () => {
     const { getByTestId } = render(
-      intl(<Projects starrted={starrted} unstarrted={unstarrted} />),
+      intl(<Projects starrtedData={starrted} unstarrtedData={unstarrted} />),
     );
     const searchbox = getByTestId('searchfield');
     await act(async () => {
@@ -99,7 +99,7 @@ describe('Starred content table test', () => {
 
   test('Check content after search in the starred row', async () => {
     const { getByTestId } = render(
-      intl(<Projects starrted={starrted} unstarrted={unstarrted} />),
+      intl(<Projects starrtedData={starrted} unstarrtedData={unstarrted} />),
     );
     const searchbox = getByTestId('searchfield');
     await act(async () => {
@@ -118,7 +118,7 @@ describe('Starred content table test', () => {
 
 describe('Unstarred content fields test', () => {
   test('Check each content in the unstarred row', () => {
-    render(intl(<Projects starrted={starrted} unstarrted={unstarrted} />));
+    render(intl(<Projects starrtedData={starrted} unstarrtedData={unstarrted} />));
     const unstarredrowname = document.querySelector('#unstarredrow-name');
     expect(unstarredrowname.textContent).toBe('Arabic NIV');
     const unstarredrowlanguage = document.querySelector(
@@ -131,7 +131,7 @@ describe('Unstarred content fields test', () => {
     expect(unstarredrowtime.textContent).toBe('2 months ago');
   });
   test('Check for unstarrred rows gets starred', () => {
-    render(intl(<Projects starrted={starrted} unstarrted={unstarrted} />));
+    render(intl(<Projects starrtedData={starrted} unstarrtedData={unstarrted} />));
     const unstarredrow = document.querySelector('#unstarredrow');
     expect(unstarredrow.children.length).toBe(5);
     const unstarredbutton = document.querySelector('#unstarredicon');
@@ -141,7 +141,7 @@ describe('Unstarred content fields test', () => {
 
   test('Check content after search in the unstarred row', async () => {
     const { getByTestId } = render(
-      intl(<Projects starrted={starrted} unstarrted={unstarrted} />),
+      intl(<Projects starrtedData={starrted} unstarrtedData={unstarrted} />),
     );
     const searchbox = getByTestId('searchfield');
     await act(async () => {
@@ -162,7 +162,7 @@ describe('Unstarred content fields test', () => {
 
 describe('Sorting check', () => {
   test('Check whether items gets sorted', () => {
-    render(intl(<Projects starrted={starrted} unstarrted={unstarrted} />));
+    render(intl(<Projects starrtedData={starrted} unstarrtedData={unstarrted} />));
     const sortbar = document.querySelector('#sorthead');
     fireEvent.click(sortbar);
     const starredrowname = document.querySelector('#starredrow-name');
@@ -174,9 +174,9 @@ describe('Sorting check', () => {
     expect(starredrowdate.textContent).toBe('7 Sep 2020');
     expect(starredrowtime.textContent).toBe('2 months ago');
     fireEvent.click(sortbar);
-    expect(starredrowname.textContent).toBe('Arabic NIV');
-    expect(starredrowlanguage.textContent).toBe('Arabic(arb)');
-    expect(starredrowdate.textContent).toBe('2 May 2020');
+    expect(starredrowname.textContent).toBe('Malayalam NIV');
+    expect(starredrowlanguage.textContent).toBe('Malyalam(mal)');
+    expect(starredrowdate.textContent).toBe('7 Sep 2020');
     expect(starredrowtime.textContent).toBe('2 months ago');
   });
 });

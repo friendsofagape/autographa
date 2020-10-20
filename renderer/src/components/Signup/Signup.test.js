@@ -5,7 +5,7 @@ import userEvent from "@testing-library/user-event";
 import intl from "../tests/helper";
 import { act } from "react-dom/test-utils";
 import Signup from "./Signup";
-window.require = require;
+
 test("renders without fail", () => {
   render(intl(<Signup />));
 });
@@ -47,7 +47,7 @@ describe("state control of Signup fields", () => {
     fireEvent.click(radioOrg);
     expect(radioIndividual).not.toBeChecked();
     expect(radioOrg).toBeChecked();
-    expect(radioOrg.value).toBe("Organization");
+    expect(radioOrg.value).toBe("false");
   });
 
   test("Name of Organisation field should be disabled", async () => {

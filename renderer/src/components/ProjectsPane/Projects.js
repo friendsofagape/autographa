@@ -473,6 +473,6 @@ export default function Projects({ starrtedData, unstarrtedData }) {
   );
 }
 Projects.propTypes = {
-  starrtedData: PropTypes.array.isRequired,
-  unstarrtedData: PropTypes.array.isRequired,
+  starrtedData: PropTypes.array,
+  unstarrtedData: PropTypes.array,
 };
