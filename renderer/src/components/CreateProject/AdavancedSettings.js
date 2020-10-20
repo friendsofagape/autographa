@@ -55,9 +55,11 @@ const AdvancedSetttings = () => {
         setCustonOpen(!custonOpen);
         break;
       default:
+        setContent(OT);
         setHideplaceholder(false);
         return null;
     }
+    return null;
   };
 
   return (
@@ -121,8 +123,8 @@ const AdvancedSetttings = () => {
                         {content[0]}
                       </MenuItem>
                     )}
-                    {content.map((bookname, index) => (
-                      <MenuItem value={bookname} key={index}>
+                    {content.map((bookname) => (
+                      <MenuItem value={bookname} key={bookname}>
                         {bookname}
                       </MenuItem>
                     ))}

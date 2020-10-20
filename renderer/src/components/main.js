@@ -11,7 +11,7 @@ import Meta from '../Meta';
 // import AutoUpdate from "./AutoUpdate";
 // import { logger } from "../logger";
 
-Router.onRouteChangeStart = (url) => {
+Router.onRouteChangeStart = () => {
   NProgress.start();
 };
 
@@ -79,21 +79,7 @@ const theme = createMuiTheme({
 const Main = () => {
   const [language, setlanguage] = React.useState('en');
   const [message, setmessage] = React.useState({});
-  useEffect(() => {
-    // logger.info("main.js, setting up app with preferred language");
-    getLocale().then(async (lang) => {
-      // AutographaStore.appLang = lang;
-      setlanguage(lang);
-      messages = await loadLocaleData(lang);
-      setmessage(messages);
-      // AutographaStore.currentTrans = messages;
-    });
-    NProgress.start();
-    NProgress.inc(0.4);
-    NProgress.done();
-  }, []);
-
-  const getLocale = async function () {
+  const getLocale = async () => {
     // logger.debug("main.js, started work for getLocale");
     try {
       const value = await localForage.getItem('applang');
@@ -125,6 +111,20 @@ const Main = () => {
         return import('../translations/en.json');
     }
   };
+
+  useEffect(() => {
+    // logger.info("main.js, setting up app with preferred language");
+    getLocale().then(async (lang) => {
+      // AutographaStore.appLang = lang;
+      setlanguage(lang);
+      messages = await loadLocaleData(lang);
+      setmessage(messages);
+      // AutographaStore.currentTrans = messages;
+    });
+    NProgress.start();
+    NProgress.inc(0.4);
+    NProgress.done();
+  }, []);
 
   return (
     <>

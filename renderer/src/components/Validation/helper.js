@@ -1,11 +1,12 @@
+/* eslint-disable no-useless-escape */
+/* eslint-disable no-unused-expressions */
+/* eslint-disable no-return-assign */
 export const validEmailRegex = RegExp(
-  // eslint-disable-next-line
-    /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
+  /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i,
 );
 export const validateForm = (errors) => {
   let valid = true;
   Object.values(errors).forEach((val) => {
-    // eslint-disable-next-line no-unused-expressions
     (val.length > 0 && (valid = false));
   });
   return valid;
