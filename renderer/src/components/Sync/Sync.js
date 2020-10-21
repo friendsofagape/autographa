@@ -90,13 +90,14 @@ function a11yProps(index) {
 export default function Sync(props) {
   const classes = useStyles();
   const theme = useTheme();
+  const ag = props;
   const [value, setValue] = React.useState(0);
   const [index, setIndex] = React.useState(-1);
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-  const handleProjects = (index) => {
-    setIndex(index);
+  const handleProjects = (indexValue) => {
+    setIndex(indexValue);
   };
   return (
     <div className={classes.root}>
@@ -108,15 +109,15 @@ export default function Sync(props) {
         </AccordionSummary>
         <AccordionDetails className={classes.details}>
           <div className={classes.column}>
-            {props.projects.map((value, index) => (
-              <div key={index}>
+            {ag.projects.map((project, key) => (
+              <div key={project.project}>
                 <Button
                   id="project-id"
-                  key={index}
-                  onClick={(event) => handleProjects(index)}
+                  key={project.project}
+                  onClick={() => handleProjects(key)}
                   startIcon={<FolderOpenOutlinedIcon />}
                 >
-                  {value.project}
+                  {project.project}
                 </Button>
               </div>
             ))}
@@ -124,15 +125,15 @@ export default function Sync(props) {
 
           <div className={(classes.column, classes.helper)}>
             <Typography variant="caption">
-              {index !== -1 && props.projects[index] !== undefined ? (
-                props.projects[index].files.map((value, index) => (
+              {index !== -1 && ag.projects[index] !== undefined ? (
+                ag.projects[index].files.map((val, i) => (
                   <div>
                     <Button
                       id="file-id"
-                      key={index}
+                      key={val[i]}
                       startIcon={<InsertDriveFileOutlinedIcon />}
                     >
-                      {value}
+                      {val}
                     </Button>
                   </div>
                 ))
