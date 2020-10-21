@@ -47,7 +47,7 @@ describe("state control of Signup fields", () => {
     fireEvent.click(radioOrg);
     expect(radioIndividual).not.toBeChecked();
     expect(radioOrg).toBeChecked();
-    expect(radioOrg.value).toBe("false");
+    expect(radioOrg.value).toBe("Organization");
   });
 
   test("Name of Organisation field should be disabled", async () => {
