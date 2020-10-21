@@ -48,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Login() {
   const classes = useStyles();
-  const bgImage = ['img1', 'img2', 'img3'];
+  // const bgImage = ['img1', 'img2', 'img3'];
   // const [index, setIndex] = React.useState(0);
   // const bgImg = bgImage[index % bgImage.length];
   const [values, setValues] = React.useState({
@@ -58,7 +58,7 @@ export default function Login() {
   });
   const [validUser, setValidUser] = React.useState(false);
   const [validPassword, setValidPassword] = React.useState(false);
-  const [logged, setLogged] = React.useState(false);
+  // const [logged, setLogged] = React.useState(false);
 
   const handleValidation = () => {
     if (values.username) {
@@ -72,13 +72,13 @@ export default function Login() {
       setValidPassword(true);
     }
   };
-  const handleSubmit = (event) => {
+  const handleSubmit = () => {
     logger.error('login.js', 'error in sumitting');
     logger.warn('login.js', 'check for routing');
     logger.info('login.js', 'info for routing');
     logger.debug('login.js', 'info for routing');
     handleValidation();
-    setLogged(true);
+    // setLogged(true);
   };
   const handleUsername = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
@@ -124,6 +124,7 @@ export default function Login() {
                     className={classes.margin}
                     id="input-with-icon-textfield"
                     label="Username"
+                    error={validUser}
                     onChange={handleUsername('username')}
                   />
                 </Grid>
@@ -140,6 +141,7 @@ export default function Login() {
                     label="Password"
                     type={values.showPassword ? 'text' : 'password'}
                     value={values.password}
+                    error={validPassword}
                     onChange={handlePassword('password')}
                     InputProps={{
                       'data-testid': 'password-textfield',
@@ -176,7 +178,7 @@ export default function Login() {
                 </Link>
               </Button>
               <Typography variant="caption" gutterBottom>
-                Don't have an account?
+                Don&apos;t have an account?
                 <a href="/signup">Sign Up</a>
               </Typography>
             </FormControl>
