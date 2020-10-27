@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import FormControl from '@material-ui/core/FormControl';
@@ -15,7 +15,12 @@ import Grid from '@material-ui/core/Grid';
 import Link from 'next/link';
 import Router from 'next/router';
 import NProgress from 'nprogress';
+import Switch from '@material-ui/core/Switch';
+import Box from '@material-ui/core/Box';
+import * as localForage from 'localforage';
 import * as logger from '../../logger';
+import { fetchJson } from '../../core/handleJson';
+import { hash } from '../../core/hashing.';
 
 Router.onRouteChangeStart = () => {
   NProgress.start();
@@ -58,27 +63,66 @@ export default function Login() {
   });
   const [validUser, setValidUser] = React.useState(false);
   const [validPassword, setValidPassword] = React.useState(false);
-  // const [logged, setLogged] = React.useState(false);
+  const [online, setOnline] = React.useState(true);
+  const [users, setUsers] = React.useState();
+  const [errorMsg, setErrorMsg] = React.useState();
+  const [hashValue, setHashValue] = React.useState({});
 
   const handleValidation = () => {
+    let user; let pass;
     if (values.username) {
       setValidUser(false);
+      user = true;
     } else {
       setValidUser(true);
+      user = false;
     }
     if (values.password) {
       setValidPassword(false);
+      pass = true;
+    } else if (!values.password && online === false) {
+      setValidPassword(false);
+      pass = true;
     } else {
       setValidPassword(true);
+      pass = false;
     }
+    return (user && pass);
+  };
+  const authUser = (pwd, key) => {
+    const value = hash(pwd, key.salt);
+    if (value.password === key.password) {
+      return true;
+    }
+    return false;
   };
   const handleSubmit = () => {
     logger.error('login.js', 'error in sumitting');
     logger.warn('login.js', 'check for routing');
     logger.info('login.js', 'info for routing');
     logger.debug('login.js', 'info for routing');
-    handleValidation();
-    // setLogged(true);
+    if (handleValidation()) {
+      const logged = users.some((user) => {
+        if (user.email === values.username) {
+          setHashValue({ password: user.password, salt: user.salt });
+          return true;
+        }
+        return false;
+      });
+      if (logged && online) {
+        const check = authUser(values.password, hashValue);
+        if (check) {
+          Router.push('/login');
+        } else {
+          setErrorMsg('Invalid Password');
+          setValidPassword(true);
+        }
+      } else if (logged && online === false) {
+        Router.push('/login');
+      } else {
+        setErrorMsg('Not a user');
+      }
+    }
   };
   const handleUsername = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
@@ -95,10 +139,26 @@ export default function Login() {
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
-  useEffect(() => {
+  const handleOnline = () => {
+    setOnline(!online);
+  };
+
+  React.useEffect(() => {
+    if (!users) {
+    // Get the list of users from localForage:
+      localForage.getItem('users').then((value) => {
+        setUsers(value);
+      }, []);
+    }
+    if (!users) {
+      const fs = window.require('fs');
+      fetchJson(fs);
+    }
+  });
+  // useEffect(() => {
   //   const timer = setInterval(() => setIndex((i) => i + 1), 5000);
   //   return () => clearInterval(timer);
-  }, []);
+  // }, []);
   return (
     <div>
       <Grid container className={classes.root} justify="flex-end">
@@ -110,6 +170,16 @@ export default function Login() {
               </Typography>
               <Typography variant="subtitle2" gutterBottom>
                 Welcome back! Login to access Autographa
+              </Typography>
+              <Typography color="error">{errorMsg}</Typography>
+              <Typography component="div">
+                <Grid component="label" container alignItems="center" spacing={1}>
+                  <Grid item>Offline</Grid>
+                  <Grid item>
+                    <Switch checked={online} onChange={handleOnline} name="online" />
+                  </Grid>
+                  <Grid item>Online</Grid>
+                </Grid>
               </Typography>
               <Grid container spacing={1} alignItems="flex-end">
                 <Grid item>
@@ -123,13 +193,13 @@ export default function Login() {
                     }}
                     className={classes.margin}
                     id="input-with-icon-textfield"
-                    label="Username"
+                    label="Email"
                     error={validUser}
                     onChange={handleUsername('username')}
                   />
                 </Grid>
               </Grid>
-              <Grid container spacing={1} alignItems="flex-end">
+              <Grid container component={Box} spacing={1} alignItems="flex-end" display={online === false ? 'none' : ''}>
                 <Grid item>
                   <LockOpenIcon />
                 </Grid>
@@ -165,7 +235,7 @@ export default function Login() {
                 </Grid>
               </Grid>
               <Typography variant="caption" align="right" gutterBottom>
-                Forgot Password?
+                {online === true ? 'Forgot Password?' : ''}
               </Typography>
 
               <Button
@@ -173,13 +243,13 @@ export default function Login() {
                 variant="contained"
                 onClick={handleSubmit}
               >
-                <Link href="/login">
-                  Login
-                </Link>
+                {/* <Link href="/login"> */}
+                Login
+                {/* </Link> */}
               </Button>
               <Typography variant="caption" gutterBottom>
                 Don&apos;t have an account?
-                <a href="/signup">Sign Up</a>
+                <Link href="/signup">Sign Up</Link>
               </Typography>
             </FormControl>
           </Paper>

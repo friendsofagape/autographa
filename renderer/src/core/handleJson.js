@@ -79,3 +79,36 @@ export const handleJson = async (values, fs) => {
     return error;
   }
 };
+
+export const fetchJson = (fs) => {
+  logger.debug('handleJson.js', 'Inside fetchJson');
+  const file = path.join('Autogrpha-DB', 'DB.json');
+  // error = { notUser: false, fetchFile: false };
+  if (fs.existsSync(file)) {
+    // return new Promise((resolve) => {
+    fs.readFile(file, 'utf8', (err, data) => {
+      if (err) {
+        logger.error('handleJson.js', 'Failed to read the data from file');
+        // error.fetchFile = true;
+        // resolve(error);
+      } else {
+        logger.debug('handleJson.js', 'Successfully read the data from file');
+        const json = JSON.parse(data);
+
+        // Add user list to localForage
+        localForage.setItem('users', json, (errLoc) => {
+          if (errLoc) {
+            logger.error(
+              'handleJson.js', 'Failed to add user list to localforage',
+            );
+          }
+          logger.debug('handleJson.js', 'Added new user to existing list');
+        });
+        // resolve(error);
+      }
+    });
+    // });
+  }
+  // error.notUser = true;
+  // return error;
+};

@@ -15,6 +15,8 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
+import Router from 'next/router';
+import Link from 'next/link';
 import * as logger from '../../logger';
 import { handleJson } from '../../core/handleJson';
 import { HashPassword } from '../../core/hashing.';
@@ -130,6 +132,7 @@ export default function Signup() {
           logger.error('Singup.js, Unable to fetch Data from file');
         } else {
           logger.debug('Singup.js, End handleSubmit');
+          Router.push('/login');
         }
       });
     }
@@ -354,7 +357,7 @@ export default function Signup() {
           justify="flex-end"
           direction="row"
         >
-          <a href="/login">Go Back</a>
+          <Link href="/">Go Back</Link>
         </Grid>
       </Grid>
     </div>
