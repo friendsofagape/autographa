@@ -1,13 +1,13 @@
-// import React from 'react';
-// import { render, fireEvent } from '@testing-library/react';
+import React from 'react';
+import { render } from '@testing-library/react';
 // import { act } from 'react-dom/test-utils';
-// import Login from './Login';
-// // import intl from "./helper";
+import Login from './Login';
+// import intl from "./helper";
 
-// describe('Login component tests', () => {
-//   test('Login component renders without error', () => {
-//     render(<Login />);
-//   });
+describe('Login component tests', () => {
+  test('Login component renders without error', () => {
+    render(<Login />);
+  });
 
 //   test('Update state on user-name change', async () => {
 //     const { getByTestId } = render(<Login />);
@@ -50,4 +50,4 @@
 //     //   showPassword: false,
 //     // });
 //   });
-// });
+});

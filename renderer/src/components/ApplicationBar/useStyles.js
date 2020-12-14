@@ -2,9 +2,9 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const drawerWidth = 240;
 
-export const useStyles = makeStyles(theme => ({
+export const useStyles = makeStyles((theme) => ({
   root: {
-    display: "flex"
+    display: 'flex',
   },
   grow: {
     flexGrow: 1,
@@ -13,7 +13,7 @@ export const useStyles = makeStyles(theme => ({
     display: 'none',
   },
   appBar: {
-    zIndex: theme.zIndex.drawer + 1
+    zIndex: theme.zIndex.drawer + 1,
   },
   menuButton: {
     marginLeft: -12,

@@ -18,21 +18,20 @@ function DrawerMenu({
     <div>
       <Drawer
         className={classes.drawer}
-        variant="permanent" anchor="left"
-        open={openDrawer}
-        onClose={toggleDrawer}
-        classes={drawerClasses}>
-        <Toolbar  />
-        <div 
-        id='list-items' 
-        onClick={onDrawerItemClick}
+        variant="permanent"
+        anchor="left"
+        classes={drawerClasses}
+      >
+        <Toolbar />
+        <div
+          id="list-items"
         >
           {children}
         </div>
       </Drawer>
     </div>
   );
-};
+}
 
 DrawerMenu.propTypes = {
   /** Component to render inside of the drawer menu. */

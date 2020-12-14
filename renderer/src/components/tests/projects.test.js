@@ -1,15 +1,15 @@
-// import React from 'react';
-// import { render, fireEvent } from '@testing-library/react';
+import React from 'react';
+import { render } from '@testing-library/react';
 // import { act } from 'react-dom/test-utils';
-// import Projects from '../ProjectsPane/Projects';
-// import '@testing-library/jest-dom/extend-expect';
-// import intl from './helper';
+import Projects from '../ProjectsPane/Projects';
+import '@testing-library/jest-dom/extend-expect';
+import intl from './helper';
 
-// jest.useFakeTimers();
+jest.useFakeTimers();
 
-// test('Projects pane renders without error', () => {
-//   render(intl(<Projects />));
-// });
+test('Projects pane renders without error', () => {
+  render(intl(<Projects />));
+});
 
 // const starrted = [
 //   {
