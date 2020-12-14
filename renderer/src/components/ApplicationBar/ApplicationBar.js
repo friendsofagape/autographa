@@ -1,8 +1,8 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import {
   AppBar,
-    CssBaseline,
+  CssBaseline,
   Toolbar,
   Typography,
 } from '@material-ui/core';
@@ -21,11 +21,11 @@ function ApplicationBar({
   const classes = useStyles();
 
   return (
-      <div className={classes.root}>
+    <div className={classes.root}>
       <CssBaseline />
-      <AppBar 
-      position="fixed" 
-      className={classes.appBar}
+      <AppBar
+        position="fixed"
+        className={classes.appBar}
       >
         <Toolbar>
           <Typography variant="h6" noWrap>
@@ -35,12 +35,29 @@ function ApplicationBar({
           {buttons}
         </Toolbar>
       </AppBar>
-        <DrawerMenu {...drawerMenuProps}>
-            {drawerMenu}
-        </DrawerMenu>
-      </div>
+      <DrawerMenu {...drawerMenuProps}>
+        {drawerMenu}
+      </DrawerMenu>
+    </div>
   );
 }
 
+ApplicationBar.defaultProps = {
+  drawerMenuProps: {},
+};
+
+ApplicationBar.propTypes = {
+  /** The title string or jsx to be displayed. */
+  title: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.element,
+  ]),
+  /** Additional buttons to be displayed. */
+  buttons: PropTypes.element,
+  /** Component to render inside of the drawer menu. */
+  drawerMenu: PropTypes.element,
+  /** Drawer menu props. */
+  drawerMenuProps: PropTypes.object,
+};
 
 export default ApplicationBar;

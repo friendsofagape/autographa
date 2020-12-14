@@ -1,11 +1,4 @@
 import React from 'react';
-import clsx from 'clsx';
-import Drawer from '@material-ui/core/Drawer';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import MenuIcon from '@material-ui/icons/Menu';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import Link from 'next/link';
 import Router from 'next/router';
 import NProgress from 'nprogress';
 import DescriptionIcon from '@material-ui/icons/Description';
@@ -15,7 +8,7 @@ import ApplicationBar from '../ApplicationBar/ApplicationBar';
 import {
   IconButton, Badge, List, ListItem, ListItemIcon, ListItemText, Avatar,
 } from '@material-ui/core';
-import { Mail, Notifications, Inbox } from '@material-ui/icons';
+import { Notifications } from '@material-ui/icons';
 
 Router.onRouteChangeStart = () => {
   NProgress.start();
