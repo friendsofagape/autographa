@@ -26,11 +26,7 @@
         "import/prefer-default-export": "off",
         "import/no-extraneous-dependencies": "off",
         "react/require-default-props": "off",
-        "react/forbid-prop-types": "off",
-        "linebreak-style": [
-            "error",
-            "windows"
-        ]
+        "react/forbid-prop-types": "off"
     },
     "env": {
         "browser": true,
