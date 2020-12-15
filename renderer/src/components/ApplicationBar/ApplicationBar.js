@@ -28,11 +28,17 @@ function ApplicationBar({
         className={classes.appBar}
       >
         <Toolbar>
-          <Typography variant="h6" noWrap>
+          <Typography
+            variant="h6"
+            data-testid="app-title"
+            noWrap
+          >
             {title}
           </Typography>
           <div className={classes.grow} />
-          {buttons}
+          <span data-testid="app-buttons">
+            {buttons}
+          </span>
         </Toolbar>
       </AppBar>
       <DrawerMenu {...drawerMenuProps}>

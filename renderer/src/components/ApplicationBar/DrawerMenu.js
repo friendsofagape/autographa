@@ -25,6 +25,7 @@ function DrawerMenu({
         <Toolbar />
         <div
           id="list-items"
+          data-testid="drawer-items"
         >
           {children}
         </div>
