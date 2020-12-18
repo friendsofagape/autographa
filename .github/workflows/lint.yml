@@ -24,6 +24,3 @@ jobs:
 
             - name: run lint-fix
               run: npm run lint:fix
-
-            - name: run tests
-              run: npm run test
