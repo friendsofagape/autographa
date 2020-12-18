@@ -21,8 +21,8 @@ test('renders without fail', () => {
   render(<CustomDialog open={true} />);
 });
 
-describe('Application bar test', () => {
-      test('Check AppBar title', () => {
+describe('Custom Dialog bar test', () => {
+      test('Check Dialog title', () => {
         const { getByTestId } = render(
         <CustomDialog 
             title="Autographa Dialog"
@@ -33,7 +33,7 @@ describe('Application bar test', () => {
         expect(titleBox).toHaveTextContent('Autographa Dialog');
       });
 
-      test('Check AppBar buttons', () => {
+      test('Check Dialog buttons', () => {
         const { getByTestId } = render(
         <CustomDialog 
             title="Autographa Dialog"
