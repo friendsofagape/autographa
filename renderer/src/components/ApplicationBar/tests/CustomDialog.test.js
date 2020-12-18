@@ -1,11 +1,11 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-import ApplicationBar from '../ApplicationBar';
 import {
     IconButton, Badge
   } from '@material-ui/core';
 import { Notifications } from '@material-ui/icons';
+import CustomDialog from '../CustomDialog';
 
 jest.useFakeTimers();
 
@@ -18,27 +18,29 @@ const buttons = (
   );
 
 test('renders without fail', () => {
-  render(<ApplicationBar />);
+  render(<CustomDialog open={true} />);
 });
 
 describe('Application bar test', () => {
       test('Check AppBar title', () => {
         const { getByTestId } = render(
-        <ApplicationBar 
-            title="Autographa"
-            buttons={buttons} 
+        <CustomDialog 
+            title="Autographa Dialog"
+            buttons={buttons}
+            open={true}
         />);
-        const titleBox = getByTestId('app-title');
-        expect(titleBox).toHaveTextContent('Autographa');
+        const titleBox = getByTestId('dialog-title');
+        expect(titleBox).toHaveTextContent('Autographa Dialog');
       });
 
       test('Check AppBar buttons', () => {
         const { getByTestId } = render(
-        <ApplicationBar 
-            title="Autographa"
-            buttons={buttons} 
+        <CustomDialog 
+            title="Autographa Dialog"
+            buttons={buttons}
+            open={true} 
         />);
-        const buttonslist = getByTestId('app-buttons');
+        const buttonslist = getByTestId('dialog-buttons');
         expect(buttonslist).toHaveTextContent(17)
       });
 })

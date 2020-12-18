@@ -1,7 +1,6 @@
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
 import MuiDialogContent from '@material-ui/core/DialogContent';
 import MuiDialogActions from '@material-ui/core/DialogActions';
-import { withStyles } from '@material-ui/core/styles';
 
 const drawerWidth = 240;
 
