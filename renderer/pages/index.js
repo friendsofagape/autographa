@@ -1,11 +1,15 @@
-import Login from '../src/components/Login/Login';
+import React from 'react';
+import Home from '../src/components/Home';
 import Meta from '../src/Meta';
+import AuthenticationContextProvider from '../src/components/Login/AuthenticationContextProvider';
 
-const index = () => (
-  <div>
-    <Meta />
-    <Login />
-  </div>
-);
-
-export default index;
+export default function index() {
+	return (
+		<div>
+			<Meta />
+			<AuthenticationContextProvider>
+				<Home />
+			</AuthenticationContextProvider>
+		</div>
+	);
+}
