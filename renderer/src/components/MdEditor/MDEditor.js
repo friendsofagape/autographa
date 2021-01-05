@@ -47,15 +47,18 @@ export const MDEditor = ({
         onChange={handleEdit}
         indicatorColor="primary"
         textColor="primary"
+        data-testid="test-tabs"
         aria-label="full width tabs example"
       >
         <Tab
           onClick={() => setpreview(true)}
+          data-testid="test-preview"
           label="Preview"
           {...a11yProps(0)}
         />
         <Tab
           onClick={() => setpreview(false)}
+          data-testid="test-markdown"
           label="Markdown"
           {...a11yProps(1)}
         />
@@ -97,13 +100,19 @@ export const MDEditor = ({
 
   const button = (
     <>
-      <Button autoFocus onClick={handleClose} variant="contained">
-        Cancel
+      <Button
+        autoFocus
+        onClick={handleClose}
+        data-testid="test-cancel"
+        variant="contained"
+      >
+        cancel
       </Button>
       <Button
         autoFocus
         onClick={handleClose}
         variant="contained"
+        data-testid="test-save"
         color="primary"
       >
         save
@@ -113,15 +122,13 @@ export const MDEditor = ({
 
   return (
     <div>
-      <div>
-        <CustomDialog
-          open={openMDFile}
-          setOpen={setopenMDFile}
-          title={title}
-          buttons={button}
-          content={content}
-        />
-      </div>
+      <CustomDialog
+        open={openMDFile}
+        setOpen={setopenMDFile}
+        title={title}
+        buttons={button}
+        content={content}
+      />
     </div>
   );
 };
