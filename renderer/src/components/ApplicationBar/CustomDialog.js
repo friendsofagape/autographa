@@ -5,7 +5,9 @@ import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography';
-import { useStyles, DialogContent, DialogActions } from './useStyles';
+import {
+  useStyles, DialogContent, DialogActions, Transition,
+} from './useStyles';
 
 const DialogTitle = ((props) => {
   const classes = useStyles();
@@ -29,7 +31,7 @@ export default function CustomDialog({
   setOpen,
   title,
   buttons,
-  children,
+  content,
 }) {
   const handleClose = () => {
     setOpen(false);
@@ -39,6 +41,7 @@ export default function CustomDialog({
     <div>
       <Dialog
         onClose={handleClose}
+        TransitionComponent={Transition}
         aria-labelledby="customized-dialog-title"
         open={open}
       >
@@ -50,7 +53,7 @@ export default function CustomDialog({
           {title}
         </DialogTitle>
         <DialogContent dividers>
-          {children}
+          {content}
         </DialogContent>
         <DialogActions>
           <span data-testid="dialog-buttons">
@@ -85,5 +88,5 @@ CustomDialog.propTypes = {
   /** Additional buttons to be displayed. */
   buttons: PropTypes.element,
   /** Component to render inside of the custom dialog. */
-  children: PropTypes.element,
+  content: PropTypes.element,
 };

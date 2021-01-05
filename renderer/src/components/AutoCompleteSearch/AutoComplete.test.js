@@ -13,6 +13,6 @@ const version = [
     { id: 5, value: 'UJNT' },
   ];
 
-test('Projects pane renders without error', () => {
+test('AutoCompleteSearch renders without error', () => {
   render(<AutoCompleteSearch listarray={version} />);
 });

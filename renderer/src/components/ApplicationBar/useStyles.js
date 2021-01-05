@@ -1,6 +1,8 @@
+import * as React from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import MuiDialogContent from '@material-ui/core/DialogContent';
 import MuiDialogActions from '@material-ui/core/DialogActions';
+import { Zoom } from '@material-ui/core';
 
 const drawerWidth = 240;
 
@@ -75,3 +77,12 @@ export const DialogActions = withStyles((theme) => ({
     padding: theme.spacing(1),
   },
 }))(MuiDialogActions);
+
+export const Transition = React.forwardRef((props, ref) => (
+  <Zoom
+    style={{ transitionDelay: '50ms' }}
+    direction="up"
+    ref={ref}
+    {...props}
+  />
+));
