@@ -14,7 +14,7 @@ import {
 import clsx from 'clsx';
 import { CreateProjectStyles } from './useStyles/CreateProjectStyles';
 import { AutoComplete } from './AutoComplete';
-import useUpdateValidator from '../Validation/useUpdatevalidator';
+import useValidator from '../Validation/useValidator';
 
 const version = [
   { id: 1, value: 'IRV' },
@@ -42,7 +42,9 @@ function StyledRadio(props) {
 const GeneralSettting = () => {
   const classes = CreateProjectStyles();
   const [biblename, setBiblename] = React.useState('');
-  const { errors, handleChangeFields } = useUpdateValidator();
+  const {
+    state: { errors }, action: { handleFields },
+  } = useValidator();
   return (
     <>
       <Grid container spacing={3}>
@@ -81,7 +83,7 @@ const GeneralSettting = () => {
                       helperText={errors.namefield}
                       onChange={(e) => {
                         setBiblename(e.target.value);
-                        handleChangeFields(e);
+                        handleFields(e);
                       }}
                     />
                   </div>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { countErrors, validateForm, validEmailRegex } from './helper';
 
-export default function useUpdateValidator() {
+export default function useValidator() {
   const [formValid, setFormValid] = React.useState(false);
   const [errorCount, setErrorCount] = React.useState(null);
   const [errors, setErrors] = React.useState({
@@ -11,16 +11,13 @@ export default function useUpdateValidator() {
     email: '',
   });
 
-  const handleChangeFields = (event) => {
+  const handleFields = (event) => {
     event.preventDefault();
     const { name, value } = event.target;
 
     switch (name) {
-      case 'namefield':
+      case 'name':
         errors.namefield = value.length < 5 ? 'Full Name must be 5 characters long!' : '';
-        break;
-      case 'lastname':
-        errors.lastname = value.length < 5 ? 'Full Name must be 5 characters long!' : '';
         break;
       case 'email':
         errors.email = validEmailRegex.test(value) ? '' : 'Email is not valid!';
@@ -41,13 +38,17 @@ export default function useUpdateValidator() {
   };
 
   return {
-    formValid,
-    setFormValid,
-    errorCount,
-    setErrorCount,
-    errors,
-    setErrors,
-    handleChangeFields,
-    handleSubmitFields,
+    state: {
+      formValid,
+      errorCount,
+      errors,
+    },
+    action: {
+      setFormValid,
+      setErrorCount,
+      setErrors,
+      handleFields,
+      handleSubmitFields,
+    },
   };
 }

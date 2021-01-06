@@ -27,7 +27,7 @@ import * as localForage from 'localforage';
 import AutographaStore from '../AutographaStore';
 import * as logger from '../../logger';
 import { ProfileStyles } from './useStyles/ProfileStyles';
-import useUpdateValidator from '../Validation/useUpdatevalidator';
+import useValidator from '../Validation/useValidator';
 
 const region = [
   { id: 1, place: 'Delhi, India' },
@@ -50,16 +50,21 @@ const Profile = () => {
   const [selregion, setRegion] = React.useState('');
   const [saved, setSaved] = React.useState('');
   const {
-    formValid,
-    errorCount,
-    errors,
-    handleChangeFields,
-    handleSubmitFields,
-  } = useUpdateValidator();
+    state: {
+      formValid,
+      errorCount,
+      errors,
+    },
+    action: {
+      handleFields,
+      handleSubmitFields,
+    },
+
+  } = useValidator();
 
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
-    handleChangeFields(event);
+    handleFields(event);
   };
 
   const handleClickShowPassword = () => {
@@ -232,7 +237,7 @@ const Profile = () => {
                     helperText={errors.namefield}
                     onChange={(e) => {
                       setFirstname(e.target.value);
-                      handleChangeFields(e);
+                      handleFields(e);
                     }}
                   />
                 )}
@@ -251,7 +256,7 @@ const Profile = () => {
                     helperText={errors.lastname}
                     onChange={(e) => {
                       setLastname(e.target.value);
-                      handleChangeFields(e);
+                      handleFields(e);
                     }}
                   />
                 )}
@@ -271,7 +276,7 @@ const Profile = () => {
                       helperText={errors.email}
                       onChange={(e) => {
                         setEmail(e.target.value);
-                        handleChangeFields(e);
+                        handleFields(e);
                       }}
                     />
                   )}
