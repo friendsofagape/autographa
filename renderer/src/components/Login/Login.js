@@ -75,6 +75,7 @@ export default function Login() {
       user = true;
     } else {
       setValidUser(true);
+      setErrorMsg('Enter username');
       user = false;
     }
     if (values.password) {
@@ -98,18 +99,15 @@ export default function Login() {
       values.online = online;
       const fs = window.require('fs');
       const user = handleLogin(users, values);
-      console.log(user);
+      // console.log(user);
       if (user) {
-        console.log('user 106', user);
+        // console.log('user 106', user);
         action.generateToken(user);
       } else {
         createUser(values, fs)
-          .then((user) => {
-            console.log('user', user);
-            action.generateToken(user);
-          })
-          .catch((err) => {
-            console.log(err);
+          .then((value) => {
+            // console.log('user', value);
+            action.generateToken(value);
           });
       }
     }
@@ -130,12 +128,11 @@ export default function Login() {
   const handleOnline = () => {
     setOnline(!online);
   };
-  console.log('online', online);
   useEffect(() => {
-    console.log('users', users);
+    // console.log('users', users);
     if (!users) {
       localForage.getItem('users').then((value) => {
-        console.log('login', value);
+        // console.log('login', value);
         setUsers(value);
       });
     }
@@ -178,34 +175,14 @@ export default function Login() {
                   <PersonOutlineIcon />
                 </Grid>
                 <Grid item>
-                  {/* <TextField
-											required
-											inputProps={{
-												'data-testid':
-													'username-textfield',
-											}}
-											className={classes.margin}
-											id='input-with-icon-textfield'
-											label='Username'
-											error={validUser}
-											onChange={handleUsername(
-												'username',
-											)}
-										/> */}
                   <Autocomplete
                     freeSolo
                     id="email"
                     options={users}
                     getOptionLabel={(option) => option.email}
                     getOptionSelected={(option, value) => option.email === value.email}
-                    onInputChange={(
-										  event,
-										  newInputValue,
-                    ) => {
-										  setValues({
-										    ...values,
-										    username: newInputValue,
-										  });
+                    onInputChange={(event, newInputValue) => {
+                      setValues({ ...values, username: newInputValue });
                     }}
                     renderInput={(params) => (
                       <TextField
@@ -233,44 +210,32 @@ export default function Login() {
                       className={classes.margin}
                       id="standard-adornment-password"
                       label="Password"
-                      type={
-												values.showPassword
-												  ? 'text'
-												  : 'password'
-											}
+                      type={values.showPassword ? 'text' : 'password'}
                       value={values.password}
                       error={validPassword}
-                      onChange={handlePassword(
-											  'password',
-                      )}
+                      onChange={handlePassword('password')}
                       InputProps={{
-											  'data-testid':
-													'password-textfield',
-											  endAdornment: (
-  <InputAdornment position="end">
-    <IconButton
-      aria-label="toggle password visibility"
-      onClick={
-																handleClickShowPassword
-															}
-      onMouseDown={
-																handleMouseDownPassword
-															}
-    >
-      {values.showPassword ? (
-        <Visibility />
-      ) : (
-        <VisibilityOff />
-      )}
-    </IconButton>
-  </InputAdornment>
-											  ),
+                        'data-testid': 'password-textfield',
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <IconButton
+                              aria-label="toggle password visibility"
+                              onClick={handleClickShowPassword}
+                              onMouseDown={handleMouseDownPassword}
+                            >
+                              {values.showPassword ? (
+                                <Visibility />
+                              ) : (
+                                <VisibilityOff />
+                              )}
+                            </IconButton>
+                          </InputAdornment>
+                        ),
                       }}
                     />
                   </Grid>
                 </Grid>
-              ) : (
-							  ''
+              ) : (''
               )}
               <Typography
                 variant="caption"

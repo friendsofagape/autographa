@@ -64,18 +64,14 @@ export default function ProjectsDrawer() {
       <CssBaseline />
       <AppBar
         color="inherit"
-        className={clsx(classes.appBar, {
-				  [classes.appBarShift]: open,
-        })}
+        className={clsx(classes.appBar, { [classes.appBarShift]: open })}
       >
         <Toolbar>
           <IconButton
             aria-label="open drawer"
             onClick={handleDrawerOpen}
             edge="start"
-            className={clsx(classes.menuButton, {
-						  [classes.hide]: open,
-            })}
+            className={clsx(classes.menuButton, { [classes.hide]: open })}
           >
             <MenuIcon />
           </IconButton>
@@ -115,16 +111,8 @@ export default function ProjectsDrawer() {
       </AppBar>
       <Drawer
         variant="permanent"
-        className={clsx(classes.drawer, {
-				  [classes.drawerOpen]: open,
-				  [classes.drawerClose]: !open,
-        })}
-        classes={{
-				  paper: clsx({
-				    [classes.drawerOpen]: open,
-				    [classes.drawerClose]: !open,
-				  }),
-        }}
+        className={clsx(classes.drawer, { [classes.drawerOpen]: open, [classes.drawerClose]: !open })}
+        classes={{ paper: clsx({ [classes.drawerOpen]: open, [classes.drawerClose]: !open }) }}
       >
         <div className={classes.toolbar}>
           <IconButton onClick={handleDrawerClose}>
@@ -136,10 +124,7 @@ export default function ProjectsDrawer() {
           <div
             className={classes.newproject}
             style={{
-						  backgroundColor:
-								title === 'Create New Project'
-								  ? '#ffffff'
-								  : '#212121',
+              backgroundColor: title === 'Create New Project' ? '#ffffff' : '#212121',
             }}
           >
             <ListItem
@@ -149,23 +134,14 @@ export default function ProjectsDrawer() {
               <ListItemIcon>
                 <AddCircleIcon
                   fontSize="large"
-                  color={
-										title === 'Create New Project'
-										  ? 'primary'
-										  : 'secondary'
-									}
+                  color={title === 'Create New Project' ? 'primary' : 'secondary'}
                 />
               </ListItemIcon>
               <FormattedMessage id="label-create-project">
                 {(message) => (
                   <ListItemText
                     primary={message}
-                    style={{
-										  color:
-												title === 'Create New Project'
-												  ? '#212121'
-												  : '#ffffff',
-                  }}
+                    style={{ color: title === 'Create New Project' ? '#212121' : '#ffffff' }}
                   />
                 )}
               </FormattedMessage>
@@ -173,10 +149,7 @@ export default function ProjectsDrawer() {
           </div>
           <div
             className={classes.avatarplacement}
-            style={{
-						  backgroundColor:
-								title === 'Projects' ? '#ffffff' : '#212121',
-            }}
+            style={{ backgroundColor: title === 'Projects' ? '#ffffff' : '#212121' }}
           >
             <ListItem
               onClick={() => titlechange('Projects')}
@@ -185,23 +158,14 @@ export default function ProjectsDrawer() {
               <ListItemIcon>
                 <DescriptionIcon
                   fontSize="large"
-                  color={
-										title === 'Projects'
-										  ? 'primary'
-										  : 'secondary'
-									}
+                  color={title === 'Projects' ? 'primary' : 'secondary'}
                 />
               </ListItemIcon>
               <FormattedMessage id="label-Projects">
                 {(message) => (
                   <ListItemText
                     primary={message}
-                    style={{
-										  color:
-												title === 'Projects'
-												  ? '#212121'
-												  : '#ffffff',
-                  }}
+                    style={{ color: title === 'Projects' ? '#212121' : '#ffffff' }}
                   />
                 )}
               </FormattedMessage>
@@ -209,32 +173,20 @@ export default function ProjectsDrawer() {
           </div>
           <div
             className={classes.avatarplacement}
-            style={{
-						  backgroundColor:
-								title === 'Sync' ? '#ffffff' : '#212121',
-            }}
+            style={{ backgroundColor: title === 'Sync' ? '#ffffff' : '#212121' }}
           >
             <ListItem onClick={() => titlechange('Sync')} button>
               <ListItemIcon>
                 <SettingsIcon
                   fontSize="large"
-                  color={
-										title === 'Sync'
-										  ? 'primary'
-										  : 'secondary'
-									}
+                  color={title === 'Sync' ? 'primary' : 'secondary'}
                 />
               </ListItemIcon>
               <FormattedMessage id="label-Sync">
                 {(message) => (
                   <ListItemText
                     primary={message}
-                    style={{
-										  color:
-												title === 'Sync'
-												  ? '#212121'
-												  : '#ffffff',
-                  }}
+                    style={{ color: title === 'Sync' ? '#212121' : '#ffffff' }}
                   />
                 )}
               </FormattedMessage>
@@ -242,10 +194,7 @@ export default function ProjectsDrawer() {
           </div>
           <div
             className={classes.avatarplacement}
-            style={{
-						  backgroundColor:
-								title === 'Profile' ? '#ffffff' : '#212121',
-            }}
+            style={{ backgroundColor: title === 'Profile' ? '#ffffff' : '#212121' }}
           >
             <ListItem
               color="secondary"
@@ -263,12 +212,7 @@ export default function ProjectsDrawer() {
                   <ListItemText
                     color="inherit"
                     primary={message}
-                    style={{
-										  color:
-												title === 'Profile'
-												  ? '#212121'
-												  : '#ffffff',
-                  }}
+                    style={{ color: title === 'Profile' ? '#212121' : '#ffffff' }}
                   />
                 )}
               </FormattedMessage>

@@ -22,7 +22,6 @@ function useAuthentication() {
     });
   };
   const generateToken = (user) => {
-    console.log('generateToken', user, user.email);
     const sessionData = {
       user: user.email,
       loggedAt: Date(),
