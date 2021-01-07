@@ -91,22 +91,24 @@ export default function Login() {
     return user && pass;
   };
   const handleSubmit = () => {
-    logger.error('login.js', 'error in sumitting');
-    logger.warn('login.js', 'check for routing');
-    logger.info('login.js', 'info for routing');
-    logger.debug('login.js', 'info for routing');
+    // logger.error('login.js', 'error in sumitting');
+    // logger.warn('login.js', 'check for routing');
+    // logger.info('login.js', 'info for routing');
+    logger.debug('Login.js', 'In handleSubmit');
     if (handleValidation()) {
       values.online = online;
       const fs = window.require('fs');
+      logger.debug('Login.js', 'Triggers handleLogin to check whether the user is existing or not');
       const user = handleLogin(users, values);
       // console.log(user);
       if (user) {
-        // console.log('user 106', user);
+        logger.debug('Login.js', 'Triggers generateToken to generate a Token for the user');
         action.generateToken(user);
       } else {
+        logger.debug('Login.js', 'Triggers createUser for creating a new user');
         createUser(values, fs)
           .then((value) => {
-            // console.log('user', value);
+            logger.debug('Login.js', 'Triggers generateToken to generate a Token for the user');
             action.generateToken(value);
           });
       }

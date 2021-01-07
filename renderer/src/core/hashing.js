@@ -13,7 +13,7 @@ const randomString = (length) => {
 
 //  Hash using algorithm sha512 and salt
 export const hash = (password, salt) => {
-  logger.debug('hashing.js, Inside hash');
+  logger.debug('hashing.js', ' Inside hash');
   const hashed = crypto.createHmac('sha512', salt);
   hashed.update(password);
   const value = hashed.digest('hex');
