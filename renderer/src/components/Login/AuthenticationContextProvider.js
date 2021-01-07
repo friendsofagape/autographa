@@ -1,5 +1,5 @@
 import React from 'react';
-
+import PropTypes from 'prop-types';
 import useAuthentication from './useAuthentication';
 
 export const AuthenticationContext = React.createContext();
@@ -17,3 +17,6 @@ const AuthenticationContextProvider = ({ children }) => {
   );
 };
 export default AuthenticationContextProvider;
+AuthenticationContextProvider.propTypes = {
+  children: PropTypes.node,
+};

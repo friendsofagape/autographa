@@ -111,7 +111,8 @@ export default function ProjectsDrawer() {
       </AppBar>
       <Drawer
         variant="permanent"
-        className={clsx(classes.drawer, { [classes.drawerOpen]: open, [classes.drawerClose]: !open })}
+        className={clsx(classes.drawer,
+          { [classes.drawerOpen]: open, [classes.drawerClose]: !open })}
         classes={{ paper: clsx({ [classes.drawerOpen]: open, [classes.drawerClose]: !open }) }}
       >
         <div className={classes.toolbar}>
