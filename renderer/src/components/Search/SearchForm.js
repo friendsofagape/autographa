@@ -70,7 +70,8 @@ function SearchForm({
 }) {
   const classes = useStyles();
   const [query, setQuery] = useState(defaultQuery);
-  const [setData] = useState(contentList);
+  // eslint-disable-next-line no-unused-vars
+  const [data, setData] = useState(contentList);
 
   // exclude column list from filter
 
