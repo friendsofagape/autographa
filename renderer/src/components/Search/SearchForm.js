@@ -7,7 +7,6 @@ import {
   Typography,
 } from '@material-ui/core';
 import { Search } from '@material-ui/icons';
-import { contentList } from './helper';
 // import AwesomeDebouncePromise from 'awesome-debounce-promise';
 
 const useStyles = makeStyles((theme) => ({
@@ -65,14 +64,16 @@ const useStyles = makeStyles((theme) => ({
 
 function SearchForm({
   defaultQuery,
-  onFilterContents,
+  contentList,
+  filterList,
+  // onFilterContents,
 }) {
   const classes = useStyles();
   const [query, setQuery] = useState(defaultQuery);
-  const [data, setData] = useState(contentList);
+  const [setData] = useState(contentList);
 
   // exclude column list from filter
-  const filterList = ['name', 'language', 'date', 'view'];
+
   const excludeColumns = filterList.splice(filterList.indexOf('name'), 1);
 
   // const contentSearchDebounced = AwesomeDebouncePromise(
@@ -93,7 +94,7 @@ function SearchForm({
       setData(filteredData);
       // onFilterContents(filteredData);
     }
-  }, [query]);
+  }, [contentList, excludeColumns, setData]);
 
   // handle change event of search input
   const handleChange = (value) => {
@@ -104,7 +105,12 @@ function SearchForm({
   return (
     <div className={classes.root}>
       <Toolbar>
-        <Typography className={classes.title} variant="h6" noWrap>
+        <Typography
+          className={classes.title}
+          variant="h6"
+          noWrap
+          data-testid="search-title"
+        >
           Search
         </Typography>
         <div className={classes.search}>
@@ -117,9 +123,7 @@ function SearchForm({
             label="Search"
             type="text"
             variant="outlined"
-            margin="normal"
             fullWidth
-            defaultValue={query}
             autoComplete={undefined}
             classes={{
               root: classes.inputRoot,
@@ -141,12 +145,13 @@ function SearchForm({
 SearchForm.propTypes = {
   /** Prefill the query search field. */
   defaultQuery: PropTypes.string,
+  /** Array list of items  */
+  contentList: PropTypes.array,
   /** Array list to be filtered  */
-  // contentList: PropTypes.array,
+  filterList: PropTypes.array,
   /** Function to propogate the returned repositories data array. */
-  onFilterContents: PropTypes.func.isRequired,
+  // onFilterContents: PropTypes.func.isRequired,
   /** Configuration required if paths are provided as URL. */
-  config: PropTypes.shape({ server: PropTypes.string.isRequired }).isRequired,
 };
 
 export default SearchForm;
