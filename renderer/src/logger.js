@@ -18,25 +18,25 @@ const logger = () => {
 };
 export const error = async (filename, text) => {
   await logger();
-  if (process.env.NODE_ENV !== 'test') {
+  if (process.env.NODE_ENV !== 'test' && isElectron() !== false) {
     log.error(`${filename}: ${text}`);
   }
 };
 export const warn = async (filename, text) => {
   await logger();
-  if (process.env.NODE_ENV !== 'test') {
+  if (process.env.NODE_ENV !== 'test' && isElectron() !== false) {
     log.warn(`${filename}: ${text}`);
   }
 };
 export const info = async (filename, text) => {
   await logger();
-  if (process.env.NODE_ENV !== 'test') {
+  if (process.env.NODE_ENV !== 'test' && isElectron() !== false) {
     log.info(`${filename}: ${text}`);
   }
 };
 export const debug = async (filename, text) => {
   await logger();
-  if (process.env.NODE_ENV !== 'test') {
+  if (process.env.NODE_ENV !== 'test' && isElectron() !== false) {
     log.debug(`${filename}: ${text}`);
   }
 };
