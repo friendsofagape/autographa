@@ -15,7 +15,6 @@ import {
   Input,
   Button,
 } from '@material-ui/core';
-import Autocomplete from '@material-ui/lab/Autocomplete';
 import clsx from 'clsx';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
@@ -28,6 +27,7 @@ import AutographaStore from '../AutographaStore';
 import * as logger from '../../logger';
 import { ProfileStyles } from './useStyles/ProfileStyles';
 import useValidator from '../Validation/useValidator';
+import { AutoCompleteSearch } from '../AutoCompleteSearch/AutoCompleteSearch';
 
 const region = [
   { id: 1, place: 'Delhi, India' },
@@ -287,27 +287,12 @@ const Profile = () => {
                   variant="outlined"
                   className={classes.textfieldlong}
                 >
-                  <Autocomplete
-                    id="region"
-                    options={region}
-                    getOptionLabel={(option) => option.place}
-                    inputValue={selregion}
-                    // eslint-disable-next-line no-shadow
-                    onInputChange={(id, region) => {
-                      setRegion(region);
-                    }}
-                    renderInput={(params) => (
-                      <FormattedMessage id="label-region">
-                        {(message) => (
-                          <TextField
-                            {...params}
-                            label={message}
-                            variant="outlined"
-                          />
-                        )}
-                      </FormattedMessage>
-                    )}
-                    ListboxProps={{ 'data-testid': 'list-box' }}
+                  <AutoCompleteSearch
+                    id="Region"
+                    listarray={region}
+                    customPlaceholder="Region"
+                    selectedValue={selregion}
+                    setSelectedValue={setRegion}
                   />
                 </FormControl>
               </div>
@@ -372,11 +357,8 @@ const Profile = () => {
                     value={appLang}
                     onChange={changeLangauge}
                   >
-                    {/* <MenuItem value={"ar"}>Arabic</MenuItem> */}
                     <MenuItem value="en">English</MenuItem>
                     <MenuItem value="hi">Hindi</MenuItem>
-                    {/* <MenuItem value={"pt"}>Portuguese</MenuItem>
-                    <MenuItem value={"es"}>Spanish</MenuItem> */}
                   </Select>
                 </FormControl>
               </div>

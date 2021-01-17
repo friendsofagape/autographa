@@ -9,6 +9,7 @@ import {
 } from '@material-ui/core';
 import { Notifications } from '@material-ui/icons';
 import ApplicationBar from '../ApplicationBar/ApplicationBar';
+import Profile from './Profile';
 
 Router.onRouteChangeStart = () => {
   NProgress.start();
@@ -57,10 +58,13 @@ export default function ProjectsDrawer() {
   );
 
   return (
-    <ApplicationBar
-      title="Autographa"
-      buttons={buttons}
-      drawerMenu={drawerMenu}
-    />
+    <>
+      <ApplicationBar
+        title="Autographa"
+        buttons={buttons}
+        drawerMenu={drawerMenu}
+      />
+      <Profile />
+    </>
   );
 }

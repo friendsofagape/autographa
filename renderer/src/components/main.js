@@ -5,7 +5,7 @@ import { IntlProvider } from 'react-intl';
 import * as localForage from 'localforage';
 import Router from 'next/router';
 import NProgress from 'nprogress';
-import ProjectsDrawer from './ProjectsPane/ProjectsDrawer';
+import ProjectsDrawer from './ProjectsPage/ProjectsDrawer';
 import Meta from '../Meta';
 // import AutographaStore from "./AutographaStore";
 // import AutoUpdate from "./AutoUpdate";
