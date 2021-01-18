@@ -7,7 +7,6 @@ module.exports = {
         fs: 'empty',
       };
     }
-
     config.module.rules.push(
       {
         test: /\.md$/,
@@ -17,4 +16,5 @@ module.exports = {
 
     return config;
   },
+  target: 'serverless',
 };

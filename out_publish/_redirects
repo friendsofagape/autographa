@@ -1,0 +1,2 @@
+# Next-on-Netlify Redirects
+/_next/image*  url=:url w=:width q=:quality  /.netlify/functions/next_image?url=:url&w=:width&q=:quality  200
