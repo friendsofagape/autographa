@@ -6,6 +6,10 @@
 .pnp.js
 bower_components
 
+# next-on-netlify build output
+out_functions/
+out_publish/
+
 # ignore everything in 'app' folder what had been generated from 'src' folder
 /app/app.js
 /app/background.js
