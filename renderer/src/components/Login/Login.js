@@ -12,26 +12,12 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-// import Router, { useRouter } from 'next/router';
-// import NProgress from 'nprogress';
 import * as localForage from 'localforage';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import Switch from '@material-ui/core/Switch';
 import * as logger from '../../logger';
 import { createUser, handleLogin } from '../../core/handleLogin';
 import { AuthenticationContext } from './AuthenticationContextProvider';
-
-// Router.onRouteChangeStart = () => {
-//   NProgress.start();
-// };
-
-// Router.onRouteChangeComplete = () => {
-//   NProgress.done();
-// };
-
-// Router.onRouteChangeError = () => {
-//   NProgress.done();
-// };
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -52,10 +38,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Login() {
   const classes = useStyles();
-  // const router = useRouter();
-  // const bgImage = ['img1', 'img2', 'img3'];
-  // const [index, setIndex] = React.useState(0);
-  // const bgImg = bgImage[index % bgImage.length];
   const [values, setValues] = React.useState({
     username: '',
     password: '',
@@ -63,10 +45,10 @@ export default function Login() {
   });
   const [validUser, setValidUser] = React.useState(false);
   const [validPassword, setValidPassword] = React.useState(false);
-  const [users, setUsers] = React.useState();
+  const [users, setUsers] = React.useState([]);
   const [online, setOnline] = React.useState(true);
   const [errorMsg, setErrorMsg] = React.useState();
-  const { action } = React.useContext(AuthenticationContext);
+  const { action } = React.useContext(AuthenticationContext) || {};
   const handleValidation = () => {
     let user;
     let pass;
@@ -100,7 +82,6 @@ export default function Login() {
       const fs = window.require('fs');
       logger.debug('Login.js', 'Triggers handleLogin to check whether the user is existing or not');
       const user = handleLogin(users, values);
-      // console.log(user);
       if (user) {
         logger.debug('Login.js', 'Triggers generateToken to generate a Token for the user');
         action.generateToken(user);
@@ -131,15 +112,13 @@ export default function Login() {
     setOnline(!online);
   };
   useEffect(() => {
-    // console.log('users', users);
     if (!users) {
       localForage.getItem('users').then((value) => {
-        // console.log('login', value);
-        setUsers(value);
+        if (value) {
+          setUsers(value);
+        }
       });
     }
-    //   const timer = setInterval(() => setIndex((i) => i + 1), 5000);
-    //   return () => clearInterval(timer);
   }, [users]);
   return (
     <div>
@@ -167,6 +146,7 @@ export default function Login() {
                       checked={online}
                       onChange={handleOnline}
                       name="online"
+                      data-testid="toggle-switch"
                     />
                   </Grid>
                   <Grid item>Online</Grid>
@@ -179,6 +159,7 @@ export default function Login() {
                 <Grid item>
                   <Autocomplete
                     freeSolo
+                    data-testid="autocomplete"
                     id="email"
                     options={users}
                     getOptionLabel={(option) => option.email}
@@ -253,7 +234,6 @@ export default function Login() {
                 onClick={handleSubmit}
               >
                 Login
-                {/* <Link href='/login'>Login</Link> */}
               </Button>
               <Typography variant="caption" gutterBottom>
                 Don&apos;t have an account?
