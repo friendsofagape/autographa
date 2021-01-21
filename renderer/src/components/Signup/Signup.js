@@ -17,7 +17,7 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import * as logger from '../../logger';
 import { handleJson } from '../../core/handleJson';
-import { HashPassword } from '../../core/hashing.';
+import { HashPassword } from '../../core/hashing';
 
 const useStyles = makeStyles((theme) => ({
   root: {
