@@ -23,12 +23,18 @@ import EditIcon from '@material-ui/icons/Edit';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import { FormattedMessage } from 'react-intl';
 import * as localForage from 'localforage';
+import { usePrefs } from 'prefs-rcl';
 import AutographaStore from '../AutographaStore';
 import * as logger from '../../logger';
 import { ProfileStyles } from './useStyles/ProfileStyles';
 import useValidator from '../Validation/useValidator';
 import { AutoCompleteSearch } from '../AutoCompleteSearch/AutoCompleteSearch';
 
+const localForageConfig = {
+  type: 'localForage',
+  name: 'profile1',
+  maxSize: '5MB',
+};
 const region = [
   { id: 1, place: 'Delhi, India' },
   { id: 2, place: 'Helsinki, Finland' },
@@ -61,6 +67,15 @@ const Profile = () => {
     },
 
   } = useValidator();
+
+  const {
+    state: { validator, validationMessage },
+    action: {
+      readItem, setItem, deleteItem, custom,
+    },
+  } = usePrefs({
+    backendfn: localForageConfig,
+  });
 
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
@@ -158,15 +173,20 @@ const Profile = () => {
     ];
     if (!saved) setSaved(profileSettings);
     if (errorCount !== null && formValid) {
-      localForage.setItem('profileSettings', profileSettings, () => {
-        localForage.getItem('profileSettings', (err, value) => {
-          setSaved(value);
-          logger.debug('Profile.js', 'Profile fields saved successfully');
-          if (err) {
-            logger.error('Profile.js', 'Failed in saving field values');
-          }
-        });
+      setItem({
+        key: 'profileSettings',
+        values: profileSettings,
+        tag: 'projectspage',
       });
+      // localForage.setItem('profileSettings', profileSettings, () => {
+      //   localForage.getItem('profileSettings', (err, value) => {
+      //     setSaved(value);
+      //     logger.debug('Profile.js', 'Profile fields saved successfully');
+      //     if (err) {
+      //       logger.error('Profile.js', 'Failed in saving field values');
+      //     }
+      //   });
+      // });
       localForage.getItem('applang', (err) => {
         localForage.setItem('applang', appLang, () => {
           if (err) {
