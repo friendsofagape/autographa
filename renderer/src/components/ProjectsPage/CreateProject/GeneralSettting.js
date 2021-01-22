@@ -14,7 +14,7 @@ import {
 import clsx from 'clsx';
 import { CreateProjectStyles } from './useStyles/CreateProjectStyles';
 import { AutoComplete } from './AutoComplete';
-import useValidator from '../Validation/useValidator';
+import useValidator from '../../Validation/useValidator';
 
 const version = [
   { id: 1, value: 'IRV' },

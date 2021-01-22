@@ -8,10 +8,10 @@ import {
   FormLabel,
 } from '@material-ui/core';
 import { CreateProjectStyles } from './useStyles/CreateProjectStyles';
-import { AllBooks, NT, OT } from '../../lib/CanonSpecification';
+import { AllBooks, NT, OT } from '../../../lib/CanonSpecification';
 import CustomSpecification from './CustomSpecification';
 import { LicenseSelection } from './LicenseSelection';
-import * as logger from '../../logger';
+import * as logger from '../../../logger';
 
 const canonItems = [
   { id: 'OT', spec: 'Old Testament (OT)' },

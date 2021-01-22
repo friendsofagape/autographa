@@ -21,7 +21,7 @@ import {
 } from '@material-ui/core';
 import * as localForage from 'localforage';
 import { CreateProjectStyles } from './useStyles/CreateProjectStyles';
-import * as logger from '../../logger';
+import * as logger from '../../../logger';
 
 const Transition = React.forwardRef((props, ref) => (
   <Zoom

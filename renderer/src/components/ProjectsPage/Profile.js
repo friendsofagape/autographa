@@ -69,7 +69,6 @@ const Profile = () => {
   } = useValidator();
 
   const {
-    state: { validator, validationMessage },
     action: {
       readItem, setItem, deleteItem, custom,
     },

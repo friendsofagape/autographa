@@ -13,7 +13,9 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
 import StarIcon from '@material-ui/icons/Star';
-import { IconButton, Box } from '@material-ui/core';
+import {
+  IconButton, Box, Paper, Grid,
+} from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import InfoIcon from '@material-ui/icons/Info';
@@ -257,219 +259,233 @@ export default function Projects({ starrtedData, unstarrtedData }) {
     setActionsUnStarred(false);
   };
   return (
-    <div className={classes.root}>
-      <Toolbar>
-        <div className={classes.search}>
-          <div className={classes.searchIcon}>
-            <SearchIcon />
-          </div>
-          <InputBase
-            placeholder="Search…"
-            classes={{
-              root: classes.inputRoot,
-              input: classes.inputInput,
-            }}
-            inputProps={{
-              'aria-label': 'search',
-              'data-testid': 'searchfield',
-            }}
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-          />
-        </div>
-      </Toolbar>
-      {starrtedData && (
-        <div>
-          <EnhancedTableToolbar title="Starred" />
-          <TableContainer className={classes.container}>
-            <Table
-              stickyHeader
-              className={classes.table}
-              aria-labelledby="tableTitle"
-              aria-label="enhanced table"
-            >
-              <EnhancedTableHead
-                classes={classes}
-                order={order}
-                orderBy={orderBy}
-                onRequestSort={handleRequestSort}
-                rowCount={starredrow.length}
-              />
-              {starredrow.length !== 0 ? (
-                <TableBody id="starredrow">
-                  {stableSort(
-                    query
-                      ? starredrow.filter((x) => x.name.toLowerCase().includes(query.toLowerCase()))
-                      : starredrow,
-                    getComparator(order, orderBy),
-                    orderBy,
-                    order,
-                  ).map((row, index) => (
-                    <TableRow
-                      hover
-                      role="checkbox"
-                      tabIndex={-1}
-                      key={row.name}
-                      onMouseEnter={() => mouseEnterStarred(index)}
-                      onMouseLeave={mouseLeaveStarred}
-                    >
-                      <TableCell padding="checkbox">
-                        <IconButton
-                          color="inherit"
-                          id="starredicon"
-                          onClick={(event) => handleClickStarred(event, row.name, 'starred')}
+    <>
+      <Paper>
+        <Grid container spacing={2}>
+          <Grid item xs={2} />
+          <div className={classes.root} data-test="component-profile">
+            <Grid item xs={10} />
+            <div style={{ float: 'right' }}>
+              <Toolbar>
+                <div className={classes.search}>
+                  <div className={classes.searchIcon}>
+                    <SearchIcon />
+                  </div>
+                  <InputBase
+                    placeholder="Search…"
+                    classes={{
+                      root: classes.inputRoot,
+                      input: classes.inputInput,
+                    }}
+                    inputProps={{
+                      'aria-label': 'search',
+                      'data-testid': 'searchfield',
+                    }}
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                  />
+                </div>
+              </Toolbar>
+            </div>
+            {starrtedData && (
+            <div>
+              <EnhancedTableToolbar title="Starred" />
+              <TableContainer className={classes.container}>
+                <Table
+                  stickyHeader
+                  className={classes.table}
+                  aria-labelledby="tableTitle"
+                  aria-label="enhanced table"
+                >
+                  <EnhancedTableHead
+                    classes={classes}
+                    order={order}
+                    orderBy={orderBy}
+                    onRequestSort={handleRequestSort}
+                    rowCount={starredrow.length}
+                  />
+                  {starredrow.length !== 0 ? (
+                    <TableBody id="starredrow">
+                      {stableSort(
+                        query
+                          ? starredrow.filter(
+                            (x) => x.name.toLowerCase().includes(query.toLowerCase()),
+                          )
+                          : starredrow,
+                        getComparator(order, orderBy),
+                        orderBy,
+                        order,
+                      ).map((row, index) => (
+                        <TableRow
+                          hover
+                          role="checkbox"
+                          tabIndex={-1}
+                          key={row.name}
+                          onMouseEnter={() => mouseEnterStarred(index)}
+                          onMouseLeave={mouseLeaveStarred}
                         >
-                          <StarIcon />
-                        </IconButton>
-                      </TableCell>
-                      <TableCell
-                        id="starredrow-name"
-                        component="th"
-                        scope="row"
-                        padding="none"
-                      >
-                        {row.name}
-                      </TableCell>
-                      <TableCell
-                        id="starredrow-language"
-                        component="th"
-                        scope="row"
-                        padding="none"
-                      >
-                        {row.language}
-                      </TableCell>
-                      <TableCell id="starredrow-date" align="right">
-                        {row.date}
-                      </TableCell>
-                      <TableCell id="starredrow-time" align="right">
-                        {moment(row.view, 'YYYY-MM-DD h:mm:ss').fromNow()}
-                      </TableCell>
-                      {actionsStarred && hoverIndexStarred === index ? (
-                        <TableCell align="left">
-                          <IconButton className={classes.iconbutton}>
-                            <EditIcon />
-                          </IconButton>
-                          <IconButton
-                            className={classes.iconbutton}
-                            onClick={(event) => handleDelete(event, row.name, 'starred')}
+                          <TableCell padding="checkbox">
+                            <IconButton
+                              color="inherit"
+                              id="starredicon"
+                              onClick={(event) => handleClickStarred(event, row.name, 'starred')}
+                            >
+                              <StarIcon />
+                            </IconButton>
+                          </TableCell>
+                          <TableCell
+                            id="starredrow-name"
+                            component="th"
+                            scope="row"
+                            padding="none"
                           >
-                            <DeleteIcon />
-                          </IconButton>
-                          <IconButton className={classes.iconbutton}>
-                            <InfoIcon />
-                          </IconButton>
-                        </TableCell>
-                      ) : (
-                        <TableCell align="left">
-                          <IconButton />
-                          <IconButton />
-                          <IconButton />
-                        </TableCell>
-                      )}
-                    </TableRow>
-                  ))}
-                </TableBody>
-              ) : (
-                <div>No data to display</div>
-              )}
-            </Table>
-          </TableContainer>
-        </div>
-      )}
-      {unstarrtedData && (
-        <div>
-          <EnhancedTableToolbar title="Everythings else" />
-          <TableContainer className={classes.container}>
-            <Table
-              className={classes.table}
-              aria-labelledby="tableTitle"
-              aria-label="enhanced table"
-              stickyHeader
-            >
-              <EnhancedTableHead
-                classes={classes}
-                order={orderUnstarred}
-                orderBy={orderByUnstarred}
-                onRequestSort={handleRequestSortUnstarred}
-                rowCount={unstarredrow.length}
-              />
-              <TableBody id="unstarredrow">
-                {stableSort(
-                  query
-                    ? unstarredrow.filter((x) => x.name.toLowerCase().includes(query.toLowerCase()))
-                    : unstarredrow,
-                  getComparator(orderUnstarred, orderByUnstarred),
-                  orderByUnstarred,
-                  orderUnstarred,
-                ).map((row, index) => (
-                  <TableRow
-                    hover
-                    onMouseEnter={() => mouseEnterUnStarred(index)}
-                    onMouseLeave={mouseLeaveUnStarred}
-                    tabIndex={-1}
-                    key={row.name}
-                  >
-                    <TableCell padding="checkbox">
-                      <IconButton
-                        color="inherit"
-                        id="unstarredicon"
-                        onClick={(event) => handleClickStarred(event, row.name, 'unstarred')}
+                            {row.name}
+                          </TableCell>
+                          <TableCell
+                            id="starredrow-language"
+                            component="th"
+                            scope="row"
+                            padding="none"
+                          >
+                            {row.language}
+                          </TableCell>
+                          <TableCell id="starredrow-date" align="right">
+                            {row.date}
+                          </TableCell>
+                          <TableCell id="starredrow-time" align="right">
+                            {moment(row.view, 'YYYY-MM-DD h:mm:ss').fromNow()}
+                          </TableCell>
+                          {actionsStarred && hoverIndexStarred === index ? (
+                            <TableCell align="left">
+                              <IconButton className={classes.iconbutton}>
+                                <EditIcon />
+                              </IconButton>
+                              <IconButton
+                                className={classes.iconbutton}
+                                onClick={(event) => handleDelete(event, row.name, 'starred')}
+                              >
+                                <DeleteIcon />
+                              </IconButton>
+                              <IconButton className={classes.iconbutton}>
+                                <InfoIcon />
+                              </IconButton>
+                            </TableCell>
+                          ) : (
+                            <TableCell align="left">
+                              <IconButton />
+                              <IconButton />
+                              <IconButton />
+                            </TableCell>
+                          )}
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  ) : (
+                    <div>No data to display</div>
+                  )}
+                </Table>
+              </TableContainer>
+            </div>
+            )}
+            {unstarrtedData && (
+            <div>
+              <EnhancedTableToolbar title="Everythings else" />
+              <TableContainer className={classes.container}>
+                <Table
+                  className={classes.table}
+                  aria-labelledby="tableTitle"
+                  aria-label="enhanced table"
+                  stickyHeader
+                >
+                  <EnhancedTableHead
+                    classes={classes}
+                    order={orderUnstarred}
+                    orderBy={orderByUnstarred}
+                    onRequestSort={handleRequestSortUnstarred}
+                    rowCount={unstarredrow.length}
+                  />
+                  <TableBody id="unstarredrow">
+                    {stableSort(
+                      query
+                        ? unstarredrow.filter(
+                          (x) => x.name.toLowerCase().includes(query.toLowerCase()),
+                        )
+                        : unstarredrow,
+                      getComparator(orderUnstarred, orderByUnstarred),
+                      orderByUnstarred,
+                      orderUnstarred,
+                    ).map((row, index) => (
+                      <TableRow
+                        hover
+                        onMouseEnter={() => mouseEnterUnStarred(index)}
+                        onMouseLeave={mouseLeaveUnStarred}
+                        tabIndex={-1}
+                        key={row.name}
                       >
-                        <StarBorderIcon />
-                      </IconButton>
-                    </TableCell>
-                    <TableCell
-                      id="unstarredrow-name"
-                      component="th"
-                      scope="row"
-                      padding="none"
-                    >
-                      {row.name}
-                    </TableCell>
-                    <TableCell
-                      id="unstarredrow-language"
-                      component="th"
-                      scope="row"
-                      padding="none"
-                    >
-                      {row.language}
-                    </TableCell>
-                    <TableCell id="unstarredrow-date" align="right">
-                      {row.date}
-                    </TableCell>
-                    <TableCell id="unstarredrow-time" align="right">
-                      {moment(row.view, 'YYYY-MM-DD h:mm:ss').fromNow()}
-                    </TableCell>
-                    {actionsUnStarred && hoverIndexUnStarred === index ? (
-                      <TableCell align="left">
-                        <IconButton className={classes.iconbutton}>
-                          <EditIcon />
-                        </IconButton>
-                        <IconButton
-                          className={classes.iconbutton}
-                          onClick={(event) => handleDelete(event, row.name, 'unstarred')}
+                        <TableCell padding="checkbox">
+                          <IconButton
+                            color="inherit"
+                            id="unstarredicon"
+                            onClick={(event) => handleClickStarred(event, row.name, 'unstarred')}
+                          >
+                            <StarBorderIcon />
+                          </IconButton>
+                        </TableCell>
+                        <TableCell
+                          id="unstarredrow-name"
+                          component="th"
+                          scope="row"
+                          padding="none"
                         >
-                          <DeleteIcon />
-                        </IconButton>
-                        <IconButton className={classes.iconbutton}>
-                          <InfoIcon />
-                        </IconButton>
-                      </TableCell>
-                    ) : (
-                      <TableCell align="left">
-                        <IconButton />
-                        <IconButton />
-                        <IconButton />
-                      </TableCell>
-                    )}
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </div>
-      )}
-    </div>
+                          {row.name}
+                        </TableCell>
+                        <TableCell
+                          id="unstarredrow-language"
+                          component="th"
+                          scope="row"
+                          padding="none"
+                        >
+                          {row.language}
+                        </TableCell>
+                        <TableCell id="unstarredrow-date" align="right">
+                          {row.date}
+                        </TableCell>
+                        <TableCell id="unstarredrow-time" align="right">
+                          {moment(row.view, 'YYYY-MM-DD h:mm:ss').fromNow()}
+                        </TableCell>
+                        {actionsUnStarred && hoverIndexUnStarred === index ? (
+                          <TableCell align="left">
+                            <IconButton className={classes.iconbutton}>
+                              <EditIcon />
+                            </IconButton>
+                            <IconButton
+                              className={classes.iconbutton}
+                              onClick={(event) => handleDelete(event, row.name, 'unstarred')}
+                            >
+                              <DeleteIcon />
+                            </IconButton>
+                            <IconButton className={classes.iconbutton}>
+                              <InfoIcon />
+                            </IconButton>
+                          </TableCell>
+                        ) : (
+                          <TableCell align="left">
+                            <IconButton />
+                            <IconButton />
+                            <IconButton />
+                          </TableCell>
+                        )}
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </div>
+            )}
+          </div>
+        </Grid>
+      </Paper>
+    </>
   );
 }
 Projects.propTypes = {

@@ -16,7 +16,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import PropTypes from 'prop-types';
-import * as logger from '../../logger';
+import * as logger from '../../../logger';
 
 function a11yProps(index) {
   return {
@@ -58,7 +58,7 @@ export const MarkdownViewer = ({
     logger.debug(
       'markdownviewer.js', `extracting text from files ${selectedLicense} on selection`,
     );
-    const licensefile = require(`../../lib/license/${selectedLicense}.md`);
+    const licensefile = require(`../../../lib/license/${selectedLicense}.md`);
     settranslation(licensefile.default);
   }, [selectedLicense]);
 
