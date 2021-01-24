@@ -26,7 +26,10 @@
         "import/prefer-default-export": "off",
         "import/no-extraneous-dependencies": "off",
         "react/require-default-props": "off",
-        "react/forbid-prop-types": "off"
+        "react/forbid-prop-types": "off",
+        "linebreak-style": 0,
+        "global-require": 0,
+        "eslint linebreak-style": [0, "error", "windows"]
     },
     "env": {
         "browser": true,

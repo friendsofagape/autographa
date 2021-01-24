@@ -2,7 +2,7 @@ import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { act } from 'react-dom/test-utils';
-import Profile from '../ProjectsPane/Profile';
+import Profile from '../Profile';
 import '@testing-library/jest-dom/extend-expect';
 import intl from './helper';
 

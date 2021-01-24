@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 // import { act } from 'react-dom/test-utils';
-import Projects from '../ProjectsPane/Projects';
+import Projects from '../Projects';
 import '@testing-library/jest-dom/extend-expect';
 import intl from './helper';
 
