@@ -70,7 +70,10 @@ const Profile = () => {
 
   const {
     action: {
-      readItem, setItem, deleteItem, custom,
+      // readItem,
+      setItem,
+      // deleteItem,
+      // custom,
     },
   } = usePrefs({
     backendfn: localForageConfig,

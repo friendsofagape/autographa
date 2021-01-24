@@ -10,6 +10,10 @@ bower_components
 out_functions/
 out_publish/
 
+# ignore db files
+Autogrpha-DB/
+/Autogrpha-DB/DB.json
+
 # ignore everything in 'app' folder what had been generated from 'src' folder
 /app/app.js
 /app/background.js

@@ -76,7 +76,7 @@
 		"mobx": "5.15.4",
 		"mobx-react": "6.3.0",
 		"moment": "^2.28.0",
-		"next": "latest",
+		"next": "10.0.5",
 		"next-on-netlify": "^2.6.3",
 		"nprogress": "^0.2.0",
 		"prop-types": "15.7.2",
