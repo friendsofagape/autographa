@@ -1,4 +1,4 @@
-import Main from '../src/components/main';
+import Main from '../renderer/src/components/main';
 
 const login = () => (
   <div>

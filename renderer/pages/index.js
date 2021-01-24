@@ -1,10 +1,13 @@
-import Login from '../src/components/Login/Login';
+import Home from '../src/components/Home';
 import Meta from '../src/Meta';
+import AuthenticationContextProvider from '../src/components/Login/AuthenticationContextProvider';
 
 const index = () => (
   <div>
     <Meta />
-    <Login />
+    <AuthenticationContextProvider>
+      <Home />
+    </AuthenticationContextProvider>
   </div>
 );
 

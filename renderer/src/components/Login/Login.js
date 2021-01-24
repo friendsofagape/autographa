@@ -12,22 +12,12 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import Link from 'next/link';
-import Router from 'next/router';
-import NProgress from 'nprogress';
+import * as localForage from 'localforage';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import Switch from '@material-ui/core/Switch';
 import * as logger from '../../logger';
-
-Router.onRouteChangeStart = () => {
-  NProgress.start();
-};
-
-Router.onRouteChangeComplete = () => {
-  NProgress.done();
-};
-
-Router.onRouteChangeError = () => {
-  NProgress.done();
-};
+import { createUser, handleLogin } from '../../core/handleLogin';
+import { AuthenticationContext } from './AuthenticationContextProvider';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -48,9 +38,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Login() {
   const classes = useStyles();
-  // const bgImage = ['img1', 'img2', 'img3'];
-  // const [index, setIndex] = React.useState(0);
-  // const bgImg = bgImage[index % bgImage.length];
   const [values, setValues] = React.useState({
     username: '',
     password: '',
@@ -58,30 +45,55 @@ export default function Login() {
   });
   const [validUser, setValidUser] = React.useState(false);
   const [validPassword, setValidPassword] = React.useState(false);
-  // const [logged, setLogged] = React.useState(false);
-
+  const [users, setUsers] = React.useState([]);
+  const [online, setOnline] = React.useState(true);
+  const [errorMsg, setErrorMsg] = React.useState();
+  const { action } = React.useContext(AuthenticationContext) || {};
   const handleValidation = () => {
+    let user;
+    let pass;
     if (values.username) {
       setValidUser(false);
+      user = true;
     } else {
       setValidUser(true);
+      setErrorMsg('Enter username');
+      user = false;
     }
     if (values.password) {
       setValidPassword(false);
+      pass = true;
+    } else if (!values.password && online === false) {
+      setValidPassword(false);
+      pass = true;
     } else {
       setValidPassword(true);
+      pass = false;
     }
+    return user && pass;
   };
   const handleSubmit = () => {
-    logger.error('login.js', 'error in sumitting');
-    logger.warn('login.js', 'check for routing');
-    logger.info('login.js', 'info for routing');
-    logger.debug('login.js', 'info for routing');
-    handleValidation();
-    // setLogged(true);
-  };
-  const handleUsername = (prop) => (event) => {
-    setValues({ ...values, [prop]: event.target.value });
+    // logger.error('login.js', 'error in sumitting');
+    // logger.warn('login.js', 'check for routing');
+    // logger.info('login.js', 'info for routing');
+    logger.debug('Login.js', 'In handleSubmit');
+    if (handleValidation()) {
+      values.online = online;
+      const fs = window.require('fs');
+      logger.debug('Login.js', 'Triggers handleLogin to check whether the user is existing or not');
+      const user = handleLogin(users, values);
+      if (user) {
+        logger.debug('Login.js', 'Triggers generateToken to generate a Token for the user');
+        action.generateToken(user);
+      } else {
+        logger.debug('Login.js', 'Triggers createUser for creating a new user');
+        createUser(values, fs)
+          .then((value) => {
+            logger.debug('Login.js', 'Triggers generateToken to generate a Token for the user');
+            action.generateToken(value);
+          });
+      }
+    }
   };
 
   const handlePassword = (prop) => (event) => {
@@ -95,10 +107,19 @@ export default function Login() {
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
+
+  const handleOnline = () => {
+    setOnline(!online);
+  };
   useEffect(() => {
-  //   const timer = setInterval(() => setIndex((i) => i + 1), 5000);
-  //   return () => clearInterval(timer);
-  }, []);
+    if (!users) {
+      localForage.getItem('users').then((value) => {
+        if (value) {
+          setUsers(value);
+        }
+      });
+    }
+  }, [users]);
   return (
     <div>
       <Grid container className={classes.root} justify="flex-end">
@@ -111,61 +132,100 @@ export default function Login() {
               <Typography variant="subtitle2" gutterBottom>
                 Welcome back! Login to access Autographa
               </Typography>
+              <Typography color="error">{errorMsg}</Typography>
+              <Typography component="div">
+                <Grid
+                  component="label"
+                  container
+                  alignItems="center"
+                  spacing={1}
+                >
+                  <Grid item>Offline</Grid>
+                  <Grid item>
+                    <Switch
+                      checked={online}
+                      onChange={handleOnline}
+                      name="online"
+                      data-testid="toggle-switch"
+                    />
+                  </Grid>
+                  <Grid item>Online</Grid>
+                </Grid>
+              </Typography>
               <Grid container spacing={1} alignItems="flex-end">
                 <Grid item>
                   <PersonOutlineIcon />
                 </Grid>
                 <Grid item>
-                  <TextField
-                    required
-                    inputProps={{
-                      'data-testid': 'username-textfield',
+                  <Autocomplete
+                    freeSolo
+                    data-testid="autocomplete"
+                    id="email"
+                    options={users}
+                    getOptionLabel={(option) => option.email}
+                    getOptionSelected={(option, value) => option.email === value.email}
+                    onInputChange={(event, newInputValue) => {
+                      setValues({ ...values, username: newInputValue });
                     }}
-                    className={classes.margin}
-                    id="input-with-icon-textfield"
-                    label="Username"
-                    error={validUser}
-                    onChange={handleUsername('username')}
+                    renderInput={(params) => (
+                      <TextField
+                        className={classes.margin}
+                        {...params}
+                        error={validUser}
+                        label="Email"
+                      />
+                    )}
                   />
                 </Grid>
               </Grid>
-              <Grid container spacing={1} alignItems="flex-end">
-                <Grid item>
-                  <LockOpenIcon />
+              {online === true ? (
+                <Grid
+                  container
+                  spacing={1}
+                  alignItems="flex-end"
+                >
+                  <Grid item>
+                    <LockOpenIcon />
+                  </Grid>
+                  <Grid item>
+                    <TextField
+                      required
+                      className={classes.margin}
+                      id="standard-adornment-password"
+                      label="Password"
+                      type={values.showPassword ? 'text' : 'password'}
+                      value={values.password}
+                      error={validPassword}
+                      onChange={handlePassword('password')}
+                      InputProps={{
+                        'data-testid': 'password-textfield',
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <IconButton
+                              aria-label="toggle password visibility"
+                              onClick={handleClickShowPassword}
+                              onMouseDown={handleMouseDownPassword}
+                            >
+                              {values.showPassword ? (
+                                <Visibility />
+                              ) : (
+                                <VisibilityOff />
+                              )}
+                            </IconButton>
+                          </InputAdornment>
+                        ),
+                      }}
+                    />
+                  </Grid>
                 </Grid>
-                <Grid item>
-                  <TextField
-                    required
-                    className={classes.margin}
-                    id="standard-adornment-password"
-                    label="Password"
-                    type={values.showPassword ? 'text' : 'password'}
-                    value={values.password}
-                    error={validPassword}
-                    onChange={handlePassword('password')}
-                    InputProps={{
-                      'data-testid': 'password-textfield',
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <IconButton
-                            aria-label="toggle password visibility"
-                            onClick={handleClickShowPassword}
-                            onMouseDown={handleMouseDownPassword}
-                          >
-                            {values.showPassword ? (
-                              <Visibility />
-                            ) : (
-                              <VisibilityOff />
-                            )}
-                          </IconButton>
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
-                </Grid>
-              </Grid>
-              <Typography variant="caption" align="right" gutterBottom>
-                Forgot Password?
+              ) : (''
+              )}
+              <Typography
+                variant="caption"
+                align="right"
+                gutterBottom
+              >
+                {online === true ? 'Forgot Password?' : ''}
               </Typography>
 
               <Button
@@ -173,9 +233,7 @@ export default function Login() {
                 variant="contained"
                 onClick={handleSubmit}
               >
-                <Link href="/login">
-                  Login
-                </Link>
+                Login
               </Button>
               <Typography variant="caption" gutterBottom>
                 Don&apos;t have an account?

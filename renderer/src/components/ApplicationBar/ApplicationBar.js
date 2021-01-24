@@ -6,8 +6,6 @@ import {
   Toolbar,
   Typography,
 } from '@material-ui/core';
-import {
-} from '@material-ui/icons';
 
 import { useStyles } from './useStyles';
 import DrawerMenu from './DrawerMenu';

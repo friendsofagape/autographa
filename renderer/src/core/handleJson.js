@@ -6,6 +6,26 @@ const path = require('path');
 let error;
 const uniqueUser = (users, email) => users.some((user) => user.email === email);
 
+export const loadUsers = async (fs) => {
+  const file = path.join('Autogrpha-DB', 'DB.json');
+  if (fs.existsSync(file)) {
+    fs.readFile(file, 'utf8', (err, data) => {
+      if (err) {
+        logger.error('handleJson.js', 'Failed to read the data from file');
+      } else {
+        logger.debug('handleJson.js', 'Successfully read the data from file');
+        // Add users to localForage:
+        localForage.setItem('users', JSON.parse(data), (errLoc) => {
+          if (errLoc) {
+            logger.error('handleJson.js', 'Failed to load users list to LocalStorage');
+          }
+          logger.debug('handleJson.js', 'Added users list to LocalStorage');
+        });
+      }
+    });
+  }
+};
+
 export const handleJson = async (values, fs) => {
   logger.debug('handleJson.js', 'Inside handleJson');
   //   console.log('global', global.path);
@@ -31,15 +51,11 @@ export const handleJson = async (values, fs) => {
             json.push(values);
             try {
               fs.writeFileSync(file, JSON.stringify(json));
-              logger.debug(
-                'handleJson.js', 'Successfully added new user to the existing list in file',
-              );
+              logger.debug('handleJson.js', 'Successfully added new user to the existing list in file');
               // Add new user to localForage:
               localForage.setItem('users', json, (errLoc) => {
                 if (errLoc) {
-                  logger.error(
-                    'handleJson.js', 'Failed to add new user to existing list',
-                  );
+                  logger.error('handleJson.js', 'Failed to add new user to existing list');
                 }
                 logger.debug('handleJson.js', 'Added new user to existing list');
               });
@@ -57,19 +73,13 @@ export const handleJson = async (values, fs) => {
   array.push(values);
   try {
     fs.writeFileSync(file, JSON.stringify(array));
-    logger.debug(
-      'handleJson.js', 'Successfully created and written to the file',
-    );
+    logger.debug('handleJson.js', 'Successfully created and written to the file');
     // Add new user to localForage:
     localForage.setItem('users', array, (err) => {
       if (err) {
-        logger.error(
-          'handleJson.js', 'Failed to Create a file and add user to LocalForage',
-        );
+        logger.error('handleJson.js', 'Failed to Create a file and add user to LocalForage');
       }
-      logger.debug(
-        'handleJson.js', 'Created a file and added user to LocalForage',
-      );
+      logger.debug('handleJson.js', 'Created a file and added user to LocalForage');
     });
     logger.debug('handleJson.js', 'Exiting from handleJson');
     return error;
