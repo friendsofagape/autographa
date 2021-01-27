@@ -73,6 +73,7 @@ const SearchData = ({ onfilerRequest1, onfilerRequest2 }) => {
   React.useEffect(() => {
     onfilerRequest1(starrtedData);
     onfilerRequest2(unstarrtedData);
+    // eslint-disable-next-line
   }, []);
 
   return (

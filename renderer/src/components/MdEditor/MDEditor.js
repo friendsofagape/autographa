@@ -17,14 +17,6 @@ function a11yProps(index) {
     'aria-controls': `full-width-tabpanel-${index}`,
   };
 }
-const Transition = React.forwardRef((props, ref) => (
-  <Zoom
-    style={{ transitionDelay: '50ms' }}
-    direction="up"
-    ref={ref}
-    {...props}
-  />
-));
 
 export const MDEditor = ({
   openMDFile,
@@ -149,5 +141,5 @@ export const MDEditor = ({
 MDEditor.propTypes = {
   openMDFile: PropTypes.bool.isRequired,
   setopenMDFile: PropTypes.func,
-  filePath: PropTypes.string,
+  mdFilePath: PropTypes.string,
 };

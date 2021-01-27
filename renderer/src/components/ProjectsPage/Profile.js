@@ -173,7 +173,7 @@ const Profile = () => {
         appLang,
       },
     ];
-    if (!saved) setSaved(profileSettings);
+    if (!saved) { setSaved(profileSettings); }
     if (errorCount !== null && formValid) {
       setItem({
         key: 'profileSettings',

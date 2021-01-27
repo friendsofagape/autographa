@@ -29,26 +29,33 @@
         "react/forbid-prop-types": "off",
         "linebreak-style": 0,
         "global-require": 0,
-        "eslint linebreak-style": [0, "error", "windows"]
-    },
-    "env": {
-        "browser": true,
-        "commonjs": true,
-        "es6": true,
-        "node": true,
-        "jest": false
-    },
-    "parserOptions": {
-        "ecmaVersion": 2018,
-        "sourceType": "module",
-        "ecmaFeatures": {
-            "jsx": true
-        }
-    },
-    "settings": {
-        "react": {
-            "version": "detect"
-        }
-    },
-    "plugins": []
+        "eslint linebreak-style": [0, "error", "windows"],
+        "curly": [
+            "error",
+            "all"
+            ],
+            "template-curly-spacing" : "off",
+            "indent" : "off"
+        },
+        "env": {
+            "browser": true,
+            "es6": true,
+            "node": true,
+            "jest": false
+        },
+        "parserOptions": {
+            "ecmaVersion": 2018,
+            "sourceType": "module",
+            "ecmaFeatures": {
+                "jsx": true
+            }
+        },
+        "settings": {
+            "react": {
+                "version": "detect"
+            }
+        },
+        "plugins": [
+            "react"
+        ]
 }
