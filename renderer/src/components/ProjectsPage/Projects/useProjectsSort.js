@@ -21,6 +21,16 @@ function useProjectsSort() {
     settemparray(copy[0]);
   };
 
+  const handleRequestSortUnstarred = (event, property) => {
+    logger.debug(
+      'project.js',
+      `calling unstarred stable sort with value of orderBy=${property}`,
+    );
+    const isAsc = orderByUnstarred === property && orderUnstarred === 'asc';
+    setOrderUnstarred(isAsc ? 'desc' : 'asc');
+    setOrderByUnstarred(property);
+  };
+
   const handleDelete = (event, name, property) => {
     logger.debug('project.js', 'calling handleDelete event');
     const selectedIndex = property === 'starred'
@@ -31,16 +41,7 @@ function useProjectsSort() {
     property === 'starred'
       ? (starredrow.splice(selectedIndex, 1))
       : (unstarredrow.splice(selectedIndex, 1));
-  };
-
-  const handleRequestSortUnstarred = (event, property) => {
-    logger.debug(
-      'project.js',
-      `calling unstarred stable sort with value of orderBy=${property}`,
-    );
-    const isAsc = orderByUnstarred === property && orderUnstarred === 'asc';
-    setOrderUnstarred(isAsc ? 'desc' : 'asc');
-    setOrderByUnstarred(property);
+    handleRequestSortUnstarred('asc', 'view');
   };
 
   // eslint-disable-next-line
