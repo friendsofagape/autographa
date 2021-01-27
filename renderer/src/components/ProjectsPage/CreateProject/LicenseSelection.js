@@ -1,3 +1,6 @@
+/* eslint-disable import/no-dynamic-require */
+/* eslint-disable global-require */
+// @flow
 import {
   Box,
   FormControl,
@@ -7,8 +10,9 @@ import {
 } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import * as React from 'react';
-import { MarkdownViewer } from './MarkdownViewer';
+import { MDEditor } from '../../MdEditor/MDEditor';
 import { CreateProjectStyles } from './useStyles/CreateProjectStyles';
+import * as logger from '../../../logger';
 
 const licenseItems = [
   { id: 'BY', license: 'Attribution' },
@@ -27,6 +31,15 @@ export const LicenseSelection = ({ openmdviewer, setopenmdviewer }) => {
     licenseItems[0].id,
   );
   const [updatelicenseItems] = React.useState(licenseItems);
+  const [filePath, setFilePath] = React.useState();
+
+  React.useEffect(() => {
+    logger.debug(
+      'markdownviewer.js', `extracting text from files ${selectedLicense} on selection`,
+    );
+    const licensefile = require(`../../../lib/license/${selectedLicense}.md`);
+    setFilePath(licensefile.default);
+  }, [setFilePath, selectedLicense]);
 
   const handleMdViewer = (event) => {
     setselectedLicense(event.target.value);
@@ -54,10 +67,10 @@ export const LicenseSelection = ({ openmdviewer, setopenmdviewer }) => {
           ))}
         </Select>
       </FormControl>
-      <MarkdownViewer
-        openmdviewer={openmdviewer}
-        setopenmdviewer={setopenmdviewer}
-        selectedLicense={selectedLicense}
+      <MDEditor
+        openMDFile={openmdviewer}
+        setopenMDFile={setopenmdviewer}
+        mdFilePath={filePath}
       />
     </>
   );

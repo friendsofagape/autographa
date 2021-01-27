@@ -32,6 +32,7 @@ export default function CustomDialog({
   title,
   buttons,
   content,
+  width,
 }) {
   const handleClose = () => {
     setOpen(false);
@@ -40,6 +41,8 @@ export default function CustomDialog({
   return (
     <div>
       <Dialog
+        maxWidth={width}
+        fullWidth
         onClose={handleClose}
         TransitionComponent={Transition}
         aria-labelledby="customized-dialog-title"
@@ -89,4 +92,6 @@ CustomDialog.propTypes = {
   buttons: PropTypes.element,
   /** Component to render inside of the custom dialog. */
   content: PropTypes.element,
+  /** Determines window size */
+  width: PropTypes.string,
 };
