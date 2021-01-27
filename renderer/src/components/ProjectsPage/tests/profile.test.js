@@ -9,10 +9,6 @@ import intl from './helper';
 jest.mock('localforage');
 jest.useFakeTimers();
 
-test('renders without fail', () => {
-  render(intl(<Profile />));
-});
-
 describe('state controlled profile fields', () => {
   test('state update on first name upon change', async () => {
     const { getByTestId } = render(intl(<Profile />));
@@ -88,7 +84,9 @@ describe('state controlled profile fields', () => {
       const selector = document.querySelector('#localeList');
       fireEvent.mouseDown(selector);
       const choice = getByText('Hindi');
+      await act(async () => {
       fireEvent.click(choice);
+      });
       expect(mockSetLanguage).toHaveBeenCalledWith('hi');
     });
   });

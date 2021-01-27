@@ -37,7 +37,7 @@ export default function StarredProjects() {
       setStarredRow,
       setUnStarredRow,
     },
-  } = React.useContext(AutographaContext);
+  } = React.useContext(AutographaContext) || {};
 
   const handleRequestSort = (event, property) => {
     logger.debug(

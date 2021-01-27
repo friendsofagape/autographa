@@ -2,8 +2,8 @@ import React, { useEffect } from 'react';
 import * as logger from '../../../logger';
 
 function useProjectsSort() {
-  const [starredrow, setStarredRow] = React.useState();
-  const [unstarredrow, setUnStarredRow] = React.useState();
+  const [starredrow, setStarredRow] = React.useState('');
+  const [unstarredrow, setUnStarredRow] = React.useState('');
   const [temparray, settemparray] = React.useState(null);
   const [active, setactive] = React.useState('');
   const [orderUnstarred, setOrderUnstarred] = React.useState('asc');

@@ -63,6 +63,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function SearchForm({
+  defaultQuery,
   contentList1,
   contentList2,
   filterList,
@@ -70,7 +71,7 @@ function SearchForm({
   onfilerRequest2
 }) {
   const classes = useStyles();
-  const [query, setQuery] = useState();
+  const [query, setQuery] = useState(defaultQuery);
   // eslint-disable-next-line no-unused-vars
   // exclude column list from filter
   const excludeColumns = filterList.splice(filterList.indexOf(), 1);
@@ -148,7 +149,7 @@ SearchForm.propTypes = {
   /** Array list to be filtered  */
   filterList: PropTypes.array,
   /** Function to propogate the returned repositories data array. */
-  onfilerRequest: PropTypes.func.isRequired,
+  onfilerRequest: PropTypes.func,
   /** Configuration required if paths are provided as URL. */
 };
 

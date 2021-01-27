@@ -1,14 +1,28 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 // import { act } from 'react-dom/test-utils';
-import Projects from '../Projects';
 import '@testing-library/jest-dom/extend-expect';
 import intl from './helper';
+import StarredProjects from '../Projects/StarredProjects';
+import UnstarredProjects from '../Projects/UnstarredProjects';
+import AutographaContextProvider from '../../AutogrpahaContext/AutographaContext';
 
 jest.useFakeTimers();
 
 test('Projects pane renders without error', () => {
-  render(intl(<Projects />));
+  render(intl(
+    <AutographaContextProvider>
+      <StarredProjects />
+    </AutographaContextProvider>
+  ));
+});
+
+test('Projects pane renders without error', () => {
+  render(intl(
+    <AutographaContextProvider>
+      <UnstarredProjects />
+  </AutographaContextProvider>
+  ));
 });
 
 // const starrted = [

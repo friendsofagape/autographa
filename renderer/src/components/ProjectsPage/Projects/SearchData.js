@@ -78,7 +78,6 @@ const SearchData = ({ onfilerRequest1, onfilerRequest2 }) => {
   return (
     <div>
       <SearchForm
-        defaultQuery="name"
         contentList1={starrtedData}
         contentList2={unstarrtedData}
         filterList={filterList}

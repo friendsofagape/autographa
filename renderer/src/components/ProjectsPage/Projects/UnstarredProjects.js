@@ -34,7 +34,7 @@ const UnstarredProjects = () => {
       handleDelete,
       handleRequestSortUnstarred,
     },
-  } = React.useContext(AutographaContext);
+  } = React.useContext(AutographaContext) || {};
 
   const mouseEnterUnStarred = (index) => {
     setActionsUnStarred(true);
