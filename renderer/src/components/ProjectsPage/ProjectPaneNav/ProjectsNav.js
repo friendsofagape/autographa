@@ -2,8 +2,8 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import CreateProjectAccordions from '../CreateProject/CreateProjectAccordions';
 import Profile from '../Profile';
-import TableData from '../TableData';
 import List from '../../Sync/List';
+import Projects from '../Projects/StarredProjects';
 
 export const ProjectsNav = ({ title }) => (
   <>
@@ -14,7 +14,7 @@ export const ProjectsNav = ({ title }) => (
         case 'Sync':
           return <List />;
         case 'Projects':
-          return <TableData />;
+          return <Projects />;
         case 'New':
           return <CreateProjectAccordions />;
         default:

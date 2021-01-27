@@ -73,9 +73,6 @@ export default function Login() {
     return user && pass;
   };
   const handleSubmit = () => {
-    // logger.error('login.js', 'error in sumitting');
-    // logger.warn('login.js', 'check for routing');
-    // logger.info('login.js', 'info for routing');
     logger.debug('Login.js', 'In handleSubmit');
     if (handleValidation()) {
       values.online = online;

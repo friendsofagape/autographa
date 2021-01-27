@@ -63,57 +63,54 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function SearchForm({
-  defaultQuery,
-  contentList,
+  contentList1,
+  contentList2,
   filterList,
-  // onFilterContents,
+  onfilerRequest1,
+  onfilerRequest2
 }) {
   const classes = useStyles();
-  const [query, setQuery] = useState(defaultQuery);
+  const [query, setQuery] = useState();
   // eslint-disable-next-line no-unused-vars
-  const [data, setData] = useState(contentList);
-
   // exclude column list from filter
-
-  const excludeColumns = filterList.splice(filterList.indexOf('name'), 1);
+  const excludeColumns = filterList.splice(filterList.indexOf(), 1);
 
   // const contentSearchDebounced = AwesomeDebouncePromise(
   //   async (_props) => await contentSearch(_props),
   //   250,
   // );
 
-  const onQuery = useCallback((_query) => {
+  const onQuery = useCallback((_query, content) => {
     setQuery(_query);
     const lowercasedValue = _query.toLowerCase().trim();
-    if (lowercasedValue === '') setData(contentList);
+    if (lowercasedValue === '') {
+      return content
+    }
     else {
-      const filteredData = contentList.filter(
+      const filteredData = content.filter(
         (item) => Object.keys(item).some((key) => (excludeColumns.includes(key)
           ? false
           : item[key].toString().toLowerCase().includes(lowercasedValue))),
       );
-      setData(filteredData);
-      // onFilterContents(filteredData);
+      return filteredData
     }
-  }, [contentList, excludeColumns, setData]);
+  }, [excludeColumns]);
 
   // handle change event of search input
   const handleChange = (value) => {
     setQuery(value);
-    onQuery(value);
+    if(contentList2!== undefined){
+      onfilerRequest1(onQuery(value, contentList1));
+      onfilerRequest2(onQuery(value, contentList2));
+    }
+    else{
+      onfilerRequest1(onQuery(value, contentList1));
+    }
   };
 
   return (
     <div className={classes.root}>
       <Toolbar>
-        <Typography
-          className={classes.title}
-          variant="h6"
-          noWrap
-          data-testid="search-title"
-        >
-          Search
-        </Typography>
         <div className={classes.search}>
           <div className={classes.searchIcon}>
             <Search />
@@ -151,7 +148,7 @@ SearchForm.propTypes = {
   /** Array list to be filtered  */
   filterList: PropTypes.array,
   /** Function to propogate the returned repositories data array. */
-  // onFilterContents: PropTypes.func.isRequired,
+  onfilerRequest: PropTypes.func.isRequired,
   /** Configuration required if paths are provided as URL. */
 };
 

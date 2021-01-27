@@ -1,7 +1,8 @@
 import React from 'react';
-import Projects from './Projects';
+import PropTypes from 'prop-types';
+import SearchForm from '../../Search/SearchForm';
 
-const TableData = () => {
+const SearchData = ({ onfilerRequest1, onfilerRequest2 }) => {
   function createData(name, language, date, view) {
     return {
       name, language, date, view,
@@ -12,7 +13,7 @@ const TableData = () => {
       'Project Arabic',
       'Arabic(arb)',
       '22 Apr 2020',
-      '2020-09-15 14:33:26',
+      '2021-01-15 14:33:26',
     ),
     createData(
       'Hindi New Testment',
@@ -62,17 +63,35 @@ const TableData = () => {
       'Spanish Project',
       'Spanish(spa)',
       '1 Sep 2019',
-      '2020-01-15 14:33:26',
+      '2021-01-24 14:33:26',
     ),
     createData('Arabic', 'Arabic(arb)', '2 Aug 2020', '2020-05-15 14:34:26'),
     createData('Tamil IRV', 'Tamil(tml)', '15 Aug 2018', '2018-04-21 8:33:26'),
   ];
+  const filterList = ['name', 'language', 'date', 'view'];
+
+  React.useEffect(() => {
+    onfilerRequest1(starrtedData);
+    onfilerRequest2(unstarrtedData);
+  }, []);
 
   return (
     <div>
-      <Projects starrtedData={starrtedData} unstarrtedData={unstarrtedData} />
+      <SearchForm
+        defaultQuery="name"
+        contentList1={starrtedData}
+        contentList2={unstarrtedData}
+        filterList={filterList}
+        onfilerRequest1={onfilerRequest1}
+        onfilerRequest2={onfilerRequest2}
+      />
     </div>
   );
 };
 
-export default TableData;
+export default SearchData;
+
+SearchData.propTypes = {
+  onfilerRequest1: PropTypes.func,
+  onfilerRequest2: PropTypes.func,
+};
