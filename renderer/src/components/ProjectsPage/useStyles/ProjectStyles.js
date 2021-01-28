@@ -22,7 +22,7 @@ export const useToolbarStyles = makeStyles((theme) => ({
 
 export const ProjectStyles = makeStyles((theme) => ({
   root: {
-    width: '100%',
+    flexGrow: 1,
   },
   paper: {
     width: '100%',

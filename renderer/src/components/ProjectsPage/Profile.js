@@ -15,7 +15,6 @@ import {
   Input,
   Button,
 } from '@material-ui/core';
-import Autocomplete from '@material-ui/lab/Autocomplete';
 import clsx from 'clsx';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
@@ -24,11 +23,18 @@ import EditIcon from '@material-ui/icons/Edit';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import { FormattedMessage } from 'react-intl';
 import * as localForage from 'localforage';
+import { usePrefs } from 'prefs-rcl';
 import AutographaStore from '../AutographaStore';
 import * as logger from '../../logger';
 import { ProfileStyles } from './useStyles/ProfileStyles';
 import useValidator from '../Validation/useValidator';
+import { AutoCompleteSearch } from '../AutoCompleteSearch/AutoCompleteSearch';
 
+const localForageConfig = {
+  type: 'localForage',
+  name: 'profile1',
+  maxSize: '5MB',
+};
 const region = [
   { id: 1, place: 'Delhi, India' },
   { id: 2, place: 'Helsinki, Finland' },
@@ -61,6 +67,17 @@ const Profile = () => {
     },
 
   } = useValidator();
+
+  const {
+    action: {
+      // readItem,
+      setItem,
+      // deleteItem,
+      // custom,
+    },
+  } = usePrefs({
+    backendfn: localForageConfig,
+  });
 
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
@@ -156,17 +173,22 @@ const Profile = () => {
         appLang,
       },
     ];
-    if (!saved) setSaved(profileSettings);
+    if (!saved) { setSaved(profileSettings); }
     if (errorCount !== null && formValid) {
-      localForage.setItem('profileSettings', profileSettings, () => {
-        localForage.getItem('profileSettings', (err, value) => {
-          setSaved(value);
-          logger.debug('Profile.js', 'Profile fields saved successfully');
-          if (err) {
-            logger.error('Profile.js', 'Failed in saving field values');
-          }
-        });
+      setItem({
+        key: 'profileSettings',
+        values: profileSettings,
+        tag: 'projectspage',
       });
+      // localForage.setItem('profileSettings', profileSettings, () => {
+      //   localForage.getItem('profileSettings', (err, value) => {
+      //     setSaved(value);
+      //     logger.debug('Profile.js', 'Profile fields saved successfully');
+      //     if (err) {
+      //       logger.error('Profile.js', 'Failed in saving field values');
+      //     }
+      //   });
+      // });
       localForage.getItem('applang', (err) => {
         localForage.setItem('applang', appLang, () => {
           if (err) {
@@ -287,27 +309,12 @@ const Profile = () => {
                   variant="outlined"
                   className={classes.textfieldlong}
                 >
-                  <Autocomplete
-                    id="region"
-                    options={region}
-                    getOptionLabel={(option) => option.place}
-                    inputValue={selregion}
-                    // eslint-disable-next-line no-shadow
-                    onInputChange={(id, region) => {
-                      setRegion(region);
-                    }}
-                    renderInput={(params) => (
-                      <FormattedMessage id="label-region">
-                        {(message) => (
-                          <TextField
-                            {...params}
-                            label={message}
-                            variant="outlined"
-                          />
-                        )}
-                      </FormattedMessage>
-                    )}
-                    ListboxProps={{ 'data-testid': 'list-box' }}
+                  <AutoCompleteSearch
+                    id="Region"
+                    listarray={region}
+                    customPlaceholder="Region"
+                    selectedValue={selregion}
+                    setSelectedValue={setRegion}
                   />
                 </FormControl>
               </div>
@@ -372,11 +379,8 @@ const Profile = () => {
                     value={appLang}
                     onChange={changeLangauge}
                   >
-                    {/* <MenuItem value={"ar"}>Arabic</MenuItem> */}
                     <MenuItem value="en">English</MenuItem>
                     <MenuItem value="hi">Hindi</MenuItem>
-                    {/* <MenuItem value={"pt"}>Portuguese</MenuItem>
-                    <MenuItem value={"es"}>Spanish</MenuItem> */}
                   </Select>
                 </FormControl>
               </div>

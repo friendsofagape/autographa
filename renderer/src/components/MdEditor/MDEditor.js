@@ -21,11 +21,11 @@ function a11yProps(index) {
 export const MDEditor = ({
   openMDFile,
   setopenMDFile,
-  filePath,
+  mdFilePath,
 }) => {
   const [onedit, setEdit] = React.useState(0);
   const [preview, setpreview] = React.useState(true);
-  const [translation, settranslation] = React.useState(filePath);
+  const [translation, settranslation] = React.useState();
 
   const handleEdit = (edit) => {
     setEdit(edit);
@@ -39,6 +39,10 @@ export const MDEditor = ({
     logger.debug('markdownviewer.js', `set translation as ${markdown}`);
     settranslation(markdown);
   };
+
+  React.useEffect(() => {
+    settranslation(mdFilePath);
+  }, [mdFilePath]);
 
   const title = (
     <AppBar position="static" color="default">
@@ -128,6 +132,7 @@ export const MDEditor = ({
         title={title}
         buttons={button}
         content={content}
+        width="xl"
       />
     </div>
   );
@@ -136,5 +141,5 @@ export const MDEditor = ({
 MDEditor.propTypes = {
   openMDFile: PropTypes.bool.isRequired,
   setopenMDFile: PropTypes.func,
-  filePath: PropTypes.string,
+  mdFilePath: PropTypes.string,
 };

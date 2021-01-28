@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import Router from 'next/router';
 import NProgress from 'nprogress';
 import DescriptionIcon from '@material-ui/icons/Description';
@@ -9,6 +9,7 @@ import {
 } from '@material-ui/core';
 import { Notifications } from '@material-ui/icons';
 import ApplicationBar from '../ApplicationBar/ApplicationBar';
+import { ProjectsNav } from './ProjectPaneNav/ProjectsNav';
 
 Router.onRouteChangeStart = () => {
   NProgress.start();
@@ -23,6 +24,7 @@ Router.onRouteChangeError = () => {
 };
 
 export default function ProjectsDrawer() {
+  const [title, setSelecttitle] = React.useState('Profile');
   const buttons = (
     <IconButton color="inherit">
       <Badge badgeContent={17} color="secondary">
@@ -30,6 +32,7 @@ export default function ProjectsDrawer() {
       </Badge>
     </IconButton>
   );
+
   const showIcon = (index) => {
     switch (index) {
       case 0:
@@ -43,10 +46,14 @@ export default function ProjectsDrawer() {
     }
   };
 
+  const selectPane = useCallback((text) => {
+    setSelecttitle(text);
+  }, [setSelecttitle]);
+
   const drawerMenu = (
     <List>
-      {['New', 'Project List', 'Sync', 'Profile'].map((text, index) => (
-        <ListItem style={{ marginBottom: '20px' }} button key={text}>
+      {['New', 'Projects', 'Sync', 'Profile'].map((text, index) => (
+        <ListItem style={{ marginBottom: '20px' }} button onClick={() => selectPane(text)} key={text}>
           <ListItemIcon style={{ margin: 0 }}>
             {showIcon(index)}
           </ListItemIcon>
@@ -57,10 +64,13 @@ export default function ProjectsDrawer() {
   );
 
   return (
-    <ApplicationBar
-      title="Autographa"
-      buttons={buttons}
-      drawerMenu={drawerMenu}
-    />
+    <>
+      <ApplicationBar
+        title="Autographa"
+        buttons={buttons}
+        drawerMenu={drawerMenu}
+      />
+      <ProjectsNav title={title} />
+    </>
   );
 }

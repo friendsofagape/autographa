@@ -56,38 +56,27 @@ function createData(name, language, date, view) {
   ];
 
   const filterList = ['name', 'language', 'date', 'view'];
+  const mockSetLanguage = jest.fn();
+  React.useState = jest.fn(() => ['', mockSetLanguage]);
 
 test('SearchForm renders without error', () => {
   render(
   <SearchForm 
     defaultQuery="name" 
     contentList={contentList} 
-    filterList={filterList} 
+    filterList={filterList}
+    onfilerRequest1={mockSetLanguage} 
     />);
-});
-
-test('should check for elements on search form with defaults ', () => {
-    const { getByTestId } = render(
-        <SearchForm 
-            defaultQuery="name" 
-            contentList={contentList} 
-            filterList={filterList}
-        />);
-        const searchTitle = getByTestId('search-title');
-        expect(searchTitle).toHaveTextContent("Search")
-        const searchField = getByTestId('searchfield');
-        expect(searchField).toHaveValue('name');
 });
 
 test('should check the value on change', async () => {
     const { getByTestId } = render(
         <SearchForm 
             defaultQuery="name" 
-            contentList={contentList} 
+            contentList1={contentList} 
             filterList={filterList}
+            onfilerRequest1={mockSetLanguage} 
         />);
-        const searchTitle = getByTestId('search-title');
-        expect(searchTitle).toHaveTextContent("Search")
         const searchField = getByTestId('searchfield');
         await act(async () => {
             fireEvent.change(searchField, { target: { value: 'eng' } });

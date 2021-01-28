@@ -1,50 +1,29 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles, TextField } from '@material-ui/core';
+import { TextField } from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-
-const useStyles = makeStyles((theme) => ({
-  autocomplete: {
-    marginLeft: theme.spacing(1),
-    width: theme.spacing(30),
-  },
-}));
 
 export const AutoCompleteSearch = ({
   listarray, customPlaceholder, selectedValue, setSelectedValue,
-}) => {
-  const classes = useStyles();
-
-  return (
-    <Autocomplete
-      freeSolo
-      disableClearable
-      className={classes.autocomplete}
-      options={listarray}
-      getOptionLabel={(option) => option.value}
-      inputValue={selectedValue}
-      // eslint-disable-next-line no-shadow
-      onInputChange={(id, optionSelect) => {
-        setSelectedValue(optionSelect);
-      }}
-      renderInput={(params) => (
-        <TextField
-          {...params}
-          margin="normal"
-          variant="outlined"
-          placeholder={customPlaceholder}
-          style={{ marginTop: '5px' }}
-          InputProps={{
-            ...params.InputProps,
-            type: 'search',
-            'data-testid': 'searchfield',
-          }}
-        />
-      )}
-    />
-  );
-};
-
+}) => (
+  <Autocomplete
+    options={listarray}
+    getOptionLabel={(option) => option.place}
+    inputValue={selectedValue}
+        // eslint-disable-next-line no-shadow
+    onInputChange={(id, region) => {
+      setSelectedValue(region);
+    }}
+    renderInput={(params) => (
+      <TextField
+        {...params}
+        label={customPlaceholder}
+        variant="outlined"
+      />
+    )}
+    ListboxProps={{ 'data-testid': 'list-box' }}
+  />
+);
 AutoCompleteSearch.propTypes = {
   // list of array props that needs to be searched
   listarray: PropTypes.instanceOf(Array),

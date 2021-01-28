@@ -56,7 +56,7 @@ const SampleList = () => {
 
   return (
     <>
-      <SearchForm defaultQuery="name" contentList={contentList} filterList={filterList} />
+      <SearchForm contentList1={contentList} filterList={filterList} />
     </>
   );
 };

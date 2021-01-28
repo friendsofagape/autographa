@@ -5,8 +5,9 @@ import { IntlProvider } from 'react-intl';
 import * as localForage from 'localforage';
 import Router from 'next/router';
 import NProgress from 'nprogress';
-import ProjectsDrawer from './ProjectsPane/ProjectsDrawer';
+import ProjectsDrawer from './ProjectsPage/ProjectsDrawer';
 import Meta from '../Meta';
+import AutographaContextProvider from './AutogrpahaContext/AutographaContext';
 // import AutographaStore from "./AutographaStore";
 // import AutoUpdate from "./AutoUpdate";
 // import { logger } from "../logger";
@@ -130,14 +131,16 @@ const Main = () => {
     <>
       {Object.keys(message).length !== 0 ? (
         <ThemeProvider theme={theme}>
-          <IntlProvider
-            defaultLocale="en"
-            locale={language}
-            messages={message}
-          >
-            <ProjectsDrawer />
-            <Meta />
-          </IntlProvider>
+          <AutographaContextProvider>
+            <IntlProvider
+              defaultLocale="en"
+              locale={language}
+              messages={message}
+            >
+              <ProjectsDrawer />
+              <Meta />
+            </IntlProvider>
+          </AutographaContextProvider>
         </ThemeProvider>
       ) : (
         <div />

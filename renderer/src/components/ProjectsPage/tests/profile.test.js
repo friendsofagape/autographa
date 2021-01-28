@@ -2,16 +2,12 @@ import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { act } from 'react-dom/test-utils';
-import Profile from '../ProjectsPane/Profile';
+import Profile from '../Profile';
 import '@testing-library/jest-dom/extend-expect';
 import intl from './helper';
 
 jest.mock('localforage');
 jest.useFakeTimers();
-
-test('renders without fail', () => {
-  render(intl(<Profile />));
-});
 
 describe('state controlled profile fields', () => {
   test('state update on first name upon change', async () => {
@@ -88,7 +84,9 @@ describe('state controlled profile fields', () => {
       const selector = document.querySelector('#localeList');
       fireEvent.mouseDown(selector);
       const choice = getByText('Hindi');
+      await act(async () => {
       fireEvent.click(choice);
+      });
       expect(mockSetLanguage).toHaveBeenCalledWith('hi');
     });
   });

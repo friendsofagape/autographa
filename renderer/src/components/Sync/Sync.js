@@ -16,10 +16,11 @@ import Box from '@material-ui/core/Box';
 import SyncOutlinedIcon from '@material-ui/icons/SyncOutlined';
 // import Gitea from "./Gitea/Gitea";
 import { GitHub } from '@material-ui/icons';
+import { Grid } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: '100%',
+    flexGrow: 1,
   },
   heading: {
     fontSize: theme.typography.pxToRem(15),
@@ -100,83 +101,88 @@ export default function Sync(props) {
     setIndex(indexValue);
   };
   return (
-    <div className={classes.root}>
-      <Accordion defaultExpanded>
-        <AccordionSummary aria-controls="panel1c-content" id="panel1c-header">
-          <div className={classes.column}>
-            <Typography variant="h5">Autographa Projects</Typography>
-          </div>
-        </AccordionSummary>
-        <AccordionDetails className={classes.details}>
-          <div className={classes.column}>
-            {ag.projects.map((project, key) => (
-              <div key={project.project}>
-                <Button
-                  id="project-id"
-                  key={project.project}
-                  onClick={() => handleProjects(key)}
-                  startIcon={<FolderOpenOutlinedIcon />}
-                >
-                  {project.project}
-                </Button>
+    <>
+      <Grid container spacing={2}>
+        <Grid item xs={2} />
+        <div className={classes.root}>
+          <Accordion defaultExpanded>
+            <AccordionSummary aria-controls="panel1c-content" id="panel1c-header">
+              <div className={classes.column}>
+                <Typography variant="h5">Autographa Projects</Typography>
               </div>
-            ))}
-          </div>
-
-          <div className={(classes.column, classes.helper)}>
-            <Typography variant="caption">
-              {index !== -1 && ag.projects[index] !== undefined ? (
-                ag.projects[index].files.map((val, i) => (
-                  <div>
+            </AccordionSummary>
+            <AccordionDetails className={classes.details}>
+              <div className={classes.column}>
+                {ag.projects.map((project, key) => (
+                  <div key={project.project}>
                     <Button
-                      id="file-id"
-                      key={val[i]}
-                      startIcon={<InsertDriveFileOutlinedIcon />}
+                      id="project-id"
+                      key={project.project}
+                      onClick={() => handleProjects(key)}
+                      startIcon={<FolderOpenOutlinedIcon />}
                     >
-                      {val}
+                      {project.project}
                     </Button>
                   </div>
-                ))
-              ) : (
-                <div />
-              )}
-            </Typography>
+                ))}
+              </div>
+
+              <div className={(classes.column, classes.helper)}>
+                <Typography variant="caption">
+                  {index !== -1 && ag.projects[index] !== undefined ? (
+                    ag.projects[index].files.map((val, i) => (
+                      <div>
+                        <Button
+                          id="file-id"
+                          key={val[i]}
+                          startIcon={<InsertDriveFileOutlinedIcon />}
+                        >
+                          {val}
+                        </Button>
+                      </div>
+                    ))
+                  ) : (
+                    <div />
+                  )}
+                </Typography>
+              </div>
+            </AccordionDetails>
+          </Accordion>
+          <div className={classes.root}>
+            <Paper>
+              <AppBar position="static" color="default">
+                <Tabs
+                  value={value}
+                  onChange={handleChange}
+                  indicatorColor="primary"
+                  textColor="primary"
+                >
+                  <Tab label="Github" icon={<GitHub />} {...a11yProps(0)} />
+                  <Tab
+                    label="Paratext"
+                    icon={<SyncOutlinedIcon />}
+                    {...a11yProps(1)}
+                  />
+                  <Tab
+                    label="Gitea"
+                    icon={<SyncOutlinedIcon />}
+                    {...a11yProps(2)}
+                  />
+                </Tabs>
+              </AppBar>
+              <TabPanel value={value} index={0} dir={theme.direction}>
+                Github
+              </TabPanel>
+              <TabPanel value={value} index={1} dir={theme.direction}>
+                Paratext
+              </TabPanel>
+              <TabPanel value={value} index={2} dir={theme.direction}>
+                Gitea
+              </TabPanel>
+            </Paper>
           </div>
-        </AccordionDetails>
-      </Accordion>
-      <div className={classes.root}>
-        <Paper>
-          <AppBar position="static" color="default">
-            <Tabs
-              value={value}
-              onChange={handleChange}
-              indicatorColor="primary"
-              textColor="primary"
-            >
-              <Tab label="Github" icon={<GitHub />} {...a11yProps(0)} />
-              <Tab
-                label="Paratext"
-                icon={<SyncOutlinedIcon />}
-                {...a11yProps(1)}
-              />
-              <Tab
-                label="Gitea"
-                icon={<SyncOutlinedIcon />}
-                {...a11yProps(2)}
-              />
-            </Tabs>
-          </AppBar>
-          <TabPanel value={value} index={0} dir={theme.direction}>
-            Github
-          </TabPanel>
-          <TabPanel value={value} index={1} dir={theme.direction}>
-            Paratext
-          </TabPanel>
-          <TabPanel value={value} index={2} dir={theme.direction}>
-            Gitea
-          </TabPanel>
-        </Paper>
-      </div>
-    </div>
+        </div>
+      </Grid>
+    </>
   );
 }
