@@ -69,6 +69,9 @@ This is an example of how to list things you need to use the software and how to
 2. Set `npm config set '@bit:registry' https://node.bit.dev`
 3. Install dependencies with `npm install`
 4. Start the application with `npm start`
+5. Checkout the web version with `npm run dev`
+   Runs the app in the development mode.<br>
+   Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 <!-- ROADMAP -->
 
