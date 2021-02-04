@@ -1,6 +1,7 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
 import Login from './Login';
+import { isElectron } from '../../core/handleElectron';
 // import { act } from 'react-dom/test-utils';
 // import intl from "./helper";
 
@@ -9,13 +10,15 @@ describe('Login component tests', () => {
 		render(<Login />);
 	});
 	describe('Offline test', () => {
-		test('Should switch from online to offline', async () => {
-			const { getByRole } = render(<Login />);
-      const myComponent = getByRole('checkbox');
-			expect(myComponent).toHaveAttribute('checked', '');
-      fireEvent.change(myComponent, { target: { value:false } });
-			expect(myComponent).toHaveAttribute('value', 'false');
-		});
+    if (isElectron()){
+      test('Should switch from online to offline', async () => {
+        const { getByRole } = render(<Login />);
+        const myComponent = getByRole('checkbox');
+        expect(myComponent).toHaveAttribute('checked', '');
+        fireEvent.change(myComponent, { target: { value:false } });
+        expect(myComponent).toHaveAttribute('value', 'false');
+      });
+    }
 		test('Should have autocomplete as user field', async () => {
 			const { getByRole } = render(<Login />);
 			const autocomplete = getByRole('textbox');

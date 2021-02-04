@@ -15,9 +15,11 @@ import Grid from '@material-ui/core/Grid';
 import * as localForage from 'localforage';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import Switch from '@material-ui/core/Switch';
+import { useRouter } from 'next/router';
 import * as logger from '../../logger';
 import { createUser, handleLogin } from '../../core/handleLogin';
 import { AuthenticationContext } from './AuthenticationContextProvider';
+import { isElectron } from '../../core/handleElectron';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -37,6 +39,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Login() {
+  const router = useRouter();
   const classes = useStyles();
   const [values, setValues] = React.useState({
     username: '',
@@ -74,7 +77,9 @@ export default function Login() {
   };
   const handleSubmit = () => {
     logger.debug('Login.js', 'In handleSubmit');
-    if (handleValidation()) {
+    if (!isElectron()) {
+      router.push('/login');
+    } else if (handleValidation()) {
       values.online = online;
       const fs = window.require('fs');
       logger.debug('Login.js', 'Triggers handleLogin to check whether the user is existing or not');
@@ -130,6 +135,8 @@ export default function Login() {
                 Welcome back! Login to access Autographa
               </Typography>
               <Typography color="error">{errorMsg}</Typography>
+              {isElectron()
+              && (
               <Typography component="div">
                 <Grid
                   component="label"
@@ -149,6 +156,7 @@ export default function Login() {
                   <Grid item>Online</Grid>
                 </Grid>
               </Typography>
+              )}
               <Grid container spacing={1} alignItems="flex-end">
                 <Grid item>
                   <PersonOutlineIcon />
@@ -175,7 +183,7 @@ export default function Login() {
                   />
                 </Grid>
               </Grid>
-              {online === true ? (
+              {online === true && (
                 <Grid
                   container
                   spacing={1}
@@ -215,14 +223,13 @@ export default function Login() {
                     />
                   </Grid>
                 </Grid>
-              ) : (''
               )}
               <Typography
                 variant="caption"
                 align="right"
                 gutterBottom
               >
-                {online === true ? 'Forgot Password?' : ''}
+                {online === true && 'Forgot Password?'}
               </Typography>
 
               <Button
