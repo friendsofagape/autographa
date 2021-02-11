@@ -1,25 +1,15 @@
 import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import FormControl from '@material-ui/core/FormControl';
-import TextField from '@material-ui/core/TextField';
-import PersonOutlineIcon from '@material-ui/icons/PersonOutline';
-import LockOpenIcon from '@material-ui/icons/LockOpen';
-import IconButton from '@material-ui/core/IconButton';
-import Visibility from '@material-ui/icons/Visibility';
-import VisibilityOff from '@material-ui/icons/VisibilityOff';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
-import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
+import {
+    Paper, Grid, Tabs, Tab, FormControl, Typography,
+} from '@material-ui/core';
 import * as localForage from 'localforage';
-import Autocomplete from '@material-ui/lab/Autocomplete';
-import Switch from '@material-ui/core/Switch';
 import { useRouter } from 'next/router';
 import * as logger from '../../logger';
-import { createUser, handleLogin } from '../../core/handleLogin';
-import { AuthenticationContext } from './AuthenticationContextProvider';
 import { isElectron } from '../../core/handleElectron';
+import CustomLogin from './CustomLogin';
+import { AuthenticationContext } from './AuthenticationContextProvider';
+import { createUser, handleLogin } from '../../core/handleLogin';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -38,95 +28,107 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+  function a11yProps(index) {
+    return {
+      id: `simple-tab-${index}`,
+      'aria-controls': `simple-tabpanel-${index}`,
+    };
+  }
+
 export default function Login() {
-  const router = useRouter();
-  const classes = useStyles();
-  const [values, setValues] = React.useState({
-    username: '',
-    password: '',
-    showPassword: false,
-  });
-  const [validUser, setValidUser] = React.useState(false);
-  const [validPassword, setValidPassword] = React.useState(false);
-  const [users, setUsers] = React.useState([]);
-  const [online, setOnline] = React.useState(true);
-  const [errorMsg, setErrorMsg] = React.useState();
-  const { action } = React.useContext(AuthenticationContext) || {};
-  const handleValidation = () => {
-    let user;
-    let pass;
-    if (values.username) {
-      setValidUser(false);
-      user = true;
-    } else {
-      setValidUser(true);
-      setErrorMsg('Enter username');
-      user = false;
-    }
-    if (values.password) {
-      setValidPassword(false);
-      pass = true;
-    } else if (!values.password && online === false) {
-      setValidPassword(false);
-      pass = true;
-    } else {
-      setValidPassword(true);
-      pass = false;
-    }
-    return user && pass;
+    const router = useRouter();
+    const classes = useStyles();
+    const online = {
+      textfield: {
+          count: [{ label: 'Username', type: 'text' },
+          { label: 'Password', type: 'password' }],
+      },
+      viewForgot: true,
   };
-  const handleSubmit = () => {
-    logger.debug('Login.js', 'In handleSubmit');
-    if (!isElectron()) {
-      router.push('/login');
-    } else if (handleValidation()) {
-      values.online = online;
-      const fs = window.require('fs');
-      logger.debug('Login.js', 'Triggers handleLogin to check whether the user is existing or not');
-      const user = handleLogin(users, values);
-      if (user) {
-        logger.debug('Login.js', 'Triggers generateToken to generate a Token for the user');
-        action.generateToken(user);
-      } else {
-        logger.debug('Login.js', 'Triggers createUser for creating a new user');
-        createUser(values, fs)
-          .then((value) => {
-            logger.debug('Login.js', 'Triggers generateToken to generate a Token for the user');
-            action.generateToken(value);
+  const offline = {
+      autocomplete: { count: [{ label: 'Username' }] },
+      viewForgot: false,
+  };
+    const tab = React.useState(!!isElectron());
+    const [users, setUsers] = React.useState();
+    const { action } = React.useContext(AuthenticationContext) || {};
+    const [tabvalue, setTabValue] = React.useState(0);
+    const [ui, setUi] = React.useState(isElectron() ? offline : online);
+    const [valid, setValid] = React.useState({ username: false, password: false });
+    const [errorMsg, setErrorMsg] = React.useState();
+    const handleChange = (event, newValue) => {
+      setTabValue(newValue);
+      setUi(newValue === 0 ? offline : online);
+    };
+    useEffect(() => {
+        if (!users) {
+          localForage.getItem('users').then((user) => {
+            if (user) {
+              setUsers(user);
+            }
           });
-      }
-    }
-  };
-
-  const handlePassword = (prop) => (event) => {
-    setValues({ ...values, [prop]: event.target.value });
-  };
-
-  const handleClickShowPassword = () => {
-    setValues({ ...values, showPassword: !values.showPassword });
-  };
-
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
-  };
-
-  const handleOnline = () => {
-    setOnline(!online);
-  };
-  useEffect(() => {
-    if (!users) {
-      localForage.getItem('users').then((value) => {
-        if (value) {
-          setUsers(value);
         }
-      });
-    }
-  }, [users]);
+      }, [users]);
+      const handleValidation = (values) => {
+        let user;
+        let pass;
+        if (values.username) {
+          user = true;
+        } else {
+          setErrorMsg('Enter username');
+          user = false;
+        }
+        if (values.password) {
+          pass = true;
+        } else if (!values.password && tab[0] === true) {
+          pass = true;
+        } else {
+          setErrorMsg('Enter Password');
+          pass = false;
+        }
+        setValid({ ...valid, username: !user, password: !pass });
+        return user && pass;
+      };
+      const handleSubmit = (values) => {
+        logger.debug('Login.js', 'In handleSubmit');
+        if (!isElectron()) {
+          router.push('/login');
+        } else if (handleValidation(values)) {
+          const fs = window.require('fs');
+          logger.debug('Login.js', 'Triggers handleLogin to check whether the user is existing or not');
+          const user = handleLogin(users, values);
+          if (user) {
+            logger.debug('Login.js', 'Triggers generateToken to generate a Token for the user');
+            action.generateToken(user);
+          } else {
+            logger.debug('Login.js', 'Triggers createUser for creating a new user');
+            createUser(values, fs)
+              .then((val) => {
+                logger.debug('Login.js', 'Triggers generateToken to generate a Token for the user');
+                action.generateToken(val);
+              });
+          }
+        }
+      };
   return (
     <div>
       <Grid container className={classes.root} justify="flex-end">
         <Grid item xs={12} sm={8} md={5}>
           <Paper className={classes.paper} elevation={5} square>
+            {tab[0] && (
+            <Tabs
+              value={tabvalue}
+              title="OfflineOnline"
+              data-testid="tabs"
+              indicatorColor="primary"
+              textColor="primary"
+              onChange={handleChange}
+              aria-label="disabled tabs example"
+            >
+              <Tab label="Offline" {...a11yProps(0)} />
+              <Tab label="Online" {...a11yProps(1)} />
+            </Tabs>
+            )}
             <FormControl>
               <Typography variant="h5" gutterBottom>
                 Welcome!
@@ -135,114 +137,18 @@ export default function Login() {
                 Welcome back! Login to access Autographa
               </Typography>
               <Typography color="error">{errorMsg}</Typography>
-              {isElectron()
-              && (
-              <Typography component="div">
-                <Grid
-                  component="label"
-                  container
-                  alignItems="center"
-                  spacing={1}
-                >
-                  <Grid item>Offline</Grid>
-                  <Grid item>
-                    <Switch
-                      checked={online}
-                      onChange={handleOnline}
-                      name="online"
-                      data-testid="toggle-switch"
-                    />
-                  </Grid>
-                  <Grid item>Online</Grid>
-                </Grid>
-              </Typography>
-              )}
-              <Grid container spacing={1} alignItems="flex-end">
-                <Grid item>
-                  <PersonOutlineIcon />
-                </Grid>
-                <Grid item>
-                  <Autocomplete
-                    freeSolo
-                    data-testid="autocomplete"
-                    id="email"
-                    options={users}
-                    getOptionLabel={(option) => option.email}
-                    getOptionSelected={(option, value) => option.email === value.email}
-                    onInputChange={(event, newInputValue) => {
-                      setValues({ ...values, username: newInputValue });
-                    }}
-                    renderInput={(params) => (
-                      <TextField
-                        className={classes.margin}
-                        {...params}
-                        error={validUser}
-                        label="Email"
-                      />
-                    )}
-                  />
-                </Grid>
-              </Grid>
-              {online === true && (
-                <Grid
-                  container
-                  spacing={1}
-                  alignItems="flex-end"
-                >
-                  <Grid item>
-                    <LockOpenIcon />
-                  </Grid>
-                  <Grid item>
-                    <TextField
-                      required
-                      className={classes.margin}
-                      id="standard-adornment-password"
-                      label="Password"
-                      type={values.showPassword ? 'text' : 'password'}
-                      value={values.password}
-                      error={validPassword}
-                      onChange={handlePassword('password')}
-                      InputProps={{
-                        'data-testid': 'password-textfield',
-                        endAdornment: (
-                          <InputAdornment position="end">
-                            <IconButton
-                              aria-label="toggle password visibility"
-                              onClick={handleClickShowPassword}
-                              onMouseDown={handleMouseDownPassword}
-                            >
-                              {values.showPassword ? (
-                                <Visibility />
-                              ) : (
-                                <VisibilityOff />
-                              )}
-                            </IconButton>
-                          </InputAdornment>
-                        ),
-                      }}
-                    />
-                  </Grid>
-                </Grid>
-              )}
-              <Typography
-                variant="caption"
-                align="right"
-                gutterBottom
-              >
-                {online === true && 'Forgot Password?'}
-              </Typography>
-
-              <Button
-                data-testid="login-button"
-                variant="contained"
-                onClick={handleSubmit}
-              >
-                Login
-              </Button>
+              <CustomLogin
+                ui={ui}
+                error={valid}
+                login={handleSubmit}
+                userlist={users}
+              />
+              {ui?.viewForgot === true && (
               <Typography variant="caption" gutterBottom>
                 Don&apos;t have an account?
-                <a href="/signup">Sign Up</a>
+                <a data-testid="signup" href="/signup">Sign Up</a>
               </Typography>
+                )}
             </FormControl>
           </Paper>
         </Grid>
