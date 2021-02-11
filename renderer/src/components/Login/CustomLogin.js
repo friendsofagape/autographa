@@ -6,15 +6,10 @@ import {
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import PersonOutlineIcon from '@material-ui/icons/PersonOutline';
 import LockOpenIcon from '@material-ui/icons/LockOpen';
-import { makeStyles } from '@material-ui/core/styles';
 
-const useStyles = makeStyles(() => ({
-
-}));
 const CustomLogin = ({
  ui, error, login, userlist,
 }) => {
-  const classes = useStyles();
   const [values, setValue] = React.useState({ });
   const handleChange = (prop) => (event) => {
     setValue({ ...values, [prop]: event.target.value });
@@ -34,7 +29,6 @@ const CustomLogin = ({
               <Autocomplete
                 freeSolo
                 data-testid="autocomplete"
-                className={classes.input}
                 options={userlist}
                 getOptionLabel={(option) => option.email}
                 getOptionSelected={(option, value) => option.email === value.email}

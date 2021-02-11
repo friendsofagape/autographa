@@ -3,19 +3,24 @@ import { render, fireEvent } from '@testing-library/react';
 import Login from '../Login';
 import CustomLogin from '../CustomLogin'
 import { isElectron } from '../../../core/handleElectron';
+import AuthenticationContextProvider from '../AuthenticationContextProvider';
 // import { act } from 'react-dom/test-utils';
 // import intl from "./helper";
 
 describe('Login component tests', () => {
 	test('Should render Login component without error', () => {
-		render(<Login />);
+		render(
+      <AuthenticationContextProvider>
+        <Login />
+      </AuthenticationContextProvider>
+    );
 	});
 	describe('Offline test', () => {
     if (isElectron()){
       test('Should have tabs', async () => {
-		const { getByTestId } = render(<Login />);
-		const element = getByTestId('tabs');
-        expect(element).toHaveTextContent('OfflineOnline')
+      const { getByTestId } = render(<Login />);
+      const element = getByTestId('tabs');
+      expect(element).toHaveTextContent('OfflineOnline')
       });
     }
     test('Should have called CustomLogin', async () => {

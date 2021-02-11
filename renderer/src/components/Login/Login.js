@@ -28,90 +28,90 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-  function a11yProps(index) {
-    return {
-      id: `simple-tab-${index}`,
-      'aria-controls': `simple-tabpanel-${index}`,
-    };
-  }
+function a11yProps(index) {
+  return {
+    id: `simple-tab-${index}`,
+    'aria-controls': `simple-tabpanel-${index}`,
+  };
+}
 
 export default function Login() {
-    const router = useRouter();
-    const classes = useStyles();
-    const online = {
-      textfield: {
-          count: [{ label: 'Username', type: 'text' },
-          { label: 'Password', type: 'password' }],
-      },
-      viewForgot: true,
+  const router = useRouter();
+  const classes = useStyles();
+  const online = {
+    textfield: {
+      count: [{ label: 'Username', type: 'text' },
+      { label: 'Password', type: 'password' }],
+    },
+    viewForgot: true,
   };
   const offline = {
-      autocomplete: { count: [{ label: 'Username' }] },
-      viewForgot: false,
+    autocomplete: { count: [{ label: 'Username' }] },
+    viewForgot: false,
   };
-    const tab = React.useState(!!isElectron());
-    const [users, setUsers] = React.useState();
-    const { action } = React.useContext(AuthenticationContext) || {};
-    const [tabvalue, setTabValue] = React.useState(0);
-    const [ui, setUi] = React.useState(isElectron() ? offline : online);
-    const [valid, setValid] = React.useState({ username: false, password: false });
-    const [errorMsg, setErrorMsg] = React.useState();
-    const handleChange = (event, newValue) => {
-      setTabValue(newValue);
-      setUi(newValue === 0 ? offline : online);
-    };
-    useEffect(() => {
-        if (!users) {
-          localForage.getItem('users').then((user) => {
-            if (user) {
-              setUsers(user);
-            }
-          });
+  const tab = React.useState(!!isElectron());
+  const [users, setUsers] = React.useState([]);
+  const { action: { generateToken } } = React.useContext(AuthenticationContext);
+  const [tabvalue, setTabValue] = React.useState(0);
+  const [ui, setUi] = React.useState(isElectron() ? offline : online);
+  const [valid, setValid] = React.useState({ username: false, password: false });
+  const [errorMsg, setErrorMsg] = React.useState();
+  const handleChange = (event, newValue) => {
+    setTabValue(newValue);
+    setUi(newValue === 0 ? offline : online);
+  };
+  useEffect(() => {
+    if (users.length === 0) {
+      localForage.getItem('users').then((user) => {
+        if (user) {
+          setUsers(user);
         }
-      }, [users]);
-      const handleValidation = (values) => {
-        let user;
-        let pass;
-        if (values.username) {
-          user = true;
-        } else {
-          setErrorMsg('Enter username');
-          user = false;
-        }
-        if (values.password) {
-          pass = true;
-        } else if (!values.password && tab[0] === true) {
-          pass = true;
-        } else {
-          setErrorMsg('Enter Password');
-          pass = false;
-        }
-        setValid({ ...valid, username: !user, password: !pass });
-        return user && pass;
-      };
-      const handleSubmit = (values) => {
-        logger.debug('Login.js', 'In handleSubmit');
-        if (!isElectron()) {
-          router.push('/login');
-        } else if (handleValidation(values)) {
-          const fs = window.require('fs');
-          logger.debug('Login.js', 'Triggers handleLogin to check whether the user is existing or not');
-          const user = handleLogin(users, values);
-          if (user) {
+      });
+    }
+  }, [users]);
+  const handleValidation = (values) => {
+    let user;
+    let pass;
+    if (values.username) {
+      user = true;
+    } else {
+      setErrorMsg('Enter username');
+      user = false;
+    }
+    if (values.password) {
+      pass = true;
+    } else if (!values.password && tab[0] === true) {
+      pass = true;
+    } else {
+      setErrorMsg('Enter Password');
+      pass = false;
+    }
+    setValid({ ...valid, username: !user, password: !pass });
+    return user && pass;
+  };
+  const handleSubmit = (values) => {
+    logger.debug('Login.js', 'In handleSubmit');
+    if (!isElectron()) {
+      router.push('/login');
+    } else if (handleValidation(values)) {
+      const fs = window.require('fs');
+      logger.debug('Login.js', 'Triggers handleLogin to check whether the user is existing or not');
+      const user = handleLogin(users, values);
+      if (user) {
+        logger.debug('Login.js', 'Triggers generateToken to generate a Token for the user');
+        generateToken(user);
+      } else {
+        logger.debug('Login.js', 'Triggers createUser for creating a new user');
+        createUser(values, fs)
+          .then((val) => {
             logger.debug('Login.js', 'Triggers generateToken to generate a Token for the user');
-            action.generateToken(user);
-          } else {
-            logger.debug('Login.js', 'Triggers createUser for creating a new user');
-            createUser(values, fs)
-              .then((val) => {
-                logger.debug('Login.js', 'Triggers generateToken to generate a Token for the user');
-                action.generateToken(val);
-              });
-          }
-        }
-      };
+            generateToken(val);
+          });
+      }
+    }
+  };
   return (
-    <div>
+    <>
       <Grid container className={classes.root} justify="flex-end">
         <Grid item xs={12} sm={8} md={5}>
           <Paper className={classes.paper} elevation={5} square>
@@ -153,6 +153,6 @@ export default function Login() {
           </Paper>
         </Grid>
       </Grid>
-    </div>
+    </>
   );
 }
