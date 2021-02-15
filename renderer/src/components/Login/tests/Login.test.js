@@ -1,33 +1,30 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
-import Login from './Login';
-import { isElectron } from '../../core/handleElectron';
+import Login from '../Login';
+import CustomLogin from '../CustomLogin'
+import { isElectron } from '../../../core/handleElectron';
+import AuthenticationContextProvider from '../AuthenticationContextProvider';
 // import { act } from 'react-dom/test-utils';
 // import intl from "./helper";
 
 describe('Login component tests', () => {
 	test('Should render Login component without error', () => {
-		render(<Login />);
+		render(
+      <AuthenticationContextProvider>
+        <Login />
+      </AuthenticationContextProvider>
+    );
 	});
 	describe('Offline test', () => {
     if (isElectron()){
-      test('Should switch from online to offline', async () => {
-        const { getByRole } = render(<Login />);
-        const myComponent = getByRole('checkbox');
-        expect(myComponent).toHaveAttribute('checked', '');
-        fireEvent.change(myComponent, { target: { value:false } });
-        expect(myComponent).toHaveAttribute('value', 'false');
+      test('Should have tabs', async () => {
+      const { getByTestId } = render(<Login />);
+      const element = getByTestId('tabs');
+      expect(element).toHaveTextContent('OfflineOnline')
       });
     }
-		test('Should have autocomplete as user field', async () => {
-			const { getByRole } = render(<Login />);
-			const autocomplete = getByRole('textbox');
-			expect(autocomplete.value).toEqual('');
-    });
-    test('Should have login button', async () => {
-			const { getByTestId } = render(<Login />);
-      const loginButton = getByTestId('login-button');
-      expect(loginButton.type).toEqual("button");
+    test('Should have called CustomLogin', async () => {
+			render(<CustomLogin />);
     });
   });
   
