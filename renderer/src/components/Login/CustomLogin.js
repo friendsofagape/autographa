@@ -1,14 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
- TextField, Button, Grid, Link,
+ TextField, Button, Grid, Link, Typography,
 } from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import PersonOutlineIcon from '@material-ui/icons/PersonOutline';
 import LockOpenIcon from '@material-ui/icons/LockOpen';
 
 const CustomLogin = ({
- ui, error, login, userlist,
+ ui, error, login, userlist, validation,
 }) => {
   const [values, setValue] = React.useState({ });
   const handleChange = (prop) => (event) => {
@@ -22,9 +22,10 @@ const CustomLogin = ({
   return (
     <>
       <Grid container direction="column" spacing={2}>
-        <form onSubmit={(e) => handleSubmit(e)}>
+        <form key="login" name="aglogin" onSubmit={(e) => handleSubmit(e)}>
+          <Typography color="error">{validation?.msg}</Typography>
           {(ui?.autocomplete?.count)?.map((v) => (
-            <Grid container spacing={1} alignItems="flex-end">
+            <Grid key={v.label} container spacing={1} alignItems="flex-end">
               <PersonOutlineIcon />
               <Autocomplete
                 freeSolo
@@ -42,15 +43,20 @@ const CustomLogin = ({
             </Grid>
         ))}
           {(ui?.textfield?.count)?.map((c) => (
-            <Grid key={c.label} container spacing={1} alignItems="flex-end">
-              {c.type === 'text' && <PersonOutlineIcon />}
-              {c.type === 'password' && <LockOpenIcon />}
-              <TextField
-                label={c.label}
-                type={c.type}
-                onChange={handleChange(c.label)}
-              />
-            </Grid>
+            <div key={c.name}>
+              <Grid key={c.label} container spacing={1} alignItems="flex-end">
+                {c.type === 'text' && <PersonOutlineIcon />}
+                {c.type === 'password' && <LockOpenIcon />}
+                <TextField
+                  name={c.name}
+                  label={c.label}
+                  type={c.type}
+                  onChange={handleChange(c.label)}
+                />
+              </Grid>
+              <Typography color="error">{validation?.[c.name]}</Typography>
+            </div>
+
         ))}
           {ui?.viewForgot && (
           <Link
@@ -74,4 +80,5 @@ CustomLogin.propTypes = {
   error: PropTypes.object,
   login: PropTypes.func,
   userlist: PropTypes.array,
+  validation: PropTypes.object,
 };

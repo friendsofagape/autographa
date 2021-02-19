@@ -1,12 +1,17 @@
 import * as localForage from 'localforage';
 import React from 'react';
+import { Configuration, PublicApi } from '@ory/kratos-client';
 import * as logger from '../../logger';
+import { isElectron } from '../../core/handleElectron';
 
 const jwt = require('jsonwebtoken');
+
+const kratos = new PublicApi(new Configuration({ basePath: 'http://127.0.0.1:4433/' }));
 
 function useAuthentication() {
   const [accessToken, setaccessToken] = React.useState();
   const [currentUser, setCurrentUser] = React.useState();
+  const [config, setConfig] = React.useState();
   const getToken = () => {
     logger.debug('useAuthentication.js', 'In getToken to check any token stored in localStorage');
     localForage.getItem('sessionToken').then((value) => {
@@ -44,14 +49,29 @@ function useAuthentication() {
     setCurrentUser();
     localForage.removeItem('sessionToken');
   };
+  const getConfig = (flowId) => {
+    kratos.getSelfServiceLoginFlow(flowId)
+      .then(({ data: flow }) => {
+        setConfig(flow?.methods?.password?.config);
+      });
+  };
+  React.useEffect(() => {
+    if (isElectron()) {
+      kratos.initializeSelfServiceLoginViaAPIFlow().then(({ data: flow }) => {
+        getConfig(flow.id);
+      });
+    }
+  }, []);
   React.useEffect(() => {
     if (accessToken && !currentUser) {
       handleUser();
     }
   });
   const response = {
-    state: { accessToken, currentUser },
-    actions: { getToken, generateToken, logout },
+    state: { accessToken, currentUser, config },
+    actions: {
+      getToken, generateToken, logout, getConfig,
+    },
   };
   return response;
 }
