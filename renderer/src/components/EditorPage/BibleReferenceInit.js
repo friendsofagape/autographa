@@ -1,6 +1,5 @@
 import React from 'react';
 import BookNavigation from './BookNavigation';
-import TranslationHelps from './TranslationHelps/TranslationHelps';
 
 const BibleReferenceInit = () => {
     const supportedBooks = null; // if empty array or null then all books available
@@ -18,7 +17,6 @@ const BibleReferenceInit = () => {
     return (
       <>
         <BookNavigation initial={initial} />
-        <TranslationHelps />
       </>
       );
 };

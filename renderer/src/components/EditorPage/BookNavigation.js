@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import BibleReference, { useBibleReference } from 'bible-reference-rcl';
 import TranslationHelps from './TranslationHelps/TranslationHelps';
-import TranslationWordList from './TranslationHelps/TranslationWordList';
 
 const BookNavigation = ({ initial }) => {
   const {
@@ -20,6 +19,7 @@ const BookNavigation = ({ initial }) => {
     initialVerse,
     onChange,
   });
+  // console.log(state, actions);
 
   useEffect(() => {
     actions.applyBooksFilter(supportedBooks);
@@ -42,11 +42,6 @@ const BookNavigation = ({ initial }) => {
         <br />
         <br />
         <TranslationHelps
-          bookID={state.bookId}
-          currentChapterID={state.chapter}
-          currentVerse={state.verse}
-        />
-        <TranslationWordList
           bookID={state.bookId}
           currentChapterID={state.chapter}
           currentVerse={state.verse}

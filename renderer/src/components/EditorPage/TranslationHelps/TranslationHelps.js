@@ -1,75 +1,88 @@
+import { makeStyles } from '@material-ui/core';
 import React, { useState } from 'react';
-import {
-  Card,
-  CardContent,
-  TsvContent,
-  useContent,
-  useCardState,
-} from 'translation-helps-rcl';
+import { Workspace } from 'resource-workspace-rcl';
+import PropTypes from 'prop-types';
+import TranslationHelpsCard from './TranslationHelpsCard';
 
+const useStyles = makeStyles(() => ({
+  root: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  dragIndicator: {},
+}));
 const TranslationHelps = ({
- bookID,
+  bookID,
   currentChapterID,
   currentVerse,
 }) => {
-  const [selectedQuote, setQuote] = useState({});
-  const { markdown, items } = useContent({
-    verse: currentVerse,
-    chapter: currentChapterID,
-    projectId: bookID || 'mat',
-    branch: 'master',
-    languageId: 'en',
-    resourceId: 'tn',
-    owner: 'test_org',
-    server: 'https://git.door43.org',
-  });
+  const classes = useStyles();
+  const [currentLayout, setCurrentLayout] = useState(null);
+  const layout = {
+    widths: [
+      [1, 1, 2],
+      [2, 2],
+      [2, 2],
+    ],
+    heights: [[5], [10, 10], [10, 10]],
+  };
 
-  const {
-    state: {
-      item,
-      headers,
-      filters,
-      fontSize,
-      itemIndex,
-      markdownView,
-    },
-    actions: {
-      setFilters,
-      setFontSize,
-      setItemIndex,
-      setMarkdownView,
-    },
-  } = useCardState({
-    items,
-  });
-
-  if (item) {
-    return (
-      <Card
-        items={items}
-        headers={headers}
-        filters={filters}
-        fontSize={fontSize}
-        itemIndex={itemIndex}
-        setFilters={setFilters}
-        title="Notes"
-        setFontSize={setFontSize}
-        setItemIndex={setItemIndex}
-        markdownView={markdownView}
-        setMarkdownView={setMarkdownView}
-      >
-        <CardContent
-          item={item}
-          filters={filters}
-          fontSize={fontSize}
-          markdownView={markdownView}
-          selectedQuote={selectedQuote}
-          setQuote={setQuote}
-        />
-      </Card>
-    );
+  if (currentLayout) {
+    layout.absolute = currentLayout;
   }
-    return null;
-};
+  return (
+    <>
+      <Workspace
+        rowHeight={25}
+        layout={layout}
+        gridMargin={[15, 15]}
+        classes={classes}
+        onLayoutChange={setCurrentLayout}
+      >
+        <TranslationHelpsCard
+          title="TranslationNotes"
+          verse={currentVerse}
+          chapter={currentChapterID}
+          projectId={bookID || 'mat'}
+          branch="master"
+          languageId="en"
+          resourceId="tn"
+          owner="test_org"
+          server="https://git.door43.org"
+        />
+        <TranslationHelpsCard
+          title="Translation Words List"
+          verse={currentVerse}
+          chapter={currentChapterID}
+          projectId={bookID || 'mat'}
+          branch="master"
+          viewMode="list"
+          languageId="en"
+          resourceId="twl"
+          owner="test_org"
+          server="https://git.door43.org"
+        />
+        <TranslationHelpsCard
+          title="Translation Words"
+          verse={currentVerse}
+          chapter={currentChapterID}
+          projectId={bookID || 'mat'}
+          branch="master"
+          viewMode="markdown"
+          languageId="en"
+          resourceId="twl"
+          owner="test_org"
+          server="https://git.door43.org"
+        />
+      </Workspace>
+    </>
+    );
+  };
 
 export default TranslationHelps;
+
+TranslationHelps.propTypes = {
+  currentChapterID: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+  currentVerse: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+  bookID: PropTypes.string.isRequired,
+};
