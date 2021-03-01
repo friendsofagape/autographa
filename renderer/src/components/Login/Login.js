@@ -3,13 +3,13 @@ import { makeStyles } from '@material-ui/core/styles';
 import {
     Paper, Grid, Tabs, Tab, FormControl, Typography,
 } from '@material-ui/core';
-import * as localForage from 'localforage';
+// import * as localForage from 'localforage';
 import { useRouter } from 'next/router';
 import * as logger from '../../logger';
 import { isElectron } from '../../core/handleElectron';
 import CustomLogin from './CustomLogin';
 import { AuthenticationContext } from './AuthenticationContextProvider';
-import { createUser, handleLogin } from '../../core/handleLogin';
+// import { createUser, handleLogin } from '../../core/handleLogin';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -50,20 +50,22 @@ export default function Login() {
     viewForgot: false,
   };
   const tab = React.useState(!!isElectron());
+  // eslint-disable-next-line no-unused-vars
   const [users, setUsers] = React.useState([]);
   const {
     states: { config },
-    action: { generateToken, getConfig },
+    // action: { generateToken, getConfig },
   } = React.useContext(AuthenticationContext);
   const [tabvalue, setTabValue] = React.useState(0);
   const [ui, setUi] = React.useState(isElectron() ? offline : online);
   const [valid, setValid] = React.useState({ username: false, password: false });
   const [errorMsg, setErrorMsg] = React.useState();
+  // eslint-disable-next-line no-unused-vars
   const [token, setToken] = React.useState();
   const [error, setError] = React.useState({
     identifier: '', password: '', msg: '',
   });
-  const handleChange = (event, newValue) => {
+  const handleChange = (newValue) => {
     setTabValue(newValue);
     setUi(newValue === 0 ? offline : online);
   };
@@ -101,6 +103,7 @@ export default function Login() {
       setError(err);
     }
   }, [config]);
+  // eslint-disable-next-line no-unused-vars
   const handleValidation = (values) => {
     let user;
     if (values.username) {
@@ -112,6 +115,7 @@ export default function Login() {
     setValid({ ...valid, username: !user });
     return user;
   };
+  // eslint-disable-next-line no-unused-vars
   const handleSubmit = async (values) => {
     logger.debug('Login.js', 'In handleSubmit');
     if (isElectron() && tabvalue === 0) {
@@ -119,16 +123,19 @@ export default function Login() {
       // The below code is commented for UI dev purpose.
       // if (handleValidation(values)) {
       //   const fs = window.require('fs');
-      //   logger.debug('Login.js', 'Triggers handleLogin to check whether the user is existing or not');
+      //   logger.debug('Login.js',
+      // 'Triggers handleLogin to check whether the user is existing or not');
       //   const user = handleLogin(users, values);
       //   if (user) {
-      //     logger.debug('Login.js', 'Triggers generateToken to generate a Token for the user');
+      //     logger.debug('Login.js',
+      // 'Triggers generateToken to generate a Token for the user');
       //     generateToken(user);
       //   } else {
       //     logger.debug('Login.js', 'Triggers createUser for creating a new user');
       //     createUser(values, fs)
       //       .then((val) => {
-      //         logger.debug('Login.js', 'Triggers generateToken to generate a Token for the user');
+      //         logger.debug('Login.js',
+      // 'Triggers generateToken to generate a Token for the user');
       //         generateToken(val);
       //       });
       //   }
