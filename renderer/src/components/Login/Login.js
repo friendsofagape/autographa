@@ -67,24 +67,25 @@ export default function Login() {
     setTabValue(newValue);
     setUi(newValue === 0 ? offline : online);
   };
-  useEffect(() => {
-    if (users.length === 0) {
-      localForage.getItem('users').then((user) => {
-        if (user) {
-          setUsers(user);
-        }
-      });
-    }
-  }, [users]);
-  useEffect(() => {
-    if (!isElectron()) {
-      // window is accessible here.
-      const url = window.location.href;
-      const regex = /(.*)login\?flow=/gm;
-      getConfig(url.replace(regex, ''));
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // The below code is commented for UI dev purpose.
+  // useEffect(() => {
+  //   if (users.length === 0) {
+  //     localForage.getItem('users').then((user) => {
+  //       if (user) {
+  //         setUsers(user);
+  //       }
+  //     });
+  //   }
+  // }, [users]);
+  // useEffect(() => {
+  //   if (!isElectron()) {
+  //     // window is accessible here.
+  //     const url = window.location.href;
+  //     const regex = /(.*)login\?flow=/gm;
+  //     getConfig(url.replace(regex, ''));
+  //   }
+  // // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
   useEffect(() => {
     if (config) {
       // eslint-disable-next-line prefer-const
@@ -114,26 +115,28 @@ export default function Login() {
   const handleSubmit = async (values) => {
     logger.debug('Login.js', 'In handleSubmit');
     if (isElectron() && tabvalue === 0) {
-      if (handleValidation(values)) {
-        const fs = window.require('fs');
-        logger.debug('Login.js', 'Triggers handleLogin to check whether the user is existing or not');
-        const user = handleLogin(users, values);
-        if (user) {
-          logger.debug('Login.js', 'Triggers generateToken to generate a Token for the user');
-          generateToken(user);
-        } else {
-          logger.debug('Login.js', 'Triggers createUser for creating a new user');
-          createUser(values, fs)
-            .then((val) => {
-              logger.debug('Login.js', 'Triggers generateToken to generate a Token for the user');
-              generateToken(val);
-            });
-        }
-      }
+      router.push('/main');
+      // The below code is commented for UI dev purpose.
+      // if (handleValidation(values)) {
+      //   const fs = window.require('fs');
+      //   logger.debug('Login.js', 'Triggers handleLogin to check whether the user is existing or not');
+      //   const user = handleLogin(users, values);
+      //   if (user) {
+      //     logger.debug('Login.js', 'Triggers generateToken to generate a Token for the user');
+      //     generateToken(user);
+      //   } else {
+      //     logger.debug('Login.js', 'Triggers createUser for creating a new user');
+      //     createUser(values, fs)
+      //       .then((val) => {
+      //         logger.debug('Login.js', 'Triggers generateToken to generate a Token for the user');
+      //         generateToken(val);
+      //       });
+      //   }
+      // }
     } else {
       // eslint-disable-next-line no-lonely-if
       if (isElectron()) {
-        router.push('/login');
+        router.push('/main');
         // const requestOptions = {
         //   method: 'POST',
         //   headers: { 'Content-Type': 'application/json' },
@@ -143,15 +146,17 @@ export default function Login() {
         //   .then((response) => response.json())
         //   .then((data) => console.log(data));
       } else {
-        document.aglogin.action = config.action;
-        document.aglogin.method = config.method;
-        // eslint-disable-next-line prefer-const
-        let input = document.createElement('input');
-          input.setAttribute('type', 'hidden');
-          input.setAttribute('name', 'csrf_token');
-          input.setAttribute('value', token);
-        document.aglogin.appendChild(input);
-        document.aglogin.submit();
+        router.push('/main');
+        // The below code is commented for UI dev purpose.
+        // document.aglogin.action = config.action;
+        // document.aglogin.method = config.method;
+        // // eslint-disable-next-line prefer-const
+        // let input = document.createElement('input');
+        //   input.setAttribute('type', 'hidden');
+        //   input.setAttribute('name', 'csrf_token');
+        //   input.setAttribute('value', token);
+        // document.aglogin.appendChild(input);
+        // document.aglogin.submit();
       }
       // router.push('/login');
     }

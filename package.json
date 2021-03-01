@@ -10,7 +10,7 @@
 	"scripts": {
 		"clean": "rimraf dist renderer/.next renderer/out",
 		"start": "electron .",
-		"dev": "next dev --hostname 127.0.0.1 -p 3000",
+		"dev": "next dev",
 		"test": "jest",
 		"lint": "eslint ./renderer/src",
 		"lint:fix": "eslint ./renderer/src --fix",
