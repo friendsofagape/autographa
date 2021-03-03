@@ -65,6 +65,7 @@
 		"@material-ui/icons": "^4.9.1",
 		"@material-ui/lab": "latest",
 		"bible-reference-rcl": "^0.2.0",
+		"@ory/kratos-client": "^0.5.4-alpha.1",
 		"clsx": "1.1.1",
 		"electron-is-dev": "^1.1.0",
 		"electron-log": "4.2.4",

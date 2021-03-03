@@ -3,13 +3,13 @@ import { makeStyles } from '@material-ui/core/styles';
 import {
     Paper, Grid, Tabs, Tab, FormControl, Typography,
 } from '@material-ui/core';
-import * as localForage from 'localforage';
+// import * as localForage from 'localforage';
 import { useRouter } from 'next/router';
 import * as logger from '../../logger';
 import { isElectron } from '../../core/handleElectron';
 import CustomLogin from './CustomLogin';
 import { AuthenticationContext } from './AuthenticationContextProvider';
-import { createUser, handleLogin } from '../../core/handleLogin';
+// import { createUser, handleLogin } from '../../core/handleLogin';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -40,8 +40,8 @@ export default function Login() {
   const classes = useStyles();
   const online = {
     textfield: {
-      count: [{ label: 'Username', type: 'text' },
-      { label: 'Password', type: 'password' }],
+      count: [{ label: 'Username', type: 'text', name: 'identifier' },
+      { label: 'Password', type: 'password', name: 'password' }],
     },
     viewForgot: true,
   };
@@ -50,64 +50,122 @@ export default function Login() {
     viewForgot: false,
   };
   const tab = React.useState(!!isElectron());
+  // eslint-disable-next-line no-unused-vars
   const [users, setUsers] = React.useState([]);
-  const { action: { generateToken } } = React.useContext(AuthenticationContext);
+  const {
+    states: { config },
+    // action: { generateToken, getConfig },
+  } = React.useContext(AuthenticationContext);
   const [tabvalue, setTabValue] = React.useState(0);
   const [ui, setUi] = React.useState(isElectron() ? offline : online);
   const [valid, setValid] = React.useState({ username: false, password: false });
   const [errorMsg, setErrorMsg] = React.useState();
-  const handleChange = (event, newValue) => {
+  // eslint-disable-next-line no-unused-vars
+  const [token, setToken] = React.useState();
+  const [error, setError] = React.useState({
+    identifier: '', password: '', msg: '',
+  });
+  const handleChange = (newValue) => {
     setTabValue(newValue);
     setUi(newValue === 0 ? offline : online);
   };
+  // The below code is commented for UI dev purpose.
+  // useEffect(() => {
+  //   if (users.length === 0) {
+  //     localForage.getItem('users').then((user) => {
+  //       if (user) {
+  //         setUsers(user);
+  //       }
+  //     });
+  //   }
+  // }, [users]);
+  // useEffect(() => {
+  //   if (!isElectron()) {
+  //     // window is accessible here.
+  //     const url = window.location.href;
+  //     const regex = /(.*)login\?flow=/gm;
+  //     getConfig(url.replace(regex, ''));
+  //   }
+  // // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
   useEffect(() => {
-    if (users.length === 0) {
-      localForage.getItem('users').then((user) => {
-        if (user) {
-          setUsers(user);
+    if (config) {
+      // eslint-disable-next-line prefer-const
+      let err = {};
+      err.msg = config?.messages?.[0]?.text;
+      (config.fields).forEach((field) => {
+        if (field.name === 'csrf_token') {
+          setToken(field.value);
+        } else {
+          err[field.name] = field.messages?.[0].text;
         }
       });
+      setError(err);
     }
-  }, [users]);
+  }, [config]);
+  // eslint-disable-next-line no-unused-vars
   const handleValidation = (values) => {
     let user;
-    let pass;
     if (values.username) {
       user = true;
     } else {
       setErrorMsg('Enter username');
       user = false;
     }
-    if (values.password) {
-      pass = true;
-    } else if (!values.password && tab[0] === true) {
-      pass = true;
-    } else {
-      setErrorMsg('Enter Password');
-      pass = false;
-    }
-    setValid({ ...valid, username: !user, password: !pass });
-    return user && pass;
+    setValid({ ...valid, username: !user });
+    return user;
   };
-  const handleSubmit = (values) => {
+  // eslint-disable-next-line no-unused-vars
+  const handleSubmit = async (values) => {
     logger.debug('Login.js', 'In handleSubmit');
-    if (!isElectron()) {
-      router.push('/login');
-    } else if (handleValidation(values)) {
-      const fs = window.require('fs');
-      logger.debug('Login.js', 'Triggers handleLogin to check whether the user is existing or not');
-      const user = handleLogin(users, values);
-      if (user) {
-        logger.debug('Login.js', 'Triggers generateToken to generate a Token for the user');
-        generateToken(user);
+    if (isElectron() && tabvalue === 0) {
+      router.push('/main');
+      // The below code is commented for UI dev purpose.
+      // if (handleValidation(values)) {
+      //   const fs = window.require('fs');
+      //   logger.debug('Login.js',
+      // 'Triggers handleLogin to check whether the user is existing or not');
+      //   const user = handleLogin(users, values);
+      //   if (user) {
+      //     logger.debug('Login.js',
+      // 'Triggers generateToken to generate a Token for the user');
+      //     generateToken(user);
+      //   } else {
+      //     logger.debug('Login.js', 'Triggers createUser for creating a new user');
+      //     createUser(values, fs)
+      //       .then((val) => {
+      //         logger.debug('Login.js',
+      // 'Triggers generateToken to generate a Token for the user');
+      //         generateToken(val);
+      //       });
+      //   }
+      // }
+    } else {
+      // eslint-disable-next-line no-lonely-if
+      if (isElectron()) {
+        router.push('/main');
+        // const requestOptions = {
+        //   method: 'POST',
+        //   headers: { 'Content-Type': 'application/json' },
+        //   body: document.aglogin,
+        // };
+        // fetch(config?.action, requestOptions)
+        //   .then((response) => response.json())
+        //   .then((data) => console.log(data));
       } else {
-        logger.debug('Login.js', 'Triggers createUser for creating a new user');
-        createUser(values, fs)
-          .then((val) => {
-            logger.debug('Login.js', 'Triggers generateToken to generate a Token for the user');
-            generateToken(val);
-          });
+        router.push('/main');
+        // The below code is commented for UI dev purpose.
+        // document.aglogin.action = config.action;
+        // document.aglogin.method = config.method;
+        // // eslint-disable-next-line prefer-const
+        // let input = document.createElement('input');
+        //   input.setAttribute('type', 'hidden');
+        //   input.setAttribute('name', 'csrf_token');
+        //   input.setAttribute('value', token);
+        // document.aglogin.appendChild(input);
+        // document.aglogin.submit();
       }
+      // router.push('/login');
     }
   };
   return (
@@ -142,6 +200,7 @@ export default function Login() {
                 error={valid}
                 login={handleSubmit}
                 userlist={users}
+                validation={error}
               />
               {ui?.viewForgot === true && (
               <Typography variant="caption" gutterBottom>
