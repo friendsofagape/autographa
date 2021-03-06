@@ -4,7 +4,7 @@ import MuiDialogContent from '@material-ui/core/DialogContent';
 import MuiDialogActions from '@material-ui/core/DialogActions';
 import { Zoom } from '@material-ui/core';
 
-const drawerWidth = 240;
+const drawerWidth = 150;
 
 export const useStyles = makeStyles((theme) => ({
   root: {

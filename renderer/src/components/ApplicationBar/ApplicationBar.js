@@ -15,6 +15,8 @@ function ApplicationBar({
   buttons,
   drawerMenu,
   drawerMenuProps,
+  appBarStyle,
+  theme,
 }) {
   const classes = useStyles();
 
@@ -24,6 +26,8 @@ function ApplicationBar({
       <AppBar
         position="fixed"
         className={classes.appBar}
+        style={appBarStyle || {}}
+        color={theme || ''}
       >
         <Toolbar>
           <Typography
@@ -39,9 +43,11 @@ function ApplicationBar({
           </span>
         </Toolbar>
       </AppBar>
-      <DrawerMenu {...drawerMenuProps}>
-        {drawerMenu}
-      </DrawerMenu>
+      {drawerMenu && (
+        <DrawerMenu {...drawerMenuProps}>
+          {drawerMenu}
+        </DrawerMenu>
+      )}
     </div>
   );
 }

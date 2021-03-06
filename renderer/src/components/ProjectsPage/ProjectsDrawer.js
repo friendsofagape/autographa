@@ -66,7 +66,8 @@ export default function ProjectsDrawer() {
   return (
     <>
       <ApplicationBar
-        title="Autographa"
+        title="AUTOGRAPHA"
+        theme="primary"
         buttons={buttons}
         drawerMenu={drawerMenu}
       />

@@ -64,8 +64,8 @@ const AdvancedSetttings = () => {
 
   return (
     <>
-      <Grid container spacing={3}>
-        <Grid item xs={11}>
+      <Grid container spacing={2}>
+        <Grid item xs={3}>
           <form noValidate autoComplete="off">
             <div>
               <FormControl component="fieldset">
@@ -85,7 +85,7 @@ const AdvancedSetttings = () => {
                   </MenuItem>
                 </Select>
               </FormControl>
-              <span className={classes.version}>
+              <div>
                 <FormControl component="fieldset">
                   <FormLabel component="legend">
                     <Box fontWeight={600} m={1}>
@@ -105,8 +105,8 @@ const AdvancedSetttings = () => {
                     ))}
                   </Select>
                 </FormControl>
-              </span>
-              <span className={classes.version}>
+              </div>
+              <span>
                 <FormControl component="fieldset">
                   <FormLabel component="legend">
                     <Box fontWeight={600} m={1}>

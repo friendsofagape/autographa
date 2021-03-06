@@ -1,0 +1,20 @@
+{
+  "../translations/en.json": [
+    {
+      "id": "./renderer/src/translations/en.json",
+      "file": "static/chunks/1.js"
+    }
+  ],
+  "../translations/hi.json": [
+    {
+      "id": "./renderer/src/translations/hi.json",
+      "file": "static/chunks/2.js"
+    }
+  ],
+  "./dev/noop": [
+    {
+      "id": "./node_modules/next/dist/client/dev/noop.js",
+      "file": "static/chunks/0.js"
+    }
+  ]
+}

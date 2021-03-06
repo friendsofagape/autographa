@@ -66,11 +66,11 @@ const GeneralSettting = () => {
                   <MenuItem value="bi">Bible</MenuItem>
                 </Select>
               </FormControl>
-              <span className={classes.version}>
+              <div>
                 <FormControl component="fieldset">
                   <FormLabel component="legend">
                     <Box fontWeight={600} m={1}>
-                      Bible Name
+                      Project Name
                     </Box>
                   </FormLabel>
                   <div>
@@ -88,8 +88,8 @@ const GeneralSettting = () => {
                     />
                   </div>
                 </FormControl>
-              </span>
-              <span className={classes.version}>
+              </div>
+              <span>
                 <FormControl component="fieldset">
                   <FormLabel component="legend">
                     <Box fontWeight={600} m={1}>
