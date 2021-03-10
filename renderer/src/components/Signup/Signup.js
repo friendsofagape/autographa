@@ -18,7 +18,7 @@ import Grid from '@material-ui/core/Grid';
 import { useRouter } from 'next/router';
 import * as logger from '../../logger';
 import useApi from './useApi';
-import configData from '../../config.json';
+// import configData from '../../config.json';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -376,7 +376,9 @@ export default function Signup() {
           justify="flex-end"
           direction="row"
         >
-          <a href={configData.login_url}>Go Back</a>
+          {/* Commented for development purpose */}
+          <a href="/login">Go Back</a>
+          {/* <a href={configData.login_url}>Go Back</a> */}
         </Grid>
       </Grid>
     </div>
