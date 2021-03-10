@@ -10,6 +10,7 @@ import { isElectron } from '../../core/handleElectron';
 import CustomLogin from './CustomLogin';
 import { AuthenticationContext } from './AuthenticationContextProvider';
 import { createUser, handleLogin } from '../../core/handleLogin';
+import configData from '../../config.json';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -71,6 +72,7 @@ export default function Login() {
     if (users.length === 0) {
       localForage.getItem('users').then((user) => {
         if (user) {
+          logger.debug('Login.js', 'Fetching the offline users from the LocalForage');
           setUsers(user);
         }
       });
@@ -81,12 +83,14 @@ export default function Login() {
       // window is accessible here.
       const url = window.location.href;
       const regex = /(.*)login\?flow=/gm;
+      logger.debug('Login.js', 'Calling getConfig using flowID');
       getConfig(url.replace(regex, ''));
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   useEffect(() => {
     if (config) {
+      logger.debug('Login.js', 'After receiving config from kratos fetching the token and errors(if available)');
       // eslint-disable-next-line prefer-const
       let err = {};
       err.msg = config?.messages?.[0]?.text;
@@ -101,6 +105,7 @@ export default function Login() {
     }
   }, [config]);
   const handleValidation = (values) => {
+    logger.debug('Login.js', 'In handleValidation');
     let user;
     if (values.username) {
       user = true;
@@ -114,6 +119,7 @@ export default function Login() {
   const handleSubmit = async (values) => {
     logger.debug('Login.js', 'In handleSubmit');
     if (isElectron() && tabvalue === 0) {
+      logger.debug('Login.js', 'Complete Offline user');
       if (handleValidation(values)) {
         const fs = window.require('fs');
         logger.debug('Login.js', 'Triggers handleLogin to check whether the user is existing or not');
@@ -133,6 +139,7 @@ export default function Login() {
     } else {
       // eslint-disable-next-line no-lonely-if
       if (isElectron()) {
+        logger.debug('Login.js', 'Online electron user');
         router.push('/login');
         // const requestOptions = {
         //   method: 'POST',
@@ -143,6 +150,7 @@ export default function Login() {
         //   .then((response) => response.json())
         //   .then((data) => console.log(data));
       } else {
+        logger.debug('Login.js', 'Online web user');
         document.aglogin.action = config.action;
         document.aglogin.method = config.method;
         // eslint-disable-next-line prefer-const
@@ -193,7 +201,7 @@ export default function Login() {
               {ui?.viewForgot === true && (
               <Typography variant="caption" gutterBottom>
                 Don&apos;t have an account?
-                <a data-testid="signup" href="/signup">Sign Up</a>
+                <a data-testid="signup" href={configData.signup_url}>Sign Up</a>
               </Typography>
                 )}
             </FormControl>
