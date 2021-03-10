@@ -18,6 +18,8 @@ Autogrpha-DB/
 /app/app.js
 /app/background.js
 /app/**/*.map
+/.next
+.next
 
 # testing
 /coverage

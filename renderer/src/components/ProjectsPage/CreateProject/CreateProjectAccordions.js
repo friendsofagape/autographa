@@ -40,9 +40,9 @@ export default function CreateProjectAccordions() {
       <Paper>
         <Grid container spacing={2}>
           <Grid item xs={1} />
-          <div className={classes.root} data-test="component-profile">
+          <div data-test="component-profile">
             <Accordion
-              style={{ boxShadow: '0 10px 20px rgba(0,0,0,0)', margin: '0px' }}
+              style={{ boxShadow: '0 10px 20px rgba(0,0,0,0)' }}
               expanded
             >
               <AccordionSummary aria-controls="panel1bh-content" id="panel1bh-header" />

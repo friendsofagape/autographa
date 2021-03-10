@@ -44,7 +44,7 @@ function ApplicationBar({
         </Toolbar>
       </AppBar>
       {drawerMenu && (
-        <DrawerMenu {...drawerMenuProps}>
+        <DrawerMenu open classes={classes} direction="left">
           {drawerMenu}
         </DrawerMenu>
       )}

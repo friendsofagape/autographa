@@ -5,22 +5,19 @@ import {
   Toolbar,
 } from '@material-ui/core';
 
-import { useStyles } from './useStyles';
-
 function DrawerMenu({
+  classes,
   children,
+  direction,
+  open,
 }) {
-  const classes = useStyles();
-
-  const drawerClasses = { paper: classes.drawerPaper };
-
   return (
     <div>
       <Drawer
         className={classes.drawer}
-        variant="permanent"
-        anchor="left"
-        classes={drawerClasses}
+        variant="persistent"
+        anchor={direction}
+        open={open}
       >
         <Toolbar />
         <div
@@ -35,6 +32,8 @@ function DrawerMenu({
 }
 
 DrawerMenu.propTypes = {
+  classes: PropTypes.object,
+  direction: PropTypes.string,
   /** Component to render inside of the drawer menu. */
   children: PropTypes.element,
 };
