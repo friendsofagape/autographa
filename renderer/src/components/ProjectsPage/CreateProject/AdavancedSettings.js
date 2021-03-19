@@ -6,7 +6,13 @@ import {
   FormControl,
   Select,
   FormLabel,
+  IconButton,
+  Button,
 } from '@material-ui/core';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
+import EditIcon from '@material-ui/icons/Edit';
+import * as localForage from 'localforage';
+import DrawerMenu from '../../ApplicationBar/DrawerMenu';
 import { CreateProjectStyles } from './useStyles/CreateProjectStyles';
 import { AllBooks, NT, OT } from '../../../lib/CanonSpecification';
 import CustomSpecification from './CustomSpecification';
@@ -18,12 +24,13 @@ const canonItems = [
   { id: 'NT', spec: 'New Testament (NT)' },
   { id: 'DC', spec: 'Deutro Canon' },
   { id: 'OTDC', spec: 'OT Deutro Canon' },
-  { id: 'Custom', spec: 'Custom' },
 ];
 const AdvancedSetttings = () => {
   const classes = CreateProjectStyles();
   const [canonSpecification, setcanonSpecification] = React.useState('OT');
   const [content, setContent] = React.useState([OT]);
+  const [drawerOpen, setDrawerOpen] = React.useState(false);
+  const [eventName, setEventname] = React.useState('');
   const [hideplaceholder, setHideplaceholder] = React.useState(false);
   const [custonOpen, setCustonOpen] = React.useState(false);
   const [updateCanonItems, setUpdateCanonItems] = React.useState(canonItems);
@@ -33,6 +40,23 @@ const AdvancedSetttings = () => {
     logger.debug('advancesettings.js', 'set content to OT on mount');
     setContent(OT);
   }, []);
+
+  useEffect(() => {
+    localForage.getItem('custonSpec', (err, value) => {
+      let custonspec;
+      if (value !== null) {
+        value.forEach((fields) => {
+            custonspec = { id: fields.id, spec: fields.id };
+            updateCanonItems.push(custonspec);
+            setUpdateCanonItems(updateCanonItems);
+            logger.debug(
+              'customspecification.js', 'updated customSpec and canonItems on component mount',
+            );
+        });
+      }
+    });
+    // eslint-disable-next-line
+  },[])
 
   const changeCanonSpecification = (event) => {
     logger.debug(
@@ -49,17 +73,24 @@ const AdvancedSetttings = () => {
         setContent(NT);
         setHideplaceholder(false);
         break;
-      case 'Custom':
-        setContent(NT);
-        setHideplaceholder(false);
-        setCustonOpen(!custonOpen);
-        break;
       default:
-        setContent(OT);
+        localForage.getItem('custonSpec', (err, value) => {
+          if (value) {
+            value.forEach((item) => {
+              if (item.id === event.target.value) { setContent(item.books); }
+            });
+          }
+        });
         setHideplaceholder(false);
         return null;
     }
     return null;
+  };
+
+  const setDrawerEvent = (e, value, eventname) => {
+    e.preventDefault();
+    setDrawerOpen(value);
+    setEventname(eventname);
   };
 
   return (
@@ -92,43 +123,74 @@ const AdvancedSetttings = () => {
                       Canon Specifications
                     </Box>
                   </FormLabel>
-                  <Select
-                    className={classes.biblename}
-                    value={canonSpecification}
-                    onChange={(event) => changeCanonSpecification(event)}
-                    variant="outlined"
-                  >
-                    {updateCanonItems.map((value) => (
-                      <MenuItem key={value.id} value={value.id}>
-                        {value.spec}
-                      </MenuItem>
+                  <span>
+                    <Select
+                      className={classes.biblename}
+                      value={canonSpecification}
+                      onChange={(event) => changeCanonSpecification(event)}
+                      variant="outlined"
+                    >
+                      {updateCanonItems.map((value) => (
+                        <MenuItem key={value.id} value={value.id}>
+                          {value.spec}
+                        </MenuItem>
                     ))}
-                  </Select>
+                    </Select>
+                  </span>
+                  <span>
+                    <IconButton>
+                      <AddCircleIcon onClick={(e) => { setDrawerEvent(e, true, 'canondisplay'); }} />
+                    </IconButton>
+                    <IconButton>
+                      <EditIcon onClick={(e) => { setDrawerEvent(e, true, 'canonedit'); }} />
+                    </IconButton>
+                  </span>
                 </FormControl>
               </div>
               <span>
                 <FormControl component="fieldset">
-                  <FormLabel component="legend">
-                    <Box fontWeight={600} m={1}>
-                      Content
-                    </Box>
-                  </FormLabel>
-                  <Select
-                    className={classes.biblename}
-                    value={content[0]}
-                    variant="outlined"
+                  <DrawerMenu
+                    open={drawerOpen}
+                    classes={classes}
+                    direction="right"
                   >
-                    {hideplaceholder && (
-                      <MenuItem value={content[0]} disabled>
-                        {content[0]}
-                      </MenuItem>
-                    )}
-                    {content.map((bookname) => (
-                      <MenuItem value={bookname} key={bookname}>
-                        {bookname}
-                      </MenuItem>
-                    ))}
-                  </Select>
+                    {
+                    eventName === 'canondisplay' && (
+                      <div
+                        style={{ width: '600px', marginTop: '100px', marginLeft: 20 }}
+                      >
+                        {content.map((bookname) => (
+                          <MenuItem value={bookname} key={bookname}>
+                            {bookname}
+                          </MenuItem>
+                      ))}
+                        <div>
+                          <Button
+                            className={classes.save}
+                            variant="contained"
+                            color="secondary"
+                            data-testid="submit-button"
+                            type="submit"
+                            onClick={(e) => setDrawerEvent(e, false)}
+                          >
+                            cancel
+                          </Button>
+                          <Button
+                            className={classes.save}
+                            variant="contained"
+                            color="primary"
+                            data-testid="submit-button"
+                            type="submit"
+                            onClick={(e) => setDrawerEvent(e, false)}
+                          >
+                            Save
+                          </Button>
+                        </div>
+                      </div>
+                    )
+                  }
+
+                  </DrawerMenu>
                 </FormControl>
               </span>
               <div>
@@ -141,16 +203,26 @@ const AdvancedSetttings = () => {
           </form>
         </Grid>
       </Grid>
-      <CustomSpecification
-        opencustom={custonOpen}
-        setCustonOpen={setCustonOpen}
-        allbooks={AllBooks}
-        setContent={setContent}
-        canonSpecification={canonSpecification}
-        updateCanonItems={updateCanonItems}
-        setUpdateCanonItems={setUpdateCanonItems}
-        setcanonSpecification={setcanonSpecification}
-      />
+      <DrawerMenu
+        open={drawerOpen}
+        classes={classes}
+        direction="right"
+      >
+        {
+        eventName === 'canonedit' && (
+        <CustomSpecification
+          opencustom={drawerOpen}
+          setCustonOpen={setDrawerEvent}
+          allbooks={AllBooks}
+          setContent={setContent}
+          canonSpecification={canonSpecification}
+          updateCanonItems={updateCanonItems}
+          setUpdateCanonItems={setUpdateCanonItems}
+          setcanonSpecification={setcanonSpecification}
+        />
+        )
+      }
+      </DrawerMenu>
     </>
   );
 };

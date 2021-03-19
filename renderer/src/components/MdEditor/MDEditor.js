@@ -8,6 +8,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import PropTypes from 'prop-types';
+import Typography from '@material-ui/core/Typography';
 import * as logger from '../../logger';
 import CustomDialog from '../ApplicationBar/CustomDialog';
 
@@ -31,8 +32,8 @@ export const MDEditor = ({
     setEdit(edit);
   };
 
-  const handleClose = () => {
-    setopenMDFile(false);
+  const handleClose = (e) => {
+    setopenMDFile(e, false);
   };
 
   const callback = (markdown) => {
@@ -106,7 +107,7 @@ export const MDEditor = ({
     <>
       <Button
         autoFocus
-        onClick={handleClose}
+        onClick={(e) => { handleClose(e); }}
         data-testid="test-cancel"
         variant="contained"
       >
@@ -114,7 +115,7 @@ export const MDEditor = ({
       </Button>
       <Button
         autoFocus
-        onClick={handleClose}
+        onClick={(e) => { handleClose(e); }}
         variant="contained"
         data-testid="test-save"
         color="primary"
@@ -126,14 +127,15 @@ export const MDEditor = ({
 
   return (
     <div>
-      <CustomDialog
-        open={openMDFile}
-        setOpen={setopenMDFile}
-        title={title}
-        buttons={button}
-        content={content}
-        width="xl"
-      />
+      <Typography>
+        {title}
+      </Typography>
+      <div>
+        <Typography>
+          {content}
+        </Typography>
+      </div>
+      {button}
     </div>
   );
 };

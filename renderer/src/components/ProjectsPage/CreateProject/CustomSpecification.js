@@ -79,7 +79,6 @@ const DialogActions = withStyles((theme) => ({
 }))(MuiDialogActions);
 
 export default function CustomSpecification({
-  opencustom,
   setCustonOpen,
   allbooks,
   setContent,
@@ -96,11 +95,13 @@ export default function CustomSpecification({
 
   useEffect(() => {
     localForage.getItem('custonSpec', (err, value) => {
-      setCustomelectedbookObj(value);
+      if (customselectedbookObj !== null) {
+        setCustomelectedbookObj(value);
       logger.debug(
         'customspecification.js', `changed custom on canonSpec change with ${customselectedbookObj}`,
       );
       if (err) { logger.error('customspecification.js', 'failed to get customspec'); }
+      }
     });
     if (customselectedbookObj) {
       const result = customselectedbookObj.filter((obj) => obj.id === canonSpecification);
@@ -137,10 +138,10 @@ export default function CustomSpecification({
     // eslint-disable-next-line
   },[])
 
-  const handleSave = () => {
+  const handleSave = (e) => {
     logger.debug('customspecification.js', 'calling customSpec handleSave event');
     let duplicates = false;
-    setCustonOpen(false);
+    setCustonOpen(e, false);
     if (selectedbook) {
       const selectedbookObj = { id: textRef.current.value, books: selectedbook };
       customselectedbookObj.push(selectedbookObj);
@@ -197,13 +198,13 @@ export default function CustomSpecification({
     }
   };
 
-  const handleClose = () => {
+  const handleClose = (e) => {
     logger.debug(
       'customspecification.js',
       'calling handleClose and setcanonSpecification to OT ',
     );
     setcanonSpecification('OT');
-    setCustonOpen(false);
+    setCustonOpen(e, false);
   };
 
   function FormRow() {
@@ -231,64 +232,53 @@ export default function CustomSpecification({
 
   return (
     <div>
-      <Dialog
-        maxWidth="xl"
-        fullWidth
-        TransitionComponent={Transition}
-        onClose={handleClose}
-        aria-labelledby="customized-dialog-title"
-        open={opencustom}
-      >
-        <DialogTitle id="customized-dialog-title">
-          <Box fontWeight={600} m={1}>
-            Add Canon Specification
-          </Box>
-        </DialogTitle>
-        <DialogContent dividers>
-          <form>
-            <FormControl component="fieldset">
-              <FormLabel component="legend">
-                <Box fontWeight={600} m={1}>
-                  Canon Specification Name
-                </Box>
-              </FormLabel>
-              <TextField
-                className={classes.Specification}
-                variant="outlined"
-                placeholder="Enter canon specification name"
-                type="text"
-                required
-                inputRef={textRef}
-              />
-            </FormControl>
-          </form>
-          <div className={classes.root}>
-            <Grid container spacing={1}>
-              <Grid container item xs={12} spacing={3}>
-                <FormRow />
-              </Grid>
+      <Typography id="customized-dialog-title">
+        <Box fontWeight={600} m={1}>
+          Add Canon Specification
+        </Box>
+      </Typography>
+      <DialogContent dividers>
+        <form>
+          <FormControl component="fieldset">
+            <FormLabel component="legend">
+              <Box fontWeight={600} m={1}>
+                Canon Specification Name
+              </Box>
+            </FormLabel>
+            <TextField
+              variant="outlined"
+              placeholder="Enter canon specification name"
+              type="text"
+              required
+              inputRef={textRef}
+            />
+          </FormControl>
+        </form>
+        <div>
+          <Grid container>
+            <Grid container item xs={6} spacing={2}>
+              <FormRow />
             </Grid>
-          </div>
-        </DialogContent>
-        <DialogActions>
-          <Button autoFocus onClick={handleClose} variant="contained">
-            Cancel
-          </Button>
-          <Button
-            autoFocus
-            onClick={handleSave}
-            variant="contained"
-            color="primary"
-          >
-            Create
-          </Button>
-        </DialogActions>
-      </Dialog>
+          </Grid>
+        </div>
+      </DialogContent>
+      <DialogActions>
+        <Button autoFocus onClick={(e) => handleClose(e)} variant="contained">
+          Cancel
+        </Button>
+        <Button
+          autoFocus
+          onClick={(e) => handleSave(e)}
+          variant="contained"
+          color="primary"
+        >
+          Create
+        </Button>
+      </DialogActions>
     </div>
   );
 }
 CustomSpecification.propTypes = {
-  opencustom: PropTypes.bool.isRequired,
   setCustonOpen: PropTypes.func,
   allbooks: PropTypes.array,
   setContent: PropTypes.func,
