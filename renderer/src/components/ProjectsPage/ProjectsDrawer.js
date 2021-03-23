@@ -10,6 +10,7 @@ import {
 import { Notifications } from '@material-ui/icons';
 import ApplicationBar from '../ApplicationBar/ApplicationBar';
 import { ProjectsNav } from './ProjectPaneNav/ProjectsNav';
+import ProjectContextProvider from './ProjectsContext/ProjectContext';
 
 Router.onRouteChangeStart = () => {
   NProgress.start();
@@ -65,13 +66,15 @@ export default function ProjectsDrawer() {
 
   return (
     <>
-      <ApplicationBar
-        title="AUTOGRAPHA"
-        theme="primary"
-        buttons={buttons}
-        drawerMenu={drawerMenu}
-      />
-      <ProjectsNav title={title} />
+      <ProjectContextProvider>
+        <ApplicationBar
+          title="AUTOGRAPHA"
+          theme="primary"
+          buttons={buttons}
+          drawerMenu={drawerMenu}
+        />
+        <ProjectsNav title={title} />
+      </ProjectContextProvider>
     </>
   );
 }

@@ -16,7 +16,7 @@ app.on('ready', async () => {
     webPreferences: {
       nodeIntegration: true,
       preload: join(__dirname, 'preload.js'),
-      additionalArguments: [app.getPath('userData')],
+      additionalArguments: app.getPath('documents'),
     },
   });
 

@@ -10,7 +10,7 @@ import Tab from '@material-ui/core/Tab';
 import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
 import * as logger from '../../logger';
-import CustomDialog from '../ApplicationBar/CustomDialog';
+import { ProjectContext } from '../ProjectsPage/ProjectsContext/ProjectContext';
 
 function a11yProps(index) {
   return {
@@ -20,13 +20,18 @@ function a11yProps(index) {
 }
 
 export const MDEditor = ({
-  openMDFile,
   setopenMDFile,
   mdFilePath,
 }) => {
   const [onedit, setEdit] = React.useState(0);
   const [preview, setpreview] = React.useState(true);
-  const [translation, settranslation] = React.useState();
+  const {
+    states: {
+      license,
+    }, actions: {
+      setLicense,
+    },
+   } = React.useContext(ProjectContext);
 
   const handleEdit = (edit) => {
     setEdit(edit);
@@ -38,11 +43,11 @@ export const MDEditor = ({
 
   const callback = (markdown) => {
     logger.debug('markdownviewer.js', `set translation as ${markdown}`);
-    settranslation(markdown);
+    setLicense(markdown);
   };
 
   React.useEffect(() => {
-    settranslation(mdFilePath);
+    setLicense(mdFilePath);
   }, [mdFilePath]);
 
   const title = (
@@ -76,7 +81,7 @@ export const MDEditor = ({
       {onedit === 0 ? (
         <div>
           <BlockEditable
-            markdown={translation}
+            markdown={license}
             preview={preview}
             onEdit={callback}
             inputFilters={[
@@ -89,7 +94,7 @@ export const MDEditor = ({
       ) : (
         <div>
           <BlockEditable
-            markdown={translation}
+            markdown={license}
             preview={preview}
             onEdit={callback}
             inputFilters={[

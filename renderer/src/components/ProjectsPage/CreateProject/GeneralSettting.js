@@ -17,6 +17,7 @@ import { CreateProjectStyles } from './useStyles/CreateProjectStyles';
 import { AutoComplete } from './AutoComplete';
 import useValidator from '../../Validation/useValidator';
 import DrawerMenu from '../../ApplicationBar/DrawerMenu';
+import { ProjectContext } from '../ProjectsContext/ProjectContext';
 
 const version = [
   { id: 1, value: 'IRV' },
@@ -43,9 +44,21 @@ function StyledRadio(props) {
 
 const GeneralSettting = () => {
   const classes = CreateProjectStyles();
-  const [biblename, setBiblename] = React.useState('');
-  const [drawer, setDrawer] = React.useState(false);
-  const [language, setLanguage] = React.useState('');
+  const {
+   states: {
+    biblename,
+    language,
+    drawer,
+    selectedVersion,
+    scriptDirection,
+   }, actions: {
+    setBiblename,
+    setDrawer,
+    setLanguage,
+    setSelectedVersion,
+    setScriptDirection,
+   },
+  } = React.useContext(ProjectContext);
   const {
     state: { errors }, action: { handleFields },
   } = useValidator();
@@ -87,6 +100,7 @@ const GeneralSettting = () => {
             defaultValue="LTR"
             aria-label="direction"
             name="customized-radios"
+            onClick={(event) => setScriptDirection(event.target.value)}
           >
             <FormControlLabel
               value="LTR"
@@ -183,7 +197,11 @@ const GeneralSettting = () => {
                     </Box>
                   </FormLabel>
                   <div>
-                    <AutoComplete version={version} />
+                    <AutoComplete
+                      version={version}
+                      selectedOption={selectedVersion}
+                      setSetselectedOption={setSelectedVersion}
+                    />
                   </div>
                 </FormControl>
               </span>

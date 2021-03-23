@@ -18,6 +18,7 @@ import { AllBooks, NT, OT } from '../../../lib/CanonSpecification';
 import CustomSpecification from './CustomSpecification';
 import { LicenseSelection } from './LicenseSelection';
 import * as logger from '../../../logger';
+import { ProjectContext } from '../ProjectsContext/ProjectContext';
 
 const canonItems = [
   { id: 'OT', spec: 'Old Testament (OT)' },
@@ -27,14 +28,22 @@ const canonItems = [
 ];
 const AdvancedSetttings = () => {
   const classes = CreateProjectStyles();
-  const [canonSpecification, setcanonSpecification] = React.useState('OT');
-  const [content, setContent] = React.useState([OT]);
   const [drawerOpen, setDrawerOpen] = React.useState(false);
   const [eventName, setEventname] = React.useState('');
-  const [hideplaceholder, setHideplaceholder] = React.useState(false);
-  const [custonOpen, setCustonOpen] = React.useState(false);
   const [updateCanonItems, setUpdateCanonItems] = React.useState(canonItems);
   const [openmdviewer, setopenmdviewer] = React.useState(false);
+  const {
+    states: {
+      content,
+      canonSpecification,
+      versificationScheme,
+    },
+    actions: {
+      setContent,
+      setcanonSpecification,
+      setVersificationScheme,
+    },
+} = React.useContext(ProjectContext);
 
   useEffect(() => {
     logger.debug('advancesettings.js', 'set content to OT on mount');
@@ -44,14 +53,23 @@ const AdvancedSetttings = () => {
   useEffect(() => {
     localForage.getItem('custonSpec', (err, value) => {
       let custonspec;
+      let duplicate = false;
       if (value !== null) {
         value.forEach((fields) => {
+          updateCanonItems.forEach((element) => {
+            if (element.spec.includes(fields.id) === true) {
+              duplicate = true;
+            }
+          });
+          if (duplicate === false) {
             custonspec = { id: fields.id, spec: fields.id };
             updateCanonItems.push(custonspec);
             setUpdateCanonItems(updateCanonItems);
             logger.debug(
-              'customspecification.js', 'updated customSpec and canonItems on component mount',
+              'customspecification.js',
+              'updated customSpec and canonItems on component mount',
             );
+          }
         });
       }
     });
@@ -60,28 +78,27 @@ const AdvancedSetttings = () => {
 
   const changeCanonSpecification = (event) => {
     logger.debug(
-      'advancesettings.js', `calling changeCanonSpecification event with value=${event.target.value}`,
+      'advancesettings.js',
+      `calling changeCanonSpecification event with value=${event.target.value}`,
     );
     setcanonSpecification(event.target.value);
-    setHideplaceholder(true);
     switch (event.target.value.toString()) {
       case 'OT':
         setContent(OT);
-        setHideplaceholder(false);
         break;
       case 'NT':
         setContent(NT);
-        setHideplaceholder(false);
         break;
       default:
         localForage.getItem('custonSpec', (err, value) => {
           if (value) {
             value.forEach((item) => {
-              if (item.id === event.target.value) { setContent(item.books); }
+              if (item.id === event.target.value) {
+                setContent(item.books);
+              }
             });
           }
         });
-        setHideplaceholder(false);
         return null;
     }
     return null;
@@ -107,10 +124,13 @@ const AdvancedSetttings = () => {
                 </FormLabel>
                 <Select
                   className={classes.biblename}
-                  value="kjv"
+                  value={versificationScheme}
+                  onChange={(e) => setVersificationScheme(e.target.value)}
                   variant="outlined"
                 >
-                  <MenuItem value="kjv">King James Version (KJV)</MenuItem>
+                  <MenuItem value="kjv">
+                    King James Version (KJV)
+                  </MenuItem>
                   <MenuItem value="niv">
                     New Internation Version (NIV)
                   </MenuItem>

@@ -2,12 +2,8 @@ import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import MuiDialogContent from '@material-ui/core/DialogContent';
 import MuiDialogActions from '@material-ui/core/DialogActions';
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography';
 import {
   Box,
@@ -17,53 +13,10 @@ import {
   ListItem,
   ListItemText,
   TextField,
-  Zoom,
 } from '@material-ui/core';
 import * as localForage from 'localforage';
 import { CreateProjectStyles } from './useStyles/CreateProjectStyles';
 import * as logger from '../../../logger';
-
-const Transition = React.forwardRef((props, ref) => (
-  <Zoom
-    style={{ transitionDelay: '50ms' }}
-    direction="up"
-    ref={ref}
-    {...props}
-  />
-));
-
-const styles = (theme) => ({
-  root: {
-    margin: 0,
-    padding: theme.spacing(2),
-  },
-  closeButton: {
-    position: 'absolute',
-    right: theme.spacing(1),
-    top: theme.spacing(1),
-    color: theme.palette.grey[500],
-  },
-});
-
-const DialogTitle = withStyles(styles)((props) => {
-  const {
-    children, classes, onClose, ...other
-  } = props;
-  return (
-    <MuiDialogTitle disableTypography className={classes.root} {...other}>
-      <Typography variant="h6">{children}</Typography>
-      {onClose ? (
-        <IconButton
-          aria-label="close"
-          className={classes.closeButton}
-          onClick={onClose}
-        >
-          <CloseIcon />
-        </IconButton>
-      ) : null}
-    </MuiDialogTitle>
-  );
-});
 
 const DialogContent = withStyles((theme) => ({
   root: {
@@ -95,7 +48,7 @@ export default function CustomSpecification({
 
   useEffect(() => {
     localForage.getItem('custonSpec', (err, value) => {
-      if (customselectedbookObj !== null) {
+      if (customselectedbookObj !== null && value !== null) {
         setCustomelectedbookObj(value);
       logger.debug(
         'customspecification.js', `changed custom on canonSpec change with ${customselectedbookObj}`,
@@ -147,7 +100,6 @@ export default function CustomSpecification({
       customselectedbookObj.push(selectedbookObj);
       setCustomelectedbookObj(customselectedbookObj);
     }
-
     updateCanonItems.forEach((element) => {
       if (element.spec.includes(textRef.current.value) === true) {
         duplicates = true;
@@ -161,6 +113,7 @@ export default function CustomSpecification({
       updateCanonItems.push(custonspec);
       setUpdateCanonItems(updateCanonItems);
       setcanonSpecification(textRef.current.value);
+      setcanonSpecification('OT');
       logger.debug(
         'customspecification.js',
         `updating canonitem name values with ${textRef.current.value} 

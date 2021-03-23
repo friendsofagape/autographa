@@ -4,9 +4,8 @@ import { TextField } from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { CreateProjectStyles } from './useStyles/CreateProjectStyles';
 
-export const AutoComplete = ({ version }) => {
+export const AutoComplete = ({ version, selectedOption, setSetselectedOption }) => {
   const classes = CreateProjectStyles();
-  const [selregion, setRegion] = React.useState('');
 
   return (
     <Autocomplete
@@ -15,10 +14,10 @@ export const AutoComplete = ({ version }) => {
       className={classes.autocomplete}
       options={version}
       getOptionLabel={(option) => option.value}
-      inputValue={selregion}
+      inputValue={selectedOption}
       // eslint-disable-next-line no-shadow
       onInputChange={(id, version) => {
-        setRegion(version);
+        setSetselectedOption(version);
       }}
       renderInput={(params) => (
         <TextField

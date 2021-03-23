@@ -56,6 +56,7 @@ export const LicenseSelection = ({ openmdviewer, setopenmdviewer }) => {
     setselectedLicense(event.target.value);
     setopenmdviewer(true);
   };
+  console.log(selectedLicense);
 
   return (
     <>
