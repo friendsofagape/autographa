@@ -8,7 +8,7 @@ export const AutoCompleteSearch = ({
 }) => (
   <Autocomplete
     options={listarray}
-    getOptionLabel={(option) => option.place}
+    getOptionLabel={(option) => option}
     inputValue={selectedValue}
         // eslint-disable-next-line no-shadow
     onInputChange={(id, region) => {

@@ -14,7 +14,6 @@ function ApplicationBar({
   title,
   buttons,
   drawerMenu,
-  drawerMenuProps,
   appBarStyle,
   theme,
 }) {
@@ -52,10 +51,6 @@ function ApplicationBar({
   );
 }
 
-ApplicationBar.defaultProps = {
-  drawerMenuProps: {},
-};
-
 ApplicationBar.propTypes = {
   /** The title string or jsx to be displayed. */
   title: PropTypes.oneOfType([
@@ -67,7 +62,8 @@ ApplicationBar.propTypes = {
   /** Component to render inside of the drawer menu. */
   drawerMenu: PropTypes.element,
   /** Drawer menu props. */
-  drawerMenuProps: PropTypes.object,
+  appBarStyle: PropTypes.object,
+  theme: PropTypes.string,
 };
 
 export default ApplicationBar;

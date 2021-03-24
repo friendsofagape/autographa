@@ -36,6 +36,7 @@ DrawerMenu.propTypes = {
   direction: PropTypes.string,
   /** Component to render inside of the drawer menu. */
   children: PropTypes.element,
+  open: PropTypes.bool,
 };
 
 export default DrawerMenu;

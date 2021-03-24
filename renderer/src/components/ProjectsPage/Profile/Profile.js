@@ -36,10 +36,10 @@ const localForageConfig = {
   maxSize: '5MB',
 };
 const region = [
-  { id: 1, place: 'Delhi, India' },
-  { id: 2, place: 'Helsinki, Finland' },
-  { id: 3, place: 'New York, United States' },
-  { id: 4, place: 'Morocco, North Africa' },
+  'Delhi, India',
+  'Helsinki, Finland',
+  'New York, United States',
+  'Morocco, North Africa',
 ];
 
 const Profile = () => {

@@ -14,17 +14,17 @@ import {
 import clsx from 'clsx';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import { CreateProjectStyles } from './useStyles/CreateProjectStyles';
-import { AutoComplete } from './AutoComplete';
 // import useValidator from '../../Validation/useValidator';
 import DrawerMenu from '../../ApplicationBar/DrawerMenu';
 import { ProjectContext } from '../ProjectsContext/ProjectContext';
+import { AutoCompleteSearch } from '../../AutoCompleteSearch/AutoCompleteSearch';
 
 const version = [
-  { id: 1, value: 'IRV' },
-  { id: 2, value: 'NLT' },
-  { id: 3, value: 'UDB' },
-  { id: 4, value: 'ULB' },
-  { id: 5, value: 'UJNT' },
+  'IRV',
+  'NLT',
+  'UDB',
+  'ULB',
+  'UJNT',
 ];
 
 function StyledRadio(props) {
@@ -189,11 +189,17 @@ const GeneralSettting = () => {
                     </Box>
                   </FormLabel>
                   <div>
-                    <AutoComplete
-                      version={version}
-                      selectedOption={selectedVersion}
-                      setSetselectedOption={setSelectedVersion}
-                    />
+                    <FormControl
+                      variant="outlined"
+                      className={classes.autocomplete}
+                    >
+                      <AutoCompleteSearch
+                        id="Version"
+                        listarray={version}
+                        selectedValue={selectedVersion}
+                        setSelectedValue={setSelectedVersion}
+                      />
+                    </FormControl>
                   </div>
                 </FormControl>
               </span>

@@ -8,6 +8,8 @@ import {
     List, ListItem, ListItemIcon, ListItemText, Avatar,
 } from '@material-ui/core';
 import DrawerMenu from '../DrawerMenu';
+import { useStyles } from '../useStyles';
+
 
 jest.useFakeTimers();
 
@@ -37,13 +39,15 @@ const showIcon = (index) => {
 
 
 test('renders without fail', () => {
-  render(<DrawerMenu />);
+  const classes =jest.mock()
+  render(<DrawerMenu open classes={classes} direction="left"/>);
 });
 
 describe('Starred content table test', () => {
+  const classes = 
       test('Check AppBar title', () => {
         const { getByTestId } = render(
-        <DrawerMenu>
+        <DrawerMenu open classes={classes} direction="left">
             {drawerMenu}
         </DrawerMenu>
         );

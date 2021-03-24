@@ -4,6 +4,7 @@ import '@testing-library/jest-dom/extend-expect';
 import { MDEditor } from './MDEditor';
 import { act } from 'react-dom/test-utils';
 import userEvent from '@testing-library/user-event';
+import ProjectContextProvider from '../ProjectsPage/ProjectsContext/ProjectContext';
 
 jest.useFakeTimers();
 const version = [
@@ -15,23 +16,29 @@ const version = [
   ];
 
 test('MDEditor renders without error', () => {
-  render(<MDEditor openMDFile={true} />);
+  render(
+    <ProjectContextProvider>
+    <MDEditor openMDFile={true} />
+    </ProjectContextProvider>
+    );
 });
 
 test('should check md preview and edit selector', async () => {
     const { getByTestId } = render(
-        <MDEditor 
-            openMDFile={true}
-        />);
+      <ProjectContextProvider>
+      <MDEditor openMDFile={true} />
+      </ProjectContextProvider>
+      );
     const titleBox = getByTestId('test-tabs');
     expect(titleBox).toHaveTextContent('PreviewMarkdown');
 });
 
 test('Check mdeditor buttons', () => {
     const { getByTestId } = render(
-    <MDEditor 
-        openMDFile={true}
-    />);
+      <ProjectContextProvider>
+      <MDEditor openMDFile={true} />
+      </ProjectContextProvider>
+      );
     const saveButton = getByTestId('test-save');
     expect(saveButton).toHaveTextContent("save")
     const cancelButton = getByTestId('test-cancel');

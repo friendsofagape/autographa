@@ -9,7 +9,6 @@ import {
   MenuItem,
   Select,
 } from '@material-ui/core';
-import AddCircleIcon from '@material-ui/icons/AddCircle';
 import EditIcon from '@material-ui/icons/Edit';
 import PropTypes from 'prop-types';
 import * as React from 'react';
@@ -37,12 +36,12 @@ export const LicenseSelection = ({ openmdviewer, setopenmdviewer }) => {
   const [updatelicenseItems] = React.useState(licenseItems);
   const [filePath, setFilePath] = React.useState();
   const [drawerOpen, setDrawerOpen] = React.useState(false);
-  const [eventName, setEventname] = React.useState('');
+  // const [eventName, setEventname] = React.useState('');
 
-  const setDrawerEvent = (e, value, eventname) => {
+  const setDrawerEvent = (e, value) => {
     e.preventDefault();
     setDrawerOpen(value);
-    setEventname(eventname);
+    // setEventname(eventname);
   };
   React.useEffect(() => {
     logger.debug(
@@ -56,7 +55,6 @@ export const LicenseSelection = ({ openmdviewer, setopenmdviewer }) => {
     setselectedLicense(event.target.value);
     setopenmdviewer(true);
   };
-  console.log(selectedLicense);
 
   return (
     <>

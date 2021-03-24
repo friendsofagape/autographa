@@ -48,6 +48,7 @@ export const MDEditor = ({
 
   React.useEffect(() => {
     setLicense(mdFilePath);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mdFilePath]);
 
   const title = (

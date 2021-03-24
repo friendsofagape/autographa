@@ -28,6 +28,7 @@ export default function NewProject() {
         if (isElectron()) {
           let status;
             try {
+            // eslint-disable-next-line no-unused-vars
             status = saveProjectsMeta(
                 newProjectFields,
                 selectedVersion,
@@ -38,7 +39,7 @@ export default function NewProject() {
               );
             } finally {
               // To display the status of meta save
-              console.log(status);
+              // console.log(status);
               resetProjectStates();
               setSideTabTitle('Projects');
             }
