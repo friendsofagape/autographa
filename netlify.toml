@@ -1,4 +1,9 @@
 [build]
-  functions = "out_functions"
-  publish   = "out_publish"
-  command   = "npm run build"
+  command = "npm run build"
+  publish = "out"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+[context.production.environment]
+NEXT_SERVERLESS = "true"
+NODE_ENV = "production"
