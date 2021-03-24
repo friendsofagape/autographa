@@ -33,7 +33,6 @@ function SearchForm({
     if (lowercasedValue === '') {
       return content;
     }
-
       const filteredData = content.filter(
         (item) => Object.keys(item).some((key) => (excludeColumns.includes(key)
           ? false

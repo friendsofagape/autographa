@@ -8,6 +8,7 @@ import NProgress from 'nprogress';
 import ProjectsDrawer from './ProjectsPage/ProjectsDrawer';
 import Meta from '../Meta';
 import AutographaContextProvider from './AutogrpahaContext/AutographaContext';
+import ProjectContextProvider from './ProjectsPage/ProjectsContext/ProjectContext';
 // import AutographaStore from "./AutographaStore";
 // import AutoUpdate from "./AutoUpdate";
 // import { logger } from "../logger";
@@ -132,14 +133,16 @@ const Main = () => {
       {Object.keys(message).length !== 0 ? (
         <ThemeProvider theme={theme}>
           <AutographaContextProvider>
-            <IntlProvider
-              defaultLocale="en"
-              locale={language}
-              messages={message}
-            >
-              <ProjectsDrawer />
-              <Meta />
-            </IntlProvider>
+            <ProjectContextProvider>
+              <IntlProvider
+                defaultLocale="en"
+                locale={language}
+                messages={message}
+              >
+                <ProjectsDrawer />
+                <Meta />
+              </IntlProvider>
+            </ProjectContextProvider>
           </AutographaContextProvider>
         </ThemeProvider>
       ) : (

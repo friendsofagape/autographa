@@ -4,41 +4,53 @@ import ApplicationBar from '../../ApplicationBar/ApplicationBar';
 import { ProjectContext } from '../ProjectsContext/ProjectContext';
 import CreateProjectAccordions from './CreateProjectAccordions';
 import { isElectron } from '../../../core/handleElectron';
+import saveProjectsMeta from '../../../core/projects/saveProjetcsMeta';
 
 const style = { top: '65px', width: 'inherit', left: '153px' };
 
 export default function NewProject() {
   const {
     states: {
-      biblename,
-      language,
+      newProjectFields,
       selectedVersion,
-      scriptDirection,
       license,
       canonSpecification,
       content,
       versificationScheme,
     },
+    actions: {
+      resetProjectStates,
+      setSideTabTitle,
+    },
    } = React.useContext(ProjectContext);
-  const createNewProject = () => {
+  const createNewProject = (e) => {
+    e.preventDefault();
         if (isElectron()) {
-            console.log(localStorage.getItem('userPath'));
-            const newpath = localStorage.getItem('userPath');
-            const fs = window.require('fs');
-            const path = require('path');
-            fs.mkdirSync(path.join(newpath, 'autographa', 'userdata'), {
-                recursive: true,
-            });
+          let status;
+            try {
+            status = saveProjectsMeta(
+                newProjectFields,
+                selectedVersion,
+                license,
+                canonSpecification,
+                content,
+                versificationScheme,
+              );
+            } finally {
+              // To display the status of meta save
+              console.log(status);
+              resetProjectStates();
+              setSideTabTitle('Projects');
+            }
         }
   };
-//   if (!fs.existsSync(dirPath)){
-//     fs.mkdirSync(dirPath, { recursive: true });
-// }
+
   const createProjectButton = (
     <Button
       variant="contained"
       secondary
-      onClick={() => createNewProject()}
+      type="submit"
+      onClick={(e) => createNewProject(e)}
     >
       Create
     </Button>

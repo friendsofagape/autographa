@@ -15,7 +15,7 @@ import clsx from 'clsx';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import { CreateProjectStyles } from './useStyles/CreateProjectStyles';
 import { AutoComplete } from './AutoComplete';
-import useValidator from '../../Validation/useValidator';
+// import useValidator from '../../Validation/useValidator';
 import DrawerMenu from '../../ApplicationBar/DrawerMenu';
 import { ProjectContext } from '../ProjectsContext/ProjectContext';
 
@@ -46,22 +46,19 @@ const GeneralSettting = () => {
   const classes = CreateProjectStyles();
   const {
    states: {
-    biblename,
-    language,
     drawer,
     selectedVersion,
-    scriptDirection,
+    newProjectFields,
    }, actions: {
-    setBiblename,
     setDrawer,
-    setLanguage,
     setSelectedVersion,
-    setScriptDirection,
+    handleProjectFields,
    },
   } = React.useContext(ProjectContext);
-  const {
-    state: { errors }, action: { handleFields },
-  } = useValidator();
+  // validation custom hook
+  // const {
+  //   state: { errors }, action: { handleFields },
+  // } = useValidator();
 
   const openDrawer = (status) => {
     setDrawer(status);
@@ -79,13 +76,10 @@ const GeneralSettting = () => {
             className={classes.biblename}
             variant="outlined"
             name="namefield"
-            value={language}
-            helperText={errors.namefield}
+            value={newProjectFields.language}
+            // helperText={errors.namefield}
             onChange={
-              (e) => {
-                setLanguage(e.target.value);
-                handleFields(e);
-              }
+                handleProjectFields('language')
             }
           />
         </div>
@@ -97,10 +91,10 @@ const GeneralSettting = () => {
           </FormLabel>
           <RadioGroup
             style={{ display: 'inline', marginLeft: '12px' }}
-            defaultValue="LTR"
+            defaultValue={newProjectFields.scriptDirection}
             aria-label="direction"
             name="customized-radios"
-            onClick={(event) => setScriptDirection(event.target.value)}
+            onClick={handleProjectFields('scriptDirection')}
           >
             <FormControlLabel
               value="LTR"
@@ -178,13 +172,11 @@ const GeneralSettting = () => {
                       className={classes.biblename}
                       variant="outlined"
                       name="namefield"
+                      required
                       placeholder="Enter Bible Name"
-                      value={biblename}
-                      helperText={errors.namefield}
-                      onChange={(e) => {
-                        setBiblename(e.target.value);
-                        handleFields(e);
-                      }}
+                      value={newProjectFields.projectName}
+                      // helperText={errors.namefield}
+                      onChange={handleProjectFields('projectName')}
                     />
                   </div>
                 </FormControl>
@@ -220,7 +212,7 @@ const GeneralSettting = () => {
                         variant="outlined"
                         name="namefield"
                         placeholder="Enter Bible Name"
-                        value={language}
+                        value={newProjectFields.language}
                       />
                       <IconButton>
                         <AddCircleIcon onClick={() => { openDrawer(true); }} />
