@@ -18,7 +18,8 @@
 		"maxmemory-allocation": "NODE_OPTIONS=--max_old_space_size=4096",
 		"eslint:github-action": "node ./node_modules/eslint/bin/eslint . --ignore-path .gitignore --max-warnings 0",
 		"pack-app": "npm run build && electron-builder --dir",
-		"dist": "npm run build && electron-builder -p never"
+		"dist": "npm run build && electron-builder -p never",
+		"postbuild": "next export"
 	},
 	"eslintIgnore": [
 		"*.test.js"
