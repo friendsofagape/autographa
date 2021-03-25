@@ -6,7 +6,7 @@ export const ProjectContext = React.createContext();
 
 const ProjectContextProvider = ({ children }) => {
     const [drawer, setDrawer] = React.useState(false);
-    const [sideTabTitle, setSideTabTitle] = React.useState('Profile');
+    const [sideTabTitle, setSideTabTitle] = React.useState(() => localStorage.getItem('_tabhistory'));
     const [selectedVersion, setSelectedVersion] = React.useState('');
     const [license, setLicense] = React.useState();
     const [canonSpecification, setcanonSpecification] = React.useState('OT');

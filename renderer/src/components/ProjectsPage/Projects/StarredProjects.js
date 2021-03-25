@@ -66,7 +66,7 @@ export default function StarredProjects() {
           <div className={classes.root} data-test="component-profile">
             <Grid item xs={10} />
             <div style={{ float: 'right' }}>
-              <SearchData onfilerRequest1={setStarredRow} onfilerRequest2={setUnStarredRow} />
+              <SearchData />
             </div>
             {starredrow && (
             <div>
