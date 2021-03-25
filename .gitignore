@@ -18,6 +18,8 @@ Autogrpha-DB/
 /app/app.js
 /app/background.js
 /app/**/*.map
+/.next
+.next
 
 # testing
 /coverage
@@ -29,6 +31,7 @@ Autogrpha-DB/
 # production
 /build
 /dist
+.next/
 
 # misc
 .DS_Store

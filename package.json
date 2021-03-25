@@ -19,7 +19,7 @@
 		"eslint:github-action": "node ./node_modules/eslint/bin/eslint . --ignore-path .gitignore --max-warnings 0",
 		"pack-app": "npm run build && electron-builder --dir",
 		"dist": "npm run build && electron-builder -p never",
-		"postbuild": "next-on-netlify"
+		"postbuild": "next export"
 	},
 	"eslintIgnore": [
 		"*.test.js"
@@ -37,6 +37,7 @@
 		}
 	},
 	"devDependencies": {
+		"@netlify/plugin-nextjs": "^3.0.3",
 		"@testing-library/dom": "^7.25.0",
 		"@testing-library/jest-dom": "^5.11.4",
 		"@testing-library/react": "^11.0.4",

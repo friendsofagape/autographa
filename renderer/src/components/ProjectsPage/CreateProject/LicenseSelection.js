@@ -5,14 +5,17 @@ import {
   Box,
   FormControl,
   FormLabel,
+  IconButton,
   MenuItem,
   Select,
 } from '@material-ui/core';
+import EditIcon from '@material-ui/icons/Edit';
 import PropTypes from 'prop-types';
 import * as React from 'react';
 import { MDEditor } from '../../MdEditor/MDEditor';
 import { CreateProjectStyles } from './useStyles/CreateProjectStyles';
 import * as logger from '../../../logger';
+import DrawerMenu from '../../ApplicationBar/DrawerMenu';
 
 const licenseItems = [
   { id: 'BY', license: 'Attribution' },
@@ -32,7 +35,14 @@ export const LicenseSelection = ({ openmdviewer, setopenmdviewer }) => {
   );
   const [updatelicenseItems] = React.useState(licenseItems);
   const [filePath, setFilePath] = React.useState();
+  const [drawerOpen, setDrawerOpen] = React.useState(false);
+  // const [eventName, setEventname] = React.useState('');
 
+  const setDrawerEvent = (e, value) => {
+    e.preventDefault();
+    setDrawerOpen(value);
+    // setEventname(eventname);
+  };
   React.useEffect(() => {
     logger.debug(
       'markdownviewer.js', `extracting text from files ${selectedLicense} on selection`,
@@ -66,12 +76,23 @@ export const LicenseSelection = ({ openmdviewer, setopenmdviewer }) => {
             </MenuItem>
           ))}
         </Select>
+        <span>
+          <IconButton>
+            <EditIcon onClick={(e) => { setDrawerEvent(e, true, 'licenseedit'); }} />
+          </IconButton>
+        </span>
       </FormControl>
-      <MDEditor
-        openMDFile={openmdviewer}
-        setopenMDFile={setopenmdviewer}
-        mdFilePath={filePath}
-      />
+      <DrawerMenu
+        open={drawerOpen}
+        classes={classes}
+        direction="right"
+      >
+        <MDEditor
+          openMDFile={openmdviewer}
+          setopenMDFile={setDrawerEvent}
+          mdFilePath={filePath}
+        />
+      </DrawerMenu>
     </>
   );
 };

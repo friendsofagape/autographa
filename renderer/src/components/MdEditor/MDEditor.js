@@ -8,8 +8,9 @@ import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import PropTypes from 'prop-types';
+import Typography from '@material-ui/core/Typography';
 import * as logger from '../../logger';
-import CustomDialog from '../ApplicationBar/CustomDialog';
+import { ProjectContext } from '../ProjectsPage/ProjectsContext/ProjectContext';
 
 function a11yProps(index) {
   return {
@@ -19,29 +20,35 @@ function a11yProps(index) {
 }
 
 export const MDEditor = ({
-  openMDFile,
   setopenMDFile,
   mdFilePath,
 }) => {
   const [onedit, setEdit] = React.useState(0);
   const [preview, setpreview] = React.useState(true);
-  const [translation, settranslation] = React.useState();
+  const {
+    states: {
+      license,
+    }, actions: {
+      setLicense,
+    },
+   } = React.useContext(ProjectContext);
 
   const handleEdit = (edit) => {
     setEdit(edit);
   };
 
-  const handleClose = () => {
-    setopenMDFile(false);
+  const handleClose = (e) => {
+    setopenMDFile(e, false);
   };
 
   const callback = (markdown) => {
     logger.debug('markdownviewer.js', `set translation as ${markdown}`);
-    settranslation(markdown);
+    setLicense(markdown);
   };
 
   React.useEffect(() => {
-    settranslation(mdFilePath);
+    setLicense(mdFilePath);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mdFilePath]);
 
   const title = (
@@ -75,7 +82,7 @@ export const MDEditor = ({
       {onedit === 0 ? (
         <div>
           <BlockEditable
-            markdown={translation}
+            markdown={license}
             preview={preview}
             onEdit={callback}
             inputFilters={[
@@ -88,7 +95,7 @@ export const MDEditor = ({
       ) : (
         <div>
           <BlockEditable
-            markdown={translation}
+            markdown={license}
             preview={preview}
             onEdit={callback}
             inputFilters={[
@@ -106,7 +113,7 @@ export const MDEditor = ({
     <>
       <Button
         autoFocus
-        onClick={handleClose}
+        onClick={(e) => { handleClose(e); }}
         data-testid="test-cancel"
         variant="contained"
       >
@@ -114,7 +121,7 @@ export const MDEditor = ({
       </Button>
       <Button
         autoFocus
-        onClick={handleClose}
+        onClick={(e) => { handleClose(e); }}
         variant="contained"
         data-testid="test-save"
         color="primary"
@@ -126,14 +133,15 @@ export const MDEditor = ({
 
   return (
     <div>
-      <CustomDialog
-        open={openMDFile}
-        setOpen={setopenMDFile}
-        title={title}
-        buttons={button}
-        content={content}
-        width="xl"
-      />
+      <Typography>
+        {title}
+      </Typography>
+      <div>
+        <Typography>
+          {content}
+        </Typography>
+      </div>
+      {button}
     </div>
   );
 };

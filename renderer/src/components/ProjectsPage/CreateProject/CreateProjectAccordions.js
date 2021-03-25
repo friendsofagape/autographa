@@ -5,7 +5,9 @@ import AccordionDetails from '@material-ui/core/AccordionDetails';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { Box, Grid, Paper } from '@material-ui/core';
+import {
+ Box, Divider, Grid, Paper,
+} from '@material-ui/core';
 import GeneralSettting from './GeneralSettting';
 import AdvancedSetttings from './AdavancedSettings';
 
@@ -37,21 +39,13 @@ export default function CreateProjectAccordions() {
     <>
       <Paper>
         <Grid container spacing={2}>
-          <Grid item xs={2} />
-          <div className={classes.root} data-test="component-profile">
-            <Grid item xs={10} />
+          <Grid item xs={1} />
+          <div data-test="component-profile">
             <Accordion
-              className={classes.rootcolor}
-              style={{ boxShadow: '0 10px 20px rgba(0,0,0,0)', margin: '0px' }}
+              style={{ boxShadow: '0 10px 20px rgba(0,0,0,0)' }}
               expanded
             >
-              <AccordionSummary aria-controls="panel1bh-content" id="panel1bh-header">
-                <Box fontWeight={600} m={1}>
-                  <Typography className={classes.heading}>
-                    General Settings
-                  </Typography>
-                </Box>
-              </AccordionSummary>
+              <AccordionSummary aria-controls="panel1bh-content" id="panel1bh-header" />
               <AccordionDetails>
                 <GeneralSettting />
               </AccordionDetails>
@@ -78,6 +72,7 @@ export default function CreateProjectAccordions() {
                 </AccordionDetails>
               </Accordion>
             </Accordion>
+            <Divider orientation="vertical" flexItem />
           </div>
         </Grid>
       </Paper>
