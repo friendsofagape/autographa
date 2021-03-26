@@ -63,9 +63,11 @@ test('SearchForm renders without error', () => {
   render(
   <SearchForm 
     defaultQuery="name" 
-    contentList={contentList} 
+    contentList1={contentList}
+    contentList2={contentList}
     filterList={filterList}
     onfilerRequest1={mockSetLanguage} 
+    onfilerRequest2={mockSetLanguage}
     />);
 });
 
@@ -73,9 +75,11 @@ test('should check the value on change', async () => {
     const { getByTestId } = render(
         <SearchForm 
             defaultQuery="name" 
-            contentList1={contentList} 
+            contentList1={contentList}
+            contentList2={contentList}
             filterList={filterList}
-            onfilerRequest1={mockSetLanguage} 
+            onfilerRequest1={mockSetLanguage}
+            onfilerRequest2={mockSetLanguage}
         />);
         const searchField = getByTestId('searchfield');
         await act(async () => {

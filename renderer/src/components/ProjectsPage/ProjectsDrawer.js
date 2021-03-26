@@ -8,7 +8,6 @@ import {
   IconButton, Badge, List, ListItem, ListItemIcon, ListItemText, Avatar,
 } from '@material-ui/core';
 import { Notifications } from '@material-ui/icons';
-import * as localForage from 'localforage';
 import ApplicationBar from '../ApplicationBar/ApplicationBar';
 import { ProjectsNav } from './ProjectPaneNav/ProjectsNav';
 import { ProjectContext } from './ProjectsContext/ProjectContext';

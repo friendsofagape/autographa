@@ -34,8 +34,6 @@ export default function StarredProjects() {
     action: {
       handleClickStarred,
       handleDelete,
-      setStarredRow,
-      setUnStarredRow,
     },
   } = React.useContext(AutographaContext) || {};
 

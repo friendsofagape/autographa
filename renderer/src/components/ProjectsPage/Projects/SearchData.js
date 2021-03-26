@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import SearchForm from '../../Search/SearchForm';
 import { AutographaContext } from '../../AutogrpahaContext/AutographaContext';
 
@@ -7,8 +6,6 @@ const SearchData = () => {
   const filterList = ['name', 'language', 'date', 'view'];
   const {
     states: {
-      starredrow,
-      unstarredrow,
       starredProjects,
       unstarredProjects,
     },
@@ -32,8 +29,3 @@ const SearchData = () => {
 };
 
 export default SearchData;
-
-SearchData.propTypes = {
-  onfilerRequest1: PropTypes.func,
-  onfilerRequest2: PropTypes.func,
-};
