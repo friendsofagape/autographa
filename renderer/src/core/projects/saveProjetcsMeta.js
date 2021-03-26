@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 const saveProjectsMeta = (
     newProjectFields,
     selectedVersion,
@@ -23,6 +25,9 @@ const saveProjectsMeta = (
                 canoncontent: content,
             },
             license,
+            starred: false,
+            createdAt: moment().format('DD-MM-YYYY'),
+            updatedAt: moment().format('YYYY-MM-DD h:mm:ss'),
             },
 
         ],

@@ -5,6 +5,7 @@ import { ProjectContext } from '../ProjectsContext/ProjectContext';
 import CreateProjectAccordions from './CreateProjectAccordions';
 import { isElectron } from '../../../core/handleElectron';
 import saveProjectsMeta from '../../../core/projects/saveProjetcsMeta';
+import { AutographaContext } from '../../AutogrpahaContext/AutographaContext';
 
 const style = { top: '65px', width: 'inherit', left: '153px' };
 
@@ -23,6 +24,11 @@ export default function NewProject() {
       setSideTabTitle,
     },
    } = React.useContext(ProjectContext);
+   const {
+    action: {
+      FetchProjects,
+    },
+   } = React.useContext(AutographaContext);
   const createNewProject = (e) => {
     e.preventDefault();
         if (isElectron()) {
@@ -42,6 +48,9 @@ export default function NewProject() {
               // console.log(status);
               resetProjectStates();
               setSideTabTitle('Projects');
+              localStorage.setItem('_tabhistory', 'Projects');
+              window.location.reload();
+              FetchProjects();
             }
         }
   };

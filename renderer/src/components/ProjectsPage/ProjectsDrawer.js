@@ -53,9 +53,9 @@ export default function ProjectsDrawer() {
         return <Avatar alt="My Avatar" />;
     }
   };
-
   const selectPane = useCallback((text) => {
     setSideTabTitle(text);
+    localStorage.setItem('_tabhistory', text);
   }, [setSideTabTitle]);
 
   const drawerMenu = (
