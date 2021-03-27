@@ -33,6 +33,7 @@ export default function ProjectsDrawer() {
       setSideTabTitle,
     },
    } = React.useContext(ProjectContext);
+
   const buttons = (
     <IconButton color="inherit">
       <Badge badgeContent={17} color="secondary">

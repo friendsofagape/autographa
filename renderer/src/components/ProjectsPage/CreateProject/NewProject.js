@@ -6,6 +6,7 @@ import CreateProjectAccordions from './CreateProjectAccordions';
 import { isElectron } from '../../../core/handleElectron';
 import saveProjectsMeta from '../../../core/projects/saveProjetcsMeta';
 import { AutographaContext } from '../../AutogrpahaContext/AutographaContext';
+import parseSaveProjectsMeta from '../../../core/projects/parseSaveProjectsMeta';
 
 const style = { top: '65px', width: 'inherit', left: '153px' };
 
@@ -50,6 +51,24 @@ export default function NewProject() {
               setSideTabTitle('Projects');
               localStorage.setItem('_tabhistory', 'Projects');
               window.location.reload();
+              FetchProjects();
+            }
+        } else {
+          let status;
+            try {
+            // eslint-disable-next-line no-unused-vars
+            status = parseSaveProjectsMeta(
+                newProjectFields,
+                selectedVersion,
+                license,
+                canonSpecification,
+                content,
+                versificationScheme,
+              );
+            } finally {
+              // To display the status of meta save
+              setSideTabTitle('Projects');
+              localStorage.setItem('_tabhistory', 'Projects');
               FetchProjects();
             }
         }
