@@ -67,7 +67,6 @@ function useProjectsSort() {
     });
 
     const FetchStarred = (ProjectName, Language, createdAt, LastView) => {
-        console.log(ProjectName, Language, createdAt, LastView);
       starrtedData.push(createData(
         ProjectName,
         Language,
