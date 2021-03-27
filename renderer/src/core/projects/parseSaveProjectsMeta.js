@@ -47,6 +47,19 @@ const parseSaveProjectsMeta = async (
             }
         };
 
+        const FindDuplicateProjects = async () => {
+            const newUserQuery = new Parse.Query(ProjectMeta);
+            newUserQuery.equalTo('projectName', newProjectFields.projectName);
+            newUserQuery.include('owner');
+            newUserQuery.select('name');
+            const result = await newUserQuery.find();
+            for (let i = 0; i < result.length; i++) {
+                if (result[i].get('owner').get('name') === username) {
+                    return result[i].get('owner').get('name');
+                }
+}
+        };
+
         const saveProject = async (person) => {
             const projectMeta = new ProjectMeta();
             projectMeta.set('projectName', newProjectFields.projectName);
@@ -76,10 +89,12 @@ const parseSaveProjectsMeta = async (
                     if ((projectRes !== newProjectFields.projectName)) {
                             saveProject(userRes[1]);
                     } else {
-                                    const newUserQuery = new Parse.Query(ProjectMeta);
-                                    newUserQuery.include('owner');
-                                    const result = await newUserQuery.find();
-                                    console.log(result);
+                        FindDuplicateProjects().then((result) => {
+                            if (result === undefined && result !== username) {
+                                saveProject(userRes[1]);
+                            }
+                        });
+
                                     // eslint-disable-next-line prefer-const
                     }
                     // else {
