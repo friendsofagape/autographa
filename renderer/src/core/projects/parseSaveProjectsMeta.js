@@ -26,17 +26,6 @@ const parseSaveProjectsMeta = async (
             }
         };
 
-        const listUsers = async () => {
-            const users = [];
-            const personQuery = new Parse.Query(Person);
-            const user = await personQuery.find();
-            // eslint-disable-next-line arrow-body-style
-            user.forEach((element) => {
-                users.push(element.get('name'));
-            });
-            return users;
-        };
-
         const projectExist = async () => {
             const personQuery = new Parse.Query(ProjectMeta);
             personQuery.equalTo('projectName', newProjectFields.projectName);
@@ -57,7 +46,7 @@ const parseSaveProjectsMeta = async (
                 if (result[i].get('owner').get('name') === username) {
                     return result[i].get('owner').get('name');
                 }
-}
+            }
         };
 
         const saveProject = async (person) => {
@@ -71,8 +60,8 @@ const parseSaveProjectsMeta = async (
             projectMeta.set('canoncontent', content);
             projectMeta.set('license', license);
             projectMeta.set('starred', false);
-            projectMeta.set('createdAt', moment().format('DD-MM-YYYY'));
-            projectMeta.set('updatedAt', moment().format('YYYY-MM-DD h:mm:ss'));
+            projectMeta.set('date', moment().format('DD-MM-YYYY'));
+            projectMeta.set('lastview', moment().format('YYYY-MM-DD h:mm:ss'));
             projectMeta.set('owner', person);
             projectMeta.save();
         };
@@ -94,8 +83,6 @@ const parseSaveProjectsMeta = async (
                                 saveProject(userRes[1]);
                             }
                         });
-
-                                    // eslint-disable-next-line prefer-const
                     }
                     // else {
                     //     const BreakException = {};

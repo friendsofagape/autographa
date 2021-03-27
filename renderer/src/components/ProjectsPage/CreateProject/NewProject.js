@@ -67,7 +67,10 @@ export default function NewProject() {
               );
             } finally {
               // To display the status of meta save
-              console.log('done save');
+              console.log('saved and fetching....');
+              setSideTabTitle('Projects');
+              localStorage.setItem('_tabhistory', 'Projects');
+              FetchProjects();
             }
         }
   };

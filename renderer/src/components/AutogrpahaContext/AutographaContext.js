@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import useProjectsSort from '../ProjectsPage/Projects/useProjectsSort';
 
 export const AutographaContext = React.createContext();
@@ -11,7 +10,6 @@ const AutographaContextProvider = ({ children }) => {
     states: state,
     action: actions,
   };
-
   return (
     <AutographaContext.Provider value={context}>
       {children}
