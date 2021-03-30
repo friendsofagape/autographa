@@ -23,18 +23,18 @@ import EditIcon from '@material-ui/icons/Edit';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import { FormattedMessage } from 'react-intl';
 import * as localForage from 'localforage';
-import { usePrefs } from 'prefs-rcl';
+// import { usePrefs } from 'prefs-rcl';
 import AutographaStore from '../../AutographaStore';
 import * as logger from '../../../logger';
 import { ProfileStyles } from '../useStyles/ProfileStyles';
 import useValidator from '../../Validation/useValidator';
 import { AutoCompleteSearch } from '../../AutoCompleteSearch/AutoCompleteSearch';
 
-const localForageConfig = {
-  type: 'localForage',
-  name: 'profile1',
-  maxSize: '5MB',
-};
+// const localForageConfig = {
+//   type: 'localForage',
+//   name: 'profile1',
+//   maxSize: '5MB',
+// };
 const region = [
   'Delhi, India',
   'Helsinki, Finland',
@@ -48,7 +48,7 @@ const Profile = () => {
     password: '',
     showPassword: false,
   });
-  const [appLang, setAppLang] = React.useState(AutographaStore.appLang);
+  const [appLang, setAppLang] = React.useState('en');
   const [avatarPathImport, setavatarPathImport] = React.useState('');
   const [firstname, setFirstname] = React.useState('');
   const [lastname, setLastname] = React.useState('');
@@ -68,16 +68,16 @@ const Profile = () => {
 
   } = useValidator();
 
-  const {
-    action: {
-      // readItem,
-      setItem,
-      // deleteItem,
-      // custom,
-    },
-  } = usePrefs({
-    backendfn: localForageConfig,
-  });
+  // const {
+  //   action: {
+  //     // readItem,
+  //     setItem,
+  //     // deleteItem,
+  //     // custom,
+  //   },
+  // } = usePrefs({
+  //   backendfn: localForageConfig,
+  // });
 
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
@@ -140,6 +140,16 @@ const Profile = () => {
         logger.error('Profile.js', 'error in setting avatar on mount');
       }
     });
+  }, [avatarPathImport]);
+
+  useEffect(() => {
+    localForage.getItem('avatarPath', (err, value) => {
+      setavatarPathImport(value);
+      AutographaStore.avatarPath = value;
+      if (err) {
+        logger.error('Profile.js', 'error in setting avatar on mount');
+      }
+    });
   }, []);
 
   useEffect(() => {
@@ -175,20 +185,20 @@ const Profile = () => {
     ];
     if (!saved) { setSaved(profileSettings); }
     if (errorCount !== null && formValid) {
-      setItem({
-        key: 'profileSettings',
-        values: profileSettings,
-        tag: 'projectspage',
-      });
-      // localForage.setItem('profileSettings', profileSettings, () => {
-      //   localForage.getItem('profileSettings', (err, value) => {
-      //     setSaved(value);
-      //     logger.debug('Profile.js', 'Profile fields saved successfully');
-      //     if (err) {
-      //       logger.error('Profile.js', 'Failed in saving field values');
-      //     }
-      //   });
+      // setItem({
+      //   key: 'profileSettings',
+      //   values: profileSettings,
+      //   tag: 'projectspage',
       // });
+      localForage.setItem('profileSettings', profileSettings, () => {
+        localForage.getItem('profileSettings', (err, value) => {
+          setSaved(value);
+          logger.debug('Profile.js', 'Profile fields saved successfully');
+          if (err) {
+            logger.error('Profile.js', 'Failed in saving field values');
+          }
+        });
+      });
       localForage.getItem('applang', (err) => {
         localForage.setItem('applang', appLang, () => {
           if (err) {
