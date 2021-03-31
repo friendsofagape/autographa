@@ -26,7 +26,7 @@ Router.onRouteChangeError = () => {
 };
 
 let messages;
-const theme = createMuiTheme({
+ export const theme = createMuiTheme({
   palette: {
     type: 'light',
     primary: {

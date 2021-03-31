@@ -33,11 +33,8 @@ export default function CustomDialog({
   buttons,
   content,
   width,
+  handleClose,
 }) {
-  const handleClose = () => {
-    setOpen(false);
-  };
-
   return (
     <div>
       <Dialog
