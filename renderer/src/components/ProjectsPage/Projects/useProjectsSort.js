@@ -87,7 +87,8 @@ function useProjectsSort() {
     const FetchProjects = () => {
       if (isElectron()) {
         const projectsData = fetchProjectsMeta();
-        projectsData.then((value) => {
+        if (projectsData) {
+          projectsData.then((value) => {
           value.projects.forEach((project) => {
             if (project.starred === true) {
                 FetchStarred(project.projectName,
@@ -103,6 +104,7 @@ function useProjectsSort() {
           setUnStarredRow(unstarrtedData);
           setUnStarredProjets(unstarrtedData);
         });
+      }
       } else {
         parseFetchProjects().then((res) => {
           res.forEach((projects) => {

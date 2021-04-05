@@ -1,12 +1,13 @@
+/* eslint-disable */
 import * as localForage from 'localforage';
 import React from 'react';
 import { Configuration, PublicApi } from '@ory/kratos-client';
 import * as logger from '../../logger';
-import { isElectron } from '../../core/handleElectron';
-
+// import configData from '../../config.json';
+// import { isElectron } from '../../core/handleElectron';
 const jwt = require('jsonwebtoken');
 
-const kratos = new PublicApi(new Configuration({ basePath: 'http://127.0.0.1:4433/' }));
+// const kratos = new PublicApi(new Configuration({ basePath: configData.base_url }));
 
 function useAuthentication() {
   const [accessToken, setaccessToken] = React.useState();
@@ -50,18 +51,21 @@ function useAuthentication() {
     localForage.removeItem('sessionToken');
   };
   const getConfig = (flowId) => {
+    logger.debug('useAuthentication.js', 'getConfig fetch the config from the Kratos using flowID');
     kratos.getSelfServiceLoginFlow(flowId)
       .then(({ data: flow }) => {
         setConfig(flow?.methods?.password?.config);
       });
   };
-  React.useEffect(() => {
-    if (isElectron()) {
-      kratos.initializeSelfServiceLoginViaAPIFlow().then(({ data: flow }) => {
-        getConfig(flow.id);
-      });
-    }
-  }, []);
+  // Below code is of Online app
+  // React.useEffect(() => {
+  //   if (isElectron()) {
+  //     kratos.initializeSelfServiceLoginViaAPIFlow().then(({ data: flow }) => {
+  //       logger.debug('useAuthentication.js', 'Calling getConfig using flowID');
+  //       getConfig(flow.id);
+  //     });
+  //   }
+  // }, []);
   React.useEffect(() => {
     if (accessToken && !currentUser) {
       handleUser();
