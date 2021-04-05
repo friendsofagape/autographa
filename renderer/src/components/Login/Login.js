@@ -10,7 +10,7 @@ import { isElectron } from '../../core/handleElectron';
 import CustomLogin from './CustomLogin';
 import { AuthenticationContext } from './AuthenticationContextProvider';
 // import { createUser, handleLogin } from '../../core/handleLogin';
-
+// import configData from '../../config.json';
 const useStyles = makeStyles((theme) => ({
   root: {
     height: '100vh',
@@ -90,6 +90,7 @@ export default function Login() {
   // }, []);
   useEffect(() => {
     if (config) {
+      logger.debug('Login.js', 'After receiving config from kratos fetching the token and errors(if available)');
       // eslint-disable-next-line prefer-const
       let err = {};
       err.msg = config?.messages?.[0]?.text;
@@ -105,6 +106,7 @@ export default function Login() {
   }, [config]);
   // eslint-disable-next-line no-unused-vars
   const handleValidation = (values) => {
+    logger.debug('Login.js', 'In handleValidation');
     let user;
     if (values.username) {
       user = true;
@@ -119,8 +121,9 @@ export default function Login() {
   const handleSubmit = async (values) => {
     logger.debug('Login.js', 'In handleSubmit');
     if (isElectron() && tabvalue === 0) {
+      logger.debug('Login.js', 'Complete Offline user');
       router.push('/main');
-      // The below code is commented for UI dev purpose.
+      // The below code is commented for bypassing the authentication
       // if (handleValidation(values)) {
       //   const fs = window.require('fs');
       //   logger.debug('Login.js',
@@ -143,6 +146,7 @@ export default function Login() {
     } else {
       // eslint-disable-next-line no-lonely-if
       if (isElectron()) {
+        logger.debug('Login.js', 'Online electron user');
         router.push('/main');
         // const requestOptions = {
         //   method: 'POST',
@@ -153,8 +157,9 @@ export default function Login() {
         //   .then((response) => response.json())
         //   .then((data) => console.log(data));
       } else {
+        logger.debug('Login.js', 'Online web user');
         router.push('/main');
-        // The below code is commented for UI dev purpose.
+        // The below code is commented for bypassing the authentication
         // document.aglogin.action = config.action;
         // document.aglogin.method = config.method;
         // // eslint-disable-next-line prefer-const
@@ -165,7 +170,6 @@ export default function Login() {
         // document.aglogin.appendChild(input);
         // document.aglogin.submit();
       }
-      // router.push('/login');
     }
   };
   return (
@@ -205,7 +209,9 @@ export default function Login() {
               {ui?.viewForgot === true && (
               <Typography variant="caption" gutterBottom>
                 Don&apos;t have an account?
+                {/* Commented for development purpose */}
                 <a data-testid="signup" href="/signup">Sign Up</a>
+                {/* <a data-testid="signup" href={configData.signup_url}>Sign Up</a> */}
               </Typography>
                 )}
             </FormControl>

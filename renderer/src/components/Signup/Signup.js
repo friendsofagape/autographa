@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import FormControl from '@material-ui/core/FormControl';
@@ -15,9 +16,10 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
+import { useRouter } from 'next/router';
 import * as logger from '../../logger';
-import { handleJson } from '../../core/handleJson';
-import { HashPassword } from '../../core/hashing';
+import useApi from './useApi';
+// import configData from '../../config.json';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -37,11 +39,19 @@ const useStyles = makeStyles((theme) => ({
 }));
 export default function Signup() {
   const classes = useStyles();
+  const router = useRouter();
+  const { state: { config }, action: { getFlow } } = useApi();
+  React.useEffect(() => {
+ if (router?.query?.flow) {
+    getFlow(router.query.flow);
+  }
+// eslint-disable-next-line react-hooks/exhaustive-deps
+}, [router?.query]);
+
   // const bgImage = ["img1", "img2", "img3"];
   // const [index, setIndex] = React.useState(0);
   // const bgImg = bgImage[index % bgImage.length];
-  const [jsonObj, setJsonObj] = React.useState();
-  const [result, setResult] = React.useState();
+  const [token, setToken] = React.useState();
   const [values, setValues] = React.useState({
     firstname: '',
     lastname: '',
@@ -61,7 +71,7 @@ export default function Signup() {
     validorganization: false,
     validselectedregion: false,
   });
-  const [errormsg, setErrormsg] = React.useState('');
+  const [error, setError] = React.useState({ });
   const region = [
     { id: 1, place: 'Delhi, India' },
     { id: 2, place: 'Helsinki, Finland' },
@@ -100,12 +110,12 @@ export default function Signup() {
     } else if (!values.email) {
       setValid({ ...valid, validemail: true });
       validation = false;
-    } else if (!values.organization && values.work === 'Organization') {
-      setValid({ ...valid, validorganization: true });
-      validation = false;
-    } else if (!values.selectedregion) {
-      setValid({ ...valid, validselectedregion: true });
-      validation = false;
+    // } else if (!values.organization && values.work === 'Organization') {
+    //   setValid({ ...valid, validorganization: true });
+    //   validation = false;
+    // } else if (!values.selectedregion) {
+    //   setValid({ ...valid, validselectedregion: true });
+    //   validation = false;
     } else if (!values.password) {
       setValid({ ...valid, validpassword: true });
       validation = false;
@@ -120,51 +130,55 @@ export default function Signup() {
     return validation;
   };
   React.useEffect(() => {
-    if (result) {
-      result.then((response) => {
-        if (response.userExist === true) {
-          setValid({ validemail: true });
-          setErrormsg('User exists with same Email');
-          logger.error('Singup.js, User exist, use different Mail ID');
-        } else if (response.fetchFile === true) {
-          logger.error('Singup.js, Unable to fetch Data from file');
+    if (config) {
+      // eslint-disable-next-line prefer-const
+      let err = {};
+      err.msg = config?.messages?.[0]?.text;
+      (config.fields).forEach((field) => {
+        if (field.name === 'csrf_token') {
+          setToken(field.value);
         } else {
-          logger.debug('Singup.js, End handleSubmit');
+          err[field.name] = field.messages?.[0].text;
         }
       });
+      setError(err);
     }
-  }, [result]);
-  React.useEffect(() => {
-    if (jsonObj) {
-      const fs = window.require('fs');
-      setResult(handleJson(jsonObj, fs));
-    }
-  }, [jsonObj]);
+  }, [config]);
   const handleSubmit = () => {
-    setErrormsg();
+    setError({});
     logger.debug('Singup.js', 'Into handleSubmit');
     if (handleValidation()) {
       if (values.password === values.confirmpassword) {
-        const hashedPassword = HashPassword(values.password);
-        setJsonObj({
-          first_name: values.firstname,
-          last_name: values.lastname,
-          email: values.email,
-          work: values.work,
-          organization: values.organization,
-          region: values.selectedregion,
-          password: hashedPassword.password,
-          salt: hashedPassword.salt,
-        });
-      } else {
         logger.debug('Singup.js, Passwords do not match');
+        router.push('/main');
+        // Values in object can be used to store the data in DB
+        // const obj = ({
+        //   first_name: values.firstname,
+        //   last_name: values.lastname,
+        //   email: values.email,
+        //   work: values.work,
+        //   organization: values.organization,
+        //   region: values.selectedregion,
+        // });
+        // The below code is commented for bypassing the authentication.
+        // document.agsignup.action = config.action;
+        // document.agsignup.method = config.method;
+        // // eslint-disable-next-line prefer-const
+        // let input = document.createElement('input');
+        //   input.setAttribute('type', 'hidden');
+        //   input.setAttribute('name', 'csrf_token');
+        //   input.setAttribute('value', token);
+        // document.agsignup.appendChild(input);
+        // document.agsignup.submit();
+      } else {
+        logger.debug('Singup.js', 'Passwords do not match');
         setValid({ ...valid, validconfirmpassword: true });
-        setErrormsg('Passwords do not match');
+        setError({ msg: 'Passwords do not match' });
       }
     } else {
       Object.keys(valid).forEach((key) => {
         if (valid[key] === true) {
-          logger.error(`Singup.js, Validation Failed for ${key}`);
+          logger.error('Singup.js', `Validation Failed for ${key}`);
         }
       });
     }
@@ -179,174 +193,186 @@ export default function Signup() {
     <div>
       <Grid container className={classes.root} justify="center">
         <Grid item xs={5}>
-          <Paper className={classes.paper}>
-            <FormControl>
-              <Typography variant="h5" gutterBottom>
-                Sign Up
-              </Typography>
-              <Typography variant="subtitle2" gutterBottom>
-                Be part of a great community & have fun with us
-              </Typography>
-              <Typography color="error">{errormsg}</Typography>
-              <Typography component="span">
-                <Grid container spacing={1} alignItems="flex-end">
-                  <Grid item>
-                    <PersonOutlineIcon />
-                  </Grid>
-                  <Grid item>
-                    <TextField
-                      className={classes.margin}
-                      inputProps={{
+          <form name="agsignup">
+            <Paper className={classes.paper}>
+              <FormControl>
+                <Typography variant="h5" gutterBottom>
+                  Sign Up
+                </Typography>
+                <Typography variant="subtitle2" gutterBottom>
+                  Be part of a great community & have fun with us
+                </Typography>
+                <Typography color="error">{error?.msg}</Typography>
+                <Typography component="span">
+                  <Grid container spacing={1} alignItems="flex-end">
+                    <Grid item>
+                      <PersonOutlineIcon />
+                    </Grid>
+                    <Grid item>
+                      <TextField
+                        className={classes.margin}
+                        inputProps={{
                         'data-testid': 'firstnamefield',
                       }}
-                      label="First Name"
-                      onChange={handleFirstname('firstname')}
-                      error={valid.validfirstname}
-                    />
-                  </Grid>
-                  <Grid item>
-                    <TextField
-                      className={classes.margin}
-                      inputProps={{
+                        name="traits.name.first"
+                        type="text"
+                        label="First Name"
+                        onChange={handleFirstname('firstname')}
+                        error={valid.validfirstname}
+                      />
+                      <Typography color="error">{error?.['traits.name.first']}</Typography>
+                    </Grid>
+                    <Grid item>
+                      <TextField
+                        className={classes.margin}
+                        inputProps={{
                         'data-testid': 'lastnamefield',
                       }}
-                      label="Last Name"
-                      onChange={handleLastname('lastname')}
-                      error={valid.validlastname}
-                    />
+                        name="traits.name.last"
+                        label="Last Name"
+                        onChange={handleLastname('lastname')}
+                        error={valid.validlastname}
+                      />
+                      <Typography color="error">{error?.['traits.name.last']}</Typography>
+                    </Grid>
                   </Grid>
-                </Grid>
-              </Typography>
-              <Grid container spacing={1} alignItems="flex-end">
-                <Grid item>
-                  <MailOutlineIcon />
-                </Grid>
-                <Grid item>
-                  <TextField
-                    className={classes.margin}
-                    inputProps={{
+                </Typography>
+                <Grid container spacing={1} alignItems="flex-end">
+                  <Grid item>
+                    <MailOutlineIcon />
+                  </Grid>
+                  <Grid item>
+                    <TextField
+                      className={classes.margin}
+                      inputProps={{
                       'data-testid': 'emailfield',
                     }}
-                    label="Enter Your Email"
-                    onChange={handleEmail('email')}
-                    error={valid.validemail}
+                      name="traits.email"
+                      type="email"
+                      label="Enter Your Email"
+                      onChange={handleEmail('email')}
+                      error={valid.validemail}
+                    />
+                  </Grid>
+                  <Typography color="error">{error?.['traits.email']}</Typography>
+                </Grid>
+                <RadioGroup
+                  row
+                  data-testid="radioButton"
+                  style={{ justifyContent: 'center' }}
+                  value={values.work}
+                  onChange={handleRadio('work')}
+                >
+                  <FormControlLabel
+                    value="Individual"
+                    control={<Radio color="primary" />}
+                    label="Individual"
                   />
-                </Grid>
-              </Grid>
-              <RadioGroup
-                row
-                data-testid="radioButton"
-                style={{ justifyContent: 'center' }}
-                value={values.work}
-                onChange={handleRadio('work')}
-              >
-                <FormControlLabel
-                  value="Individual"
-                  control={<Radio color="primary" />}
-                  label="Individual"
-                />
-                <FormControlLabel
-                  value="Organization"
-                  control={<Radio color="primary" />}
-                  label="Organization"
-                />
-              </RadioGroup>
-              <Grid container spacing={1} alignItems="flex-end">
-                <Grid item>
-                  <AccountBalanceOutlinedIcon />
-                </Grid>
-                <Grid item>
-                  <TextField
-                    className={classes.margin}
-                    inputProps={{
+                  <FormControlLabel
+                    value="Organization"
+                    control={<Radio color="primary" />}
+                    label="Organization"
+                  />
+                </RadioGroup>
+                <Grid container spacing={1} alignItems="flex-end">
+                  <Grid item>
+                    <AccountBalanceOutlinedIcon />
+                  </Grid>
+                  <Grid item>
+                    <TextField
+                      className={classes.margin}
+                      inputProps={{
                       'data-testid': 'orgfield',
                     }}
-                    label="Name of the Organization"
-                    error={valid.validorganization}
-                    onChange={handleOrganization('organization')}
-                    disabled={values.work === 'Individual'}
-                  />
-                </Grid>
-              </Grid>
-              <Typography component="span">
-                <Grid container spacing={1} alignItems="flex-end">
-                  <Grid item>
-                    <LanguageOutlinedIcon />
+                      label="Name of the Organization"
+                      error={valid.validorganization}
+                      onChange={handleOrganization('organization')}
+                      disabled={values.work === 'Individual'}
+                    />
                   </Grid>
-                  <Grid item>
-                    <Autocomplete
-                      id="region"
-                      options={region}
-                      getOptionLabel={(option) => option.place}
-                      getOptionSelected={(option, value) => option.place === value.place}
-                      onInputChange={(event, newInputValue) => {
+                </Grid>
+                <Typography component="span">
+                  <Grid container spacing={1} alignItems="flex-end">
+                    <Grid item>
+                      <LanguageOutlinedIcon />
+                    </Grid>
+                    <Grid item>
+                      <Autocomplete
+                        id="region"
+                        options={region}
+                        getOptionLabel={(option) => option.place}
+                        getOptionSelected={(option, value) => option.place === value.place}
+                        onInputChange={(event, newInputValue) => {
                         setValues({ ...values, selectedregion: newInputValue });
                       }}
-                      renderInput={(params) => (
-                        <TextField
-                          className={classes.margin}
-                          {...params}
-                          error={valid.validselectedregion}
-                          label="Select Region"
-                        />
+                        renderInput={(params) => (
+                          <TextField
+                            className={classes.margin}
+                            {...params}
+                            error={valid.validselectedregion}
+                            label="Select Region"
+                          />
                       )}
-                    />
+                      />
+                    </Grid>
                   </Grid>
-                </Grid>
-              </Typography>
-              <Typography component="span">
-                <Grid container spacing={1} alignItems="flex-end">
-                  <Grid item>
-                    <LockOpenIcon />
-                  </Grid>
-                  <Grid item>
-                    <TextField
-                      className={classes.margin}
-                      inputProps={{
+                </Typography>
+                <Typography component="span">
+                  <Grid container spacing={1} alignItems="flex-end">
+                    <Grid item>
+                      <LockOpenIcon />
+                    </Grid>
+                    <Grid item>
+                      <TextField
+                        className={classes.margin}
+                        inputProps={{
                         'data-testid': 'passwordfield',
                       }}
-                      label="Password"
-                      type="password"
-                      value={values.password}
-                      error={valid.validpassword}
-                      onChange={handlePassword('password')}
-                    />
-                  </Grid>
-                  <Grid item>
-                    <TextField
-                      className={classes.margin}
-                      inputProps={{
+                        name="password"
+                        label="Password"
+                        type="password"
+                        value={values.password}
+                        error={valid.validpassword}
+                        onChange={handlePassword('password')}
+                      />
+                      <Typography color="error">{error?.password}</Typography>
+                    </Grid>
+                    <Grid item>
+                      <TextField
+                        className={classes.margin}
+                        inputProps={{
                         'data-testid': 'confirmpassfield',
                       }}
-                      label="Confirm Password"
-                      type="password"
-                      value={values.confirmpassword}
-                      error={valid.validconfirmpassword}
-                      onChange={handlePassword('confirmpassword')}
-                    />
+                        label="Confirm Password"
+                        type="password"
+                        value={values.confirmpassword}
+                        error={valid.validconfirmpassword}
+                        onChange={handlePassword('confirmpassword')}
+                      />
+                    </Grid>
                   </Grid>
-                </Grid>
-              </Typography>
-              <Button
-                data-testid="submitButton"
-                variant="contained"
-                onClick={handleSubmit}
-              >
-                Sign Up
-              </Button>
-              <Typography variant="caption" gutterBottom>
-                By signing up, you agree to our Terms and Conditions and
-                <Typography
-                  color="primary"
-                  variant="caption"
-                  component="a"
-                  target="_blank"
-                >
-                  Private Policy
                 </Typography>
-              </Typography>
-            </FormControl>
-          </Paper>
+                <Button
+                  data-testid="submitButton"
+                  variant="contained"
+                  onClick={handleSubmit}
+                >
+                  Sign Up
+                </Button>
+                <Typography variant="caption" gutterBottom>
+                  By signing up, you agree to our Terms and Conditions and
+                  <Typography
+                    color="primary"
+                    variant="caption"
+                    component="a"
+                    target="_blank"
+                  >
+                    Private Policy
+                  </Typography>
+                </Typography>
+              </FormControl>
+            </Paper>
+          </form>
         </Grid>
         <Grid
           container
@@ -354,7 +380,9 @@ export default function Signup() {
           justify="flex-end"
           direction="row"
         >
+          {/* Commented for development purpose */}
           <a href="/login">Go Back</a>
+          {/* <a href={configData.login_url}>Go Back</a> */}
         </Grid>
       </Grid>
     </div>
