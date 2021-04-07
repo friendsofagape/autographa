@@ -131,6 +131,8 @@ export default function Sync(props) {
               <Divider />
               {ag.projects.map((project, key) => (
                 <List
+                  id="project-id"
+                  key={`list${ project.project}`}
                   component="nav"
                   className={classes.root}
                   aria-label="mailbox folders"
