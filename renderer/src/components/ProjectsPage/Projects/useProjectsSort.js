@@ -1,4 +1,7 @@
 import React, { useEffect } from 'react';
+import { isElectron } from '../../../core/handleElectron';
+import fetchProjectsMeta from '../../../core/projects/fetchProjectsMeta';
+import parseFetchProjects from '../../../core/projects/parseFetchProjects';
 import * as logger from '../../../logger';
 
 function useProjectsSort() {
@@ -8,6 +11,10 @@ function useProjectsSort() {
   const [active, setactive] = React.useState('');
   const [orderUnstarred, setOrderUnstarred] = React.useState('asc');
   const [orderByUnstarred, setOrderByUnstarred] = React.useState('name');
+  const [starredProjects, setStarredProjets] = React.useState();
+  const [unstarredProjects, setUnStarredProjets] = React.useState();
+  const starrtedData = [];
+  const unstarrtedData = [];
 
   const handleClickStarred = (event, name, property) => {
     logger.debug('project.js', 'calling starred to be unstarred and viceversa');
@@ -55,25 +62,104 @@ function useProjectsSort() {
     // eslint-disable-next-line
       }, [temparray, active]);
 
-  const response = {
-    state: {
-      starredrow,
-      unstarredrow,
-      orderUnstarred,
-      orderByUnstarred,
-    },
-    actions: {
-      handleClickStarred,
-      handleDelete,
-      handleRequestSortUnstarred,
-      setStarredRow,
-      setUnStarredRow,
-      settemparray,
-      setactive,
-      setOrderUnstarred,
-      setOrderByUnstarred,
-    },
-  };
+    const createData = (name, language, date, view) => ({
+          name, language, date, view,
+    });
+
+    const FetchStarred = (ProjectName, Language, createdAt, LastView) => {
+      starrtedData.push(createData(
+        ProjectName,
+        Language,
+        createdAt,
+        LastView,
+      ));
+    };
+
+    const FetchUnstarred = (ProjectName, Language, createdAt, LastView) => {
+      unstarrtedData.push(createData(
+        ProjectName,
+        Language,
+        createdAt,
+        LastView,
+      ));
+    };
+
+    const FetchProjects = () => {
+      if (isElectron()) {
+        const projectsData = fetchProjectsMeta();
+        if (projectsData) {
+          projectsData.then((value) => {
+          value.projects.forEach((project) => {
+            if (project.starred === true) {
+                FetchStarred(project.projectName,
+                  project.language, project.createdAt, project.updatedAt);
+            } else {
+              FetchUnstarred(project.projectName,
+                project.language, project.createdAt, project.updatedAt);
+            }
+          });
+        }).finally(() => {
+          setStarredRow(starrtedData);
+          setStarredProjets(starrtedData);
+          setUnStarredRow(unstarrtedData);
+          setUnStarredProjets(unstarrtedData);
+        });
+      }
+      } else {
+        parseFetchProjects().then((res) => {
+          res.forEach((projects) => {
+              if (projects.get('starred') === true) {
+                FetchStarred(
+                projects.get('projectName'),
+                projects.get('language'),
+                projects.get('date'),
+                projects.get('lastview'),
+                );
+              } else {
+                FetchUnstarred(
+                    projects.get('projectName'),
+                    projects.get('language'),
+                    projects.get('date'),
+                    projects.get('lastview'),
+                );
+              }
+          });
+        }).finally(() => {
+            setStarredRow(starrtedData);
+            setStarredProjets(starrtedData);
+            setUnStarredRow(unstarrtedData);
+            setUnStarredProjets(unstarrtedData);
+        });
+       }
+    };
+
+    React.useEffect(() => {
+      FetchProjects();
+      // eslint-disable-next-line
+    }, []);
+
+    const response = {
+      state: {
+        starredrow,
+        unstarredrow,
+        orderUnstarred,
+        orderByUnstarred,
+        starredProjects,
+        unstarredProjects,
+      },
+      actions: {
+        handleClickStarred,
+        handleDelete,
+        handleRequestSortUnstarred,
+        setStarredRow,
+        setUnStarredRow,
+        settemparray,
+        setactive,
+        setOrderUnstarred,
+        setOrderByUnstarred,
+        FetchProjects,
+      },
+    };
   return response;
 }
 export default useProjectsSort;

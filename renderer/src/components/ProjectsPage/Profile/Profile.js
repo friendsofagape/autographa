@@ -24,11 +24,11 @@ import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import { FormattedMessage } from 'react-intl';
 import * as localForage from 'localforage';
 import { usePrefs } from 'prefs-rcl';
-import AutographaStore from '../AutographaStore';
-import * as logger from '../../logger';
-import { ProfileStyles } from './useStyles/ProfileStyles';
-import useValidator from '../Validation/useValidator';
-import { AutoCompleteSearch } from '../AutoCompleteSearch/AutoCompleteSearch';
+import AutographaStore from '../../AutographaStore';
+import * as logger from '../../../logger';
+import { ProfileStyles } from '../useStyles/ProfileStyles';
+import useValidator from '../../Validation/useValidator';
+import { AutoCompleteSearch } from '../../AutoCompleteSearch/AutoCompleteSearch';
 
 const localForageConfig = {
   type: 'localForage',
@@ -36,10 +36,10 @@ const localForageConfig = {
   maxSize: '5MB',
 };
 const region = [
-  { id: 1, place: 'Delhi, India' },
-  { id: 2, place: 'Helsinki, Finland' },
-  { id: 3, place: 'New York, United States' },
-  { id: 4, place: 'Morocco, North Africa' },
+  'Delhi, India',
+  'Helsinki, Finland',
+  'New York, United States',
+  'Morocco, North Africa',
 ];
 
 const Profile = () => {

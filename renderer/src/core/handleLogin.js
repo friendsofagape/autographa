@@ -10,8 +10,7 @@ export const createUser = (values, fs) => {
     work: 'Individual',
     organization: '',
     selectedregion: '',
-    password: '',
-    confirmpassword: '',
+    offlineuser: true,
   };
   return handleJson(obj, fs).then(() => obj);
 };

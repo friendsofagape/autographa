@@ -33,7 +33,6 @@ function SearchForm({
     if (lowercasedValue === '') {
       return content;
     }
-
       const filteredData = content.filter(
         (item) => Object.keys(item).some((key) => (excludeColumns.includes(key)
           ? false
@@ -45,13 +44,19 @@ function SearchForm({
   // handle change event of search input
   const handleChange = (value) => {
     setQuery(value);
-    if (contentList2 !== undefined) {
-      onfilerRequest1(onQuery(value, contentList1));
-      onfilerRequest2(onQuery(value, contentList2));
-    } else {
-      onfilerRequest1(onQuery(value, contentList1));
-    }
   };
+
+  React.useEffect(() => {
+    if (query) {
+      onfilerRequest1(onQuery(query, contentList1));
+      onfilerRequest2(onQuery(query, contentList2));
+    }
+    if (!query) {
+      onfilerRequest1(contentList1);
+      onfilerRequest2(contentList2);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [query]);
 
   return (
     <div className={classes.root}>

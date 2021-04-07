@@ -14,7 +14,8 @@ function ApplicationBar({
   title,
   buttons,
   drawerMenu,
-  drawerMenuProps,
+  appBarStyle,
+  theme,
 }) {
   const classes = useStyles();
 
@@ -24,6 +25,8 @@ function ApplicationBar({
       <AppBar
         position="fixed"
         className={classes.appBar}
+        style={appBarStyle || {}}
+        color={theme || ''}
       >
         <Toolbar>
           <Typography
@@ -39,16 +42,14 @@ function ApplicationBar({
           </span>
         </Toolbar>
       </AppBar>
-      <DrawerMenu {...drawerMenuProps}>
-        {drawerMenu}
-      </DrawerMenu>
+      {drawerMenu && (
+        <DrawerMenu open classes={classes} direction="left">
+          {drawerMenu}
+        </DrawerMenu>
+      )}
     </div>
   );
 }
-
-ApplicationBar.defaultProps = {
-  drawerMenuProps: {},
-};
 
 ApplicationBar.propTypes = {
   /** The title string or jsx to be displayed. */
@@ -61,7 +62,8 @@ ApplicationBar.propTypes = {
   /** Component to render inside of the drawer menu. */
   drawerMenu: PropTypes.element,
   /** Drawer menu props. */
-  drawerMenuProps: PropTypes.object,
+  appBarStyle: PropTypes.object,
+  theme: PropTypes.string,
 };
 
 export default ApplicationBar;

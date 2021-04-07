@@ -1,5 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles';
 
+const drawerWidth = 600;
 export const CreateProjectStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -102,5 +103,9 @@ export const CreateProjectStyles = makeStyles((theme) => ({
     'input:hover ~ &': {
       backgroundColor: '#106ba3',
     },
+  },
+  drawer: {
+    width: drawerWidth,
+    flexShrink: 0,
   },
 }));

@@ -10,6 +10,7 @@ import {
 import { Notifications } from '@material-ui/icons';
 import ApplicationBar from '../ApplicationBar/ApplicationBar';
 import { ProjectsNav } from './ProjectPaneNav/ProjectsNav';
+import { ProjectContext } from './ProjectsContext/ProjectContext';
 
 Router.onRouteChangeStart = () => {
   NProgress.start();
@@ -24,7 +25,15 @@ Router.onRouteChangeError = () => {
 };
 
 export default function ProjectsDrawer() {
-  const [title, setSelecttitle] = React.useState('Profile');
+  const {
+    states: {
+    sideTabTitle,
+    },
+    actions: {
+      setSideTabTitle,
+    },
+   } = React.useContext(ProjectContext);
+
   const buttons = (
     <IconButton color="inherit">
       <Badge badgeContent={17} color="secondary">
@@ -45,10 +54,10 @@ export default function ProjectsDrawer() {
         return <Avatar alt="My Avatar" />;
     }
   };
-
   const selectPane = useCallback((text) => {
-    setSelecttitle(text);
-  }, [setSelecttitle]);
+    setSideTabTitle(text);
+    localStorage.setItem('_tabhistory', text);
+  }, [setSideTabTitle]);
 
   const drawerMenu = (
     <List>
@@ -66,11 +75,12 @@ export default function ProjectsDrawer() {
   return (
     <>
       <ApplicationBar
-        title="Autographa"
+        title="AUTOGRAPHA"
+        theme="primary"
         buttons={buttons}
         drawerMenu={drawerMenu}
       />
-      <ProjectsNav title={title} />
+      <ProjectsNav title={sideTabTitle} />
     </>
   );
 }
