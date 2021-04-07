@@ -1,26 +1,29 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useTheme, makeStyles } from '@material-ui/core/styles';
-import Accordion from '@material-ui/core/Accordion';
-import AccordionDetails from '@material-ui/core/AccordionDetails';
-import AccordionSummary from '@material-ui/core/AccordionSummary';
-import Typography from '@material-ui/core/Typography';
-import Paper from '@material-ui/core/Paper';
-import Button from '@material-ui/core/Button';
+import {
+ Typography, Paper, AppBar, Tabs, Tab, Box, Divider,
+ Grid, List, ListItem, ListItemText, ListItemIcon, Stepper, StepButton,
+} from '@material-ui/core';
 import FolderOpenOutlinedIcon from '@material-ui/icons/FolderOpenOutlined';
 import InsertDriveFileOutlinedIcon from '@material-ui/icons/InsertDriveFileOutlined';
-import AppBar from '@material-ui/core/AppBar';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import Box from '@material-ui/core/Box';
+
 import SyncOutlinedIcon from '@material-ui/icons/SyncOutlined';
 // import Gitea from "./Gitea/Gitea";
 import { GitHub } from '@material-ui/icons';
-import { Grid } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
+  },
+  mainPaper: {
+    height: '100vh',
+    width: '100vw',
+    paddingLeft: '12%',
+  },
+  paper: {
+    height: '100vh',
+    width: '100%',
   },
   heading: {
     fontSize: theme.typography.pxToRem(15),
@@ -94,68 +97,86 @@ export default function Sync(props) {
   const ag = props;
   const [value, setValue] = React.useState(0);
   const [index, setIndex] = React.useState(-1);
+  const [activeStep, setActiveStep] = React.useState(0);
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
   const handleProjects = (indexValue) => {
     setIndex(indexValue);
+    setActiveStep(1);
+  };
+  const handleStep = (step) => () => {
+    setActiveStep(step);
+    setIndex();
   };
   return (
     <>
-      <Grid container spacing={2}>
-        <Grid item xs={2} />
-        <div className={classes.root}>
-          <Accordion defaultExpanded>
-            <AccordionSummary aria-controls="panel1c-content" id="panel1c-header">
+      <Paper className={classes.mainPaper}>
+        <Grid container justify="center" spacing={1}>
+          <Grid key={1} style={{ width: '50%' }} item>
+            <Paper className={classes.paper}>
+              <AppBar position="static" color="default">
+                <h1>Sync</h1>
+              </AppBar>
               <div className={classes.column}>
-                <Typography variant="h5">Autographa Projects</Typography>
+                <Stepper nonLinear activeStep={activeStep}>
+                  <StepButton onClick={handleStep(0)}>
+                    Autographa Projects
+                  </StepButton>
+                  <StepButton>
+                    {ag.projects[index]?.project}
+                  </StepButton>
+                </Stepper>
               </div>
-            </AccordionSummary>
-            <AccordionDetails className={classes.details}>
-              <div className={classes.column}>
-                {ag.projects.map((project, key) => (
-                  <div key={project.project}>
-                    <Button
-                      id="project-id"
-                      key={project.project}
-                      onClick={() => handleProjects(key)}
-                      startIcon={<FolderOpenOutlinedIcon />}
-                    >
-                      {project.project}
-                    </Button>
-                  </div>
+              <Divider />
+              {ag.projects.map((project, key) => (
+                <List
+                  component="nav"
+                  className={classes.root}
+                  aria-label="mailbox folders"
+                  style={{ display: (activeStep === 1 ? 'none' : '') }}
+                >
+                  <ListItem
+                    button
+                    divider
+                    key={project.project}
+                    onClick={() => handleProjects(key)}
+                  >
+                    <ListItemIcon>
+                      <FolderOpenOutlinedIcon />
+                    </ListItemIcon>
+                    <ListItemText primary={project.project} />
+                  </ListItem>
+                </List>
                 ))}
-              </div>
-
-              <div className={(classes.column, classes.helper)}>
-                <Typography variant="caption">
-                  {index !== -1 && ag.projects[index] !== undefined ? (
+              <Typography variant="caption">
+                {index !== -1 && ag.projects[index] !== undefined ? (
                     ag.projects[index].files.map((val, i) => (
-                      <div>
-                        <Button
-                          id="file-id"
-                          key={val[i]}
-                          startIcon={<InsertDriveFileOutlinedIcon />}
-                        >
-                          {val}
-                        </Button>
-                      </div>
+                      <List component="nav" className={classes.root} aria-label="mailbox folders">
+                        <ListItem button divider key={val[i]}>
+                          <ListItemIcon>
+                            <InsertDriveFileOutlinedIcon />
+                          </ListItemIcon>
+                          <ListItemText primary={val} />
+                        </ListItem>
+                      </List>
                     ))
                   ) : (
                     <div />
                   )}
-                </Typography>
-              </div>
-            </AccordionDetails>
-          </Accordion>
-          <div className={classes.root}>
-            <Paper>
+              </Typography>
+            </Paper>
+          </Grid>
+          <Grid key={2} style={{ width: '50%' }} item>
+            <Paper className={classes.paper}>
               <AppBar position="static" color="default">
                 <Tabs
                   value={value}
                   onChange={handleChange}
                   indicatorColor="primary"
                   textColor="primary"
+                  scrollButtons="auto"
+                  variant="scrollable"
                 >
                   <Tab label="Github" icon={<GitHub />} {...a11yProps(0)} />
                   <Tab
@@ -180,9 +201,9 @@ export default function Sync(props) {
                 Gitea
               </TabPanel>
             </Paper>
-          </div>
-        </div>
-      </Grid>
+          </Grid>
+        </Grid>
+      </Paper>
     </>
   );
 }
