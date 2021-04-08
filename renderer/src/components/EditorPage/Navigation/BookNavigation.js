@@ -62,12 +62,10 @@ const BookNavigation = ({ initial }) => {
     initialVerse,
     supportedBooks,
     onChange,
-    style,
   } = initial || {};
 
   const {
  state: {
-    bookId,
     chapter,
     verse,
     bookList,
@@ -75,10 +73,6 @@ const BookNavigation = ({ initial }) => {
     verseList,
     bookName,
  }, actions: {
-    goToPrevChapter,
-    goToNextChapter,
-    goToPrevVerse,
-    goToNextVerse,
     onChangeBook,
     onChangeChapter,
     onChangeVerse,
@@ -92,7 +86,7 @@ const BookNavigation = ({ initial }) => {
   });
 
   const classes = useStyles();
-  const classes1 = CreateProjectStyles();
+  const customClasses = CreateProjectStyles();
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
   const [dialog, setDialog] = React.useState(false);
@@ -155,13 +149,13 @@ const BookNavigation = ({ initial }) => {
               <Grid key={bookname.key} item xs={4}>
                 <ListItem
                   button
-                  className={classes1.paper}
+                  className={customClasses.paper}
                   classes={{ selected: classes.selected }}
                   style={{ backgroundColor: 'white' }}
                   onClick={(e) => onBookSelect(e, bookname.key)}
                 >
                   <ListItemText>
-                    <span className={classes1.listtext}>{bookname.name}</span>
+                    <span className={customClasses.listtext}>{bookname.name}</span>
                   </ListItemText>
                 </ListItem>
               </Grid>
@@ -176,13 +170,13 @@ const BookNavigation = ({ initial }) => {
               <Grid key={chapternum.key} item xs={4}>
                 <ListItem
                   button
-                  className={classes1.paper}
+                  className={customClasses.paper}
                   classes={{ selected: classes.selected }}
                   style={{ backgroundColor: 'white' }}
                   onClick={(e) => onChapterSelect(e, chapternum.key)}
                 >
                   <ListItemText>
-                    <span className={classes1.listtext}>{chapternum.name}</span>
+                    <span className={customClasses.listtext}>{chapternum.name}</span>
                   </ListItemText>
                 </ListItem>
               </Grid>
@@ -197,13 +191,13 @@ const BookNavigation = ({ initial }) => {
               <Grid key={versenum.key} item xs={4}>
                 <ListItem
                   button
-                  className={classes1.paper}
+                  className={customClasses.paper}
                   classes={{ selected: classes.selected }}
                   style={{ backgroundColor: 'white' }}
                   onClick={(e) => onVerseSelect(e, versenum.key)}
                 >
                   <ListItemText>
-                    <span className={classes1.listtext}>{versenum.name}</span>
+                    <span className={customClasses.listtext}>{versenum.name}</span>
                   </ListItemText>
                 </ListItem>
               </Grid>
