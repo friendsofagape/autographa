@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import Router from 'next/router';
+import Router, { useRouter } from 'next/router';
 import NProgress from 'nprogress';
 import DescriptionIcon from '@material-ui/icons/Description';
 import SettingsIcon from '@material-ui/icons/Settings';
@@ -25,6 +25,7 @@ Router.onRouteChangeError = () => {
 };
 
 export default function ProjectsDrawer() {
+  const router = useRouter();
   const {
     states: {
     sideTabTitle,
@@ -34,8 +35,12 @@ export default function ProjectsDrawer() {
     },
    } = React.useContext(ProjectContext);
 
+   const goToEditorPage = () => {
+    router.push('/home');
+   };
+
   const buttons = (
-    <IconButton color="inherit">
+    <IconButton color="inherit" onClick={goToEditorPage}>
       <Badge badgeContent={17} color="secondary">
         <Notifications />
       </Badge>

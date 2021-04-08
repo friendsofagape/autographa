@@ -28,16 +28,12 @@ const DialogTitle = ((props) => {
 
 export default function CustomDialog({
   open,
-  setOpen,
   title,
   buttons,
   content,
   width,
+  handleClose,
 }) {
-  const handleClose = () => {
-    setOpen(false);
-  };
-
   return (
     <div>
       <Dialog
@@ -87,7 +83,7 @@ CustomDialog.propTypes = {
   /** State which triggers dialog. */
   open: PropTypes.bool.isRequired,
   /** State setting function to trigger dialog */
-  setOpen: PropTypes.func,
+  handleClose: PropTypes.func,
   /** Additional buttons to be displayed. */
   buttons: PropTypes.element,
   /** Component to render inside of the custom dialog. */

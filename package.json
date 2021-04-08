@@ -77,6 +77,7 @@
 		"jsonwebtoken": "^8.5.1",
 		"localforage": "1.9.0",
 		"markdown-translatable": "^1.0.4",
+		"bible-reference-rcl": "^0.2.0",
 		"mobx": "5.15.4",
 		"mobx-react": "6.3.0",
 		"moment": "^2.28.0",
