@@ -35,7 +35,7 @@ export default function ProjectsDrawer() {
     },
    } = React.useContext(ProjectContext);
 
-   const goToEditorPage = (params) => {
+   const goToEditorPage = () => {
     router.push('/home');
    };
 

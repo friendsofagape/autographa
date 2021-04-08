@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import BibleReference, { useBibleReference } from 'bible-reference-rcl';
+import { useBibleReference } from 'bible-reference-rcl';
 import {
     Button,
     ButtonGroup,
- Grid, ListItem, ListItemText, Paper, Tabs, Typography,
+ Grid, ListItem, ListItemText, Tabs, Typography,
 } from '@material-ui/core';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
