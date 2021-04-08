@@ -3,58 +3,19 @@ import PropTypes from 'prop-types';
 import { useBibleReference } from 'bible-reference-rcl';
 import {
     Button,
-    ButtonGroup,
- Grid, ListItem, ListItemText, Tabs, Typography,
+    ButtonGroup, Tabs,
 } from '@material-ui/core';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Tab from '@material-ui/core/Tab';
-import Box from '@material-ui/core/Box';
 import CustomDialog from '../../ApplicationBar/CustomDialog';
-import { CreateProjectStyles } from '../../ProjectsPage/CreateProject/useStyles/CreateProjectStyles';
+import CustomBooksTab from './CustomBooksTab';
 
-function TabPanel(props) {
-    const {
- children, value, index, ...other
-} = props;
-
-    return (
-      <div
-        role="tabpanel"
-        hidden={value !== index}
-        id={`full-width-tabpanel-${index}`}
-        aria-labelledby={`full-width-tab-${index}`}
-        {...other}
-      >
-        {value === index && (
-          <Box p={3}>
-            <Typography>{children}</Typography>
-          </Box>
-        )}
-      </div>
-    );
-  }
-
-  TabPanel.propTypes = {
-    children: PropTypes.node,
-    index: PropTypes.any.isRequired,
-    value: PropTypes.any.isRequired,
+function a11yProps(index) {
+  return {
+    id: `full-width-tab-${index}`,
+    'aria-controls': `full-width-tabpanel-${index}`,
   };
-
-  function a11yProps(index) {
-    return {
-      id: `full-width-tab-${index}`,
-      'aria-controls': `full-width-tabpanel-${index}`,
-    };
-  }
-
-  const useStyles = makeStyles((theme) => ({
-    root: {
-      backgroundColor: theme.palette.background.paper,
-      width: 500,
-    },
-  }));
-
+}
 const BookNavigation = ({ initial }) => {
   const {
     initialBook,
@@ -85,11 +46,10 @@ const BookNavigation = ({ initial }) => {
     onChange,
   });
 
-  const classes = useStyles();
-  const customClasses = CreateProjectStyles();
-  const theme = useTheme();
   const [value, setValue] = React.useState(0);
   const [dialog, setDialog] = React.useState(false);
+  const [OTSelectionSort, setOTSelectionSort] = React.useState(true);
+  const [NTSelectionSort, setNTSelectionSort] = React.useState(true);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -106,105 +66,62 @@ const BookNavigation = ({ initial }) => {
     e.preventDefault();
     setDialog(true);
     setValue(0);
+    setOTSelectionSort(true);
+    setNTSelectionSort(true);
   };
 
-  const onBookSelect = (e, bookid) => {
-      e.preventDefault();
-      onChangeBook(bookid);
-      setValue(1);
-  };
+  // eslint-disable-next-line no-unused-vars
+  const BookReferenceTabsTitle = (
+    <AppBar position="static" color="primary">
+      <Tabs
+        value={value}
+        onChange={handleChange}
+        indicatorColor="primary"
+        variant="fullWidth"
+        aria-label="full width tabs example"
+      >
+        <Tab label={`${bookName}`} {...a11yProps(0)} />
+        <Tab label={`Chapter: ${chapter}`} {...a11yProps(1)} />
+        <Tab label={`Verse: ${verse}`} {...a11yProps(2)} />
+      </Tabs>
+    </AppBar>
+  );
 
-  const onChapterSelect = (e, chapternum) => {
-    e.preventDefault();
-    onChangeChapter(chapternum);
-    setValue(2);
-  };
+  const BookReferenceTabsOT = (
+    <div>
+      <CustomBooksTab
+        onChangeBook={onChangeBook}
+        onChangeChapter={onChangeChapter}
+        onChangeVerse={onChangeVerse}
+        setDialog={setDialog}
+        value={value}
+        bookList={bookList}
+        chapterList={chapterList}
+        verseList={verseList}
+        setValue={setValue}
+        OT
+        setOTSelectionSort={setOTSelectionSort}
+        setNTSelectionSort={setNTSelectionSort}
+      />
+    </div>
+  );
 
-  const onVerseSelect = (e, versenum) => {
-    e.preventDefault();
-    onChangeVerse(versenum);
-    setDialog(false);
-  };
-
-  const BookReferenceTabs = (
-    <div className={classes.root}>
-      <AppBar position="static" color="primary">
-        <Tabs
-          value={value}
-          onChange={handleChange}
-          indicatorColor="primary"
-          variant="fullWidth"
-          aria-label="full width tabs example"
-        >
-          <Tab label={`${bookName}`} {...a11yProps(0)} />
-          <Tab label={`Chapter: ${chapter}`} {...a11yProps(1)} />
-          <Tab label={`Verse: ${verse}`} {...a11yProps(2)} />
-        </Tabs>
-      </AppBar>
-
-      <TabPanel value={value} index={0} dir={theme.direction}>
-        <Grid container>
-          <Grid container item xs={12} spacing={1}>
-            {bookList.map((bookname) => (
-              <Grid key={bookname.key} item xs={4}>
-                <ListItem
-                  button
-                  className={customClasses.paper}
-                  classes={{ selected: classes.selected }}
-                  style={{ backgroundColor: 'white' }}
-                  onClick={(e) => onBookSelect(e, bookname.key)}
-                >
-                  <ListItemText>
-                    <span className={customClasses.listtext}>{bookname.name}</span>
-                  </ListItemText>
-                </ListItem>
-              </Grid>
-        ))}
-          </Grid>
-        </Grid>
-      </TabPanel>
-      <TabPanel value={value} index={1} dir={theme.direction}>
-        <Grid container>
-          <Grid container item xs={12} spacing={1}>
-            {chapterList.map((chapternum) => (
-              <Grid key={chapternum.key} item xs={4}>
-                <ListItem
-                  button
-                  className={customClasses.paper}
-                  classes={{ selected: classes.selected }}
-                  style={{ backgroundColor: 'white' }}
-                  onClick={(e) => onChapterSelect(e, chapternum.key)}
-                >
-                  <ListItemText>
-                    <span className={customClasses.listtext}>{chapternum.name}</span>
-                  </ListItemText>
-                </ListItem>
-              </Grid>
-            ))}
-          </Grid>
-        </Grid>
-      </TabPanel>
-      <TabPanel value={value} index={2} dir={theme.direction}>
-        <Grid container>
-          <Grid container item xs={12} spacing={1}>
-            {verseList.map((versenum) => (
-              <Grid key={versenum.key} item xs={4}>
-                <ListItem
-                  button
-                  className={customClasses.paper}
-                  classes={{ selected: classes.selected }}
-                  style={{ backgroundColor: 'white' }}
-                  onClick={(e) => onVerseSelect(e, versenum.key)}
-                >
-                  <ListItemText>
-                    <span className={customClasses.listtext}>{versenum.name}</span>
-                  </ListItemText>
-                </ListItem>
-              </Grid>
-            ))}
-          </Grid>
-        </Grid>
-      </TabPanel>
+  const BookReferenceTabsNT = (
+    <div>
+      <CustomBooksTab
+        onChangeBook={onChangeBook}
+        onChangeChapter={onChangeChapter}
+        onChangeVerse={onChangeVerse}
+        setDialog={setDialog}
+        value={value}
+        bookList={bookList}
+        chapterList={chapterList}
+        verseList={verseList}
+        setValue={setValue}
+        OT={false}
+        setOTSelectionSort={setOTSelectionSort}
+        setNTSelectionSort={setNTSelectionSort}
+      />
     </div>
   );
     return (
@@ -225,7 +142,10 @@ const BookNavigation = ({ initial }) => {
             open={dialog}
             handleClose={handleClose}
             title="Bible Reference"
-            content={BookReferenceTabs}
+            subtitle1={OTSelectionSort ? 'Old Testment' : ''}
+            subtitle2={NTSelectionSort ? 'New Testment' : ''}
+            subcontent1={OTSelectionSort ? BookReferenceTabsOT : ''}
+            subcontent2={NTSelectionSort ? BookReferenceTabsNT : ''}
             width="md"
           />
         </div>

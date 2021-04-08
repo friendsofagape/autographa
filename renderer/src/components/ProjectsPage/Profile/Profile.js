@@ -18,7 +18,6 @@ import {
 import clsx from 'clsx';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
-import Avatar from '@material-ui/core/Avatar';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import { FormattedMessage } from 'react-intl';
@@ -29,6 +28,7 @@ import * as logger from '../../../logger';
 import { ProfileStyles } from '../useStyles/ProfileStyles';
 import useValidator from '../../Validation/useValidator';
 import { AutoCompleteSearch } from '../../AutoCompleteSearch/AutoCompleteSearch';
+import BadgeAvatars from '../../ApplicationBar/Avatar';
 
 // const localForageConfig = {
 //   type: 'localForage',
@@ -217,10 +217,11 @@ const Profile = () => {
         <Grid container spacing={3}>
           <Grid item xs={2} />
           <Grid item xs>
-            <Avatar
-              src={avatarPathImport}
+            <BadgeAvatars
+              path={avatarPathImport}
               alt="Remy Sharp"
-              className={classes.avatarlarge}
+              status="online"
+              size={classes.avatarlarge}
             />
             <div className={classes.avataredits}>
               <IconButton variant="contained" component="label">
