@@ -3,6 +3,7 @@ import { makeStyles, withStyles } from '@material-ui/core/styles';
 import MuiDialogContent from '@material-ui/core/DialogContent';
 import MuiDialogActions from '@material-ui/core/DialogActions';
 import { Zoom } from '@material-ui/core';
+import Badge from '@material-ui/core/Badge';
 
 const drawerWidth = 150;
 
@@ -87,3 +88,60 @@ export const Transition = React.forwardRef((props, ref) => (
     {...props}
   />
 ));
+
+export const StyledBadgeOnline = withStyles((theme) => ({
+  badge: {
+    backgroundColor: '#44b700',
+    color: '#44b700',
+    boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
+    '&::after': {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      width: '100%',
+      height: '100%',
+      borderRadius: '50%',
+      animation: '$ripple 1.2s infinite ease-in-out',
+      border: '1px solid currentColor',
+      content: '""',
+    },
+  },
+  '@keyframes ripple': {
+    '0%': {
+      transform: 'scale(.8)',
+      opacity: 1,
+    },
+    '100%': {
+      transform: 'scale(2.4)',
+      opacity: 0,
+    },
+  },
+}))(Badge);
+
+export const StyledBadgeOffline = withStyles((theme) => ({
+    badge: {
+      backgroundColor: '#A9A9A9',
+      color: '#A9A9A9',
+      boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
+      '&::after': {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        borderRadius: '50%',
+        border: '1px solid currentColor',
+        content: '""',
+      },
+    },
+    '@keyframes ripple': {
+      '0%': {
+        transform: 'scale(.8)',
+        opacity: 1,
+      },
+      '100%': {
+        transform: 'scale(2.4)',
+        opacity: 0,
+      },
+    },
+  }))(Badge);
