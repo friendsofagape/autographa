@@ -28,7 +28,7 @@ Autogrpha-DB/
 # next.js
 /renderer/.next/
 /renderer/out/
-/renderer/environment.js/
+/renderer/environment.js
 environment.js
 # production
 /build
