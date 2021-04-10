@@ -6,28 +6,24 @@ const parseFileSave = async (
     filename,
     projectMeta,
 ) => {
-        // const Person = Parse.Object.extend('Person');
-        // const ProjectMeta = Parse.Object.extend('ProjectMeta');
         const filedata = Array.from(Buffer.from(writeData.toString(), 'binary'));
-        const file = new Parse.File(`${filename}.usfm`, filedata);
+        const file = new Parse.File(`${filename.replace(/[()]/g, '')}.usfm`, filedata);
         file.addTag('filename', `${filename}.usfm`);
         file.save().then((filedatas) => {
             // The file has been saved to Parse.
             const fileUrl = filedatas.url(); // provide file location
-                fetch(fileUrl)
+            fetch(fileUrl)
                 .then((url) => url.text())
                 .then((usfmValue) => console.log(usfmValue));
-                const Files = Parse.Object.extend('Files');
+            const Files = Parse.Object.extend('Files');
             const files = new Files();
-            files.set('file', file);
-            files.set('scope', filename);
-            files.set('owner', projectMeta);
-            files.save();
+                files.set('file', file);
+                files.set('scope', filename);
+                files.set('owner', projectMeta);
+                files.save();
         }, (error) => {
-            console.log(error);
-            // The file either could not be read, or could not be saved to Parse.
+            throw error;
         });
-        //
 };
 
 export default parseFileSave;

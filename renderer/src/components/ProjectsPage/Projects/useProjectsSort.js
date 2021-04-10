@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { isElectron } from '../../../core/handleElectron';
+import fetchParseFiles from '../../../core/projects/fectchParseFiles';
 import fetchProjectsMeta from '../../../core/projects/fetchProjectsMeta';
 import parseFetchProjects from '../../../core/projects/parseFetchProjects';
 import * as logger from '../../../logger';
@@ -106,7 +107,10 @@ function useProjectsSort() {
         });
       }
       } else {
-        parseFetchProjects().then((res) => {
+        const username = 'John';
+        const projectName = 'NewBible';
+        console.log(fetchParseFiles(username, projectName));
+        parseFetchProjects(username).then((res) => {
           res.forEach((projects) => {
               if (projects.get('starred') === true) {
                 FetchStarred(
@@ -116,7 +120,7 @@ function useProjectsSort() {
                 projects.get('lastview'),
                 );
               } else {
-                FetchUnstarred(
+                  FetchUnstarred(
                     projects.get('projectName'),
                     projects.get('language'),
                     projects.get('date'),
