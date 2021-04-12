@@ -2,6 +2,7 @@
 import Parse from 'parse';
 
 import moment from 'moment';
+import parseFileSave from './parseFileSave';
 
 const parseSaveProjectsMeta = async (
     newProjectFields,
@@ -12,8 +13,8 @@ const parseSaveProjectsMeta = async (
     versificationScheme,
 ) => {
     const username = 'Michael';
-
-        const Person = Parse.Object.extend('Person');
+    const writeData = 'this is the test data inside usfm file';
+    const Person = Parse.Object.extend('Person');
 
         const ProjectMeta = Parse.Object.extend('ProjectMeta');
 
@@ -67,6 +68,13 @@ const parseSaveProjectsMeta = async (
             projectMeta.set('lastview', moment().format('YYYY-MM-DD h:mm:ss'));
             projectMeta.set('owner', person);
             projectMeta.save();
+            content.forEach((filename) => {
+                parseFileSave(
+                    writeData,
+                    filename,
+                    projectMeta,
+                );
+            });
         };
 
         userExist().then((userRes) => {
@@ -87,36 +95,6 @@ const parseSaveProjectsMeta = async (
                             }
                         });
                     }
-                    // else {
-                    //     const BreakException = {};
-                    //     try {
-                    //         const newUserQuery = new Parse.Query(ProjectMeta);
-                    //         const duplicates = [];
-                    //         const filterList = [];
-                    //         newUserQuery.equalTo('projectName', newProjectFields.projectName);
-                    //         newUserQuery.include('owner');
-                    //         const result = await newUserQuery.find();
-                    //         // eslint-disable-next-line prefer-const
-                    //         listUsers().then((users) => {
-                    //             users.forEach((user) => {
-                    //                 console.log(user);
-                    //                 filterList.push(user);
-                    //             });
-                    //             result.forEach((element) => {
-                    //                 if (element.get('owner').get('name') === username) {
-                    //                     duplicates.push(element.get('owner').get('name'));
-                    //                 }
-                    //                 if (element.get('owner').get('name') !== (username)) {
-                    //                         saveProject(userRes[1]);
-                    //                         console.log('false');
-                    //                         throw BreakException;
-                    //                     }
-                    //             });
-                    //         });
-                    //     } catch (e) {
-                    //         if (e !== BreakException) { throw e; }
-                    //     }
-                    // }
                 });
             }
         });

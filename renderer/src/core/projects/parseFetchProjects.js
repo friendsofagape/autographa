@@ -1,9 +1,7 @@
 /* eslint-disable consistent-return */
 import Parse from 'parse';
 
-const parseFetchProjects = async () => {
-    const username = 'Michael';
-
+const parseFetchProjects = async (username) => {
     // const Person = Parse.Object.extend('Person');
     const ProjectMeta = Parse.Object.extend('ProjectMeta');
     const projectsMetadata = [];
