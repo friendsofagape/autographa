@@ -220,7 +220,7 @@ const Profile = () => {
             <BadgeAvatars
               path={avatarPathImport}
               alt="Remy Sharp"
-              status="online"
+              status="offline"
               size={classes.avatarlarge}
             />
             <div className={classes.avataredits}>

@@ -13,8 +13,8 @@ const parseSaveProjectsMeta = async (
     versificationScheme,
 ) => {
     const username = 'Michael';
-
-        const Person = Parse.Object.extend('Person');
+    const writeData = 'this is the test data inside usfm file';
+    const Person = Parse.Object.extend('Person');
 
         const ProjectMeta = Parse.Object.extend('ProjectMeta');
 
@@ -68,7 +68,6 @@ const parseSaveProjectsMeta = async (
             projectMeta.set('lastview', moment().format('YYYY-MM-DD h:mm:ss'));
             projectMeta.set('owner', person);
             projectMeta.save();
-            const writeData = 'this is the test data inside usfm file';
             content.forEach((filename) => {
                 parseFileSave(
                     writeData,
