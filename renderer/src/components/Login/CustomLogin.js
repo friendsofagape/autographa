@@ -5,6 +5,7 @@ import {
 } from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import PersonOutlineIcon from '@material-ui/icons/PersonOutline';
+import 'tailwindcss/tailwind.css';
 
 const CustomLogin = ({
  ui, error, login, userlist, validation,
