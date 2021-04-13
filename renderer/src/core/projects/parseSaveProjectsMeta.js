@@ -15,8 +15,8 @@ const parseSaveProjectsMeta = async (
     const username = 'Michael';
     const writeData = 'this is the test data inside usfm file';
     const Person = Parse.Object.extend('Person');
-
-        const ProjectMeta = Parse.Object.extend('ProjectMeta');
+    const fileExtention = 'usfm';
+    const ProjectMeta = Parse.Object.extend('ProjectMeta');
 
         const userExist = async () => {
             const personQuery = new Parse.Query(Person);
@@ -72,6 +72,7 @@ const parseSaveProjectsMeta = async (
                 parseFileSave(
                     writeData,
                     filename,
+                    fileExtention,
                     projectMeta,
                 );
             });
