@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { useTheme, makeStyles } from '@material-ui/core/styles';
 import {
@@ -9,8 +9,10 @@ import FolderOpenOutlinedIcon from '@material-ui/icons/FolderOpenOutlined';
 import InsertDriveFileOutlinedIcon from '@material-ui/icons/InsertDriveFileOutlined';
 
 import SyncOutlinedIcon from '@material-ui/icons/SyncOutlined';
-// import Gitea from "./Gitea/Gitea";
 import { GitHub } from '@material-ui/icons';
+import Parse from 'parse';
+import Gitea from './Gitea/Gitea';
+import Dropzone from './Dropzone/Dropzone';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -92,12 +94,14 @@ function a11yProps(index) {
 }
 
 export default function Sync(props) {
+  console.log('props', props);
   const classes = useStyles();
   const theme = useTheme();
   const ag = props;
   const [value, setValue] = React.useState(0);
   const [index, setIndex] = React.useState(-1);
   const [activeStep, setActiveStep] = React.useState(0);
+  const [dragValue, setDragValue] = React.useState();
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -109,6 +113,17 @@ export default function Sync(props) {
     setActiveStep(step);
     setIndex();
   };
+  const onDragEnd = useCallback((result) => {
+    // eslint-disable-next-line no-underscore-dangle
+    console.log('result', result, result.meta._url);
+    // eslint-disable-next-line no-underscore-dangle
+    // Parse.Cloud.httpRequest({ url: result.meta._url })
+    // .then((response) => {
+    //   console.log(response, response.buffer);
+    //   // The file contents are in response.buffer.
+    // });
+    setDragValue(result);
+  }, []);
   return (
     <>
       <Paper className={classes.mainPaper}>
@@ -155,11 +170,17 @@ export default function Sync(props) {
                 {index !== -1 && ag.projects[index] !== undefined ? (
                     ag.projects[index].files.map((val, i) => (
                       <List component="nav" className={classes.root} aria-label="mailbox folders">
-                        <ListItem button divider key={val[i]}>
+                        <ListItem
+                          button
+                          divider
+                          key={val[i]}
+                          draggable
+                          onDragEnd={() => onDragEnd(val)}
+                        >
                           <ListItemIcon>
                             <InsertDriveFileOutlinedIcon />
                           </ListItemIcon>
-                          <ListItemText primary={val} />
+                          <ListItemText primary={val.filename} />
                         </ListItem>
                       </List>
                     ))
@@ -194,13 +215,13 @@ export default function Sync(props) {
                 </Tabs>
               </AppBar>
               <TabPanel value={value} index={0} dir={theme.direction}>
-                Github
+                <Dropzone file={dragValue} />
               </TabPanel>
               <TabPanel value={value} index={1} dir={theme.direction}>
                 Paratext
               </TabPanel>
               <TabPanel value={value} index={2} dir={theme.direction}>
-                Gitea
+                <Gitea />
               </TabPanel>
             </Paper>
           </Grid>
