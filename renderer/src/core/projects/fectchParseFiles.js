@@ -18,10 +18,12 @@ const fetchParseFiles = async (username, projectname) => {
             filesResult.forEach((element) => {
                 if (element.get('owner').get('owner').get('name') === username) {
                     if (element.get('owner').get('projectName') === projectname) {
+                            // console.log((element).get('file')._name.split('_')[1]);
                             files.push({
                                 filename: (element).get('file')._name.split('_')[1],
                                 filedataURL: (element).get('file')._url,
                                 file: (element).get('file'),
+                                filenameAlias: (element).get('filenameAlias'),
                             });
                     }
                 }
@@ -39,3 +41,9 @@ const fetchParseFiles = async (username, projectname) => {
 };
 
 export default fetchParseFiles;
+
+// export const fetchFileData = async (fileURL) => {
+//     const res = await fetch(fileURL);
+//     const data = await res.text();
+//     return data.results;
+//   };

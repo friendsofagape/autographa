@@ -5,7 +5,7 @@ import Main from '../renderer/src/components/main';
 initializeParse(
   environment.SERVER_URL,
   environment.APPLICATION_ID,
-  environment.JAVASCRIPT_KEY,
+  environment.MASTER_KEY,
 );
 
 const main = () => (

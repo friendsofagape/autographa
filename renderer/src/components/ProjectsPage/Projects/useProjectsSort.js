@@ -3,6 +3,7 @@ import { isElectron } from '../../../core/handleElectron';
 import fetchParseFiles from '../../../core/projects/fectchParseFiles';
 import fetchProjectsMeta from '../../../core/projects/fetchProjectsMeta';
 import parseFetchProjects from '../../../core/projects/parseFetchProjects';
+// import parseFileUpdate from '../../../core/projects/parseFileUpdate';
 import * as logger from '../../../logger';
 
 function useProjectsSort() {
@@ -109,6 +110,17 @@ function useProjectsSort() {
       } else {
         const username = 'Michael';
         const projectName = 'Newcanon based Pro';
+       // Replacing file or updating files fileds
+        // uncomment foloowing snippet and trigger accordingly
+      //  await parseFileUpdate({
+      //     username,
+      //     projectName,
+      //     filename: 'SNG',
+      //     fileExtention: 'usfm',
+      //     data: 'Updated data inside usfm',
+      //     filenameAlias: 'श्रेष्ठगीत test updated',
+      //   });
+
         // fetching files of selected project
          await fetchParseFiles(username, projectName).then((result) => {
           result.forEach((ele) => {
@@ -126,6 +138,7 @@ function useProjectsSort() {
                 });
               });
         });
+
         parseFetchProjects(username).then((res) => {
           res.forEach((projects) => {
               if (projects.get('starred') === true) {
