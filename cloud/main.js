@@ -1,5 +1,3 @@
-import Parse from 'parse';
-
 Parse.Cloud.define('deleteUserfile', async (request) => {
     const { fileId } = request.params;
     const Files = Parse.Object.extend('Files');

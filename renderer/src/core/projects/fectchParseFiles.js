@@ -19,7 +19,6 @@ const fetchParseFiles = async (username, projectname) => {
                 if (element.get('owner').get('owner').get('name') === username) {
                     if (element.get('owner').get('projectName') === projectname) {
                             // console.log((element).get('file')._name.split('_')[1]);
-                            console.log((element).get('filenameAlias'));
                             files.push({
                                 filename: (element).get('file')._name.split('_')[1],
                                 filedataURL: (element).get('file')._url,
