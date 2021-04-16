@@ -28,8 +28,8 @@ Autogrpha-DB/
 # next.js
 /renderer/.next/
 /renderer/out/
-/renderer/environment.js
-environment.js
+# /renderer/environment.js
+# environment.js
 # production
 /build
 /dist
