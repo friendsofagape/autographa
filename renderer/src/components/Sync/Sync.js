@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
-import { useTheme, makeStyles } from '@material-ui/core/styles';
+import { useTheme } from '@material-ui/core/styles';
 import {
  Typography, Paper, AppBar, Tabs, Tab, Box, Divider,
  Grid, List, ListItem, ListItemText, ListItemIcon, Stepper, StepButton,
@@ -10,53 +10,11 @@ import InsertDriveFileOutlinedIcon from '@material-ui/icons/InsertDriveFileOutli
 
 import SyncOutlinedIcon from '@material-ui/icons/SyncOutlined';
 import { GitHub } from '@material-ui/icons';
-import Parse from 'parse';
 import Gitea from './Gitea/Gitea';
 import Dropzone from './Dropzone/Dropzone';
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-  },
-  mainPaper: {
-    height: '100vh',
-    width: '100vw',
-    paddingLeft: '12%',
-  },
-  paper: {
-    height: '100vh',
-    width: '100%',
-  },
-  heading: {
-    fontSize: theme.typography.pxToRem(15),
-  },
-  secondaryHeading: {
-    fontSize: theme.typography.pxToRem(15),
-    color: theme.palette.text.secondary,
-  },
-  icon: {
-    verticalAlign: 'bottom',
-    height: 20,
-    width: 20,
-  },
-  details: {
-    alignItems: 'center',
-  },
-  column: {
-    flexBasis: '33.33%',
-  },
-  helper: {
-    borderLeft: `2px solid ${theme.palette.divider}`,
-    padding: theme.spacing(1, 2),
-  },
-  link: {
-    color: theme.palette.primary.main,
-    textDecoration: 'none',
-    '&:hover': {
-      textDecoration: 'underline',
-    },
-  },
-}));
+import fetchParseFiles from '../../core/projects/fectchParseFiles';
+import parseFetchProjects from '../../core/projects/parseFetchProjects';
+import { useStyle } from './useStyle';
 
 function TabPanel(props) {
   const {
@@ -93,36 +51,85 @@ function a11yProps(index) {
   };
 }
 
-export default function Sync(props) {
-  console.log('props', props);
-  const classes = useStyles();
+export default function Sync() {
+  const username = 'Michael';
+  const classes = useStyle();
   const theme = useTheme();
-  const ag = props;
   const [value, setValue] = React.useState(0);
   const [index, setIndex] = React.useState(-1);
   const [activeStep, setActiveStep] = React.useState(0);
   const [dragValue, setDragValue] = React.useState();
+  const [projects, setProjects] = React.useState([]);
+  const [files, setFiles] = React.useState([]);
+  const projectList = [];
+  const [trigger, setTrigger] = React.useState(false);
   const handleChange = (event, newValue) => {
     setValue(newValue);
-  };
-  const handleProjects = (indexValue) => {
-    setIndex(indexValue);
-    setActiveStep(1);
   };
   const handleStep = (step) => () => {
     setActiveStep(step);
     setIndex();
   };
+  const handleProjects = async (projectName, indexValue) => {
+    await fetchParseFiles(username, projectName)
+    .then((res) => {
+      setIndex(indexValue);
+      setActiveStep(1);
+      setFiles(res);
+    });
+  };
   const onDragEnd = useCallback((result) => {
-    // eslint-disable-next-line no-underscore-dangle
-    console.log('result', result, result.meta._url);
-    // eslint-disable-next-line no-underscore-dangle
-    // Parse.Cloud.httpRequest({ url: result.meta._url })
-    // .then((response) => {
-    //   console.log(response, response.buffer);
-    //   // The file contents are in response.buffer.
-    // });
-    setDragValue(result);
+    fetch(result.filedataURL)
+    .then((url) => url.text())
+    .then((usfmValue) => {
+      setDragValue({ result: { ...result, content: usfmValue, from: 'autographa' } });
+    });
+  }, []);
+  const fetchProjects = async () => {
+    await parseFetchProjects(username)
+    .then((res) => {
+      res.forEach((project) => {
+        // eslint-disable-next-line prefer-const
+        let file = [];
+        project.get('canoncontent').forEach((val, i) => {
+          file.push({ filename: val, meta: project.get(`file${i + 1}`) });
+        });
+        projectList.push(project.get('projectName'));
+      });
+    }).finally(() => {
+      setProjects(projectList);
+    });
+  };
+
+  const dropHere = (data) => {
+    console.log('data', data);
+    if (trigger && data.result.from === 'gitea') {
+      fetch(data.result.download_url)
+      .then((url) => url.text())
+      .then((usfmValue) => {
+        const lines = usfmValue.trim().split(/\s*[\r\n]+\s*/g);
+        // eslint-disable-next-line no-plusplus
+        for (let i = 0; i < 5; i++) {
+          if (lines[i]) {
+            const splitLine = lines[i].split(/ +/);
+            if (splitLine[0] === '\\id') {
+              console.log('Filename:', splitLine[1]);
+              break;
+            } else {
+              console.log(splitLine);
+            }
+          } else {
+            alert('Not a USFM file.');
+            break;
+          }
+        }
+      });
+      setTrigger(false);
+    }
+  };
+  React.useEffect(() => {
+    fetchProjects();
+    // eslint-disable-next-line
   }, []);
   return (
     <>
@@ -139,54 +146,58 @@ export default function Sync(props) {
                     Autographa Projects
                   </StepButton>
                   <StepButton>
-                    {ag.projects[index]?.project}
+                    {projects[index]}
                   </StepButton>
                 </Stepper>
               </div>
               <Divider />
-              {ag.projects.map((project, key) => (
-                <List
-                  id="project-id"
-                  key={`list${ project.project}`}
-                  component="nav"
-                  className={classes.root}
-                  aria-label="mailbox folders"
-                  style={{ display: (activeStep === 1 ? 'none' : '') }}
-                >
+
+              <List
+                id="project-id"
+                component="nav"
+                className={classes.root}
+                aria-label="mailbox folders"
+                style={{ display: (activeStep === 1 ? 'none' : '') }}
+              >
+                {projects.map((project, i) => (
                   <ListItem
                     button
                     divider
-                    key={project.project}
-                    onClick={() => handleProjects(key)}
+                    key={project}
+                    onClick={() => handleProjects(project, i)}
                   >
                     <ListItemIcon>
                       <FolderOpenOutlinedIcon />
                     </ListItemIcon>
-                    <ListItemText primary={project.project} />
+                    <ListItemText primary={project} />
                   </ListItem>
-                </List>
-                ))}
+))}
+              </List>
+
               <Typography variant="caption">
-                {index !== -1 && ag.projects[index] !== undefined ? (
-                    ag.projects[index].files.map((val, i) => (
-                      <List component="nav" className={classes.root} aria-label="mailbox folders">
-                        <ListItem
-                          button
-                          divider
-                          key={val[i]}
-                          draggable
-                          onDragEnd={() => onDragEnd(val)}
-                        >
-                          <ListItemIcon>
-                            <InsertDriveFileOutlinedIcon />
-                          </ListItemIcon>
-                          <ListItemText primary={val.filename} />
-                        </ListItem>
-                      </List>
-                    ))
+                {index !== -1 && projects[index] !== undefined ? (
+                  <List component="nav" className={classes.root} aria-label="mailbox folders">
+                    {files.map((val, i) => (
+                      <ListItem
+                        button
+                        divider
+                        key={val[i]}
+                        draggable
+                        onDragEnd={() => onDragEnd(val)}
+                      >
+                        <ListItemIcon>
+                          <InsertDriveFileOutlinedIcon />
+                        </ListItemIcon>
+                        <ListItemText primary={val.filename} />
+                      </ListItem>
+                    ))}
+                    <Dropzone dropped={() => setTrigger(true)} />
+                  </List>
+
                   ) : (
                     <div />
                   )}
+
               </Typography>
             </Paper>
           </Grid>
@@ -215,13 +226,13 @@ export default function Sync(props) {
                 </Tabs>
               </AppBar>
               <TabPanel value={value} index={0} dir={theme.direction}>
-                <Dropzone file={dragValue} />
+                <Dropzone />
               </TabPanel>
               <TabPanel value={value} index={1} dir={theme.direction}>
                 Paratext
               </TabPanel>
               <TabPanel value={value} index={2} dir={theme.direction}>
-                <Gitea />
+                <Gitea data={dragValue} onDrop={(e) => { dropHere(e); }} />
               </TabPanel>
             </Paper>
           </Grid>

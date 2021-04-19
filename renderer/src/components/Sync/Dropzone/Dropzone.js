@@ -6,7 +6,6 @@ const DragAndDrop = (props) => {
     e.preventDefault();
     // e.stopPropagation();
     console.log('handleDragEnter');
-    // dispatch({ type: 'AddToDropZone', inDropZone: true });
   };
   const handleDragLeave = (e) => {
     e.preventDefault();
@@ -17,13 +16,13 @@ const DragAndDrop = (props) => {
     e.preventDefault();
     // e.stopPropagation();
     console.log('handleDragOver');
-    // dispatch({ type: 'AddToDropZone', inDropZone: true });
   };
 
   const handleDrop = (e) => {
     e.preventDefault();
     // e.stopPropagation();
     console.log('handleDrop', props);
+    props.dropped(true);
   };
   return (
     <div
@@ -38,6 +37,6 @@ const DragAndDrop = (props) => {
 };
 export default DragAndDrop;
 DragAndDrop.propTypes = {
-  /** State which triggers login. */
-//   dropped: PropTypes.bool,
+  /** State which triggers Drop. */
+  dropped: PropTypes.bool,
 };
