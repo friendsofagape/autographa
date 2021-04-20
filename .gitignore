@@ -9,7 +9,7 @@ bower_components
 # next-on-netlify build output
 out_functions/
 out_publish/
-out
+/out
 
 # ignore db files
 Autogrpha-DB/
@@ -28,7 +28,8 @@ Autogrpha-DB/
 # next.js
 /renderer/.next/
 /renderer/out/
-
+# /renderer/environment.js
+# environment.js
 # production
 /build
 /dist
@@ -46,6 +47,7 @@ yarn-debug.log*
 yarn-error.log*
 
 # local env files
+
 .env.local
 .env.development.local
 .env.test.local

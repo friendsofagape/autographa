@@ -42,6 +42,8 @@
 		"@testing-library/jest-dom": "^5.11.4",
 		"@testing-library/react": "^11.0.4",
 		"@testing-library/user-event": "12.1.7",
+		"@tailwindcss/jit": "0.1.18",
+		"autoprefixer": "^10.2.5",
 		"babel-eslint": "^10.1.0",
 		"babel-jest": "^26.5.2",
 		"babel-plugin-istanbul": "^6.0.0",
@@ -59,7 +61,9 @@
 		"eslint-plugin-simple-import-sort": "^7.0.0",
 		"jest": "^26.5.3",
 		"jest-dom": "^4.0.0",
-		"prettier": "^2.0.5"
+		"postcss": "^8.2.10",
+		"prettier": "^2.0.5",
+		"tailwindcss": "^2.1.1"
 	},
 	"dependencies": {
 		"@material-ui/core": "^4.9.12",
@@ -77,6 +81,7 @@
 		"jsonwebtoken": "^8.5.1",
 		"localforage": "1.9.0",
 		"markdown-translatable": "^1.0.4",
+		"bible-reference-rcl": "^0.2.0",
 		"mobx": "5.15.4",
 		"mobx-react": "6.3.0",
 		"moment": "^2.28.0",

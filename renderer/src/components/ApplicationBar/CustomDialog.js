@@ -28,16 +28,16 @@ const DialogTitle = ((props) => {
 
 export default function CustomDialog({
   open,
-  setOpen,
   title,
-  buttons,
   content,
   width,
+  handleClose,
+  buttons,
+  subtitle1,
+  subcontent1,
+  subtitle2,
+  subcontent2,
 }) {
-  const handleClose = () => {
-    setOpen(false);
-  };
-
   return (
     <div>
       <Dialog
@@ -57,6 +57,32 @@ export default function CustomDialog({
         </DialogTitle>
         <DialogContent dividers>
           {content}
+          {subtitle1 && (
+            <>
+              <DialogTitle
+                id="customized-dialog-subtitle1"
+                data-testid="dialog-subtitle1"
+              >
+                {subtitle1}
+              </DialogTitle>
+              <DialogContent dividers>
+                {subcontent1}
+              </DialogContent>
+            </>
+          )}
+          {subtitle2 && (
+            <>
+              <DialogTitle
+                id="customized-dialog-subtitle2"
+                data-testid="dialog-subtitle2"
+              >
+                {subtitle2}
+              </DialogTitle>
+              <DialogContent dividers>
+                {subcontent2}
+              </DialogContent>
+            </>
+          )}
         </DialogContent>
         <DialogActions>
           <span data-testid="dialog-buttons">
@@ -87,11 +113,23 @@ CustomDialog.propTypes = {
   /** State which triggers dialog. */
   open: PropTypes.bool.isRequired,
   /** State setting function to trigger dialog */
-  setOpen: PropTypes.func,
+  handleClose: PropTypes.func,
   /** Additional buttons to be displayed. */
   buttons: PropTypes.element,
   /** Component to render inside of the custom dialog. */
   content: PropTypes.element,
   /** Determines window size */
   width: PropTypes.string,
+  /** The subtitle string or jsx to be displayed. */
+  subtitle1: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.element,
+  ]),
+  /** Component to render inside of the custom dialog. */
+  subcontent1: PropTypes.element,
+  subtitle2: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.element,
+  ]),
+  subcontent2: PropTypes.element,
 };

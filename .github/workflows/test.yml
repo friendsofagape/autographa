@@ -1,5 +1,5 @@
 name: Test Check
-on: [push]
+on: [push,  pull_request_target]
 jobs:
     build:
         name: Tests

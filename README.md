@@ -110,9 +110,10 @@ Usage: logger.[level]("<filename>, <message>")
 -   [React Testing Library](https://jestjs.io/docs/en/getting-started)
 
 6. Run `npm run lint:fix` for code to adapt our linting rules
-7. Commit your Changes (`git commit -m 'Add some NewFeatures'`)
-8. Push to the Branch (`git push origin feature/NewFeature`)
-9. Open a Pull Request and make sure all checks have passed
+7. Run `npm run build` for build checks
+8. Commit your Changes (`git commit -m 'Add some NewFeatures'`)
+9. Push to the Branch (`git push origin feature/NewFeature`)
+10. Open a Pull Request and make sure all checks have passed
 
 <!-- LICENSE -->
 

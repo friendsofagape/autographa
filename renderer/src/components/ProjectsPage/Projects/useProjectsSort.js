@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react';
 import { isElectron } from '../../../core/handleElectron';
+import fetchParseFiles from '../../../core/projects/fectchParseFiles';
 import fetchProjectsMeta from '../../../core/projects/fetchProjectsMeta';
 import parseFetchProjects from '../../../core/projects/parseFetchProjects';
+// import parseFileUpdate from '../../../core/projects/parseFileUpdate';
 import * as logger from '../../../logger';
 
 function useProjectsSort() {
@@ -84,7 +86,7 @@ function useProjectsSort() {
       ));
     };
 
-    const FetchProjects = () => {
+    const FetchProjects = async () => {
       if (isElectron()) {
         const projectsData = fetchProjectsMeta();
         if (projectsData) {
@@ -106,7 +108,38 @@ function useProjectsSort() {
         });
       }
       } else {
-        parseFetchProjects().then((res) => {
+        const username = 'Michael';
+        const projectName = 'Newcanon based Pro';
+       // Replacing file or updating files fileds
+        // uncomment foloowing snippet and trigger accordingly
+      //  await parseFileUpdate({
+      //     username,
+      //     projectName,
+      //     filename: 'SNG',
+      //     fileExtention: 'usfm',
+      //     data: 'Updated data inside usfm',
+      //     filenameAlias: 'श्रेष्ठगीत test updated',
+      //   });
+
+        // fetching files of selected project
+         await fetchParseFiles(username, projectName).then((result) => {
+          result.forEach((ele) => {
+            // result is an array of object with 'filename' and 'fileURL'
+            // eslint-disable-next-line no-console
+            console.log(ele);
+            // fetching data from url
+            // only call this when a particular file is been selected better performance
+              fetch(ele.filedataURL)
+                .then((url) => url.text())
+                .then((usfmValue) => {
+                  // text value
+                  // eslint-disable-next-line no-console
+                  console.log(usfmValue);
+                });
+              });
+        });
+
+        parseFetchProjects(username).then((res) => {
           res.forEach((projects) => {
               if (projects.get('starred') === true) {
                 FetchStarred(
@@ -116,7 +149,7 @@ function useProjectsSort() {
                 projects.get('lastview'),
                 );
               } else {
-                FetchUnstarred(
+                  FetchUnstarred(
                     projects.get('projectName'),
                     projects.get('language'),
                     projects.get('date'),
