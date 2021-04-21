@@ -6,6 +6,7 @@ import {
 // import FileHandle from './FileHandle';
 import PropTypes from 'prop-types';
 import FileList from './FileList';
+import { environment } from '../../../../environment';
 
 const Gitea = ({ data, onDrop }) => {
   const [authentication, setAuthentication] = React.useState();
@@ -13,8 +14,8 @@ const Gitea = ({ data, onDrop }) => {
   return (
     <AuthenticationContextProvider
       config={{
-        server: 'https://git.door43.org',
-        tokenid: 'Gitea AG Testing',
+        server: environment.GITEA_SERVER,
+        tokenid: environment.GITEA_TOKEN,
       }}
       authentication={authentication}
       onAuthentication={setAuthentication}
@@ -26,7 +27,7 @@ const Gitea = ({ data, onDrop }) => {
         defaultQuery=""
         branch=""
       >
-        <FileList data={data} onDrop={onDrop} />
+        <FileList data={data} onDrop={onDrop} changeRepo={() => setRepository()} />
       </RepositoryContextProvider>
     </AuthenticationContextProvider>
   );

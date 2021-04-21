@@ -11,8 +11,9 @@ import PropTypes from 'prop-types';
 import FolderOpenOutlinedIcon from '@material-ui/icons/FolderOpenOutlined';
 import InsertDriveFileOutlinedIcon from '@material-ui/icons/InsertDriveFileOutlined';
 import Dropzone from '../Dropzone/Dropzone';
+import * as logger from '../../../logger';
 
-const FileList = ({ data, onDrop }) => {
+const FileList = ({ data, onDrop, changeRepo }) => {
   const [projects, setProjects] = React.useState([]);
   const [files, setFiles] = React.useState([]);
   const [activeStep, setActiveStep] = React.useState();
@@ -24,21 +25,18 @@ const FileList = ({ data, onDrop }) => {
     RepositoryContext,
   );
   const fetchTree = async (treeUrl, projectName) => {
+    logger.debug('Dropzone.js', 'calling fetchTree event');
     const step = steps;
     const found = steps.find((s) => s.url === treeUrl && s.name === projectName);
     if (found === undefined) {
       step.push({ url: treeUrl, name: projectName });
-      setActiveStep(step.length - 1);
+      setActiveStep(step.length);
       setSteps(step);
     }
     const url = treeUrl;
-    const config1 = {
-      server: 'https://git.door43.org',
-      tokenid: 'Gitea AG Testing',
-    };
     const tree = [];
     const blob = [];
-    const response = await get({ url, config: config1 });
+    const response = await get({ url, config: auth.config });
     response.tree.forEach((list) => {
       if (list.type === 'blob') {
         blob.push(list);
@@ -47,10 +45,12 @@ const FileList = ({ data, onDrop }) => {
         tree.push(list);
       }
     });
+    logger.debug('Dropzone.js', 'sending the list of Trees and Blobs');
     setProjects(tree);
     setFiles(blob);
   };
   const getPath = (filename) => {
+    logger.debug('Dropzone.js', 'calling getPath event');
     const arr = [];
     if (steps.length > 1) {
       steps.forEach((s) => {
@@ -59,9 +59,11 @@ const FileList = ({ data, onDrop }) => {
       arr.shift();
     }
     arr.push(filename);
+    logger.debug('Dropzone.js', 'returning path with filename');
     return (arr.join('/'));
   };
   const readData = (value) => {
+    logger.debug('Dropzone.js', 'calling readData event');
     const filePath = getPath(value.path);
     const reads = readContent(
       {
@@ -73,13 +75,14 @@ const FileList = ({ data, onDrop }) => {
       },
     );
     reads.then((result) => {
-      // send the result
+      logger.debug('Dropzone.js', 'sending the data from Gitea with content');
       onDrop({ result: { ...result, from: 'gitea' } });
     });
   };
   const handleDrop = () => {
-    console.log(repo.owner.username, repo.name, data);
+    logger.debug('Dropzone.js', 'calling handleDrop event');
     if (data?.result?.from === 'autographa') {
+      logger.debug('Dropzone.js', 'fata send from Autographa');
       const filePath = getPath(data.result.filename);
       const result = createContent({
         config: auth.config,
@@ -94,21 +97,34 @@ const FileList = ({ data, onDrop }) => {
           username: auth.user.username,
         },
       });
-      result.then(() => alert('success'))
-      .catch((err) => alert(err));
+      result.then(() => {
+        logger.debug('Dropzone.js', 'file uploaded to Gitea');
+        alert('success');
+      })
+      .catch((err) => {
+        logger.debug('Dropzone.js', 'failed to upload file to Gitea');
+        alert(err);
+      });
     }
   };
   const handleStep = (step) => () => {
+    logger.debug('Dropzone.js', 'calling handleStep event');
     steps.splice(step + 1, steps.length);
     setSteps(steps);
-    setActiveStep(step);
+    setActiveStep(step + 1);
     fetchTree(steps[step].url, steps[step].name);
   };
-
+  const cleanRepo = () => {
+    logger.debug('Dropzone.js', 'calling cleanRepo to change the Repo');
+    setFiles([]);
+    setProjects([]);
+    setSteps([]);
+    changeRepo();
+  };
   React.useEffect(() => {
     if (files.length === 0 && projects.length === 0) {
       if (repo) {
-        fetchTree(`https://git.door43.org/${repo?.tree_url}`, 'Gitea Project');
+        fetchTree(`${auth.config.server}/${repo?.tree_url}`, repo.name);
       }
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -120,6 +136,7 @@ const FileList = ({ data, onDrop }) => {
     <>
       <Paper>
         <Stepper nonLinear activeStep={activeStep}>
+          <StepButton onClick={cleanRepo}>Gitea Project</StepButton>
           {steps.map((label, index) => (
             <StepButton onClick={handleStep(index)}>
               {label.name}
@@ -175,4 +192,5 @@ FileList.propTypes = {
     onDrop: PropTypes.object,
     content: PropTypes.string,
     data: PropTypes.object,
+    changeRepo: PropTypes.func,
   };

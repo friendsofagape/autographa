@@ -7,14 +7,16 @@ import {
 } from '@material-ui/core';
 import FolderOpenOutlinedIcon from '@material-ui/icons/FolderOpenOutlined';
 import InsertDriveFileOutlinedIcon from '@material-ui/icons/InsertDriveFileOutlined';
-
 import SyncOutlinedIcon from '@material-ui/icons/SyncOutlined';
 import { GitHub } from '@material-ui/icons';
+import { isUSFM, getId } from '../../core/Sync/handleSync';
 import Gitea from './Gitea/Gitea';
 import Dropzone from './Dropzone/Dropzone';
 import fetchParseFiles from '../../core/projects/fectchParseFiles';
 import parseFetchProjects from '../../core/projects/parseFetchProjects';
 import { useStyle } from './useStyle';
+import parseFileUpdate from '../../core/projects/parseFileUpdate';
+import * as logger from '../../logger';
 
 function TabPanel(props) {
   const {
@@ -67,10 +69,12 @@ export default function Sync() {
     setValue(newValue);
   };
   const handleStep = (step) => () => {
+    logger.debug('Dropzone.js', 'calling handleStep event');
     setActiveStep(step);
     setIndex();
   };
   const handleProjects = async (projectName, indexValue) => {
+    logger.debug('Dropzone.js', 'calling handleProjects event');
     await fetchParseFiles(username, projectName)
     .then((res) => {
       setIndex(indexValue);
@@ -79,13 +83,16 @@ export default function Sync() {
     });
   };
   const onDragEnd = useCallback((result) => {
+    logger.debug('Dropzone.js', 'calling onDragEnd event');
     fetch(result.filedataURL)
     .then((url) => url.text())
     .then((usfmValue) => {
+      logger.debug('Dropzone.js', 'sending dragged value');
       setDragValue({ result: { ...result, content: usfmValue, from: 'autographa' } });
     });
   }, []);
   const fetchProjects = async () => {
+    logger.debug('Dropzone.js', 'calling fetchProjects event');
     await parseFetchProjects(username)
     .then((res) => {
       res.forEach((project) => {
@@ -97,33 +104,40 @@ export default function Sync() {
         projectList.push(project.get('projectName'));
       });
     }).finally(() => {
+      logger.debug('Dropzone.js', 'Updating project List');
       setProjects(projectList);
     });
   };
 
-  const dropHere = (data) => {
-    console.log('data', data);
+  const dropHere = async (data) => {
+    logger.debug('Dropzone.js', 'calling dropHere event');
     if (trigger && data.result.from === 'gitea') {
-      fetch(data.result.download_url)
-      .then((url) => url.text())
-      .then((usfmValue) => {
-        const lines = usfmValue.trim().split(/\s*[\r\n]+\s*/g);
-        // eslint-disable-next-line no-plusplus
-        for (let i = 0; i < 5; i++) {
-          if (lines[i]) {
-            const splitLine = lines[i].split(/ +/);
-            if (splitLine[0] === '\\id') {
-              console.log('Filename:', splitLine[1]);
-              break;
-            } else {
-              console.log(splitLine);
-            }
-          } else {
-            alert('Not a USFM file.');
-            break;
-          }
-        }
-      });
+      const checkFile = isUSFM(data.result.name);
+      if (checkFile) {
+        fetch(data.result.download_url)
+        .then((url) => url.text())
+        .then((usfmValue) => {
+          const lines = usfmValue.trim().split(/\s*[\r\n]+\s*/g);
+          // eslint-disable-next-line no-plusplus
+          const bookCode = getId(lines);
+          // eslint-disable-next-line no-unused-vars
+          // let status;
+          parseFileUpdate({
+            username,
+            projectName: projects[index],
+            filename: bookCode,
+            fileExtention: 'usfm',
+            data: usfmValue,
+            filenameAlias: data.result.name,
+          })
+          .then((response) => {
+              alert(response);
+          });
+        });
+      } else {
+        logger.debug('Dropzone.js', 'Not a USFM file.');
+        alert('Not a USFM file.');
+      }
       setTrigger(false);
     }
   };
