@@ -8,10 +8,13 @@ const parseFileSave = async (
     projectMeta,
     filenameAlias,
 ) => {
-        const filedata = Array.from(Buffer.from(writeData.toString(), 'binary'));
-        const file = new Parse.File(`${filename.replace(/[()]/g, '')}.${fileExtention}`, filedata);
-        file.addTag('filename', `${filename}.${fileExtention}`);
-        file.save().then(() => {
+    const filedata = {
+        base64: Buffer.from(writeData, 'utf-8').toString('base64'),
+    };
+    return new Promise((resolve) => {
+            const file = new Parse.File(`${filename.replace(/[()]/g, '')}.${fileExtention}`, filedata, 'text/plain');
+            file.addTag('filename', `${filename}.${fileExtention}`);
+            file.save().then(() => {
             // The file has been saved to Parse.
             // const fileUrl = filedatas.url(); // provide file location
             // fetch(fileUrl)
@@ -24,10 +27,10 @@ const parseFileSave = async (
                 files.set('owner', projectMeta);
                 files.set('filenameAlias', filenameAlias);
                 files.save();
-                return file;
+                resolve('SUCCESS');
         }, (error) => {
             throw error;
         });
+    });
 };
-
 export default parseFileSave;
