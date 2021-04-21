@@ -1,16 +1,16 @@
 import React, { useEffect } from 'react';
+import 'tailwindcss/tailwind.css';
 import { makeStyles } from '@material-ui/core/styles';
-import {
-    Paper, Grid, Tabs, Tab, FormControl, Typography,
-} from '@material-ui/core';
+
 // import * as localForage from 'localforage';
 import { useRouter } from 'next/router';
 import * as logger from '../../logger';
 import { isElectron } from '../../core/handleElectron';
 import CustomLogin from './CustomLogin';
 import { AuthenticationContext } from './AuthenticationContextProvider';
+
 // import { createUser, handleLogin } from '../../core/handleLogin';
-// import configData from '../../config.json';
+
 const useStyles = makeStyles((theme) => ({
   root: {
     height: '100vh',
@@ -28,20 +28,35 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function a11yProps(index) {
+const NavItem = (props) => (
+  <li>
+    <a
+      className="text-sm fond-bold
+       text-gray-700 px-2 py-1
+       hover:bg-gray-300 rounded transition-colors duration-300"
+      href={props.href}
+    >
+      {props.text}
+    </a>
+  </li>
+  );
+
+  function a11yProps(index) {
   return {
     id: `simple-tab-${index}`,
     'aria-controls': `simple-tabpanel-${index}`,
   };
-}
+  }
 
 export default function Login() {
   const router = useRouter();
   const classes = useStyles();
   const online = {
     textfield: {
-      count: [{ label: 'Username', type: 'text', name: 'identifier' },
-      { label: 'Password', type: 'password', name: 'password' }],
+      count: [
+        { label: 'Username', type: 'text', name: 'identifier' },
+        { label: 'Password', type: 'password', name: 'password' },
+      ],
     },
     viewForgot: true,
   };
@@ -58,12 +73,17 @@ export default function Login() {
   } = React.useContext(AuthenticationContext);
   const [tabvalue, setTabValue] = React.useState(0);
   const [ui, setUi] = React.useState(isElectron() ? offline : online);
-  const [valid, setValid] = React.useState({ username: false, password: false });
+  const [valid, setValid] = React.useState({
+    username: false,
+    password: false,
+  });
   const [errorMsg, setErrorMsg] = React.useState();
   // eslint-disable-next-line no-unused-vars
   const [token, setToken] = React.useState();
   const [error, setError] = React.useState({
-    identifier: '', password: '', msg: '',
+    identifier: '',
+    password: '',
+    msg: '',
   });
   const handleChange = (newValue) => {
     setTabValue(newValue);
@@ -90,11 +110,10 @@ export default function Login() {
   // }, []);
   useEffect(() => {
     if (config) {
-      logger.debug('Login.js', 'After receiving config from kratos fetching the token and errors(if available)');
       // eslint-disable-next-line prefer-const
       let err = {};
       err.msg = config?.messages?.[0]?.text;
-      (config.fields).forEach((field) => {
+      config.fields.forEach((field) => {
         if (field.name === 'csrf_token') {
           setToken(field.value);
         } else {
@@ -106,7 +125,6 @@ export default function Login() {
   }, [config]);
   // eslint-disable-next-line no-unused-vars
   const handleValidation = (values) => {
-    logger.debug('Login.js', 'In handleValidation');
     let user;
     if (values.username) {
       user = true;
@@ -121,9 +139,8 @@ export default function Login() {
   const handleSubmit = async (values) => {
     logger.debug('Login.js', 'In handleSubmit');
     if (isElectron() && tabvalue === 0) {
-      logger.debug('Login.js', 'Complete Offline user');
       router.push('/main');
-      // The below code is commented for bypassing the authentication
+      // The below code is commented for UI dev purpose.
       // if (handleValidation(values)) {
       //   const fs = window.require('fs');
       //   logger.debug('Login.js',
@@ -146,7 +163,6 @@ export default function Login() {
     } else {
       // eslint-disable-next-line no-lonely-if
       if (isElectron()) {
-        logger.debug('Login.js', 'Online electron user');
         router.push('/main');
         // const requestOptions = {
         //   method: 'POST',
@@ -157,9 +173,8 @@ export default function Login() {
         //   .then((response) => response.json())
         //   .then((data) => console.log(data));
       } else {
-        logger.debug('Login.js', 'Online web user');
         router.push('/main');
-        // The below code is commented for bypassing the authentication
+        // The below code is commented for UI dev purpose.
         // document.aglogin.action = config.action;
         // document.aglogin.method = config.method;
         // // eslint-disable-next-line prefer-const
@@ -170,54 +185,93 @@ export default function Login() {
         // document.aglogin.appendChild(input);
         // document.aglogin.submit();
       }
+      // router.push('/login');
     }
   };
   return (
     <>
-      <Grid container className={classes.root} justify="flex-end">
-        <Grid item xs={12} sm={8} md={5}>
-          <Paper className={classes.paper} elevation={5} square>
-            {tab[0] && (
-            <Tabs
-              value={tabvalue}
-              title="OfflineOnline"
-              data-testid="tabs"
-              indicatorColor="primary"
-              textColor="primary"
-              onChange={handleChange}
-              aria-label="disabled tabs example"
+      <div>
+        <div className="inline-block min-h-screen  bg-white w-5/12">
+          <div className="ml-10 2xl:ml-40 mt-32">
+            <div className="text-green-500 pb-12">
+              Don’t have an account?
+              <a
+                data-testid="signup"
+                href="/signup"
+                className="text-blue-600 ml-2"
+              >
+                Sign Up!
+              </a>
+            </div>
+            <div className="text-3xl font-medium text-black"> Welcome!</div>
+            <div className="text-lg
+            font-light
+            pb-14 text-gray-400"
             >
-              <Tab label="Offline" {...a11yProps(0)} />
-              <Tab label="Online" {...a11yProps(1)} />
-            </Tabs>
-            )}
-            <FormControl>
-              <Typography variant="h5" gutterBottom>
-                Welcome!
-              </Typography>
-              <Typography variant="subtitle2" gutterBottom>
-                Welcome back! Login to access Autographa
-              </Typography>
-              <Typography color="error">{errorMsg}</Typography>
-              <CustomLogin
-                ui={ui}
-                error={valid}
-                login={handleSubmit}
-                userlist={users}
-                validation={error}
-              />
-              {ui?.viewForgot === true && (
-              <Typography variant="caption" gutterBottom>
-                Don&apos;t have an account?
-                {/* Commented for development purpose */}
-                <a data-testid="signup" href="/signup">Sign Up</a>
-                {/* <a data-testid="signup" href={configData.signup_url}>Sign Up</a> */}
-              </Typography>
-                )}
-            </FormControl>
-          </Paper>
-        </Grid>
-      </Grid>
+              Welcome back! Login to access Autographa
+            </div>
+            <CustomLogin
+              ui={ui}
+              error={valid}
+              login={handleSubmit}
+              userlist={users}
+              validation={error}
+            />
+            <div />
+          </div>
+          <div className="2xl:ml-40 pt-72 2xl:pl-5 pl-14 space-x-14 sm:space-y-2
+          text-black font-bold"
+          >
+            <a href="/">EN(US)</a>
+            <a href="/">ABOUT</a>
+            <a href="/">PRIVACY</a>
+            <a href="/">TERMS</a>
+          </div>
+        </div>
+        <div className="absolute
+        inline-block bg-black min-h-screen w-7/12 pt-8 pl-40 pr-40"
+        >
+          <div className="grid grid-rows-1 justify-items-center relative">
+            <div className="justify-center">
+              <div className="flex gap-3 ">
+                <img src="/Logo.svg" alt="logo" />
+                <div className="text-white">AUTOGRAPHA</div>
+                <div className="text-blue-800 font-bold">2.0</div>
+              </div>
+              <div className="pt-8 pl-72">
+                <img src="/Group.svg" alt="Group" />
+              </div>
+              <div className="w-96 pt-16 mb-10 text-xl text-white leading-9">
+                <div className="pb-5">
+                  <img src="/Quote.svg" alt="quote" />
+                </div>
+
+                Lorem ipsum dolor sit amet,
+                consectetur adipiscing elit. Consectetur
+                viverra facilisis platea malesuada faucibus justo.
+                Donec sit amet diam, in. Arcu, felis sed tempor orci,
+                pretium velit amet. Nullam amet, in justo a auctor sem felis.
+
+                <div className="flex pt-5">
+                  <div className="pr-4">FEATURE</div>
+                  <img className="" src="/GreenCheck.svg" alt="logo" />
+                </div>
+              </div>
+              <div className="flex pb-20">
+                <div className="pl-24">
+                  <img className="w-56 h-80" src="/Sitting.svg" alt="Sitting" />
+                </div>
+                <div>
+                  <img className="pl-10" src="/VectorOne.svg" alt="VectorOne" />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className=" bottom-0 pt-10 absolute left-5">
+            <img src="/HalfMoon.svg" alt="logo" />
+          </div>
+        </div>
+      </div>
     </>
   );
 }
