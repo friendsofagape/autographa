@@ -7,8 +7,14 @@ import {
 } from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
 import Tab from '@material-ui/core/Tab';
+import dynamic from 'next/dynamic';
 import CustomDialog from '../../ApplicationBar/CustomDialog';
 import CustomBooksTab from './CustomBooksTab';
+
+const TranslationHelpsWithNoSSR = dynamic(
+  () => import('../Reference/TranslationHelps'),
+  { ssr: false },
+);
 
 function a11yProps(index) {
   return {
@@ -33,6 +39,7 @@ const BookNavigation = ({ initial }) => {
     chapterList,
     verseList,
     bookName,
+    bookId,
  }, actions: {
     onChangeBook,
     onChangeChapter,
@@ -149,6 +156,11 @@ const BookNavigation = ({ initial }) => {
             width="md"
           />
         </div>
+        <TranslationHelpsWithNoSSR
+          bookID={bookId}
+          currentChapterID={chapter}
+          currentVerse={verse}
+        />
       </div>
      );
 };
