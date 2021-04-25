@@ -98,7 +98,10 @@
 		"react": "^16.13.1",
 		"react-dom": "^16.13.1",
 		"react-intl": "^4.7.6",
+		"resource-workspace-rcl": "0.6.0",
 		"sweetalert": "2.1.2",
+		"scripture-resources-rcl": "^3.2.0",
+		"translation-helps-rcl": "^1.5.0",
 		"winston": "^3.3.3"
 	}
 }
