@@ -39,9 +39,6 @@ export default function Login() {
     username: false,
     password: false,
   });
-  // eslint-disable-next-line no-unused-vars
-  const [errorMsg, setErrorMsg] = React.useState();
-  // eslint-disable-next-line no-unused-vars
   const [token, setToken] = React.useState();
   const [error, setError] = React.useState({
     identifier: '',
@@ -93,7 +90,6 @@ export default function Login() {
     if (values.username) {
       user = true;
     } else {
-      setErrorMsg('Enter username');
       user = false;
     }
     setValid({ ...valid, username: !user });
