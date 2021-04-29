@@ -23,6 +23,7 @@
         ],
         "react/jsx-props-no-spreading": "off",
         "eslint no-unused-expressions": "off",
+        "no-shadow": "off",
         "import/prefer-default-export": "off",
         "import/no-extraneous-dependencies": "off",
         "react/require-default-props": "off",
