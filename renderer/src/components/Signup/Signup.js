@@ -12,9 +12,10 @@ export default function Signup() {
   const ui = {
     textfield: {
       count: [
-        { label: 'Username', type: 'text', name: 'identifier' },
         { label: 'Email', type: 'email', name: 'email' },
+        { label: 'First Name', type: 'text', name: 'identifier' },
         { label: 'Password', type: 'password', name: 'password' },
+        { label: 'Confirm Password', type: 'password', name: 'password' },
       ],
     },
     viewForgot: false,

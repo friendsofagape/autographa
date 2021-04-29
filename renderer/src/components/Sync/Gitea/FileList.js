@@ -1,3 +1,4 @@
+/* eslint-disable no-alert */
 import React, { useContext } from 'react';
 import {
  Paper, Stepper, StepButton, Divider, List, ListItem, ListItemText, ListItemIcon,

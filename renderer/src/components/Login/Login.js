@@ -39,6 +39,7 @@ export default function Login() {
     username: false,
     password: false,
   });
+  // eslint-disable-next-line no-unused-vars
   const [token, setToken] = React.useState();
   const [error, setError] = React.useState({
     identifier: '',
