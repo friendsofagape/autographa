@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import 'tailwindcss/tailwind.css';
-import { makeStyles } from '@material-ui/core/styles';
 
 // import * as localForage from 'localforage';
 import { useRouter } from 'next/router';
@@ -11,46 +10,8 @@ import { AuthenticationContext } from './AuthenticationContextProvider';
 
 // import { createUser, handleLogin } from '../../core/handleLogin';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    height: '100vh',
-    overflow: 'hidden',
-  },
-  paper: {
-    margin: theme.spacing(8, 4),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    textAlign: 'center',
-  },
-  margin: {
-    margin: theme.spacing(1),
-  },
-}));
-
-const NavItem = (props) => (
-  <li>
-    <a
-      className="text-sm fond-bold
-       text-gray-700 px-2 py-1
-       hover:bg-gray-300 rounded transition-colors duration-300"
-      href={props.href}
-    >
-      {props.text}
-    </a>
-  </li>
-  );
-
-  function a11yProps(index) {
-  return {
-    id: `simple-tab-${index}`,
-    'aria-controls': `simple-tabpanel-${index}`,
-  };
-  }
-
 export default function Login() {
   const router = useRouter();
-  const classes = useStyles();
   const online = {
     textfield: {
       count: [
@@ -64,6 +25,7 @@ export default function Login() {
     autocomplete: { count: [{ label: 'Username' }] },
     viewForgot: false,
   };
+  // eslint-disable-next-line no-unused-vars
   const tab = React.useState(!!isElectron());
   // eslint-disable-next-line no-unused-vars
   const [users, setUsers] = React.useState([]);
@@ -77,7 +39,6 @@ export default function Login() {
     username: false,
     password: false,
   });
-  const [errorMsg, setErrorMsg] = React.useState();
   // eslint-disable-next-line no-unused-vars
   const [token, setToken] = React.useState();
   const [error, setError] = React.useState({
@@ -85,6 +46,7 @@ export default function Login() {
     password: '',
     msg: '',
   });
+   // eslint-disable-next-line no-unused-vars
   const handleChange = (newValue) => {
     setTabValue(newValue);
     setUi(newValue === 0 ? offline : online);
@@ -129,7 +91,6 @@ export default function Login() {
     if (values.username) {
       user = true;
     } else {
-      setErrorMsg('Enter username');
       user = false;
     }
     setValid({ ...valid, username: !user });

@@ -11,7 +11,6 @@ const parseFileUpdate = async ({
     filenameAlias,
     // scope,
 }) => {
-        const statusState = [];
         const ProjectMeta = Parse.Object.extend('ProjectMeta');
         const Files = Parse.Object.extend('Files');
         const newUserQuery = new Parse.Query(ProjectMeta);
@@ -24,28 +23,28 @@ const parseFileUpdate = async ({
             const response = await fileId.destroy({ javascriptKey: true });
             return response;
         }
+        return new Promise((resolve) => {
         filesResult.forEach((element) => {
             if (element.get('owner').get('owner').get('name') === username) {
                 if (element.get('owner').get('projectName') === projectName) {
                         if ((element).get('file') !== undefined) {
                             if ((element).get('file')._name.split('_')[1] === `${filename}.${fileExtention}`) {
-                            onDeleteImage((element)).then(() => {
+                            onDeleteImage((element)).then(async () => {
                                 // eslint-disable-next-line no-console
-                                parseFileSave(
+                              const response = parseFileSave(
                                     data,
                                     filename,
                                     fileExtention,
                                     (element).get('owner'),
                                     filenameAlias,
-                                ).then(() => {
-                                    statusState.push('updated');
-                                });
+                                );
+                                resolve(response);
                             });
                             }
                         }
                 }
             }
         });
-        return statusState;
+    });
 };
 export default parseFileUpdate;
