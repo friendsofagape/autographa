@@ -1,9 +1,9 @@
-import Projects from '../renderer/src/components/Modules/Projects/Projects';
-import AuthenticationContextProvider from '../renderer/src/components/Login/AuthenticationContextProvider';
+import ProjectList from '@/modules/projects/ProjectList';
+import AuthenticationContextProvider from '@/components/Login/AuthenticationContextProvider';
 
 const projects = () => (
   <AuthenticationContextProvider>
-    <Projects />
+    <ProjectList />
   </AuthenticationContextProvider>
 );
 

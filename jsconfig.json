@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/components/*": [
+        "renderer/src/components/*"
+      ],
+      "@/layouts/*": [
+        "renderer/src/layouts/*"
+      ],
+      "@/modules/*": [
+        "renderer/src/modules/*"
+      ],
+    }
+  }
+}
