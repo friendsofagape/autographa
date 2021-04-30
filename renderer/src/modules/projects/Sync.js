@@ -77,6 +77,7 @@ export default function ProjectList() {
             />
           </div>
           <div className="ml-3 text-sm">
+            {/* eslint jsx-a11y/label-has-associated-control: ["error", { assert: "either" } ] */}
             <label htmlFor="comments" className="font-medium text-gray-700">
               Show Hidden Files
             </label>
