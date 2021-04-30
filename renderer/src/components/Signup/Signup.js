@@ -154,16 +154,16 @@ export default function Signup() {
           <div className="grid grid-rows-1 justify-items-center relative">
             <div className="justify-center">
               <div className="flex gap-3 ">
-                <img src="/Logo.svg" alt="logo" />
+                <img src="/logo.svg" alt="logo" />
                 <div className="text-white">AUTOGRAPHA</div>
                 <div className="text-blue-800 font-bold">2.0</div>
               </div>
               <div className="pt-8 pl-72">
-                <img src="/Group.svg" alt="Group" />
+                <img src="/illustrations/group.svg" alt="Group" />
               </div>
               <div className="w-96 pt-16 mb-10 text-xl text-white leading-9">
                 <div className="pb-5">
-                  <img src="/Quote.svg" alt="quote" />
+                  <img src="/illustrations/quote.svg" alt="quote" />
                 </div>
 
                 Lorem ipsum dolor sit amet,
@@ -174,21 +174,21 @@ export default function Signup() {
 
                 <div className="flex pt-5">
                   <div className="pr-4">FEATURE</div>
-                  <img className="" src="/GreenCheck.svg" alt="logo" />
+                  <img className="" src="/illustrations/green-check.svg" alt="logo" />
                 </div>
               </div>
               <div className="flex pb-20">
                 <div className="pl-24">
-                  <img className="w-56 h-80" src="/Sitting.svg" alt="Sitting" />
+                  <img className="w-56 h-80" src="/illustrations/sitting.svg" alt="Sitting" />
                 </div>
                 <div>
-                  <img className="pl-10" src="/VectorOne.svg" alt="VectorOne" />
+                  <img className="pl-10" src="/illustrations/vector-one.svg" alt="VectorOne" />
                 </div>
               </div>
             </div>
           </div>
           <div className=" bottom-0 pt-10 absolute left-5">
-            <img src="/HalfMoon.svg" alt="logo" />
+            <img src="/illustrations/half-moon.svg" alt="logo" />
           </div>
         </div>
       </div>
