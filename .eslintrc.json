@@ -54,7 +54,17 @@
         "settings": {
             "react": {
                 "version": "detect"
-            }
+            },
+			"import/resolver" : {
+				"alias" : {
+				  "map" : [
+					["@/components","./renderer/src/components/"],
+					["@/layouts", "./renderer/src/layouts/"],
+					["@/modules", "./renderer/src/modules/"]
+				  ],
+				  "extensions": [".js"]
+				}
+			}
         },
         "plugins": [
             "react"
