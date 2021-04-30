@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import SideBar from './SideBar';
 import TopMenuBar from './TopMenuBar';
 
@@ -51,3 +52,12 @@ export default function ProjectsLayout(props) {
 
   );
 }
+
+ProjectsLayout.propTypes = {
+  children: PropTypes.any,
+  title: PropTypes.string.isRequired,
+  header: PropTypes.element,
+  isTwoCol: PropTypes.bool,
+  colOne: PropTypes.element,
+  colTwo: PropTypes.element,
+};

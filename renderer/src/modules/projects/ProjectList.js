@@ -1,7 +1,7 @@
 import { StarIcon } from '@heroicons/react/outline';
 import { ChevronUpIcon } from '@heroicons/react/solid';
 
-import ProjectsLayout from 'renderer/src/layouts/ProjectsLayout';
+import ProjectsLayout from '@/layouts/ProjectsLayout';
 import SearchTags from './SearchTags';
 
 const people = [

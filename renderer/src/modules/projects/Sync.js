@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { ChevronRightIcon } from '@heroicons/react/solid';
 
-import ProjectsLayout from 'renderer/src/layouts/ProjectsLayout';
+import ProjectsLayout from '@/layouts/ProjectsLayout';
 // import styles from './breadcrumbs.module.css';
 
 const localFiles = [
