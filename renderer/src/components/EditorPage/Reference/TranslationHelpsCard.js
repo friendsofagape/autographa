@@ -45,38 +45,22 @@ export default function TranslationHelpsCard({
       setFilters, setFontSize, setItemIndex, setMarkdownView,
     },
   } = useCardState({ items });
-
+  console.log(items);
   return (
-    <Card
-      title={title}
+
+    <CardContent
+      item={item}
       items={items}
-      classes={classes}
-      headers={headers}
       filters={filters}
+      viewMode={viewMode}
       fontSize={fontSize}
-      itemIndex={itemIndex}
-      setFilters={setFilters}
-      setFontSize={setFontSize}
-      setItemIndex={setItemIndex}
+      markdown={markdown}
+      setQuote={setQuote}
+      languageId={languageId}
       markdownView={markdownView}
-      setMarkdownView={setMarkdownView}
-      disableFilters={disableFilters}
-      disableNavigation={disableNavigation}
-      hideMarkdownToggle={hideMarkdownToggle}
-    >
-      <CardContent
-        item={item}
-        items={items}
-        filters={filters}
-        viewMode={viewMode}
-        fontSize={fontSize}
-        markdown={markdown}
-        setQuote={setQuote}
-        languageId={languageId}
-        markdownView={markdownView}
-        selectedQuote={selectedQuote}
-      />
-    </Card>
+      selectedQuote={selectedQuote}
+    />
+
   );
 }
 

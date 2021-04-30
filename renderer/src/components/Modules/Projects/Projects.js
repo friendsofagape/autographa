@@ -87,7 +87,6 @@ export default function Example() {
       </div>
 
       <div className="w-full">
-
         <Disclosure as="nav" className="bg-secondary">
           {({ open }) => (
             <>

@@ -126,7 +126,7 @@ function useProjectsSort() {
           result.forEach((ele) => {
             // result is an array of object with 'filename' and 'fileURL'
             // eslint-disable-next-line no-console
-            console.log(ele);
+            // console.log(ele);
             // fetching data from url
             // only call this when a particular file is been selected better performance
               fetch(ele.filedataURL)
@@ -134,7 +134,7 @@ function useProjectsSort() {
                 .then((usfmValue) => {
                   // text value
                   // eslint-disable-next-line no-console
-                  console.log(usfmValue);
+                  // console.log(usfmValue);
                 });
               });
         });
