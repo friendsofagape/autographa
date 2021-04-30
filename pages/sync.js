@@ -1,10 +1,10 @@
-import Login from '@/components/Login/Login';
+import Sync from '@/modules/projects/Sync';
 import AuthenticationContextProvider from '@/components/Login/AuthenticationContextProvider';
 
-const login = () => (
+const projects = () => (
   <AuthenticationContextProvider>
-    <Login />
+    <Sync />
   </AuthenticationContextProvider>
 );
 
-export default login;
+export default projects;
