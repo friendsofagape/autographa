@@ -10,6 +10,7 @@ import Tab from '@material-ui/core/Tab';
 import dynamic from 'next/dynamic';
 import CustomDialog from '../../ApplicationBar/CustomDialog';
 import CustomBooksTab from './CustomBooksTab';
+import ReferenceCard from '../Reference/ReferenceCard';
 
 const TranslationHelpsWithNoSSR = dynamic(
   () => import('../Reference/TranslationHelps'),

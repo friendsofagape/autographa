@@ -5,6 +5,7 @@ import {
   useContent,
   useCardState,
 } from 'translation-helps-rcl';
+import ReferenceCard from './ReferenceCard';
 
 export default function TranslationHelpsCard({
   title,
@@ -13,17 +14,13 @@ export default function TranslationHelpsCard({
   owner,
   branch,
   chapter,
-  classes,
   filePath,
   setQuote,
-  viewMode,
   projectId,
   languageId,
   resourceId,
   selectedQuote,
-  disableFilters,
-  disableNavigation,
-  hideMarkdownToggle,
+  viewMode,
 }) {
   const { items, markdown } = useContent({
     verse,
@@ -45,22 +42,28 @@ export default function TranslationHelpsCard({
       setFilters, setFontSize, setItemIndex, setMarkdownView,
     },
   } = useCardState({ items });
-  console.log(items);
   return (
-
-    <CardContent
-      item={item}
-      items={items}
-      filters={filters}
-      viewMode={viewMode}
-      fontSize={fontSize}
-      markdown={markdown}
-      setQuote={setQuote}
-      languageId={languageId}
-      markdownView={markdownView}
-      selectedQuote={selectedQuote}
-    />
-
+    <>
+      <ReferenceCard
+        items={items}
+        title={title}
+        item={item}
+        viewMode={viewMode}
+        headers={headers}
+        itemIndex={itemIndex}
+        setFilters={setFilters}
+        setFontSize={setFontSize}
+        setItemIndex={setItemIndex}
+        markdownView={markdownView}
+        filters={filters}
+        fontSize={fontSize}
+        markdown={markdown}
+        languageId={languageId}
+        selectedQuote={selectedQuote}
+        setQuote={setQuote}
+        setMarkdownView={setMarkdownView}
+      />
+    </>
   );
 }
 
