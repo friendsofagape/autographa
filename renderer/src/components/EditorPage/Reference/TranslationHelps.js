@@ -32,69 +32,54 @@ const TranslationHelps = ({
   }
   return (
     <>
-      <Workspace
-        rowHeight={25}
-        layout={layout}
-        gridMargin={[15, 15]}
-        classes={classes}
-        onLayoutChange={setCurrentLayout}
-      >
-        <TranslationHelpsCard
-          title="TranslationNotes"
-          verse={currentVerse}
-          chapter={currentChapterID}
-          projectId={bookID || 'mat'}
-          branch="master"
-          languageId="en"
-          resourceId="tn"
-          owner="test_org"
-          server="https://git.door43.org"
-        />
-        <TranslationHelpsCard
-          title="Translation Words List"
-          verse={currentVerse}
-          chapter={currentChapterID}
-          projectId={bookID || 'mat'}
-          branch="master"
-          viewMode="list"
-          languageId="en"
-          resourceId="twl"
-          owner="test_org"
-          server="https://git.door43.org"
-        />
-        <TranslationHelpsCard
-          title="Translation Words"
-          verse={currentVerse}
-          chapter={currentChapterID}
-          projectId={bookID || 'mat'}
-          branch="master"
-          viewMode="markdown"
-          languageId="en"
-          resourceId="twl"
-          owner="test_org"
-          server="https://git.door43.org"
-        />
-        <div style={{
-            float: 'left',
-            marginTop: '450px',
-        }}
-        >
-          <TranslationHelpsCard
-            title="Translation Questions"
-            verse={currentVerse}
-            chapter={currentChapterID}
-            projectId={bookID || 'mat'}
-            branch="master"
-            viewMode="question"
-            languageId="en"
-            resourceId="tq"
-            filePath={null}
-            owner="test_org"
-            server="https://git.door43.org"
-          />
-        </div>
-
-      </Workspace>
+      <TranslationHelpsCard
+        title="TranslationNotes"
+        verse={currentVerse}
+        chapter={currentChapterID}
+        projectId={bookID || 'mat'}
+        branch="master"
+        languageId="en"
+        resourceId="tn"
+        owner="test_org"
+        server="https://git.door43.org"
+      />
+      <TranslationHelpsCard
+        title="Translation Words List"
+        verse={currentVerse}
+        chapter={currentChapterID}
+        projectId={bookID || 'mat'}
+        branch="master"
+        viewMode="list"
+        languageId="en"
+        resourceId="twl"
+        owner="test_org"
+        server="https://git.door43.org"
+      />
+      <TranslationHelpsCard
+        title="Translation Words"
+        verse={currentVerse}
+        chapter={currentChapterID}
+        projectId={bookID || 'mat'}
+        branch="master"
+        viewMode="markdown"
+        languageId="en"
+        resourceId="twl"
+        owner="test_org"
+        server="https://git.door43.org"
+      />
+      <TranslationHelpsCard
+        title="Translation Questions"
+        verse={currentVerse}
+        chapter={currentChapterID}
+        projectId={bookID || 'mat'}
+        branch="master"
+        viewMode="question"
+        languageId="en"
+        resourceId="tq"
+        filePath={null}
+        owner="test_org"
+        server="https://git.door43.org"
+      />
     </>
     );
   };
