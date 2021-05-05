@@ -156,7 +156,6 @@ const BookNavigation = ({ initial }) => {
             width="md"
           />
         </div>
-
         <TranslationHelpsWithNoSSR
           bookID={bookId}
           currentChapterID={chapter}
