@@ -122,22 +122,7 @@ function useProjectsSort() {
       //   });
 
         // fetching files of selected project
-         await fetchParseFiles(username, projectName).then((result) => {
-          result.forEach((ele) => {
-            // result is an array of object with 'filename' and 'fileURL'
-            // eslint-disable-next-line no-console
-            // console.log(ele);
-            // fetching data from url
-            // only call this when a particular file is been selected better performance
-              fetch(ele.filedataURL)
-                .then((url) => url.text())
-                .then((usfmValue) => {
-                  // text value
-                  // eslint-disable-next-line no-console
-                  // console.log(usfmValue);
-                });
-              });
-        });
+         await fetchParseFiles(username, projectName);
 
         parseFetchProjects(username).then((res) => {
           res.forEach((projects) => {

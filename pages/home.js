@@ -1,6 +1,6 @@
 import dynamic from 'next/dynamic';
 import BibleNavigationInit from '../renderer/src/components/EditorPage/Navigation/BibleNavigationInit';
-import Meta from '../renderer/src/Meta';
+import ReferenceContextProvider from '../renderer/src/components/context/ReferenceContext'
 
 const DynamicComponentWithNoSSR = dynamic(
   () => import('../renderer/src/components/EditorPage/Navigation/BibleNavigationInit'),
@@ -9,7 +9,9 @@ const DynamicComponentWithNoSSR = dynamic(
 
 const home = () => (
   <div>
-    <DynamicComponentWithNoSSR />
+    <ReferenceContextProvider>
+      <DynamicComponentWithNoSSR />
+    </ReferenceContextProvider>
   </div>
 );
 

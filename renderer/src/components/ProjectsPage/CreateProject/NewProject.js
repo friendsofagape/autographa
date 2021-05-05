@@ -1,11 +1,11 @@
 import { Button } from '@material-ui/core';
 import React from 'react';
 import ApplicationBar from '../../ApplicationBar/ApplicationBar';
-import { ProjectContext } from '../ProjectsContext/ProjectContext';
+import { ProjectContext } from '../../context/ProjectContext';
 import CreateProjectAccordions from './CreateProjectAccordions';
 import { isElectron } from '../../../core/handleElectron';
 import saveProjectsMeta from '../../../core/projects/saveProjetcsMeta';
-import { AutographaContext } from '../../AutogrpahaContext/AutographaContext';
+import { AutographaContext } from '../../context/AutographaContext';
 import parseSaveProjectsMeta from '../../../core/projects/parseSaveProjectsMeta';
 
 const style = { top: '65px', width: 'inherit', left: '153px' };

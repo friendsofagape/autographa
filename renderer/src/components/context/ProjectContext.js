@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { OT } from '../../../lib/CanonSpecification';
+import { OT } from '../../lib/CanonSpecification';
 
 export const ProjectContext = React.createContext();
 

@@ -1,7 +1,5 @@
 import PropTypes from 'prop-types';
 import {
-  Card,
-  CardContent,
   useContent,
   useCardState,
 } from 'translation-helps-rcl';
@@ -68,7 +66,6 @@ export default function TranslationHelpsCard({
 }
 
 TranslationHelpsCard.propTypes = {
-  classes: PropTypes.object,
   viewMode: PropTypes.string,
   title: PropTypes.string.isRequired,
   chapter: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
@@ -82,7 +79,4 @@ TranslationHelpsCard.propTypes = {
   setQuote: PropTypes.func,
   selectedQuote: PropTypes.string,
   filePath: PropTypes.string,
-  disableFilters: PropTypes.bool,
-  disableNavigation: PropTypes.bool,
-  hideMarkdownToggle: PropTypes.bool,
 };

@@ -1,6 +1,6 @@
 import React from 'react';
 import SearchForm from '../../Search/SearchForm';
-import { AutographaContext } from '../../AutogrpahaContext/AutographaContext';
+import { AutographaContext } from '../../context/AutographaContext';
 
 const SearchData = () => {
   const filterList = ['name', 'language', 'date', 'view'];

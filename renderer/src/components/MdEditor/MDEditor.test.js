@@ -4,7 +4,7 @@ import '@testing-library/jest-dom/extend-expect';
 import { MDEditor } from './MDEditor';
 import { act } from 'react-dom/test-utils';
 import userEvent from '@testing-library/user-event';
-import ProjectContextProvider from '../ProjectsPage/ProjectsContext/ProjectContext';
+import ProjectContextProvider from '../context/ProjectContext';
 
 jest.useFakeTimers();
 const version = [

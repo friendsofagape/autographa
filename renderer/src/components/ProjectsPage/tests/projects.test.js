@@ -5,7 +5,7 @@ import '@testing-library/jest-dom/extend-expect';
 import intl from './helper';
 import StarredProjects from '../Projects/StarredProjects';
 import UnstarredProjects from '../Projects/UnstarredProjects';
-import AutographaContextProvider from '../../AutogrpahaContext/AutographaContext';
+import AutographaContextProvider from '../../context/AutographaContext';
 
 jest.useFakeTimers();
 
