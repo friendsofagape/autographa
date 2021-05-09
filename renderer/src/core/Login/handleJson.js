@@ -1,13 +1,17 @@
 import * as localForage from 'localforage';
-import * as logger from '../logger';
+import * as logger from '../../logger';
 
 const path = require('path');
 
+// const newpath = localStorage.getItem('userPath');
 let error;
-const uniqueUser = (users, email) => users.some((user) => user.email === email);
+const uniqueUser = (users, username) => users.some((user) => user.username === username);
 
-export const loadUsers = async (fs) => {
-  const file = path.join('Autogrpha-DB', 'DB.json');
+export const loadUsers = async () => {
+  const newpath = localStorage.getItem('userPath');
+  const fs = window.require('fs');
+  const path = require('path');
+  const file = path.join(newpath, 'autographa', 'Userdata', 'Projects', 'users.json');
   if (fs.existsSync(file)) {
     fs.readFile(file, 'utf8', (err, data) => {
       if (err) {
@@ -27,12 +31,13 @@ export const loadUsers = async (fs) => {
 };
 
 export const handleJson = async (values, fs) => {
+  const newpath = localStorage.getItem('userPath');
   logger.debug('handleJson.js', 'Inside handleJson');
   //   console.log('global', global.path);
-  fs.mkdirSync(path.join('Autogrpha-DB'), {
+  fs.mkdirSync(path.join(newpath, 'autographa', 'Userdata', 'Projects'), {
     recursive: true,
   });
-  const file = path.join('Autogrpha-DB', 'DB.json');
+  const file = path.join(newpath, 'autographa', 'Userdata', 'Projects', 'users.json');
   error = { userExist: false, fetchFile: false };
   if (fs.existsSync(file)) {
     return new Promise((resolve) => {
@@ -44,7 +49,7 @@ export const handleJson = async (values, fs) => {
         } else {
           logger.debug('handleJson.js', 'Successfully read the data from file');
           const json = JSON.parse(data);
-          if (uniqueUser(json, values.email)) {
+          if (uniqueUser(json, values.username)) {
             error.userExist = true;
             resolve(error);
           } else {

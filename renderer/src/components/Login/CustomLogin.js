@@ -8,7 +8,7 @@ import PersonOutlineIcon from '@material-ui/icons/PersonOutline';
 import 'tailwindcss/tailwind.css';
 
 const CustomLogin = ({
- ui, error, login, userlist, validation,
+ ui, error, login, userlist, validation, buttonname,
 }) => {
   const [values, setValue] = React.useState({});
   const handleChange = (prop) => (event) => {
@@ -28,10 +28,11 @@ const CustomLogin = ({
             <PersonOutlineIcon />
             <Autocomplete
               freeSolo
+              id="username"
               data-testid="autocomplete"
               options={userlist}
-              getOptionLabel={(option) => option.email}
-              getOptionSelected={(option, value) => option.email === value.email}
+              getOptionLabel={(option) => option.username}
+              getOptionSelected={(option, value) => option.username === value.username}
               onInputChange={(event, newInputValue) => {
                 setValue({ ...values, username: newInputValue });
               }}
@@ -49,6 +50,7 @@ const CustomLogin = ({
                 *
               </div>
               <input
+                data-testid="text-box"
                 name={c.name}
                 label={c.label}
                 type={c.type}
@@ -81,7 +83,7 @@ const CustomLogin = ({
         <input
           data-testid="login-button"
           type="submit"
-          value="SIGN IN"
+          value={buttonname}
           className="text-xs
            focus:border-blue-600
            max-w-md h-12 appearance-none
@@ -100,4 +102,5 @@ CustomLogin.propTypes = {
   login: PropTypes.func,
   userlist: PropTypes.array,
   validation: PropTypes.object,
+  buttonname: PropTypes.string,
 };

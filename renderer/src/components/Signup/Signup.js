@@ -13,7 +13,7 @@ export default function Signup() {
     textfield: {
       count: [
         { label: 'Email', type: 'email', name: 'email' },
-        { label: 'First Name', type: 'text', name: 'identifier' },
+        { label: 'Name', type: 'text', name: 'identifier' },
         { label: 'Password', type: 'password', name: 'password' },
         { label: 'Confirm Password', type: 'password', name: 'password' },
       ],
@@ -82,7 +82,7 @@ export default function Signup() {
     logger.debug('Singup.js', 'Into handleSubmit');
     // if (handleValidation(values)) {
       // if (values.password === values.confirmpassword) {
-        logger.debug('Singup.js, Passwords do not match');
+        logger.debug('Singup.js, Passwords matched');
         router.push('/main');
         // The below code is commented for bypassing the authentication.
         // document.agsignup.action = config.action;
@@ -131,12 +131,13 @@ export default function Signup() {
               Be part of a great community & have fun with us
             </div>
             <CustomLogin
-                  ui={ui}
-                  error={valid}
-                  login={handleSubmit}
-                  userlist={[]}
-                  validation={error}
-                />
+              ui={ui}
+              error={valid}
+              login={handleSubmit}
+              userlist={[]}
+              validation={error}
+              buttonname="SIGN UP"
+            />
             <div />
           </div>
           {/* <div className="2xl:ml-40 pt-72 2xl:pl-5 pl-14 space-x-14 sm:space-y-2
