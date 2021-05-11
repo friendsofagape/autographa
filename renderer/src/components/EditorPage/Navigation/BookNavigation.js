@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useBibleReference } from 'bible-reference-rcl';
 import {
@@ -8,6 +8,8 @@ import {
 import AppBar from '@material-ui/core/AppBar';
 import Tab from '@material-ui/core/Tab';
 import dynamic from 'next/dynamic';
+import { ReferenceContext } from '@/components/context/ReferenceContext';
+import UsfmEditor from '../UsfmEditor/UsfmEditor';
 import CustomDialog from '../../ApplicationBar/CustomDialog';
 import CustomBooksTab from './CustomBooksTab';
 
@@ -22,36 +24,23 @@ function a11yProps(index) {
     'aria-controls': `full-width-tabpanel-${index}`,
   };
 }
-const BookNavigation = ({ initial }) => {
+const BookNavigation = () => {
   const {
-    initialBook,
-    initialChapter,
-    initialVerse,
-    supportedBooks,
-    onChange,
-  } = initial || {};
-
-  const {
- state: {
-    chapter,
-    verse,
-    bookList,
-    chapterList,
-    verseList,
-    bookName,
-    bookId,
- }, actions: {
-    onChangeBook,
-    onChangeChapter,
-    onChangeVerse,
-    applyBooksFilter,
-  },
-} = useBibleReference({
-    initialBook,
-    initialChapter,
-    initialVerse,
-    onChange,
-  });
+    state: {
+      chapter,
+      verse,
+      bookList,
+      chapterList,
+      verseList,
+      bookName,
+      bookId,
+    },
+    actions: {
+      onChangeBook,
+      onChangeChapter,
+      onChangeVerse,
+    },
+  } = useContext(ReferenceContext);
 
   const [value, setValue] = React.useState(0);
   const [dialog, setDialog] = React.useState(false);
@@ -61,9 +50,6 @@ const BookNavigation = ({ initial }) => {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-  useEffect(() => {
-    applyBooksFilter(supportedBooks);
-  }, [applyBooksFilter, supportedBooks]);
 
   const handleClose = () => {
     setDialog(false);
@@ -161,6 +147,7 @@ const BookNavigation = ({ initial }) => {
           currentChapterID={chapter}
           currentVerse={verse}
         />
+        <UsfmEditor />
       </div>
      );
 };

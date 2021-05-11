@@ -58,8 +58,10 @@ export default function CustomBooksTab({
     const classes = useStyles();
     const theme = useTheme();
     const customClasses = CreateProjectStyles();
+
     const onBookSelect = (e, bookid, index) => {
         e.preventDefault();
+        console.log(bookid);
         onChangeBook(bookid);
         if (index <= 38) {
             setOTSelectionSort(true);

@@ -1,9 +1,9 @@
 /* eslint-disable react/prop-types */
 import NProgress from 'nprogress';
 import Router from 'next/router';
-import '../styles/nprogress.css';
-import '../styles/globals.css';
-import '../styles/default.css';
+import '../../styles/nprogress.css';
+import '../../styles/globals.css';
+import '../../styles/default.css';
 
 Router.events.on('routeChangeStart', () => NProgress.start());
 Router.events.on('routeChangeComplete', () => NProgress.done());

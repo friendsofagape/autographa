@@ -9,7 +9,7 @@ import Card from '@material-ui/core/Card';
 import {
     CardContent,
   } from 'translation-helps-rcl';
-import { theme } from '@/components/main';
+import { theme } from '../../main';
 import TranslationhelpsNav from './TranslationhelpsNav';
 
 const useStyles = makeStyles({

@@ -1,32 +1,49 @@
 /* eslint-disable react/prop-types */
+import { useBibleReference } from 'bible-reference-rcl';
 import React, { useState, createContext } from 'react';
 
 export const ReferenceContext = createContext({});
 
 export default function ReferenceContextProvider({ children }) {
+    const initialBook = 'mat';
+    const initialChapter = '2';
+    const initialVerse = '1';
     const [owner, setOwner] = useState('Door43-Catalog');
     const [languageId, setLanguageId] = useState('en');
     const [selectedResource, SetSelectedResource] = useState('');
     const [server, setServer] = useState('https://git.door43.org');
     const [branch, setBranch] = useState('master');
-    const [bibleReference, setBibleReference] = useState({
-      bookId: 'mat',
-      chapter: '1',
-      verse: '1',
-    });
 
-    function onReferenceChange(bookId, chapter, verse) {
-      setBibleReference((prevState) => ({
-        ...prevState,
-        bookId,
-        chapter,
-        verse,
-      }));
-    }
+    const {
+   state: {
+      chapter,
+      verse,
+      bookList,
+      chapterList,
+      verseList,
+      bookName,
+      bookId,
+   }, actions: {
+      onChangeBook,
+      onChangeChapter,
+      onChangeVerse,
+      applyBooksFilter,
+    },
+  } = useBibleReference({
+      initialBook,
+      initialChapter,
+      initialVerse,
+    });
 
     const value = {
       state: {
-        bibleReference,
+        chapter,
+        verse,
+        bookList,
+        chapterList,
+        verseList,
+        bookName,
+        bookId,
         languageId,
         server,
         branch,
@@ -38,8 +55,11 @@ export default function ReferenceContextProvider({ children }) {
         setBranch,
         setServer,
         setOwner,
-        onReferenceChange,
         SetSelectedResource,
+        onChangeBook,
+        onChangeChapter,
+        onChangeVerse,
+        applyBooksFilter,
       },
     };
 

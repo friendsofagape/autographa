@@ -1,4 +1,5 @@
 import moment from 'moment';
+import saveProjectsFiles from './saveProjectFiles';
 
 const saveProjectsMeta = (
     newProjectFields,
@@ -36,10 +37,10 @@ const saveProjectsMeta = (
     const path = require('path');
     const json = JSON.stringify(userdata);
     const projectsMetaPath = path.join(
-        newpath, 'autographa', 'Userdata', 'Projects', 'user1', 'projects.json',
+        newpath, 'autographa', 'users', 'username', 'projects', 'projects.json',
     );
     fs.mkdirSync(path.join(
-        newpath, 'autographa', 'Userdata', 'Projects', 'user1',
+        newpath, 'autographa', 'users', 'username', 'projects',
     ), {
         recursive: true,
     });
@@ -61,11 +62,16 @@ const saveProjectsMeta = (
                 obj.projects.push(userdata.projects[0]);
                 fs.writeFileSync(path.join(newpath,
                     'autographa',
-                    'Userdata',
-                    'Projects',
-                    'user1',
+                    'users',
+                    'username',
+                    'projects',
                     'projects.json'),
                     JSON.stringify(obj));
+                    saveProjectsFiles({
+                        username: 'username',
+                        projectname: newProjectFields.projectName,
+                        filenames: content,
+                    });
                     status.push({ type: 'success', value: 'projectmeta updated' });
             }
         }
@@ -75,12 +81,17 @@ const saveProjectsMeta = (
         fs.writeFileSync(path.join(
             newpath,
             'autographa',
-            'Userdata',
-            'Projects',
-            'user1',
+            'users',
+            'username',
+            'projects',
             'projects.json',
         ), json);
         status.push({ type: 'success', value: 'new project created' });
+        saveProjectsFiles({
+            username: 'username',
+            projectname: newProjectFields.projectName,
+            filenames: content,
+        });
     }
     return status;
 };
