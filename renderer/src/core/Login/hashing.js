@@ -1,4 +1,4 @@
-import * as logger from '../logger';
+import * as logger from '../../logger';
 
 const crypto = require('crypto');
 

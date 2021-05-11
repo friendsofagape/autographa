@@ -24,7 +24,7 @@ function useAuthentication() {
     jwt.verify(accessToken, 'agv2', (err, decoded) => {
       localForage.getItem('users').then((user) => {
         const obj = user.find(
-          (u) => u.email === decoded.sessionData.user,
+          (u) => u.username === decoded.sessionData.user,
         );
         setCurrentUser(obj);
       });
@@ -33,7 +33,7 @@ function useAuthentication() {
   const generateToken = (user) => {
     logger.debug('useAuthentication.js', 'In generateToken to generate a Token for the loggedIn user');
     const sessionData = {
-      user: user.email,
+      user: user.username,
       loggedAt: Date(),
       active: true,
       remember: true,

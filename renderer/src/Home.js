@@ -2,7 +2,7 @@ import React from 'react';
 import Main from './components/main';
 import Login from './components/Login/Login';
 import { AuthenticationContext } from './components/Login/AuthenticationContextProvider';
-import { loadUsers } from './core/handleJson';
+import { loadUsers } from './core/Login/handleJson';
 import * as logger from './logger';
 
 const Home = () => {

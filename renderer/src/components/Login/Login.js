@@ -8,7 +8,7 @@ import { isElectron } from '../../core/handleElectron';
 import CustomLogin from './CustomLogin';
 import { AuthenticationContext } from './AuthenticationContextProvider';
 
-// import { createUser, handleLogin } from '../../core/handleLogin';
+// import { createUser, handleLogin } from '../../core/Login/handleLogin';
 
 export default function Login() {
   const router = useRouter();
@@ -177,6 +177,7 @@ export default function Login() {
               login={handleSubmit}
               userlist={users}
               validation={error}
+              buttonname="SIGN IN"
             />
             <div />
           </div>
