@@ -17,6 +17,7 @@ const ProjectContextProvider = ({ children }) => {
       projectName: '',
       scriptDirection: 'LTR',
     });
+    const [selectedProject, setSelectedProject] = React.useState('newprodir');
 
     const handleProjectFields = (prop) => (event) => {
       setNewProjectFields({ ...newProjectFields, [prop]: event.target.value });
@@ -46,6 +47,7 @@ const ProjectContextProvider = ({ children }) => {
             content,
             versificationScheme,
             sideTabTitle,
+            selectedProject,
         },
         actions: {
             setDrawer,
@@ -57,6 +59,7 @@ const ProjectContextProvider = ({ children }) => {
             handleProjectFields,
             resetProjectStates,
             setSideTabTitle,
+            setSelectedProject,
         },
     };
 

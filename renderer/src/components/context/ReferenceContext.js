@@ -13,6 +13,7 @@ export default function ReferenceContextProvider({ children }) {
     const [selectedResource, SetSelectedResource] = useState('');
     const [server, setServer] = useState('https://git.door43.org');
     const [branch, setBranch] = useState('master');
+    const [markdown, setMarkdown] = useState('markdown');
 
     const {
    state: {
@@ -48,6 +49,7 @@ export default function ReferenceContextProvider({ children }) {
         server,
         branch,
         owner,
+        markdown,
         selectedResource,
       },
       actions: {
@@ -55,6 +57,7 @@ export default function ReferenceContextProvider({ children }) {
         setBranch,
         setServer,
         setOwner,
+        setMarkdown,
         SetSelectedResource,
         onChangeBook,
         onChangeChapter,

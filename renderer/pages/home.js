@@ -1,3 +1,4 @@
+import ProjectContextProvider from '@/components/context/ProjectContext';
 import dynamic from 'next/dynamic';
 import ReferenceContextProvider from '../src/components/context/ReferenceContext';
 
@@ -9,7 +10,9 @@ const DynamicComponentWithNoSSR = dynamic(
 const home = () => (
   <div>
     <ReferenceContextProvider>
-      <DynamicComponentWithNoSSR />
+      <ProjectContextProvider>
+        <DynamicComponentWithNoSSR />
+      </ProjectContextProvider>
     </ReferenceContextProvider>
   </div>
 );

@@ -36,7 +36,6 @@ const ReferenceSelector = () => {
     setDialogOpen(false);
   };
   const handleMenuSelect = (e, index, option) => {
-    console.log(index, option);
     setDialogOpen(true);
     setSelectedIndex(index);
   };
