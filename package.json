@@ -100,12 +100,12 @@
 		"raw-loader": "^4.0.2",
 		"react": "^17.0.2",
 		"react-dom": "^17.0.2",
-		"react-intl": "^4.7.6",
+		"react-intl": "^5.17.5",
 		"resource-workspace-rcl": "0.6.0",
 		"sweetalert": "2.1.2",
 		"scripture-resources-rcl": "^3.2.0",
 		"translation-helps-rcl": "^1.5.0",
-		"usfm-editor": "0.8.0-SNAPSHOT.4",
+		"usfm-editor": "0.8.0-SNAPSHOT.2",
 		"winston": "^3.3.3"
 	}
 }
