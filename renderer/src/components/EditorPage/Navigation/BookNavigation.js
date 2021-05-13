@@ -1,6 +1,5 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
-import { useBibleReference } from 'bible-reference-rcl';
 import {
     Button,
     ButtonGroup, Tabs,

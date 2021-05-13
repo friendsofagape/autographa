@@ -61,7 +61,6 @@ export default function CustomBooksTab({
 
     const onBookSelect = (e, bookid, index) => {
         e.preventDefault();
-        console.log(bookid);
         onChangeBook(bookid);
         if (index <= 38) {
             setOTSelectionSort(true);

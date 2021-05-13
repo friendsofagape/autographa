@@ -12,6 +12,9 @@
       "@/modules/*": [
         "src/modules/*"
       ],
+      "@/corefunctions/*": [
+        "src/core/*"
+      ],
     }
   }
 }

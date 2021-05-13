@@ -1,9 +1,8 @@
 /* eslint-disable react/prop-types */
-import React, { useContext } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import { ReferenceContext } from '@/components/context/ReferenceContext';
 import { Button } from '@material-ui/core';
 
 const FlexDiv = styled.div`
@@ -22,15 +21,6 @@ const TranslationhelpsNav = ({
     itemIndex,
     setItemIndex,
   }) => {
-    const {
-      state: {
-        markdown,
-      },
-      actions: {
-        setMarkdown,
-      },
-    } = useContext(ReferenceContext);
-
     const onPrevItem = () => {
         const newIndex = itemIndex - 1;
         if (newIndex < 0) {

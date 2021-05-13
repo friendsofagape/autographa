@@ -6,7 +6,6 @@ export const ProjectContext = React.createContext();
 
 const ProjectContextProvider = ({ children }) => {
     const [drawer, setDrawer] = React.useState(false);
-    const [sideTabTitle, setSideTabTitle] = React.useState(() => localStorage.getItem('_tabhistory'));
     const [selectedVersion, setSelectedVersion] = React.useState('');
     const [license, setLicense] = React.useState();
     const [canonSpecification, setcanonSpecification] = React.useState('OT');
@@ -18,6 +17,7 @@ const ProjectContextProvider = ({ children }) => {
       scriptDirection: 'LTR',
     });
     const [selectedProject, setSelectedProject] = React.useState('newprodir');
+    const [sideTabTitle, setSideTabTitle] = React.useState('New');
 
     const handleProjectFields = (prop) => (event) => {
       setNewProjectFields({ ...newProjectFields, [prop]: event.target.value });

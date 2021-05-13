@@ -1,13 +1,14 @@
 import { ProjectContext } from '@/components/context/ProjectContext';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import React, { useContext, useState } from 'react';
-import writeToFile from 'src/core/editor/writeToFile';
-
 import { BasicUsfmEditor } from 'usfm-editor';
+import { isElectron } from '../../../core/handleElectron';
+import writeToFile from '../../../core/editor/writeToFile';
 import InputSelector from './InputSelector';
 
 const UsfmEditor = () => {
   const [usfmInput, setUsfmInput] = useState(null);
+  // eslint-disable-next-line no-unused-vars
   const [readOnly, setReadOnly] = useState(false);
   // const [usfmOutput, setUsfmOutput] = useState(transformToOutput(usfm));
   const [identification, setIdentification] = useState({});
@@ -29,11 +30,13 @@ const UsfmEditor = () => {
 
   const handleEditorChange = (usfm) => {
     // setUsfmOutput(usfm);
-    writeToFile({
-      projectname: selectedProject,
-      filename: bookId,
-      data: usfm,
-    });
+    if (isElectron()) {
+      writeToFile({
+        projectname: selectedProject,
+        filename: bookId,
+        data: usfm,
+      });
+    }
   };
 
   const handleInputChange = (usfm) => {
