@@ -1,3 +1,4 @@
+import { PropTypes } from 'prop-types';
 import ProjectLayout from '../../layouts/ProjectsLayout';
 import CustomAutocomplete from './CustomAutocomplete';
 
@@ -45,7 +46,6 @@ function InputBar({ title }) {
   export default function UserProfile() {
       return (
         <ProjectLayout title="personal information">
-
           <div className=" bg-gray-100 flex">
             <div className="w-60 h-screen bg-gray-900 ">
               <div className="grid grid-rows-5 p-8 gap-16 pb-20 mr-20">
@@ -155,3 +155,7 @@ function InputBar({ title }) {
 
       );
     }
+
+    InputBar.propTypes = {
+      title: PropTypes.string,
+  };

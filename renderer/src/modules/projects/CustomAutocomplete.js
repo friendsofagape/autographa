@@ -153,7 +153,7 @@ export default function CustomizedHook({ list, label }) {
     setAnchorEl,
   } = useAutocomplete({
     id: 'customized-hook-demo',
-    defaultValue: [list[3]],
+    defaultValue: [list[0]],
     multiple: true,
     options: list,
     getOptionLabel: (option) => option.title,

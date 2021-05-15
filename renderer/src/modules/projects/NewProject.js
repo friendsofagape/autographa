@@ -312,6 +312,10 @@ function BibleHeaderTagDropDown() {
       );
 }
 
-BookNumberTag.protoTypes = {
-    children: PropTypes.number.isRequired,
+TargetLanguageTag.propTypes = {
+    children: PropTypes.string,
+};
+
+BookNumberTag.propTypes = {
+    children: PropTypes.number,
 };
