@@ -4,6 +4,7 @@ import NoSsr from '@material-ui/core/NoSsr';
 import CheckIcon from '@material-ui/icons/Check';
 import CloseIcon from '@material-ui/icons/Close';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
 const Label = styled('label')`
   padding: 8px;
@@ -13,7 +14,6 @@ const Label = styled('label')`
   letter-spacing: 0.025em;
   color: #0068E2;
   font-weight: 300;
-
 `;
 
 const InputWrapper = styled('div')`
@@ -153,7 +153,7 @@ export default function CustomizedHook({ list, label }) {
     setAnchorEl,
   } = useAutocomplete({
     id: 'customized-hook-demo',
-    defaultValue: [list[1]],
+    defaultValue: [list[0]],
     multiple: true,
     options: list,
     getOptionLabel: (option) => option.title,
@@ -188,3 +188,9 @@ export default function CustomizedHook({ list, label }) {
     </NoSsr>
   );
 }
+
+CustomizedHook.propTypes = {
+  list: PropTypes.array,
+  label: PropTypes.string,
+  tag: PropTypes.object,
+};
