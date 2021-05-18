@@ -1,11 +1,12 @@
+const nodeExternals = require('webpack-node-externals');
+
 module.exports = {
+
   webpack: (config, { isServer }) => {
     // Fixes npm packages that depend on `fs` module
     if (!isServer) {
       // eslint-disable-next-line no-param-reassign
-      config.node = {
-        fs: 'empty',
-      };
+      config.resolve.fallback.fs = false;
     }
     config.module.rules.push(
       {
@@ -13,8 +14,14 @@ module.exports = {
         use: 'raw-loader',
       },
     );
-
     return config;
   },
+  externals: [nodeExternals()],
   target: 'serverless',
+  future: {
+    webpack5: true,
+  },
+  fallback: {
+    fs: false,
+  },
 };
