@@ -1,4 +1,7 @@
+const nodeExternals = require('webpack-node-externals');
+
 module.exports = {
+
   webpack: (config, { isServer }) => {
     // Fixes npm packages that depend on `fs` module
     if (!isServer) {
@@ -13,6 +16,7 @@ module.exports = {
     );
     return config;
   },
+  externals: [nodeExternals()],
   target: 'serverless',
   future: {
     webpack5: true,
