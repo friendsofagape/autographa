@@ -9,6 +9,7 @@ module.exports = {
     './renderer/src/modules/**/*.{js,ts,jsx,tsx}'],
   darkMode: false, // or 'media' or 'class'
   theme: {
+
     colors: {
       transparent: 'transparent',
       current: 'currentColor',
@@ -23,8 +24,12 @@ module.exports = {
       yellow: colors.amber,
       red: colors.red,
     },
-    extend: {},
-  },
+    extend: {
+      fontSize: {
+        xxs: '.70rem',
+      },
+    },
+},
   variants: {
     extend: {},
   },
