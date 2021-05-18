@@ -1,6 +1,6 @@
 import { Fragment } from 'react';
 import { Disclosure, Transition } from '@headlessui/react';
-import { ChevronUpIcon } from '@heroicons/react/solid';
+import { ChevronUpIcon, ChevronDownIcon } from '@heroicons/react/solid';
 import { StarIcon } from '@heroicons/react/outline';
 
 import ProjectsLayout from '@/layouts/ProjectsLayout';
