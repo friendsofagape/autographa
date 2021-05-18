@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 export default function SideBar() {
   return (
 
@@ -11,34 +13,40 @@ export default function SideBar() {
       </div>
       <ul className="mt-8">
         <li className="text-gray-900 font-medium hover:text-gray-600 cursor-pointer mb-12">
-          <div className="flex flex-col items-center">
-            <img
-              className="h-7 w-7"
-              src="/icons/projects.svg"
-              alt="Workflow"
-            />
-            <div className="text-xs mt-3 uppercase">projects</div>
-          </div>
+          <Link href="/projects">
+            <a className="flex flex-col items-center" href="#projects">
+              <img
+                className="h-7 w-7"
+                src="/icons/projects.svg"
+                alt="projects"
+              />
+              <div className="text-xs mt-3 uppercase">projects</div>
+            </a>
+          </Link>
         </li>
         <li className="text-gray-900 font-medium hover:text-gray-600 cursor-pointer mb-12">
-          <div className="flex flex-col items-center">
-            <img
-              className="h-7 w-7"
-              src="/icons/new.svg"
-              alt="Workflow"
-            />
-            <div className="text-xs mt-3 uppercase">new</div>
-          </div>
+          <Link href="/newproject">
+            <a className="flex flex-col items-center" href="#new">
+              <img
+                className="h-7 w-7"
+                src="/icons/new.svg"
+                alt="newproject"
+              />
+              <div className="text-xs mt-3 uppercase">new</div>
+            </a>
+          </Link>
         </li>
         <li className="text-gray-900 font-medium hover:text-gray-600 cursor-pointer mb-12">
-          <div className="flex flex-col items-center">
-            <img
-              className="h-7 w-7"
-              src="/icons/sync.svg"
-              alt="Workflow"
-            />
-            <div className="text-xs mt-3 uppercase">sync</div>
-          </div>
+          <Link href="/sync">
+            <a className="flex flex-col items-center" href="#sync">
+              <img
+                className="h-7 w-7"
+                src="/icons/sync.svg"
+                alt="sync"
+              />
+              <div className="text-xs mt-3 uppercase">sync</div>
+            </a>
+          </Link>
         </li>
       </ul>
     </div>

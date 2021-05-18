@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { ChevronRightIcon } from '@heroicons/react/solid';
 
@@ -111,6 +111,7 @@ export default function ProjectList() {
 
       <Transition
         show={isOpen}
+        as={Fragment}
         enter="transition duration-100 ease-out"
         enterFrom="transform scale-95 opacity-0"
         enterTo="transform scale-100 opacity-100"
@@ -120,16 +121,17 @@ export default function ProjectList() {
       >
 
         <Dialog
+          as="div"
+          className="fixed inset-0 z-10 overflow-y-auto"
           static
           open={isOpen}
           onClose={() => setIsOpen(false)}
-          className="fixed z-10 inset-0 overflow-y-auto"
         >
-          <div className="flex items-center justify-center min-h-screen">
+          <Dialog.Overlay className="fixed inset-0 bg-black opacity-30" />
 
-            <Dialog.Overlay className="fixed inset-0 bg-black opacity-30" />
+          <div className="flex items-center justify-center h-screen">
 
-            <div className="bg-white p-10 rounded shadow max-w-sm mx-auto">
+            <div className="bg-white w-5/12 p-10 m-auto z-50 shadow overflow-hidden sm:rounded-lg">
 
               <Dialog.Title className="text-lg">Deactivate account</Dialog.Title>
               <Dialog.Description className="text-sm py-4">
@@ -143,7 +145,6 @@ export default function ProjectList() {
                 onClick={() => setIsOpen(false)}
               >
                 Deactivate
-
               </button>
               <button
                 type="button"
