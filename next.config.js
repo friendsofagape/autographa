@@ -3,9 +3,7 @@ module.exports = {
     // Fixes npm packages that depend on `fs` module
     if (!isServer) {
       // eslint-disable-next-line no-param-reassign
-      config.node = {
-        fs: 'empty',
-      };
+      config.resolve.fallback.fs = false;
     }
     config.module.rules.push(
       {
@@ -13,8 +11,13 @@ module.exports = {
         use: 'raw-loader',
       },
     );
-
     return config;
   },
   target: 'serverless',
+  future: {
+    webpack5: true,
+  },
+  fallback: {
+    fs: false,
+  },
 };
