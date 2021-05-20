@@ -3,12 +3,10 @@ import {
   AuthenticationContextProvider,
   RepositoryContextProvider,
 } from 'gitea-react-toolkit';
-// import FileHandle from './FileHandle';
-import PropTypes from 'prop-types';
-import FileList from './FileList';
+import GiteaFileBrowser from './GiteaFileBrowser';
 import { environment } from '../../../../environment';
 
-const Gitea = ({ data, onDrop }) => {
+const Gitea = () => {
   const [authentication, setAuthentication] = React.useState();
   const [repository, setRepository] = React.useState();
   return (
@@ -27,14 +25,9 @@ const Gitea = ({ data, onDrop }) => {
         defaultQuery=""
         branch=""
       >
-        <FileList data={data} onDrop={onDrop} changeRepo={() => setRepository()} />
+        <GiteaFileBrowser changeRepo={() => setRepository()} />
       </RepositoryContextProvider>
     </AuthenticationContextProvider>
   );
 };
 export default Gitea;
-Gitea.propTypes = {
-  /** State which has datas. */
-  onDrop: PropTypes.object,
-  data: PropTypes.object,
-};
