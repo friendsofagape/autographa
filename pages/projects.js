@@ -1,9 +1,12 @@
 import ProjectList from '@/modules/projects/ProjectList';
 import AuthenticationContextProvider from '@/components/Login/AuthenticationContextProvider';
+import AutographaContextProvider from '@/components/AutogrpahaContext/AutographaContext';
 
 const projects = () => (
   <AuthenticationContextProvider>
-    <ProjectList />
+    <AutographaContextProvider>
+      <ProjectList />
+    </AutographaContextProvider>
   </AuthenticationContextProvider>
 );
 

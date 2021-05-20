@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import useProjectsSort from '../ProjectsPage/Projects/useProjectsSort';
+import useProjectsSort from '../hooks/projects/useProjectsSort';
 
 export const AutographaContext = React.createContext();
 
