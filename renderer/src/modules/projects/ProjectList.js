@@ -13,14 +13,17 @@ import SearchTags from './SearchTags';
 export default function ProjectList() {
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('name');
+  const filterList = ['name', 'language', 'date', 'view'];
   const {
     states: {
       starredrow,
       unstarredrow,
+      starredProjects,
+      unstarredProjects,
     },
     action: {
-      handleClickStarred,
-      handleDelete,
+      setStarredRow,
+      setUnStarredRow,
     },
   } = React.useContext(AutographaContext);
 
@@ -33,7 +36,15 @@ export default function ProjectList() {
   return (
     <ProjectsLayout
       title="Projects"
-      header={<SearchTags />}
+      header={(
+        <SearchTags
+          contentList1={starredProjects}
+          contentList2={unstarredProjects}
+          filterList={filterList}
+          onfilerRequest1={setStarredRow}
+          onfilerRequest2={setUnStarredRow}
+        />
+      )}
     >
 
       <div className="mx-auto py-6 sm:px-6 lg:px-8">
@@ -49,13 +60,12 @@ export default function ProjectList() {
                       order={order}
                       orderBy={orderBy}
                       onRequestSort={handleRequestSort}
-                      rowCount={starredrow.length}
                     />
                     <tbody className="bg-white divide-y divide-gray-200">
                       {starredrow && (stableSort(starredrow,
                         getComparator(order, orderBy),
                         orderBy,
-                        order).map((project, index) => (
+                        order).map((project) => (
                           <Disclosure>
                             <tr key={project.name}>
                               <td className="px-4 py-4 whitespace-nowrap">
@@ -167,10 +177,10 @@ export default function ProjectList() {
                               <td className="px-6 py-4 whitespace-nowrap">
                                 <span
                                   className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                                  ${project.status !== 'active'
+                                  ${project.status === 'active'
                                   ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}
                                 >
-                                  active
+                                  finished
                                 </span>
                               </td>
                               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{project.date}</td>
