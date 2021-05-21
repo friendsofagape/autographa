@@ -4,17 +4,7 @@ import { Dialog, Transition } from '@headlessui/react';
 import ProjectsLayout from '@/layouts/ProjectsLayout';
 import Gitea from '@/components/Sync/Gitea/Gitea';
 // import styles from './breadcrumbs.module.css';
-import { initializeParse } from '@parse/react-ssr';
 import ProjectFileBrowser from '@/components/Sync/ProjectFileBrowser';
-import { environment } from '../../../environment';
-
-// Below code is for development purpose...
-initializeParse(
-  environment.SERVER_URL,
-  environment.APPLICATION_ID,
-  environment.MASTER_KEY,
-);
-//
 
 export default function ProjectList() {
   const [isOpen, setIsOpen] = useState(true);

@@ -1,14 +1,12 @@
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react';
+import { render, fireEvent,screen } from '@testing-library/react';
 import { act } from 'react-dom/test-utils';
-import Sync from './ProjectFileBrowser';
+import ProjectFileBrowser from './ProjectFileBrowser';
+import SyncContextProvider from './SyncContextProvider'
 // import intl from "./helper";
 
 describe('Sync component tests', () => {
-  test('Sync component renders without error', () => {
-    render(<Sync />);
-  });
-  // const projects = [
+  const agProjects = ['Project Malayalam','Project Arabic']
   //   {
   //     project: 'Project Malayalam',
   //     files: ['Gen.usfm', 'Exo.usfm', 'Readme.md'],
@@ -34,12 +32,42 @@ describe('Sync component tests', () => {
   //   },
   // ];
   
-  // describe('Test autographa projects and files in it.', () => {
-  //   test('First project should be Malyalam', async () => {
-  //     render(<Sync projects={projects} />);
-  //     const agProjects = document.querySelector('#project-id');
-  //     expect(agProjects.textContent).toBe('Project Malayalam');
-  //   });
+  describe('Autographa projects file browser.', () => {
+    test('ProjectFileBrowser component renders without error', () => {
+      render(
+        <SyncContextProvider>
+          <ProjectFileBrowser />
+        </SyncContextProvider>
+      );
+    });
+    test('Should have stepper', async () => {
+      render(
+        <SyncContextProvider>
+          <ProjectFileBrowser />
+        </SyncContextProvider>
+        );
+      const stepper = screen.getByTestId('ag-step1');
+      expect(stepper).toBeVisible();
+    });
+    test('Should have table', async () => {
+      render(
+        <SyncContextProvider>
+          <ProjectFileBrowser />
+        </SyncContextProvider>
+        );
+      const table = screen.getByTestId('table');
+      expect(table).toBeVisible();
+    });
+    test('First column of table should be Name', async () => {
+      render(
+        <SyncContextProvider>
+          <ProjectFileBrowser />
+        </SyncContextProvider>
+        );
+      const thName = screen.getByTestId('th-name');
+      expect(thName).toBeVisible();
+    });
+  });
   //   test('Project Arabic should have 6 files', async () => {
   //     render(<Sync projects={projects} />);
   //     const agFiles = document.querySelector('#project-id');
