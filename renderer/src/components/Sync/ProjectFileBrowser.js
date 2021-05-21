@@ -33,7 +33,11 @@ export default function ProjectFileBrowser() {
   return (
     <>
       <div className="flex flex-row mx-5 my-3 border-b-1 border-primary">
-        <span className="font-semibold" onClick={() => setIndex(0)}>
+        <span
+          className="font-semibold"
+          onClick={() => setIndex(-1)}
+          data-testid="ag-step1"
+        >
           Autographa Project
         </span>
         {agProjects[index]
@@ -45,12 +49,13 @@ export default function ProjectFileBrowser() {
         ) : <span />}
       </div>
 
-      <table className="min-w-full divide-y divide-gray-200">
+      <table className="min-w-full divide-y divide-gray-200" data-testid="table">
         <thead className="bg-gray-50">
           <tr>
             <th
               scope="col"
               className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              data-testid="th-name"
             >
               Name
             </th>
@@ -97,7 +102,11 @@ export default function ProjectFileBrowser() {
           <tbody className="bg-white divide-y divide-gray-200">
 
             {agProjects.map((project, i) => (
-              <tr key={project} onClick={() => handleProjects(project, i)}>
+              <tr
+                key={project}
+                onClick={() => handleProjects(project, i)}
+                data-testid="project-id"
+              >
 
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="flex items-center">
