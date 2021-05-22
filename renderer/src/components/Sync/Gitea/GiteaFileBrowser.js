@@ -1,20 +1,18 @@
-/* eslint-disable no-alert */
+/* eslint-disable */
 import React, { useContext } from 'react';
-import {
- Paper, Stepper, StepButton, Divider, List, ListItem, ListItemText, ListItemIcon,
-} from '@material-ui/core';
 import {
   AuthenticationContext,
   RepositoryContext,
   createContent, readContent, get,
 } from 'gitea-react-toolkit';
-import PropTypes from 'prop-types';
-import FolderOpenOutlinedIcon from '@material-ui/icons/FolderOpenOutlined';
-import InsertDriveFileOutlinedIcon from '@material-ui/icons/InsertDriveFileOutlined';
+import { ChevronRightIcon } from '@heroicons/react/solid';
 import Dropzone from '../Dropzone/Dropzone';
 import * as logger from '../../../logger';
-
-const FileList = ({ data, onDrop, changeRepo }) => {
+import {SyncContext} from '../SyncContextProvider';
+const GiteaFileBrowser = ({ changeRepo }) => {
+  const {
+    states: { dragFromAg }, action: {setDragFromAg,handleDropToAg}
+  } = React.useContext(SyncContext);
   const [projects, setProjects] = React.useState([]);
   const [files, setFiles] = React.useState([]);
   const [activeStep, setActiveStep] = React.useState();
@@ -63,10 +61,10 @@ const FileList = ({ data, onDrop, changeRepo }) => {
     logger.debug('Dropzone.js', 'returning path with filename');
     return (arr.join('/'));
   };
-  const readData = (value) => {
+  const readData = async (value) => {
     logger.debug('Dropzone.js', 'calling readData event');
     const filePath = getPath(value.path);
-    const reads = readContent(
+    await readContent(
       {
         config: auth.config,
         owner: auth.user.login,
@@ -74,13 +72,12 @@ const FileList = ({ data, onDrop, changeRepo }) => {
         ref: 'master',
         filepath: filePath,
       },
-    );
-    reads.then((result) => {
+    ).then((result) => {
       logger.debug('Dropzone.js', 'sending the data from Gitea with content');
-      onDrop({ result: { ...result, from: 'gitea' } });
+      handleDropToAg({ result: { ...result, from: 'gitea' } });
     });
   };
-  const handleDrop = () => {
+  const handleDrop = (data) => {
     logger.debug('Dropzone.js', 'calling handleDrop event');
     if (data?.result?.from === 'autographa') {
       logger.debug('Dropzone.js', 'fata send from Autographa');
@@ -100,10 +97,12 @@ const FileList = ({ data, onDrop, changeRepo }) => {
       });
       result.then(() => {
         logger.debug('Dropzone.js', 'file uploaded to Gitea');
+        setDragFromAg()
         alert('success');
       })
       .catch((err) => {
         logger.debug('Dropzone.js', 'failed to upload file to Gitea');
+        setDragFromAg()
         alert(err);
       });
     }
@@ -135,63 +134,86 @@ const FileList = ({ data, onDrop, changeRepo }) => {
     || (!repo && repoComponent)
     || (
     <>
-      <Paper>
-        <Stepper nonLinear activeStep={activeStep}>
-          <StepButton onClick={cleanRepo}>Gitea Project</StepButton>
-          {steps.map((label, index) => (
-            <StepButton onClick={handleStep(index)}>
-              {label.name}
-            </StepButton>
-          ))}
-        </Stepper>
-        <Divider />
-        <List
-          id="project-id"
-          component="nav"
-          aria-label="mailbox folders"
-        >
+      <div className="flex flex-row mx-5 my-3 border-b-1 border-primary">
+        <span className="font-semibold" onClick={cleanRepo}>
+          Gitea Project
+        </span>
+        {steps.map((label, index) => (
+          (steps.length - 1 === index)
+            ? (
+              <span className="font-semibold tracking-wide text-primary " onClick={handleStep(index)}>
+                <ChevronRightIcon className="h-4 w-4 mx-2 inline-block fill-current text-gray-800" aria-hidden="true" />
+                {label.name}
+              </span>
+            ) : (
+              <span className="font-semibold" onClick={handleStep(index)} role="button">
+                <ChevronRightIcon className="h-4 w-4 mx-2 inline-block fill-current text-gray-800" aria-hidden="true" />
+                {label.name}
+              </span>
+            )
+        ))}
+      </div>
+      
+      <table className="min-w-full divide-y divide-gray-200">
+        <thead className="bg-gray-50">
+          <tr>
+            <th
+              scope="col"
+              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+            >
+              Name
+            </th>
+            {/* <th
+                scope="col"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Created
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Last Viewed
+              </th> */}
+          </tr>
+        </thead>
+        <tbody className="bg-white divide-y divide-gray-200">
           {projects.map((project) => (
-            <ListItem
-              button
-              divider
-              key={project.path}
-              onClick={() => fetchTree(project.url, project.path)}
-            >
-              <ListItemIcon>
-                <FolderOpenOutlinedIcon />
-              </ListItemIcon>
-              <ListItemText primary={project.path} />
-            </ListItem>
-          ))}
-        </List>
-        <List component="nav" aria-label="mailbox folders">
-          {files.map((val, i) => (
-            <ListItem
-              button
-              divider
-              key={val[i]}
-              draggable
-              onDragEnd={() => readData(val)}
-            >
-              <ListItemIcon>
-                <InsertDriveFileOutlinedIcon />
-              </ListItemIcon>
-              <ListItemText primary={val.path} />
-            </ListItem>
-          ))}
-        </List>
-        <Dropzone dropped={handleDrop} />
-      </Paper>
+            <tr key={project.name} onClick={() => fetchTree(project.url, project.path)}>
+              <td
+                className="px-6 py-4 whitespace-nowrap"
+              >
+                <div className="flex items-center">
+                  <div className="ml-0">
+                    <div className="text-sm text-gray-900">{project.path}</div>
+                  </div>
+                </div>
+              </td>
+              {/* <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{file.created}</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{file.updated}</td> */}
+            </tr>
+                  ))}
+        </tbody>
+        <tbody className="bg-white divide-y divide-gray-200">
+          {files.map((file) => (
+            <tr key={file.name} draggable onDragStart={() => readData(file)}>
 
+              <td className="px-6 py-4 whitespace-nowrap">
+                <div className="flex items-center">
+                  <div className="ml-0">
+                    <div className="text-sm text-gray-900">{file.path}</div>
+                  </div>
+                </div>
+              </td>
+              {/* <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{file.created}</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{file.updated}</td> */}
+            </tr>
+                  ))}
+        </tbody>
+      </table>
+      <Dropzone dropped={()=>handleDrop(dragFromAg)} />
     </>
     )
   );
 };
-export default FileList;
-FileList.propTypes = {
-    /** State which has datas. */
-    onDrop: PropTypes.object,
-    content: PropTypes.string,
-    data: PropTypes.object,
-    changeRepo: PropTypes.func,
-  };
+export default GiteaFileBrowser;

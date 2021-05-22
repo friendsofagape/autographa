@@ -102,6 +102,12 @@
 		"react-dom": "^17.0.2",
 		"react-intl": "^5.18.0",
 		"sweetalert": "2.1.2",
-		"winston": "^3.3.3"
+		"winston": "^3.3.3",
+		"webpack-node-externals": "^3.0.0",
+		"ws": "^7.4.5"
+	},
+	"optionalDependencies": {
+		"bufferutil": "^4.0.3",
+		"utf-8-validate": "^5.0.5"
 	}
 }

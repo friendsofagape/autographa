@@ -1,63 +1,10 @@
 import { useState, Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
-import { ChevronRightIcon } from '@heroicons/react/solid';
 
 import ProjectsLayout from '@/layouts/ProjectsLayout';
+import Gitea from '@/components/Sync/Gitea/Gitea';
 // import styles from './breadcrumbs.module.css';
-
-const localFiles = [
-  {
-    name: 'arabic_revised.usfm',
-    created: '12 Aug 2019',
-    updated: '1 day ago',
-    type: 'usfm',
-  },
-  {
-    name: 'arabic_new.usfm',
-    created: '10 Jun 2019',
-    updated: '3 hours ago',
-    type: 'usfm',
-  },
-  {
-    name: 'kinyarwanda_new.usfm',
-    created: '10 Jun 2019',
-    updated: '3 hours ago',
-    type: 'usfm',
-  },
-  {
-    name: 'hindi_new.usfm',
-    created: '10 Jun 2019',
-    updated: '3 hours ago',
-    type: 'usfm',
-  },
-];
-
-const cloudFiles = [
-  {
-    name: 'folder',
-    created: '12 Aug 2019',
-    updated: '1 day ago',
-    type: 'folder',
-  },
-  {
-    name: 'logo.png',
-    created: '10 Jun 2019',
-    updated: '3 hours ago',
-    type: 'usfm',
-  },
-  {
-    name: 'project_arabic.md',
-    created: '10 Jun 2019',
-    updated: '3 hours ago',
-    type: 'usfm',
-  },
-  {
-    name: 'arabic_revised.usfm',
-    created: '12 Aug 2019',
-    updated: '1 day ago',
-    type: 'usfm',
-  },
-];
+import ProjectFileBrowser from '@/components/Sync/ProjectFileBrowser';
 
 export default function Sync() {
   const [isOpen, setIsOpen] = useState(true);
@@ -163,116 +110,14 @@ export default function Sync() {
 
       <main>
         <div className="py-6 sm:px-6 lg:px-6">
-
           <div className="grid grid-cols-2 gap-2 sm:px-0">
             <div className="shadow rounded">
-
-              <div className="flex flex-row mx-5 my-3 border-b-1 border-primary">
-                <span className="font-semibold">
-                  Arabic
-                  <ChevronRightIcon className="h-4 w-4 mx-2 inline-block fill-current text-gray-800" aria-hidden="true" />
-                </span>
-                <span className="font-semibold tracking-wide text-primary ">Toolkit</span>
-              </div>
-
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th
-                      scope="col"
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                    >
-                      Name
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                    >
-                      Created
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                    >
-                      Last Viewed
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
-
-                  {localFiles.map((file) => (
-                    <tr key={file.name}>
-
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="flex items-center">
-                          <div className="ml-0">
-                            <div className="text-sm text-gray-900">{file.name}</div>
-                          </div>
-                        </div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{file.created}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{file.updated}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-
+              <ProjectFileBrowser />
             </div>
-
             <div className="shadow rounded">
-
-              <div className="flex flex-row mx-5 my-3 border-b-1 border-primary">
-                <span className="font-semibold">
-                  BridgeConn
-                  <ChevronRightIcon className="h-4 w-4 mx-2 inline-block fill-current text-gray-800" aria-hidden="true" />
-                </span>
-                <span className="font-semibold tracking-wide text-primary ">Toolkit</span>
-              </div>
-
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th
-                      scope="col"
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                    >
-                      Name
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                    >
-                      Created
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                    >
-                      Last Viewed
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
-                  {cloudFiles.map((file) => (
-                    <tr key={file.name}>
-
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="flex items-center">
-                          <div className="ml-0">
-                            <div className="text-sm text-gray-900">{file.name}</div>
-                          </div>
-                        </div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{file.created}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{file.updated}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-
+              <Gitea />
             </div>
           </div>
-
         </div>
       </main>
 
