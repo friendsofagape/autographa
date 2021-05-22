@@ -2,7 +2,6 @@ import React, { Fragment } from 'react';
 import { Disclosure, Transition } from '@headlessui/react';
 import { ChevronUpIcon } from '@heroicons/react/solid';
 import { StarIcon } from '@heroicons/react/outline';
-
 import moment from 'moment';
 import ProjectsLayout from '../../layouts/ProjectsLayout';
 import EnhancedTableHead from '../../components/ProjectsPage/Projects/EnhancedTableHead';
@@ -24,6 +23,7 @@ export default function ProjectList() {
     action: {
       setStarredRow,
       setUnStarredRow,
+      handleClickStarred,
     },
   } = React.useContext(AutographaContext);
 
@@ -68,7 +68,10 @@ export default function ProjectList() {
                           <Disclosure>
                             <tr key={project.name}>
                               <td className="px-4 py-4 whitespace-nowrap">
-                                <button type="button">
+                                <button
+                                  onClick={(event) => handleClickStarred(event, project.name, 'starred')}
+                                  type="button"
+                                >
                                   <StarIcon className="h-5 w-5 fill-current text-yellow-400" aria-hidden="true" />
                                 </button>
                               </td>
@@ -163,7 +166,10 @@ export default function ProjectList() {
                               <td
                                 className="px-4 py-3 text-left text-xs font-medium text-gray-400"
                               >
-                                <button type="button">
+                                <button
+                                  onClick={(event) => handleClickStarred(event, project.name, 'unstarred')}
+                                  type="button"
+                                >
                                   <StarIcon className="h-5 w-5" aria-hidden="true" />
                                 </button>
                               </td>

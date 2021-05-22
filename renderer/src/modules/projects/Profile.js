@@ -151,7 +151,7 @@ function InputBar({ title }) {
               </form>
             </div>
           </div>
-        </ProjectLayout>
+        </ProjectsLayout>
 
       );
     }

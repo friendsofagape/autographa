@@ -5,12 +5,11 @@ import Sync from './Sync';
 import ProjectList from './ProjectList';
 import NewProject from './NewProject';
 
-export const ProjectsNav = ({ title }) => (
+export const ProjectsNav = ({ renderComponent }) => (
 
   <>
     {(() => {
-      console.log(title);
-      switch (title) {
+      switch (renderComponent) {
         case 'Profile':
           return <UserProfile />;
         case 'Sync':
@@ -26,5 +25,5 @@ export const ProjectsNav = ({ title }) => (
   </>
 );
 ProjectsNav.propTypes = {
-  title: PropTypes.string.isRequired,
+  renderComponent: PropTypes.string.isRequired,
 };

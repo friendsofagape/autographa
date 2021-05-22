@@ -25,11 +25,11 @@ moment.updateLocale('en', {
 });
 
 function descendingComparator(a, b, orderBy) {
-  if (orderBy !== 'date') {
-    if (b[orderBy] < a[orderBy]) {
+  if (orderBy !== 'date' && (orderBy !== 'status') && orderBy !== 'editors') {
+    if (b[orderBy].toLowerCase() < a[orderBy].toLowerCase()) {
       return -1;
     }
-    if (b[orderBy] > a[orderBy]) {
+    if (b[orderBy].toLowerCase() > a[orderBy].toLowerCase()) {
       return 1;
     }
     return 0;
@@ -44,7 +44,7 @@ export function getComparator(order, orderBy) {
 }
 
 export function stableSort(array, comparator, orderBy, dateorder) {
-  if (orderBy !== 'date') {
+  if (orderBy !== 'date' && (orderBy !== 'status') && orderBy !== 'editors') {
     const stabilizedThis = array.map((el, index) => [el, index]);
     stabilizedThis.sort((a, b) => {
       const order = comparator(a[0], b[0]);

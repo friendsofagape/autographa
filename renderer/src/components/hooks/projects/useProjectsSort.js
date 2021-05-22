@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import * as localForage from 'localforage';
+import metaFileReplace from '../../../core/projects/metaFileReplace';
 import { isElectron } from '../../../core/handleElectron';
 import fetchProjectsMeta from '../../../core/projects/fetchProjectsMeta';
 import parseFetchProjects from '../../../core/projects/parseFetchProjects';
@@ -19,7 +20,7 @@ function useProjectsSort() {
   const unstarrtedData = [];
 
   const handleClickStarred = (event, name, property) => {
-    logger.debug('project.js', 'calling starred to be unstarred and viceversa');
+    logger.debug('project.js', 'converting starred to be unstarred and viceversa');
     property === 'starred' ? setactive('starred') : setactive('unstarred');
     const selectedIndex = property === 'starred'
       ? starredrow.findIndex((x) => x.name === name)
@@ -27,6 +28,28 @@ function useProjectsSort() {
     const copy = property === 'starred'
       ? starredrow.splice(selectedIndex, 1)
       : unstarredrow.splice(selectedIndex, 1);
+      const projectArrayTemp = [];
+      const projects = localForage.getItem('projectmeta');
+      projects.then((value) => {
+        if (value) {
+          projectArrayTemp.push(value);
+        }
+      }).then(() => {
+        projectArrayTemp[0].projects.forEach((project) => {
+          if (project.projectName === name) {
+            const status = project.starred;
+            const selectedProject = project;
+            selectedProject.starred = !status;
+          }
+        });
+      }).finally(() => {
+        localForage.setItem('projectmeta', projectArrayTemp[0])
+        .then(() => {
+          if (isElectron()) {
+            metaFileReplace({ userData: projectArrayTemp[0] });
+          }
+        });
+      });
     settemparray(copy[0]);
   };
 
@@ -89,24 +112,16 @@ function useProjectsSort() {
     const FetchProjects = async () => {
       if (isElectron()) {
         const projectsData = fetchProjectsMeta();
-        if (projectsData) {
           projectsData.then((value) => {
-          value.projects.forEach((project) => {
-            if (project.starred === true) {
-                FetchStarred(project.projectName,
-                  project.language, project.createdAt, project.updatedAt);
-            } else {
-              FetchUnstarred(project.projectName,
-                project.language, project.createdAt, project.updatedAt);
+            if (value) {
+              localForage.setItem('projectmeta', value)
+              .then(() => localForage.getItem('projectmeta'))
+              .catch((err) => {
+                // we got an error
+                throw err;
+              });
             }
-          });
-        }).finally(() => {
-          setStarredRow(starrtedData);
-          setStarredProjets(starrtedData);
-          setUnStarredRow(unstarrtedData);
-          setUnStarredProjets(unstarrtedData);
         });
-      }
       } else {
         const username = 'Michael';
         // const projectName = 'Newcanon based Pro';
@@ -140,6 +155,31 @@ function useProjectsSort() {
     React.useEffect(() => {
       FetchProjects();
       // eslint-disable-next-line
+    }, []);
+
+    useEffect(() => {
+      if (isElectron()) {
+        const projects = localForage.getItem('projectmeta');
+        projects.then((value) => {
+          if (value) {
+            value.projects.forEach((project) => {
+              if (project.starred === true) {
+                  FetchStarred(project.projectName,
+                    project.language, project.createdAt, project.updatedAt);
+              } else {
+                FetchUnstarred(project.projectName,
+                  project.language, project.createdAt, project.updatedAt);
+              }
+            });
+          }
+        }).finally(() => {
+          setStarredRow(starrtedData);
+          setStarredProjets(starrtedData);
+          setUnStarredRow(unstarrtedData);
+          setUnStarredProjets(unstarrtedData);
+        });
+      }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const response = {
