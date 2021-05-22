@@ -3,10 +3,10 @@ import { Disclosure, Transition } from '@headlessui/react';
 import { ChevronUpIcon } from '@heroicons/react/solid';
 import { StarIcon } from '@heroicons/react/outline';
 
-import ProjectsLayout from '@/layouts/ProjectsLayout';
-import { AutographaContext } from '@/components/AutogrpahaContext/AutographaContext';
 import moment from 'moment';
-import EnhancedTableHead from '@/components/ProjectsPage/Projects/EnhancedTableHead';
+import ProjectsLayout from '../../layouts/ProjectsLayout';
+import EnhancedTableHead from '../../components/ProjectsPage/Projects/EnhancedTableHead';
+import { AutographaContext } from '../../components/AutogrpahaContext/AutographaContext';
 import { getComparator, stableSort } from '../../components/ProjectsPage/Projects/SortingHelper';
 import SearchTags from './SearchTags';
 
@@ -48,7 +48,6 @@ export default function ProjectList() {
     >
 
       <div className="mx-auto py-6 sm:px-6 lg:px-8">
-
         <div className="px-4 py-4 sm:px-0">
 
           <div className="flex flex-col">
@@ -69,7 +68,9 @@ export default function ProjectList() {
                           <Disclosure>
                             <tr key={project.name}>
                               <td className="px-4 py-4 whitespace-nowrap">
-                                <StarIcon className="h-5 w-5 fill-current text-yellow-400" aria-hidden="true" />
+                                <button type="button">
+                                  <StarIcon className="h-5 w-5 fill-current text-yellow-400" aria-hidden="true" />
+                                </button>
                               </td>
                               <td className="px-6 py-4 whitespace-nowrap">
                                 <div className="flex items-center">
@@ -162,7 +163,9 @@ export default function ProjectList() {
                               <td
                                 className="px-4 py-3 text-left text-xs font-medium text-gray-400"
                               >
-                                <StarIcon className="h-5 w-5" aria-hidden="true" />
+                                <button type="button">
+                                  <StarIcon className="h-5 w-5" aria-hidden="true" />
+                                </button>
                               </td>
                               <td className="px-6 py-4 whitespace-nowrap">
                                 <div className="flex items-center">

@@ -4,7 +4,7 @@ const fetchProjectsMeta = () => {
     const fs = window.require('fs');
     const path = require('path');
     const projectsMetaPath = path.join(
-        newpath, 'autographa', 'Userdata', 'Projects', 'user1', 'projects.json',
+        newpath, 'autographa', 'users', 'username', 'projects', 'projects.json',
     );
 if (fs.existsSync(projectsMetaPath)) {
     return new Promise((resolve, reject) => {

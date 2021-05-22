@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import * as localForage from 'localforage';
 import { isElectron } from '../../../core/handleElectron';
 import fetchProjectsMeta from '../../../core/projects/fetchProjectsMeta';
 import parseFetchProjects from '../../../core/projects/parseFetchProjects';
@@ -108,17 +109,7 @@ function useProjectsSort() {
       }
       } else {
         const username = 'Michael';
-        const projectName = 'Newcanon based Pro';
-       // Replacing file or updating files fileds
-        // uncomment foloowing snippet and trigger accordingly
-      //  await parseFileUpdate({
-      //     username,
-      //     projectName,
-      //     filename: 'SNG',
-      //     fileExtention: 'usfm',
-      //     data: 'Updated data inside usfm',
-      //     filenameAlias: 'श्रेष्ठगीत test updated',
-      //   });
+        // const projectName = 'Newcanon based Pro';
         parseFetchProjects(username).then((res) => {
           res.forEach((projects) => {
               if (projects.get('starred') === true) {

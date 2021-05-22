@@ -59,7 +59,7 @@ const cloudFiles = [
   },
 ];
 
-export default function ProjectList() {
+export default function Sync() {
   const [isOpen, setIsOpen] = useState(true);
   return (
     <ProjectsLayout

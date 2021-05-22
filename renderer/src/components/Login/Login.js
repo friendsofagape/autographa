@@ -188,6 +188,7 @@ export default function Login() {
             <a href="/">ABOUT</a>
             <a href="/">PRIVACY</a>
             <a href="/">TERMS</a>
+            <a href="/projects">PROJECTS</a>
           </div>
         </div>
         <div className="absolute

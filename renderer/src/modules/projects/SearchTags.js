@@ -12,18 +12,22 @@ export default function SearchTags({
 }) {
   const [query, setQuery] = React.useState(defaultQuery);
   const excludeColumns = filterList.splice(filterList.indexOf(), 1);
+  // eslint-disable-next-line consistent-return
   const onQuery = useCallback((_query, content) => {
+    let filteredData;
     setQuery(_query);
     const lowercasedValue = _query.toLowerCase().trim();
     if (lowercasedValue === '') {
       return content;
     }
-      const filteredData = content.filter(
+    if (content) {
+      filteredData = content.filter(
         (item) => Object.keys(item).some((key) => (excludeColumns.includes(key)
           ? false
           : item[key].toString().toLowerCase().includes(lowercasedValue))),
       );
       return filteredData;
+    }
   }, [excludeColumns]);
 
   // handle change event of search input
