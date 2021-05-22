@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import * as localForage from 'localforage';
+import parseProjectMetaUpdate from '../../../core/projects/parseProjectMetaUpdate';
 import metaFileReplace from '../../../core/projects/metaFileReplace';
 import { isElectron } from '../../../core/handleElectron';
 import fetchProjectsMeta from '../../../core/projects/fetchProjectsMeta';
@@ -29,6 +30,7 @@ function useProjectsSort() {
       ? starredrow.splice(selectedIndex, 1)
       : unstarredrow.splice(selectedIndex, 1);
       const projectArrayTemp = [];
+      if (isElectron()) {
       const projects = localForage.getItem('projectmeta');
       projects.then((value) => {
         if (value) {
@@ -45,11 +47,15 @@ function useProjectsSort() {
       }).finally(() => {
         localForage.setItem('projectmeta', projectArrayTemp[0])
         .then(() => {
-          if (isElectron()) {
             metaFileReplace({ userData: projectArrayTemp[0] });
-          }
         });
       });
+    } else {
+      parseProjectMetaUpdate({
+        username: 'Michael',
+        projectName: name,
+      });
+    }
     settemparray(copy[0]);
   };
 
