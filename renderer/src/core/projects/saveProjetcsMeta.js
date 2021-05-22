@@ -36,10 +36,10 @@ const saveProjectsMeta = (
     const path = require('path');
     const json = JSON.stringify(userdata);
     const projectsMetaPath = path.join(
-        newpath, 'autographa', 'Userdata', 'Projects', 'user1', 'projects.json',
+        newpath, 'autographa', 'users', 'username', 'projects', 'projects.json',
     );
     fs.mkdirSync(path.join(
-        newpath, 'autographa', 'Userdata', 'Projects', 'user1',
+        newpath, 'autographa', 'users', 'username', 'projects',
     ), {
         recursive: true,
     });
@@ -60,24 +60,25 @@ const saveProjectsMeta = (
                 // appending to an existing file
                 obj.projects.push(userdata.projects[0]);
                 fs.writeFileSync(path.join(newpath,
+                    newpath,
                     'autographa',
-                    'Userdata',
-                    'Projects',
-                    'user1',
+                    'users',
+                    'username',
+                    'projects',
                     'projects.json'),
                     JSON.stringify(obj));
                     status.push({ type: 'success', value: 'projectmeta updated' });
             }
-        }
- });
+            }
+        });
     } else {
         // Creating new file if nothing present
         fs.writeFileSync(path.join(
             newpath,
             'autographa',
-            'Userdata',
-            'Projects',
-            'user1',
+            'users',
+            'username',
+            'projects',
             'projects.json',
         ), json);
         status.push({ type: 'success', value: 'new project created' });

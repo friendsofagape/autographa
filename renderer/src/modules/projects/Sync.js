@@ -6,7 +6,7 @@ import Gitea from '@/components/Sync/Gitea/Gitea';
 // import styles from './breadcrumbs.module.css';
 import ProjectFileBrowser from '@/components/Sync/ProjectFileBrowser';
 
-export default function ProjectList() {
+export default function Sync() {
   const [isOpen, setIsOpen] = useState(true);
   return (
     <ProjectsLayout

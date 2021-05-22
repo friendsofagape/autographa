@@ -64,7 +64,7 @@ const parseSaveProjectsMeta = async (
             projectMeta.set('canoncontent', content);
             projectMeta.set('license', license);
             projectMeta.set('starred', false);
-            projectMeta.set('date', moment().format('DD-MM-YYYY'));
+            projectMeta.set('date', moment().format('DD-MMM-YYYY'));
             projectMeta.set('lastview', moment().format('YYYY-MM-DD h:mm:ss'));
             projectMeta.set('owner', person);
             projectMeta.save();

@@ -18,13 +18,6 @@ function SearchForm({
 }) {
   const classes = searchStyles();
   const [query, setQuery] = useState(defaultQuery);
-
-  // const contentSearchDebounced = AwesomeDebouncePromise(
-  //   async (_props) => await contentSearch(_props),
-  //   250,
-  // );
-  // eslint-disable-next-line no-unused-vars
-  // exclude column list from filter
   const excludeColumns = filterList.splice(filterList.indexOf(), 1);
   const onQuery = useCallback((_query, content) => {
     setQuery(_query);
