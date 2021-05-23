@@ -1,10 +1,10 @@
-import BibleNavigationInit from '../renderer/src/components/EditorPage/Navigation/BibleNavigationInit';
+import BibleNavigation from '@/modules/biblenavigation/BibleNavigation';
 import Meta from '../renderer/src/Meta';
 
 const home = () => (
   <div>
     <Meta />
-    <BibleNavigationInit />
+    <BibleNavigation />
   </div>
 );
 

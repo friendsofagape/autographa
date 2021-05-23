@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import { Disclosure, Transition } from '@headlessui/react';
@@ -6,46 +7,34 @@ import { useState } from 'react';
 import PropTypes from 'prop-types';
 import styles from './SelectReference.module.css';
 
-export default function SelectVerse(props) {
-  const {
-    children,
-    selectChapter,
-    selectVerse,
-  } = props;
-
+export default function SelectVerse({
+  children,
+  bookName,
+  chapter,
+  verse,
+  chapterList,
+  verseList,
+  onChangeChapter,
+  onChangeVerse,
+  closeBooks,
+  closeVerses,
+}) {
   const [openChapter, setOpenChapter] = useState(true);
   const [openVerse, setOpenVerse] = useState(false);
-  const [chapter, setChapter] = useState(1);
-  const [verse, setVerse] = useState(1);
 
-  function clickChapter(ev) {
-    const chapter = ev.target.innerHTML;
-    setChapter(chapter);
-    // Pass to Parent
-    selectChapter(chapter);
-
+  const onChapterSelect = (e, chapterNum) => {
+    e.preventDefault();
+    onChangeChapter(chapterNum);
     setOpenChapter(false);
     setOpenVerse(true);
-  }
+  };
 
-  function clickVerse(ev) {
-    const verse = ev.target.innerHTML;
-    setVerse(verse);
-    // Pass to Parent
-    selectVerse(verse);
-  }
-
-  const chapters = [];
-
-  for (let i = 1; i <= 70; i += 1) {
-    chapters.push(i);
-  }
-
-  const verses = [];
-
-  for (let i = 1; i <= 100; i += 1) {
-    verses.push(i);
-  }
+  const onVerseSelect = (e, verseNum) => {
+    e.preventDefault();
+    onChangeVerse(verseNum);
+    closeBooks();
+    closeVerses();
+  };
 
   return (
     <>
@@ -53,7 +42,7 @@ export default function SelectVerse(props) {
       <div className="flex flex-row justify-between text-center bg-gray-800 font-semibold text-xs tracking-wider uppercase">
         <div className="grid grid-cols-3 gap-0 bg-gray-700">
           <div className={`px-3 pt-2 ${openVerse ? 'bg-black border-black' : 'bg-primary border-primary'} hover:bg-primary hover:border-primary border-b-4 cursor-pointer`}>
-            Matthew
+            {bookName}
           </div>
           <div className={`px-3 pt-2 ${openVerse ? 'hover:bg-gray-600 border-gray-600' : 'bg-primary border-primary'} border-b-4 cursor-pointer`}>
             Chapter : &nbsp;
@@ -88,8 +77,13 @@ export default function SelectVerse(props) {
             leaveTo="transform scale-95 opacity-0"
           >
             <Disclosure.Panel className="grid pb-5 grid-cols-10 text-center bg-black text-white text-xs font-medium tracking-wide uppercase" static>
-              {chapters.map((ch) => (
-                <div onClick={clickChapter} className={styles.select}>{ch}</div>
+              {chapterList.map((chapter) => (
+                <div
+                  onClick={(e) => { onChapterSelect(e, chapter.key); }}
+                  className={styles.select}
+                >
+                  {chapter.name}
+                </div>
               ))}
             </Disclosure.Panel>
           </Transition>
@@ -109,8 +103,14 @@ export default function SelectVerse(props) {
             leaveTo="transform scale-95 opacity-0"
           >
             <Disclosure.Panel className="grid pb-5 grid-cols-10 text-center bg-black text-white text-xs font-medium tracking-wide uppercase">
-              {verses.map((v) => (
-                <div onClick={clickVerse} className={styles.select}>{v}</div>
+              {verseList.map((v) => (
+                <div
+                  onClick={(e) => { onVerseSelect(e, v.key); }}
+                  className={styles.select}
+                >
+                  {v.name}
+
+                </div>
               ))}
             </Disclosure.Panel>
 
@@ -125,7 +125,13 @@ export default function SelectVerse(props) {
 
 SelectVerse.propTypes = {
   children: PropTypes.any,
-  selectChapter: PropTypes.func,
-  selectVerse: PropTypes.func,
-
+  bookName: PropTypes.string,
+  chapter: PropTypes.string,
+  verse: PropTypes.string,
+  chapterList: PropTypes.array,
+  verseList: PropTypes.array,
+  onChangeChapter: PropTypes.func,
+  onChangeVerse: PropTypes.func,
+  closeBooks: PropTypes.func,
+  closeVerses: PropTypes.func,
 };
