@@ -40,6 +40,8 @@ export default function BibleNavigation() {
     const [openBook, setOpenBook] = useState(false);
     const [openVerse, setOpenVerse] = useState(false);
     const cancelButtonRef = useRef(null);
+    const [selectedVerses, setSelectedVerses] = useState([]);
+    const [multiSelectVerse] = useState(false);
 
     function closeBooks() {
       setOpenBook(false);
@@ -85,7 +87,9 @@ export default function BibleNavigation() {
           >
             VERSE:
             {' '}
-            {verse}
+            {multiSelectVerse
+            ? selectedVerses.join()
+            : verse}
           </button>
         </div>
 
@@ -165,6 +169,9 @@ export default function BibleNavigation() {
                   onChangeVerse={onChangeVerse}
                   closeBooks={closeBooks}
                   closeVerses={closeVerses}
+                  multiSelectVerse={multiSelectVerse}
+                  selectedVerses={selectedVerses}
+                  setSelectedVerses={setSelectedVerses}
                 >
                   <button
                     type="button"

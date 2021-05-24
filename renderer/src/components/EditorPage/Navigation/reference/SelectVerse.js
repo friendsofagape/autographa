@@ -5,6 +5,7 @@ import { Disclosure, Transition } from '@headlessui/react';
 import { useState } from 'react';
 
 import PropTypes from 'prop-types';
+import { convertToRange } from '@/util/convertToRange';
 import styles from './SelectReference.module.css';
 
 export default function SelectVerse({
@@ -18,7 +19,11 @@ export default function SelectVerse({
   onChangeVerse,
   closeBooks,
   closeVerses,
+  multiSelectVerse,
+  selectedVerses,
+  setSelectedVerses,
 }) {
+  const temp = [];
   const [openChapter, setOpenChapter] = useState(true);
   const [openVerse, setOpenVerse] = useState(false);
 
@@ -33,7 +38,20 @@ export default function SelectVerse({
     e.preventDefault();
     onChangeVerse(verseNum);
     closeBooks();
-    closeVerses();
+    // closeVerses();
+  };
+
+  const onMultiSelectVerse = async (e, verses) => {
+    selectedVerses.push(parseInt(verses, 10));
+    console.log(selectedVerses);
+      if ((selectedVerses[selectedVerses.length - 2]
+        ? selectedVerses[selectedVerses.length - 2].toString()
+        : selectedVerses[selectedVerses.length - 2]) !== verses.toString()) {
+          const result = await convertToRange(selectedVerses);
+          setSelectedVerses(result);
+        } else {
+           await selectedVerses.splice(selectedVerses.indexOf(verses.toString()), 1);
+        }
   };
 
   return (
@@ -50,7 +68,9 @@ export default function SelectVerse({
           </div>
           <div className={`px-3 pt-2 ${openVerse ? 'bg-primary border-primary' : 'hover:bg-gray-600 border-gray-600'} border-b-4 cursor-pointer`}>
             Verse : &nbsp;
-            {verse}
+            {multiSelectVerse
+            ? (selectedVerses.join())
+            : verse}
           </div>
         </div>
         <div className="flex justify-end">
@@ -91,8 +111,35 @@ export default function SelectVerse({
         )}
       </Disclosure>
 
-      <Disclosure>
-        {openVerse && (
+      {multiSelectVerse ? (
+        <Disclosure>
+          {openVerse && (
+          <Transition
+            show={openVerse}
+            enter="transition duration-100 ease-out"
+            enterFrom="transform scale-95 opacity-0"
+            enterTo="transform scale-100 opacity-100"
+            leave="transition duration-75 ease-out"
+            leaveFrom="transform scale-100 opacity-100"
+            leaveTo="transform scale-95 opacity-0"
+          >
+            <Disclosure.Panel className="grid pb-5 grid-cols-10 text-center bg-black text-white text-xs font-medium tracking-wide uppercase">
+              {verseList.map((v) => (
+                <div
+                  onClick={(e) => { onMultiSelectVerse(e, v.key); }}
+                  className={styles.select}
+                >
+                  {v.name}
+                </div>
+              ))}
+            </Disclosure.Panel>
+
+          </Transition>
+        )}
+        </Disclosure>
+      ) : (
+        <Disclosure>
+          {openVerse && (
           <Transition
             show={openVerse}
             enter="transition duration-100 ease-out"
@@ -109,15 +156,14 @@ export default function SelectVerse({
                   className={styles.select}
                 >
                   {v.name}
-
                 </div>
               ))}
             </Disclosure.Panel>
 
           </Transition>
         )}
-      </Disclosure>
-
+        </Disclosure>
+      )}
     </>
 
   );

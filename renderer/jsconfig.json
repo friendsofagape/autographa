@@ -11,6 +11,12 @@
       "@/modules/*": [
         "src/modules/*"
       ],
+      "@/core/*": [
+        "src/core/*"
+      ],
+      "@/util/*": [
+        "src/util/*"
+      ],
     }
   }
 }
