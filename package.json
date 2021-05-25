@@ -38,6 +38,7 @@
 	},
 	"devDependencies": {
 		"@netlify/plugin-nextjs": "^3.0.3",
+		"@svgr/webpack": "^5.5.0",
 		"@tailwindcss/jit": "0.1.18",
 		"@testing-library/dom": "^7.25.0",
 		"@testing-library/jest-dom": "^5.11.4",
@@ -102,8 +103,8 @@
 		"react-dom": "^17.0.2",
 		"react-intl": "^5.18.0",
 		"sweetalert": "2.1.2",
-		"winston": "^3.3.3",
 		"webpack-node-externals": "^3.0.0",
+		"winston": "^3.3.3",
 		"ws": "^7.4.5"
 	},
 	"optionalDependencies": {

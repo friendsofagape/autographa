@@ -8,12 +8,31 @@ module.exports = {
       // eslint-disable-next-line no-param-reassign
       config.resolve.fallback.fs = false;
     }
-    config.module.rules.push(
-      {
-        test: /\.md$/,
-        use: 'raw-loader',
+    config.module.rules.push({
+      test: /\.md$/,
+      use: 'raw-loader',
+    });
+    config.module.rules.push({
+      test: /\.svg$/,
+      use: [{
+        loader: '@svgr/webpack',
+        options: {
+          svgoConfig: {
+            plugins: [{
+              removeViewBox: false,
+            },
+            { removeDimensions: true },
+            {
+              removeAttrs: {
+                attrs: ['fill'],
+              },
+            }],
+          },
+        },
       },
-    );
+      ],
+    });
+
     return config;
   },
   externals: [nodeExternals()],

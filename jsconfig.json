@@ -2,6 +2,9 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
+      "@/icons/*": [
+        "public/icons/*"
+      ],
       "@/components/*": [
         "renderer/src/components/*"
       ],
