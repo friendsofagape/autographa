@@ -66,18 +66,15 @@ export default function SelectBook({
             >
               <Disclosure.Panel static>
                 <div className="bg-white grid grid-cols-4 p-4 text-xxs text-left font-bold tracking-wide uppercase">
-                  {bookList.map((book, index) => (
-                    <>
-                      {index > 38 && (
-                      <div
-                        key={book.name}
-                        onClick={(e) => bookSelect(e, book.key, book.name)}
-                        className={styles.select}
-                      >
-                        {book.name}
-                      </div>
-                    )}
-                    </>
+                  {bookList.map((book, index) => (index > 38 && (
+                  <div
+                    key={book.name}
+                    onClick={(e) => bookSelect(e, book.key, book.name)}
+                    className={styles.select}
+                  >
+                    {book.name}
+                  </div>
+                    )
                   ))}
                 </div>
               </Disclosure.Panel>
@@ -105,8 +102,7 @@ export default function SelectBook({
               <Disclosure.Panel static>
                 <div className="bg-white grid grid-cols-4 p-4 text-xxs text-left font-bold tracking-wide uppercase">
                   {bookList.map((book, index) => (
-                    <>
-                      {index <= 38 && (
+                      index <= 38 && (
                         <div
                           key={book.name}
                           onClick={(e) => bookSelect(e, book.key, book.name)}
@@ -114,8 +110,7 @@ export default function SelectBook({
                         >
                           {book.name}
                         </div>
-                    )}
-                    </>
+                    )
                   ))}
                 </div>
               </Disclosure.Panel>

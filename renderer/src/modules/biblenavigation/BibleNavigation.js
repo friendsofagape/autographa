@@ -41,7 +41,8 @@ export default function BibleNavigation() {
     const [openVerse, setOpenVerse] = useState(false);
     const cancelButtonRef = useRef(null);
     const [selectedVerses, setSelectedVerses] = useState([]);
-    const [multiSelectVerse] = useState(false);
+    const [multiSelectVerse] = useState(true);
+    const [verselectActive, setVerseSelectActive] = useState(false);
 
     function closeBooks() {
       setOpenBook(false);
@@ -53,11 +54,13 @@ export default function BibleNavigation() {
 
     function closeVerses() {
       setOpenVerse(false);
+      if (multiSelectVerse) { setVerseSelectActive(true); }
     }
 
     function selectBook() {
       setOpenBook(false);
       setOpenVerse(true);
+      if (multiSelectVerse) { setSelectedVerses([]); }
     }
 
     return (
@@ -172,6 +175,8 @@ export default function BibleNavigation() {
                   multiSelectVerse={multiSelectVerse}
                   selectedVerses={selectedVerses}
                   setSelectedVerses={setSelectedVerses}
+                  verselectActive={verselectActive}
+                  setVerseSelectActive={setVerseSelectActive}
                 >
                   <button
                     type="button"
