@@ -2,7 +2,6 @@ import Link from 'next/link';
 
 export default function SideBar() {
   return (
-
     <div className="w-28 bg-white shadow min-h-screen">
       <div className="grid justify-items-center items-center h-16 border border-b-1">
         <img
@@ -11,8 +10,8 @@ export default function SideBar() {
           alt="Workflow"
         />
       </div>
-      <ul className="mt-8">
-        <li className="text-gray-900 font-medium hover:text-gray-600 cursor-pointer mb-12">
+      <ul>
+        <li className="text-gray-900 font-medium hover:text-white hover:bg-primary cursor-pointer py-5">
           <Link href="/projects">
             <a className="flex flex-col items-center" href="#projects">
               <img
@@ -24,7 +23,7 @@ export default function SideBar() {
             </a>
           </Link>
         </li>
-        <li className="text-gray-900 font-medium hover:text-gray-600 cursor-pointer mb-12">
+        <li className="text-gray-900 font-medium hover:text-white hover:bg-primary cursor-pointer py-5">
           <Link href="/newproject">
             <a className="flex flex-col items-center" href="#new">
               <img
@@ -36,7 +35,7 @@ export default function SideBar() {
             </a>
           </Link>
         </li>
-        <li className="text-gray-900 font-medium hover:text-gray-600 cursor-pointer mb-12">
+        <li className="text-gray-900 font-medium hover:text-white hover:bg-primary cursor-pointer py-5">
           <Link href="/sync">
             <a className="flex flex-col items-center" href="#sync">
               <img
