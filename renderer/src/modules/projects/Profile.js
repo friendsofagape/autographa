@@ -50,10 +50,8 @@ function InputBar({ title }) {
             <div className="w-60 h-screen bg-gray-900 ">
               <div className="grid grid-rows-5 p-8 gap-16 pb-20 mr-20">
                 <div className="grid grid-cols-2">
-                  <img
-                    className=""
-                    src="/illustrations/green-check.svg"
-                    alt="Workflow"
+                  src="/illustrations/green-check.svg"
+                  alt="Workflow"
                   />
                   <div className="text-white tracking-wider pl-3"> Name</div>
                 </div>
