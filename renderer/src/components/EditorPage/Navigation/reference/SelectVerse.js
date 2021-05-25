@@ -122,60 +122,37 @@ export default function SelectVerse({
         )}
       </Disclosure>
 
-      {multiSelectVerse ? (
-        <Disclosure>
-          {openVerse && (
-            <Transition
-              show={openVerse}
-              enter="transition duration-100 ease-out"
-              enterFrom="transform scale-95 opacity-0"
-              enterTo="transform scale-100 opacity-100"
-              leave="transition duration-75 ease-out"
-              leaveFrom="transform scale-100 opacity-100"
-              leaveTo="transform scale-95 opacity-0"
-            >
-              <Disclosure.Panel className="grid pb-5 grid-cols-10 text-center bg-black text-white text-xs font-medium tracking-wide uppercase">
-                {verseList.map((verse) => (
-                  <div
-                    key={verse.key}
-                    onClick={(e) => { onMultiSelectVerse(e, verse.key); }}
-                    className={styles.select}
-                  >
-                    {verse.name}
-                  </div>
+      <Disclosure>
+        {openVerse && (
+        <Transition
+          show={openVerse}
+          enter="transition duration-100 ease-out"
+          enterFrom="transform scale-95 opacity-0"
+          enterTo="transform scale-100 opacity-100"
+          leave="transition duration-75 ease-out"
+          leaveFrom="transform scale-100 opacity-100"
+          leaveTo="transform scale-95 opacity-0"
+        >
+          <Disclosure.Panel className="grid pb-5 grid-cols-10 text-center bg-black text-white text-xs font-medium tracking-wide uppercase">
+            {verseList.map((verse) => (
+              <div
+                key={verse.key}
+                style={{ color: controlVerseSelect.includes(parseInt(verse.key, 10)) ? 'seagreen' : '' }}
+                onClick={(e) => {
+                  // eslint-disable-next-line no-unused-expressions
+                  multiSelectVerse
+                  ? onMultiSelectVerse(e, verse.key)
+                  : onVerseSelect(e, verse.key);
+                  }}
+                className={styles.select}
+              >
+                {verse.name}
+              </div>
               ))}
-              </Disclosure.Panel>
-
-            </Transition>
-        )}
-        </Disclosure>
-      ) : (
-        <Disclosure>
-          {openVerse && (
-          <Transition
-            show={openVerse}
-            enter="transition duration-100 ease-out"
-            enterFrom="transform scale-95 opacity-0"
-            enterTo="transform scale-100 opacity-100"
-            leave="transition duration-75 ease-out"
-            leaveFrom="transform scale-100 opacity-100"
-            leaveTo="transform scale-95 opacity-0"
-          >
-            <Disclosure.Panel className="grid pb-5 grid-cols-10 text-center bg-black text-white text-xs font-medium tracking-wide uppercase">
-              {verseList.map((v) => (
-                <div
-                  onClick={(e) => { onVerseSelect(e, v.key); }}
-                  className={styles.select}
-                >
-                  {v.name}
-                </div>
-              ))}
-            </Disclosure.Panel>
-
-          </Transition>
-        )}
-        </Disclosure>
-      )}
+          </Disclosure.Panel>
+        </Transition>
+          )}
+      </Disclosure>
     </>
 
   );

@@ -40,8 +40,11 @@ export default function BibleNavigation() {
     const [openBook, setOpenBook] = useState(false);
     const [openVerse, setOpenVerse] = useState(false);
     const cancelButtonRef = useRef(null);
+
+    const [multiSelectVerse] = useState(false);
+    const [multiSelectBook] = useState(false);
     const [selectedVerses, setSelectedVerses] = useState([]);
-    const [multiSelectVerse] = useState(true);
+    const [selectedBooks, setSelectedBooks] = useState([]);
     const [verselectActive, setVerseSelectActive] = useState(false);
 
     function closeBooks() {
@@ -116,14 +119,15 @@ export default function BibleNavigation() {
           >
 
             <Dialog.Overlay className="fixed inset-0 bg-black opacity-30" />
-
             <div className="flex items-center justify-center h-screen ">
-
               <div className="w-5/12 m-auto z-50 shadow overflow-hidden sm:rounded-lg">
                 <SelectBook
                   selectBook={selectBook}
                   bookList={bookList}
                   onChangeBook={onChangeBook}
+                  multiSelectBook={multiSelectBook}
+                  selectedBooks={selectedBooks}
+                  setSelectedBooks={setSelectedBooks}
                 >
                   <button
                     type="button"
