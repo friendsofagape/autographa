@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Fragment, useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import {
   Disclosure, Menu, Dialog, Transition,
 } from '@headlessui/react';
@@ -8,9 +8,10 @@ import {
   MenuIcon,
   XIcon,
 } from '@heroicons/react/outline';
+import { AuthenticationContext } from '@/components/Login/AuthenticationContextProvider';
 import Notifications from '../modules/notifications/Notifications';
 
-const profile = ['Your Profile', 'Settings', 'Sign out'];
+const profile = ['Your Profile', 'Settings'];
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
@@ -18,7 +19,9 @@ function classNames(...classes) {
 
 export default function TopMenuBar() {
   const [openSideBar, setOpenSideBar] = useState(false);
-
+  const {
+    action: { logout },
+  } = React.useContext(AuthenticationContext);
   function closeSideBars() {
     setOpenSideBar(false);
   }
@@ -110,6 +113,20 @@ export default function TopMenuBar() {
                                   )}
                                 </Menu.Item>
                               ))}
+                              <Menu.Item key="Sign out">
+                                {({ active }) => (
+                                  <a
+                                    href="#profile"
+                                    onClick={() => logout()}
+                                    className={classNames(
+                                          active ? 'bg-gray-100' : '',
+                                          'block px-4 py-2 text-sm text-gray-700',
+                                        )}
+                                  >
+                                    Sign out
+                                  </a>
+                                  )}
+                              </Menu.Item>
                             </Menu.Items>
                           </Transition>
                         </>

@@ -5,12 +5,11 @@ export const createUser = (values, fs) => {
   logger.debug('handleLogin.js', 'In createUser to create a new user');
   const obj = {
     username: values.username,
-    name: '',
+    firstname: '',
+    lastname: '',
     email: '',
-    work: 'Individual',
     organization: '',
     selectedregion: '',
-    offlineuser: true,
   };
   return handleJson(obj, fs).then(() => obj);
 };

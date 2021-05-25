@@ -1,6 +1,10 @@
 import ProjectsLayout from '@/layouts/ProjectsLayout';
 import { PropTypes } from 'prop-types';
+import React from 'react';
+import * as localForage from 'localforage';
+import { saveProfile } from '@/components/ProjectsPage/Profile/handleProfile';
 import CustomAutocomplete from './CustomAutocomplete';
+import { isElectron } from '../../core/handleElectron';
 
 const regions = [
   { title: 'New Delhi, India' },
@@ -44,6 +48,37 @@ function InputBar({ title }) {
   }
 
   export default function UserProfile() {
+    const [username, setUsername] = React.useState();
+    const [appMode, setAppMode] = React.useState('online');
+    const [values, setValues] = React.useState({
+      firstname: '',
+      lastname: '',
+      email: '',
+      selectedregion: '',
+      organization: '',
+    });
+    React.useEffect(() => {
+      if (!username && isElectron()) {
+        localForage.getItem('userProfile')
+        .then((value) => {
+          setUsername(value.username);
+          const keys = Object.keys(values);
+          keys.forEach((key) => {
+            // eslint-disable-next-line no-param-reassign
+            values[key] = value[key];
+          });
+          setValues(values);
+        });
+        localForage.getItem('appMode')
+        .then((value) => {
+          setAppMode(value);
+        });
+      }
+    }, [username, values, appMode]);
+    const handleSave = (e) => {
+      e.preventDefault();
+      saveProfile(values);
+    };
       return (
         <ProjectsLayout title="personal information">
           <div className=" bg-gray-100 flex">
@@ -93,13 +128,32 @@ function InputBar({ title }) {
             </div>
             <div className="w-full h-auto bg-white ml-5 mt-3 mr-3 mb-3 rounded-lg shadow border-2">
 
-              <form className="grid gap-12 grid-rows-8 pt-5 pl-5">
+              <form className="grid gap-12 grid-rows-8 pt-5 pl-5" onSubmit={(e) => handleSave(e)}>
+                {(appMode === 'offline')
+                  ? (
+                    <div>
+                      <h4 className="text-xs font-base mb-2 ml-2 text-primary  tracking-wide leading-4  font-light">Username</h4>
+                      <input
+                        type="text"
+                        name="username"
+                        id="username"
+                        defaultValue={username}
+                        disabled
+                        className="bg-gray-100 w-96 block rounded shadow-sm sm:text-sm focus:ring-gray-500 focus:border-primary border-gray-200 h-10 font-light"
+                      />
+                    </div>
+                  )
+                : <div />}
                 <div className="flex gap-8">
                   <input
                     type="text"
                     name="given-name"
                     id="name"
                     autoComplete="given-name"
+                    defaultValue={values?.firstname}
+                    onChange={(e) => {
+                      setValues({ ...values, firstname: e.target.value });
+                    }}
                     className="bg-gray-100 w-44 block rounded shadow-sm sm:text-sm focus:ring-gray-500 focus:border-primary border-gray-200 h-10 font-light"
                   />
                   <input
@@ -107,6 +161,10 @@ function InputBar({ title }) {
                     name="family-name"
                     id="name"
                     autoComplete="given-name"
+                    defaultValue={values?.lastname}
+                    onChange={(e) => {
+                      setValues({ ...values, lastname: e.target.value });
+                    }}
                     className="bg-gray-100 w-44 h-10  block rounded  sm:text-sm focus:ring-gray-500 focus:border-primary border-gray-200 font-light "
                   />
                 </div>
@@ -116,24 +174,30 @@ function InputBar({ title }) {
                   name="email"
                   id="email"
                   autoComplete="email"
+                  defaultValue={values?.email}
+                  onChange={(e) => {
+                    setValues({ ...values, email: e.target.value });
+                    }}
                   className="bg-gray-100 w-96 block rounded shadow-sm sm:text-sm focus:ring-gray-500 focus:border-primary border-gray-200 h-10 font-light"
                 />
+                {(appMode === 'online')
+                  ? (
+                    <div className="flex gap-3">
+                      <input
+                        className="bg-gray-100 w-96 block rounded shadow-sm sm:text-sm focus:ring-gray-500 focus:border-primary border-gray-200 h-10 font-light"
+                        type="password"
+                      />
+                      <button type="button" onClick="">
 
-                <div className="flex gap-3">
-                  <input
-                    className="bg-gray-100 w-96 block rounded shadow-sm sm:text-sm focus:ring-gray-500 focus:border-primary border-gray-200 h-10 font-light"
-                    type="password"
-                  />
-                  <button type="button" onClick="">
+                        <img
+                          className=""
+                          src="/illustrations/edit-password.svg"
+                          alt="edit password"
+                        />
+                      </button>
 
-                    <img
-                      className=""
-                      src="/illustrations/edit-password.svg"
-                      alt="edit password"
-                    />
-                  </button>
-
-                </div>
+                    </div>
+                  ) : <div />}
                 <InputBar title=" Organisation" />
                 <div>
                   <CustomAutocomplete list={regions} label="Region" />

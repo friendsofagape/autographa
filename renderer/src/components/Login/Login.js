@@ -1,14 +1,14 @@
 import React, { useEffect } from 'react';
 // import 'tailwindcss/tailwind.css';
 
-// import * as localForage from 'localforage';
+import * as localForage from 'localforage';
 import { useRouter } from 'next/router';
 import * as logger from '../../logger';
 import { isElectron } from '../../core/handleElectron';
 import CustomLogin from './CustomLogin';
 import { AuthenticationContext } from './AuthenticationContextProvider';
 
-// import { createUser, handleLogin } from '../../core/Login/handleLogin';
+import { createUser, handleLogin } from '../../core/Login/handleLogin';
 
 export default function Login() {
   const router = useRouter();
@@ -31,6 +31,7 @@ export default function Login() {
   const [users, setUsers] = React.useState([]);
   const {
     states: { config },
+    action: { generateToken },
     // action: { generateToken, getConfig },
   } = React.useContext(AuthenticationContext);
   const [tabvalue, setTabValue] = React.useState(0);
@@ -52,15 +53,15 @@ export default function Login() {
     setUi(newValue === 0 ? offline : online);
   };
   // The below code is commented for UI dev purpose.
-  // useEffect(() => {
-  //   if (users.length === 0) {
-  //     localForage.getItem('users').then((user) => {
-  //       if (user) {
-  //         setUsers(user);
-  //       }
-  //     });
-  //   }
-  // }, [users]);
+  useEffect(() => {
+    if (users.length === 0) {
+      localForage.getItem('users').then((user) => {
+        if (user) {
+          setUsers(user);
+        }
+      });
+    }
+  }, [users]);
   // useEffect(() => {
   //   if (!isElectron()) {
   //     // window is accessible here.
@@ -98,29 +99,30 @@ export default function Login() {
   };
   // eslint-disable-next-line no-unused-vars
   const handleSubmit = async (values) => {
+    localForage.setItem('appMode', 'online');
     logger.debug('Login.js', 'In handleSubmit');
     if (isElectron() && tabvalue === 0) {
-      router.push('/main');
+      // router.push('/main');
       // The below code is commented for UI dev purpose.
-      // if (handleValidation(values)) {
-      //   const fs = window.require('fs');
-      //   logger.debug('Login.js',
-      // 'Triggers handleLogin to check whether the user is existing or not');
-      //   const user = handleLogin(users, values);
-      //   if (user) {
-      //     logger.debug('Login.js',
-      // 'Triggers generateToken to generate a Token for the user');
-      //     generateToken(user);
-      //   } else {
-      //     logger.debug('Login.js', 'Triggers createUser for creating a new user');
-      //     createUser(values, fs)
-      //       .then((val) => {
-      //         logger.debug('Login.js',
-      // 'Triggers generateToken to generate a Token for the user');
-      //         generateToken(val);
-      //       });
-      //   }
-      // }
+      if (handleValidation(values)) {
+        const fs = window.require('fs');
+        logger.debug('Login.js',
+      'Triggers handleLogin to check whether the user is existing or not');
+        const user = handleLogin(users, values);
+        if (user) {
+          logger.debug('Login.js',
+      'Triggers generateToken to generate a Token for the user');
+          generateToken(user);
+        } else {
+          logger.debug('Login.js', 'Triggers createUser for creating a new user');
+          createUser(values, fs)
+            .then((val) => {
+              logger.debug('Login.js',
+      'Triggers generateToken to generate a Token for the user');
+              generateToken(val);
+            });
+        }
+      }
     } else {
       // eslint-disable-next-line no-lonely-if
       if (isElectron()) {
