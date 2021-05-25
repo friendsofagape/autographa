@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import Link from 'next/link';
 import { Fragment, useState } from 'react';
 
@@ -6,9 +7,7 @@ import {
 } from '@headlessui/react';
 
 import {
-  BellIcon,
   SunIcon,
-  ArrowsExpandIcon,
   SearchIcon,
 } from '@heroicons/react/outline';
 
@@ -58,9 +57,9 @@ export default function TopMenuBar() {
     setOpenSideBar(false);
   }
 
-  function openSideBars() {
-    setOpenSideBar(true);
-  }
+  // function openSideBars() {
+  //   setOpenSideBar(true);
+  // }
 
   function closeNotifications(open) {
     setOpenSideBar(open);
@@ -94,7 +93,11 @@ export default function TopMenuBar() {
                       type="text"
                       name="search"
                       id="search"
-                      className="w-2/5 m-auto focus:ring-primary focus:border-primary bg-gray-100 block rounded-md sm:text-sm border-none placeholder-gray-700"
+                      className="w-2/5 m-auto
+                      focus:ring-primary
+                      focus:border-primary
+                      bg-gray-100 block
+                      rounded-md sm:text-sm border-none placeholder-gray-700"
                       placeholder="Search"
                     />
                   </div> */}
