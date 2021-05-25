@@ -11,7 +11,7 @@ export const loadUsers = async () => {
   const newpath = localStorage.getItem('userPath');
   const fs = window.require('fs');
   const path = require('path');
-  const file = path.join(newpath, 'autographa', 'Userdata', 'Projects', 'users.json');
+  const file = path.join(newpath, 'autographa', 'users', 'users.json');
   if (fs.existsSync(file)) {
     fs.readFile(file, 'utf8', (err, data) => {
       if (err) {
@@ -34,10 +34,10 @@ export const handleJson = async (values, fs) => {
   const newpath = localStorage.getItem('userPath');
   logger.debug('handleJson.js', 'Inside handleJson');
   //   console.log('global', global.path);
-  fs.mkdirSync(path.join(newpath, 'autographa', 'Userdata', 'Projects'), {
+  fs.mkdirSync(path.join(newpath, 'autographa', 'users'), {
     recursive: true,
   });
-  const file = path.join(newpath, 'autographa', 'Userdata', 'Projects', 'users.json');
+  const file = path.join(newpath, 'autographa', 'users', 'users.json');
   error = { userExist: false, fetchFile: false };
   if (fs.existsSync(file)) {
     return new Promise((resolve) => {

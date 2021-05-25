@@ -395,6 +395,7 @@ const Profile = () => {
                   </Select>
                 </FormControl>
               </div>
+              <a href="/profile">New Profile</a>
               <Button
                 className={classes.save}
                 variant="contained"

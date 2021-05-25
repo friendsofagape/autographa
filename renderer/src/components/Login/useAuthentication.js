@@ -27,6 +27,8 @@ function useAuthentication() {
           (u) => u.username === decoded.sessionData.user,
         );
         setCurrentUser(obj);
+        localForage.setItem('userProfile',obj);
+        localForage.setItem('appMode','offline');
       });
     });
   };
@@ -49,6 +51,8 @@ function useAuthentication() {
     setaccessToken();
     setCurrentUser();
     localForage.removeItem('sessionToken');
+    localForage.removeItem('userProfile');
+    localForage.setItem('appMode','online');
   };
   const getConfig = (flowId) => {
     logger.debug('useAuthentication.js', 'getConfig fetch the config from the Kratos using flowID');
