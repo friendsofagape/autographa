@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import { Disclosure, Transition } from '@headlessui/react';
@@ -11,6 +12,9 @@ export default function SelectBook({
   bookList,
   selectBook,
   onChangeBook,
+  multiSelectBook,
+  selectedBooks,
+  setSelectedBooks,
  }) {
   const [openNT, setOpenNT] = useState(true);
   const [openOT, setOpenOT] = useState(true);
@@ -33,7 +37,20 @@ export default function SelectBook({
   function bookSelect(e, bookId) {
     e.preventDefault();
     onChangeBook(bookId);
-    selectBook();
+    if (multiSelectBook === false) { selectBook(); }
+  }
+
+  function selectMultipleBooks(e, bookID) {
+    if (selectedBooks.includes(bookID.toUpperCase()) === false) {
+      const _selectedBooks = [...selectedBooks];
+      _selectedBooks.push(bookID.toUpperCase());
+      setSelectedBooks(_selectedBooks);
+    } else {
+      const _selectedBooks = [...selectedBooks];
+      const selectedIndex = _selectedBooks.indexOf(bookID.toUpperCase());
+      _selectedBooks.splice(selectedIndex, 1);
+      setSelectedBooks(_selectedBooks);
+    }
   }
 
   return (
@@ -66,18 +83,18 @@ export default function SelectBook({
             >
               <Disclosure.Panel static>
                 <div className="bg-white grid grid-cols-4 p-4 text-xxs text-left font-bold tracking-wide uppercase">
-                  {bookList.map((book, index) => (
-                    <>
-                      {index > 38 && (
-                      <div
-                        key={book.name}
-                        onClick={(e) => bookSelect(e, book.key, book.name)}
-                        className={styles.select}
-                      >
-                        {book.name}
-                      </div>
-                    )}
-                    </>
+                  {bookList.map((book, index) => (index > 38 && (
+                  <div
+                    key={book.name}
+                    style={{ color: selectedBooks.includes((book.key).toUpperCase()) ? 'seagreen' : '' }}
+                    onClick={(e) => (multiSelectBook
+                    ? selectMultipleBooks(e, book.key, book.name)
+                    : bookSelect(e, book.key, book.name))}
+                    className={styles.select}
+                  >
+                    {book.name}
+                  </div>
+                    )
                   ))}
                 </div>
               </Disclosure.Panel>
@@ -105,17 +122,23 @@ export default function SelectBook({
               <Disclosure.Panel static>
                 <div className="bg-white grid grid-cols-4 p-4 text-xxs text-left font-bold tracking-wide uppercase">
                   {bookList.map((book, index) => (
-                    <>
-                      {index <= 38 && (
+                      index <= 38 && (
                         <div
                           key={book.name}
-                          onClick={(e) => bookSelect(e, book.key, book.name)}
+                          style={{
+                          color:
+                          selectedBooks.includes((book.key).toUpperCase())
+                          ? 'seagreen' : '',
+                          }}
+                          onClick={(e) => (
+                          multiSelectBook
+                          ? selectMultipleBooks(e, book.key, book.name)
+                          : bookSelect(e, book.key, book.name))}
                           className={styles.select}
                         >
                           {book.name}
                         </div>
-                    )}
-                    </>
+                    )
                   ))}
                 </div>
               </Disclosure.Panel>
@@ -133,4 +156,7 @@ SelectBook.propTypes = {
   selectBook: PropTypes.func,
   onChangeBook: PropTypes.func,
   bookList: PropTypes.array,
+  selectedBooks: PropTypes.array,
+  multiSelectBook: PropTypes.bool,
+  setSelectedBooks: PropTypes.func,
 };

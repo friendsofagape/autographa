@@ -11,6 +11,12 @@
       "@/modules/*": [
         "renderer/src/modules/*"
       ],
+      "@/core/*": [
+        "renderer/src/core/*"
+      ],
+      "@/util/*": [
+        "renderer/src/util/*"
+      ],
     }
   }
 }

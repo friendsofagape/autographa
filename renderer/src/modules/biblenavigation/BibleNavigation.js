@@ -41,6 +41,12 @@ export default function BibleNavigation() {
     const [openVerse, setOpenVerse] = useState(false);
     const cancelButtonRef = useRef(null);
 
+    const [multiSelectVerse] = useState(false);
+    const [multiSelectBook] = useState(false);
+    const [selectedVerses, setSelectedVerses] = useState([]);
+    const [selectedBooks, setSelectedBooks] = useState([]);
+    const [verselectActive, setVerseSelectActive] = useState(false);
+
     function closeBooks() {
       setOpenBook(false);
     }
@@ -51,11 +57,13 @@ export default function BibleNavigation() {
 
     function closeVerses() {
       setOpenVerse(false);
+      if (multiSelectVerse) { setVerseSelectActive(true); }
     }
 
     function selectBook() {
       setOpenBook(false);
       setOpenVerse(true);
+      if (multiSelectVerse) { setSelectedVerses([]); }
     }
 
     return (
@@ -85,7 +93,9 @@ export default function BibleNavigation() {
           >
             VERSE:
             {' '}
-            {verse}
+            {multiSelectVerse
+            ? selectedVerses.join()
+            : verse}
           </button>
         </div>
 
@@ -109,14 +119,15 @@ export default function BibleNavigation() {
           >
 
             <Dialog.Overlay className="fixed inset-0 bg-black opacity-30" />
-
             <div className="flex items-center justify-center h-screen ">
-
               <div className="w-5/12 m-auto z-50 shadow overflow-hidden sm:rounded-lg">
                 <SelectBook
                   selectBook={selectBook}
                   bookList={bookList}
                   onChangeBook={onChangeBook}
+                  multiSelectBook={multiSelectBook}
+                  selectedBooks={selectedBooks}
+                  setSelectedBooks={setSelectedBooks}
                 >
                   <button
                     type="button"
@@ -165,6 +176,11 @@ export default function BibleNavigation() {
                   onChangeVerse={onChangeVerse}
                   closeBooks={closeBooks}
                   closeVerses={closeVerses}
+                  multiSelectVerse={multiSelectVerse}
+                  selectedVerses={selectedVerses}
+                  setSelectedVerses={setSelectedVerses}
+                  verselectActive={verselectActive}
+                  setVerseSelectActive={setVerseSelectActive}
                 >
                   <button
                     type="button"
