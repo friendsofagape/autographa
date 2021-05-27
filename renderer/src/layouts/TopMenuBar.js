@@ -8,7 +8,7 @@ import {
   MenuIcon,
   XIcon,
 } from '@heroicons/react/outline';
-import { AuthenticationContext } from '@/components/Login/AuthenticationContextProvider';
+import { AuthenticationContext } from '../components/Login/AuthenticationContextProvider';
 import Notifications from '../modules/notifications/Notifications';
 
 const profile = ['Your Profile', 'Settings'];
