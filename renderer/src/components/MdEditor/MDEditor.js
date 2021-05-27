@@ -10,7 +10,7 @@ import Tab from '@material-ui/core/Tab';
 import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
 import * as logger from '../../logger';
-import { ProjectContext } from '../ProjectsPage/ProjectsContext/ProjectContext';
+import { ProjectContext } from '../context/ProjectContext';
 
 function a11yProps(index) {
   return {

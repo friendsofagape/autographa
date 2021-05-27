@@ -17,7 +17,7 @@ import { ProjectStyles } from '../useStyles/ProjectStyles';
 import * as logger from '../../../logger';
 import { getComparator, stableSort } from './SortingHelper';
 import UnstarredProjects from './UnstarredProjects';
-import { AutographaContext } from '../../AutogrpahaContext/AutographaContext';
+import { AutographaContext } from '../../context/AutographaContext';
 import EnhancedTableHead from './EnhancedTableHead';
 import EnhancedTableToolbar from './EnhancedTableToolbar';
 

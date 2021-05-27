@@ -16,7 +16,7 @@ import AddCircleIcon from '@material-ui/icons/AddCircle';
 import { CreateProjectStyles } from './useStyles/CreateProjectStyles';
 // import useValidator from '../../Validation/useValidator';
 import DrawerMenu from '../../ApplicationBar/DrawerMenu';
-import { ProjectContext } from '../ProjectsContext/ProjectContext';
+import { ProjectContext } from '../../context/ProjectContext';
 import { AutoCompleteSearch } from '../../AutoCompleteSearch/AutoCompleteSearch';
 
 const version = [

@@ -1,18 +1,14 @@
 import { Dialog, Transition } from '@headlessui/react';
 import {
- Fragment, useEffect, useRef, useState,
+ Fragment, useContext, useEffect, useRef, useState,
 } from 'react';
 import SelectBook from '@/components/EditorPage/Navigation/reference/SelectBook';
 import SelectVerse from '@/components/EditorPage/Navigation/reference/SelectVerse';
 import { XIcon } from '@heroicons/react/solid';
-import { useBibleReference } from 'bible-reference-rcl';
+import { ReferenceContext } from '@/components/context/ReferenceContext';
 
 export default function BibleNavigation() {
     const supportedBooks = null; // if empty array or null then all books available
-    const initialBook = 'mat';
-    const initialChapter = '2';
-    const initialVerse = '1';
-
       const {
      state: {
         bookList,
@@ -27,11 +23,7 @@ export default function BibleNavigation() {
         onChangeVerse,
         applyBooksFilter,
       },
-    } = useBibleReference({
-        initialBook,
-        initialChapter,
-        initialVerse,
-      });
+    } = useContext(ReferenceContext);
 
     useEffect(() => {
         applyBooksFilter(supportedBooks);

@@ -18,7 +18,7 @@ import { AllBooks, NT, OT } from '../../../lib/CanonSpecification';
 import CustomSpecification from './CustomSpecification';
 import { LicenseSelection } from './LicenseSelection';
 import * as logger from '../../../logger';
-import { ProjectContext } from '../ProjectsContext/ProjectContext';
+import { ProjectContext } from '../../context/ProjectContext';
 
 const canonItems = [
   { id: 'OT', spec: 'Old Testament (OT)' },

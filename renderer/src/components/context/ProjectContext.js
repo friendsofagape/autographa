@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { OT } from '../../../lib/CanonSpecification';
+import { OT } from '../../lib/CanonSpecification';
 
 export const ProjectContext = React.createContext();
 
 const ProjectContextProvider = ({ children }) => {
     const [drawer, setDrawer] = React.useState(false);
-    const [sideTabTitle, setSideTabTitle] = React.useState(() => localStorage.getItem('_tabhistory'));
+    const [sideTabTitle, setSideTabTitle] = React.useState('New');
     const [selectedVersion, setSelectedVersion] = React.useState('');
     const [license, setLicense] = React.useState();
     const [canonSpecification, setcanonSpecification] = React.useState('OT');
@@ -17,6 +17,7 @@ const ProjectContextProvider = ({ children }) => {
       projectName: '',
       scriptDirection: 'LTR',
     });
+    const [selectedProject, setSelectedProject] = React.useState('newprodir');
 
     const handleProjectFields = (prop) => (event) => {
       setNewProjectFields({ ...newProjectFields, [prop]: event.target.value });
@@ -46,6 +47,7 @@ const ProjectContextProvider = ({ children }) => {
             content,
             versificationScheme,
             sideTabTitle,
+            selectedProject,
         },
         actions: {
             setDrawer,
@@ -57,6 +59,7 @@ const ProjectContextProvider = ({ children }) => {
             handleProjectFields,
             resetProjectStates,
             setSideTabTitle,
+            setSelectedProject,
         },
     };
 

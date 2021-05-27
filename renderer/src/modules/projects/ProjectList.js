@@ -5,7 +5,7 @@ import { StarIcon } from '@heroicons/react/outline';
 import moment from 'moment';
 import ProjectsLayout from '../../layouts/ProjectsLayout';
 import EnhancedTableHead from '../../components/ProjectsPage/Projects/EnhancedTableHead';
-import { AutographaContext } from '../../components/AutogrpahaContext/AutographaContext';
+import { AutographaContext } from '../../components/context/AutographaContext';
 import { getComparator, stableSort } from '../../components/ProjectsPage/Projects/SortingHelper';
 import SearchTags from './SearchTags';
 
