@@ -50,6 +50,7 @@ export default function SearchTags({
   return (
     <>
       <input
+        data-testid="search"
         type="text"
         name="search_box"
         id="search_box"

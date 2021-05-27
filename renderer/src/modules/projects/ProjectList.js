@@ -34,34 +34,35 @@ export default function ProjectList() {
   };
 
   return (
-    <ProjectsLayout
-      title="Projects"
-      header={(
-        <SearchTags
-          contentList1={starredProjects}
-          contentList2={unstarredProjects}
-          filterList={filterList}
-          onfilerRequest1={setStarredRow}
-          onfilerRequest2={setUnStarredRow}
-        />
+    <>
+      <ProjectsLayout
+        title="Projects"
+        header={(
+          <SearchTags
+            contentList1={starredProjects}
+            contentList2={unstarredProjects}
+            filterList={filterList}
+            onfilerRequest1={setStarredRow}
+            onfilerRequest2={setUnStarredRow}
+          />
       )}
-    >
+      >
 
-      <div className="mx-auto py-6 sm:px-6 lg:px-8">
-        <div className="px-4 py-4 sm:px-0">
+        <div className="mx-auto py-6 sm:px-6 lg:px-8">
+          <div className="px-4 py-4 sm:px-0">
 
-          <div className="flex flex-col">
-            <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-              <div className="align-middle inline-block min-w-full sm:px-6 lg:px-8">
-                <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-                  <table className="min-w-full divide-y divide-gray-200">
-                    <EnhancedTableHead
-                      order={order}
-                      orderBy={orderBy}
-                      onRequestSort={handleRequestSort}
-                    />
-                    <tbody className="bg-white divide-y divide-gray-200">
-                      {starredrow && (stableSort(starredrow,
+            <div className="flex flex-col">
+              <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                <div className="align-middle inline-block min-w-full sm:px-6 lg:px-8">
+                  <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                    <table data-testid="tablelayout" className="min-w-full divide-y divide-gray-200">
+                      <EnhancedTableHead
+                        order={order}
+                        orderBy={orderBy}
+                        onRequestSort={handleRequestSort}
+                      />
+                      <tbody className="bg-white divide-y divide-gray-200">
+                        {starredrow && (stableSort(starredrow,
                         getComparator(order, orderBy),
                         orderBy,
                         order).map((project) => (
@@ -155,9 +156,9 @@ export default function ProjectList() {
                           </Disclosure>
                       ))
                       )}
-                    </tbody>
-                    <tbody className="bg-white divide-y divide-gray-200">
-                      {unstarredrow && (stableSort(unstarredrow,
+                      </tbody>
+                      <tbody className="bg-white divide-y divide-gray-200">
+                        {unstarredrow && (stableSort(unstarredrow,
                         getComparator(order, orderBy),
                         orderBy,
                         order).map((project) => (
@@ -253,18 +254,19 @@ export default function ProjectList() {
                           </Disclosure>
                       ))
                       )}
-                    </tbody>
-                  </table>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
             </div>
+
           </div>
 
         </div>
 
-      </div>
-
-    </ProjectsLayout>
+      </ProjectsLayout>
+    </>
 
   );
 }
