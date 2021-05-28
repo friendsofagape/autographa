@@ -11,6 +11,7 @@ import {
   } from 'translation-helps-rcl';
 import { theme } from '@/components/main';
 import TranslationhelpsNav from './TranslationhelpsNav';
+import EditorSection from '../EditorSection';
 
 const useStyles = makeStyles({
     root: {
@@ -73,34 +74,21 @@ const ReferenceCard = ({
     return (
       <>
         <ThemeProvider theme={theme}>
-          <Container>
-            <Card className={classes.root}>
-              <div>
-                <TranslationhelpsNav
-                  items={items}
-                  classes={classes}
-                  itemIndex={itemIndex}
-                  setItemIndex={setItemIndex}
-                />
-              </div>
-              <div className={classes.title} color="textSecondary" gutterBottom>
-                {title}
-              </div>
-              <Typography className={classes.body} variant="body2" component="p">
-                <CardContent
-                  item={item}
-                  items={items}
-                  filters={filters}
-                  markdown={markdown}
-                  languageId={languageId}
-                  markdownView={markdownView}
-                  selectedQuote={selectedQuote}
-                  setQuote={setQuote}
-                  viewMode={viewMode}
-                />
-              </Typography>
-            </Card>
-          </Container>
+          <EditorSection className={classes.body} header={title}>
+            <Typography variant="body3" component="p">
+              <CardContent
+                item={item}
+                items={items}
+                filters={filters}
+                markdown={markdown}
+                languageId={languageId}
+                markdownView={markdownView}
+                selectedQuote={selectedQuote}
+                setQuote={setQuote}
+                viewMode={viewMode}
+              />
+            </Typography>
+          </EditorSection>
         </ThemeProvider>
       </>
       );

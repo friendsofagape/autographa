@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import MenuItem from '@material-ui/core/MenuItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -12,6 +12,7 @@ import BookIcon from '@material-ui/icons/Book';
 import LiveHelpIcon from '@material-ui/icons/LiveHelp';
 import ListAltIcon from '@material-ui/icons/ListAlt';
 import CustomDialog from '@/components/ApplicationBar/CustomDialog';
+import { ReferenceContext } from '@/components/context/ReferenceContext';
 import ResourceFileManager from './ResourceFileManager';
 
 const listValue = [
@@ -24,19 +25,23 @@ const listValue = [
   { id: 'tq', val: 'Translation Questions' },
 ];
 const ReferenceSelector = () => {
-  const [anchorEl, setAnchorEl] = React.useState(null);
   const [dialogOpen, setDialogOpen] = React.useState(false);
   const [selectedIndex, setSelectedIndex] = React.useState(1);
+  const {
+    state: {
+        anchorEl,
+    },
+    actions: {
+      setAnchorEl,
+      handleClick,
+    },
+  } = useContext(ReferenceContext);
 
-  const handleClick = (event) => {
-      setAnchorEl(event.currentTarget);
-  };
   const handleClose = () => {
     setAnchorEl(null);
     setDialogOpen(false);
   };
-  const handleMenuSelect = (e, index, option) => {
-    console.log(index, option);
+  const handleMenuSelect = (e, index) => {
     setDialogOpen(true);
     setSelectedIndex(index);
   };
@@ -73,9 +78,6 @@ const ReferenceSelector = () => {
 
   return (
     <>
-      <IconButton aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
-        <AddBoxIcon />
-      </IconButton>
       <Menu
         id="simple-menu"
         anchorEl={anchorEl}

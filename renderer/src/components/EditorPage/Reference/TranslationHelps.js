@@ -25,7 +25,7 @@ const TranslationHelps = () => {
         case 'tn':
           return (
             <TranslationHelpsCard
-              title="TranslationNotes"
+              title="Translation Notes"
               verse={verse}
               chapter={chapter}
               projectId={bookId || 'mat'}

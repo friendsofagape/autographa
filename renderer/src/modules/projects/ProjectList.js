@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
 import { Disclosure, Transition } from '@headlessui/react';
+import { useRouter } from 'next/router';
 import { ChevronUpIcon } from '@heroicons/react/solid';
 import { StarIcon } from '@heroicons/react/outline';
 import moment from 'moment';
@@ -10,6 +11,7 @@ import { getComparator, stableSort } from '../../components/ProjectsPage/Project
 import SearchTags from './SearchTags';
 
 export default function ProjectList() {
+  const router = useRouter();
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('name');
   const filterList = ['name', 'language', 'date', 'view'];
@@ -24,6 +26,7 @@ export default function ProjectList() {
       setStarredRow,
       setUnStarredRow,
       handleClickStarred,
+      setSelectedProject,
     },
   } = React.useContext(AutographaContext);
 
@@ -31,6 +34,11 @@ export default function ProjectList() {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(property);
+  };
+
+  const handleSelectProject = (event, projectName) => {
+    setSelectedProject(projectName);
+    router.push('/home');
   };
 
   return (
@@ -67,66 +75,83 @@ export default function ProjectList() {
                         orderBy,
                         order).map((project) => (
                           <Disclosure>
-                            <tr key={project.name}>
-                              <td className="px-4 py-4 whitespace-nowrap">
-                                <button
-                                  onClick={(event) => handleClickStarred(event, project.name, 'starred')}
-                                  type="button"
-                                >
-                                  <StarIcon className="h-5 w-5 fill-current text-yellow-400" aria-hidden="true" />
-                                </button>
-                              </td>
-                              <td className="px-6 py-4 whitespace-nowrap">
-                                <div className="flex items-center">
-                                  <div className="ml-0">
-                                    <div className="text-sm font-medium text-gray-900">{project.name}</div>
+                            <>
+                              <tr
+                                className="hover:bg-gray-200 focus:outline-none cursor-pointer"
+                                key={project.name}
+                              >
+                                <td className="px-4 py-4 whitespace-nowrap">
+                                  <button
+                                    onClick={(event) => handleClickStarred(event, project.name, 'starred')}
+                                    type="button"
+                                  >
+                                    <StarIcon className="h-5 w-5 fill-current text-yellow-400" aria-hidden="true" />
+                                  </button>
+                                </td>
+                                <td className="px-6 py-4 whitespace-nowrap">
+                                  <div
+                                    className="flex items-center"
+                                  >
+                                    <div className="ml-0">
+                                      <div
+                                        onClick={
+                                          (event) => handleSelectProject(event, project.name)
+                                        }
+                                        role="button"
+                                        tabIndex="0"
+                                        className="text-sm font-medium text-gray-900"
+                                      >
+                                        {project.name}
+
+                                      </div>
+                                    </div>
                                   </div>
-                                </div>
-                              </td>
-                              <td className="px-6 py-4 whitespace-nowrap">
-                                <div className="text-sm text-gray-900">{project.language}</div>
-                              </td>
-                              <td className="px-6 py-4 whitespace-nowrap">
-                                <span
-                                  className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                                </td>
+                                <td className="px-6 py-4 whitespace-nowrap">
+                                  <div className="text-sm text-gray-900">{project.language}</div>
+                                </td>
+                                <td className="px-6 py-4 whitespace-nowrap">
+                                  <span
+                                    className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
                                   ${project.status !== 'active'
                                   ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}
-                                >
-                                  active
-                                </span>
-                              </td>
-                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{project.date}</td>
-                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{moment(project.view, 'YYYY-MM-DD h:mm:ss').fromNow()}</td>
-                              <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                <div className="flex -space-x-1 overflow-hidden">
-                                  <img
-                                    className="inline-block h-6 w-6 rounded-full ring-2 ring-white"
-                                    src="https://images.unsplash.com/photo-1491528323818-fdd1faba62cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                    alt=""
-                                  />
-                                  <img
-                                    className="inline-block h-6 w-6 rounded-full ring-2 ring-white"
-                                    src="https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                    alt=""
-                                  />
-                                  <img
-                                    className="inline-block h-6 w-6 rounded-full ring-2 ring-white"
-                                    src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.25&w=256&h=256&q=80"
-                                    alt=""
-                                  />
-                                  <img
-                                    className="inline-block h-6 w-6 rounded-full ring-2 ring-white"
-                                    src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                    alt=""
-                                  />
-                                </div>
-                              </td>
-                              <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                <Disclosure.Button>
-                                  <ChevronUpIcon className="h-4 w-4 fill-current text-gray-400" aria-hidden="true" />
-                                </Disclosure.Button>
-                              </td>
-                            </tr>
+                                  >
+                                    active
+                                  </span>
+                                </td>
+                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{project.date}</td>
+                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{moment(project.view, 'YYYY-MM-DD h:mm:ss').fromNow()}</td>
+                                <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                  <div className="flex -space-x-1 overflow-hidden">
+                                    <img
+                                      className="inline-block h-6 w-6 rounded-full ring-2 ring-white"
+                                      src="https://images.unsplash.com/photo-1491528323818-fdd1faba62cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                                      alt=""
+                                    />
+                                    <img
+                                      className="inline-block h-6 w-6 rounded-full ring-2 ring-white"
+                                      src="https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                                      alt=""
+                                    />
+                                    <img
+                                      className="inline-block h-6 w-6 rounded-full ring-2 ring-white"
+                                      src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.25&w=256&h=256&q=80"
+                                      alt=""
+                                    />
+                                    <img
+                                      className="inline-block h-6 w-6 rounded-full ring-2 ring-white"
+                                      src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                                      alt=""
+                                    />
+                                  </div>
+                                </td>
+                                <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                  <Disclosure.Button>
+                                    <ChevronUpIcon className="h-4 w-4 fill-current text-gray-400" aria-hidden="true" />
+                                  </Disclosure.Button>
+                                </td>
+                              </tr>
+                            </>
                             <Transition
                               as={Fragment}
                               enter="transition duration-100 ease-out"
@@ -163,7 +188,11 @@ export default function ProjectList() {
                         orderBy,
                         order).map((project) => (
                           <Disclosure>
-                            <tr key={project.name}>
+                            <tr
+                              className="hover:bg-gray-200 focus:outline-none cursor-pointer"
+                              onClick={(event) => handleSelectProject(event, project.name)}
+                              key={project.name}
+                            >
                               <td
                                 className="px-4 py-3 text-left text-xs font-medium text-gray-400"
                               >

@@ -11,6 +11,7 @@ import writeToFile from '../../../core/editor/writeToFile';
 import InputSelector from './InputSelector';
 import fetchFromParse from '../../../core/editor/fetchFromParse';
 import findBookFromParse from '../../../core/editor/findBookFromParse';
+import EditorSection from '../EditorSection';
 
 const UsfmEditor = () => {
   const intervalRef = useRef();
@@ -111,7 +112,6 @@ const UsfmEditor = () => {
   };
 
   useEffect(() => {
-    console.log('hii', bookId);
     findBookFromParse({
       username, projectName, scope: bookId.toUpperCase(),
     }).then((scopefiles) => {
@@ -160,25 +160,27 @@ const UsfmEditor = () => {
 
 return (
   <>
-    <header className="App-header">
-      <p>
-        USFM Editor
-      </p>
-      <div>
-        <InputSelector onChange={handleInputChange} />
-      </div>
-    </header>
-    {usfmInput && (
-      <BasicUsfmEditor
-        usfmString={usfmInput}
-        key={usfmInput}
-        onChange={handleEditorChange}
-        onVerseChange={handleVersChange}
-        readOnly={readOnly}
-        identification={identification}
-        onIdentificationChange={onIdentificationChange}
-      />
+    {/* <div>
+      <InputSelector onChange={handleInputChange} />
+    </div> */}
+    <span style={{
+      float: 'right', left: '-6px', top: '-404px', paddingRight: '2px',
+    }}
+    >
+      <EditorSection header="USFM EDITOR" editor>
+        {usfmInput && (
+        <BasicUsfmEditor
+          usfmString={usfmInput}
+          key={usfmInput}
+          onChange={handleEditorChange}
+          onVerseChange={handleVersChange}
+          readOnly={readOnly}
+          identification={identification}
+          onIdentificationChange={onIdentificationChange}
+        />
     )}
+      </EditorSection>
+    </span>
   </>
 );
 };

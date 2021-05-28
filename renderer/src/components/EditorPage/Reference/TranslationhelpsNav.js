@@ -20,7 +20,7 @@ const TranslationhelpsNav = ({
     itemIndex,
     setItemIndex,
   }) => {
-    const onPrevItem = () => {
+      const onPrevItem = () => {
         const newIndex = itemIndex - 1;
         if (newIndex < 0) {
           setItemIndex(items.length - 1);

@@ -5,15 +5,20 @@ import React, { useState, createContext } from 'react';
 export const ReferenceContext = createContext({});
 
 export default function ReferenceContextProvider({ children }) {
-    const initialBook = 'mat';
+    const initialBook = '1TI';
     const initialChapter = '1';
     const initialVerse = '1';
     const [owner, setOwner] = useState('Door43-Catalog');
     const [languageId, setLanguageId] = useState('en');
-    const [selectedResource, SetSelectedResource] = useState('');
+    const [selectedResource, SetSelectedResource] = useState('tn');
     const [server, setServer] = useState('https://git.door43.org');
     const [branch, setBranch] = useState('master');
     const [markdown, setMarkdown] = useState('markdown');
+    const [anchorEl, setAnchorEl] = React.useState(null);
+
+    const handleClick = (event) => {
+      setAnchorEl(event.currentTarget);
+    };
 
     const {
    state: {
@@ -51,6 +56,7 @@ export default function ReferenceContextProvider({ children }) {
         owner,
         markdown,
         selectedResource,
+        anchorEl,
       },
       actions: {
         setLanguageId,
@@ -63,6 +69,8 @@ export default function ReferenceContextProvider({ children }) {
         onChangeChapter,
         onChangeVerse,
         applyBooksFilter,
+        setAnchorEl,
+        handleClick,
       },
     };
 
