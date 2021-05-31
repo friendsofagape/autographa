@@ -1,11 +1,9 @@
-/* eslint-disable no-console */
-/* eslint-disable no-unused-vars */
 import { ProjectContext } from '@/components/context/ProjectContext';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import React, {
  useContext, useEffect, useRef, useState,
 } from 'react';
-// import { BasicUsfmEditor } from 'usfm-editor';
+import { BasicUsfmEditor } from 'usfm-editor';
 import * as localforage from 'localforage';
 import writeToParse from '../../../core/editor/writeToParse';
 import { isElectron } from '../../../core/handleElectron';
@@ -18,7 +16,7 @@ import EditorSection from '../EditorSection';
 const UsfmEditor = () => {
   const intervalRef = useRef();
   const [usfmInput, setUsfmInput] = useState(null);
-  const [readOnly, setReadOnly] = useState(false);
+  const [readOnly, setReadOnly] = useState(true);
   const [activeTyping, setActiveTyping] = useState(false);
   const [usfmOutput, setUsfmOutput] = useState();
   const [identification, setIdentification] = useState({});
@@ -83,7 +81,6 @@ const UsfmEditor = () => {
     } else {
       clearInterval(intervalRef.current);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeTyping]);
 
   // handle unmount
@@ -123,11 +120,13 @@ const UsfmEditor = () => {
           fetchFromParse({
           username, projectName, scope: bookId.toUpperCase(),
           }).then(async (data) => {
+            console.log(data);
             if (data) {
               localforage.setItem('editorData', data).then(
                 () => localforage.getItem('editorData'),
                 ).then(() => {
                   handleInputChange(data);
+                  console.log('saved to localforage');
                 }).catch((err) => {
                   // we got an error
                   throw err;
@@ -170,7 +169,7 @@ return (
     >
       <EditorSection header="USFM EDITOR" editor>
         {usfmInput && (
-        {/* <BasicUsfmEditor
+        <BasicUsfmEditor
           usfmString={usfmInput}
           key={usfmInput}
           onChange={handleEditorChange}
@@ -178,7 +177,7 @@ return (
           readOnly={readOnly}
           identification={identification}
           onIdentificationChange={onIdentificationChange}
-        /> */}
+        />
     )}
       </EditorSection>
     </span>

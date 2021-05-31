@@ -5,6 +5,7 @@ export const UsfmToolbar = {
         actionSpec: {
             buttonType: 'ParagraphButton',
             usfmMarker: 's',
+            additionalAction: () => console.log('Section header button pressed!'),
         },
     },
     'Quoted Book Title': {

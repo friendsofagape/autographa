@@ -1,11 +1,16 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
+import Container from '@material-ui/core/Container';
 import { makeStyles, ThemeProvider } from '@material-ui/core/styles';
-// import {
-//     CardContent,
-//   } from 'translation-helps-rcl';
+import Card from '@material-ui/core/Card';
+// import CardActions from '@material-ui/core/CardActions';
+// import Button from '@material-ui/core/Button';
+import {
+    CardContent,
+  } from 'translation-helps-rcl';
 import { theme } from '@/components/main';
+import TranslationhelpsNav from './TranslationhelpsNav';
 import EditorSection from '../EditorSection';
 
 const useStyles = makeStyles({
@@ -51,30 +56,27 @@ const useStyles = makeStyles({
       marginBottom: 12,
     },
   });
-const ReferenceCard = (
-//   {
-//     title,
-//     items,
-//     item,
-//     filters,
-//     markdownView,
-//     markdown,
-//     languageId,
-//     selectedQuote,
-//     setQuote,
-//     viewMode,
-// }
-) => {
+const ReferenceCard = ({
+    title,
+    items,
+    item,
+    filters,
+    itemIndex,
+    markdownView,
+    setItemIndex,
+    markdown,
+    languageId,
+    selectedQuote,
+    setQuote,
+    viewMode,
+}) => {
     const classes = useStyles();
     return (
       <>
         <ThemeProvider theme={theme}>
-          <EditorSection
-            className={classes.body}
-            // header={title}
-          >
+          <EditorSection className={classes.body} header={title}>
             <Typography variant="body3" component="p">
-              {/* <CardContent
+              <CardContent
                 item={item}
                 items={items}
                 filters={filters}
@@ -84,7 +86,7 @@ const ReferenceCard = (
                 selectedQuote={selectedQuote}
                 setQuote={setQuote}
                 viewMode={viewMode}
-              /> */}
+              />
             </Typography>
           </EditorSection>
         </ThemeProvider>

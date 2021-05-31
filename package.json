@@ -107,12 +107,15 @@
 		"react-dom": "^17.0.2",
 		"react-intl": "^5.18.0",
 		"sweetalert": "2.1.2",
+		"translation-helps-rcl": "^1.5.0",
 		"webpack-node-externals": "^3.0.0",
+		"usfm-editor": "0.8.0-SNAPSHOT.2",
 		"winston": "^3.3.3",
 		"ws": "^7.4.5"
 	},
 	"optionalDependencies": {
 		"bufferutil": "^4.0.3",
-		"utf-8-validate": "^5.0.5"
+		"utf-8-validate": "^5.0.5",
+		"scripture-resources-rcl": "^3.2.0"
 	}
 }
