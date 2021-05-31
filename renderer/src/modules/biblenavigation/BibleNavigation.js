@@ -1,18 +1,16 @@
 import { Dialog, Transition } from '@headlessui/react';
 import {
- Fragment, useEffect, useRef, useState,
+ Fragment, useContext, useEffect, useRef, useState,
 } from 'react';
 import SelectBook from '@/components/EditorPage/Navigation/reference/SelectBook';
 import SelectVerse from '@/components/EditorPage/Navigation/reference/SelectVerse';
 import { XIcon } from '@heroicons/react/solid';
-import { useBibleReference } from 'bible-reference-rcl';
+import { ReferenceContext } from '@/components/context/ReferenceContext';
+import { IconButton } from '@material-ui/core';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 export default function BibleNavigation() {
     const supportedBooks = null; // if empty array or null then all books available
-    const initialBook = 'mat';
-    const initialChapter = '2';
-    const initialVerse = '1';
-
       const {
      state: {
         bookList,
@@ -27,11 +25,7 @@ export default function BibleNavigation() {
         onChangeVerse,
         applyBooksFilter,
       },
-    } = useBibleReference({
-        initialBook,
-        initialChapter,
-        initialVerse,
-      });
+    } = useContext(ReferenceContext);
 
     useEffect(() => {
         applyBooksFilter(supportedBooks);
@@ -68,37 +62,43 @@ export default function BibleNavigation() {
 
     return (
       <>
-        <div className="items-center justify-center">
-          <button
-            type="button"
-            onClick={openBooks}
-            className="px-4 py-2 text-sm font-medium text-white bg-black rounded-md bg-opacity-60 hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+        <span className="items-center justify-center">
+          <span
+            className="px-2 py-2 pr-0 text-sm uppercase font-medium text-white bg-gray-800 bg-opacity-90"
           >
-            BOOK:
-            {' '}
             {bookName}
-          </button>
-          <button
-            type="button"
-            onClick={selectBook}
-            className="px-4 py-2 text-sm font-medium text-white bg-black rounded-md bg-opacity-60 hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+            <span style={{ marginLeft: '6px' }} className="px-2 py-2 pl-0 pr-0 text-sm font-medium text-white bg-gray-900 bg-opacity-90 hover:bg-opacity-10 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75">
+              <IconButton
+                style={{ width: '30px' }}
+                onClick={openBooks}
+              >
+                <ExpandMoreIcon fontSize="small" color="secondary" />
+              </IconButton>
+            </span>
+          </span>
+          <span
+            className="px-2 py-2 pr-0.5 text-sm font-medium text-white bg-gray-900 bg-opacity-90"
           >
-            CHAPTER:
-            {' '}
             {chapter}
-          </button>
-          <button
-            type="button"
-            className="px-4 py-2 text-sm font-medium text-white bg-black rounded-md bg-opacity-60 hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+            <span style={{ marginLeft: '6px' }} className="px-2 py-2 pl-0 pr-0 text-sm font-medium text-white bg-gray-900 bg-opacity-90 hover:bg-opacity-10 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75">
+              <IconButton
+                style={{ width: '30px', marginLeft: '2px' }}
+                onClick={selectBook}
+              >
+                <ExpandMoreIcon fontSize="small" color="secondary" />
+              </IconButton>
+            </span>
+          </span>
+          <span
+            className="px-2 py-2 text-sm uppercase font-medium text-white bg-gray-800 bg-opacity-90"
           >
             VERSE:
             {' '}
             {multiSelectVerse
             ? selectedVerses.join()
             : verse}
-          </button>
-        </div>
-
+          </span>
+        </span>
         <Transition
           show={openBook}
           as={Fragment}

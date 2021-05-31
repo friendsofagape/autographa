@@ -1,4 +1,5 @@
 import moment from 'moment';
+import saveProjectsFiles from './saveProjectFiles';
 
 const saveProjectsMeta = (
     newProjectFields,
@@ -60,17 +61,21 @@ const saveProjectsMeta = (
                 // appending to an existing file
                 obj.projects.push(userdata.projects[0]);
                 fs.writeFileSync(path.join(newpath,
-                    newpath,
                     'autographa',
                     'users',
                     'username',
                     'projects',
                     'projects.json'),
                     JSON.stringify(obj));
+                    saveProjectsFiles({
+                        username: 'username',
+                        projectname: newProjectFields.projectName,
+                        filenames: content,
+                    });
                     status.push({ type: 'success', value: 'projectmeta updated' });
             }
-            }
-        });
+        }
+ });
     } else {
         // Creating new file if nothing present
         fs.writeFileSync(path.join(
@@ -82,6 +87,11 @@ const saveProjectsMeta = (
             'projects.json',
         ), json);
         status.push({ type: 'success', value: 'new project created' });
+        saveProjectsFiles({
+            username: 'username',
+            projectname: newProjectFields.projectName,
+            filenames: content,
+        });
     }
     return status;
 };

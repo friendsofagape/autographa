@@ -136,7 +136,7 @@ export default function Login() {
         //   .then((response) => response.json())
         //   .then((data) => console.log(data));
       } else {
-        router.push('/main');
+        router.push('/newproject');
         // The below code is commented for UI dev purpose.
         // document.aglogin.action = config.action;
         // document.aglogin.method = config.method;
@@ -190,7 +190,6 @@ export default function Login() {
             <a href="/">ABOUT</a>
             <a href="/">PRIVACY</a>
             <a href="/">TERMS</a>
-            <a href="/newproject">PROJECTS</a>
           </div>
         </div>
         <div className="absolute

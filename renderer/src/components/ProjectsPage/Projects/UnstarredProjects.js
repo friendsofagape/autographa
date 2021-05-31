@@ -16,7 +16,7 @@ import InfoIcon from '@material-ui/icons/Info';
 import moment from 'moment';
 import { ProjectStyles } from '../useStyles/ProjectStyles';
 import { getComparator, stableSort } from './SortingHelper';
-import { AutographaContext } from '../../AutogrpahaContext/AutographaContext';
+import { AutographaContext } from '../../context/AutographaContext';
 import EnhancedTableToolbar from './EnhancedTableToolbar';
 import EnhancedTableHead from './EnhancedTableHead';
 

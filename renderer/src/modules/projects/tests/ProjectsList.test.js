@@ -3,7 +3,7 @@ import { render, screen  } from '@testing-library/react';
 import { act } from 'react-dom/test-utils';
 import '@testing-library/jest-dom/extend-expect';
 import ProjectList from '../ProjectList';
-import AutographaContextProvider from '../../../components/AutogrpahaContext/AutographaContext'
+import AutographaContextProvider from '../../../components/context/AutographaContext'
 import AuthenticationContextProvider from '../../../components/Login/AuthenticationContextProvider';
 
 describe('ProjectList', () => {

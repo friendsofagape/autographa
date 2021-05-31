@@ -10,7 +10,7 @@ import {
 import { Notifications } from '@material-ui/icons';
 import ApplicationBar from '../ApplicationBar/ApplicationBar';
 import { ProjectsNav } from './ProjectPaneNav/ProjectsNav';
-import { ProjectContext } from './ProjectsContext/ProjectContext';
+import { ProjectContext } from '../context/ProjectContext';
 
 Router.onRouteChangeStart = () => {
   NProgress.start();

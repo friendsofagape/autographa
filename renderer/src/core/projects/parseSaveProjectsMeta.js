@@ -15,7 +15,6 @@ const parseSaveProjectsMeta = async (
     const username = 'Michael';
     const writeData = 'this is the test data inside usfm file';
     const Person = Parse.Object.extend('Person');
-    const fileExtention = 'usfm';
     const ProjectMeta = Parse.Object.extend('ProjectMeta');
 
         const userExist = async () => {
@@ -64,17 +63,16 @@ const parseSaveProjectsMeta = async (
             projectMeta.set('canoncontent', content);
             projectMeta.set('license', license);
             projectMeta.set('starred', false);
-            projectMeta.set('date', moment().format('DD-MMM-YYYY'));
+            projectMeta.set('date', moment().format('DD-MM-YYYY'));
             projectMeta.set('lastview', moment().format('YYYY-MM-DD h:mm:ss'));
             projectMeta.set('owner', person);
             projectMeta.save();
             content.forEach((filename) => {
-                parseFileSave(
+                parseFileSave({
                     writeData,
                     filename,
-                    fileExtention,
                     projectMeta,
-                );
+                });
             });
         };
 

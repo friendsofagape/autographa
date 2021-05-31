@@ -17,6 +17,7 @@ function useProjectsSort() {
   const [orderByUnstarred, setOrderByUnstarred] = React.useState('name');
   const [starredProjects, setStarredProjets] = React.useState();
   const [unstarredProjects, setUnStarredProjets] = React.useState();
+  const [selectedProject, setSelectedProject] = React.useState('');
   const starrtedData = [];
   const unstarrtedData = [];
 
@@ -196,6 +197,7 @@ function useProjectsSort() {
         orderByUnstarred,
         starredProjects,
         unstarredProjects,
+        selectedProject,
       },
       actions: {
         handleClickStarred,
@@ -208,6 +210,7 @@ function useProjectsSort() {
         setOrderUnstarred,
         setOrderByUnstarred,
         FetchProjects,
+        setSelectedProject,
       },
     };
   return response;
