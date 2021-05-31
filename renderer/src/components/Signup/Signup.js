@@ -83,7 +83,7 @@ export default function Signup() {
     // if (handleValidation(values)) {
       // if (values.password === values.confirmpassword) {
         logger.debug('Singup.js, Passwords matched');
-        router.push('/main');
+        router.push('/newproject');
         // The below code is commented for bypassing the authentication.
         // document.agsignup.action = config.action;
         // document.agsignup.method = config.method;

@@ -1,83 +1,83 @@
 /* Hide extra breaks that are not created by the usfm editor */
 br {
-    display: none;
+	display: none;
 }
 br.usfm-editor-break {
-    display: block;
+	display: block;
 }
 /* Don't display a break after a section header */
 .usfm-marker-s + br {
-    display: none;
+	display: none;
 }
 
 h1.usfm-marker-s {
-    text-align: center;
-    margin: 0.5em 0;
-    font-size: 2em;
+	text-align: center;
+	margin: 0.5em 0;
+	font-size: 2em;
 }
 h2.usfm-marker-s {
-    text-align: center;
-    margin: 0.5em 0;
-    font-size: 1.5em;
+	text-align: center;
+	margin: 0.5em 0;
+	font-size: 1.5em;
 }
 h3.usfm-marker-s {
-    text-align: center;
-    margin: 0.5em 0;
-    font-size: 1.17em;
+	text-align: center;
+	margin: 0.5em 0;
+	font-size: 1.17em;
 }
 h4.usfm-marker-s {
-    text-align: center;
-    margin: 0.5em 0;
-    font-size: 1.12em;
+	text-align: center;
+	margin: 0.5em 0;
+	font-size: 1.12em;
 }
 h5.usfm-marker-s {
-    text-align: center;
-    margin: 0.5em 0;
-    font-size: 0.83em;
+	text-align: center;
+	margin: 0.5em 0;
+	font-size: 0.83em;
 }
 h6.usfm-marker-s {
-    text-align: center;
-    margin: 0.5em 0;
-    font-size: 0.75em;
+	text-align: center;
+	margin: 0.5em 0;
+	font-size: 0.75em;
 }
 
 hr.usfm-editor-hr {
-    margin: 0;
+	margin: 0;
 }
 
 .usfm-editor {
 } /* Override font, bg color, etc. */
 
 .usfm-editor-chapter {
-    overflow: auto;
-    margin-bottom: 0.5em;
+	overflow: auto;
+	margin-bottom: 0.5em;
 }
 
 .usfm-editor-context-menu:not(:empty) {
-    padding: 8px 7px 6px;
-    position: absolute;
-    z-index: 1;
-    top: -10000px;
-    left: -10000px;
-    margin-top: -6px;
-    opacity: 0;
-    background-color: #222;
-    border-radius: 4px;
-    transition: opacity 0.75s;
+	padding: 8px 7px 6px;
+	position: absolute;
+	z-index: 1;
+	top: -10000px;
+	left: -10000px;
+	margin-top: -6px;
+	opacity: 0;
+	background-color: #222;
+	border-radius: 4px;
+	transition: opacity 0.75s;
 }
 
 /* Give space between verse numbers when a verse is empty.
 The verse is empty if the inline container is empty and it is 
 the last child. */
 .usfm-editor-empty-inline:last-child {
-    margin: 0 0.5em 0 0;
+	margin: 0 0.5em 0 0;
 }
 
 .usfm-editor-inline {
 }
 
 .usfm-editor-unrendered-marker {
-    display: none;
+	display: none;
 }
 
 .usfm-editor-verse {
@@ -89,31 +89,31 @@ the last child. */
 }
 
 .usfm-marker-c {
-    float: left;
-    font-size: 200%;
-    margin: 0 0.2em 0 0;
-    display: inline;
-    background-color: lightgray;
+	float: left;
+	font-size: 200%;
+	margin: 0 0.2em 0 0;
+	display: inline;
+	background-color: lightgray;
 }
 .usfm-marker-c.usfm-editor-front,
 .usfm-marker-v.usfm-editor-front {
-    display: none;
+	display: none;
 }
 
 .usfm-marker-nd {
-    font-variant: small-caps;
+	font-variant: small-caps;
 }
 
 .usfm-marker-v {
-    display: inline;
-    margin: 0 0.2em 0 0;
-    background-color: lightgray;
-    white-space: nowrap;
+	display: inline;
+	margin: 0 0.2em 0 0;
+	background-color: lightgray;
+	white-space: nowrap;
 }
 
 .no-select {
-    user-select: none;
-    -moz-user-select: none;
-    -webkit-user-select: none;
-    -ms-user-select: none;
+	user-select: none;
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
 }

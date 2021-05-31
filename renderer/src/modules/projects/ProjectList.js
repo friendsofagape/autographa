@@ -188,11 +188,7 @@ export default function ProjectList() {
                         orderBy,
                         order).map((project) => (
                           <Disclosure>
-                            <tr
-                              className="hover:bg-gray-200 focus:outline-none cursor-pointer"
-                              onClick={(event) => handleSelectProject(event, project.name)}
-                              key={project.name}
-                            >
+                            <tr key={project.name}>
                               <td
                                 className="px-4 py-3 text-left text-xs font-medium text-gray-400"
                               >
@@ -206,7 +202,17 @@ export default function ProjectList() {
                               <td className="px-6 py-4 whitespace-nowrap">
                                 <div className="flex items-center">
                                   <div className="ml-0">
-                                    <div className="text-sm font-medium text-gray-900">{project.name}</div>
+                                    <div
+                                      onClick={
+                                          (event) => handleSelectProject(event, project.name)
+                                        }
+                                      role="button"
+                                      tabIndex="0"
+                                      className="text-sm font-medium text-gray-900"
+                                    >
+                                      {project.name}
+
+                                    </div>
                                   </div>
                                 </div>
                               </td>

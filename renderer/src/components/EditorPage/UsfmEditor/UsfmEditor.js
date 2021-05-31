@@ -8,7 +8,7 @@ import * as localforage from 'localforage';
 import writeToParse from '../../../core/editor/writeToParse';
 import { isElectron } from '../../../core/handleElectron';
 import writeToFile from '../../../core/editor/writeToFile';
-import InputSelector from './InputSelector';
+// import InputSelector from './InputSelector';
 import fetchFromParse from '../../../core/editor/fetchFromParse';
 import findBookFromParse from '../../../core/editor/findBookFromParse';
 import EditorSection from '../EditorSection';
