@@ -1,9 +1,8 @@
 import React, { useContext } from 'react';
-import AddBoxIcon from '@material-ui/icons/AddBox';
 import MenuItem from '@material-ui/core/MenuItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import Typography from '@material-ui/core/Typography';
-import { IconButton, Menu } from '@material-ui/core';
+import { Menu } from '@material-ui/core';
 import CommentIcon from '@material-ui/icons/Comment';
 import PostAddIcon from '@material-ui/icons/PostAdd';
 import ImageIcon from '@material-ui/icons/Image';
@@ -33,7 +32,6 @@ const ReferenceSelector = () => {
     },
     actions: {
       setAnchorEl,
-      handleClick,
     },
   } = useContext(ReferenceContext);
 

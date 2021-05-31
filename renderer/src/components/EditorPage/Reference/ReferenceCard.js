@@ -1,16 +1,11 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
-import Container from '@material-ui/core/Container';
 import { makeStyles, ThemeProvider } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-// import CardActions from '@material-ui/core/CardActions';
-// import Button from '@material-ui/core/Button';
 import {
     CardContent,
   } from 'translation-helps-rcl';
 import { theme } from '@/components/main';
-import TranslationhelpsNav from './TranslationhelpsNav';
 import EditorSection from '../EditorSection';
 
 const useStyles = makeStyles({
@@ -61,9 +56,7 @@ const ReferenceCard = ({
     items,
     item,
     filters,
-    itemIndex,
     markdownView,
-    setItemIndex,
     markdown,
     languageId,
     selectedQuote,

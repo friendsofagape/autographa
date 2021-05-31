@@ -108,7 +108,6 @@
 		"react-intl": "^5.18.0",
 		"sweetalert": "2.1.2",
 		"webpack-node-externals": "^3.0.0",
-		"usfm-editor": "0.8.0-SNAPSHOT.2",
 		"winston": "^3.3.3",
 		"ws": "^7.4.5"
 	},

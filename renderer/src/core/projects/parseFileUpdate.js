@@ -6,7 +6,6 @@ const parseFileUpdate = async ({
     username,
     projectName,
     filename,
-    fileExtention,
     data,
     filenameAlias,
     // scope,
@@ -19,28 +18,18 @@ const parseFileUpdate = async ({
         newUserQuery.include('owner');
         await newUserQuery.find();
         const filesResult = await filesQuery.find();
-        async function onDeleteImage(fileId) {
-            const response = await fileId.destroy({ javascriptKey: true });
-            return response;
-        }
         return new Promise((resolve) => {
         filesResult.forEach((element) => {
             if (element.get('owner').get('owner').get('name') === username) {
                 if (element.get('owner').get('projectName') === projectName) {
-                        if ((element).get('file') !== undefined) {
-                            if ((element).get('file')._name.split('_')[1] === `${filename}.${fileExtention}`) {
-                            onDeleteImage((element)).then(async () => {
-                                // eslint-disable-next-line no-console
-                              const response = parseFileSave(
-                                    data,
-                                    filename,
-                                    fileExtention,
-                                    (element).get('owner'),
-                                    filenameAlias,
-                                );
+                        if ((element).get('data') !== undefined) {
+                              const response = parseFileSave({
+                                writeData: data,
+                                filename,
+                                projectMeta: (element).get('owner'),
+                                filenameAlias,
+                              });
                                 resolve(response);
-                            });
-                            }
                         }
                 }
             }

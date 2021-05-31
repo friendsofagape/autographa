@@ -22,7 +22,7 @@ const home = () => (
         <EditorLayout>
           <BibleNavigation />
           <TranslationHelps />
-          <UsfmEditor />
+          {/* <UsfmEditor /> */}
         </EditorLayout>
       </ReferenceContextProvider>
     </ProjectContextProvider>

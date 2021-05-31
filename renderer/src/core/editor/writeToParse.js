@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable no-underscore-dangle */
 import Parse from 'parse';
 
@@ -19,11 +20,9 @@ const writeToParse = async ({
         filesResult.forEach(async (element) => {
             if (element.get('owner').get('owner').get('name') === username) {
                 if (element.get('owner').get('projectName') === projectName && element.get('scope') === scope) {
-                    console.log(scope);
                     if (element.get('data')) {
                         element.set('data', usfmData);
                         element.save();
-                        console.log('saved to parse');
                     } else {
                         element.set('data', usfmData);
                         try {

@@ -197,6 +197,7 @@ function useProjectsSort() {
         orderByUnstarred,
         starredProjects,
         unstarredProjects,
+        selectedProject,
       },
       actions: {
         handleClickStarred,

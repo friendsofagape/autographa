@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const InputSelector = ({ onChange }) => {
     const handleReadFile = async (e) => {
@@ -19,3 +20,7 @@ const InputSelector = ({ onChange }) => {
 };
 
 export default InputSelector;
+
+InputSelector.propTypes = {
+  onChange: PropTypes.func,
+};
