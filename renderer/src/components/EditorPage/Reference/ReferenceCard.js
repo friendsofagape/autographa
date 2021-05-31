@@ -2,9 +2,9 @@
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles, ThemeProvider } from '@material-ui/core/styles';
-import {
-    CardContent,
-  } from 'translation-helps-rcl';
+// import {
+//     CardContent,
+//   } from 'translation-helps-rcl';
 import { theme } from '@/components/main';
 import EditorSection from '../EditorSection';
 
@@ -51,25 +51,30 @@ const useStyles = makeStyles({
       marginBottom: 12,
     },
   });
-const ReferenceCard = ({
-    title,
-    items,
-    item,
-    filters,
-    markdownView,
-    markdown,
-    languageId,
-    selectedQuote,
-    setQuote,
-    viewMode,
-}) => {
+const ReferenceCard = (
+//   {
+//     title,
+//     items,
+//     item,
+//     filters,
+//     markdownView,
+//     markdown,
+//     languageId,
+//     selectedQuote,
+//     setQuote,
+//     viewMode,
+// }
+) => {
     const classes = useStyles();
     return (
       <>
         <ThemeProvider theme={theme}>
-          <EditorSection className={classes.body} header={title}>
+          <EditorSection
+            className={classes.body}
+            // header={title}
+          >
             <Typography variant="body3" component="p">
-              <CardContent
+              {/* <CardContent
                 item={item}
                 items={items}
                 filters={filters}
@@ -79,7 +84,7 @@ const ReferenceCard = ({
                 selectedQuote={selectedQuote}
                 setQuote={setQuote}
                 viewMode={viewMode}
-              />
+              /> */}
             </Typography>
           </EditorSection>
         </ThemeProvider>
