@@ -9,10 +9,10 @@ const TranslationHelps = dynamic(
   () => import('../renderer/src/components/EditorPage/Reference/TranslationHelps'),
   { ssr: false },
 );
-const UsfmEditor = dynamic(
-  () => import('@/components/EditorPage/UsfmEditor/UsfmEditor'),
-  { ssr: false },
-);
+// const UsfmEditor = dynamic(
+//   () => import('@/components/EditorPage/UsfmEditor/UsfmEditor'),
+//   { ssr: false },
+// );
 
 const home = () => (
   <div>
