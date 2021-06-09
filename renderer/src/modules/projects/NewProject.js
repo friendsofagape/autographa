@@ -1,16 +1,38 @@
 import ProjectsLayout from '@/layouts/ProjectsLayout';
-import React from 'react';
-import { Popover } from '@headlessui/react';
+import React, { Fragment } from 'react';
+import { Popover, Dialog, Transition } from '@headlessui/react';
 import PropTypes from 'prop-types';
+// import BibleNavigation from '@/modules/biblenavigation/BibleNavigation';
+import SelectBook from '@/components/EditorPage/Navigation/reference/SelectBook';
+import { XIcon } from '@heroicons/react/solid';
+import { useBibleReference } from 'bible-reference-rcl';
+import CustomCanonSpec from '@/components/ProjectsPage/CreateProject/CustomCanonSpec';
+// import useCreateProject from '@/components/ProjectsPage/CreateProject/useCreateProject';
+// import CreateProjectContextProvider from '@/components/ProjectsPage/CreateProject/CreateProjectContextProvider';
+import { ProjectContext } from '@/components/context/ProjectContext';
+import { ReferenceContext } from '@/components/context/ReferenceContext';
 import CustomAutocomplete from './CustomAutocomplete';
 
 const langauges = [
   { title: 'English' },
-  { title: 'Zulu' },
-  { title: 'Wolof' },
-  { title: 'Mende' },
-  { title: 'Kiswahili' }];
-
+  { title: 'Hindi' },
+  { title: 'Malayalam' },
+  { title: 'Tamil' },
+  { title: 'Odia' }];
+const versification = [
+  { title: 'King James Version (KJV)' },
+  { title: 'New Internation Version (NIV)' },
+];
+const licenseItems = [
+  { id: 'BY', title: 'Attribution' },
+  { id: 'BY_ND', title: 'Attribution-NoDerivatives' },
+  { id: 'BY_NC', title: 'Attribution-NonCommercial' },
+  { id: 'BY_SA', title: 'Attribution-ShareAlike' },
+  { id: 'BY_NC_SA', title: 'Attribution-NonCommercial-ShareAlike' },
+  { id: 'BY_NC_ND', title: 'Attribution-NonCommercial-NoDerivatives' },
+  { id: 'CC0', title: 'CC0' },
+  { id: 'Custom', title: 'Custom' },
+];
   function TargetLanguageTag(props) {
       const { children } = props;
       return (
@@ -43,11 +65,29 @@ function LicencePopover() {
       {({ open }) => (
         <>
           <Popover.Button className="min-w-full">
-            <img
-              className=""
-              src="illustrations/add-button.svg"
-              alt="add button"
-            />
+            <button
+              className="mt-5 flex-shrink-0"
+              type="button"
+              label="na"
+            >
+              <img
+                className="min-w-10"
+                src="illustrations/add-button.svg"
+                alt="add button"
+              />
+            </button>
+            <button
+              className="mt-5 flex-shrink-0"
+              type="button"
+              label="na"
+              onClick={() => openBibleNav('edit')}
+            >
+              <img
+                className=" w-10 h-10"
+                src="illustrations/edit.svg"
+                alt="add button"
+              />
+            </button>
           </Popover.Button>
           <Popover.Overlay
             className={`${
@@ -86,12 +126,30 @@ function TargetLanguagePopover() {
       {({ open }) => (
         <>
           <Popover.Button>
-            <img
-              className=" w-10 h-10"
-              src="illustrations/add-button.svg"
-              alt="add button"
-            />
 
+            <button
+              className="mt-5 min-w-max"
+              type="button"
+              label="na"
+            >
+              <img
+                className=" w-10 h-10"
+                src="illustrations/add-button.svg"
+                alt="add button"
+              />
+            </button>
+            <button
+              className="mt-5 flex-shrink-0"
+              type="button"
+              label="na"
+              onClick={() => openBibleNav('edit')}
+            >
+              <img
+                className=" w-10 h-10"
+                src="illustrations/edit.svg"
+                alt="add button"
+              />
+            </button>
           </Popover.Button>
           <Popover.Overlay
             className={`${
@@ -148,32 +206,67 @@ function TargetLanguagePopover() {
 }
 
 function AdvancedSettingsDropdown() {
+  const canon = [
+    { id: 'OT', title: 'Old Testament (OT)' },
+    { id: 'NT', title: 'New Testament (NT)' },
+    { id: 'DC', title: 'Deutro Canon' },
+    { id: 'OTDC', title: 'OT Deutro Canon' },
+  ];
+  const {
+    states: {
+      canonSpecification,
+      content,
+      canonList,
+    },
+   } = React.useContext(ProjectContext);
+   const {
+    state: {
+      bookList,
+      bookName,
+      bookId,
+    },
+   } = React.useContext(ReferenceContext);
   const [isShow, setIsShow] = React.useState(true);
-
+  const [bibleNav, setBibleNav] = React.useState(false);
+  // const [canonItems, setCanonItems] = React.useState(canon);
+  // const [selectedBooks, setSelectedBooks] = React.useState([]);
+  const [handleNav, setHandleNav] = React.useState();
+  // const { state: { newCanonSpec } } = useCreateProject();
   const handleClick = () => {
     setIsShow(!isShow);
   };
-
+  const openBibleNav = (value) => {
+    setHandleNav(value);
+    setBibleNav(true);
+  };
+  function closeBooks() {
+    setBibleNav(false);
+  }
+  // console.log(bookList,
+  //   bookName,
+  //   bookId);
+  // console.log(langauges, licenseItems.map(({ license }) => license));
   return (
-    <div>
-      <button
-        className="min-w-max flex justify-between pt-3 shadow tracking-wider leading-none h-10 w-2/3 px-4 py-2 text-sm font-medium text-black bg-gray-100 rounded-md hover:bg-gray-200 focus:outline-none"
-        onClick={handleClick}
-        type="button"
-      >
-        <h3>Advanced Settings</h3>
-        <img
-          className="justify-self-end mt-1"
-          src="illustrations/arrow-down.svg"
-          alt=""
-        />
-      </button>
-      {!isShow
+    <>
+      <div>
+        <button
+          className="min-w-max flex justify-between pt-3 shadow tracking-wider leading-none h-10 w-2/3 px-4 py-2 text-sm font-medium text-black bg-gray-100 rounded-md hover:bg-gray-200 focus:outline-none"
+          onClick={handleClick}
+          type="button"
+        >
+          <h3>Advanced Settings</h3>
+          <img
+            className="justify-self-end mt-1"
+            src="illustrations/arrow-down.svg"
+            alt=""
+          />
+        </button>
+        {!isShow
         && (
         <div>
           <div className="flex gap-5 mt-8">
-            <CustomAutocomplete label="Versification Scheme" list={langauges} />
-            <button
+            <CustomAutocomplete label="Versification Scheme" list={versification} />
+            {/* <button
               className="mt-5 min-w-max"
               type="button"
               label="na"
@@ -182,20 +275,21 @@ function AdvancedSettingsDropdown() {
                 src="illustrations/add-button.svg"
                 alt="add button"
               />
-            </button>
+            </button> */}
           </div>
           <div className="flex relative gap-5 mt-5">
             <div className="absolute left-72 ml-4">
               <BookNumberTag>
-                68
+                {content[0].length}
               </BookNumberTag>
             </div>
 
-            <CustomAutocomplete label="Canon Specificationse" list={langauges} />
+            <CustomAutocomplete label="Canon Specificationse" list={canonList} />
             <button
               className="mt-5 flex-shrink-0"
               type="button"
               label="na"
+              onClick={() => openBibleNav('new')}
             >
               <img
                 className="min-w-10"
@@ -207,6 +301,7 @@ function AdvancedSettingsDropdown() {
               className="mt-5 flex-shrink-0"
               type="button"
               label="na"
+              onClick={() => openBibleNav('edit')}
             >
               <img
                 className=" w-10 h-10"
@@ -216,15 +311,22 @@ function AdvancedSettingsDropdown() {
             </button>
           </div>
           <div className="flex gap-5 mt-5">
-            <CustomAutocomplete label="Licence" list={langauges} />
+            <CustomAutocomplete label="Licence" list={licenseItems} />
             <div className="mt-8 w-8 min-w-max">
               <LicencePopover />
             </div>
           </div>
         </div>
+        )}
+      </div>
+      {bibleNav && (
+      <CustomCanonSpec
+        bibleNav={bibleNav}
+        closeBibleNav={closeBooks}
+        handleNav={handleNav}
+      />
 )}
-    </div>
-
+    </>
   );
 }
 
@@ -243,6 +345,34 @@ function BibleHeaderTagDropDown() {
 }
 
   export default function NewProject() {
+    const {
+      states: {
+        newProjectFields,
+        version,
+      },
+      actions: {
+        handleProjectFields,
+        setVersion,
+      },
+     } = React.useContext(ProjectContext);
+    function getAbbreviation(text) {
+      if (typeof text !== 'string' || !text) {
+        return '';
+      }
+      const abbr = [];
+      const splitText = text.trim().split(' ');
+      splitText.forEach((t) => {
+        abbr.push(t.charAt(0));
+      });
+      return abbr.join('').toUpperCase();
+    }
+    const handleVersion = (e) => {
+      const abbreviation = getAbbreviation(e.target.value);
+      setVersion({ ...version, name: e.target.value, abbreviation });
+    };
+    const handleCreate = () => {
+      console.log('Create Project', newProjectFields, version);
+    };
       return (
         <ProjectsLayout
           title="new project"
@@ -258,6 +388,8 @@ function BibleHeaderTagDropDown() {
                       type="text"
                       name="project_name"
                       id=""
+                      value={newProjectFields.projectName}
+                      onChange={handleProjectFields('projectName')}
                       className="bg-gray-200 w-80 block rounded shadow-sm sm:text-sm focus:ring-gray-500 focus:border-primary border-gray-300"
                     />
                   </div>
@@ -266,12 +398,20 @@ function BibleHeaderTagDropDown() {
                       type="text"
                       name="version"
                       id=""
+                      value={newProjectFields.version}
+                      onChange={(e) => {
+                        handleVersion(e);
+                      }}
                       className="bg-white w-80 block rounded shadow-sm sm:text-sm focus:ring-gray-500 focus:border-primary border-gray-300"
                     />
                     <input
                       type="text"
                       name="version_abbreviated"
                       id=""
+                      value={version.abbreviation}
+                      onChange={(e) => {
+                        setVersion({ ...version, abbreviation: e.target.value });
+                      }}
                       className="bg-white w-20 block rounded  sm:text-sm focus:ring-gray-500 focus:border-primary border-gray-300"
                     />
                   </div>
@@ -281,6 +421,8 @@ function BibleHeaderTagDropDown() {
                       type="text"
                       name="Description"
                       id=""
+                      value={newProjectFields.description}
+                      onChange={handleProjectFields('description')}
                       className="bg-white w-80 h-28  block rounded shadow-sm sm:text-sm focus:ring-gray-500 focus:border-primary border-gray-300"
                     />
                   </div>
@@ -288,7 +430,7 @@ function BibleHeaderTagDropDown() {
                     <div className=" absolute left-80 ml-4">
 
                       <TargetLanguageTag>
-                        LTR
+                        {newProjectFields.scriptDirection}
                       </TargetLanguageTag>
                     </div>
                     <CustomAutocomplete label="Target Langauge" list={langauges} />
@@ -296,7 +438,14 @@ function BibleHeaderTagDropDown() {
                       <TargetLanguagePopover />
                     </div>
                   </div>
-                  <button type="button" className="w-40 h-10  bg-success leading-loose rounded shadow text-xs font-base  text-white tracking-wide  font-light uppercase">Create Project</button>
+                  <button
+                    type="button"
+                    className="w-40 h-10  bg-success leading-loose rounded shadow text-xs font-base  text-white tracking-wide  font-light uppercase"
+                    onClick={() => handleCreate()}
+                  >
+                    Create Project
+
+                  </button>
                 </div>
               </div>
               <div className="overflow-auto ">

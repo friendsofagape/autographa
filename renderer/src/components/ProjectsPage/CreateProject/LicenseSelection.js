@@ -87,11 +87,11 @@ export const LicenseSelection = ({ openmdviewer, setopenmdviewer }) => {
         classes={classes}
         direction="right"
       >
-        <MDEditor
+        {/* <MDEditor
           openMDFile={openmdviewer}
           setopenMDFile={setDrawerEvent}
           mdFilePath={filePath}
-        />
+        /> */}
       </DrawerMenu>
     </>
   );
