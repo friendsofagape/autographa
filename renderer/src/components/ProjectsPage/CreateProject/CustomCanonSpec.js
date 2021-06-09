@@ -11,29 +11,26 @@ const CustomCanonSpec = ({ bibleNav, closeBibleNav, handleNav }) => {
   const initialChapter = '1';
   const initialVerse = '1';
   const [name, setName] = React.useState();
-  const [selectedBooks, setSelectedBooks] = React.useState([]);
   const {
-    states: { canonSpecification, content },
-    actions: { setcanonSpecification, setContent },
+    states: { canonSpecification },
+    actions: { setcanonSpecification },
   } = React.useContext(ProjectContext);
+  const [selectedBooks, setSelectedBooks] = React.useState([]);
+
   const {
     state: { bookList },
   } = useBibleReference({ initialBook, initialChapter, initialVerse });
   const saveCanon = () => {
-    console.log('hi');
-     console.log({ title: name, books: selectedBooks, old: content });
-     setcanonSpecification(name);
-     setContent([selectedBooks]);
-     closeBibleNav();
+    setcanonSpecification({ title: name, currentScope: selectedBooks });
+    closeBibleNav();
    };
    React.useEffect(() => {
      if (handleNav === 'edit') {
-       console.log(canonSpecification, content[0]);
-        setName(canonSpecification);
-        setSelectedBooks(content[0]);
+        setName(canonSpecification.title);
+        setSelectedBooks(canonSpecification.currentScope);
      }
+   // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [handleNav]);
-console.log(bookList, selectedBooks);
   return (
     <Transition
       show={bibleNav}
@@ -48,12 +45,10 @@ console.log(bookList, selectedBooks);
       <Dialog
         as="div"
         className="fixed inset-0 z-10 overflow-y-auto"
-      // initialFocus={cancelButtonRef}
         static
         open={bibleNav}
         onClose={closeBibleNav}
       >
-
         <Dialog.Overlay className="fixed inset-0 bg-black opacity-30" />
         <div className="flex items-center justify-center h-screen ">
           <div className="w-5/12 m-auto z-50 shadow overflow-hidden sm:rounded-lg">

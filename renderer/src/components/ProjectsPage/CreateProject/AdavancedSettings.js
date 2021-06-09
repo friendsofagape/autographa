@@ -45,11 +45,11 @@ const AdvancedSetttings = () => {
     },
 } = React.useContext(ProjectContext);
 
-  useEffect(() => {
-    logger.debug('advancesettings.js', 'set content to OT on mount');
-    setContent(OT);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // useEffect(() => {
+  //   logger.debug('advancesettings.js', 'set content to OT on mount');
+  //   setContent(OT);
+  // // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
 
   useEffect(() => {
     localForage.getItem('custonSpec', (err, value) => {

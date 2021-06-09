@@ -1,38 +1,11 @@
 import ProjectsLayout from '@/layouts/ProjectsLayout';
-import React, { Fragment } from 'react';
-import { Popover, Dialog, Transition } from '@headlessui/react';
+import React from 'react';
+import { Popover } from '@headlessui/react';
 import PropTypes from 'prop-types';
-// import BibleNavigation from '@/modules/biblenavigation/BibleNavigation';
-import SelectBook from '@/components/EditorPage/Navigation/reference/SelectBook';
-import { XIcon } from '@heroicons/react/solid';
-import { useBibleReference } from 'bible-reference-rcl';
 import CustomCanonSpec from '@/components/ProjectsPage/CreateProject/CustomCanonSpec';
-// import useCreateProject from '@/components/ProjectsPage/CreateProject/useCreateProject';
-// import CreateProjectContextProvider from '@/components/ProjectsPage/CreateProject/CreateProjectContextProvider';
 import { ProjectContext } from '@/components/context/ProjectContext';
-import { ReferenceContext } from '@/components/context/ReferenceContext';
 import CustomAutocomplete from './CustomAutocomplete';
 
-const langauges = [
-  { title: 'English' },
-  { title: 'Hindi' },
-  { title: 'Malayalam' },
-  { title: 'Tamil' },
-  { title: 'Odia' }];
-const versification = [
-  { title: 'King James Version (KJV)' },
-  { title: 'New Internation Version (NIV)' },
-];
-const licenseItems = [
-  { id: 'BY', title: 'Attribution' },
-  { id: 'BY_ND', title: 'Attribution-NoDerivatives' },
-  { id: 'BY_NC', title: 'Attribution-NonCommercial' },
-  { id: 'BY_SA', title: 'Attribution-ShareAlike' },
-  { id: 'BY_NC_SA', title: 'Attribution-NonCommercial-ShareAlike' },
-  { id: 'BY_NC_ND', title: 'Attribution-NonCommercial-NoDerivatives' },
-  { id: 'CC0', title: 'CC0' },
-  { id: 'Custom', title: 'Custom' },
-];
   function TargetLanguageTag(props) {
       const { children } = props;
       return (
@@ -60,6 +33,22 @@ function BookNumberTag(props) {
 }
 
 function LicencePopover() {
+  const [name, setName] = React.useState();
+  const [content, setContent] = React.useState();
+  const {
+    states: {
+      copyright,
+    }, actions: { setCopyRight },
+  } = React.useContext(ProjectContext);
+  const openlicenceNav = (nav) => {
+    if (nav === 'edit') {
+      setName(copyright.title);
+      setContent(copyright.licence);
+    }
+  };
+  const addLicence = () => {
+    setCopyRight({ id: 'custom', title: name, licence: content });
+  };
   return (
     <Popover className="relative">
       {({ open }) => (
@@ -69,6 +58,7 @@ function LicencePopover() {
               className="mt-5 flex-shrink-0"
               type="button"
               label="na"
+              onClick={() => openlicenceNav('add')}
             >
               <img
                 className="min-w-10"
@@ -80,7 +70,7 @@ function LicencePopover() {
               className="mt-5 flex-shrink-0"
               type="button"
               label="na"
-              onClick={() => openBibleNav('edit')}
+              onClick={() => openlicenceNav('edit')}
             >
               <img
                 className=" w-10 h-10"
@@ -100,14 +90,26 @@ function LicencePopover() {
                 <h2 className="uppercase font-bold leading-5 tracking-widest ">new license</h2>
               </div>
               <div className="mt-8 mb-10">
-                <input className="bg-gray-200 w-96 block rounded shadow-sm sm:text-sm focus:border-primary border-gray-300 h-10" />
+                <input
+                  className="bg-gray-200 w-96 block rounded shadow-sm sm:text-sm focus:border-primary border-gray-300 h-10"
+                  value={name}
+                  onChange={(e) => { setName(e.target.value); }}
+                />
               </div>
               <div>
-                <textarea className="h-60 border rounded border-gray-300 bg-gray-200 w-96" />
+                <textarea
+                  className="h-60 border rounded border-gray-300 bg-gray-200 w-96"
+                  value={content}
+                  onChange={(e) => { setContent(e.target.value); }}
+                />
               </div>
               <div className="mt-3 content-start">
                 <Popover.Button className="mr-5 bg-error w-28 h-8 border-color-error rounded uppercase shadow text-white text-xs tracking-wide leading-4 font-light"> cancel</Popover.Button>
-                <button type="button" className=" bg-success w-28 h-8 border-color-success rounded uppercase text-white text-xs shadow">
+                <button
+                  type="button"
+                  className=" bg-success w-28 h-8 border-color-success rounded uppercase text-white text-xs shadow"
+                  onClick={() => { addLicence(); }}
+                >
                   create
                 </button>
               </div>
@@ -121,6 +123,25 @@ function LicencePopover() {
 }
 
 function TargetLanguagePopover() {
+  const [lang, setLang] = React.useState();
+  const [direction, setDirection] = React.useState();
+  const {
+    states: {
+      language,
+    }, actions: { setLanguage },
+  } = React.useContext(ProjectContext);
+  const openLanguageNav = (nav) => {
+    if (nav === 'edit') {
+      setLang(language.language);
+      setDirection(language.scriptDirection);
+    } else {
+      setLang();
+      setDirection('LTR');
+    }
+  };
+  const addLanguage = () => {
+    setLanguage({ language: lang, scriptDirection: direction });
+  };
   return (
     <Popover className="relative ">
       {({ open }) => (
@@ -131,6 +152,7 @@ function TargetLanguagePopover() {
               className="mt-5 min-w-max"
               type="button"
               label="na"
+              onClick={() => openLanguageNav('add')}
             >
               <img
                 className=" w-10 h-10"
@@ -142,12 +164,12 @@ function TargetLanguagePopover() {
               className="mt-5 flex-shrink-0"
               type="button"
               label="na"
-              onClick={() => openBibleNav('edit')}
+              onClick={() => openLanguageNav('edit')}
             >
               <img
                 className=" w-10 h-10"
                 src="illustrations/edit.svg"
-                alt="add button"
+                alt="edit button"
               />
             </button>
           </Popover.Button>
@@ -168,6 +190,8 @@ function TargetLanguagePopover() {
                       name="search_box"
                       id="search_box"
                       autoComplete="given-name"
+                      value={lang}
+                      onChange={(e) => { setLang(e.target.value); }}
                       className="bg-gray-200 w-80 block rounded shadow-sm sm:text-sm focus:ring-gray-500 focus:border-primary border-gray-300"
                     />
                   </div>
@@ -176,11 +200,23 @@ function TargetLanguagePopover() {
                   <h3 className="mb-3 text-xs font-base  text-primary tracking-wide leading-4 font-light">Script Direction</h3>
                   <div>
                     <div className=" mb-3">
-                      <input type="radio" className="form-radio h-4 w-4 text-primary" />
+                      <input
+                        type="radio"
+                        className="form-radio h-4 w-4 text-primary"
+                        value="LTR"
+                        checked={direction === 'LTR'}
+                        onChange={() => setDirection('LTR')}
+                      />
                       <span className=" ml-3 text-xs font-bold">LTR</span>
                     </div>
                     <div>
-                      <input type="radio" className="form-radio h-4 w-4 text-primary" />
+                      <input
+                        type="radio"
+                        className="form-radio h-4 w-4 text-primary"
+                        value="RTL"
+                        checked={direction === 'RTL'}
+                        onChange={() => setDirection('RTL')}
+                      />
                       <span className=" ml-3 text-xs font-bold">RTL</span>
                     </div>
                   </div>
@@ -190,7 +226,7 @@ function TargetLanguagePopover() {
                   <button
                     type="button"
                     className=" bg-success w-28 h-8 border-color-success rounded uppercase text-white text-xs shadow"
-                    onClick=""
+                    onClick={() => addLanguage()}
                   >
                     create
                   </button>
@@ -206,32 +242,17 @@ function TargetLanguagePopover() {
 }
 
 function AdvancedSettingsDropdown() {
-  const canon = [
-    { id: 'OT', title: 'Old Testament (OT)' },
-    { id: 'NT', title: 'New Testament (NT)' },
-    { id: 'DC', title: 'Deutro Canon' },
-    { id: 'OTDC', title: 'OT Deutro Canon' },
-  ];
   const {
     states: {
       canonSpecification,
-      content,
       canonList,
+      licenceList,
+      versification,
     },
    } = React.useContext(ProjectContext);
-   const {
-    state: {
-      bookList,
-      bookName,
-      bookId,
-    },
-   } = React.useContext(ReferenceContext);
   const [isShow, setIsShow] = React.useState(true);
   const [bibleNav, setBibleNav] = React.useState(false);
-  // const [canonItems, setCanonItems] = React.useState(canon);
-  // const [selectedBooks, setSelectedBooks] = React.useState([]);
   const [handleNav, setHandleNav] = React.useState();
-  // const { state: { newCanonSpec } } = useCreateProject();
   const handleClick = () => {
     setIsShow(!isShow);
   };
@@ -242,10 +263,6 @@ function AdvancedSettingsDropdown() {
   function closeBooks() {
     setBibleNav(false);
   }
-  // console.log(bookList,
-  //   bookName,
-  //   bookId);
-  // console.log(langauges, licenseItems.map(({ license }) => license));
   return (
     <>
       <div>
@@ -280,7 +297,7 @@ function AdvancedSettingsDropdown() {
           <div className="flex relative gap-5 mt-5">
             <div className="absolute left-72 ml-4">
               <BookNumberTag>
-                {content[0].length}
+                {(canonSpecification.currentScope).length}
               </BookNumberTag>
             </div>
 
@@ -311,7 +328,7 @@ function AdvancedSettingsDropdown() {
             </button>
           </div>
           <div className="flex gap-5 mt-5">
-            <CustomAutocomplete label="Licence" list={licenseItems} />
+            <CustomAutocomplete label="Licence" list={licenceList} />
             <div className="mt-8 w-8 min-w-max">
               <LicencePopover />
             </div>
@@ -320,12 +337,12 @@ function AdvancedSettingsDropdown() {
         )}
       </div>
       {bibleNav && (
-      <CustomCanonSpec
-        bibleNav={bibleNav}
-        closeBibleNav={closeBooks}
-        handleNav={handleNav}
-      />
-)}
+        <CustomCanonSpec
+          bibleNav={bibleNav}
+          closeBibleNav={closeBooks}
+          handleNav={handleNav}
+        />
+      )}
     </>
   );
 }
@@ -349,10 +366,13 @@ function BibleHeaderTagDropDown() {
       states: {
         newProjectFields,
         version,
+        languages,
+        language,
       },
       actions: {
         handleProjectFields,
         setVersion,
+        createProject,
       },
      } = React.useContext(ProjectContext);
     function getAbbreviation(text) {
@@ -369,9 +389,6 @@ function BibleHeaderTagDropDown() {
     const handleVersion = (e) => {
       const abbreviation = getAbbreviation(e.target.value);
       setVersion({ ...version, name: e.target.value, abbreviation });
-    };
-    const handleCreate = () => {
-      console.log('Create Project', newProjectFields, version);
     };
       return (
         <ProjectsLayout
@@ -398,7 +415,7 @@ function BibleHeaderTagDropDown() {
                       type="text"
                       name="version"
                       id=""
-                      value={newProjectFields.version}
+                      value={version.name}
                       onChange={(e) => {
                         handleVersion(e);
                       }}
@@ -421,7 +438,7 @@ function BibleHeaderTagDropDown() {
                       type="text"
                       name="Description"
                       id=""
-                      value={newProjectFields.description}
+                      value={version.description}
                       onChange={handleProjectFields('description')}
                       className="bg-white w-80 h-28  block rounded shadow-sm sm:text-sm focus:ring-gray-500 focus:border-primary border-gray-300"
                     />
@@ -430,10 +447,10 @@ function BibleHeaderTagDropDown() {
                     <div className=" absolute left-80 ml-4">
 
                       <TargetLanguageTag>
-                        {newProjectFields.scriptDirection}
+                        {language.scriptDirection}
                       </TargetLanguageTag>
                     </div>
-                    <CustomAutocomplete label="Target Langauge" list={langauges} />
+                    <CustomAutocomplete label="Target Langauge" list={languages} />
                     <div className=" mt-8">
                       <TargetLanguagePopover />
                     </div>
@@ -441,7 +458,7 @@ function BibleHeaderTagDropDown() {
                   <button
                     type="button"
                     className="w-40 h-10  bg-success leading-loose rounded shadow text-xs font-base  text-white tracking-wide  font-light uppercase"
-                    onClick={() => handleCreate()}
+                    onClick={() => createProject()}
                   >
                     Create Project
 
