@@ -48,7 +48,7 @@ const ProjectContextProvider = ({ children }) => {
       const fs = window.require('fs');
       const file = path.join(newpath, 'autographa', 'users', 'username', 'usersetting.json');
       if (fs.existsSync(file)) {
-        fs.readFile((file, data) => {
+        fs.readFile(file, (err, data) => {
           logger.debug('ProjectContext.js', 'Successfully read the data from file');
           const json = JSON.parse(data);
           // (json.currentSetting).push(currentSetting);
