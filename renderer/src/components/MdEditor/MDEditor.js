@@ -21,6 +21,7 @@ function a11yProps(index) {
 
 export const MDEditor = ({
   setopenMDFile,
+  // eslint-disable-next-line no-unused-vars
   mdFilePath,
 }) => {
   const [onedit, setEdit] = React.useState(0);
@@ -46,10 +47,10 @@ export const MDEditor = ({
     setLicense(markdown);
   };
 
-  React.useEffect(() => {
-    setLicense(mdFilePath);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [mdFilePath]);
+  // React.useEffect(() => {
+  //   setLicense(mdFilePath);
+  // // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [mdFilePath]);
 
   const title = (
     <AppBar position="static" color="default">
