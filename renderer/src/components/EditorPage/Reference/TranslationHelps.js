@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import TranslationHelpsCard from './TranslationHelpsCard';
 import ReferenceSelector from './ReferenceSelection';
+import ReferenceCard from './ReferenceCard';
 
 const TranslationHelps = () => {
   const {
@@ -80,6 +81,12 @@ const TranslationHelps = () => {
               filePath={null}
               owner="test_org"
               server="https://git.door43.org"
+            />
+          );
+        case 'bible':
+          return (
+            <ReferenceCard
+              title="Bible"
             />
           );
         default:

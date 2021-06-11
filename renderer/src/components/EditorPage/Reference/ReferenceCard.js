@@ -12,6 +12,7 @@ import {
 import { theme } from '@/components/main';
 import TranslationhelpsNav from './TranslationhelpsNav';
 import EditorSection from '../EditorSection';
+import RefBible from './RefBible/RefBible';
 
 const useStyles = makeStyles({
     root: {
@@ -75,19 +76,26 @@ const ReferenceCard = ({
       <>
         <ThemeProvider theme={theme}>
           <EditorSection className={classes.body} header={title}>
-            <Typography variant="body3" component="p">
-              <CardContent
-                item={item}
-                items={items}
-                filters={filters}
-                markdown={markdown}
-                languageId={languageId}
-                markdownView={markdownView}
-                selectedQuote={selectedQuote}
-                setQuote={setQuote}
-                viewMode={viewMode}
-              />
-            </Typography>
+            <>
+              {(title === 'Translation Notes') && (
+              <Typography variant="body3" component="p">
+                <CardContent
+                  item={item}
+                  items={items}
+                  filters={filters}
+                  markdown={markdown}
+                  languageId={languageId}
+                  markdownView={markdownView}
+                  selectedQuote={selectedQuote}
+                  setQuote={setQuote}
+                  viewMode={viewMode}
+                />
+              </Typography>
+            )}
+              {(title === 'Bible') && (
+                <RefBible />
+            )}
+            </>
           </EditorSection>
         </ThemeProvider>
       </>

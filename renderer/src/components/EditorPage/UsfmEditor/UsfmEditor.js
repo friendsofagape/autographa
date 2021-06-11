@@ -3,29 +3,33 @@ import { ReferenceContext } from '@/components/context/ReferenceContext';
 import React, {
  useContext, useEffect, useRef, useState,
 } from 'react';
-import { BasicUsfmEditor } from 'usfm-editor';
 import * as localforage from 'localforage';
+import {
+    BasicUsfmEditor,
+} from 'usfm-editor';
+import { readFile } from '@/core/editor/readFile';
 import writeToParse from '../../../core/editor/writeToParse';
 import { isElectron } from '../../../core/handleElectron';
 import writeToFile from '../../../core/editor/writeToFile';
-// import InputSelector from './InputSelector';
+import InputSelector from './InputSelector';
 import fetchFromParse from '../../../core/editor/fetchFromParse';
 import findBookFromParse from '../../../core/editor/findBookFromParse';
 import EditorSection from '../EditorSection';
 
 const UsfmEditor = () => {
   const intervalRef = useRef();
-  const [usfmInput, setUsfmInput] = useState(null);
-  const [readOnly, setReadOnly] = useState(true);
+  const [usfmInput, setUsfmInput] = useState();
+  const [readOnly] = useState(false);
   const [activeTyping, setActiveTyping] = useState(false);
   const [usfmOutput, setUsfmOutput] = useState();
   const [identification, setIdentification] = useState({});
-
   const username = 'Michael';
-  const projectName = 'TEST PRO HiN';
+  const projectName = 'Spanish Pro';
   const {
     state: {
       bookId,
+      verse,
+      chapter,
     },
     actions: {
       onChangeBook,
@@ -107,40 +111,58 @@ const UsfmEditor = () => {
   const onIdentificationChange = (id) => {
     const identification = typeof id === 'string' ? JSON.parse(id) : id;
     setIdentification(identification);
-    console.log(identification, bookId);
     onChangeBook((identification.id).toLowerCase());
   };
 
   useEffect(() => {
-    findBookFromParse({
-      username, projectName, scope: bookId.toUpperCase(),
-    }).then((scopefiles) => {
-      scopefiles.forEach((file) => {
-        if (file === bookId.toUpperCase()) {
-          fetchFromParse({
-          username, projectName, scope: bookId.toUpperCase(),
-          }).then(async (data) => {
-            console.log(data);
-            if (data) {
-              localforage.setItem('editorData', data).then(
-                () => localforage.getItem('editorData'),
-                ).then(() => {
-                  handleInputChange(data);
-                  console.log('saved to localforage');
-                }).catch((err) => {
-                  // we got an error
-                  throw err;
-                });
-            }
-          });
-        } else {
-          handleInputChange(undefined);
+    if (!isElectron()) {
+      findBookFromParse({
+        username, projectName, scope: bookId.toUpperCase(),
+      }).then((scopefiles) => {
+        scopefiles.forEach((file) => {
+          if (file === bookId.toUpperCase()) {
+            fetchFromParse({
+            username, projectName, scope: bookId.toUpperCase(),
+            }).then(async (data) => {
+              if (data) {
+                localforage.setItem('editorData', data).then(
+                  () => localforage.getItem('editorData'),
+                  ).then(() => {
+                    handleInputChange(data);
+                    console.log('saved to localforage');
+                  }).catch((err) => {
+                    // we got an error
+                    throw err;
+                  });
+              }
+            });
+          } else {
+            handleInputChange(undefined);
+          }
+        });
+      });
+    } else {
+       readFile({
+        projectname: selectedProject,
+        filename: bookId,
+      }).then((data) => {
+        if (data) {
+          localforage.setItem('editorData', data).then(
+            () => localforage.getItem('editorData'),
+            ).then(() => {
+              handleInputChange(data);
+              console.log('saved to localforage');
+            }).catch((err) => {
+              // we got an error
+              throw err;
+            });
         }
       });
-    });
+    }
   }, [bookId]);
 
   useEffect(() => {
+    if (!isElectron()) {
     fetchFromParse({
       username, projectName, scope: bookId.toUpperCase(),
     }).then((data) => {
@@ -155,14 +177,29 @@ const UsfmEditor = () => {
           });
       }
       });
+    } else {
+      readFile({
+        projectname: selectedProject,
+        filename: bookId,
+      }).then((data) => {
+        if (data) {
+          localforage.setItem('editorData', data).then(
+            () => localforage.getItem('editorData'),
+            ).then(() => {
+              handleInputChange(data);
+              console.log('saved to localforage');
+            }).catch((err) => {
+              // we got an error
+              throw err;
+            });
+        }
+      });
+    }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
 return (
   <>
-    {/* <div>
-      <InputSelector onChange={handleInputChange} />
-    </div> */}
     <span style={{
       float: 'right', left: '-6px', top: '-404px', paddingRight: '2px',
     }}
@@ -178,7 +215,7 @@ return (
           identification={identification}
           onIdentificationChange={onIdentificationChange}
         />
-    )}
+        )}
       </EditorSection>
     </span>
   </>

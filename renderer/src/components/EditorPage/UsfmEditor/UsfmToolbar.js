@@ -1,6 +1,6 @@
 export const UsfmToolbar = {
     'Section Header': {
-        icon: '\\s',
+        icon: 'S',
         cssClass: 's-toolbar-button',
         actionSpec: {
             buttonType: 'ParagraphButton',
@@ -9,7 +9,7 @@ export const UsfmToolbar = {
         },
     },
     'Quoted Book Title': {
-        icon: '\\bk',
+        icon: 'BK',
         cssClass: 'bk-toolbar-button',
         actionSpec: {
             buttonType: 'MarkButton',
@@ -17,7 +17,7 @@ export const UsfmToolbar = {
         },
     },
     'Nomen Domini': {
-        icon: '\\nd',
+        icon: 'I',
         cssClass: 'nd-toolbar-button',
         actionSpec: {
             buttonType: 'MarkButton',

@@ -8,9 +8,10 @@ import { XIcon } from '@heroicons/react/solid';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import { IconButton } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import * as localforage from 'localforage';
 
 export default function BibleNavigation() {
-    const supportedBooks = null; // if empty array or null then all books available
+  // if empty array or null then all books available
       const {
      state: {
         bookList,
@@ -19,17 +20,17 @@ export default function BibleNavigation() {
         verse,
         chapterList,
         verseList,
+        languageId,
+        refName,
+        currentScope,
      }, actions: {
         onChangeBook,
         onChangeChapter,
         onChangeVerse,
         applyBooksFilter,
+        setCurrentScope,
       },
     } = useContext(ReferenceContext);
-
-    useEffect(() => {
-        applyBooksFilter(supportedBooks);
-      }, [applyBooksFilter, supportedBooks]);
 
     const [openBook, setOpenBook] = useState(false);
     const [openVerse, setOpenVerse] = useState(false);
@@ -59,6 +60,25 @@ export default function BibleNavigation() {
       setOpenVerse(true);
       if (multiSelectVerse) { setSelectedVerses([]); }
     }
+
+    useEffect(() => {
+      localforage.getItem('refBibleBurrito')
+        .then((refs) => {
+          refs.forEach((ref) => {
+            if (languageId !== null) {
+            if (ref.languages[0].tag === languageId) {
+              const supportedBooks = [];
+              Object.entries((ref.type.flavorType.currentScope)).forEach(
+                  ([key]) => {
+                    supportedBooks.push(key.toLowerCase());
+                  },
+                  );
+                  applyBooksFilter(supportedBooks);
+                }
+              }
+          });
+        });
+    }, [languageId]);
 
     return (
       <>

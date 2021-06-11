@@ -7,6 +7,7 @@ import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import ReferenceDataTable from './ReferenceDataTable';
+import RefBibleSelector from './RefBible/RefBibleSelection';
 
 function TabPanel(props) {
   const {
@@ -111,7 +112,9 @@ const ResourceFileManager = ({
         {listItems[1].val}
       </TabPanel>
       <TabPanel value={value} index={2}>
-        {listItems[2].val}
+        <RefBibleSelector
+          handleClose={handleClose}
+        />
       </TabPanel>
       <TabPanel value={value} index={3}>
         <ReferenceDataTable

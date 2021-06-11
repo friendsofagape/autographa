@@ -5,7 +5,7 @@ import React, { useState, createContext } from 'react';
 export const ReferenceContext = createContext({});
 
 export default function ReferenceContextProvider({ children }) {
-    const initialBook = '1TI';
+    const initialBook = '1JN';
     const initialChapter = '1';
     const initialVerse = '1';
     const [owner, setOwner] = useState('Door43-Catalog');
@@ -15,6 +15,8 @@ export default function ReferenceContextProvider({ children }) {
     const [branch, setBranch] = useState('master');
     const [markdown, setMarkdown] = useState('markdown');
     const [anchorEl, setAnchorEl] = React.useState(null);
+    const [refName, setRefName] = React.useState('null');
+    const [currentScope, setCurrentScope] = React.useState([]);
 
     const handleClick = (event) => {
       setAnchorEl(event.currentTarget);
@@ -57,6 +59,8 @@ export default function ReferenceContextProvider({ children }) {
         markdown,
         selectedResource,
         anchorEl,
+        refName,
+        currentScope,
       },
       actions: {
         setLanguageId,
@@ -71,6 +75,8 @@ export default function ReferenceContextProvider({ children }) {
         applyBooksFilter,
         setAnchorEl,
         handleClick,
+        setRefName,
+        setCurrentScope,
       },
     };
 

@@ -4,14 +4,14 @@ import Router from 'next/router';
 import '../../styles/nprogress.css';
 import '../../styles/globals.css';
 import '../../styles/default.css';
-// import { initializeParse } from '@parse/react-ssr';
-// import { environment } from '../environment';
+import { initializeParse } from '@parse/react-ssr';
+import { environment } from '../environment';
 
-// initializeParse(
-//   environment.SERVER_URL,
-//   environment.APPLICATION_ID,
-//   environment.MASTER_KEY,
-// );
+initializeParse(
+  environment.SERVER_URL,
+  environment.APPLICATION_ID,
+  environment.MASTER_KEY,
+);
 
 Router.events.on('routeChangeStart', () => NProgress.start());
 Router.events.on('routeChangeComplete', () => NProgress.done());
