@@ -1,17 +1,21 @@
 import { ProjectContext } from '@/components/context/ProjectContext';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import React, {
- useContext, useEffect, useRef, useState,
+ useContext, useEffect, useRef, useState, useMemo,
+ useCallback,
 } from 'react';
 import * as localforage from 'localforage';
 import {
-    BasicUsfmEditor,
+ createBasicUsfmEditor,
+ withChapterPaging,
+//  withChapterSelection,
+ withToolbar,
 } from 'usfm-editor';
 import { readFile } from '@/core/editor/readFile';
 import writeToParse from '../../../core/editor/writeToParse';
 import { isElectron } from '../../../core/handleElectron';
 import writeToFile from '../../../core/editor/writeToFile';
-import InputSelector from './InputSelector';
+// import InputSelector from './InputSelector';
 import fetchFromParse from '../../../core/editor/fetchFromParse';
 import findBookFromParse from '../../../core/editor/findBookFromParse';
 import EditorSection from '../EditorSection';
@@ -23,6 +27,7 @@ const UsfmEditor = () => {
   const [activeTyping, setActiveTyping] = useState(false);
   const [usfmOutput, setUsfmOutput] = useState();
   const [identification, setIdentification] = useState({});
+  const [goToVersePropValue, setGoToVersePropValue] = useState({});
   const username = 'Michael';
   const projectName = 'Spanish Pro';
   const {
@@ -43,6 +48,11 @@ const UsfmEditor = () => {
     },
    } = useContext(ProjectContext);
 
+   const CustomEditor = useMemo(
+    () => withToolbar((withChapterPaging(createBasicUsfmEditor()))),
+    [usfmInput],
+    );
+
    const saveToParse = async () => {
       try {
         const usfm = await localforage.getItem('editorData');
@@ -55,7 +65,6 @@ const UsfmEditor = () => {
     };
 
   const handleEditorChange = (usfm) => {
-    setUsfmOutput(usfm);
     if (isElectron()) {
       writeToFile({
         projectname: selectedProject,
@@ -101,18 +110,25 @@ const UsfmEditor = () => {
     setIdentification({});
   };
 
-  const handleVersChange = (val) => {
+  const handleVersChange = useCallback(
+    (val) => {
+      console.log(val);
     if (val) {
        onChangeChapter(val.chapter.toString());
        onChangeVerse(val.verseStart.toString());
     }
-  };
+  }, [onChangeChapter, onChangeVerse],
+  );
 
-  const onIdentificationChange = (id) => {
+  const onIdentificationChange = useCallback(
+    (id) => {
+      console.log(id);
     const identification = typeof id === 'string' ? JSON.parse(id) : id;
     setIdentification(identification);
     onChangeBook((identification.id).toLowerCase());
-  };
+    },
+    [bookId],
+  );
 
   useEffect(() => {
     if (!isElectron()) {
@@ -159,7 +175,7 @@ const UsfmEditor = () => {
         }
       });
     }
-  }, [bookId]);
+  }, [bookId, chapter]);
 
   useEffect(() => {
     if (!isElectron()) {
@@ -198,6 +214,14 @@ const UsfmEditor = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    setGoToVersePropValue({
+          chapter: parseInt(chapter),
+          verse: parseInt(verse),
+          key: Date.now(),
+      });
+  }, [chapter]);
+
 return (
   <>
     <span style={{
@@ -206,11 +230,12 @@ return (
     >
       <EditorSection header="USFM EDITOR" editor>
         {usfmInput && (
-        <BasicUsfmEditor
+        <CustomEditor
           usfmString={usfmInput}
           key={usfmInput}
           onChange={handleEditorChange}
           onVerseChange={handleVersChange}
+          goToVerse={goToVersePropValue}
           readOnly={readOnly}
           identification={identification}
           onIdentificationChange={onIdentificationChange}

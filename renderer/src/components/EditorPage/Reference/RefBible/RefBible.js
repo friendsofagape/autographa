@@ -1,7 +1,11 @@
 /* eslint-disable no-underscore-dangle */
 import { ReferenceContext } from '@/components/context/ReferenceContext';
-import React, { useContext, useEffect, useState } from 'react';
-import { BasicUsfmEditor } from 'usfm-editor';
+import React, {
+ useContext, useEffect, useState, useMemo,
+} from 'react';
+import {
+  createBasicUsfmEditor, withChapterPaging, withChapterSelection, withToolbar,
+ } from 'usfm-editor';
 import * as localforage from 'localforage';
 // eslint-disable-next-line import/no-unresolved
 import { readIngredients } from '@/core/reference/readIngredients';
@@ -9,6 +13,8 @@ import { readIngredients } from '@/core/reference/readIngredients';
 const RefBible = () => {
   const {
       state: {
+        chapter,
+        verse,
         bookId,
         languageId,
         refName,
@@ -19,7 +25,10 @@ const RefBible = () => {
   } = useContext(ReferenceContext);
   // const regExp = /\(([^)]+)\)/;
     const [usfmInput, setUsfmInput] = useState();
-
+    const CustomEditor = useMemo(
+      () => (withChapterPaging(createBasicUsfmEditor())),
+      [usfmInput],
+      );
     useEffect(() => {
       localforage.getItem('refBibleBurrito')
       .then((refs) => {
@@ -67,10 +76,15 @@ const RefBible = () => {
   return (
     <>
       {usfmInput && (
-        <BasicUsfmEditor
+        <CustomEditor
           usfmString={usfmInput}
           key={usfmInput}
           readOnly
+          goToVerse={{
+              chapter: parseInt(chapter),
+              verse: parseInt(verse),
+              key: Date.now(),
+          }}
         />
       )}
     </>
