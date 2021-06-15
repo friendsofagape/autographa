@@ -1,28 +1,129 @@
+/* eslint-disable no-console */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { OT } from '../../lib/CanonSpecification';
+import { isElectron } from '../../core/handleElectron';
+import * as logger from '../../logger';
+
+const path = require('path');
+const advanceSettings = require('../../lib/AdvanceSettings.json');
 
 export const ProjectContext = React.createContext();
 
 const ProjectContextProvider = ({ children }) => {
     const [drawer, setDrawer] = React.useState(false);
     const [sideTabTitle, setSideTabTitle] = React.useState('New');
-    const [selectedVersion, setSelectedVersion] = React.useState('');
-    const [license, setLicense] = React.useState();
-    const [canonSpecification, setcanonSpecification] = React.useState('OT');
-    const [content, setContent] = React.useState([OT]);
-    const [versificationScheme, setVersificationScheme] = React.useState('kjv');
-    const [newProjectFields, setNewProjectFields] = React.useState({
-      language: '',
-      projectName: '',
+    const [languages] = React.useState(advanceSettings.languages);
+    const [language, setLanguage] = React.useState({
       scriptDirection: 'LTR',
+      language: advanceSettings.languages[0].title,
     });
+    const [canonList, setCanonList] = React.useState();
+    const [licenceList, setLicenseList] = React.useState();
+    const [selectedVersion, setSelectedVersion] = React.useState('');
+    const [version, setVersion] = React.useState({
+      name: '',
+      abbreviation: '',
+    });
+    const [copyright, setCopyRight] = React.useState(advanceSettings.copyright[0]);
+    const [canonSpecification, setcanonSpecification] = React.useState(
+      advanceSettings.canonSpecification[0],
+    );
+    const [versification] = React.useState(advanceSettings.versification);
+    const [versificationScheme, setVersificationScheme] = React.useState(
+      advanceSettings.versification[0],
+    );
+    const [newProjectFields, setNewProjectFields] = React.useState({
+      projectName: '',
+      description: '',
+    });
+
     const [selectedProject, setSelectedProject] = React.useState('newprodir');
 
     const handleProjectFields = (prop) => (event) => {
       setNewProjectFields({ ...newProjectFields, [prop]: event.target.value });
     };
-
+    const uniqueSetting = (list, title) => list.some((obj) => obj.title === title);
+    const loadSettings = () => {
+      const newpath = localStorage.getItem('userPath');
+      const fs = window.require('fs');
+      const file = path.join(newpath, 'autographa', 'users', 'username', 'usersetting.json');
+      if (fs.existsSync(file)) {
+        fs.readFile(file, (err, data) => {
+          logger.debug('ProjectContext.js', 'Successfully read the data from file');
+          const json = JSON.parse(data);
+          // (json.currentSetting).push(currentSetting);
+          setCanonList((advanceSettings.canonSpecification).concat(json.canonSpecification));
+          setLicenseList((advanceSettings.copyright).concat(json.copyright));
+        });
+      } else {
+        setCanonList(advanceSettings.canonSpecification);
+        setLicenseList(advanceSettings.copyright);
+      }
+    };
+    // Json for storing advance settings
+    // eslint-disable-next-line no-unused-vars
+    const updateJson = (currentSetting) => {
+      const newpath = localStorage.getItem('userPath');
+      const fs = window.require('fs');
+      const file = path.join(newpath, 'autographa', 'users', 'username', 'usersetting.json');
+      if (fs.existsSync(file)) {
+        // fs.mkdirSync(file);
+        fs.readFile(file, 'utf8', (err, data) => {
+          if (err) {
+            logger.error('ProjectContext.js', 'Failed to read the data from file');
+          } else {
+            logger.debug('ProjectContext.js', 'Successfully read the data from file');
+            const json = JSON.parse(data);
+            if (uniqueSetting(json.currentSetting, currentSetting.title)) {
+              (json.currentSetting).forEach((setting) => {
+                if (setting.title === currentSetting.title) {
+                  const keys = Object.keys(setting);
+                  keys.forEach((key) => {
+                    // eslint-disable-next-line no-param-reassign
+                    setting[key] = currentSetting[key];
+                  });
+                }
+              });
+            } else {
+              (json.currentSetting).push(currentSetting);
+            }
+            logger.debug('ProjectContext.js', 'Upadting the settings in existing file');
+            console.log('pushing to file', json);
+            // fs.writeFileSync(file, JSON.stringify(json));
+            logger.debug('ProjectContext.js', 'Loading new settings from file');
+            loadSettings();
+          }
+        });
+      } else {
+        const json = {
+          canonSpecification: [
+            {
+              title: (currentSetting === 'canonSpecification' ? canonSpecification.title : ''),
+              currentScope: (currentSetting === 'canonSpecification' ? canonSpecification.currentScope : []),
+            },
+          ],
+          copyright: [
+            {
+              id: 'custom',
+              title: (currentSetting === 'copyright' ? copyright.title : ''),
+              licence: (currentSetting === 'copyright' ? copyright.licence : ''),
+            },
+          ],
+        };
+        fs.writeFileSync(file, JSON.stringify(json));
+      }
+    };
+    const createProject = () => {
+      console.log('Create', newProjectFields, version, versificationScheme, canonSpecification, copyright);
+      if (!uniqueSetting(canonList, canonSpecification.title)) {
+        console.log('canonSpecification');
+        // updateJson('canonSpecification');
+      }
+      if (!uniqueSetting(licenceList, copyright.title)) {
+        console.log('copyright');
+        // updateJson('copyright');
+      }
+    };
     const resetProjectStates = () => {
       const initialState = {
         language: '',
@@ -31,35 +132,45 @@ const ProjectContextProvider = ({ children }) => {
       };
         setNewProjectFields({ ...initialState });
         setSelectedVersion('');
-        setLicense();
+        setCopyRight();
         setcanonSpecification('OT');
-        setContent([OT]);
         setVersificationScheme('kjv');
     };
-
+    React.useEffect(() => {
+      if (isElectron()) {
+        loadSettings();
+      }
+    }, []);
     const context = {
         states: {
             newProjectFields,
             drawer,
             selectedVersion,
-            license,
+            copyright,
             canonSpecification,
-            content,
+            versification,
             versificationScheme,
             sideTabTitle,
             selectedProject,
+            canonList,
+            licenceList,
+            version,
+            languages,
+            language,
         },
         actions: {
             setDrawer,
             setSelectedVersion,
-            setLicense,
+            setCopyRight,
             setcanonSpecification,
-            setContent,
             setVersificationScheme,
             handleProjectFields,
             resetProjectStates,
             setSideTabTitle,
             setSelectedProject,
+            setVersion,
+            createProject,
+            setLanguage,
         },
     };
 

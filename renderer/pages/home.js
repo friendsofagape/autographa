@@ -2,6 +2,7 @@ import ProjectContextProvider from '@/components/context/ProjectContext';
 import ReferenceContextProvider from '@/components/context/ReferenceContext';
 import EditorLayout from '@/layouts/editor/Layout';
 import BibleNavigation from '@/modules/biblenavigation/BibleNavigation';
+import EditorSectionSmall from '@/modules/projects/SmallEditorSection';
 import dynamic from 'next/dynamic';
 import Meta from '../src/Meta';
 
@@ -21,7 +22,8 @@ const home = () => (
       <ReferenceContextProvider>
         <EditorLayout>
           <BibleNavigation />
-          <TranslationHelps />
+          {/* <TranslationHelps /> */}
+          <EditorSectionSmall />
           <UsfmEditor />
         </EditorLayout>
       </ReferenceContextProvider>
