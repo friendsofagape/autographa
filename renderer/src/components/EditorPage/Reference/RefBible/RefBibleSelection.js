@@ -13,6 +13,7 @@ import { ReferenceContext } from '@/components/context/ReferenceContext';
 import { readRefBurrito } from '@/core/reference/readRefBurrito';
 import * as localforage from 'localforage';
 import { readRefMeta } from '@/core/reference/readRefMeta';
+import { isElectron } from '@/core/handleElectron';
 
 const useStyles = makeStyles({
   table: {
@@ -42,6 +43,7 @@ const RefBibleSelector = ({ handleClose }) => {
   };
 
   useEffect(() => {
+    if (isElectron()) {
     const parseData = [];
     readRefMeta({
       projectname: 'newprodir',
@@ -65,6 +67,7 @@ const RefBibleSelector = ({ handleClose }) => {
         });
       });
     });
+  }
   }, []);
 
   return (

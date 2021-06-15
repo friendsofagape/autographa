@@ -9,6 +9,7 @@ import { ReferenceContext } from '@/components/context/ReferenceContext';
 import { IconButton } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import * as localforage from 'localforage';
+import { isElectron } from '@/core/handleElectron';
 
 export default function BibleNavigation() {
   // if empty array or null then all books available
@@ -59,22 +60,24 @@ export default function BibleNavigation() {
     }
 
     useEffect(() => {
-      localforage.getItem('refBibleBurrito')
-        .then((refs) => {
-          refs.forEach((ref) => {
-            if (languageId !== null) {
-            if (ref.languages[0].tag === languageId) {
-              const supportedBooks = [];
-              Object.entries((ref.type.flavorType.currentScope)).forEach(
-                  ([key]) => {
-                    supportedBooks.push(key.toLowerCase());
-                  },
-                  );
-                  applyBooksFilter(supportedBooks);
+      if (isElectron()) {
+        localforage.getItem('refBibleBurrito')
+          .then((refs) => {
+            refs.forEach((ref) => {
+              if (languageId !== null) {
+              if (ref.languages[0].tag === languageId) {
+                const supportedBooks = [];
+                Object.entries((ref.type.flavorType.currentScope)).forEach(
+                    ([key]) => {
+                      supportedBooks.push(key.toLowerCase());
+                    },
+                    );
+                    applyBooksFilter(supportedBooks);
+                  }
                 }
-              }
-          });
+            });
         });
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [languageId]);
 

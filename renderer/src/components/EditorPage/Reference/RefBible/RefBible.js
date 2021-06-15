@@ -9,6 +9,7 @@ import {
 import * as localforage from 'localforage';
 // eslint-disable-next-line import/no-unresolved
 import { readIngredients } from '@/core/reference/readIngredients';
+import { isElectron } from '@/core/handleElectron';
 
 const RefBible = () => {
   const {
@@ -28,31 +29,33 @@ const RefBible = () => {
       [usfmInput],
       );
     useEffect(() => {
-      localforage.getItem('refBibleBurrito')
-      .then((refs) => {
-        refs.forEach((ref) => {
-          if (ref.languages[0].tag === languageId) {
-              Object.entries(ref.ingredients).forEach(
-                ([key]) => {
-                  const _bookID = key.split('.')[0];
-                  if (_bookID.split('-').pop() === bookId.toUpperCase() && refName !== null) {
-                    readIngredients({
-                      projectname: 'newprodir',
-                      refName,
-                      filePath: key,
-                    }).then((res) => {
-                      setUsfmInput(res);
-                    });
-                  }
-                  // console.log(key, value),
-                },
-              );
-          }
+      if (isElectron()) {
+        localforage.getItem('refBibleBurrito')
+        .then((refs) => {
+          refs.forEach((ref) => {
+            if (ref.languages[0].tag === languageId) {
+                Object.entries(ref.ingredients).forEach(
+                  ([key]) => {
+                    const _bookID = key.split('.')[0];
+                    if (_bookID.split('-').pop() === bookId.toUpperCase() && refName !== null) {
+                      readIngredients({
+                        projectname: 'newprodir',
+                        refName,
+                        filePath: key,
+                      }).then((res) => {
+                        setUsfmInput(res);
+                      });
+                    }
+                    // console.log(key, value),
+                  },
+                );
+            }
+          });
+        }).catch((err) => {
+          // we got an error
+          throw err;
         });
-      }).catch((err) => {
-        // we got an error
-        throw err;
-      });
+      }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [bookId, languageId]);
 
