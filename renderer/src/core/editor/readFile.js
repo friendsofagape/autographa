@@ -2,8 +2,6 @@ export const readFile = async ({
     projectname,
     filename,
 }) => {
-    console.log(projectname,
-        filename);
     const fs = window.require('fs');
     const path = require('path');
     const newpath = localStorage.getItem('userPath');

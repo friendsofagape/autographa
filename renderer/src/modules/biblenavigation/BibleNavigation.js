@@ -21,14 +21,11 @@ export default function BibleNavigation() {
         chapterList,
         verseList,
         languageId,
-        refName,
-        currentScope,
      }, actions: {
         onChangeBook,
         onChangeChapter,
         onChangeVerse,
         applyBooksFilter,
-        setCurrentScope,
       },
     } = useContext(ReferenceContext);
 
@@ -78,6 +75,7 @@ export default function BibleNavigation() {
               }
           });
         });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [languageId]);
 
     return (

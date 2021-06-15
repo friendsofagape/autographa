@@ -4,7 +4,7 @@ import React, {
  useContext, useEffect, useState, useMemo,
 } from 'react';
 import {
-  createBasicUsfmEditor, withChapterPaging, withChapterSelection, withToolbar,
+  createBasicUsfmEditor, withChapterPaging,
  } from 'usfm-editor';
 import * as localforage from 'localforage';
 // eslint-disable-next-line import/no-unresolved
@@ -19,14 +19,12 @@ const RefBible = () => {
         languageId,
         refName,
     },
-    actions: {
-      applyBooksFilter,
-    },
   } = useContext(ReferenceContext);
   // const regExp = /\(([^)]+)\)/;
     const [usfmInput, setUsfmInput] = useState();
     const CustomEditor = useMemo(
       () => (withChapterPaging(createBasicUsfmEditor())),
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       [usfmInput],
       );
     useEffect(() => {
@@ -55,6 +53,7 @@ const RefBible = () => {
         // we got an error
         throw err;
       });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [bookId, languageId]);
 
     // seting book scope for navigation
@@ -81,8 +80,8 @@ const RefBible = () => {
           key={usfmInput}
           readOnly
           goToVerse={{
-              chapter: parseInt(chapter),
-              verse: parseInt(verse),
+              chapter: parseInt(chapter, 10),
+              verse: parseInt(verse, 10),
               key: Date.now(),
           }}
         />

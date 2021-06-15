@@ -27,12 +27,10 @@ const RefBibleSelector = ({ handleClose }) => {
         setLanguageId,
         SetSelectedResource,
         setRefName,
-        setCurrentScope,
     },
   } = useContext(ReferenceContext);
-  const regExp = /\(([^)]+)\)/;
   const [refList, setRefList] = useState([]);
-  
+
   const handleRowSelect = (e, row, name) => {
     SetSelectedResource('bible');
     setLanguageId(row);

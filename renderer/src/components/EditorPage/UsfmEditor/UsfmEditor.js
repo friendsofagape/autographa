@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { ProjectContext } from '@/components/context/ProjectContext';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import React, {
@@ -11,7 +12,7 @@ import {
 //  withChapterSelection,
  withToolbar,
 } from 'usfm-editor';
-import { readFile } from '@/core/editor/readFile';
+import { readFile } from '../../../core/editor/readFile';
 import writeToParse from '../../../core/editor/writeToParse';
 import { isElectron } from '../../../core/handleElectron';
 import writeToFile from '../../../core/editor/writeToFile';
@@ -25,7 +26,6 @@ const UsfmEditor = () => {
   const [usfmInput, setUsfmInput] = useState();
   const [readOnly] = useState(false);
   const [activeTyping, setActiveTyping] = useState(false);
-  const [usfmOutput, setUsfmOutput] = useState();
   const [identification, setIdentification] = useState({});
   const [goToVersePropValue, setGoToVersePropValue] = useState({});
   const username = 'Michael';
@@ -60,6 +60,7 @@ const UsfmEditor = () => {
           username, projectName, usfmData: usfm, scope: bookId.toUpperCase(), write: true,
         });
       } catch (err) {
+        // eslint-disable-next-line no-console
         console.log(err);
       }
     };
@@ -76,7 +77,6 @@ const UsfmEditor = () => {
         () => localforage.getItem('editorData'),
         ).then(() => {
           setActiveTyping(true);
-          console.log('saved to localforage');
         }).catch((err) => {
           // we got an error
           throw err;
@@ -112,7 +112,6 @@ const UsfmEditor = () => {
 
   const handleVersChange = useCallback(
     (val) => {
-      console.log(val);
     if (val) {
        onChangeChapter(val.chapter.toString());
        onChangeVerse(val.verseStart.toString());
@@ -122,7 +121,6 @@ const UsfmEditor = () => {
 
   const onIdentificationChange = useCallback(
     (id) => {
-      console.log(id);
     const identification = typeof id === 'string' ? JSON.parse(id) : id;
     setIdentification(identification);
     onChangeBook((identification.id).toLowerCase());
@@ -145,7 +143,6 @@ const UsfmEditor = () => {
                   () => localforage.getItem('editorData'),
                   ).then(() => {
                     handleInputChange(data);
-                    console.log('saved to localforage');
                   }).catch((err) => {
                     // we got an error
                     throw err;
@@ -167,7 +164,6 @@ const UsfmEditor = () => {
             () => localforage.getItem('editorData'),
             ).then(() => {
               handleInputChange(data);
-              console.log('saved to localforage');
             }).catch((err) => {
               // we got an error
               throw err;
@@ -203,7 +199,6 @@ const UsfmEditor = () => {
             () => localforage.getItem('editorData'),
             ).then(() => {
               handleInputChange(data);
-              console.log('saved to localforage');
             }).catch((err) => {
               // we got an error
               throw err;
@@ -211,13 +206,12 @@ const UsfmEditor = () => {
         }
       });
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     setGoToVersePropValue({
-          chapter: parseInt(chapter),
-          verse: parseInt(verse),
+          chapter: parseInt(chapter, 10),
+          verse: parseInt(verse, 10),
           key: Date.now(),
       });
   }, [chapter]);
