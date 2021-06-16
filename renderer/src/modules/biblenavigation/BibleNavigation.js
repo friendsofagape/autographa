@@ -9,7 +9,7 @@ import { ReferenceContext } from '@/components/context/ReferenceContext';
 import { IconButton } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import * as localforage from 'localforage';
-import { isElectron } from '@/core/handleElectron';
+import { isElectron } from '../../core/handleElectron';
 
 export default function BibleNavigation() {
   // if empty array or null then all books available
@@ -83,7 +83,7 @@ export default function BibleNavigation() {
 
     return (
       <>
-        <span className="items-center justify-center">
+        <span className="items-center justify-center" style={{ display: 'flex' }}>
           <span
             className="px-2 py-2 pr-0 text-sm uppercase font-medium text-white bg-gray-800 bg-opacity-90"
           >

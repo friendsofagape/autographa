@@ -1,5 +1,5 @@
 import { Menu, Transition } from '@headlessui/react';
-import { Fragment } from 'react';
+import { Fragment, useContext } from 'react';
 
 import {
   PencilIcon,
@@ -15,10 +15,16 @@ import ColumnsIcon from '@/icons/basil/Outline/Interface/Columns.svg';
 import ReplyIcon from '@/icons/basil/Outline/Communication/Reply.svg';
 import ForwardIcon from '@/icons/basil/Outline/Communication/Forward.svg';
 
+import { ReferenceContext } from '@/components/context/ReferenceContext';
 import menuStyles from './MenuBar.module.css';
 import styles from './SubMenuBar.module.css';
 
 export default function SubMenuBar() {
+  const {
+    actions: {
+      setOpenResource,
+    },
+  } = useContext(ReferenceContext);
   return (
     <nav className="flex p-2 shadow">
       <div>
@@ -133,7 +139,7 @@ export default function SubMenuBar() {
       </div>
       <div className="w-2/3">
         <div className="flex-1 items-center text-center place-self-center">
-          <button type="button" className={`group ${menuStyles.btn}`}>
+          <button onClick={() => setOpenResource(false)} type="button" className={`group ${menuStyles.btn}`}>
             <ColumnsIcon fill="currentColor" className="h-6 w-6" aria-hidden="true" />
             <span className="px-2 ml-1 bg-primary  text-white  group-hover:bg-white group-hover:text-primary inline-flex text-xxs leading-5 font-semibold rounded-full">3</span>
           </button>

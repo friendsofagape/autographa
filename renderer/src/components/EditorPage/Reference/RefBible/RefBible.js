@@ -9,7 +9,7 @@ import {
 import * as localforage from 'localforage';
 // eslint-disable-next-line import/no-unresolved
 import { readIngredients } from '@/core/reference/readIngredients';
-import { isElectron } from '@/core/handleElectron';
+import { isElectron } from '../../../../core/handleElectron';
 
 const RefBible = () => {
   const {

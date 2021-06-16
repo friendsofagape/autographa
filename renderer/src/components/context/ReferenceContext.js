@@ -17,6 +17,8 @@ export default function ReferenceContextProvider({ children }) {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [refName, setRefName] = React.useState('null');
     const [currentScope, setCurrentScope] = React.useState([]);
+    const [openResource, setOpenResource] = React.useState(true);
+    const [openResourcePopUp, setOpenResourcePopUp] = React.useState(false);
 
     const handleClick = (event) => {
       setAnchorEl(event.currentTarget);
@@ -61,6 +63,8 @@ export default function ReferenceContextProvider({ children }) {
         anchorEl,
         refName,
         currentScope,
+        openResource,
+        openResourcePopUp,
       },
       actions: {
         setLanguageId,
@@ -77,6 +81,8 @@ export default function ReferenceContextProvider({ children }) {
         handleClick,
         setRefName,
         setCurrentScope,
+        setOpenResource,
+        setOpenResourcePopUp,
       },
     };
 

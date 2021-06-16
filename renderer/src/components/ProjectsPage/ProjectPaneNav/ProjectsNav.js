@@ -1,7 +1,6 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import NewProject from '@/modules/projects/NewProject';
-import Profile from '../Profile/Profile';
 import Sync from '../../../modules/projects/Sync';
 import Projects from '../Projects/StarredProjects';
 
@@ -9,8 +8,6 @@ export const ProjectsNav = ({ title }) => (
   <>
     {(() => {
       switch (title) {
-        case 'Profile':
-          return <Profile />;
         case 'Sync':
           return <Sync />;
         case 'Projects':

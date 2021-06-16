@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import TranslationHelpsCard from './TranslationHelpsCard';
-import ReferenceSelector from './ReferenceSelection';
 import ReferenceCard from './ReferenceCard';
 
 const TranslationHelps = () => {
@@ -20,7 +19,6 @@ const TranslationHelps = () => {
 
   return (
     <>
-      <ReferenceSelector />
       {(() => {
       switch (selectedResource) {
         case 'tn':
