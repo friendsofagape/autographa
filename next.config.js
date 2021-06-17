@@ -1,7 +1,7 @@
 const nodeExternals = require('webpack-node-externals');
+const withTM = require('next-transpile-modules')(['usfm-editor']);
 
-module.exports = {
-
+module.exports = withTM({
   webpack: (config, { isServer }) => {
     // Fixes npm packages that depend on `fs` module
     if (!isServer) {
@@ -35,12 +35,13 @@ module.exports = {
 
     return config;
   },
+  images: {
+    disableStaticImages: true,
+  },
+  webpack5: true,
   externals: [nodeExternals()],
   target: 'serverless',
-  future: {
-    webpack5: true,
-  },
   fallback: {
     fs: false,
   },
-};
+});

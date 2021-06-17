@@ -46,7 +46,7 @@
 		"@testing-library/jest-dom": "^5.11.4",
 		"@testing-library/react": "^11.0.4",
 		"@testing-library/user-event": "12.1.7",
-		"autoprefixer": "^10.2.5",
+		"autoprefixer": "^10.2.6",
 		"babel-eslint": "^10.1.0",
 		"babel-jest": "^26.6.3",
 		"babel-plugin-istanbul": "^6.0.0",
@@ -58,6 +58,7 @@
 		"enzyme-adapter-react-16": "^1.15.6",
 		"eslint": "^7.11.0",
 		"eslint-config-airbnb": "^18.2.0",
+		"eslint-config-next": "^11.0.0",
 		"eslint-plugin-import": "^2.22.1",
 		"eslint-plugin-jsx-a11y": "^6.3.1",
 		"eslint-plugin-prettier": "^3.1.4",
@@ -66,9 +67,9 @@
 		"eslint-plugin-simple-import-sort": "^7.0.0",
 		"jest": "^26.6.3",
 		"jest-dom": "^4.0.0",
-		"postcss": "^8.2.15",
+		"postcss": "^8.3.5",
 		"prettier": "^2.3.0",
-		"tailwindcss": "^2.1.2"
+		"tailwindcss": "^2.1.4"
 	},
 	"dependencies": {
 		"@headlessui/react": "^1.2.0",
@@ -96,6 +97,7 @@
 		"moment": "^2.28.0",
 		"next": "latest",
 		"next-on-netlify": "^2.6.3",
+		"next-transpile-modules": "^8.0.0",
 		"nprogress": "^0.2.0",
 		"parse": "^3.1.0",
 		"postcss-import": "^14.0.2",
@@ -108,8 +110,8 @@
 		"react-intl": "^5.18.0",
 		"sweetalert": "2.1.2",
 		"translation-helps-rcl": "^1.5.0",
-		"webpack-node-externals": "^3.0.0",
 		"usfm-editor": "0.8.0-SNAPSHOT.6",
+		"webpack-node-externals": "^3.0.0",
 		"winston": "^3.3.3",
 		"ws": "^7.4.5"
 	},

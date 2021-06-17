@@ -15,6 +15,7 @@ const {
     setOpenResourcePopUp,
   },
 } = useContext(ReferenceContext);
+
 const removeSection = () => {
   setOpenResource(!openResource);
 };
