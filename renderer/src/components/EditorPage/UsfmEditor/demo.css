@@ -1,0 +1,86 @@
+.column {
+    width: 49%;
+}
+
+.column-left {
+    float: left;
+}
+
+.column-right {
+    float: right;
+}
+
+.demo-header {
+    margin-bottom: 15px;
+    float: left;
+}
+
+.horizontal > * {
+    display: inline-block;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+/* Don't give right margin to the last child of a horizontal container */
+.horizontal > *:last-child {
+    margin-right: 0px;
+}
+
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.usfm-container {
+    border: ridge;
+    white-space: pre-wrap;
+}
+
+.center-horizontal {
+    width: fit-content;
+    margin: 0 auto;
+}
+
+.no-select {
+    user-select: none;
+}
+
+.option-checkbox {
+    margin-right: 10px;
+}
+
+.identification-setter {
+    display: inline-block;
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+.identification-input {
+    width: 80%;
+    float: left;
+}
+
+.identification-button {
+    width: 20%;
+    float: right;
+}
+
+.verse-selector-input {
+    width: 2em;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.verse-tracker-text {
+    margin-right: 5px;
+}
+
+.no-margin-top {
+    margin-top: 0px;
+}
+
+.hr-separator {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}

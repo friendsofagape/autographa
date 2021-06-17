@@ -17,6 +17,9 @@
       "@/util/*": [
         "src/util/*"
       ],
+      "@/icons/*": [
+        "public/icons/*"
+      ],
     }
   }
 }
