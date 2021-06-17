@@ -66,7 +66,7 @@ function LicencePopover() {
                 alt="add button"
               />
             </button>
-            <button
+            {/* <button
               className="mt-5 flex-shrink-0"
               type="button"
               label="na"
@@ -77,7 +77,7 @@ function LicencePopover() {
                 src="illustrations/edit.svg"
                 alt="add button"
               />
-            </button>
+            </button> */}
           </Popover.Button>
           <Popover.Overlay
             className={`${
@@ -146,33 +146,39 @@ function TargetLanguagePopover() {
     <Popover className="relative ">
       {({ open }) => (
         <>
-          <Popover.Button>
+          <div className="">
 
-            <button
-              className="mt-5 min-w-max"
-              type="button"
-              label="na"
-              onClick={() => openLanguageNav('add')}
-            >
-              <img
-                className=" w-10 h-10"
-                src="illustrations/add-button.svg"
-                alt="add button"
-              />
-            </button>
-            <button
-              className="mt-5 flex-shrink-0"
-              type="button"
-              label="na"
-              onClick={() => openLanguageNav('edit')}
-            >
-              <img
-                className=" w-10 h-10"
-                src="illustrations/edit.svg"
-                alt="edit button"
-              />
-            </button>
-          </Popover.Button>
+            <Popover.Button>
+
+              <button
+                className="mt-5 min-w-max"
+                type="button"
+                label="na"
+                onClick={() => openLanguageNav('add')}
+              >
+                <img
+                  className=" w-10 h-10"
+                  src="illustrations/add-button.svg"
+                  alt="add button"
+                />
+              </button>
+            </Popover.Button>
+            <Popover.Button>
+
+              <button
+                className="mt-5 flex-shrink-0"
+                type="button"
+                label="na"
+                onClick={() => openLanguageNav('edit')}
+              >
+                <img
+                  className=" w-10 h-10"
+                  src="illustrations/edit.svg"
+                  alt="edit button"
+                />
+              </button>
+            </Popover.Button>
+          </div>
           <Popover.Overlay
             className={`${
               open ? 'opacity-30 fixed inset-0' : 'opacity-0'
@@ -192,7 +198,7 @@ function TargetLanguagePopover() {
                       autoComplete="given-name"
                       value={lang}
                       onChange={(e) => { setLang(e.target.value); }}
-                      className="bg-gray-200 w-80 block rounded shadow-sm sm:text-sm focus:ring-gray-500 focus:border-primary border-gray-300"
+                      className="bg-gray-200 w-80 block rounded shadow-sm sm:text-sm focus:border-primary border-gray-300"
                     />
                   </div>
                 </div>
@@ -207,7 +213,7 @@ function TargetLanguagePopover() {
                         checked={direction === 'LTR'}
                         onChange={() => setDirection('LTR')}
                       />
-                      <span className=" ml-3 text-xs font-bold">LTR</span>
+                      <span className=" ml-4 text-xs font-bold">LTR</span>
                     </div>
                     <div>
                       <input
@@ -267,7 +273,7 @@ function AdvancedSettingsDropdown() {
     <>
       <div>
         <button
-          className="min-w-max flex justify-between pt-3 shadow tracking-wider leading-none h-10 w-2/3 px-4 py-2 text-sm font-medium text-black bg-gray-100 rounded-md hover:bg-gray-200 focus:outline-none"
+          className="min-w-max flex justify-between pt-3 shadow tracking-wider leading-none h-10 w-5/6 px-4 py-2 text-sm font-medium text-black bg-gray-100 rounded-md hover:bg-gray-200 focus:outline-none"
           onClick={handleClick}
           type="button"
         >
@@ -395,10 +401,10 @@ function BibleHeaderTagDropDown() {
           title="new project"
           header={BibleHeaderTagDropDown()}
         >
-          <div className="h-screen rounded border shadow mt-4 ml-5 mr-5 mb-5 ">
-            <div className="grid grid-cols-2 m-5">
+          <div className=" rounded border shadow mt-4 ml-5 mr-5 mb-5 ">
+            <div className="grid grid-cols-2">
               <div className="overflow-auto">
-                <div className="grid grid-row-5 gap-10 m-8 w-full">
+                <div className="grid grid-row-5 gap-10 m-8">
                   <div>
                     <h4 className="text-xs font-base mb-2 text-primary  tracking-wide leading-4  font-light">Project Name</h4>
                     <input
@@ -407,7 +413,7 @@ function BibleHeaderTagDropDown() {
                       id=""
                       value={newProjectFields.projectName}
                       onChange={handleProjectFields('projectName')}
-                      className="bg-gray-200 w-80 block rounded shadow-sm sm:text-sm focus:ring-gray-500 focus:border-primary border-gray-300"
+                      className="bg-gray-200 w-80 block rounded shadow-sm sm:text-sm focus:border-primary border-gray-300"
                     />
                   </div>
                   <div className="flex gap-8">
@@ -419,7 +425,7 @@ function BibleHeaderTagDropDown() {
                       onChange={(e) => {
                         handleVersion(e);
                       }}
-                      className="bg-white w-80 block rounded shadow-sm sm:text-sm focus:ring-gray-500 focus:border-primary border-gray-300"
+                      className="bg-white w-80 block rounded shadow-sm sm:text-sm focus:border-primary border-gray-300"
                     />
                     <input
                       type="text"
@@ -429,7 +435,7 @@ function BibleHeaderTagDropDown() {
                       onChange={(e) => {
                         setVersion({ ...version, abbreviation: e.target.value });
                       }}
-                      className="bg-white w-20 block rounded  sm:text-sm focus:ring-gray-500 focus:border-primary border-gray-300"
+                      className="bg-white w-20 block rounded  sm:text-sm focus:border-primary border-gray-300"
                     />
                   </div>
                   <div>
@@ -440,18 +446,18 @@ function BibleHeaderTagDropDown() {
                       id=""
                       value={version.description}
                       onChange={handleProjectFields('description')}
-                      className="bg-white w-80 h-28  block rounded shadow-sm sm:text-sm focus:ring-gray-500 focus:border-primary border-gray-300"
+                      className="bg-white w-80 h-28  block rounded shadow-sm sm:text-sm focus:border-primary border-gray-300"
                     />
                   </div>
                   <div className=" relative flex gap-5">
-                    <div className=" absolute left-80 ml-4">
+                    <div className=" absolute left-80 ml-4 mb-20">
 
                       <TargetLanguageTag>
                         {language.scriptDirection}
                       </TargetLanguageTag>
                     </div>
                     <CustomAutocomplete label="Target Langauge" list={languages} />
-                    <div className=" mt-8">
+                    <div className="">
                       <TargetLanguagePopover />
                     </div>
                   </div>

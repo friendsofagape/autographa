@@ -58,16 +58,16 @@ const CustomLogin = ({
                 placeholder={c.label}
                 className="text-xs
                 mb-8
-                focus:border-blue-600
+                focus:border-primary
                 h-12 max-w-md
                 appearance-none
-                border
+                border-primary
                 rounded
                 w-full
                 py-2
                 px-3
                  text-gray-600
-                 focus:outline-none"
+                 "
               />
             </div>
             <Typography color="error">{validation?.[c.name]}</Typography>
@@ -75,7 +75,7 @@ const CustomLogin = ({
         ))}
         <div className="text-xs mb-8 max-w-md appearance-none py-2 px-3">
           {ui?.viewForgot && (
-            <a className="text-xs text-red-600 float-right" href="/signup">
+            <a className="text-xs text-error float-right" href="/signup">
               Forgot Password?
             </a>
           )}
@@ -88,7 +88,7 @@ const CustomLogin = ({
            focus:border-blue-600
            max-w-md h-12 appearance-none
            border rounded
-           w-full py-2 px-3 text-white focus:outline-none bg-blue-600"
+           w-full py-2 px-3 text-white focus:outline-none bg-primary"
         />
       </form>
     </>
