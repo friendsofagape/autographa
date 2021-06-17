@@ -1,12 +1,18 @@
-/* eslint-disable no-console */
-/* eslint-disable no-unused-vars */
+/* eslint-disable react-hooks/exhaustive-deps */
 import { ProjectContext } from '@/components/context/ProjectContext';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import React, {
- useContext, useEffect, useRef, useState,
+ useContext, useEffect, useRef, useState, useMemo,
+ useCallback,
 } from 'react';
-// import { BasicUsfmEditor } from 'usfm-editor';
 import * as localforage from 'localforage';
+import {
+ createBasicUsfmEditor,
+ withChapterPaging,
+//  withChapterSelection,
+ withToolbar,
+} from 'usfm-editor';
+import { readFile } from '../../../core/editor/readFile';
 import writeToParse from '../../../core/editor/writeToParse';
 import { isElectron } from '../../../core/handleElectron';
 import writeToFile from '../../../core/editor/writeToFile';
@@ -17,17 +23,18 @@ import EditorSection from '../EditorSection';
 
 const UsfmEditor = () => {
   const intervalRef = useRef();
-  const [usfmInput, setUsfmInput] = useState(null);
-  const [readOnly, setReadOnly] = useState(false);
+  const [usfmInput, setUsfmInput] = useState();
+  const [readOnly] = useState(false);
   const [activeTyping, setActiveTyping] = useState(false);
-  const [usfmOutput, setUsfmOutput] = useState();
   const [identification, setIdentification] = useState({});
-
+  const [goToVersePropValue, setGoToVersePropValue] = useState({});
   const username = 'Michael';
-  const projectName = 'TEST PRO HiN';
+  const projectName = 'Spanish Pro';
   const {
     state: {
       bookId,
+      verse,
+      chapter,
     },
     actions: {
       onChangeBook,
@@ -41,6 +48,11 @@ const UsfmEditor = () => {
     },
    } = useContext(ProjectContext);
 
+   const CustomEditor = useMemo(
+    () => withToolbar((withChapterPaging(createBasicUsfmEditor()))),
+    [usfmInput],
+    );
+
    const saveToParse = async () => {
       try {
         const usfm = await localforage.getItem('editorData');
@@ -48,12 +60,12 @@ const UsfmEditor = () => {
           username, projectName, usfmData: usfm, scope: bookId.toUpperCase(), write: true,
         });
       } catch (err) {
+        // eslint-disable-next-line no-console
         console.log(err);
       }
     };
 
   const handleEditorChange = (usfm) => {
-    setUsfmOutput(usfm);
     if (isElectron()) {
       writeToFile({
         projectname: selectedProject,
@@ -65,7 +77,6 @@ const UsfmEditor = () => {
         () => localforage.getItem('editorData'),
         ).then(() => {
           setActiveTyping(true);
-          console.log('saved to localforage');
         }).catch((err) => {
           // we got an error
           throw err;
@@ -83,7 +94,6 @@ const UsfmEditor = () => {
     } else {
       clearInterval(intervalRef.current);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeTyping]);
 
   // handle unmount
@@ -100,48 +110,71 @@ const UsfmEditor = () => {
     setIdentification({});
   };
 
-  const handleVersChange = (val) => {
+  const handleVersChange = useCallback(
+    (val) => {
     if (val) {
        onChangeChapter(val.chapter.toString());
        onChangeVerse(val.verseStart.toString());
     }
-  };
+  }, [onChangeChapter, onChangeVerse],
+  );
 
-  const onIdentificationChange = (id) => {
+  const onIdentificationChange = useCallback(
+    (id) => {
     const identification = typeof id === 'string' ? JSON.parse(id) : id;
     setIdentification(identification);
-    console.log(identification, bookId);
     onChangeBook((identification.id).toLowerCase());
-  };
+    },
+    [bookId],
+  );
 
   useEffect(() => {
-    findBookFromParse({
-      username, projectName, scope: bookId.toUpperCase(),
-    }).then((scopefiles) => {
-      scopefiles.forEach((file) => {
-        if (file === bookId.toUpperCase()) {
-          fetchFromParse({
-          username, projectName, scope: bookId.toUpperCase(),
-          }).then(async (data) => {
-            if (data) {
-              localforage.setItem('editorData', data).then(
-                () => localforage.getItem('editorData'),
-                ).then(() => {
-                  handleInputChange(data);
-                }).catch((err) => {
-                  // we got an error
-                  throw err;
-                });
-            }
-          });
-        } else {
-          handleInputChange(undefined);
+    if (!isElectron()) {
+      findBookFromParse({
+        username, projectName, scope: bookId.toUpperCase(),
+      }).then((scopefiles) => {
+        scopefiles.forEach((file) => {
+          if (file === bookId.toUpperCase()) {
+            fetchFromParse({
+            username, projectName, scope: bookId.toUpperCase(),
+            }).then(async (data) => {
+              if (data) {
+                localforage.setItem('editorData', data).then(
+                  () => localforage.getItem('editorData'),
+                  ).then(() => {
+                    handleInputChange(data);
+                  }).catch((err) => {
+                    // we got an error
+                    throw err;
+                  });
+              }
+            });
+          } else {
+            handleInputChange(undefined);
+          }
+        });
+      });
+    } else {
+       readFile({
+        projectname: selectedProject,
+        filename: bookId,
+      }).then((data) => {
+        if (data) {
+          localforage.setItem('editorData', data).then(
+            () => localforage.getItem('editorData'),
+            ).then(() => {
+              handleInputChange(data);
+            }).catch((err) => {
+              // we got an error
+              throw err;
+            });
         }
       });
-    });
-  }, [bookId]);
+    }
+  }, [bookId, chapter]);
 
   useEffect(() => {
+    if (!isElectron()) {
     fetchFromParse({
       username, projectName, scope: bookId.toUpperCase(),
     }).then((data) => {
@@ -156,30 +189,52 @@ const UsfmEditor = () => {
           });
       }
       });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    } else {
+      readFile({
+        projectname: selectedProject,
+        filename: bookId,
+      }).then((data) => {
+        if (data) {
+          localforage.setItem('editorData', data).then(
+            () => localforage.getItem('editorData'),
+            ).then(() => {
+              handleInputChange(data);
+            }).catch((err) => {
+              // we got an error
+              throw err;
+            });
+        }
+      });
+    }
   }, []);
+
+  useEffect(() => {
+    setGoToVersePropValue({
+          chapter: parseInt(chapter, 10),
+          verse: parseInt(verse, 10),
+          key: Date.now(),
+      });
+  }, [chapter]);
 
 return (
   <>
-    {/* <div>
-      <InputSelector onChange={handleInputChange} />
-    </div> */}
     <span style={{
       float: 'right', left: '-6px', top: '-404px', paddingRight: '2px',
     }}
     >
       <EditorSection header="USFM EDITOR" editor>
         {usfmInput && (
-        {/* <BasicUsfmEditor
+        <CustomEditor
           usfmString={usfmInput}
           key={usfmInput}
           onChange={handleEditorChange}
           onVerseChange={handleVersChange}
+          goToVerse={goToVersePropValue}
           readOnly={readOnly}
           identification={identification}
           onIdentificationChange={onIdentificationChange}
-        /> */}
-    )}
+        />
+        )}
       </EditorSection>
     </span>
   </>

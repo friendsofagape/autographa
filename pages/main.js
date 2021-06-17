@@ -1,4 +1,3 @@
-import { environment } from '../renderer/environment';
 import Main from '../renderer/src/components/main';
 
 const main = () => (

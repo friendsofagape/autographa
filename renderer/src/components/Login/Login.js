@@ -126,7 +126,7 @@ export default function Login() {
     } else {
       // eslint-disable-next-line no-lonely-if
       if (isElectron()) {
-        router.push('/main');
+        router.push('/newproject');
         // const requestOptions = {
         //   method: 'POST',
         //   headers: { 'Content-Type': 'application/json' },

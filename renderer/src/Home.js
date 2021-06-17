@@ -1,8 +1,10 @@
 import React from 'react';
-import Main from './components/main';
 import Login from './components/Login/Login';
-import { AuthenticationContext } from './components/Login/AuthenticationContextProvider';
+import AuthenticationContextProvider, { AuthenticationContext } from './components/Login/AuthenticationContextProvider';
 import { loadUsers } from './core/Login/handleJson';
+import ProjectContextProvider from './components/context/ProjectContext';
+import ReferenceContextProvider from './components/context/ReferenceContext';
+import NewProject from './modules/projects/NewProject';
 import * as logger from './logger';
 
 const Home = () => {
@@ -21,7 +23,15 @@ const Home = () => {
   return (
     <>
       {states.accessToken
-        ? <Main />
+        ? (
+          <AuthenticationContextProvider>
+            <ProjectContextProvider>
+              <ReferenceContextProvider>
+                <NewProject />
+              </ReferenceContextProvider>
+            </ProjectContextProvider>
+          </AuthenticationContextProvider>
+        )
         : <Login />}
     </>
   );

@@ -62,6 +62,30 @@
 	position: absolute;
 }
 
+/* width */
+::-webkit-scrollbar {
+	width: 14px;
+	height: 14px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+	border-radius: 100vh;
+	background: #edf2f7;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+	background: #cbd5e0;
+	border-radius: 100vh;
+	border: 3px solid #edf2f7;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+	background: #a0aec0;
+}
+
 @-webkit-keyframes nprogress-spinner {
 	0% {
 		-webkit-transform: rotate(0deg);

@@ -46,11 +46,19 @@ hr.usfm-editor-hr {
 }
 
 .usfm-editor {
+	margin-top: 1em;
+	overflow-y: scroll;
+	-ms-overflow-style: none; /* No scrollbar- IE and Edge */
+	scrollbar-width: none; /* Firefox */
 } /* Override font, bg color, etc. */
+
+.usfm-editor::-webkit-scrollbar {
+	display: none; /* Chrome, Safari, Opera */
+}
 
 .usfm-editor-chapter {
 	overflow: auto;
-	margin-bottom: 0.5em;
+	margin: 0 0.75em 0.5em 0.75em;
 }
 
 .usfm-editor-context-menu:not(:empty) {
@@ -116,4 +124,47 @@ the last child. */
 	-moz-user-select: none;
 	-webkit-user-select: none;
 	-ms-user-select: none;
+}
+
+.toolbar {
+	padding-left: 0;
+}
+
+.toolbar-button {
+	min-width: 3em;
+	font-size: 16px; /* Default for material-UI icons */
+	font-weight: bold;
+}
+
+.toolbar-button-active {
+	color: black;
+}
+
+.toolbar-button-inactive {
+	color: rgb(204, 204, 204);
+}
+
+.toolbar-button:hover {
+	background-color: transparent;
+}
+
+.toolbar-button-active .toolbar-icon {
+	fill: black;
+}
+
+.toolbar-button-inactive .toolbar-icon {
+	fill: rgb(204, 204, 204);
+}
+
+.verse-selector {
+	padding-bottom: 20px;
+}
+
+.border-bottom {
+	border-bottom: 3px solid rgb(238, 238, 238);
+}
+
+.fixed-size {
+	display: flex;
+	flex-flow: column;
 }
