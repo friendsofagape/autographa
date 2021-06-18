@@ -153,23 +153,23 @@ export default function Login() {
   };
   return (
     <>
-      <div>
-        <div className="inline-block min-h-screen  bg-white w-5/12">
+      <div className="relative">
+        <div className="inline-block  bg-white w-5/12">
           <div className="ml-10 2xl:ml-40 mt-32">
-            <div className="text-green-500 pb-12">
+            <div className="text-success pb-12">
               Don’t have an account?
               <a
                 data-testid="signup"
                 href="/signup"
-                className="text-blue-600 ml-2"
+                className="text-primary ml-2"
               >
                 Sign Up!
               </a>
             </div>
-            <div className="text-3xl font-medium text-black"> Welcome!</div>
+            <div className="text-3xl font-medium text-secondary"> Welcome!</div>
             <div className="text-lg
             font-light
-            pb-14 text-gray-400"
+            pb-14 text-gray-400 leading-7"
             >
               Welcome back! Login to access Autographa
             </div>
@@ -183,24 +183,16 @@ export default function Login() {
             />
             <div />
           </div>
-          <div className="2xl:ml-40 pt-72 2xl:pl-5 pl-14 space-x-14 sm:space-y-2
-          text-black font-bold"
-          >
-            <a href="/">EN(US)</a>
-            <a href="/">ABOUT</a>
-            <a href="/">PRIVACY</a>
-            <a href="/">TERMS</a>
-          </div>
         </div>
         <div className="absolute
-        inline-block bg-black min-h-screen w-7/12 pt-8 pl-40 pr-40"
+        inline-block bg-secondary w-7/12 pt-8 pl-40 pr-40 overflow-auto"
         >
           <div className="grid grid-rows-1 justify-items-center relative">
             <div className="justify-center">
               <div className="flex gap-3 ">
                 <img src="/logo.svg" alt="logo" />
-                <div className="text-white">AUTOGRAPHA</div>
-                <div className="text-blue-800 font-bold">2.0</div>
+                <div className="text-white uppercase">AUTOGRAPHA</div>
+                <div className="text-primary font-bold">2.0</div>
               </div>
               <div className="pt-8 pl-72">
                 <img src="/illustrations/group.svg" alt="Group" />
@@ -234,6 +226,14 @@ export default function Login() {
           <div className=" bottom-0 pt-10 absolute left-5">
             <img src="/illustrations/half-moon.svg" alt="logo" />
           </div>
+        </div>
+        <div className="2xl:ml-40 pt-72 2xl:pl-5 pl-14 space-x-14 sm:space-y-2
+          text-black font-bold absolute overflow-auto "
+        >
+          <a href="/">EN(US)</a>
+          <a href="/">ABOUT</a>
+          <a href="/">PRIVACY</a>
+          <a href="/">TERMS</a>
         </div>
       </div>
     </>

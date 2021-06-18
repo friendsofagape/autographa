@@ -82,7 +82,7 @@ function InputBar({ title }) {
       return (
         <ProjectsLayout title="personal information">
           <div className=" bg-gray-100 flex">
-            <div className="w-60 h-screen bg-gray-900 ">
+            <div className="w-60  bg-secondary ">
               <div className="grid grid-rows-5 p-8 gap-16 pb-20 mr-20">
                 <div className="grid grid-cols-2">
                   <img
@@ -95,6 +95,7 @@ function InputBar({ title }) {
 
                 <div className="grid grid-cols-2">
                   <img
+                    className="flex-shrink-0"
                     src="/illustrations/step-two.svg"
                     alt="Workflow1"
                   />
@@ -187,7 +188,7 @@ function InputBar({ title }) {
                         className="bg-gray-100 w-96 block rounded shadow-sm sm:text-sm focus:ring-gray-500 focus:border-primary border-gray-200 h-10 font-light"
                         type="password"
                       />
-                      <button type="button" onClick="">
+                      <button type="button" className="pt-1">
 
                         <img
                           className=""
@@ -208,7 +209,7 @@ function InputBar({ title }) {
 
                 <button
                   type="submit"
-                  className=" w-20 h-9 bg-success  shadow-md font-light text-white border-none text-xs leading-5 rounded uppercase"
+                  className=" w-20 h-9 bg-success  shadow-md font-light text-white border-none text-xs leading-5 rounded uppercase mb-5"
                 >
                   Save
                 </button>
