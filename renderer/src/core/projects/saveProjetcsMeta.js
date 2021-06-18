@@ -1,13 +1,13 @@
 import moment from 'moment';
-import saveProjectsFiles from './saveProjectFiles';
+import { createVersificationUSFM } from '../../util/createVersificationUSFM';
 
 const saveProjectsMeta = (
     newProjectFields,
     selectedVersion,
-    license,
-    canonSpecification,
-    content,
+    selectedLanguage,
     versificationScheme,
+    canonSpecification,
+    copyright,
 ) => {
     const newpath = localStorage.getItem('userPath');
     const status = [];
@@ -16,16 +16,18 @@ const saveProjectsMeta = (
             {
             id: Date.now(),
             projectName: newProjectFields.projectName,
-            bibleVersion: selectedVersion,
-            language: newProjectFields.language,
-            scriptDirection: newProjectFields.scriptDirection,
+            bibleVersion: selectedVersion.name,
+            abbreviation: selectedVersion.abbreviation,
+            language: selectedLanguage.language,
+            scriptDirection: selectedLanguage.scriptDirection,
+            projectDescription: newProjectFields.description,
             versificationScheme,
             canonspecification:
             {
-                canonSpecification,
-                canoncontent: content,
+                canonSpecification: canonSpecification.title,
+                canoncontent: canonSpecification.currentScope,
             },
-            license,
+            license: copyright.license,
             starred: false,
             createdAt: moment().format('DD-MM-YYYY'),
             updatedAt: moment().format('YYYY-MM-DD h:mm:ss'),
@@ -67,11 +69,12 @@ const saveProjectsMeta = (
                     'projects',
                     'projects.json'),
                     JSON.stringify(obj));
-                    saveProjectsFiles({
-                        username: 'username',
-                        projectname: newProjectFields.projectName,
-                        filenames: content,
-                    });
+                    createVersificationUSFM(
+                        'username',
+                        newProjectFields.projectName,
+                        versificationScheme,
+                        canonSpecification.currentScope,
+                    );
                     status.push({ type: 'success', value: 'projectmeta updated' });
             }
         }
@@ -87,11 +90,12 @@ const saveProjectsMeta = (
             'projects.json',
         ), json);
         status.push({ type: 'success', value: 'new project created' });
-        saveProjectsFiles({
-            username: 'username',
-            projectname: newProjectFields.projectName,
-            filenames: content,
-        });
+        createVersificationUSFM(
+            'username',
+            newProjectFields.projectName,
+            versificationScheme,
+            canonSpecification.currentScope,
+        );
     }
     return status;
 };

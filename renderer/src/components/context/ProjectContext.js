@@ -3,6 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { isElectron } from '../../core/handleElectron';
 import * as logger from '../../logger';
+import saveProjectsMeta from '../../core/projects/saveProjetcsMeta';
 
 const path = require('path');
 const advanceSettings = require('../../lib/AdvanceSettings.json');
@@ -62,7 +63,7 @@ const ProjectContextProvider = ({ children }) => {
     };
     // Json for storing advance settings
     // eslint-disable-next-line no-unused-vars
-    const updateJson = (currentSetting) => {
+    const updateJson = (currentSettings) => {
       const newpath = localStorage.getItem('userPath');
       const fs = window.require('fs');
       const file = path.join(newpath, 'autographa', 'users', 'username', 'usersetting.json');
@@ -74,8 +75,10 @@ const ProjectContextProvider = ({ children }) => {
           } else {
             logger.debug('ProjectContext.js', 'Successfully read the data from file');
             const json = JSON.parse(data);
-            if (uniqueSetting(json.currentSetting, currentSetting.title)) {
-              (json.currentSetting).forEach((setting) => {
+            const currentSetting = (currentSettings === 'copyright' ? copyright : canonSpecification);
+            console.log(json[currentSettings], currentSetting.title);
+            if (uniqueSetting(json[currentSettings], currentSetting.title)) {
+              (json[currentSettings]).forEach((setting) => {
                 if (setting.title === currentSetting.title) {
                   const keys = Object.keys(setting);
                   keys.forEach((key) => {
@@ -85,11 +88,12 @@ const ProjectContextProvider = ({ children }) => {
                 }
               });
             } else {
-              (json.currentSetting).push(currentSetting);
+              // updating the canon
+              (json[currentSettings]).push(currentSetting);
             }
             logger.debug('ProjectContext.js', 'Upadting the settings in existing file');
             console.log('pushing to file', json);
-            // fs.writeFileSync(file, JSON.stringify(json));
+            fs.writeFileSync(file, JSON.stringify(json));
             logger.debug('ProjectContext.js', 'Loading new settings from file');
             loadSettings();
           }
@@ -98,15 +102,15 @@ const ProjectContextProvider = ({ children }) => {
         const json = {
           canonSpecification: [
             {
-              title: (currentSetting === 'canonSpecification' ? canonSpecification.title : ''),
-              currentScope: (currentSetting === 'canonSpecification' ? canonSpecification.currentScope : []),
+              title: (currentSettings === 'canonSpecification' ? canonSpecification.title : ''),
+              currentScope: (currentSettings === 'canonSpecification' ? canonSpecification.currentScope : []),
             },
           ],
           copyright: [
             {
               id: 'custom',
-              title: (currentSetting === 'copyright' ? copyright.title : ''),
-              licence: (currentSetting === 'copyright' ? copyright.licence : ''),
+              title: (currentSettings === 'copyright' ? copyright.title : ''),
+              licence: (currentSettings === 'copyright' ? copyright.licence : ''),
             },
           ],
         };
@@ -114,15 +118,21 @@ const ProjectContextProvider = ({ children }) => {
       }
     };
     const createProject = () => {
-      console.log('Create', newProjectFields, version, versificationScheme, canonSpecification, copyright);
+      console.log(canonList);
       if (!uniqueSetting(canonList, canonSpecification.title)) {
-        console.log('canonSpecification');
-        // updateJson('canonSpecification');
+        updateJson('canonSpecification');
       }
       if (!uniqueSetting(licenceList, copyright.title)) {
-        console.log('copyright');
-        // updateJson('copyright');
+        updateJson('copyright');
       }
+      saveProjectsMeta(
+        newProjectFields,
+        version,
+        language,
+        versificationScheme.title,
+        canonSpecification,
+        copyright,
+      );
     };
     const resetProjectStates = () => {
       const initialState = {

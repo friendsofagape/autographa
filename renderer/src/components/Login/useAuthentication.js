@@ -6,13 +6,14 @@ import * as logger from '../../logger';
 // import configData from '../../config.json';
 // import { isElectron } from '../../core/handleElectron';
 const jwt = require('jsonwebtoken');
-
+import { useRouter } from 'next/router';
 // const kratos = new PublicApi(new Configuration({ basePath: configData.base_url }));
 
 function useAuthentication() {
   const [accessToken, setaccessToken] = React.useState();
   const [currentUser, setCurrentUser] = React.useState();
   const [config, setConfig] = React.useState();
+  const router = useRouter();
   const getToken = () => {
     logger.debug('useAuthentication.js', 'In getToken to check any token stored in localStorage');
     localForage.getItem('sessionToken').then((value) => {
@@ -53,6 +54,7 @@ function useAuthentication() {
     localForage.removeItem('sessionToken');
     localForage.removeItem('userProfile');
     localForage.setItem('appMode','online');
+    router.push('/index')
   };
   const getConfig = (flowId) => {
     logger.debug('useAuthentication.js', 'getConfig fetch the config from the Kratos using flowID');
