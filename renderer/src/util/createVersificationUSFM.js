@@ -1,13 +1,11 @@
 const grammar = require('usfm-grammar');
 const path = require('path');
 
-export const createVersificationUSFM = () => {
+export const createVersificationUSFM = (username, projectname, versification, books) => {
   const newpath = localStorage.getItem('userPath');
-  const versification = 'kjv';
-  const books = ['TIT', 'JUD'];
-  const folder = path.join(newpath, 'autographa', 'users', 'username', 'projects', 'Test Bible', 'ingredients');
+  const folder = path.join(newpath, 'autographa', 'users', username, 'projects', projectname, 'ingredients');
   const schemes = [
-    { name: 'kjv', file: 'eng.json' },
+    { name: 'King James Version (KJV)', file: 'eng.json' },
     { name: '', file: 'ethiopian_custom.json' },
     { name: '', file: 'lxx.json' },
     { name: '', file: 'org.json' },
