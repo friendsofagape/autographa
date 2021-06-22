@@ -29,6 +29,7 @@ export default function MenuDropdown() {
       if (isElectron()) {
         getFonts();
       }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
