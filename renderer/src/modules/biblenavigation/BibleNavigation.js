@@ -1,221 +1,249 @@
+import PropTypes from 'prop-types';
 import { Dialog, Transition } from '@headlessui/react';
 import {
- Fragment, useContext, useEffect, useRef, useState,
+  Fragment, useEffect, useRef, useState,
 } from 'react';
 import SelectBook from '@/components/EditorPage/Navigation/reference/SelectBook';
 import SelectVerse from '@/components/EditorPage/Navigation/reference/SelectVerse';
-import { XIcon } from '@heroicons/react/solid';
-import { ReferenceContext } from '@/components/context/ReferenceContext';
-import { IconButton } from '@material-ui/core';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import * as localforage from 'localforage';
-import { isElectron } from '../../core/handleElectron';
+import {
+  XIcon,
+  ChevronDownIcon,
+} from '@heroicons/react/solid';
 
-export default function BibleNavigation() {
-  // if empty array or null then all books available
-      const {
-     state: {
-        bookList,
-        bookName,
-        chapter,
-        verse,
-        chapterList,
-        verseList,
-        languageId,
-     }, actions: {
-        onChangeBook,
-        onChangeChapter,
-        onChangeVerse,
-        applyBooksFilter,
-      },
-    } = useContext(ReferenceContext);
+import {
+  LockOpenIcon,
+  LockClosedIcon,
+  BookmarkIcon,
+  CogIcon,
+  ChatIcon,
+} from '@heroicons/react/outline';
 
-    const [openBook, setOpenBook] = useState(false);
-    const [openVerse, setOpenVerse] = useState(false);
-    const cancelButtonRef = useRef(null);
+import { useBibleReference } from 'bible-reference-rcl';
 
-    const [multiSelectVerse] = useState(false);
-    const [multiSelectBook] = useState(false);
-    const [selectedVerses, setSelectedVerses] = useState([]);
-    const [selectedBooks, setSelectedBooks] = useState([]);
-    const [verselectActive, setVerseSelectActive] = useState(false);
+export default function BibleNavigation(props) {
+  const { showVerse } = props;
+  const supportedBooks = null; // if empty array or null then all books available
+  const initialBook = 'mat';
+  const initialChapter = '2';
+  const initialVerse = '1';
 
-    function closeBooks() {
-      setOpenBook(false);
-    }
+  const {
+    state: {
+      bookList,
+      bookName,
+      chapter,
+      verse,
+      chapterList,
+      verseList,
+    }, actions: {
+      onChangeBook,
+      onChangeChapter,
+      onChangeVerse,
+      applyBooksFilter,
+    },
+  } = useBibleReference({
+    initialBook,
+    initialChapter,
+    initialVerse,
+  });
 
-    function openBooks() {
-      setOpenBook(true);
-    }
+  useEffect(() => {
+    applyBooksFilter(supportedBooks);
+  }, [applyBooksFilter, supportedBooks]);
 
-    function closeVerses() {
-      setOpenVerse(false);
-      if (multiSelectVerse) { setVerseSelectActive(true); }
-    }
+  const [openBook, setOpenBook] = useState(false);
+  const [openVerse, setOpenVerse] = useState(false);
+  const cancelButtonRef = useRef(null);
 
-    function selectBook() {
-      setOpenBook(false);
-      setOpenVerse(true);
-      if (multiSelectVerse) { setSelectedVerses([]); }
-    }
+  const [multiSelectVerse] = useState(false);
+  const [multiSelectBook] = useState(false);
+  const [selectedVerses, setSelectedVerses] = useState([]);
+  const [selectedBooks, setSelectedBooks] = useState([]);
+  const [verselectActive, setVerseSelectActive] = useState(false);
 
-    useEffect(() => {
-      if (isElectron()) {
-        localforage.getItem('refBibleBurrito')
-          .then((refs) => {
-            refs.forEach((ref) => {
-              if (languageId !== null) {
-              if (ref.languages[0].tag === languageId) {
-                const supportedBooks = [];
-                Object.entries((ref.type.flavorType.currentScope)).forEach(
-                    ([key]) => {
-                      supportedBooks.push(key.toLowerCase());
-                    },
-                    );
-                    applyBooksFilter(supportedBooks);
-                  }
-                }
-            });
-        });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [languageId]);
+  function closeBooks() {
+    setOpenBook(false);
+  }
 
-    return (
-      <>
-        <span className="items-center justify-center" style={{ display: 'flex' }}>
+  function openBooks() {
+    setOpenBook(true);
+  }
+
+  function closeVerses() {
+    setOpenVerse(false);
+    if (multiSelectVerse) { setVerseSelectActive(true); }
+  }
+
+  function selectBook() {
+    setOpenBook(false);
+    setOpenVerse(true);
+    if (multiSelectVerse) { setSelectedVerses([]); }
+  }
+
+  return (
+    <>
+      <div className="flex">
+        <div className="bg-primary text-white py-2 uppercase tracking-wider text-sm font-semibold">
+          <span className="px-3">{bookName}</span>
           <span
-            className="px-2 py-2 pr-0 text-sm uppercase font-medium text-white bg-gray-800 bg-opacity-90"
+            className="bg-white py-4 bg-opacity-10"
+            onClick={openBooks}
+            role="button"
+            tabIndex="-2"
           >
-            {bookName}
-            <span style={{ marginLeft: '6px' }} className="px-2 py-2 pl-0 pr-0 text-sm font-medium text-white bg-gray-900 bg-opacity-90 hover:bg-opacity-10 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75">
-              <IconButton
-                style={{ width: '30px' }}
-                onClick={openBooks}
-              >
-                <ExpandMoreIcon fontSize="small" color="secondary" />
-              </IconButton>
-            </span>
+            <ChevronDownIcon className="inline h-4 w-4 mx-1 text-white" aria-hidden="true" />
           </span>
+          <span className="px-3">{chapter}</span>
           <span
-            className="px-2 py-2 pr-0.5 text-sm font-medium text-white bg-gray-900 bg-opacity-90"
+            className="bg-white py-4 bg-opacity-10"
+            onClick={selectBook}
+            role="button"
+            tabIndex="-1"
           >
-            {chapter}
-            <span style={{ marginLeft: '6px' }} className="px-2 py-2 pl-0 pr-0 text-sm font-medium text-white bg-gray-900 bg-opacity-90 hover:bg-opacity-10 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75">
-              <IconButton
-                style={{ width: '30px', marginLeft: '2px' }}
-                onClick={selectBook}
-              >
-                <ExpandMoreIcon fontSize="small" color="secondary" />
-              </IconButton>
-            </span>
+            <ChevronDownIcon className="inline h-4 w-4 mx-1 text-white" aria-hidden="true" />
           </span>
-          <span
-            className="px-2 py-2 text-sm uppercase font-medium text-white bg-gray-800 bg-opacity-90"
-          >
-            VERSE:
-            {' '}
-            {multiSelectVerse
+          {showVerse
+            && (
+              <span className="px-3">
+                {multiSelectVerse
+                  ? selectedVerses.join()
+                  : verse}
+              </span>
+            )}
+        </div>
+      </div>
+
+      {/* <div className="items-center justify-center">
+        <button
+          type="button"
+          onClick={openBooks}
+          className="px-4 py-2 text-sm font-medium text-white bg-black rounded-md bg-opacity-60 hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+        >
+          BOOK:
+          {' '}
+          {bookName}
+        </button>
+        <button
+          type="button"
+          onClick={selectBook}
+          className="px-4 py-2 text-sm font-medium text-white bg-black rounded-md bg-opacity-60 hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+        >
+          CHAPTER:
+          {' '}
+          {chapter}
+        </button>
+        <button
+          type="button"
+          className="px-4 py-2 text-sm font-medium text-white bg-black rounded-md bg-opacity-60 hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+        >
+          VERSE:
+          {' '}
+          {multiSelectVerse
             ? selectedVerses.join()
             : verse}
-          </span>
-        </span>
-        <Transition
-          show={openBook}
-          as={Fragment}
-          enter="transition duration-100 ease-out"
-          enterFrom="transform scale-95 opacity-0"
-          enterTo="transform scale-100 opacity-100"
-          leave="transition duration-75 ease-out"
-          leaveFrom="transform scale-100 opacity-100"
-          leaveTo="transform scale-95 opacity-0"
+        </button>
+      </div> */}
+
+      <Transition
+        show={openBook}
+        as={Fragment}
+        enter="transition duration-100 ease-out"
+        enterFrom="transform scale-95 opacity-0"
+        enterTo="transform scale-100 opacity-100"
+        leave="transition duration-75 ease-out"
+        leaveFrom="transform scale-100 opacity-100"
+        leaveTo="transform scale-95 opacity-0"
+      >
+        <Dialog
+          as="div"
+          className="fixed inset-0 z-10 overflow-y-auto"
+          initialFocus={cancelButtonRef}
+          static
+          open={openBook}
+          onClose={closeBooks}
         >
-          <Dialog
-            as="div"
-            className="fixed inset-0 z-10 overflow-y-auto"
-            initialFocus={cancelButtonRef}
-            static
-            open={openBook}
-            onClose={closeBooks}
-          >
 
-            <Dialog.Overlay className="fixed inset-0 bg-black opacity-30" />
-            <div className="flex items-center justify-center h-screen ">
-              <div className="w-5/12 m-auto z-50 shadow overflow-hidden sm:rounded-lg">
-                <SelectBook
-                  selectBook={selectBook}
-                  bookList={bookList}
-                  onChangeBook={onChangeBook}
-                  multiSelectBook={multiSelectBook}
-                  selectedBooks={selectedBooks}
-                  setSelectedBooks={setSelectedBooks}
+          <Dialog.Overlay className="fixed inset-0 bg-black opacity-30" />
+          <div className="flex items-center justify-center h-screen ">
+            <div className="w-5/12 m-auto z-50 shadow overflow-hidden sm:rounded-lg">
+              <SelectBook
+                selectBook={selectBook}
+                bookList={bookList}
+                onChangeBook={onChangeBook}
+                multiSelectBook={multiSelectBook}
+                selectedBooks={selectedBooks}
+                setSelectedBooks={setSelectedBooks}
+              >
+                <button
+                  type="button"
+                  className="w-9 h-9 bg-black p-2"
+                  onClick={closeBooks}
                 >
-                  <button
-                    type="button"
-                    className="w-9 h-9 bg-black p-2"
-                    onClick={closeBooks}
-                  >
-                    <XIcon />
-                  </button>
-                </SelectBook>
-              </div>
+                  <XIcon />
+                </button>
+              </SelectBook>
             </div>
+          </div>
 
-          </Dialog>
-        </Transition>
+        </Dialog>
+      </Transition>
 
-        <Transition
-          show={openVerse}
-          as={Fragment}
-          enter="transition duration-100 ease-out"
-          enterFrom="transform scale-95 opacity-0"
-          enterTo="transform scale-100 opacity-100"
-          leave="transition duration-75 ease-out"
-          leaveFrom="transform scale-100 opacity-100"
-          leaveTo="transform scale-95 opacity-0"
+      <Transition
+        show={openVerse}
+        as={Fragment}
+        enter="transition duration-100 ease-out"
+        enterFrom="transform scale-95 opacity-0"
+        enterTo="transform scale-100 opacity-100"
+        leave="transition duration-75 ease-out"
+        leaveFrom="transform scale-100 opacity-100"
+        leaveTo="transform scale-95 opacity-0"
+      >
+        <Dialog
+          as="div"
+          className="fixed inset-0 z-10 overflow-y-auto"
+          initialFocus={cancelButtonRef}
+          static
+          open={openVerse}
+          onClose={closeVerses}
         >
-          <Dialog
-            as="div"
-            className="fixed inset-0 z-10 overflow-y-auto"
-            initialFocus={cancelButtonRef}
-            static
-            open={openVerse}
-            onClose={closeVerses}
-          >
 
-            <Dialog.Overlay className="fixed inset-0 bg-black opacity-30" />
-            <div className="flex items-center justify-center h-screen">
+          <Dialog.Overlay className="fixed inset-0 bg-black opacity-30" />
+          <div className="flex items-center justify-center h-screen">
 
-              <div className=" w-3/12 m-auto z-50 bg-black text-white shadow overflow-hidden sm:rounded-lg">
-                <SelectVerse
-                  chapter={chapter}
-                  verse={verse}
-                  chapterList={chapterList}
-                  verseList={verseList}
-                  bookName={bookName}
-                  onChangeChapter={onChangeChapter}
-                  onChangeVerse={onChangeVerse}
-                  closeBooks={closeBooks}
-                  closeVerses={closeVerses}
-                  multiSelectVerse={multiSelectVerse}
-                  selectedVerses={selectedVerses}
-                  setSelectedVerses={setSelectedVerses}
-                  verselectActive={verselectActive}
-                  setVerseSelectActive={setVerseSelectActive}
+            <div className=" w-3/12 m-auto z-50 bg-black text-white shadow overflow-hidden sm:rounded-lg">
+              <SelectVerse
+                chapter={chapter}
+                verse={verse}
+                chapterList={chapterList}
+                verseList={verseList}
+                bookName={bookName}
+                onChangeChapter={onChangeChapter}
+                onChangeVerse={onChangeVerse}
+                closeBooks={closeBooks}
+                closeVerses={closeVerses}
+                multiSelectVerse={multiSelectVerse}
+                selectedVerses={selectedVerses}
+                setSelectedVerses={setSelectedVerses}
+                verselectActive={verselectActive}
+                setVerseSelectActive={setVerseSelectActive}
+              >
+                <button
+                  type="button"
+                  className="w-9 h-9 bg-black p-2"
+                  onClick={closeVerses}
                 >
-                  <button
-                    type="button"
-                    className="w-9 h-9 bg-black p-2"
-                    onClick={closeVerses}
-                  >
-                    <XIcon />
-                  </button>
-                </SelectVerse>
-              </div>
+                  <XIcon />
+                </button>
+              </SelectVerse>
             </div>
+          </div>
 
-          </Dialog>
-        </Transition>
-      </>
+        </Dialog>
+      </Transition>
+    </>
   );
 }
+
+BibleNavigation.propTypes = {
+  showVerse: PropTypes.bool,
+};

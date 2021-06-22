@@ -1,0 +1,15 @@
+.verseNumber {
+  @apply font-mono pr-2 text-primary font-extrabold -top-0;
+}
+
+.redLetters {
+  @apply text-error font-medium;
+}
+
+.editToolWrap {
+  @apply inline-block p-1 mx-1 rounded-full hover:bg-primary text-primary hover:text-white;
+}
+
+.editTool {
+  @apply cursor-pointer inline-block h-4 w-4 -mt-1;
+}

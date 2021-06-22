@@ -9,7 +9,6 @@ module.exports = {
     './renderer/src/modules/**/*.{js,ts,jsx,tsx}'],
   darkMode: false, // or 'media' or 'class'
   theme: {
-
     colors: {
       transparent: 'transparent',
       current: 'currentColor',
@@ -17,8 +16,11 @@ module.exports = {
       secondary: '#151515',
       success: '#32C000',
       error: '#FF4A4A',
+      validation: '#FFE5E5',
       white: colors.white,
+      light: '#E4F1FF',
       gray: colors.trueGray,
+      dark: '#333333',
       black: colors.black,
       green: colors.green,
       yellow: colors.amber,
@@ -26,7 +28,10 @@ module.exports = {
     },
     extend: {
       fontSize: {
-        xxs: '.70rem',
+        xxs: '.65rem',
+      },
+      height: {
+        editor: 'calc(-7.25rem + 100vh)',
       },
     },
 },
@@ -35,5 +40,6 @@ module.exports = {
   },
   plugins: [
     require('@tailwindcss/forms'),
+    require('@tailwindcss/typography'),
   ],
 };

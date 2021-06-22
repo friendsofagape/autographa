@@ -10,7 +10,6 @@ export default function ProjectsLayout(props) {
     isTwoCol,
     colOne,
     colTwo,
-    // activeMenu,
   } = props;
 
   return (
@@ -61,5 +60,4 @@ ProjectsLayout.propTypes = {
   isTwoCol: PropTypes.bool,
   colOne: PropTypes.element,
   colTwo: PropTypes.element,
-  // activeMenu: PropTypes.string.isRequired,
 };
