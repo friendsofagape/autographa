@@ -19,6 +19,8 @@ export default function ReferenceContextProvider({ children }) {
     const [currentScope, setCurrentScope] = React.useState([]);
     const [openResource, setOpenResource] = React.useState(true);
     const [openResourcePopUp, setOpenResourcePopUp] = React.useState(false);
+    const [selectedFont, setSelectedFont] = React.useState('sans-serif');
+    const [fontSize, setFontsize] = React.useState(1);
 
     const handleClick = (event) => {
       setAnchorEl(event.currentTarget);
@@ -65,6 +67,8 @@ export default function ReferenceContextProvider({ children }) {
         currentScope,
         openResource,
         openResourcePopUp,
+        selectedFont,
+        fontSize,
       },
       actions: {
         setLanguageId,
@@ -83,6 +87,8 @@ export default function ReferenceContextProvider({ children }) {
         setCurrentScope,
         setOpenResource,
         setOpenResourcePopUp,
+        setSelectedFont,
+        setFontsize,
       },
     };
 
