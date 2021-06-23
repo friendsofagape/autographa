@@ -12,6 +12,7 @@ import {
 //  withChapterSelection,
  withToolbar,
 } from 'usfm-editor';
+import Editor from '@/modules/editor/Editor';
 import { readFile } from '../../../core/editor/readFile';
 import writeToParse from '../../../core/editor/writeToParse';
 import { isElectron } from '../../../core/handleElectron';
@@ -19,7 +20,6 @@ import writeToFile from '../../../core/editor/writeToFile';
 // import InputSelector from './InputSelector';
 import fetchFromParse from '../../../core/editor/fetchFromParse';
 import findBookFromParse from '../../../core/editor/findBookFromParse';
-import EditorSection from '../EditorSection';
 
 const UsfmEditor = () => {
   const intervalRef = useRef();
@@ -218,11 +218,9 @@ const UsfmEditor = () => {
 
 return (
   <>
-    <span style={{
-      float: 'right', left: '-6px', top: '-404px', paddingRight: '2px',
-    }}
-    >
-      <EditorSection header="USFM EDITOR" editor>
+    <span>
+      <Editor>
+        {/* <EditorSection header="USFM EDITOR" editor> */}
         {usfmInput && (
         <CustomEditor
           usfmString={usfmInput}
@@ -235,7 +233,8 @@ return (
           onIdentificationChange={onIdentificationChange}
         />
         )}
-      </EditorSection>
+      </Editor>
+      {/* </EditorSection> */}
     </span>
   </>
 );

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { Dialog, Transition } from '@headlessui/react';
 import {
-  Fragment, useEffect, useRef, useState,
+  Fragment, useContext, useEffect, useRef, useState,
 } from 'react';
 import SelectBook from '@/components/EditorPage/Navigation/reference/SelectBook';
 import SelectVerse from '@/components/EditorPage/Navigation/reference/SelectVerse';
@@ -17,35 +17,30 @@ import {
   CogIcon,
   ChatIcon,
 } from '@heroicons/react/outline';
-
-import { useBibleReference } from 'bible-reference-rcl';
+import * as localforage from 'localforage';
+import { ReferenceContext } from '@/components/context/ReferenceContext';
+import { isElectron } from '../../core/handleElectron';
 
 export default function BibleNavigation(props) {
   const { showVerse } = props;
   const supportedBooks = null; // if empty array or null then all books available
-  const initialBook = 'mat';
-  const initialChapter = '2';
-  const initialVerse = '1';
 
   const {
     state: {
-      bookList,
-      bookName,
-      chapter,
-      verse,
-      chapterList,
-      verseList,
+       bookList,
+       bookName,
+       chapter,
+       verse,
+       chapterList,
+       verseList,
+       languageId,
     }, actions: {
-      onChangeBook,
-      onChangeChapter,
-      onChangeVerse,
-      applyBooksFilter,
-    },
-  } = useBibleReference({
-    initialBook,
-    initialChapter,
-    initialVerse,
-  });
+       onChangeBook,
+       onChangeChapter,
+       onChangeVerse,
+       applyBooksFilter,
+     },
+   } = useContext(ReferenceContext);
 
   useEffect(() => {
     applyBooksFilter(supportedBooks);
@@ -79,6 +74,28 @@ export default function BibleNavigation(props) {
     setOpenVerse(true);
     if (multiSelectVerse) { setSelectedVerses([]); }
   }
+
+  useEffect(() => {
+    if (isElectron()) {
+      localforage.getItem('refBibleBurrito')
+        .then((refs) => {
+          refs.forEach((ref) => {
+            if (languageId !== null) {
+            if (ref.languages[0].tag === languageId) {
+              const supportedBooks = [];
+              Object.entries((ref.type.flavorType.currentScope)).forEach(
+                  ([key]) => {
+                    supportedBooks.push(key.toLowerCase());
+                  },
+                  );
+                  applyBooksFilter(supportedBooks);
+                }
+              }
+          });
+      });
+  }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [languageId]);
 
   return (
     <>
@@ -162,7 +179,6 @@ export default function BibleNavigation(props) {
           open={openBook}
           onClose={closeBooks}
         >
-
           <Dialog.Overlay className="fixed inset-0 bg-black opacity-30" />
           <div className="flex items-center justify-center h-screen ">
             <div className="w-5/12 m-auto z-50 shadow overflow-hidden sm:rounded-lg">

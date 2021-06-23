@@ -48,7 +48,7 @@ const showResourcesPanel = () => {
           {openResourcePopUp
 
         && (
-        <div className=" absolute z-50 ">
+        <div className=" fixed z-50 ">
 
           <ResourcesPopUp />
 
@@ -89,14 +89,12 @@ const showResourcesPanel = () => {
 
         && (
         <div
-          style={{
-              height: '500px', fontFamily: selectedFont || 'sans-serif', fontSize: `${fontSize}rem`,
-          }}
-          className="overflow-scroll p-3 text-xl"
+          style={{ fontFamily: selectedFont || 'sans-serif', fontSize: `${fontSize}rem` }}
+          className="prose-sm max-w-none overflow-y-auto px-3 py-4 pb-16 text-xl"
         >
           { children }
         </div>
-)}
+        )}
       </div>
     </div>
   );

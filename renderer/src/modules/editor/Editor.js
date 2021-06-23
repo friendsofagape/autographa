@@ -15,13 +15,26 @@ import {
 import CrossReferenceIcon from '@/icons/crossreference.svg';
 import FootNotesIcon from '@/icons/footnotes.svg';
 
+import { useContext } from 'react';
+import { ReferenceContext } from '@/components/context/ReferenceContext';
 import styles from './Editor.module.css';
 
-export default function Editor() {
+export default function Editor({ children }) {
+  const {
+    state: {
+      selectedFont,
+      fontSize,
+    },
+  } = useContext(ReferenceContext);
   return (
     <>
       <div className="flex items-center justify-between bg-secondary">
         <BibleNavigation />
+        <div className="text-center h-6 rounded-t text-gray-100  text-xs uppercase tracking-widest font-bold leading-3">
+          <div className="text-center pt-1">
+            Editor
+          </div>
+        </div>
         <div className="flex items-center">
           <div>
             <LockOpenIcon className="h-5 w-5 text-white" aria-hidden="true" />
@@ -34,9 +47,16 @@ export default function Editor() {
           </div>
         </div>
       </div>
-
-      <div className="border-l-2 border-r-2 border-secondary px-3 py-4 pb-16 prose-sm max-w-none overflow-y-auto h-full no-scrollbars">
-        <h3 className="text-secondary">Jesus Has Risen</h3>
+      <div
+        style={{
+                fontFamily: selectedFont || 'sans-serif',
+                fontSize: `${fontSize}rem`,
+                lineHeight: (fontSize > 1.3) ? 1.5 : '',
+        }}
+        className="border-l-2 hover:border-primary border-r-2 border-secondary px-3 py-4 pb-16 prose-sm max-w-none overflow-y-auto h-full no-scrollbars"
+      >
+        {children}
+        {/* <h3 className="text-secondary">Jesus Has Risen</h3>
         <p>
           <sup className={styles.verseNumber}>1</sup>
           After the Sabbath, at dawn on the first day of the week, Mary Magdalene and the other Mary went to look at the tomb.
@@ -133,7 +153,7 @@ export default function Editor() {
         <p>
           <sup className={styles.verseNumber}>20</sup>
           <span className={styles.redLetters}>everything I have commanded you. And surely I am with you always, to the very end of the age.”</span>
-        </p>
+        </p> */}
       </div>
     </>
 

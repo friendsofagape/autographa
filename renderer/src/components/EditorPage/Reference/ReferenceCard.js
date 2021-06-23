@@ -19,7 +19,7 @@ const ReferenceCard = ({
     viewMode,
 }) => (
   <>
-    <div style={{ width: '500px', display: 'inline-block', float: 'left' }}>
+    <div>
       {(title === 'Translation Notes') && (
       <EditorSectionSmall title={title}>
         <CardContent
