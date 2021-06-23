@@ -11,6 +11,10 @@ export default function EditorSection(props) {
         editor,
       } = props;
       const {
+        state: {
+          selectedFont,
+          fontSize,
+        },
         actions: {
           handleClick,
         },
@@ -19,15 +23,20 @@ export default function EditorSection(props) {
       <>
         {editor ? (
           <div
-            className="shadow relative hover:border-primary w-96 h-250 rounded-md border-2 border-black top-13"
-            style={{ top: '13px' }}
+            className="shadow relative hover:border-primary w-96 h-100 rounded-md border-2 border-black top-13"
+            style={{ top: '13px', width: '500px' }}
           >
             <div className="relative text-center bg-gray-800 h-6 rounded-t text-gray-100  text-xs uppercase tracking-widest font-bold leading-3">
               <div className="text-center pt-1">
                 {header}
               </div>
             </div>
-            <div className=" p-5 border-white rounded-b h-250 max-h-100 overflow-scroll text-xs">
+            <div
+              style={{
+                  height: '755px', fontFamily: selectedFont || 'sans-serif', fontSize: `${fontSize}rem`, lineHeight: (fontSize > 1.3) ? 1.5 : '',
+              }}
+              className=" p-5 border-white rounded-b overflow-scroll text-base"
+            >
               {children}
             </div>
           </div>

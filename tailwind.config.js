@@ -9,7 +9,6 @@ module.exports = {
     './renderer/src/modules/**/*.{js,ts,jsx,tsx}'],
   darkMode: false, // or 'media' or 'class'
   theme: {
-
     colors: {
       transparent: 'transparent',
       current: 'currentColor',
@@ -31,7 +30,10 @@ module.exports = {
     },
 },
   variants: {
-    extend: {},
+    fontFamily: {
+      sans: ['Graphik', 'sans-serif'],
+      serif: ['Merriweather', 'serif'],
+    },
   },
   plugins: [
     require('@tailwindcss/forms'),

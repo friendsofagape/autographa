@@ -21,6 +21,10 @@ module.exports = withTM({
       use: 'null-loader',
     });
     config.module.rules.push({
+      include: path.resolve(__dirname, 'node_modules/canvas'),
+      use: 'null-loader',
+    });
+    config.module.rules.push({
       test: /\.svg$/,
       use: [{
         loader: '@svgr/webpack',
