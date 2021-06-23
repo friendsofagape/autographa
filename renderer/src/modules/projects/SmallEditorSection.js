@@ -9,6 +9,8 @@ const {
   state: {
     openResource,
     openResourcePopUp,
+    selectedFont,
+    fontSize,
   },
   actions: {
     setOpenResource,
@@ -86,7 +88,12 @@ const showResourcesPanel = () => {
         { content
 
         && (
-        <div style={{ height: '500px' }} className="overflow-scroll p-3">
+        <div
+          style={{
+              height: '500px', fontFamily: selectedFont || 'sans-serif', fontSize: `${fontSize}rem`,
+          }}
+          className="overflow-scroll p-3 text-xl"
+        >
           { children }
         </div>
 )}

@@ -1,8 +1,6 @@
 /* eslint-disable no-unused-vars */
 import Link from 'next/link';
-
-import { Fragment, useState } from 'react';
-
+import { Fragment, useContext, useState } from 'react';
 import {
   Disclosure, Menu, Popover, Transition,
 } from '@headlessui/react';
@@ -21,6 +19,7 @@ import ProcessorIcon from '@/icons/basil/Outline/Devices/Processor.svg';
 import CheckIcon from '@/icons/basil/Outline/Interface/Check.svg';
 import ExpandIcon from '@/icons/basil/Outline/Interface/Expand.svg';
 
+import { ReferenceContext } from '@/components/context/ReferenceContext';
 import styles from './MenuBar.module.css';
 
 const profile = ['Your Profile', 'Settings', 'Sign out'];
@@ -58,10 +57,29 @@ export default function TopMenuBar() {
   function openSideBars() {
     setOpenSideBar(true);
   }
+//   const {
+//     state: {
+//       fontSize,
+//     },
+//     actions: {
+//       setFontsize,
+//     },
+//   } = useContext(ReferenceContext);
+//   function closeSideBars() {
+//     setOpenSideBar(false);
+//   }
 
   function closeSideBar(open) {
     setOpenSideBar(open);
   }
+  const handleFontSize = (status) => {
+    if (status === 'dec' && fontSize > 0.70) {
+      setFontsize(fontSize - 0.2);
+    }
+    if (status === 'inc' && fontSize < 2) {
+      setFontsize(fontSize + 0.2);
+    }
+  };
 
   return (
     <nav>
@@ -109,7 +127,30 @@ export default function TopMenuBar() {
 
                 <div className="flex justify-end">
                   <div className="mr-4 flex items-center">
-
+                    <div className="inline-flex">
+                      <button
+                        type="button"
+                        onClick={() => { handleFontSize('dec'); }}
+                        className="py-1 px-4 border border-gray-200 rounded-md shadow-sm
+                                  text-s text-primary bg-gray-100
+                                  hover:bg-primary hover:text-white font-bold
+                                  focus:outline-none focus:ring-1 focus:ring-offset-1
+                                  focus:ring-offset-gray-300 focus:ring-gray-300;"
+                      >
+                        A-
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => { handleFontSize('inc'); }}
+                        className="py-2 px-4 border border-gray-200 rounded-md shadow-sm
+                                  text-lg text-primary bg-gray-100
+                                  hover:bg-primary hover:text-white font-bold
+                                  focus:outline-none focus:ring-1 focus:ring-offset-1
+                                  focus:ring-offset-gray-300 focus:ring-gray-300;"
+                      >
+                        A+
+                      </button>
+                    </div>
                     <Popover className="relative">
                       {({ open }) => (
                         <>
