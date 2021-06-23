@@ -1,17 +1,17 @@
 /* eslint-disable no-unused-vars */
 import Link from 'next/link';
 import { Fragment, useContext, useState } from 'react';
-
 import {
-  Disclosure, Menu, Dialog, Popover, Transition,
+  Disclosure, Menu, Popover, Transition,
 } from '@headlessui/react';
+
+import EditorSideBar from '@/modules/editorsidebar/EditorSideBar';
 
 import {
   SunIcon,
   SearchIcon,
 } from '@heroicons/react/outline';
 
-import Notifications from '@/modules/notifications/Notifications';
 import AppsIcon from '@/icons/basil/Outline/Interface/Apps.svg';
 import LayoutIcon from '@/icons/basil/Outline/Interface/Layout.svg';
 import BullhornIcon from '@/icons/basil/Outline/Communication/Bullhorn.svg';
@@ -53,23 +53,23 @@ function classNames(...classes) {
 
 export default function TopMenuBar() {
   const [openSideBar, setOpenSideBar] = useState(false);
-  const {
-    state: {
-      fontSize,
-    },
-    actions: {
-      setFontsize,
-    },
-  } = useContext(ReferenceContext);
-  function closeSideBars() {
-    setOpenSideBar(false);
+
+  function openSideBars() {
+    setOpenSideBar(true);
   }
+//   const {
+//     state: {
+//       fontSize,
+//     },
+//     actions: {
+//       setFontsize,
+//     },
+//   } = useContext(ReferenceContext);
+//   function closeSideBars() {
+//     setOpenSideBar(false);
+//   }
 
-  // function openSideBars() {
-  //   setOpenSideBar(true);
-  // }
-
-  function closeNotifications(open) {
+  function closeSideBar(open) {
     setOpenSideBar(open);
   }
   const handleFontSize = (status) => {
@@ -83,6 +83,9 @@ export default function TopMenuBar() {
 
   return (
     <nav>
+
+      <EditorSideBar isOpen={openSideBar} closeSideBar={closeSideBar} />
+
       <Disclosure as="nav">
         {({ open }) => (
           <>
@@ -104,19 +107,6 @@ export default function TopMenuBar() {
                 </div>
 
                 <div className="flex-grow">
-                  {/* <div className="flex items-center text-center place-self-center">
-                    <input
-                      type="text"
-                      name="search"
-                      id="search"
-                      className="w-2/5 m-auto
-                      focus:ring-primary
-                      focus:border-primary
-                      bg-gray-100 block
-                      rounded-md sm:text-sm border-none placeholder-gray-700"
-                      placeholder="Search"
-                    />
-                  </div> */}
                   <div className="mt-1 relative w-2/5 m-auto focus:ring-primary focus:border-primary bg-gray-100 block rounded-md sm:text-sm border-none placeholder-gray-700">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                       <span className="text-gray-300 sm:text-sm">
@@ -129,6 +119,7 @@ export default function TopMenuBar() {
                       id="search"
                       className="bg-gray-100 focus:ring-primary focus:border-primary block w-full pl-10 sm:text-sm border-none rounded-md"
                       placeholder="Search"
+                      onClick={openSideBars}
                     />
                   </div>
 
@@ -284,35 +275,6 @@ export default function TopMenuBar() {
           </>
         )}
       </Disclosure>
-
-      <Transition
-        show={openSideBar}
-        as={Fragment}
-        enter="transform transition ease-in-out duration-700"
-        enterFrom="translate-x-full"
-        enterTo="translate-x-0"
-        leave="transform transition ease-in-out duration-700"
-        leaveFrom="translate-x-0"
-        leaveTo="translate-x-full"
-      >
-
-        <Dialog
-          as="div"
-          className="fixed inset-0 z-10 overflow-y-auto"
-          // initialFocus={cancelButtonRef}
-          static
-          open={openSideBar}
-          onClose={closeSideBars}
-        >
-
-          <Dialog.Overlay className="fixed inset-0 bg-black opacity-30" />
-
-          <Notifications closeNotifications={closeNotifications}>
-            notification
-          </Notifications>
-
-        </Dialog>
-      </Transition>
 
     </nav>
 

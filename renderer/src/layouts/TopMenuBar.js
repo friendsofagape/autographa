@@ -8,8 +8,8 @@ import {
   MenuIcon,
   XIcon,
 } from '@heroicons/react/outline';
-import { AuthenticationContext } from '../components/Login/AuthenticationContextProvider';
-import Notifications from '../modules/notifications/Notifications';
+
+import Notifications from '@/modules/notifications/Notifications';
 
 const profile = ['Your Profile', 'Settings'];
 
@@ -19,12 +19,6 @@ function classNames(...classes) {
 
 export default function TopMenuBar() {
   const [openSideBar, setOpenSideBar] = useState(false);
-  const {
-    action: { logout },
-  } = React.useContext(AuthenticationContext);
-  function closeSideBars() {
-    setOpenSideBar(false);
-  }
 
   function openSideBars() {
     setOpenSideBar(true);
@@ -152,34 +146,9 @@ export default function TopMenuBar() {
         )}
       </Disclosure>
 
-      <Transition
-        show={openSideBar}
-        as={Fragment}
-        enter="transform transition ease-in-out duration-700"
-        enterFrom="translate-x-full"
-        enterTo="translate-x-0"
-        leave="transform transition ease-in-out duration-700"
-        leaveFrom="translate-x-0"
-        leaveTo="translate-x-full"
-      >
-
-        <Dialog
-          as="div"
-          className="fixed inset-0 z-10 overflow-y-auto"
-          // initialFocus={cancelButtonRef}
-          static
-          open={openSideBar}
-          onClose={closeSideBars}
-        >
-
-          <Dialog.Overlay className="fixed inset-0 bg-black opacity-30" />
-
-          <Notifications closeNotifications={closeNotifications}>
-            notification
-          </Notifications>
-
-        </Dialog>
-      </Transition>
+      <Notifications isOpen={openSideBar} closeNotifications={closeNotifications}>
+        notification
+      </Notifications>
 
     </>
 

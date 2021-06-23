@@ -82,6 +82,7 @@
 		"@ory/kratos-client": "^0.5.4-alpha.1",
 		"@parse/react-ssr": "0.0.1-alpha.14",
 		"@tailwindcss/forms": "^0.3.2",
+		"@tailwindcss/typography": "^0.4.1",
 		"bible-reference-rcl": "^0.2.0",
 		"clsx": "1.1.1",
 		"electron-is-dev": "^1.1.0",
@@ -122,7 +123,7 @@
 	},
 	"optionalDependencies": {
 		"bufferutil": "^4.0.3",
-		"utf-8-validate": "^5.0.5",
-		"scripture-resources-rcl": "^3.2.0"
+		"scripture-resources-rcl": "^3.2.0",
+		"utf-8-validate": "^5.0.5"
 	}
 }
