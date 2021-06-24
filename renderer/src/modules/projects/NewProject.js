@@ -125,6 +125,7 @@ function LicencePopover() {
 function TargetLanguagePopover() {
   const [lang, setLang] = React.useState();
   const [direction, setDirection] = React.useState();
+  const [edit, setEdit] = React.useState(false);
   const {
     states: {
       language,
@@ -132,15 +133,17 @@ function TargetLanguagePopover() {
   } = React.useContext(ProjectContext);
   const openLanguageNav = (nav) => {
     if (nav === 'edit') {
-      setLang(language.language);
-      setDirection(language.scriptDirection);
+      setEdit(true);
+      setLang(language.title);
+      setDirection(language.scriptDirection ? language.scriptDirection : 'LTR');
     } else {
+      setEdit(false);
       setLang();
       setDirection('LTR');
     }
   };
   const addLanguage = () => {
-    setLanguage({ language: lang, scriptDirection: direction });
+    setLanguage({ title: lang, scriptDirection: direction });
   };
   return (
     <Popover className="relative ">
@@ -229,13 +232,15 @@ function TargetLanguagePopover() {
                 </div>
                 <div className="ml-16">
                   <Popover.Button className="mr-5 bg-error w-28 h-8 border-color-error rounded uppercase shadow text-white text-xs tracking-wide leading-4 font-light"> cancel</Popover.Button>
+
                   <button
                     type="button"
                     className=" bg-success w-28 h-8 border-color-success rounded uppercase text-white text-xs shadow"
                     onClick={() => addLanguage()}
                   >
-                    create
+                    {edit ? 'save' : 'create'}
                   </button>
+
                 </div>
 
               </div>
@@ -255,6 +260,11 @@ function AdvancedSettingsDropdown() {
       licenceList,
       versification,
     },
+    actions: {
+      setVersificationScheme,
+      setcanonSpecification,
+      setCopyRight,
+    },
    } = React.useContext(ProjectContext);
   const [isShow, setIsShow] = React.useState(true);
   const [bibleNav, setBibleNav] = React.useState(false);
@@ -269,6 +279,29 @@ function AdvancedSettingsDropdown() {
   function closeBooks() {
     setBibleNav(false);
   }
+  const setValue = async (value) => {
+    if (value.label === 'Versification Scheme') {
+      versification.forEach((v) => {
+        if (v.title === value.data) {
+          setVersificationScheme(v);
+        }
+      });
+    }
+    if (value.label === 'Canon Specificationse') {
+      canonList.forEach((c) => {
+        if (c.title === value.data) {
+          setcanonSpecification(c);
+        }
+      });
+    }
+    if (value.label === 'Licence') {
+      licenceList.forEach((l) => {
+        if (l.title === value.data) {
+          setCopyRight(l);
+        }
+      });
+    }
+  };
   return (
     <>
       <div>
@@ -288,7 +321,7 @@ function AdvancedSettingsDropdown() {
         && (
         <div>
           <div className="flex gap-5 mt-8">
-            <CustomAutocomplete label="Versification Scheme" list={versification} />
+            <CustomAutocomplete label="Versification Scheme" list={versification} setValue={setValue} />
             {/* <button
               className="mt-5 min-w-max"
               type="button"
@@ -307,7 +340,7 @@ function AdvancedSettingsDropdown() {
               </BookNumberTag>
             </div>
 
-            <CustomAutocomplete label="Canon Specificationse" list={canonList} />
+            <CustomAutocomplete label="Canon Specificationse" list={canonList} setValue={setValue} />
             <button
               className="mt-5 flex-shrink-0"
               type="button"
@@ -334,7 +367,7 @@ function AdvancedSettingsDropdown() {
             </button>
           </div>
           <div className="flex gap-5 mt-5">
-            <CustomAutocomplete label="Licence" list={licenceList} />
+            <CustomAutocomplete label="Licence" list={licenceList} setValue={setValue} />
             <div className="mt-8 w-8 min-w-max">
               <LicencePopover />
             </div>
@@ -378,6 +411,7 @@ function BibleHeaderTagDropDown() {
       actions: {
         handleProjectFields,
         setVersion,
+        setLanguage,
         createProject,
       },
      } = React.useContext(ProjectContext);
@@ -395,6 +429,15 @@ function BibleHeaderTagDropDown() {
     const handleVersion = (e) => {
       const abbreviation = getAbbreviation(e.target.value);
       setVersion({ ...version, name: e.target.value, abbreviation });
+    };
+    const setValue = async (value) => {
+      if (value.label === 'Target Langauge') {
+        languages.forEach((l) => {
+          if (l.title === value.data) {
+            setLanguage(l);
+          }
+        });
+      }
     };
       return (
         <ProjectsLayout
@@ -453,10 +496,10 @@ function BibleHeaderTagDropDown() {
                     <div className=" absolute left-80 ml-4 mb-20">
 
                       <TargetLanguageTag>
-                        {language.scriptDirection}
+                        {language.scriptDirection ? language.scriptDirection : 'LTR'}
                       </TargetLanguageTag>
                     </div>
-                    <CustomAutocomplete label="Target Langauge" list={languages} />
+                    <CustomAutocomplete label="Target Langauge" list={languages} setValue={setValue} />
                     <div className="">
                       <TargetLanguagePopover />
                     </div>

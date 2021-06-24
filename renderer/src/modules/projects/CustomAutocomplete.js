@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from 'react';
 import useAutocomplete from '@material-ui/lab/useAutocomplete';
 import NoSsr from '@material-ui/core/NoSsr';
@@ -139,7 +140,7 @@ const Listbox = styled('ul')`
   }
 `;
 
-export default function CustomizedHook({ list, label }) {
+export default function CustomizedHook({ list, label, setValue }) {
   const {
     getRootProps,
     getInputLabelProps,
@@ -153,12 +154,15 @@ export default function CustomizedHook({ list, label }) {
     setAnchorEl,
   } = useAutocomplete({
     id: 'customized-hook-demo',
-    defaultValue: [list[0]],
-    multiple: true,
+    defaultValue: list[0],
+    multiple: false,
     options: list,
     getOptionLabel: (option) => option.title,
   });
-
+  React.useEffect(() => {
+    setValue({ label, data: getInputProps().value });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [getInputProps().value]);
   return (
     <NoSsr>
       <div>
@@ -167,10 +171,9 @@ export default function CustomizedHook({ list, label }) {
             { label }
           </Label>
           <InputWrapper ref={setAnchorEl} className={focused ? 'focused' : ''}>
-            {value.map((option, index) => (
+            {/* {value.map((option, index) => (
               <Tag label={option.title} {...getTagProps({ index })} />
-            ))}
-
+            ))} */}
             <input {...getInputProps()} />
           </InputWrapper>
         </div>
@@ -193,4 +196,5 @@ CustomizedHook.propTypes = {
   list: PropTypes.array,
   label: PropTypes.string,
   tag: PropTypes.object,
+  setValue: PropTypes.func,
 };
