@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 /* eslint-disable camelcase */
 // id, currentBook, db, direction, column, currentTrans
-import { readIngredients } from '@/core/reference/readIngredients';
+import { readIngredients } from '../reference/readIngredients';
 import {
 css_1_col_ltr,
 css_2_col_ltr,
