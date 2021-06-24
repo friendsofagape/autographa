@@ -1,36 +1,22 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable react/no-array-index-key */
 import {
- Fragment, useContext, useEffect, useState,
+ Fragment, useContext,
 } from 'react';
 import { Listbox, Transition } from '@headlessui/react';
 import { CheckIcon, SelectorIcon } from '@heroicons/react/solid';
-import * as localforage from 'localforage';
-import { isElectron } from '../../core/handleElectron';
 import { ReferenceContext } from '../context/ReferenceContext';
 
 export default function MenuDropdown() {
-  const [fonts, setFonts] = useState([]);
   const {
     state: {
       selectedFont,
+      fonts,
     },
     actions: {
       setSelectedFont,
     },
   } = useContext(ReferenceContext);
-
-  useEffect(() => {
-      async function getFonts() {
-            const _fonts = await localforage.getItem('font-family');
-            fonts.push(_fonts);
-            setFonts(fonts);
-        }
-      if (isElectron()) {
-        getFonts();
-      }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   return (
     <div style={{ width: '150%' }} className="w-100">

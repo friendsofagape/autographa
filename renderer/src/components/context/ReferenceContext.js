@@ -1,6 +1,8 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable react/prop-types */
 import { useBibleReference } from 'bible-reference-rcl';
 import React, { useState, createContext } from 'react';
+import * as localforage from 'localforage';
 
 export const ReferenceContext = createContext({});
 
@@ -21,10 +23,17 @@ export default function ReferenceContextProvider({ children }) {
     const [openResourcePopUp, setOpenResourcePopUp] = React.useState(false);
     const [selectedFont, setSelectedFont] = React.useState('sans-serif');
     const [fontSize, setFontsize] = React.useState(1);
+    const [fonts, setFonts] = useState([]);
 
     const handleClick = (event) => {
       setAnchorEl(event.currentTarget);
     };
+
+  async function getFonts() {
+    const _fonts = await localforage.getItem('font-family');
+    fonts.push(_fonts);
+    setFonts(fonts);
+  }
 
     const {
    state: {
@@ -69,6 +78,7 @@ export default function ReferenceContextProvider({ children }) {
         openResourcePopUp,
         selectedFont,
         fontSize,
+        fonts,
       },
       actions: {
         setLanguageId,
@@ -89,6 +99,8 @@ export default function ReferenceContextProvider({ children }) {
         setOpenResourcePopUp,
         setSelectedFont,
         setFontsize,
+        setFonts,
+        getFonts,
       },
     };
 
