@@ -6,7 +6,7 @@ import { useBibleReference } from 'bible-reference-rcl';
 import PropTypes from 'prop-types';
 import { ProjectContext } from '../../context/ProjectContext';
 
-const CustomCanonSpec = ({ bibleNav, closeBibleNav, handleNav }) => {
+const CustomCanonSpecification = ({ bibleNav, closeBibleNav, handleNav }) => {
   const initialBook = 'mat';
   const initialChapter = '1';
   const initialVerse = '1';
@@ -87,8 +87,8 @@ const CustomCanonSpec = ({ bibleNav, closeBibleNav, handleNav }) => {
     </Transition>
   );
 };
-export default CustomCanonSpec;
-CustomCanonSpec.propTypes = {
+export default CustomCanonSpecification;
+CustomCanonSpecification.propTypes = {
   bibleNav: PropTypes.bool,
   closeBibleNav: PropTypes.func,
   handleNav: PropTypes.string,

@@ -14,18 +14,15 @@ const ProjectContextProvider = ({ children }) => {
     const [drawer, setDrawer] = React.useState(false);
     const [sideTabTitle, setSideTabTitle] = React.useState('New');
     const [languages] = React.useState(advanceSettings.languages);
-    const [language, setLanguage] = React.useState({
-      scriptDirection: 'LTR',
-      language: advanceSettings.languages[0].title,
-    });
-    const [canonList, setCanonList] = React.useState();
-    const [licenceList, setLicenseList] = React.useState();
+    const [language, setLanguage] = React.useState(advanceSettings.languages[0]);
     const [selectedVersion, setSelectedVersion] = React.useState('');
     const [version, setVersion] = React.useState({
       name: '',
       abbreviation: '',
     });
+    const [licenceList, setLicenseList] = React.useState();
     const [copyright, setCopyRight] = React.useState(advanceSettings.copyright[0]);
+    const [canonList, setCanonList] = React.useState();
     const [canonSpecification, setcanonSpecification] = React.useState(
       advanceSettings.canonSpecification[0],
     );
@@ -118,7 +115,6 @@ const ProjectContextProvider = ({ children }) => {
       }
     };
     const createProject = () => {
-      console.log(canonList);
       if (!uniqueSetting(canonList, canonSpecification.title)) {
         updateJson('canonSpecification');
       }
