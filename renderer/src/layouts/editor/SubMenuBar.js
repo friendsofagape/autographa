@@ -3,7 +3,7 @@ import {
 } from 'react';
 
 import {
-  Menu, Dialog, Transition,
+ Dialog, Transition,
 } from '@headlessui/react';
 
 import {
@@ -34,7 +34,7 @@ const tesfFunc = () => {
 };
 
 const tesfFunc1 = () => {
-  console.log('rename');
+  console.log('test2');
 };
 const activate = () => {
   console.log('rename');

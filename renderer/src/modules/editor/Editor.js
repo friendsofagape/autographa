@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import BibleNavigation from '@/modules/biblenavigation/BibleNavigation';
 import PropTypes from 'prop-types';
@@ -15,30 +16,74 @@ import {
 
 import CrossReferenceIcon from '@/icons/crossreference.svg';
 import FootNotesIcon from '@/icons/footnotes.svg';
-
+import * as localforage from 'localforage';
+import CustomNavigation from '@/components/EditorPage/Navigation/CustomNavigation';
 import { useContext } from 'react';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
+import { ProjectContext } from '@/components/context/ProjectContext';
 
-export default function Editor({ children }) {
+export default function Editor({
+bookList,
+bookName,
+chapter,
+verse,
+chapterList,
+verseList,
+onChangeBook,
+onChangeChapter,
+onChangeVerse,
+children,
+}) {
+  const {
+    states: {
+      scrollLock,
+    },
+    actions: {
+      setScrollLock,
+    },
+  } = useContext(ProjectContext);
   const {
     state: {
       selectedFont,
       fontSize,
     },
   } = useContext(ReferenceContext);
+
+  const handleUnlockScroll = (e) => {
+    e.preventDefault();
+    setScrollLock(!scrollLock);
+  };
+
   return (
     <>
       <div className="flex items-center justify-between bg-secondary">
-        <BibleNavigation />
+        <CustomNavigation
+          bookList={bookList}
+          bookName={bookName}
+          chapter={chapter}
+          verse={verse}
+          chapterList={chapterList}
+          verseList={verseList}
+          onChangeBook={onChangeBook}
+          onChangeChapter={onChangeChapter}
+          onChangeVerse={onChangeVerse}
+        />
         <div className="text-center h-6 rounded-t text-gray-100  text-xs uppercase tracking-widest font-bold leading-3">
           <div className="text-center pt-1">
             Editor
           </div>
         </div>
         <div className="flex items-center">
-          <div>
-            <LockOpenIcon className="h-5 w-5 text-white" aria-hidden="true" />
-          </div>
+          {scrollLock === true ? (
+            <div>
+              <LockOpenIcon onClick={() => setScrollLock(!scrollLock)} className="h-5 w-5 text-white" aria-hidden="true" />
+            </div>
+            )
+          : (
+            <div>
+              <LockClosedIcon onClick={(e) => handleUnlockScroll(e)} className="h-5 w-5 text-white" aria-hidden="true" />
+            </div>
+          )}
           <div className="mx-2 px-2 py-2 border-r-2 border-l-2 border-white border-opacity-10">
             <BookmarkIcon className="h-5 w-5 text-white" aria-hidden="true" />
           </div>

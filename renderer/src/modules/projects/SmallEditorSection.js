@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React, { useContext, useState } from 'react';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import ResourcesPopUp from '../../components/EditorPage/Reference/ResourcesPopUp';
+import BibleNavigation from '../biblenavigation/BibleNavigation';
 
 export default function EditorSectionSmall({ title, children }) {
 const [content, setContent] = useState(true);
@@ -81,8 +82,13 @@ const showResourcesPanel = () => {
               />
             </button>
           </div>
-          <div className="uppercase text-xs tracking-widest font-medium py-2">
-            { title }
+          <div className="flex items-center justify-between">
+            <BibleNavigation />
+            <div style={{ marginRight: '240px' }} className="text-center h-6 rounded-t  text-xs uppercase tracking-widest font-bold leading-3">
+              <div className="text-center pt-1">
+                { title }
+              </div>
+            </div>
           </div>
         </div>
         { content
