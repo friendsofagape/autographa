@@ -7,7 +7,7 @@ import * as localforage from 'localforage';
 export const ReferenceContext = createContext({});
 
 export default function ReferenceContextProvider({ children }) {
-    const initialBook = '1JN';
+    const initialBook = '1TI';
     const initialChapter = '1';
     const initialVerse = '1';
     const [owner, setOwner] = useState('Door43-Catalog');
@@ -20,10 +20,11 @@ export default function ReferenceContextProvider({ children }) {
     const [refName, setRefName] = React.useState('null');
     const [currentScope, setCurrentScope] = React.useState([]);
     const [openResource, setOpenResource] = React.useState(true);
-    const [openResourcePopUp, setOpenResourcePopUp] = React.useState(false);
+    // const [openResourcePopUp, setOpenResourcePopUp] = React.useState(false);
     const [selectedFont, setSelectedFont] = React.useState('sans-serif');
     const [fontSize, setFontsize] = React.useState(1);
     const [fonts, setFonts] = useState([]);
+    const [layout, setLayout] = useState(0);
 
     const handleClick = (event) => {
       setAnchorEl(event.currentTarget);
@@ -75,10 +76,11 @@ export default function ReferenceContextProvider({ children }) {
         refName,
         currentScope,
         openResource,
-        openResourcePopUp,
+        // openResourcePopUp,
         selectedFont,
         fontSize,
         fonts,
+        layout,
       },
       actions: {
         setLanguageId,
@@ -96,11 +98,12 @@ export default function ReferenceContextProvider({ children }) {
         setRefName,
         setCurrentScope,
         setOpenResource,
-        setOpenResourcePopUp,
+        // setOpenResourcePopUp,
         setSelectedFont,
         setFontsize,
         setFonts,
         getFonts,
+        setLayout,
       },
     };
 

@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable no-underscore-dangle */
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import React, {
@@ -11,14 +12,15 @@ import * as localforage from 'localforage';
 import { readIngredients } from '@/core/reference/readIngredients';
 import { isElectron } from '../../../../core/handleElectron';
 
-const RefBible = () => {
+const RefBible = ({
+ languageId,
+  refName,
+ }) => {
   const {
       state: {
         chapter,
         verse,
         bookId,
-        languageId,
-        refName,
     },
   } = useContext(ReferenceContext);
   // const regExp = /\(([^)]+)\)/;
@@ -76,7 +78,7 @@ const RefBible = () => {
     //       });
 
   return (
-    <>
+    <span>
       {usfmInput && (
         <CustomEditor
           usfmString={usfmInput}
@@ -88,8 +90,9 @@ const RefBible = () => {
               key: Date.now(),
           }}
         />
+
       )}
-    </>
+    </span>
   );
 };
 

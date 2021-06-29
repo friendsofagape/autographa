@@ -4,20 +4,26 @@ import { ReferenceContext } from '@/components/context/ReferenceContext';
 import ResourcesPopUp from '../../components/EditorPage/Reference/ResourcesPopUp';
 import BibleNavigation from '../biblenavigation/BibleNavigation';
 
-export default function EditorSectionSmall({ title, children }) {
+export default function EditorSectionSmall({
+ title,
+ selectedResource,
+ setReferenceResources,
+ children,
+ column,
+}) {
 const [content, setContent] = useState(true);
 const {
   state: {
     openResource,
-    openResourcePopUp,
     selectedFont,
     fontSize,
   },
   actions: {
     setOpenResource,
-    setOpenResourcePopUp,
   },
 } = useContext(ReferenceContext);
+
+const [openResourcePopUp, setOpenResourcePopUp] = useState(false);
 
 const removeSection = () => {
   setOpenResource(!openResource);
@@ -51,7 +57,13 @@ const showResourcesPanel = () => {
         && (
         <div className=" fixed z-50 ">
 
-          <ResourcesPopUp />
+          <ResourcesPopUp
+            column={column}
+            selectedResource={selectedResource}
+            setReferenceResources={setReferenceResources}
+            openResourcePopUp={openResourcePopUp}
+            setOpenResourcePopUp={setOpenResourcePopUp}
+          />
 
         </div>
           )}
@@ -86,6 +98,7 @@ const showResourcesPanel = () => {
             <BibleNavigation />
             <div style={{ marginRight: '240px' }} className="text-center h-6 rounded-t  text-xs uppercase tracking-widest font-bold leading-3">
               <div className="text-center pt-1">
+                {console.log(title)}
                 { title }
               </div>
             </div>

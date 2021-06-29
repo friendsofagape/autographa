@@ -89,15 +89,25 @@ export default function SubMenuBar() {
   const [counter, setCounter] = useState(10);
   const [openSideBar, setOpenSideBar] = useState(false);
   const {
+    state: {
+      layout,
+    },
     actions: {
       setOpenResource,
       getFonts,
+      setLayout,
     },
   } = useContext(ReferenceContext);
 
   useEffect(() => {
     getFonts();
   }, []);
+
+  const handleResource = () => {
+    setOpenResource(false);
+    if (layout < 3) { setLayout(layout + 1); }
+    if (layout >= 3) { setLayout(1); }
+  };
 
   function openSideBars() {
     setOpenSideBar(true);
@@ -255,7 +265,7 @@ export default function SubMenuBar() {
         </div>
         <div className="w-2/3">
           <div className="flex-1 items-center text-center place-self-center">
-            <button type="button" onClick={() => setOpenResource(false)} className={`group ${menuStyles.btn}`}>
+            <button type="button" onClick={() => handleResource()} className={`group ${menuStyles.btn}`}>
               <ColumnsIcon fill="currentColor" className="h-6 w-6" aria-hidden="true" />
               <span className="px-2 ml-1 bg-primary
               text-white  group-hover:bg-white

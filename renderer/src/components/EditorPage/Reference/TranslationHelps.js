@@ -1,19 +1,17 @@
+/* eslint-disable react/prop-types */
 import React, { useContext } from 'react';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import TranslationHelpsCard from './TranslationHelpsCard';
-import ReferenceCard from './ReferenceCard';
 
-const TranslationHelps = () => {
+const TranslationHelps = ({ selectedResource, languageId, refName }) => {
   const {
     state: {
         bookId,
         chapter,
         verse,
-        languageId,
         server,
         branch,
         owner,
-        selectedResource,
     },
   } = useContext(ReferenceContext);
 
@@ -83,8 +81,10 @@ const TranslationHelps = () => {
           );
         case 'bible':
           return (
-            <ReferenceCard
+            <TranslationHelpsCard
               title="Bible"
+              languageId={languageId}
+              refName={refName}
             />
           );
         default:
