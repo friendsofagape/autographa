@@ -2,21 +2,28 @@ import PropTypes from 'prop-types';
 import React, { useContext, useState } from 'react';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import ResourcesPopUp from '../../components/EditorPage/Reference/ResourcesPopUp';
+import BibleNavigation from '../biblenavigation/BibleNavigation';
 
-export default function EditorSectionSmall({ title, children }) {
+export default function EditorSectionSmall({
+ title,
+ selectedResource,
+ setReferenceResources,
+ children,
+ column,
+}) {
 const [content, setContent] = useState(true);
 const {
   state: {
     openResource,
-    openResourcePopUp,
     selectedFont,
     fontSize,
   },
   actions: {
     setOpenResource,
-    setOpenResourcePopUp,
   },
 } = useContext(ReferenceContext);
+
+const [openResourcePopUp, setOpenResourcePopUp] = useState(false);
 
 const removeSection = () => {
   setOpenResource(!openResource);
@@ -48,9 +55,15 @@ const showResourcesPanel = () => {
           {openResourcePopUp
 
         && (
-        <div className=" absolute z-50 ">
+        <div className=" fixed z-50 ">
 
-          <ResourcesPopUp />
+          <ResourcesPopUp
+            column={column}
+            selectedResource={selectedResource}
+            setReferenceResources={setReferenceResources}
+            openResourcePopUp={openResourcePopUp}
+            setOpenResourcePopUp={setOpenResourcePopUp}
+          />
 
         </div>
           )}
@@ -81,22 +94,26 @@ const showResourcesPanel = () => {
               />
             </button>
           </div>
-          <div className="uppercase text-xs tracking-widest font-medium py-2">
-            { title }
+          <div className="flex items-center justify-between">
+            <BibleNavigation />
+            <div style={{ marginRight: '240px' }} className="text-center h-6 rounded-t  text-xs uppercase tracking-widest font-bold leading-3">
+              <div className="text-center pt-1">
+                {console.log(title)}
+                { title }
+              </div>
+            </div>
           </div>
         </div>
         { content
 
         && (
         <div
-          style={{
-              height: '500px', fontFamily: selectedFont || 'sans-serif', fontSize: `${fontSize}rem`,
-          }}
-          className="overflow-scroll p-3 text-xl"
+          style={{ fontFamily: selectedFont || 'sans-serif', fontSize: `${fontSize}rem` }}
+          className="prose-sm max-w-none overflow-y-auto px-3 py-4 pb-16 text-xl"
         >
           { children }
         </div>
-)}
+        )}
       </div>
     </div>
   );

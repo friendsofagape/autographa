@@ -1,7 +1,7 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable import/no-unresolved */
 import { StarIcon } from '@heroicons/react/outline';
-import React, { useContext, useEffect, useState } from 'react';
-import { ReferenceContext } from '@/components/context/ReferenceContext';
+import React, { useEffect, useState } from 'react';
 import * as localforage from 'localforage';
 import { isElectron } from '@/core/handleElectron';
 import { readRefMeta } from '@/core/reference/readRefMeta';
@@ -21,24 +21,20 @@ const translationNotes = [
     createData('Gujrati Notes', 'gu', '2020-12-29'),
 ];
 
-const ResourcesPopUp = () => {
+const ResourcesPopUp = ({
+  openResourcePopUp,
+  setOpenResourcePopUp,
+  selectedResource,
+  setReferenceResources,
+}) => {
     const [subMenuItems, setSubMenuItems] = useState();
-    const {
-        state: {
-            selectedResource,
-            openResourcePopUp,
-        },
-        actions: {
-            setLanguageId,
-            SetSelectedResource,
-            setRefName,
-            setOpenResourcePopUp,
-        },
-      } = useContext(ReferenceContext);
+    const [title, setTitle] = useState(setReferenceResources.header);
     const [selectResource, setSelectResource] = useState(selectedResource);
-
     useEffect(() => {
-        SetSelectedResource(selectResource);
+      setReferenceResources({
+        selectedResource: selectResource,
+        header: title,
+      });
         if (isElectron()) {
             const parseData = [];
             readRefMeta({
@@ -72,10 +68,13 @@ const ResourcesPopUp = () => {
     };
 
     const handleRowSelect = (e, row, name) => {
-        SetSelectedResource(selectResource);
-        setLanguageId(row);
-        setRefName(name);
-        removeSection();
+      setReferenceResources({
+        selectedResource: selectResource,
+        languageId: row,
+        refName: name,
+        header: title,
+      });
+      removeSection();
     };
 
     return (
@@ -98,12 +97,12 @@ const ResourcesPopUp = () => {
                 name="gsearch"
               />
               <div className=" grid grid-rows-5 px-5 py-5 gap-6">
-                <ResourceOption imageUrl="/illustrations/dictionary-icon.svg" id="tn" text="Notes" setSelectResource={setSelectResource} setSubMenuItems={setSubMenuItems} />
-                <ResourceOption imageUrl="/illustrations/image-icon.svg" id="img" text="Image" setSelectResource={setSelectResource} setSubMenuItems={setSubMenuItems} />
-                <ResourceOption imageUrl="/illustrations/location-icon.svg" id="map" text="Map" setSelectResource={setSelectResource} setSubMenuItems={setSubMenuItems} />
-                <ResourceOption imageUrl="/illustrations/dialogue-icon.svg" id="cmtry" text="Commentary" setSelectResource={setSelectResource} setSubMenuItems={setSubMenuItems} />
-                <ResourceOption imageUrl="/illustrations/bible-icon.svg" id="bible" text="Bible" setSelectResource={setSelectResource} setSubMenuItems={setSubMenuItems} />
-                <ResourceOption imageUrl="/illustrations/dialogue-icon.svg" id="tq" text="Questions" setSelectResource={setSelectResource} setSubMenuItems={setSubMenuItems} />
+                <ResourceOption imageUrl="/illustrations/dictionary-icon.svg" id="tn" text="Notes" setSelectResource={setSelectResource} setTitle={setTitle} setSubMenuItems={setSubMenuItems} />
+                <ResourceOption imageUrl="/illustrations/image-icon.svg" id="img" text="Image" setSelectResource={setSelectResource} setTitle={setTitle} setSubMenuItems={setSubMenuItems} />
+                <ResourceOption imageUrl="/illustrations/location-icon.svg" id="map" text="Map" setSelectResource={setSelectResource} setTitle={setTitle} setSubMenuItems={setSubMenuItems} />
+                <ResourceOption imageUrl="/illustrations/dialogue-icon.svg" id="cmtry" text="Commentary" setSelectResource={setSelectResource} setTitle={setTitle} setSubMenuItems={setSubMenuItems} />
+                <ResourceOption imageUrl="/illustrations/bible-icon.svg" id="bible" text="Bible" setSelectResource={setSelectResource} setTitle={setTitle} setSubMenuItems={setSubMenuItems} />
+                <ResourceOption imageUrl="/illustrations/dialogue-icon.svg" id="tq" text="Questions" setSelectResource={setSelectResource} setTitle={setTitle} setSubMenuItems={setSubMenuItems} />
               </div>
             </div>
           </div>
