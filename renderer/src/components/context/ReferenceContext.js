@@ -25,6 +25,11 @@ export default function ReferenceContextProvider({ children }) {
     const [fontSize, setFontsize] = React.useState(1);
     const [fonts, setFonts] = useState([]);
     const [layout, setLayout] = useState(0);
+    const [refernceLoading, setRefernceLoading] = useState({
+      status: false,
+      text: '',
+    });
+    const [counter, setCounter] = useState(7);
 
     const handleClick = (event) => {
       setAnchorEl(event.currentTarget);
@@ -81,6 +86,8 @@ export default function ReferenceContextProvider({ children }) {
         fontSize,
         fonts,
         layout,
+        refernceLoading,
+        counter,
       },
       actions: {
         setLanguageId,
@@ -104,6 +111,8 @@ export default function ReferenceContextProvider({ children }) {
         setFonts,
         getFonts,
         setLayout,
+        setRefernceLoading,
+        setCounter,
       },
     };
 

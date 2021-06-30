@@ -6,7 +6,7 @@ import React, { createContext } from 'react';
 export const CustomNavigationContext = createContext({});
 
 export default function CustomNavigationContextProvider({ children }) {
-    const initialBook = '1JN';
+    const initialBook = '1TI';
     const initialChapter = '1';
     const initialVerse = '1';
 

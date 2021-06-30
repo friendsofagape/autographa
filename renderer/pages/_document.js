@@ -11,7 +11,9 @@ import Document, {
    render() {
      return (
        <Html>
-         <Head />
+         <Head>
+           <link rel="stylesheet" href="./loader.css" />
+         </Head>
          <body>
            <Main />
            <NextScript />

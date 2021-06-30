@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import PropTypes from 'prop-types';
 import { Dialog, Transition } from '@headlessui/react';
 import {
@@ -108,7 +109,7 @@ export default function BibleNavigation(props) {
         <div className="bg-primary text-white py-2 uppercase tracking-wider text-sm font-semibold">
           <span className="px-3">{bookName}</span>
           <span
-            className="bg-white py-4 bg-opacity-10"
+            className="focus:outline-none bg-white py-4 bg-opacity-10"
             onClick={openBooks}
             role="button"
             tabIndex="-2"
@@ -117,7 +118,7 @@ export default function BibleNavigation(props) {
           </span>
           <span className="px-3">{chapter}</span>
           <span
-            className="bg-white py-4 bg-opacity-10"
+            className="focus:outline-none bg-white py-4 bg-opacity-10"
             onClick={selectBook}
             role="button"
             tabIndex="-1"
@@ -197,7 +198,7 @@ export default function BibleNavigation(props) {
               >
                 <button
                   type="button"
-                  className="w-9 h-9 bg-black p-2"
+                  className="focus:outline-none w-9 h-9 bg-black p-2"
                   onClick={closeBooks}
                 >
                   <XIcon />
@@ -250,7 +251,7 @@ export default function BibleNavigation(props) {
               >
                 <button
                   type="button"
-                  className="w-9 h-9 bg-black p-2"
+                  className="focus:outline-none w-9 h-9 bg-black p-2"
                   onClick={closeVerses}
                 >
                   <XIcon />

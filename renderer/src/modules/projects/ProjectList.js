@@ -99,7 +99,7 @@ export default function ProjectList() {
                                         }
                                         role="button"
                                         tabIndex="0"
-                                        className="text-sm font-medium text-gray-900"
+                                        className="focus:outline-none text-sm font-medium text-gray-900"
                                       >
                                         {project.name}
 

@@ -11,7 +11,7 @@ const TranslationHelps = dynamic(
 const ReferencePlaceholder = () => {
     const [referenceColumnOneData, setReferenceCoulumnOneData] = useState({
       languageId: 'en',
-      selectedResource: 'tn',
+      selectedResource: 'tq',
       refName: '',
       header: '',
     });
@@ -30,8 +30,6 @@ const ReferencePlaceholder = () => {
             layout,
         },
       } = useContext(ReferenceContext);
-      console.log(referenceColumnOneData.selectedResource, referenceColumnOneData.languageId,
-        referenceColumnTwoData.selectedResource, referenceColumnTwoData.languageId);
 return (
   <>
 
@@ -42,6 +40,7 @@ return (
           title={referenceColumnOneData.header === 'Notes' ? 'Translation Notes' : referenceColumnOneData.header}
           selectedResource={referenceColumnOneData.selectedResource}
           setReferenceResources={setReferenceCoulumnOneData}
+          languageId={referenceColumnOneData.languageId}
         >
           {referenceColumnOneData.selectedResource === 'bible' ? (
             <RefBible
@@ -69,6 +68,7 @@ return (
           title={referenceColumnOneData.header === 'Notes' ? 'Translation Notes' : referenceColumnOneData.header}
           selectedResource={referenceColumnOneData.selectedResource}
           setReferenceResources={setReferenceCoulumnOneData}
+          languageId={referenceColumnOneData.languageId}
         >
           {referenceColumnOneData.selectedResource === 'bible' ? (
             <RefBible
@@ -90,6 +90,7 @@ return (
           column="2"
           title={referenceColumnTwoData.header === 'Notes' ? 'Translation Notes' : referenceColumnTwoData.header}
           selectedResource={referenceColumnTwoData.selectedResource}
+          languageId={referenceColumnTwoData.languageId}
           setReferenceResources={setReferenceCoulumnTwoData}
         >
           {referenceColumnTwoData.selectedResource === 'bible' ? (
@@ -109,7 +110,7 @@ return (
     </>
     )}
 
-    {layout >= 3 && (
+    {(layout >= 3 || layout === 0) && (
     <>
       <div className="m-3 ml-0 border-b-2 rounded-md shadow overflow-y-auto" />
       <div className="m-3 ml-0 border-b-2 rounded-md shadow overflow-y-auto" />

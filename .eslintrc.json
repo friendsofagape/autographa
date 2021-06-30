@@ -24,6 +24,7 @@
         "react/jsx-props-no-spreading": "off",
         "eslint no-unused-expressions": "off",
         "no-shadow": "off",
+        "jsx-a11y/label-has-associated-control": 0,
         "import/prefer-default-export": "off",
         "import/no-extraneous-dependencies": "off",
         "jsx-a11y/click-events-have-key-events": "off",

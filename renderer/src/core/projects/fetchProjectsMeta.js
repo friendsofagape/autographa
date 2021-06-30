@@ -6,14 +6,15 @@ const fetchProjectsMeta = () => {
     const projectsMetaPath = path.join(
         newpath, 'autographa', 'users', 'username', 'projects', 'projects.json',
     );
-if (fs.existsSync(projectsMetaPath)) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
+      if (fs.existsSync(projectsMetaPath)) {
         // eslint-disable-next-line
-        fs.readFile(projectsMetaPath, 'utf8', (err, data) => {
-          if (err) { return reject(err); }
-          resolve(JSON.parse(data));
-        });
-      });
-}
+          const fileContent = fs.readFileSync(
+            path.join(projectsMetaPath),
+            'utf8',
+          );
+          resolve(JSON.parse(fileContent));
+        }
+    });
 };
 export default fetchProjectsMeta;

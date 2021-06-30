@@ -80,21 +80,21 @@ export default function CustomNavigation({
         <div className="bg-primary text-white py-2 uppercase tracking-wider text-sm font-semibold">
           <span className="px-3">{bookName}</span>
           <span
-            className="bg-white py-4 bg-opacity-10"
+            className="focus:outline-none bg-white py-4 bg-opacity-10"
             onClick={openBooks}
             role="button"
             tabIndex="-2"
           >
-            <ChevronDownIcon className="inline h-4 w-4 mx-1 text-white" aria-hidden="true" />
+            <ChevronDownIcon className="focus:outline-none inline h-4 w-4 mx-1 text-white" aria-hidden="true" />
           </span>
           <span className="px-3">{chapter}</span>
           <span
-            className="bg-white py-4 bg-opacity-10"
+            className="focus:outline-none bg-white py-4 bg-opacity-10"
             onClick={selectBook}
             role="button"
             tabIndex="-1"
           >
-            <ChevronDownIcon className="inline h-4 w-4 mx-1 text-white" aria-hidden="true" />
+            <ChevronDownIcon className="focus:outline-none inline h-4 w-4 mx-1 text-white" aria-hidden="true" />
           </span>
           {showVerse
             && (
@@ -137,7 +137,7 @@ export default function CustomNavigation({
               >
                 <button
                   type="button"
-                  className="w-9 h-9 bg-black p-2"
+                  className="focus:outline-none w-9 h-9 bg-black p-2"
                   onClick={closeBooks}
                 >
                   <XIcon />
@@ -171,7 +171,7 @@ export default function CustomNavigation({
           <Dialog.Overlay className="fixed inset-0 bg-black opacity-30" />
           <div className="flex items-center justify-center h-screen">
 
-            <div className=" w-3/12 m-auto z-50 bg-black text-white shadow overflow-hidden sm:rounded-lg">
+            <div className="w-3/12 m-auto z-50 bg-black text-white shadow overflow-hidden sm:rounded-lg">
               <SelectVerse
                 chapter={chapter}
                 verse={verse}
@@ -190,7 +190,7 @@ export default function CustomNavigation({
               >
                 <button
                   type="button"
-                  className="w-9 h-9 bg-black p-2"
+                  className="focus:outline-none w-9 h-9 bg-black p-2"
                   onClick={closeVerses}
                 >
                   <XIcon />
