@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import {
   Fragment, useState, useEffect, useContext,
 } from 'react';
@@ -30,14 +31,14 @@ import menuStyles from './MenuBar.module.css';
 import styles from './SubMenuBar.module.css';
 
 const tesfFunc = () => {
-  console.log('edit');
+  // console.log('edit');
 };
 
 const tesfFunc1 = () => {
-  console.log('test2');
+  // console.log('test2');
 };
 const activate = () => {
-  console.log('rename');
+  // console.log('rename');
 };
 
 const FileMenuItems = [{
@@ -85,28 +86,34 @@ const FormatMenuItems = [
 ];
 export default function SubMenuBar() {
   const [open, setOpen] = useState(false);
-  const [snackBar, setSnackBar] = useState(true);
-  const [counter, setCounter] = useState(10);
+  // const [snackBar, setSnackBar] = useState(true);
   const [openSideBar, setOpenSideBar] = useState(false);
   const {
     state: {
       layout,
+      refernceLoading,
+      counter,
     },
     actions: {
       setOpenResource,
       getFonts,
       setLayout,
+      setRefernceLoading,
+      setCounter,
     },
   } = useContext(ReferenceContext);
+  const [notificationsText, setNotification] = useState();
 
   useEffect(() => {
     getFonts();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleResource = () => {
     setOpenResource(false);
     if (layout < 3) { setLayout(layout + 1); }
     if (layout >= 3) { setLayout(1); }
+    if (layout === 2) { setLayout(0); }
   };
 
   function openSideBars() {
@@ -121,13 +128,23 @@ export default function SubMenuBar() {
   useEffect(() => {
     const timer = counter > 0 && setInterval(() => setCounter(counter - 1), 1000);
     if (counter <= 0) {
-      setSnackBar(false);
+      // setNotification(refernceLoading.text);
+      setRefernceLoading({
+        status: false,
+        text: '',
+      });
     }
     return () => clearInterval(timer);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [counter]);
 
   function closeSnackBar() {
-    setSnackBar(false);
+    setNotification(refernceLoading.text);
+    // setSnackBar(false);
+    setRefernceLoading({
+      status: false,
+      text: '',
+    });
   }
 
   // function timeOutClose() {
@@ -145,7 +162,7 @@ export default function SubMenuBar() {
 
       <AboutModal openModal={openModal} open={open} />
 
-      <Transition appear show={snackBar} as={Fragment}>
+      <Transition appear show={refernceLoading.status} as={Fragment}>
         <Dialog
           as={Fragment}
           // className="fixed inset-0 z-10 overflow-y-auto"
@@ -181,12 +198,13 @@ export default function SubMenuBar() {
                     <XIcon />
                   </button>
                   <p>
-                    This is a Notifiction. &nbsp;
-                    {counter}
+                    {refernceLoading.text}
+                    {' '}
+                    {counter > 0 ? counter : ''}
                   </p>
                 </div>
 
-                <div className="relative p-5 mt-5 bg-light rounded-lg text-sm font-semibold text-gray-500">
+                {/* <div className="relative p-5 mt-5 bg-light rounded-lg text-sm font-semibold text-gray-500">
                   <button
                     type="button"
                     className="bg-black absolute top-0 right-0 h-6 w-6 rounded-full text-center text-white p-1 -mt-2 -mr-2 focus:outline-none"
@@ -206,7 +224,7 @@ export default function SubMenuBar() {
                     <XIcon />
                   </button>
                   <p>This is a Notifiction.</p>
-                </div>
+                </div> */}
 
               </div>
 
@@ -216,15 +234,17 @@ export default function SubMenuBar() {
       </Transition>
 
       <Notifications isOpen={openSideBar} closeNotifications={closeNotifications}>
+        {notificationsText && (
         <div className="relative mb-2 bg-gray-200 rounded-lg text-sm text-black overflow-hidden">
           <div className="flex justify-between px-4 py-1 text-xs uppercase font-semibold bg-gray-300 text-gray-700">
-            Title
+            Resources
             <span className="opacity-100 text-xxs text-gray-400">
               1 Hour Ago
             </span>
           </div>
-          <p className="px-4 py-2">This is a Notifiction.</p>
+          <p className="px-4 py-2">{notificationsText}</p>
         </div>
+        )}
         <div className="relative mb-2 bg-validation rounded-lg text-sm text-black">
           <div className="flex justify-between px-4 py-1 text-xs uppercase font-semibold bg-secondary text-error rounded-t">
             Validation
@@ -272,7 +292,7 @@ export default function SubMenuBar() {
               group-hover:text-primary inline-flex
               text-xxs leading-5 font-semibold rounded-full"
               >
-                3
+                {layout + 1}
               </span>
             </button>
             <button type="button" className={`group ${menuStyles.btn}`}>

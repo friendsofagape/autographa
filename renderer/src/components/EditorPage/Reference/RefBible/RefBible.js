@@ -22,6 +22,10 @@ const RefBible = ({
         verse,
         bookId,
     },
+    actions: {
+      setRefernceLoading,
+      setCounter,
+    },
   } = useContext(ReferenceContext);
   // const regExp = /\(([^)]+)\)/;
     const [usfmInput, setUsfmInput] = useState();
@@ -29,7 +33,8 @@ const RefBible = ({
       () => (withChapterPaging(createBasicUsfmEditor())),
       // eslint-disable-next-line react-hooks/exhaustive-deps
       [usfmInput],
-      );
+    );
+
     useEffect(() => {
       if (isElectron()) {
         localforage.getItem('refBibleBurrito')
@@ -46,6 +51,11 @@ const RefBible = ({
                         filePath: key,
                       }).then((res) => {
                         setUsfmInput(res);
+                        setRefernceLoading({
+                          status: true,
+                          text: 'Reference-burrito loaded succesfully',
+                        });
+                        setCounter(4);
                       });
                     }
                     // console.log(key, value),

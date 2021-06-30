@@ -20,7 +20,7 @@ export default function TranslationHelpsCard({
   selectedQuote,
   viewMode,
 }) {
-  const { items, markdown } = useContent({
+  const { items, markdown, isLoading } = useContent({
     verse,
     chapter,
     projectId,
@@ -44,22 +44,23 @@ export default function TranslationHelpsCard({
     <>
       <ReferenceCard
         items={items}
-        title={title}
-        item={item}
-        viewMode={viewMode}
         headers={headers}
+        filters={filters}
+        fontSize={fontSize}
         itemIndex={itemIndex}
         setFilters={setFilters}
         setFontSize={setFontSize}
         setItemIndex={setItemIndex}
         markdownView={markdownView}
-        filters={filters}
-        fontSize={fontSize}
+        setMarkdownView={setMarkdownView}
+        item={item}
         markdown={markdown}
+        isLoading={isLoading}
         languageId={languageId}
+        title={title}
+        viewMode={viewMode}
         selectedQuote={selectedQuote}
         setQuote={setQuote}
-        setMarkdownView={setMarkdownView}
       />
     </>
   );

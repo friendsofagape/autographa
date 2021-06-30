@@ -9,6 +9,7 @@ export default function EditorSectionSmall({
  selectedResource,
  setReferenceResources,
  children,
+ languageId,
  column,
 }) {
 const [content, setContent] = useState(true);
@@ -59,6 +60,8 @@ const showResourcesPanel = () => {
 
           <ResourcesPopUp
             column={column}
+            header={title}
+            languageId={languageId}
             selectedResource={selectedResource}
             setReferenceResources={setReferenceResources}
             openResourcePopUp={openResourcePopUp}
@@ -80,7 +83,6 @@ const showResourcesPanel = () => {
               onClick={sectionContent}
               type="button"
             >
-
               <img
                 className="px-2 py-2"
                 src="/illustrations/minimize.svg"
@@ -98,7 +100,6 @@ const showResourcesPanel = () => {
             <BibleNavigation />
             <div style={{ marginRight: '240px' }} className="text-center h-6 rounded-t  text-xs uppercase tracking-widest font-bold leading-3">
               <div className="text-center pt-1">
-                {console.log(title)}
                 { title }
               </div>
             </div>
@@ -122,4 +123,8 @@ const showResourcesPanel = () => {
 EditorSectionSmall.propTypes = {
   title: PropTypes.string,
   children: PropTypes.any,
+  selectedResource: PropTypes.string,
+  setReferenceResources: PropTypes.func,
+  column: PropTypes.string,
+  languageId: PropTypes.string,
 };

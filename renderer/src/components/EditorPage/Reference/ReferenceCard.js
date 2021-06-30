@@ -5,7 +5,6 @@ import {
   } from 'translation-helps-rcl';
 
 const ReferenceCard = ({
-    title,
     items,
     item,
     filters,
@@ -15,9 +14,9 @@ const ReferenceCard = ({
     selectedQuote,
     setQuote,
     viewMode,
+    isLoading,
 }) => (
   <>
-    {(title === 'Translation Notes') && (
     <CardContent
       item={item}
       items={items}
@@ -25,12 +24,12 @@ const ReferenceCard = ({
       markdown={markdown}
       languageId={languageId}
       markdownView={markdownView}
+      isLoading={isLoading}
       selectedQuote={selectedQuote}
       setQuote={setQuote}
       viewMode={viewMode}
     />
-    )}
   </>
-    );
+);
 
 export default ReferenceCard;
