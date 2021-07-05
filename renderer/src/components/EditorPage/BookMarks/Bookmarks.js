@@ -6,9 +6,6 @@ export default function Bookmarks() {
     state: {
       bookmarksVerses,
     },
-    actions: {
-      setBookmarksVerses,
-    },
   } = useContext(ReferenceContext);
   return (
     <>
