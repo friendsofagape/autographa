@@ -6,10 +6,6 @@ import dynamic from 'next/dynamic';
 import CustomNavigationContextProvider from '@/components/context/CustomNavigationContext';
 import ReferencePlaceholder from '@/components/EditorPage/NewRefernce/ReferencePlaceholder';
 
-const TranslationHelps = dynamic(
-  () => import('../renderer/src/components/EditorPage/Reference/TranslationHelps'),
-  { ssr: false },
-);
 const UsfmEditor = dynamic(
   () => import('@/components/EditorPage/UsfmEditor/UsfmEditor'),
   { ssr: false },

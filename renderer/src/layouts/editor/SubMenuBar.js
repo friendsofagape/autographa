@@ -239,7 +239,7 @@ export default function SubMenuBar() {
           <div className="flex justify-between px-4 py-1 text-xs uppercase font-semibold bg-gray-300 text-gray-700">
             Resources
             <span className="opacity-100 text-xxs text-gray-400">
-              1 Hour Ago
+              a min ago
             </span>
           </div>
           <p className="px-4 py-2">{notificationsText}</p>

@@ -7,18 +7,11 @@ import EditorLayout from '@/layouts/editor/Layout';
 import dynamic from 'next/dynamic';
 import ReferencePlaceholder from '@/components/EditorPage/NewRefernce/ReferencePlaceholder';
 
-const TranslationHelps = dynamic(
-  () => import('@/components/EditorPage/Reference/TranslationHelps'),
-  { ssr: false },
-);
 const UsfmEditor = dynamic(
   () => import('@/components/EditorPage/UsfmEditor/UsfmEditor'),
   { ssr: false },
 );
-const ReferenceCard = dynamic(
-  () => import('@/components/EditorPage/Reference/ReferenceCard'),
-  { ssr: false },
-);
+
 export default function ReferenceSelector() {
   return (
     <AuthenticationContextProvider>

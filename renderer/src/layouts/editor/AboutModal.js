@@ -14,7 +14,7 @@ import {
   DocumentTextIcon,
 } from '@heroicons/react/outline';
 
-import LogoIcon from './public/logo.svg';
+import LogoIcon from '../../../public/Logo.svg';
 
 export default function AboutModal(props) {
   const { openModal, open } = props;

@@ -23,7 +23,7 @@ import Search from './Search';
 import CrossReferences from './CrossReferences';
 import FootNotes from './FootNotes';
 import Comments from './Comments';
-import Bookmarks from './Bookmarks';
+import Bookmarks from '../../components/EditorPage/BookMarks/Bookmarks';
 
 const initialTab = { tabIndex: 0 };
 

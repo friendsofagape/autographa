@@ -30,6 +30,7 @@ export default function ReferenceContextProvider({ children }) {
       text: '',
     });
     const [counter, setCounter] = useState(7);
+    const [bookmarksVerses, setBookmarksVerses] = useState([]);
 
     const handleClick = (event) => {
       setAnchorEl(event.currentTarget);
@@ -88,6 +89,7 @@ export default function ReferenceContextProvider({ children }) {
         layout,
         refernceLoading,
         counter,
+        bookmarksVerses,
       },
       actions: {
         setLanguageId,
@@ -113,6 +115,7 @@ export default function ReferenceContextProvider({ children }) {
         setLayout,
         setRefernceLoading,
         setCounter,
+        setBookmarksVerses,
       },
     };
 
