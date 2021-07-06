@@ -26,7 +26,7 @@ export default function Login() {
     viewForgot: false,
   };
   // eslint-disable-next-line no-unused-vars
-  const tab = React.useState(!!isElectron());
+  const tab = React.useState(!isElectron());
   // eslint-disable-next-line no-unused-vars
   const [users, setUsers] = React.useState([]);
   const {
@@ -156,16 +156,19 @@ export default function Login() {
       <div className="relative">
         <div className="inline-block  bg-white w-5/12">
           <div className="ml-10 2xl:ml-40 mt-32">
-            <div className="text-success pb-12">
-              Don’t have an account?
-              <a
-                data-testid="signup"
-                href="/signup"
-                className="text-primary ml-2"
-              >
-                Sign Up!
-              </a>
-            </div>
+            {tab[0] === false ? null
+            : (
+              <div className="text-success pb-12">
+                Don’t have an account?
+                <a
+                  data-testid="signup"
+                  href="/signup"
+                  className="text-primary ml-2"
+                >
+                  Sign Up!
+                </a>
+              </div>
+            )}
             <div className="text-3xl font-medium text-secondary"> Welcome!</div>
             <div className="text-lg
             font-light
@@ -190,7 +193,7 @@ export default function Login() {
           <div className="grid grid-rows-1 justify-items-center relative">
             <div className="justify-center">
               <div className="flex gap-3 ">
-                <img src="/logo.svg" alt="logo" />
+                <img src="/Logo.svg" alt="logo" />
                 <div className="text-white uppercase">AUTOGRAPHA</div>
                 <div className="text-primary font-bold">2.0</div>
               </div>

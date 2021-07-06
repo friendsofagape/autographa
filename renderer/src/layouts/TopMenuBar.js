@@ -10,6 +10,7 @@ import {
 } from '@heroicons/react/outline';
 
 import Notifications from '@/modules/notifications/Notifications';
+import { AuthenticationContext } from '@/components/Login/AuthenticationContextProvider';
 
 const profile = ['Your Profile', 'Settings'];
 
@@ -19,7 +20,7 @@ function classNames(...classes) {
 
 export default function TopMenuBar() {
   const [openSideBar, setOpenSideBar] = useState(false);
-
+  const { action: { logout } } = React.useContext(AuthenticationContext);
   function openSideBars() {
     setOpenSideBar(true);
   }
