@@ -12,6 +12,8 @@ export const ProjectContext = React.createContext();
 
 const ProjectContextProvider = ({ children }) => {
     const [drawer, setDrawer] = React.useState(false);
+    const [scrollLock, setScrollLock] = React.useState(false);
+    // const []
     const [sideTabTitle, setSideTabTitle] = React.useState('New');
     const [languages] = React.useState(advanceSettings.languages);
     const [language, setLanguage] = React.useState(advanceSettings.languages[0]);
@@ -163,6 +165,7 @@ const ProjectContextProvider = ({ children }) => {
             version,
             languages,
             language,
+            scrollLock,
         },
         actions: {
             setDrawer,
@@ -177,6 +180,7 @@ const ProjectContextProvider = ({ children }) => {
             setVersion,
             createProject,
             setLanguage,
+            setScrollLock,
         },
     };
 

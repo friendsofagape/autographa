@@ -12,6 +12,8 @@ import {
 //  withChapterSelection,
  withToolbar,
 } from 'usfm-editor';
+import Editor from '@/modules/editor/Editor';
+import { CustomNavigationContext } from '@/components/context/CustomNavigationContext';
 import { readFile } from '../../../core/editor/readFile';
 import writeToParse from '../../../core/editor/writeToParse';
 import { isElectron } from '../../../core/handleElectron';
@@ -19,7 +21,6 @@ import writeToFile from '../../../core/editor/writeToFile';
 // import InputSelector from './InputSelector';
 import fetchFromParse from '../../../core/editor/fetchFromParse';
 import findBookFromParse from '../../../core/editor/findBookFromParse';
-import EditorSection from '../EditorSection';
 
 const UsfmEditor = () => {
   const intervalRef = useRef();
@@ -30,23 +31,35 @@ const UsfmEditor = () => {
   const [goToVersePropValue, setGoToVersePropValue] = useState({});
   const username = 'Michael';
   const projectName = 'Spanish Pro';
-  const {
-    state: {
-      bookId,
-      verse,
-      chapter,
-    },
-    actions: {
-      onChangeBook,
-      onChangeChapter,
-      onChangeVerse,
-    },
-  } = useContext(ReferenceContext);
+
+  const supportedBooks = null; // if empty array or null then all books available
   const {
     states: {
       selectedProject,
+      scrollLock,
     },
    } = useContext(ProjectContext);
+
+  const {
+    state: {
+      bookList,
+      bookId,
+      bookName,
+      chapter,
+      verse,
+      chapterList,
+      verseList,
+    }, actions: {
+      onChangeBook,
+      onChangeChapter,
+      onChangeVerse,
+      applyBooksFilter,
+    },
+  } = useContext(scrollLock === false ? ReferenceContext : CustomNavigationContext);
+
+  useEffect(() => {
+    applyBooksFilter(supportedBooks);
+  }, [applyBooksFilter, supportedBooks]);
 
    const CustomEditor = useMemo(
     () => withToolbar((withChapterPaging(createBasicUsfmEditor()))),
@@ -160,14 +173,7 @@ const UsfmEditor = () => {
         filename: bookId,
       }).then((data) => {
         if (data) {
-          localforage.setItem('editorData', data).then(
-            () => localforage.getItem('editorData'),
-            ).then(() => {
-              handleInputChange(data);
-            }).catch((err) => {
-              // we got an error
-              throw err;
-            });
+          handleInputChange(data);
         }
       });
     }
@@ -195,14 +201,7 @@ const UsfmEditor = () => {
         filename: bookId,
       }).then((data) => {
         if (data) {
-          localforage.setItem('editorData', data).then(
-            () => localforage.getItem('editorData'),
-            ).then(() => {
-              handleInputChange(data);
-            }).catch((err) => {
-              // we got an error
-              throw err;
-            });
+            handleInputChange(data);
         }
       });
     }
@@ -218,11 +217,19 @@ const UsfmEditor = () => {
 
 return (
   <>
-    <span style={{
-      float: 'right', left: '-6px', top: '-404px', paddingRight: '2px',
-    }}
-    >
-      <EditorSection header="USFM EDITOR" editor>
+    <span>
+      <Editor
+        bookList={bookList}
+        bookName={bookName}
+        chapter={chapter}
+        verse={verse}
+        chapterList={chapterList}
+        verseList={verseList}
+        onChangeBook={onChangeBook}
+        onChangeChapter={onChangeChapter}
+        onChangeVerse={onChangeVerse}
+      >
+        {/* <EditorSection header="USFM EDITOR" editor> */}
         {usfmInput && (
         <CustomEditor
           usfmString={usfmInput}
@@ -235,7 +242,8 @@ return (
           onIdentificationChange={onIdentificationChange}
         />
         )}
-      </EditorSection>
+      </Editor>
+      {/* </EditorSection> */}
     </span>
   </>
 );

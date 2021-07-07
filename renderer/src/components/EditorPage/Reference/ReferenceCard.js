@@ -3,11 +3,8 @@ import React from 'react';
 import {
     CardContent,
   } from 'translation-helps-rcl';
-import RefBible from './RefBible/RefBible';
-import EditorSectionSmall from '../../../modules/projects/SmallEditorSection';
 
 const ReferenceCard = ({
-    title,
     items,
     item,
     filters,
@@ -17,33 +14,22 @@ const ReferenceCard = ({
     selectedQuote,
     setQuote,
     viewMode,
+    isLoading,
 }) => (
   <>
-    <div style={{ width: '500px', display: 'inline-block', float: 'left' }}>
-      {(title === 'Translation Notes') && (
-      <EditorSectionSmall title={title}>
-        <CardContent
-          item={item}
-          items={items}
-          filters={filters}
-          markdown={markdown}
-          languageId={languageId}
-          markdownView={markdownView}
-          selectedQuote={selectedQuote}
-          setQuote={setQuote}
-          viewMode={viewMode}
-        />
-      </EditorSectionSmall>
-
-    )}
-      {(title === 'Bible') && (
-      <EditorSectionSmall title="Bible">
-        <RefBible />
-      </EditorSectionSmall>
-
-    )}
-    </div>
+    <CardContent
+      item={item}
+      items={items}
+      filters={filters}
+      markdown={markdown}
+      languageId={languageId}
+      markdownView={markdownView}
+      isLoading={isLoading}
+      selectedQuote={selectedQuote}
+      setQuote={setQuote}
+      viewMode={viewMode}
+    />
   </>
-    );
+);
 
 export default ReferenceCard;

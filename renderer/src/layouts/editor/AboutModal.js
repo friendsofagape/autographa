@@ -1,3 +1,5 @@
+/* eslint-disable react/no-unescaped-entities */
+/* eslint-disable max-len */
 import PropTypes from 'prop-types';
 import {
   Fragment, useRef, useState,
@@ -12,7 +14,7 @@ import {
   DocumentTextIcon,
 } from '@heroicons/react/outline';
 
-import LogoIcon from '/public/logo.svg';
+import LogoIcon from '../../../public/Logo.svg';
 
 export default function AboutModal(props) {
   const { openModal, open } = props;
@@ -80,14 +82,24 @@ export default function AboutModal(props) {
                     </Dialog.Title>
 
                     <div className="flex cursor-pointer border-0 border-b border-gray-300">
-                      <div onClick={() => setTabNumber(0)} className={`flex items-center justify-center p-2 leading-6 text-sm text-black hover:text-primary uppercase tracking-wide font-bold border-0 border-b-4 ${tabNumber === 0 ? 'border-primary' : 'border-transparent hover:border-black'}`}>
+                      <div
+                        onClick={() => setTabNumber(0)}
+                        role="button"
+                        tabIndex="0"
+                        className={`flex items-center justify-center p-2 leading-6 text-sm text-black hover:text-primary uppercase tracking-wide font-bold border-0 border-b-4 ${tabNumber === 0 ? 'border-primary' : 'border-transparent hover:border-black'}`}
+                      >
                         <InformationCircleIcon
                           className="h-5 w-5 mr-2"
                           aria-hidden="true"
                         />
                         About
                       </div>
-                      <div onClick={() => setTabNumber(1)} className={`flex items-center justify-center p-2 leading-6 text-sm text-black hover:text-primary uppercase tracking-wide font-bold border-0 border-b-4 ${tabNumber === 1 ? 'border-primary' : 'border-transparent hover:border-black'}`}>
+                      <div
+                        onClick={() => setTabNumber(1)}
+                        role="button"
+                        tabIndex="0"
+                        className={`flex items-center justify-center p-2 leading-6 text-sm text-black hover:text-primary uppercase tracking-wide font-bold border-0 border-b-4 ${tabNumber === 1 ? 'border-primary' : 'border-transparent hover:border-black'}`}
+                      >
                         <DocumentTextIcon
                           className="h-5 w-5 mr-2"
                           aria-hidden="true"

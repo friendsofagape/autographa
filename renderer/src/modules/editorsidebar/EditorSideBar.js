@@ -23,7 +23,7 @@ import Search from './Search';
 import CrossReferences from './CrossReferences';
 import FootNotes from './FootNotes';
 import Comments from './Comments';
-import Bookmarks from './Bookmarks';
+import Bookmarks from '../../components/EditorPage/BookMarks/Bookmarks';
 
 const initialTab = { tabIndex: 0 };
 
@@ -103,17 +103,23 @@ export default function EditorSideBar(props) {
                   <div className="grid grid-cols-3 col-span-3 gap-0">
                     <div
                       onClick={() => dispatch({ type: 'search' })}
+                      role="button"
+                      tabIndex="0"
                       className={`text-white h-full w-full hover:bg-primary cursor-pointer ${state.tabIndex === 0 && 'bg-primary'}`}
                     >
                       <SearchIcon className="w-1/3 m-auto h-full" aria-hidden="true" />
                     </div>
                     <div
+                      role="button"
+                      tabIndex="0"
                       onClick={() => dispatch({ type: 'crossreference' })}
                       className={`text-white h-full w-full hover:bg-primary cursor-pointer ${state.tabIndex === 1 && 'bg-primary'}`}
                     >
                       <CrossReferenceIcon fill="currentColor" className="w-1/5 m-auto h-full" aria-hidden="true" />
                     </div>
                     <div
+                      role="button"
+                      tabIndex="0"
                       onClick={() => dispatch({ type: 'footnotes' })}
                       className={`text-white h-full w-full hover:bg-primary cursor-pointer ${state.tabIndex === 2 && 'bg-primary'}`}
                     >
@@ -122,12 +128,16 @@ export default function EditorSideBar(props) {
                   </div>
                   <div className="grid grid-cols-3 col-span-3 gap-0">
                     <div
+                      role="button"
+                      tabIndex="0"
                       onClick={() => dispatch({ type: 'comments' })}
                       className={`text-white h-full w-full hover:bg-primary cursor-pointer ${state.tabIndex === 3 && 'bg-primary'}`}
                     >
                       <AnnotationIcon className="w-1/3 m-auto h-full" aria-hidden="true" />
                     </div>
                     <div
+                      role="button"
+                      tabIndex="0"
                       onClick={() => dispatch({ type: 'bookmarks' })}
                       className={`text-white h-full w-full hover:bg-primary cursor-pointer ${state.tabIndex === 4 && 'bg-primary'}`}
                     >

@@ -1,14 +1,11 @@
 import ProjectContextProvider from '@/components/context/ProjectContext';
 import ReferenceContextProvider from '@/components/context/ReferenceContext';
 import EditorLayout from '@/layouts/editor/Layout';
-import BibleNavigation from '@/modules/biblenavigation/BibleNavigation';
+import AuthenticationContextProvider from '@/components/Login/AuthenticationContextProvider';
 import dynamic from 'next/dynamic';
-import Meta from '../renderer/src/Meta';
+import CustomNavigationContextProvider from '@/components/context/CustomNavigationContext';
+import ReferencePlaceholder from '@/components/EditorPage/NewRefernce/ReferencePlaceholder';
 
-const TranslationHelps = dynamic(
-  () => import('../renderer/src/components/EditorPage/Reference/TranslationHelps'),
-  { ssr: false },
-);
 const UsfmEditor = dynamic(
   () => import('@/components/EditorPage/UsfmEditor/UsfmEditor'),
   { ssr: false },
@@ -16,16 +13,22 @@ const UsfmEditor = dynamic(
 
 const home = () => (
   <div>
-    <Meta />
-    <ProjectContextProvider>
-      <ReferenceContextProvider>
-        <EditorLayout>
-          <BibleNavigation />
-          <TranslationHelps />
-          <UsfmEditor />
-        </EditorLayout>
-      </ReferenceContextProvider>
-    </ProjectContextProvider>
+    <AuthenticationContextProvider>
+      <ProjectContextProvider>
+        <ReferenceContextProvider>
+          <CustomNavigationContextProvider>
+            <EditorLayout>
+              <div className="grid grid-cols-3 h-editor">
+                <ReferencePlaceholder />
+                <div className="m-3 ml-0 border-b-2 border-secondary rounded-md shadow overflow-hidden">
+                  <UsfmEditor />
+                </div>
+              </div>
+            </EditorLayout>
+          </CustomNavigationContextProvider>
+        </ReferenceContextProvider>
+      </ProjectContextProvider>
+    </AuthenticationContextProvider>
 
     {/* <DynamicComponentWithNoSSR /> */}
   </div>

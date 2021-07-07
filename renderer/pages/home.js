@@ -1,34 +1,34 @@
+import AuthenticationContextProvider from '@/components/Login/AuthenticationContextProvider';
 import ProjectContextProvider from '@/components/context/ProjectContext';
 import ReferenceContextProvider from '@/components/context/ReferenceContext';
+import CustomNavigationContextProvider from '@/components/context/CustomNavigationContext';
 import EditorLayout from '@/layouts/editor/Layout';
-import BibleNavigation from '@/modules/biblenavigation/BibleNavigation';
+// import Editor from '@/modules/editor/Editor';
 import dynamic from 'next/dynamic';
-import Meta from '../src/Meta';
+import ReferencePlaceholder from '@/components/EditorPage/NewRefernce/ReferencePlaceholder';
 
-const TranslationHelps = dynamic(
-  () => import('../src/components/EditorPage/Reference/TranslationHelps'),
-  { ssr: false },
-);
 const UsfmEditor = dynamic(
   () => import('@/components/EditorPage/UsfmEditor/UsfmEditor'),
   { ssr: false },
 );
 
-const home = () => (
-  <div>
-    <Meta />
-    <ProjectContextProvider>
-      <ReferenceContextProvider>
-        <EditorLayout>
-          <BibleNavigation />
-          <TranslationHelps />
-          <UsfmEditor />
-        </EditorLayout>
-      </ReferenceContextProvider>
-    </ProjectContextProvider>
-
-    {/* <DynamicComponentWithNoSSR /> */}
-  </div>
-);
-
-export default home;
+export default function ReferenceSelector() {
+  return (
+    <AuthenticationContextProvider>
+      <ProjectContextProvider>
+        <ReferenceContextProvider>
+          <CustomNavigationContextProvider>
+            <EditorLayout>
+              <div className="grid grid-cols-3 h-editor">
+                <ReferencePlaceholder />
+                <div className="m-3 ml-0 border-b-2 border-secondary rounded-md shadow overflow-hidden">
+                  <UsfmEditor />
+                </div>
+              </div>
+            </EditorLayout>
+          </CustomNavigationContextProvider>
+        </ReferenceContextProvider>
+      </ProjectContextProvider>
+    </AuthenticationContextProvider>
+  );
+}
