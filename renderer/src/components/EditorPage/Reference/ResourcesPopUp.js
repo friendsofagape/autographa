@@ -22,6 +22,12 @@ const translationNotes = [
     createData('Bengali', 'bn', '2021-02-25'),
     createData('Malayalam', 'ml', '2020-12-31'),
     createData('Gujrati Notes', 'gu', '2020-12-29'),
+    createData('Gujrati Notes', 'gu', '2020-12-29'),
+    createData('Gujrati Notes', 'gu', '2020-12-29'),
+    createData('Gujrati Notes', 'gu', '2020-12-29'),
+    createData('Gujrati Notes', 'gu', '2020-12-29'),
+ 
+
 ];
 const translationWords = [
   createData('Translation Words', 'en', '2021-02-05'),
@@ -111,7 +117,7 @@ const ResourcesPopUp = ({
             onClose={removeSection}
           >
             <Dialog.Overlay className="fixed inset-0 bg-black opacity-30" />
-            <div className="flex items-center justify-center h-screen ">
+            <div className="flex items-center justify-center h-screen">
               <div className="w-5/12 m-auto z-50 shadow overflow-hidden sm:rounded-lg" />
               <div className="absolute">
                 <div className="flex relative rounded shadow overflow-hidden bg-white">
@@ -121,11 +127,18 @@ const ResourcesPopUp = ({
                       alt="/"
                     />
                   </button>
+                  <div
+                      className="flex gap-6 mb-5 ml-52 mr-10 absolute bottom-0 justify-end left-64 z-10"
+                    >
+                      <button type="button" className="py-2 px-6 bg-primary rounded shadow text-white uppercase text-xs tracking-widest font-semibold">Upload</button>
+                      <button type="button" className="py-2 px-6 rounded shadow bg-error text-white uppercase text-xs tracking-widest font-semibold">Cancel</button>
+                      <button type="button" className="py-2 px-7 rounded shadow bg-success text-white uppercase text-xs tracking-widest font-semibold">Open</button>
+                    </div>
                   <div>
                     <div className="uppercase bg-secondary  text-white py-2 px-2 text-xs tracking-widest leading-snug rounded-tl text-center">Resources</div>
                     <div className="bg-gray-100 px-3 py-3 h-full">
                       <input
-                        className="rounded h-8 bg-gray-200 border-none uppercase pr-6 text-xs tracking-widest leading-snug font-bold text-secondary"
+                        className="rounded h-8 bg-gray-200 border-none uppercase pr-6 text-xs tracking-widest leading-snug font-bold"
                         placeholder="Search"
                         type="search"
                         id="gsearch"
@@ -141,9 +154,8 @@ const ResourcesPopUp = ({
                       </div>
                     </div>
                   </div>
-                  <div className="w-full relative overflow-hidden">
-                    <table className="divide-y divide-gray-200 w-full">
-                      <thead className="bg-white">
+                  <div style={{width: 600, height: 550}} className=" relative divide-y divide-gray-200 ">
+                  <thead className="bg-white">
                         <tr className="">
                           <th
                             className=" py-3 text-left text-xs font-medium text-gray-300 pl-10"
@@ -151,20 +163,21 @@ const ResourcesPopUp = ({
                             <StarIcon className="h-5 w-5" aria-hidden="true" />
                           </th>
                           <th
-                            className="px-6 py-3 text-left text-xs font-bold text-gray-700 uppercase tracking-wider"
+                            className="px-9  font-bold text-gray-700 uppercase tracking-wider"
                           >
                             Name
                           </th>
                           <th
-                            className="px-6 py-3 text-left text-xs font-bold text-gray-700 uppercase tracking-wider"
+                            className="px-40 py-3 font-bold text-gray-700 uppercase tracking-wider"
                           >
                             Language
                           </th>
                         </tr>
                       </thead>
-
+                      <div className="overflow-scroll h-96 overflow-x-hidden">
+                    <table className="divide-y divide-gray-200  w-full">
                       {selectResource === 'tn' && (
-                      <tbody className="bg-white divide-y divide-gray-200">
+                        <tbody className="bg-white divide-y divide-gray-200 ">
                         {translationNotes.map((notes) => (
                           <tr className="hover:bg-gray-200" key={notes.name}>
                             <td className="pl-10">
@@ -172,7 +185,7 @@ const ResourcesPopUp = ({
                               <StarIcon className="h-5 w-5 text-gray-300" aria-hidden="true" />
                             </td>
                             <td
-                              className="px-5 py-6 text-left text-gray-600"
+                              className="py-6  text-gray-600"
                             >
                               <div
                                 className="focus:outline-none"
@@ -183,7 +196,7 @@ const ResourcesPopUp = ({
                                 {notes.name}
                               </div>
                             </td>
-                            <td className="text-gray-600  text-left">
+                            <td className="text-gray-600  pr-36">
                               <div
                                 className="focus:outline-none"
                                 onClick={(e) => handleRowSelect(e, notes.language)}
@@ -195,11 +208,11 @@ const ResourcesPopUp = ({
                             </td>
                           </tr>
                         ))}
+                       
                       </tbody>
                       )}
-
                       {selectResource === 'twlm' && (
-                      <tbody className="bg-white divide-y divide-gray-200">
+                      <tbody className="bg-white divide-y divide-gray-200  mb-44 ">
                         {translationWords.map((notes) => (
                           <tr className="hover:bg-gray-200" key={notes.name}>
                             <td className="pl-10">
@@ -207,7 +220,7 @@ const ResourcesPopUp = ({
                               <StarIcon className="h-5 w-5 text-gray-300" aria-hidden="true" />
                             </td>
                             <td
-                              className="px-5 py-6 text-left text-gray-600"
+                              className="py-6 text-gray-600"
                             >
                               <div
                                 className="focus:outline-none"
@@ -218,7 +231,7 @@ const ResourcesPopUp = ({
                                 {notes.name}
                               </div>
                             </td>
-                            <td className="text-gray-600  text-left">
+                            <td className="text-gray-600  pr-36">
                               <div
                                 className="focus:outline-none"
                                 onClick={(e) => handleRowSelect(e, notes.language)}
@@ -232,9 +245,8 @@ const ResourcesPopUp = ({
                       ))}
                       </tbody>
                       )}
-
                       {selectResource === 'tq' && (
-                      <tbody className="bg-white divide-y divide-gray-200">
+                      <tbody className="bg-white divide-y divide-gray-200  mb-44 ">
                         {translationQuestions.map((notes) => (
                           <tr className="hover:bg-gray-200" key={notes.name}>
                             <td className="pl-10">
@@ -242,7 +254,7 @@ const ResourcesPopUp = ({
                               <StarIcon className="h-5 w-5 text-gray-300" aria-hidden="true" />
                             </td>
                             <td
-                              className="px-5 py-6 text-left text-gray-600"
+                              className="py-6 text-gray-600"
                             >
                               <div
                                 className="focus:outline-none"
@@ -253,7 +265,7 @@ const ResourcesPopUp = ({
                                 {notes.name}
                               </div>
                             </td>
-                            <td className="text-gray-600  text-left">
+                            <td className="text-gray-600 pr-36">
                               <div
                                 className="focus:outline-none"
                                 onClick={(e) => handleRowSelect(e, notes.language)}
@@ -269,7 +281,7 @@ const ResourcesPopUp = ({
                       )}
 
                       {selectResource === 'bible' && (
-                      <tbody className="bg-white divide-y divide-gray-200">
+                      <tbody className="bg-white divide-y divide-gray-200  mb-44 ">
                         {(subMenuItems) && (
                     subMenuItems.map((ref) => (
                       <tr className="hover:bg-gray-200" key={ref.identification.name.en}>
@@ -278,7 +290,7 @@ const ResourcesPopUp = ({
                           <StarIcon className="h-5 w-5 text-gray-300" aria-hidden="true" />
                         </td>
                         <td
-                          className="px-5 py-6 text-left text-gray-600"
+                          className="py-6 text-gray-600"
                         >
                           <div
                             className="focus:outline-none"
@@ -290,7 +302,7 @@ const ResourcesPopUp = ({
                             {ref.identification.name.en}
                           </div>
                         </td>
-                        <td className="text-gray-600  text-left">
+                        <td className="text-gray-600  pr-36">
                           <div
                             className="focus:outline-none"
                             onClick={(e) => handleRowSelect(e,
@@ -307,17 +319,8 @@ const ResourcesPopUp = ({
                       </tbody>
                   )}
                     </table>
-                    <div
-                      style={{
-                      bottom: (selectResource === 'tq' || selectResource === 'twlm') ? '-185px' : '',
-                      position: (selectResource === 'tq' || selectResource === 'twlm') ? 'relative' : '',
-                      }}
-                      className="flex gap-6 mt-32 mb-5 ml-52 mr-10  justify-end"
-                    >
-                      <button type="button" className="py-2 px-6 bg-primary rounded shadow text-white uppercase text-xs tracking-widest font-semibold">Upload</button>
-                      <button type="button" className="py-2 px-6 rounded shadow bg-error text-white uppercase text-xs tracking-widest font-semibold">Cancel</button>
-                      <button type="button" className="py-2 px-7 rounded shadow bg-success text-white uppercase text-xs tracking-widest font-semibold">Open</button>
                     </div>
+                 
                   </div>
                 </div>
               </div>
