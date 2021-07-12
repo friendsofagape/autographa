@@ -57,17 +57,17 @@ export default function TopMenuBar() {
   function openSideBars() {
     setOpenSideBar(true);
   }
-//   const {
-//     state: {
-//       fontSize,
-//     },
-//     actions: {
-//       setFontsize,
-//     },
-//   } = useContext(ReferenceContext);
-//   function closeSideBars() {
-//     setOpenSideBar(false);
-//   }
+  const {
+    state: {
+      fontSize,
+    },
+    actions: {
+      setFontsize,
+    },
+  } = useContext(ReferenceContext);
+  function closeSideBars() {
+    setOpenSideBar(false);
+  }
 
   function closeSideBar(open) {
     setOpenSideBar(open);

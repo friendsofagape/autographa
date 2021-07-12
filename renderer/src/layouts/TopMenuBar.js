@@ -1,14 +1,13 @@
 import Link from 'next/link';
 import React, { Fragment, useState } from 'react';
 import {
-  Disclosure, Menu, Dialog, Transition,
+  Disclosure, Menu, Transition,
 } from '@headlessui/react';
 import {
   BellIcon,
   MenuIcon,
   XIcon,
 } from '@heroicons/react/outline';
-
 import { AuthenticationContext } from '../components/Login/AuthenticationContextProvider';
 import Notifications from '../modules/notifications/Notifications';
 
@@ -112,7 +111,7 @@ export default function TopMenuBar() {
                                 {({ active }) => (
                                   <a
                                     href="#profile"
-                                    onClick={() => logout()}
+                                    // onClick={() => logout()}
                                     className={classNames(
                                           active ? 'bg-gray-100' : '',
                                           'block px-4 py-2 text-sm text-gray-700',

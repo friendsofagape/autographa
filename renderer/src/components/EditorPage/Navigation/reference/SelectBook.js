@@ -55,7 +55,7 @@ export default function SelectBook({
 
   return (
     <>
-      <div className="flex flex-row text-center bg-gray-800 text-white text-sm font-semibold tracking-wide uppercase">
+      <div className="flex flex-row text-center bg-gray-800 text-white text-sm font-bold tracking-wide uppercase">
         <div className="w-40 m-auto grid grid-cols-3 gap-0 bg-primary">
           <div onClick={toggle} className="p-2 bg-black hover:bg-primary backdrop-opacity-20 cursor-pointer">All</div>
           <div onClick={toggleNT} className="p-2 border-r-2 border-black hover:bg-black border-opacity-5 cursor-pointer">NT</div>

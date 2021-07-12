@@ -48,11 +48,12 @@ const saveProjectsMeta = (
     });
     if (fs.existsSync(projectsMetaPath)) {
         let projectNameExists = false;
-        fs.readFile(projectsMetaPath, 'utf8', (err, data) => {
-            if (err) {
-                throw err;
-            } else {
-            const obj = JSON.parse(data);
+            // eslint-disable-next-line
+            const fileContent = fs.readFileSync(
+              path.join(projectsMetaPath),
+              'utf8',
+            );
+            const obj = JSON.parse(fileContent);
             obj.projects.forEach((element) => {
                 if (element.projectName === newProjectFields.projectName) {
                     projectNameExists = true;
@@ -77,8 +78,6 @@ const saveProjectsMeta = (
                     );
                     status.push({ type: 'success', value: 'projectmeta updated' });
             }
-        }
- });
     } else {
         // Creating new file if nothing present
         fs.writeFileSync(path.join(

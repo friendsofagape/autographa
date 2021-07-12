@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable no-underscore-dangle */
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import React, {
@@ -11,14 +12,19 @@ import * as localforage from 'localforage';
 import { readIngredients } from '@/core/reference/readIngredients';
 import { isElectron } from '../../../../core/handleElectron';
 
-const RefBible = () => {
+const RefBible = ({
+ languageId,
+  refName,
+ }) => {
   const {
       state: {
         chapter,
         verse,
         bookId,
-        languageId,
-        refName,
+    },
+    actions: {
+      setRefernceLoading,
+      setCounter,
     },
   } = useContext(ReferenceContext);
   // const regExp = /\(([^)]+)\)/;
@@ -27,7 +33,8 @@ const RefBible = () => {
       () => (withChapterPaging(createBasicUsfmEditor())),
       // eslint-disable-next-line react-hooks/exhaustive-deps
       [usfmInput],
-      );
+    );
+
     useEffect(() => {
       if (isElectron()) {
         localforage.getItem('refBibleBurrito')
@@ -44,6 +51,11 @@ const RefBible = () => {
                         filePath: key,
                       }).then((res) => {
                         setUsfmInput(res);
+                        setRefernceLoading({
+                          status: true,
+                          text: 'Reference-burrito loaded succesfully',
+                        });
+                        setCounter(4);
                       });
                     }
                     // console.log(key, value),
@@ -76,7 +88,7 @@ const RefBible = () => {
     //       });
 
   return (
-    <>
+    <span>
       {usfmInput && (
         <CustomEditor
           usfmString={usfmInput}
@@ -88,8 +100,9 @@ const RefBible = () => {
               key: Date.now(),
           }}
         />
+
       )}
-    </>
+    </span>
   );
 };
 
