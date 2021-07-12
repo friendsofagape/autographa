@@ -70,9 +70,9 @@ export default function NewProject() {
       title="new project"
       header={BibleHeaderTagDropDown()}
     >
-      <div className=" rounded border shadow mt-4 ml-5 mr-5 mb-5 ">
+      <div className=" rounded-md border shadow mt-4 ml-5 mr-5 mb-5 min-h-screen ">
         <div className="grid grid-cols-2">
-          <div className="overflow-auto">
+          <div className="">
             <div className="grid grid-row-5 gap-10 m-8">
               <div>
                 <h4 className="text-xs font-base mb-2 text-primary  tracking-wide leading-4  font-light">Project Name</h4>
@@ -82,33 +82,36 @@ export default function NewProject() {
                   id=""
                   value={newProjectFields.projectName}
                   onChange={handleProjectFields('projectName')}
-                  className="bg-gray-200 w-80 block rounded shadow-sm sm:text-sm focus:border-primary border-gray-300"
+                  className=" w-80 block rounded shadow-sm sm:text-sm focus:border-primary border-gray-300"
                 />
               </div>
-              <div>
-                <h4 className="text-xs font-base mb-2 text-primary leading-4 tracking-wide  font-light">Version</h4>
-                <div className="flex gap-8">
-                  <input
-                    type="text"
-                    name="version"
-                    id=""
-                    value={version.name}
-                    onChange={(e) => {
+              <div className="flex gap-8">
+                <div>
+                <h4 className="text-xs font-base mb-2 text-primary  tracking-wide leading-4  font-light">Version</h4>
+                <input
+                  type="text"
+                  name="version"
+                  id=""
+                  value={version.name}
+                  onChange={(e) => {
                     handleVersion(e);
                   }}
-                    className="bg-white w-80 block rounded shadow-sm sm:text-sm focus:border-primary border-gray-300"
+                  className="bg-white w-80 block rounded shadow-sm sm:text-sm focus:border-primary border-gray-300"
                   />
-                  <input
-                    type="text"
-                    name="version_abbreviated"
-                    id=""
-                    value={version.abbreviation}
-                    onChange={(e) => {
+                  </div>
+               <div>
+                <h4 className="text-xs font-base mb-2 text-primary  tracking-wide leading-4  font-light">Abbreviation</h4>
+                <input
+                  type="text"
+                  name="version_abbreviated"
+                  id=""
+                  value={version.abbreviation}
+                  onChange={(e) => {
                     setVersion({ ...version, abbreviation: e.target.value });
                   }}
-                    className="bg-white w-20 block rounded  sm:text-sm focus:border-primary border-gray-300"
+                  className="bg-white w-24 block rounded  sm:text-sm focus:border-primary border-gray-300"
                   />
-                </div>
+                  </div>
               </div>
               <div>
                 <h4 className="text-xs font-base mb-2 text-primary leading-4 tracking-wide  font-light">Description</h4>
@@ -122,33 +125,30 @@ export default function NewProject() {
                 />
               </div>
               <div className=" relative flex gap-5">
-                <div className=" absolute left-80 ml-4 mb-20">
+                <div className=" absolute ml-4 mb-20 left-64">
                   <TargetLanguageTag>
                     {language.scriptDirection ? language.scriptDirection : 'LTR'}
                   </TargetLanguageTag>
                 </div>
-                <CustomAutocomplete
-                  label="Target Langauge"
-                  list={languages}
-                  setValue={setValue}
-                />
-                <div className="">
+                <CustomAutocomplete label="Target Langauge" list={languages} setValue={setValue} />
+                <div className="mt-8">
                   <TargetLanguagePopover />
                 </div>
               </div>
-              <button
+              
+            </div>
+          </div>
+          <div className="overflow-auto relative">
+            <div className="m-10">
+              <AdvancedSettingsDropdown />
+            </div>
+            <button
                 type="button"
-                className="w-40 h-10  bg-success leading-loose rounded shadow text-xs font-base  text-white tracking-wide  font-light uppercase"
+                className="w-40 h-10  mb-5 bg-success leading-loose rounded shadow text-xs font-base  text-white tracking-wide  font-light uppercase absolute bottom-0 left-64"
                 onClick={() => createProject()}
               >
                 Create Project
               </button>
-            </div>
-          </div>
-          <div className="overflow-auto ">
-            <div className="m-10">
-              <AdvancedSettingsDropdown />
-            </div>
           </div>
         </div>
       </div>

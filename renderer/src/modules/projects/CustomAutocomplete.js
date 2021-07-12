@@ -8,33 +8,37 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
 const Label = styled('label')`
-  padding: 8px;
+  padding: 8px 8px 6px 0;
   display: block;
   font-size: 12px;
   line-height: 16px;
   letter-spacing: 0.025em;
   color: #0068E2;
   font-weight: 300;
+  
 `;
 
 const InputWrapper = styled('div')`
-  width: 385px;
-  min-height: 40px;
-  border: 2px solid #d9d9d9;
+  width: 326px;
+  min-height: 38px;
+  border: 1px solid #d9d9d9;
   background-color: #fff;
   border-radius: 4px;
   padding: 1px;
   display: flex;
   flex-wrap: wrap;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+ 
   
 
   &:hover {
-    border-color: #0068E2
+   
   }
 
   &.focused {
-    border-color: #0068E2
-    box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+    border-color: #0068E2;
+    border-width: 2px;
+    
   }
 
   & input {

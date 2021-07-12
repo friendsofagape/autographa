@@ -13,7 +13,7 @@ export default function Sync() {
       title="Sync"
       isTwoCol
       colOne={(
-        <form action="#" className="flex flex-row mx-5">
+        <form action="#" className="flex flex-row mx-5" >
           <div className="flex items-center h-5">
             <input
               id="comments"
@@ -111,7 +111,7 @@ export default function Sync() {
       <main>
         <div className="py-6 sm:px-6 lg:px-6">
           <div className="grid grid-cols-2 gap-2 sm:px-0">
-            <div className="shadow rounded">
+            <div className="shadow rounded min-h-screen">
               <ProjectFileBrowser />
             </div>
             <div className="shadow rounded">
