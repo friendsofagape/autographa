@@ -2,7 +2,7 @@ import ProjectsLayout from '@/layouts/ProjectsLayout';
 import { PropTypes } from 'prop-types';
 import React from 'react';
 import * as localForage from 'localforage';
-import { saveProfile } from '@/components/ProjectsPage/Profile/handleProfile';
+import { saveProfile } from '../../core/projects/handleProfile';
 import CustomAutocomplete from './CustomAutocomplete';
 import { isElectron } from '../../core/handleElectron';
 

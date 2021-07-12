@@ -2,7 +2,7 @@ import { ReferenceContext } from '@/components/context/ReferenceContext';
 import EditorSectionSmall from '@/modules/projects/SmallEditorSection';
 import dynamic from 'next/dynamic';
 import { useContext, useState } from 'react';
-import RefBible from '../Reference/RefBible/RefBible';
+import ReferenceBible from './ReferenceBible/ReferenceBible';
 
 const TranslationHelps = dynamic(
     () => import('@/components/EditorPage/Reference/TranslationHelps'),
@@ -21,10 +21,6 @@ const ReferencePlaceholder = () => {
       refName: '',
       header: '',
     });
-    // const [languageId, setLanguageId] = useState('en');
-    // const [selectedResource, setSelectedResource] = useState('tn');
-    // const [header, setHeader] = useState('');
-    // const [refName, setRefName] = useState('');
     const {
         state: {
             layout,
@@ -32,7 +28,6 @@ const ReferencePlaceholder = () => {
       } = useContext(ReferenceContext);
 return (
   <>
-
     {layout === 1 && (
     <>
       <div className="m-3 ml-0 border-b-2 rounded-md shadow overflow-y-auto">
@@ -43,7 +38,7 @@ return (
           languageId={referenceColumnOneData.languageId}
         >
           {referenceColumnOneData.selectedResource === 'bible' ? (
-            <RefBible
+            <ReferenceBible
               languageId={referenceColumnOneData.languageId}
               refName={referenceColumnOneData.refName}
             />
@@ -71,7 +66,7 @@ return (
           languageId={referenceColumnOneData.languageId}
         >
           {referenceColumnOneData.selectedResource === 'bible' ? (
-            <RefBible
+            <ReferenceBible
               languageId={referenceColumnOneData.languageId}
               refName={referenceColumnOneData.refName}
             />
@@ -94,7 +89,7 @@ return (
           setReferenceResources={setReferenceCoulumnTwoData}
         >
           {referenceColumnTwoData.selectedResource === 'bible' ? (
-            <RefBible
+            <ReferenceBible
               languageId={referenceColumnTwoData.languageId}
               refName={referenceColumnTwoData.refName}
             />
@@ -109,7 +104,6 @@ return (
 
     </>
     )}
-
     {(layout >= 3 || layout === 0) && (
     <>
       <div className="m-3 ml-0 border-b-2 rounded-md shadow overflow-y-auto" />

@@ -36,13 +36,15 @@ const ProjectContextProvider = ({ children }) => {
       projectName: '',
       description: '',
     });
-
+    const [username, setUsername] = React.useState('Michael');
     const [selectedProject, setSelectedProject] = React.useState('newprodir');
 
     const handleProjectFields = (prop) => (event) => {
       setNewProjectFields({ ...newProjectFields, [prop]: event.target.value });
     };
+
     const uniqueSetting = (list, title) => list.some((obj) => obj.title === title);
+
     const loadSettings = () => {
       const newpath = localStorage.getItem('userPath');
       const fs = window.require('fs');
@@ -166,6 +168,7 @@ const ProjectContextProvider = ({ children }) => {
             languages,
             language,
             scrollLock,
+            username,
         },
         actions: {
             setDrawer,
@@ -181,6 +184,7 @@ const ProjectContextProvider = ({ children }) => {
             createProject,
             setLanguage,
             setScrollLock,
+            setUsername,
         },
     };
 
