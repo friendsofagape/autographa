@@ -12,7 +12,7 @@ import * as localforage from 'localforage';
 import { readIngredients } from '@/core/reference/readIngredients';
 import { isElectron } from '../../../../core/handleElectron';
 
-const RefBible = ({
+const ReferenceBible = ({
  languageId,
   refName,
  }) => {
@@ -106,4 +106,4 @@ const RefBible = ({
   );
 };
 
-export default RefBible;
+export default ReferenceBible;

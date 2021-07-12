@@ -26,16 +26,8 @@ import { ProjectContext } from '@/components/context/ProjectContext';
 // import styles from './Editor.module.css';
 
 export default function Editor({
-bookList,
-bookName,
-chapter,
-verse,
-chapterList,
-verseList,
-onChangeBook,
-onChangeChapter,
-onChangeVerse,
-children,
+  setNavigation,
+  children,
 }) {
   const {
     states: {
@@ -50,6 +42,10 @@ children,
       selectedFont,
       fontSize,
       bookmarksVerses,
+      bookId,
+      bookName,
+      chapter,
+      verse,
     },
     actions: {
       setBookmarksVerses,
@@ -120,17 +116,16 @@ children,
   return (
     <>
       <div className="flex items-center justify-between bg-secondary">
-        <CustomNavigation
-          bookList={bookList}
-          bookName={bookName}
-          chapter={chapter}
-          verse={verse}
-          chapterList={chapterList}
-          verseList={verseList}
-          onChangeBook={onChangeBook}
-          onChangeChapter={onChangeChapter}
-          onChangeVerse={onChangeVerse}
-        />
+        {scrollLock === false ? (
+          <BibleNavigation />
+          ) : (
+            <CustomNavigation
+              setNavigation={setNavigation}
+              initialBook={bookId}
+              initialChapter={chapter}
+              initialVerse={verse}
+            />
+        )}
         <div className="text-center h-6 rounded-t text-gray-100  text-xs uppercase tracking-widest font-bold leading-3">
           <div className="text-center pt-1">
             Editor

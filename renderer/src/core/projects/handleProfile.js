@@ -1,6 +1,6 @@
 import * as localForage from 'localforage';
-import { loadUsers } from '../../../core/Login/handleJson';
-import * as logger from '../../../logger';
+import { loadUsers } from '../Login/handleJson';
+import * as logger from '../../logger';
 
 const updateJson = (userdata) => {
   logger.error('handleProfile.js', 'In UpdateJson, for updating the current user details');

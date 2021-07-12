@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { ProjectContext } from '@/components/context/ProjectContext';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
@@ -13,7 +14,6 @@ import {
  withToolbar,
 } from 'usfm-editor';
 import Editor from '@/modules/editor/Editor';
-import { CustomNavigationContext } from '@/components/context/CustomNavigationContext';
 import { readFile } from '../../../core/editor/readFile';
 import writeToParse from '../../../core/editor/writeToParse';
 import { isElectron } from '../../../core/handleElectron';
@@ -29,7 +29,6 @@ const UsfmEditor = () => {
   const [activeTyping, setActiveTyping] = useState(false);
   const [identification, setIdentification] = useState({});
   const [goToVersePropValue, setGoToVersePropValue] = useState({});
-  const username = 'Michael';
   const projectName = 'Spanish Pro';
 
   const supportedBooks = null; // if empty array or null then all books available
@@ -37,25 +36,32 @@ const UsfmEditor = () => {
     states: {
       selectedProject,
       scrollLock,
+      username,
     },
    } = useContext(ProjectContext);
 
   const {
     state: {
-      bookList,
       bookId,
-      bookName,
       chapter,
       verse,
-      chapterList,
-      verseList,
     }, actions: {
       onChangeBook,
       onChangeChapter,
       onChangeVerse,
       applyBooksFilter,
     },
-  } = useContext(scrollLock === false ? ReferenceContext : CustomNavigationContext);
+  } = useContext(ReferenceContext);
+
+  const [naviagation, setNavigation] = useState({
+    bookId,
+    chapter,
+    verse,
+  });
+
+  const _bookId = scrollLock === false ? bookId : naviagation.bookId;
+  const _chapter = scrollLock === false ? chapter : naviagation.chapter;
+  const _verse = scrollLock === false ? verse : naviagation.verse;
 
   useEffect(() => {
     applyBooksFilter(supportedBooks);
@@ -70,7 +76,7 @@ const UsfmEditor = () => {
       try {
         const usfm = await localforage.getItem('editorData');
         writeToParse({
-          username, projectName, usfmData: usfm, scope: bookId.toUpperCase(), write: true,
+          username, projectName, usfmData: usfm, scope: _bookId.toUpperCase(), write: true,
         });
       } catch (err) {
         // eslint-disable-next-line no-console
@@ -82,7 +88,7 @@ const UsfmEditor = () => {
     if (isElectron()) {
       writeToFile({
         projectname: selectedProject,
-        filename: bookId,
+        filename: _bookId,
         data: usfm,
       });
     } else {
@@ -118,14 +124,14 @@ const UsfmEditor = () => {
       };
   }, []);
 
-  const handleInputChange = (usfm) => {
+  const handleInputChange = useCallback((usfm) => {
     setUsfmInput(usfm);
     setIdentification({});
-  };
+  }, [usfmInput]);
 
   const handleVersChange = useCallback(
     (val) => {
-    if (val) {
+    if (val && scrollLock === false) {
        onChangeChapter(val.chapter.toString());
        onChangeVerse(val.verseStart.toString());
     }
@@ -136,20 +142,27 @@ const UsfmEditor = () => {
     (id) => {
     const identification = typeof id === 'string' ? JSON.parse(id) : id;
     setIdentification(identification);
-    onChangeBook((identification.id).toLowerCase());
+    // onChangeBook((identification.id).toLowerCase());
     },
-    [bookId],
+    [_bookId],
   );
+
+  useEffect(() => {
+    if (scrollLock === false) {
+      onChangeBook(bookId.toLowerCase());
+      onChangeChapter(chapter.toLowerCase());
+    }
+  }, []);
 
   useEffect(() => {
     if (!isElectron()) {
       findBookFromParse({
-        username, projectName, scope: bookId.toUpperCase(),
+        username, projectName, scope: _bookId.toUpperCase(),
       }).then((scopefiles) => {
         scopefiles.forEach((file) => {
-          if (file === bookId.toUpperCase()) {
+          if (file === _bookId.toUpperCase()) {
             fetchFromParse({
-            username, projectName, scope: bookId.toUpperCase(),
+            username, projectName, scope: _bookId.toUpperCase(),
             }).then(async (data) => {
               if (data) {
                 localforage.setItem('editorData', data).then(
@@ -170,19 +183,19 @@ const UsfmEditor = () => {
     } else {
        readFile({
         projectname: selectedProject,
-        filename: bookId,
+        filename: _bookId,
       }).then((data) => {
         if (data) {
           handleInputChange(data);
         }
       });
     }
-  }, [bookId, chapter]);
+  }, [_bookId, _chapter]);
 
   useEffect(() => {
     if (!isElectron()) {
     fetchFromParse({
-      username, projectName, scope: bookId.toUpperCase(),
+      username, projectName, scope: _bookId.toUpperCase(),
     }).then((data) => {
       if (data) {
         localforage.setItem('editorData', data).then(
@@ -198,7 +211,7 @@ const UsfmEditor = () => {
     } else {
       readFile({
         projectname: selectedProject,
-        filename: bookId,
+        filename: _bookId,
       }).then((data) => {
         if (data) {
             handleInputChange(data);
@@ -209,27 +222,18 @@ const UsfmEditor = () => {
 
   useEffect(() => {
     setGoToVersePropValue({
-          chapter: parseInt(chapter, 10),
-          verse: parseInt(verse, 10),
+          chapter: parseInt(_chapter, 10),
+          verse: parseInt(_verse, 10),
           key: Date.now(),
       });
-  }, [chapter]);
+  }, [_chapter]);
 
 return (
   <>
     <span>
       <Editor
-        bookList={bookList}
-        bookName={bookName}
-        chapter={chapter}
-        verse={verse}
-        chapterList={chapterList}
-        verseList={verseList}
-        onChangeBook={onChangeBook}
-        onChangeChapter={onChangeChapter}
-        onChangeVerse={onChangeVerse}
+        setNavigation={setNavigation}
       >
-        {/* <EditorSection header="USFM EDITOR" editor> */}
         {usfmInput && (
         <CustomEditor
           usfmString={usfmInput}
@@ -243,7 +247,6 @@ return (
         />
         )}
       </Editor>
-      {/* </EditorSection> */}
     </span>
   </>
 );

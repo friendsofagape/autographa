@@ -20,6 +20,7 @@ function useProjectsSort() {
   const [selectedProject, setSelectedProject] = React.useState('');
   const starrtedData = [];
   const unstarrtedData = [];
+  const username = 'Michael';
 
   const handleClickStarred = (event, name, property) => {
     logger.debug('project.js', 'converting starred to be unstarred and viceversa');
@@ -53,7 +54,7 @@ function useProjectsSort() {
       });
     } else {
       parseProjectMetaUpdate({
-        username: 'Michael',
+        username,
         projectName: name,
       });
     }
@@ -130,7 +131,6 @@ function useProjectsSort() {
             }
         });
       } else {
-        const username = 'Michael';
         // const projectName = 'Newcanon based Pro';
         parseFetchProjects(username).then((res) => {
           res.forEach((projects) => {
