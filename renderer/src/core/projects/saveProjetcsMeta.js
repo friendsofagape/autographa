@@ -18,7 +18,7 @@ const saveProjectsMeta = (
             projectName: newProjectFields.projectName,
             bibleVersion: selectedVersion.name,
             abbreviation: selectedVersion.abbreviation,
-            language: selectedLanguage.language,
+            language: selectedLanguage.title,
             scriptDirection: selectedLanguage.scriptDirection,
             projectDescription: newProjectFields.description,
             versificationScheme,
