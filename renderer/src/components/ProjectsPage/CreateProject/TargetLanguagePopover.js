@@ -3,17 +3,20 @@ import { Popover } from '@headlessui/react';
 import { ProjectContext } from '../../context/ProjectContext';
 
 export default function TargetLanguagePopover() {
+  const [id, setId] = React.useState();
   const [lang, setLang] = React.useState();
   const [direction, setDirection] = React.useState();
   const [edit, setEdit] = React.useState(false);
   const {
     states: {
       language,
+      languages,
     }, actions: { setLanguage },
   } = React.useContext(ProjectContext);
   const openLanguageNav = (nav) => {
     if (nav === 'edit') {
       setEdit(true);
+      setId(language.id);
       setLang(language.title);
       setDirection(language.scriptDirection ? language.scriptDirection : 'LTR');
     } else {
@@ -23,7 +26,10 @@ export default function TargetLanguagePopover() {
     }
   };
   const addLanguage = () => {
-    setLanguage({ title: lang, scriptDirection: direction });
+    setLanguage({ id: languages.length + 1, title: lang, scriptDirection: direction });
+  };
+  const editLanguage = () => {
+    setLanguage({ id, title: lang, scriptDirection: direction });
   };
   return (
     <Popover className="relative ">

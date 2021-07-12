@@ -112,7 +112,6 @@ export default function NewProject() {
                   className="bg-white w-24 block rounded  sm:text-sm focus:border-primary border-gray-300"
                   />
                   </div>
-                
               </div>
               <div>
                 <h4 className="text-xs font-base mb-2 text-primary leading-4 tracking-wide  font-light">Description</h4>

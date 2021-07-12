@@ -8,7 +8,7 @@ import {
   MenuIcon,
   XIcon,
 } from '@heroicons/react/outline';
-
+import { AuthenticationContext } from '../components/Login/AuthenticationContextProvider';
 import Notifications from '../modules/notifications/Notifications';
 
 const profile = ['Your Profile', 'Settings'];
@@ -19,7 +19,7 @@ function classNames(...classes) {
 
 export default function TopMenuBar() {
   const [openSideBar, setOpenSideBar] = useState(false);
-
+  const { action: { logout } } = React.useContext(AuthenticationContext);
   function openSideBars() {
     setOpenSideBar(true);
   }

@@ -1,6 +1,7 @@
 {
 	"canonSpecification": [
 		{
+			"id": 1,
 			"title": "All Books",
 			"currentScope": [
 				"GEN",
@@ -69,9 +70,11 @@
 				"3JN",
 				"JUD",
 				"REV"
-			]
+			],
+			"locked": true
 		},
 		{
+			"id": 2,
 			"title": "Old Testament (OT)",
 			"currentScope": [
 				"GEN",
@@ -113,9 +116,11 @@
 				"HAG",
 				"ZEC",
 				"MAL"
-			]
+			],
+			"locked": true
 		},
 		{
+			"id": 3,
 			"title": "New Testament (NT)",
 			"currentScope": [
 				"MAT",
@@ -145,14 +150,30 @@
 				"3JN",
 				"JUD",
 				"REV"
-			]
+			],
+			"locked": true
 		}
 	],
 	"copyright": [
-		{ "id": "BY", "title": "Attribution", "licence": "" },
-		{ "id": "BY_ND", "title": "Attribution-NoDerivatives", "licence": "" },
-		{ "id": "BY_NC", "title": "Attribution-NonCommercial", "licence": "" },
-		{ "id": "BY_SA", "title": "Attribution-ShareAlike", "licence": "" },
+		{ "id": "BY", "title": "Attribution", "licence": "", "locked": true },
+		{
+			"id": "BY_ND",
+			"title": "Attribution-NoDerivatives",
+			"licence": "",
+			"locked": true
+		},
+		{
+			"id": "BY_NC",
+			"title": "Attribution-NonCommercial",
+			"licence": "",
+			"locked": true
+		},
+		{
+			"id": "BY_SA",
+			"title": "Attribution-ShareAlike",
+			"licence": "",
+			"locked": true
+		},
 		{
 			"id": "BY_NC_SA",
 			"title": "Attribution-NonCommercial-ShareAlike",
@@ -161,19 +182,20 @@
 		{
 			"id": "BY_NC_ND",
 			"title": "Attribution-NonCommercial-NoDerivatives",
-			"licence": ""
+			"licence": "",
+			"locked": true
 		},
-		{ "id": "CC0", "title": "CC0", "licence": "" }
+		{ "id": "CC0", "title": "CC0", "licence": "", "locked": true }
 	],
 	"versification": [
 		{ "title": "King James Version (KJV)" },
 		{ "title": "New Internation Version (NIV)" }
 	],
 	"languages": [
-		{ "title": "English", "scriptDirection": "LTR" },
-		{ "title": "Hindi", "scriptDirection": "LTR" },
-		{ "title": "Malayalam", "scriptDirection": "LTR" },
-		{ "title": "Tamil", "scriptDirection": "LTR" },
-		{ "title": "Odia", "scriptDirection": "LTR" }
+		{ "id": 1, "title": "English", "scriptDirection": "LTR" },
+		{ "id": 2, "title": "Hindi", "scriptDirection": "LTR" },
+		{ "id": 3, "title": "Malayalam", "scriptDirection": "LTR" },
+		{ "id": 4, "title": "Tamil", "scriptDirection": "LTR" },
+		{ "id": 5, "title": "Odia", "scriptDirection": "LTR" }
 	]
 }

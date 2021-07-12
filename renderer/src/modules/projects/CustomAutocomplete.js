@@ -144,7 +144,9 @@ const Listbox = styled('ul')`
   }
 `;
 
-export default function CustomizedHook({ list, label, setValue }) {
+export default function CustomizedHook({
+ list, label, setValue,
+}) {
   const {
     getRootProps,
     getInputLabelProps,
