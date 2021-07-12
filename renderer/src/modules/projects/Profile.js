@@ -13,9 +13,9 @@ const regions = [
 ];
 
 const languages = [
-  { title: 'Hindu' },
-  { title: 'Zulu' },
-  { title: 'Wolof' },
+  { title: 'English' },
+  { title: 'Hindi' },
+  { title: 'Spanish' },
 ];
 
 function InputBar({ title }) {
@@ -78,6 +78,14 @@ function InputBar({ title }) {
     const handleSave = (e) => {
       e.preventDefault();
       saveProfile(values);
+    };
+    const setValue = async (value) => {
+      if (value.label === 'Region') {
+        setValues({ ...values, selectedregion: value.data });
+      }
+      // if (value.label === 'App Language') {
+      //   console.log(value.data)
+      // }
     };
       return (
         <ProjectsLayout title="personal information">
@@ -145,31 +153,33 @@ function InputBar({ title }) {
                     </div>
                   )
                 : <div />}
-                <div className="flex gap-8">
-                  <input
-                    type="text"
-                    name="given-name"
-                    id="name"
-                    autoComplete="given-name"
-                    defaultValue={values?.firstname}
-                    onChange={(e) => {
+                <div>
+                  <h4 className="text-xs font-base mb-2 ml-2 text-primary  tracking-wide leading-4  font-light">Name</h4>
+                  <div className="flex gap-8">
+                    <input
+                      type="text"
+                      name="given-name"
+                      id="name"
+                      autoComplete="given-name"
+                      defaultValue={values?.firstname}
+                      onChange={(e) => {
                       setValues({ ...values, firstname: e.target.value });
                     }}
-                    className="bg-gray-100 w-44 block rounded shadow-sm sm:text-sm focus:ring-gray-500 focus:border-primary border-gray-200 h-10 font-light"
-                  />
-                  <input
-                    type="text"
-                    name="family-name"
-                    id="name"
-                    autoComplete="given-name"
-                    defaultValue={values?.lastname}
-                    onChange={(e) => {
+                      className="bg-gray-100 w-44 block rounded shadow-sm sm:text-sm focus:ring-gray-500 focus:border-primary border-gray-200 h-10 font-light"
+                    />
+                    <input
+                      type="text"
+                      name="family-name"
+                      id="name"
+                      autoComplete="given-name"
+                      defaultValue={values?.lastname}
+                      onChange={(e) => {
                       setValues({ ...values, lastname: e.target.value });
                     }}
-                    className="bg-gray-100 w-44 h-10  block rounded  sm:text-sm focus:ring-gray-500 focus:border-primary border-gray-200 font-light "
-                  />
+                      className="bg-gray-100 w-44 h-10  block rounded  sm:text-sm focus:ring-gray-500 focus:border-primary border-gray-200 font-light "
+                    />
+                  </div>
                 </div>
-
                 <input
                   type="text"
                   name="email"
@@ -201,10 +211,10 @@ function InputBar({ title }) {
                   ) : <div />}
                 <InputBar title=" Organisation" />
                 <div>
-                  <CustomAutocomplete list={regions} label="Region" />
+                  <CustomAutocomplete list={regions} label="Region" setValue={setValue} />
                 </div>
                 <div>
-                  <CustomAutocomplete list={languages} label="App Language" />
+                  <CustomAutocomplete list={languages} label="App Language" setValue={setValue} />
                 </div>
 
                 <button

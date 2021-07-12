@@ -87,8 +87,8 @@ const GiteaFileBrowser = ({ changeRepo }) => {
         owner: auth.user.login,
         repo: repo.name,
         branch: 'master',
-        filepath: filePath,
-        content: data.result.content,
+        filepath: filePath+`.usfm`,
+        content: data.result.data,
         message: 'Testing createContent via AG using Gitea-React-Toolkit',
         author: {
           email: auth.user.email,

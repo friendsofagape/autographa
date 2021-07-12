@@ -55,7 +55,6 @@ function useSync() {
             username,
             projectName: agProjects[index],
             filename: bookCode,
-            fileExtention: 'usfm',
             data: usfmValue,
             filenameAlias: data.result.name,
           })

@@ -85,27 +85,30 @@ export default function NewProject() {
                   className="bg-gray-200 w-80 block rounded shadow-sm sm:text-sm focus:border-primary border-gray-300"
                 />
               </div>
-              <div className="flex gap-8">
-                <input
-                  type="text"
-                  name="version"
-                  id=""
-                  value={version.name}
-                  onChange={(e) => {
+              <div>
+                <h4 className="text-xs font-base mb-2 text-primary leading-4 tracking-wide  font-light">Version</h4>
+                <div className="flex gap-8">
+                  <input
+                    type="text"
+                    name="version"
+                    id=""
+                    value={version.name}
+                    onChange={(e) => {
                     handleVersion(e);
                   }}
-                  className="bg-white w-80 block rounded shadow-sm sm:text-sm focus:border-primary border-gray-300"
-                />
-                <input
-                  type="text"
-                  name="version_abbreviated"
-                  id=""
-                  value={version.abbreviation}
-                  onChange={(e) => {
+                    className="bg-white w-80 block rounded shadow-sm sm:text-sm focus:border-primary border-gray-300"
+                  />
+                  <input
+                    type="text"
+                    name="version_abbreviated"
+                    id=""
+                    value={version.abbreviation}
+                    onChange={(e) => {
                     setVersion({ ...version, abbreviation: e.target.value });
                   }}
-                  className="bg-white w-20 block rounded  sm:text-sm focus:border-primary border-gray-300"
-                />
+                    className="bg-white w-20 block rounded  sm:text-sm focus:border-primary border-gray-300"
+                  />
+                </div>
               </div>
               <div>
                 <h4 className="text-xs font-base mb-2 text-primary leading-4 tracking-wide  font-light">Description</h4>
@@ -124,7 +127,11 @@ export default function NewProject() {
                     {language.scriptDirection ? language.scriptDirection : 'LTR'}
                   </TargetLanguageTag>
                 </div>
-                <CustomAutocomplete label="Target Langauge" list={languages} setValue={setValue} />
+                <CustomAutocomplete
+                  label="Target Langauge"
+                  list={languages}
+                  setValue={setValue}
+                />
                 <div className="">
                   <TargetLanguagePopover />
                 </div>

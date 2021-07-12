@@ -15,7 +15,7 @@ const ProjectContextProvider = ({ children }) => {
     const [scrollLock, setScrollLock] = React.useState(false);
     // const []
     const [sideTabTitle, setSideTabTitle] = React.useState('New');
-    const [languages] = React.useState(advanceSettings.languages);
+    const [languages, setLanguages] = React.useState(advanceSettings.languages);
     const [language, setLanguage] = React.useState(advanceSettings.languages[0]);
     const [selectedVersion, setSelectedVersion] = React.useState('');
     const [version, setVersion] = React.useState({
@@ -42,7 +42,7 @@ const ProjectContextProvider = ({ children }) => {
     const handleProjectFields = (prop) => (event) => {
       setNewProjectFields({ ...newProjectFields, [prop]: event.target.value });
     };
-    const uniqueSetting = (list, title) => list.some((obj) => obj.title === title);
+    const uniqueId = (list, id) => list.some((obj) => obj.id === id);
     const loadSettings = () => {
       const newpath = localStorage.getItem('userPath');
       const fs = window.require('fs');
@@ -52,12 +52,22 @@ const ProjectContextProvider = ({ children }) => {
           logger.debug('ProjectContext.js', 'Successfully read the data from file');
           const json = JSON.parse(data);
           // (json.currentSetting).push(currentSetting);
-          setCanonList((advanceSettings.canonSpecification).concat(json.canonSpecification));
-          setLicenseList((advanceSettings.copyright).concat(json.copyright));
+          setCanonList(json.canonSpecification
+            ? (advanceSettings.canonSpecification).concat(json.canonSpecification)
+            : advanceSettings.canonSpecification);
+          setLicenseList(json.copyright
+            ? (advanceSettings.copyright).concat(json.copyright)
+            : advanceSettings.copyright);
+          setLanguages(json.languages
+            ? (advanceSettings.languages).concat(json.languages)
+            : advanceSettings.languages);
         });
       } else {
         setCanonList(advanceSettings.canonSpecification);
         setLicenseList(advanceSettings.copyright);
+        setLanguages(advanceSettings.languages);
+        const json = { canonSpecification: [], copyright: [], languages: [] };
+        fs.writeFileSync(file, JSON.stringify(json));
       }
     };
     // Json for storing advance settings
@@ -67,18 +77,18 @@ const ProjectContextProvider = ({ children }) => {
       const fs = window.require('fs');
       const file = path.join(newpath, 'autographa', 'users', 'username', 'usersetting.json');
       if (fs.existsSync(file)) {
-        // fs.mkdirSync(file);
         fs.readFile(file, 'utf8', (err, data) => {
           if (err) {
             logger.error('ProjectContext.js', 'Failed to read the data from file');
           } else {
             logger.debug('ProjectContext.js', 'Successfully read the data from file');
             const json = JSON.parse(data);
-            const currentSetting = (currentSettings === 'copyright' ? copyright : canonSpecification);
-            console.log(json[currentSettings], currentSetting.title);
-            if (uniqueSetting(json[currentSettings], currentSetting.title)) {
+            // eslint-disable-next-line no-nested-ternary
+            const currentSetting = (currentSettings === 'copyright' ? copyright
+            : (currentSettings === 'languages' ? language : canonSpecification));
+            if (json[currentSettings] && uniqueId(json[currentSettings], currentSetting.id)) {
               (json[currentSettings]).forEach((setting) => {
-                if (setting.title === currentSetting.title) {
+                if (setting.id === currentSetting.id) {
                   const keys = Object.keys(setting);
                   keys.forEach((key) => {
                     // eslint-disable-next-line no-param-reassign
@@ -91,38 +101,43 @@ const ProjectContextProvider = ({ children }) => {
               (json[currentSettings]).push(currentSetting);
             }
             logger.debug('ProjectContext.js', 'Upadting the settings in existing file');
-            console.log('pushing to file', json);
             fs.writeFileSync(file, JSON.stringify(json));
             logger.debug('ProjectContext.js', 'Loading new settings from file');
             loadSettings();
           }
         });
-      } else {
-        const json = {
-          canonSpecification: [
-            {
-              title: (currentSettings === 'canonSpecification' ? canonSpecification.title : ''),
-              currentScope: (currentSettings === 'canonSpecification' ? canonSpecification.currentScope : []),
-            },
-          ],
-          copyright: [
-            {
-              id: 'custom',
-              title: (currentSettings === 'copyright' ? copyright.title : ''),
-              licence: (currentSettings === 'copyright' ? copyright.licence : ''),
-            },
-          ],
-        };
-        fs.writeFileSync(file, JSON.stringify(json));
       }
     };
     const createProject = () => {
-      if (!uniqueSetting(canonList, canonSpecification.title)) {
+      // Add / update language into current list.
+      if (uniqueId(languages, language.id)) {
+        languages.forEach((lang) => {
+          if (lang.id === language.id) {
+            if (lang.title !== language.title
+              || lang.scriptDirection !== language.scriptDirection) {
+              updateJson('languages');
+            }
+          }
+        });
+      } else {
+        updateJson('languages');
+      }
+      // Add / update canon into current list.
+      if (uniqueId(canonList, canonSpecification.id)) {
+        canonList.forEach((canon) => {
+          if (canon.id === canonSpecification.id) {
+            if (canon.title !== canonSpecification.title
+              || canon.currentScope !== canonSpecification.currentScope) {
+              updateJson('canonSpecification');
+            }
+          }
+        });
+      } else {
         updateJson('canonSpecification');
       }
-      if (!uniqueSetting(licenceList, copyright.title)) {
-        updateJson('copyright');
-      }
+      // if (!uniqueSetting(licenceList, copyright.title)) {
+      //   updateJson('copyright');
+      // }
       saveProjectsMeta(
         newProjectFields,
         version,

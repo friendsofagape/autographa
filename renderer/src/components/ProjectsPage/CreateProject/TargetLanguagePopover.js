@@ -3,17 +3,20 @@ import { Popover } from '@headlessui/react';
 import { ProjectContext } from '../../context/ProjectContext';
 
 export default function TargetLanguagePopover() {
+  const [id, setId] = React.useState();
   const [lang, setLang] = React.useState();
   const [direction, setDirection] = React.useState();
   const [edit, setEdit] = React.useState(false);
   const {
     states: {
       language,
+      languages,
     }, actions: { setLanguage },
   } = React.useContext(ProjectContext);
   const openLanguageNav = (nav) => {
     if (nav === 'edit') {
       setEdit(true);
+      setId(language.id);
       setLang(language.title);
       setDirection(language.scriptDirection ? language.scriptDirection : 'LTR');
     } else {
@@ -23,7 +26,10 @@ export default function TargetLanguagePopover() {
     }
   };
   const addLanguage = () => {
-    setLanguage({ title: lang, scriptDirection: direction });
+    setLanguage({ id: languages.length + 1, title: lang, scriptDirection: direction });
+  };
+  const editLanguage = () => {
+    setLanguage({ id, title: lang, scriptDirection: direction });
   };
   return (
     <Popover className="relative ">
@@ -108,13 +114,25 @@ export default function TargetLanguagePopover() {
                 </div>
                 <div className="ml-16">
                   <Popover.Button className="mr-5 bg-error w-28 h-8 border-color-error rounded uppercase shadow text-white text-xs tracking-wide leading-4 font-light"> cancel</Popover.Button>
-                  <button
-                    type="button"
-                    className=" bg-success w-28 h-8 border-color-success rounded uppercase text-white text-xs shadow"
-                    onClick={() => addLanguage()}
-                  >
-                    {edit ? 'save' : 'create'}
-                  </button>
+                  {edit
+                  ? (
+                    <button
+                      type="button"
+                      className=" bg-success w-28 h-8 border-color-success rounded uppercase text-white text-xs shadow"
+                      onClick={() => editLanguage()}
+                    >
+                      save
+                    </button>
+                    )
+                  : (
+                    <button
+                      type="button"
+                      className=" bg-success w-28 h-8 border-color-success rounded uppercase text-white text-xs shadow"
+                      onClick={() => addLanguage()}
+                    >
+                      create
+                    </button>
+                    )}
                 </div>
               </div>
             </div>
