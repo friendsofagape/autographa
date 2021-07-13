@@ -26,8 +26,6 @@ const translationNotes = [
     createData('Gujrati Notes', 'gu', '2020-12-29'),
     createData('Gujrati Notes', 'gu', '2020-12-29'),
     createData('Gujrati Notes', 'gu', '2020-12-29'),
- 
-
 ];
 const translationWords = [
   createData('Translation Words', 'en', '2021-02-05'),
@@ -121,168 +119,245 @@ const ResourcesPopUp = ({
               <div className="w-5/12 m-auto z-50 shadow overflow-hidden sm:rounded-lg" />
               <div className="absolute">
                 <div className="flex relative rounded shadow overflow-hidden bg-white">
-                  <button onClick={removeSection} type="button" className="focus:outline-none absolute z-10 -right-0">
+                  <button
+                    onClick={removeSection}
+                    type="button"
+                    className="focus:outline-none absolute z-10 -right-0"
+                  >
                     <img
                       src="/illustrations/close-button-black.svg"
                       alt="/"
                     />
                   </button>
                   <div
-                      className="flex gap-6 mb-5 ml-52 mr-10 absolute bottom-0 justify-end left-64 z-10"
+                    className="flex gap-6 mb-5 ml-52 mr-10 absolute bottom-0 justify-end
+                      left-64 z-10"
+                  >
+                    <button
+                      type="button"
+                      className="py-2 px-6 bg-primary rounded shadow
+                      text-white uppercase text-xs tracking-widest font-semibold"
                     >
-                      <button type="button" className="py-2 px-6 bg-primary rounded shadow text-white uppercase text-xs tracking-widest font-semibold">Upload</button>
-                      <button type="button" className="py-2 px-6 rounded shadow bg-error text-white uppercase text-xs tracking-widest font-semibold">Cancel</button>
-                      <button type="button" className="py-2 px-7 rounded shadow bg-success text-white uppercase text-xs tracking-widest font-semibold">Open</button>
-                    </div>
+                      Upload
+
+                    </button>
+                    <button
+                      type="button"
+                      className="py-2 px-6 rounded shadow bg-error
+                       text-white uppercase text-xs tracking-widest font-semibold"
+                    >
+                      Cancel
+
+                    </button>
+                    <button
+                      type="button"
+                      className="py-2 px-7 rounded shadow bg-success
+                       text-white uppercase text-xs tracking-widest font-semibold"
+                    >
+                      Open
+
+                    </button>
+                  </div>
                   <div>
-                    <div className="uppercase bg-secondary  text-white py-2 px-2 text-xs tracking-widest leading-snug rounded-tl text-center">Resources</div>
+                    <div className="uppercase bg-secondary  text-white py-2 px-2 text-xs
+                    tracking-widest leading-snug rounded-tl text-center"
+                    >
+                      Resources
+
+                    </div>
                     <div className="bg-gray-100 px-3 py-3 h-full">
                       <input
-                        className="rounded h-8 bg-gray-200 border-none uppercase pr-6 text-xs tracking-widest leading-snug font-bold"
+                        className="rounded h-8 bg-gray-200 border-none uppercase pr-6 text-xs
+                        tracking-widest leading-snug font-bold"
                         placeholder="Search"
                         type="search"
                         id="gsearch"
                         name="gsearch"
                       />
                       <div className=" grid grid-rows-5 px-5 py-5 gap-6">
-                        <ResourceOption imageUrl="/illustrations/dictionary-icon.svg" id="tn" text="Notes" setSelectResource={setSelectResource} setTitle={setTitle} setSubMenuItems={setSubMenuItems} />
-                        <ResourceOption imageUrl="/illustrations/bible-icon.svg" id="bible" text="Bible" setSelectResource={setSelectResource} setTitle={setTitle} setSubMenuItems={setSubMenuItems} />
-                        <ResourceOption imageUrl="/illustrations/image-icon.svg" id="twlm" text="TraslationWords" setSelectResource={setSelectResource} setTitle={setTitle} setSubMenuItems={setSubMenuItems} />
-                        <ResourceOption imageUrl="/illustrations/dialogue-icon.svg" id="tq" text="Questions" setSelectResource={setSelectResource} setTitle={setTitle} setSubMenuItems={setSubMenuItems} />
-                        <ResourceOption imageUrl="/illustrations/location-icon.svg" id="map" text="Map" setSelectResource={setSelectResource} setTitle={setTitle} setSubMenuItems={setSubMenuItems} />
-                        <ResourceOption imageUrl="/illustrations/dialogue-icon.svg" id="cmtry" text="Commentary" setSelectResource={setSelectResource} setTitle={setTitle} setSubMenuItems={setSubMenuItems} />
+                        <ResourceOption
+                          imageUrl="/illustrations/dictionary-icon.svg"
+                          id="tn"
+                          text="Notes"
+                          setSelectResource={setSelectResource}
+                          setTitle={setTitle}
+                          setSubMenuItems={setSubMenuItems}
+                        />
+                        <ResourceOption
+                          imageUrl="/illustrations/bible-icon.svg"
+                          id="bible"
+                          text="Bible"
+                          setSelectResource={setSelectResource}
+                          setTitle={setTitle}
+                          setSubMenuItems={setSubMenuItems}
+                        />
+                        <ResourceOption
+                          imageUrl="/illustrations/image-icon.svg"
+                          id="twlm"
+                          text="TraslationWords"
+                          setSelectResource={setSelectResource}
+                          setTitle={setTitle}
+                          setSubMenuItems={setSubMenuItems}
+                        />
+                        <ResourceOption
+                          imageUrl="/illustrations/dialogue-icon.svg"
+                          id="tq"
+                          text="Questions"
+                          setSelectResource={setSelectResource}
+                          setTitle={setTitle}
+                          setSubMenuItems={setSubMenuItems}
+                        />
+                        <ResourceOption
+                          imageUrl="/illustrations/location-icon.svg"
+                          id="map"
+                          text="Map"
+                          setSelectResource={setSelectResource}
+                          setTitle={setTitle}
+                          setSubMenuItems={setSubMenuItems}
+                        />
+                        <ResourceOption
+                          imageUrl="/illustrations/dialogue-icon.svg"
+                          id="cmtry"
+                          text="Commentary"
+                          setSelectResource={setSelectResource}
+                          setTitle={setTitle}
+                          setSubMenuItems={setSubMenuItems}
+                        />
                       </div>
                     </div>
                   </div>
-                  <div className=" w-resourcePanel h-resourcePanel relative divide-y divide-gray-200 ">
-                  <thead className="bg-white">
-                        <tr className="">
-                          <th
-                            className=" py-3 text-left text-xs font-medium text-gray-300 pl-10"
-                          >
-                            <StarIcon className="h-5 w-5" aria-hidden="true" />
-                          </th>
-                          <th
-                            className="px-9  font-bold text-gray-700 uppercase tracking-wider"
-                          >
-                            Name
-                          </th>
-                          <th
-                            className="px-40 py-3 font-bold text-gray-700 uppercase tracking-wider"
-                          >
-                            Language
-                          </th>
-                        </tr>
-                      </thead>
-                      <div className="overflow-scroll h-96 overflow-x-hidden">
-                    <table className="divide-y divide-gray-200  w-full">
-                      {selectResource === 'tn' && (
-                        <tbody className="bg-white divide-y divide-gray-200 ">
-                        {translationNotes.map((notes) => (
-                          <tr className="hover:bg-gray-200" key={notes.name}>
-                            <td className="pl-10">
-                              {' '}
-                              <StarIcon className="h-5 w-5 text-gray-300" aria-hidden="true" />
-                            </td>
-                            <td
-                              className="py-6  text-gray-600"
-                            >
-                              <div
-                                className="focus:outline-none"
-                                onClick={(e) => handleRowSelect(e, notes.language)}
-                                role="button"
-                                tabIndex="0"
-                              >
-                                {notes.name}
-                              </div>
-                            </td>
-                            <td className="text-gray-600  pr-36">
-                              <div
-                                className="focus:outline-none"
-                                onClick={(e) => handleRowSelect(e, notes.language)}
-                                role="button"
-                                tabIndex="0"
-                              >
-                                {notes.language}
-                              </div>
-                            </td>
-                          </tr>
+                  <div className=" w-resourcePanel h-resourcePanel relative divide-y
+                  divide-gray-200 "
+                  >
+                    <thead className="bg-white">
+                      <tr className="">
+                        <th
+                          className=" py-3 text-left text-xs font-medium text-gray-300 pl-10"
+                        >
+                          <StarIcon className="h-5 w-5" aria-hidden="true" />
+                        </th>
+                        <th
+                          className="px-9  font-bold text-gray-700 uppercase tracking-wider"
+                        >
+                          Name
+                        </th>
+                        <th
+                          className="px-40 py-3 font-bold text-gray-700 uppercase
+                            tracking-wider"
+                        >
+                          Language
+                        </th>
+                      </tr>
+                    </thead>
+                    <div className="overflow-scroll h-96 overflow-x-hidden">
+                      <table className="divide-y divide-gray-200  w-full">
+                        {selectResource === 'tn' && (
+                          <tbody className="bg-white divide-y divide-gray-200 ">
+                            {translationNotes.map((notes) => (
+                              <tr className="hover:bg-gray-200" key={notes.name}>
+                                <td className="pl-10">
+                                  {' '}
+                                  <StarIcon className="h-5 w-5 text-gray-300" aria-hidden="true" />
+                                </td>
+                                <td
+                                  className="py-6  text-gray-600"
+                                >
+                                  <div
+                                    className="focus:outline-none"
+                                    onClick={(e) => handleRowSelect(e, notes.language)}
+                                    role="button"
+                                    tabIndex="0"
+                                  >
+                                    {notes.name}
+                                  </div>
+                                </td>
+                                <td className="text-gray-600  pr-36">
+                                  <div
+                                    className="focus:outline-none"
+                                    onClick={(e) => handleRowSelect(e, notes.language)}
+                                    role="button"
+                                    tabIndex="0"
+                                  >
+                                    {notes.language}
+                                  </div>
+                                </td>
+                              </tr>
                         ))}
-                       
-                      </tbody>
+
+                          </tbody>
                       )}
-                      {selectResource === 'twlm' && (
-                      <tbody className="bg-white divide-y divide-gray-200  mb-44 ">
-                        {translationWords.map((notes) => (
-                          <tr className="hover:bg-gray-200" key={notes.name}>
-                            <td className="pl-10">
-                              {' '}
-                              <StarIcon className="h-5 w-5 text-gray-300" aria-hidden="true" />
-                            </td>
-                            <td
-                              className="py-6 text-gray-600"
-                            >
-                              <div
-                                className="focus:outline-none"
-                                onClick={(e) => handleRowSelect(e, notes.language)}
-                                role="button"
-                                tabIndex="0"
-                              >
-                                {notes.name}
-                              </div>
-                            </td>
-                            <td className="text-gray-600  pr-36">
-                              <div
-                                className="focus:outline-none"
-                                onClick={(e) => handleRowSelect(e, notes.language)}
-                                role="button"
-                                tabIndex="0"
-                              >
-                                {notes.language}
-                              </div>
-                            </td>
-                          </tr>
+                        {selectResource === 'twlm' && (
+                          <tbody className="bg-white divide-y divide-gray-200  mb-44 ">
+                            {translationWords.map((notes) => (
+                              <tr className="hover:bg-gray-200" key={notes.name}>
+                                <td className="pl-10">
+                                  {' '}
+                                  <StarIcon className="h-5 w-5 text-gray-300" aria-hidden="true" />
+                                </td>
+                                <td
+                                  className="py-6 text-gray-600"
+                                >
+                                  <div
+                                    className="focus:outline-none"
+                                    onClick={(e) => handleRowSelect(e, notes.language)}
+                                    role="button"
+                                    tabIndex="0"
+                                  >
+                                    {notes.name}
+                                  </div>
+                                </td>
+                                <td className="text-gray-600  pr-36">
+                                  <div
+                                    className="focus:outline-none"
+                                    onClick={(e) => handleRowSelect(e, notes.language)}
+                                    role="button"
+                                    tabIndex="0"
+                                  >
+                                    {notes.language}
+                                  </div>
+                                </td>
+                              </tr>
                       ))}
-                      </tbody>
+                          </tbody>
                       )}
-                      {selectResource === 'tq' && (
-                      <tbody className="bg-white divide-y divide-gray-200  mb-44 ">
-                        {translationQuestions.map((notes) => (
-                          <tr className="hover:bg-gray-200" key={notes.name}>
-                            <td className="pl-10">
-                              {' '}
-                              <StarIcon className="h-5 w-5 text-gray-300" aria-hidden="true" />
-                            </td>
-                            <td
-                              className="py-6 text-gray-600"
-                            >
-                              <div
-                                className="focus:outline-none"
-                                onClick={(e) => handleRowSelect(e, notes.language)}
-                                role="button"
-                                tabIndex="0"
-                              >
-                                {notes.name}
-                              </div>
-                            </td>
-                            <td className="text-gray-600 pr-36">
-                              <div
-                                className="focus:outline-none"
-                                onClick={(e) => handleRowSelect(e, notes.language)}
-                                role="button"
-                                tabIndex="0"
-                              >
-                                {notes.language}
-                              </div>
-                            </td>
-                          </tr>
+                        {selectResource === 'tq' && (
+                          <tbody className="bg-white divide-y divide-gray-200  mb-44 ">
+                            {translationQuestions.map((notes) => (
+                              <tr className="hover:bg-gray-200" key={notes.name}>
+                                <td className="pl-10">
+                                  {' '}
+                                  <StarIcon className="h-5 w-5 text-gray-300" aria-hidden="true" />
+                                </td>
+                                <td
+                                  className="py-6 text-gray-600"
+                                >
+                                  <div
+                                    className="focus:outline-none"
+                                    onClick={(e) => handleRowSelect(e, notes.language)}
+                                    role="button"
+                                    tabIndex="0"
+                                  >
+                                    {notes.name}
+                                  </div>
+                                </td>
+                                <td className="text-gray-600 pr-36">
+                                  <div
+                                    className="focus:outline-none"
+                                    onClick={(e) => handleRowSelect(e, notes.language)}
+                                    role="button"
+                                    tabIndex="0"
+                                  >
+                                    {notes.language}
+                                  </div>
+                                </td>
+                              </tr>
                       ))}
-                      </tbody>
+                          </tbody>
                       )}
 
-                      {selectResource === 'bible' && (
-                      <tbody className="bg-white divide-y divide-gray-200  mb-44 ">
-                        {(subMenuItems) && (
+                        {selectResource === 'bible' && (
+                          <tbody className="bg-white divide-y divide-gray-200  mb-44 ">
+                            {(subMenuItems) && (
                     subMenuItems.map((ref) => (
                       <tr className="hover:bg-gray-200" key={ref.identification.name.en}>
                         <td className="pl-10">
@@ -316,11 +391,11 @@ const ResourcesPopUp = ({
                       </tr>
                     ))
                     )}
-                      </tbody>
+                          </tbody>
                   )}
-                    </table>
+                      </table>
                     </div>
-                 
+
                   </div>
                 </div>
               </div>
