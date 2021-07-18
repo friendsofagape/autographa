@@ -23,9 +23,6 @@ const translationNotes = [
     createData('Malayalam', 'ml', '2020-12-31'),
     createData('Gujrati Notes', 'gu', '2020-12-29'),
     createData('Gujrati Notes', 'gu', '2020-12-29'),
-    createData('Gujrati Notes', 'gu', '2020-12-29'),
-    createData('Gujrati Notes', 'gu', '2020-12-29'),
-    createData('Gujrati Notes', 'gu', '2020-12-29'),
 ];
 const translationWords = [
   createData('Translation Words', 'en', '2021-02-05'),
