@@ -26,7 +26,6 @@ const translationNotes = [
     createData('Gujrati Notes', 'gu', '2020-12-29'),
     createData('Gujrati Notes', 'gu', '2020-12-29'),
     createData('Gujrati Notes', 'gu', '2020-12-29'),
- 
 
 ];
 const translationWords = [
@@ -128,12 +127,12 @@ const ResourcesPopUp = ({
                     />
                   </button>
                   <div
-                      className="flex gap-6 mb-5 ml-52 mr-10 absolute bottom-0 justify-end left-64 z-10"
-                    >
-                      <button type="button" className="py-2 px-6 bg-primary rounded shadow text-white uppercase text-xs tracking-widest font-semibold">Upload</button>
-                      <button type="button" className="py-2 px-6 rounded shadow bg-error text-white uppercase text-xs tracking-widest font-semibold">Cancel</button>
-                      <button type="button" className="py-2 px-7 rounded shadow bg-success text-white uppercase text-xs tracking-widest font-semibold">Open</button>
-                    </div>
+                    className="flex gap-6 mb-5 ml-52 mr-10 absolute bottom-0 justify-end left-64 z-10"
+                  >
+                    <button type="button" className="py-2 px-6 bg-primary rounded shadow text-white uppercase text-xs tracking-widest font-semibold">Upload</button>
+                    <button type="button" className="py-2 px-6 rounded shadow bg-error text-white uppercase text-xs tracking-widest font-semibold">Cancel</button>
+                    <button type="button" className="py-2 px-7 rounded shadow bg-success text-white uppercase text-xs tracking-widest font-semibold">Open</button>
+                  </div>
                   <div>
                     <div className="uppercase bg-secondary  text-white py-2 px-2 text-xs tracking-widest leading-snug rounded-tl text-center">Resources</div>
                     <div className="bg-gray-100 px-3 py-3 h-full">
@@ -154,135 +153,135 @@ const ResourcesPopUp = ({
                       </div>
                     </div>
                   </div>
-                  <div style={{width: 600, height: 550}} className=" relative divide-y divide-gray-200 ">
-                  <thead className="bg-white">
-                        <tr className="">
-                          <th
-                            className=" py-3 text-left text-xs font-medium text-gray-300 pl-10"
-                          >
-                            <StarIcon className="h-5 w-5" aria-hidden="true" />
-                          </th>
-                          <th
-                            className="px-9  font-bold text-gray-700 uppercase tracking-wider"
-                          >
-                            Name
-                          </th>
-                          <th
-                            className="px-40 py-3 font-bold text-gray-700 uppercase tracking-wider"
-                          >
-                            Language
-                          </th>
-                        </tr>
-                      </thead>
-                      <div className="overflow-scroll h-96 overflow-x-hidden">
-                    <table className="divide-y divide-gray-200  w-full">
-                      {selectResource === 'tn' && (
-                        <tbody className="bg-white divide-y divide-gray-200 ">
-                        {translationNotes.map((notes) => (
-                          <tr className="hover:bg-gray-200" key={notes.name}>
-                            <td className="pl-10">
-                              {' '}
-                              <StarIcon className="h-5 w-5 text-gray-300" aria-hidden="true" />
-                            </td>
-                            <td
-                              className="py-6  text-gray-600"
-                            >
-                              <div
-                                className="focus:outline-none"
-                                onClick={(e) => handleRowSelect(e, notes.language)}
-                                role="button"
-                                tabIndex="0"
-                              >
-                                {notes.name}
-                              </div>
-                            </td>
-                            <td className="text-gray-600  pr-36">
-                              <div
-                                className="focus:outline-none"
-                                onClick={(e) => handleRowSelect(e, notes.language)}
-                                role="button"
-                                tabIndex="0"
-                              >
-                                {notes.language}
-                              </div>
-                            </td>
-                          </tr>
+                  <div style={{ width: 600, height: 550 }} className=" relative divide-y divide-gray-200 ">
+                    <thead className="bg-white">
+                      <tr className="">
+                        <th
+                          className=" py-3 text-left text-xs font-medium text-gray-300 pl-10"
+                        >
+                          <StarIcon className="h-5 w-5" aria-hidden="true" />
+                        </th>
+                        <th
+                          className="px-9  font-bold text-gray-700 uppercase tracking-wider"
+                        >
+                          Name
+                        </th>
+                        <th
+                          className="px-40 py-3 font-bold text-gray-700 uppercase tracking-wider"
+                        >
+                          Language
+                        </th>
+                      </tr>
+                    </thead>
+                    <div className="overflow-scroll h-96 overflow-x-hidden">
+                      <table className="divide-y divide-gray-200  w-full">
+                        {selectResource === 'tn' && (
+                          <tbody className="bg-white divide-y divide-gray-200 ">
+                            {translationNotes.map((notes) => (
+                              <tr className="hover:bg-gray-200" key={notes.name}>
+                                <td className="pl-10">
+                                  {' '}
+                                  <StarIcon className="h-5 w-5 text-gray-300" aria-hidden="true" />
+                                </td>
+                                <td
+                                  className="py-6  text-gray-600"
+                                >
+                                  <div
+                                    className="focus:outline-none"
+                                    onClick={(e) => handleRowSelect(e, notes.language)}
+                                    role="button"
+                                    tabIndex="0"
+                                  >
+                                    {notes.name}
+                                  </div>
+                                </td>
+                                <td className="text-gray-600  pr-36">
+                                  <div
+                                    className="focus:outline-none"
+                                    onClick={(e) => handleRowSelect(e, notes.language)}
+                                    role="button"
+                                    tabIndex="0"
+                                  >
+                                    {notes.language}
+                                  </div>
+                                </td>
+                              </tr>
                         ))}
-                       
-                      </tbody>
+
+                          </tbody>
                       )}
-                      {selectResource === 'twlm' && (
-                      <tbody className="bg-white divide-y divide-gray-200  mb-44 ">
-                        {translationWords.map((notes) => (
-                          <tr className="hover:bg-gray-200" key={notes.name}>
-                            <td className="pl-10">
-                              {' '}
-                              <StarIcon className="h-5 w-5 text-gray-300" aria-hidden="true" />
-                            </td>
-                            <td
-                              className="py-6 text-gray-600"
-                            >
-                              <div
-                                className="focus:outline-none"
-                                onClick={(e) => handleRowSelect(e, notes.language)}
-                                role="button"
-                                tabIndex="0"
-                              >
-                                {notes.name}
-                              </div>
-                            </td>
-                            <td className="text-gray-600  pr-36">
-                              <div
-                                className="focus:outline-none"
-                                onClick={(e) => handleRowSelect(e, notes.language)}
-                                role="button"
-                                tabIndex="0"
-                              >
-                                {notes.language}
-                              </div>
-                            </td>
-                          </tr>
+                        {selectResource === 'twlm' && (
+                          <tbody className="bg-white divide-y divide-gray-200  mb-44 ">
+                            {translationWords.map((notes) => (
+                              <tr className="hover:bg-gray-200" key={notes.name}>
+                                <td className="pl-10">
+                                  {' '}
+                                  <StarIcon className="h-5 w-5 text-gray-300" aria-hidden="true" />
+                                </td>
+                                <td
+                                  className="py-6 text-gray-600"
+                                >
+                                  <div
+                                    className="focus:outline-none"
+                                    onClick={(e) => handleRowSelect(e, notes.language)}
+                                    role="button"
+                                    tabIndex="0"
+                                  >
+                                    {notes.name}
+                                  </div>
+                                </td>
+                                <td className="text-gray-600  pr-36">
+                                  <div
+                                    className="focus:outline-none"
+                                    onClick={(e) => handleRowSelect(e, notes.language)}
+                                    role="button"
+                                    tabIndex="0"
+                                  >
+                                    {notes.language}
+                                  </div>
+                                </td>
+                              </tr>
                       ))}
-                      </tbody>
+                          </tbody>
                       )}
-                      {selectResource === 'tq' && (
-                      <tbody className="bg-white divide-y divide-gray-200  mb-44 ">
-                        {translationQuestions.map((notes) => (
-                          <tr className="hover:bg-gray-200" key={notes.name}>
-                            <td className="pl-10">
-                              {' '}
-                              <StarIcon className="h-5 w-5 text-gray-300" aria-hidden="true" />
-                            </td>
-                            <td
-                              className="py-6 text-gray-600"
-                            >
-                              <div
-                                className="focus:outline-none"
-                                onClick={(e) => handleRowSelect(e, notes.language)}
-                                role="button"
-                                tabIndex="0"
-                              >
-                                {notes.name}
-                              </div>
-                            </td>
-                            <td className="text-gray-600 pr-36">
-                              <div
-                                className="focus:outline-none"
-                                onClick={(e) => handleRowSelect(e, notes.language)}
-                                role="button"
-                                tabIndex="0"
-                              >
-                                {notes.language}
-                              </div>
-                            </td>
-                          </tr>
+                        {selectResource === 'tq' && (
+                          <tbody className="bg-white divide-y divide-gray-200  mb-44 ">
+                            {translationQuestions.map((notes) => (
+                              <tr className="hover:bg-gray-200" key={notes.name}>
+                                <td className="pl-10">
+                                  {' '}
+                                  <StarIcon className="h-5 w-5 text-gray-300" aria-hidden="true" />
+                                </td>
+                                <td
+                                  className="py-6 text-gray-600"
+                                >
+                                  <div
+                                    className="focus:outline-none"
+                                    onClick={(e) => handleRowSelect(e, notes.language)}
+                                    role="button"
+                                    tabIndex="0"
+                                  >
+                                    {notes.name}
+                                  </div>
+                                </td>
+                                <td className="text-gray-600 pr-36">
+                                  <div
+                                    className="focus:outline-none"
+                                    onClick={(e) => handleRowSelect(e, notes.language)}
+                                    role="button"
+                                    tabIndex="0"
+                                  >
+                                    {notes.language}
+                                  </div>
+                                </td>
+                              </tr>
                       ))}
-                      </tbody>
+                          </tbody>
                       )}
 
-                      {selectResource === 'bible' && (
-                      <tbody className="bg-white divide-y divide-gray-200  mb-44 ">
-                        {(subMenuItems) && (
+                        {selectResource === 'bible' && (
+                          <tbody className="bg-white divide-y divide-gray-200  mb-44 ">
+                            {(subMenuItems) && (
                     subMenuItems.map((ref) => (
                       <tr className="hover:bg-gray-200" key={ref.identification.name.en}>
                         <td className="pl-10">
@@ -316,11 +315,11 @@ const ResourcesPopUp = ({
                       </tr>
                     ))
                     )}
-                      </tbody>
+                          </tbody>
                   )}
-                    </table>
+                      </table>
                     </div>
-                 
+
                   </div>
                 </div>
               </div>

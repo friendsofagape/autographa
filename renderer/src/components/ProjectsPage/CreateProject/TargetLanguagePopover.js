@@ -28,6 +28,7 @@ export default function TargetLanguagePopover() {
   const addLanguage = () => {
     setLanguage({ id: languages.length + 1, title: lang, scriptDirection: direction });
   };
+  // eslint-disable-next-line no-unused-vars
   const editLanguage = () => {
     setLanguage({ id, title: lang, scriptDirection: direction });
   };
@@ -36,26 +37,27 @@ export default function TargetLanguagePopover() {
       {({ open }) => (
         <>
           <Popover.Group>
-            <Popover.Button className="focus:outline-none"
-            onClick={() => openLanguageNav('add')}
+            <Popover.Button
+              className="focus:outline-none"
+              onClick={() => openLanguageNav('add')}
             >
-                <img
-                  src="illustrations/add-button.svg"
-                  alt="add button"
-                />
-             
+              <img
+                src="illustrations/add-button.svg"
+                alt="add button"
+              />
+
             </Popover.Button>
             <Popover.Button
-            className="focus:outline-none"
-            onClick={() => openLanguageNav('edit')}
-            
+              className="focus:outline-none"
+              onClick={() => openLanguageNav('edit')}
+
             >
-                <img
-                  src="illustrations/edit.svg"
-                  alt="edit button"
-                />
+              <img
+                src="illustrations/edit.svg"
+                alt="edit button"
+              />
             </Popover.Button>
-            </Popover.Group>
+          </Popover.Group>
           <Popover.Overlay
             className={`${
               open ? 'opacity-30 fixed inset-0' : 'opacity-0'
