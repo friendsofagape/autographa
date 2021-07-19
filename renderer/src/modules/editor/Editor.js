@@ -164,6 +164,8 @@ export default function Editor({
         className="border-l-2 hover:border-primary border-r-2 border-secondary px-3 py-4 pb-16 prose-sm max-w-none overflow-y-auto h-full no-scrollbars"
       >
         {children}
+        {/* styled editor */}
+
         {/* <>
           <h3 className="text-secondary">Jesus Has Risen</h3>
           <p>
