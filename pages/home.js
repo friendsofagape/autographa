@@ -4,7 +4,7 @@ import EditorLayout from '@/layouts/editor/Layout';
 import AuthenticationContextProvider from '@/components/Login/AuthenticationContextProvider';
 import dynamic from 'next/dynamic';
 import CustomNavigationContextProvider from '@/components/context/CustomNavigationContext';
-import ReferencePlaceholder from '@/components/EditorPage/NewRefernce/ReferencePlaceholder';
+import ReferencePlaceholder from '@/components/EditorPage/Reference/ReferencePlaceholder';
 
 const UsfmEditor = dynamic(
   () => import('@/components/EditorPage/UsfmEditor/UsfmEditor'),

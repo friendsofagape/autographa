@@ -19,6 +19,7 @@ function classNames(...classes) {
 
 export default function TopMenuBar() {
   const [openSideBar, setOpenSideBar] = useState(false);
+  // eslint-disable-next-line no-unused-vars
   const { action: { logout } } = React.useContext(AuthenticationContext);
   function openSideBars() {
     setOpenSideBar(true);

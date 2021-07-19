@@ -2,7 +2,7 @@
 import PropTypes from 'prop-types';
 import { Dialog, Transition } from '@headlessui/react';
 import {
-  Fragment, useRef, useState,
+  Fragment, useEffect, useRef, useState,
 } from 'react';
 import SelectBook from '@/components/EditorPage/Navigation/reference/SelectBook';
 import SelectVerse from '@/components/EditorPage/Navigation/reference/SelectVerse';
@@ -10,28 +10,56 @@ import {
   XIcon,
   ChevronDownIcon,
 } from '@heroicons/react/solid';
+import { useBibleReference } from 'bible-reference-rcl';
 
 export default function CustomNavigation({
-    showVerse,
-    bookList,
-    bookName,
-    chapter,
-    verse,
-    chapterList,
-    verseList,
-    onChangeBook,
-    onChangeChapter,
-    onChangeVerse,
+  initialBook,
+  initialChapter,
+  initialVerse,
+  setNavigation,
+  showVerse,
 }) {
+  const {
+    state: {
+      bookId,
+      bookList,
+      bookName,
+      chapter,
+      verse,
+      chapterList,
+      verseList,
+    }, actions: {
+      onChangeBook,
+      onChangeChapter,
+      onChangeVerse,
+      applyBooksFilter,
+    },
+  } = useBibleReference({
+    initialBook,
+    initialChapter,
+    initialVerse,
+});
   const [openBook, setOpenBook] = useState(false);
   const [openVerse, setOpenVerse] = useState(false);
   const cancelButtonRef = useRef(null);
+  const supportedBooks = null;
 
   const [multiSelectVerse] = useState(false);
   const [multiSelectBook] = useState(false);
   const [selectedVerses, setSelectedVerses] = useState([]);
   const [selectedBooks, setSelectedBooks] = useState([]);
   const [verselectActive, setVerseSelectActive] = useState(false);
+
+  useEffect(() => {
+    applyBooksFilter(supportedBooks);
+  }, [applyBooksFilter, supportedBooks]);
+
+  useEffect(() => {
+    setNavigation({
+      bookId, chapter, verse,
+    });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [bookId, chapter, verse]);
 
   function closeBooks() {
     setOpenBook(false);

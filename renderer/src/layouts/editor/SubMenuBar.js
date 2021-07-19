@@ -99,7 +99,6 @@ export default function SubMenuBar() {
       getFonts,
       setLayout,
       setRefernceLoading,
-      setCounter,
     },
   } = useContext(ReferenceContext);
   const [notificationsText, setNotification] = useState();
@@ -125,18 +124,18 @@ export default function SubMenuBar() {
   }
 
   // Third Attempts
-  useEffect(() => {
-    const timer = counter > 0 && setInterval(() => setCounter(counter - 1), 1000);
-    if (counter <= 0) {
-      // setNotification(refernceLoading.text);
-      setRefernceLoading({
-        status: false,
-        text: '',
-      });
-    }
-    return () => clearInterval(timer);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [counter]);
+  // useEffect(() => {
+  //   const timer = counter > 0 && setInterval(() => setCounter(counter - 1), 1000);
+  //   if (counter <= 0) {
+  //     // setNotification(refernceLoading.text);
+  //     setRefernceLoading({
+  //       status: false,
+  //       text: '',
+  //     });
+  //   }
+  //   return () => clearInterval(timer);
+  // // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [counter]);
 
   function closeSnackBar() {
     setNotification(refernceLoading.text);
