@@ -111,7 +111,7 @@ export default function Sync() {
       <main>
         <div className="py-6 sm:px-6 lg:px-6">
           <div className="grid grid-cols-2 gap-2 sm:px-0">
-            <div className="shadow rounded">
+            <div className="shadow rounded min-h-screen">
               <ProjectFileBrowser />
             </div>
             <div className="shadow rounded">

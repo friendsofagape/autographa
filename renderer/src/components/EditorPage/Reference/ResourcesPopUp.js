@@ -226,6 +226,7 @@ const ResourcesPopUp = ({
                   <div className=" w-resourcePanel h-resourcePanel relative divide-y
                   divide-gray-200 "
                   >
+
                     <thead className="bg-white">
                       <tr className="">
                         <th
