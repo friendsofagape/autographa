@@ -75,7 +75,7 @@ export default function AdvancedSettingsDropdown() {
     <>
       <div>
         <button
-          className="min-w-max flex justify-between pt-3 shadow tracking-wider leading-none h-10 w-5/6 px-4 py-2 text-sm font-medium text-black bg-gray-100 rounded-md hover:bg-gray-200 focus:outline-none"
+          className="min-w-max flex justify-between pt-3 shadow tracking-wider leading-none h-10 px-4 py-2 w-96	 text-sm font-medium text-black bg-gray-100 rounded-sm hover:bg-gray-200 focus:outline-none"
           onClick={handleClick}
           type="button"
         >

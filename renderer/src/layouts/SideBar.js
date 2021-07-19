@@ -6,7 +6,7 @@ export default function SideBar() {
       <div className="grid justify-items-center items-center h-16 border border-b-1">
         <img
           className="h-8 w-8"
-          src="/logo.svg"
+          src="/Logo.svg"
           alt="Workflow"
         />
       </div>

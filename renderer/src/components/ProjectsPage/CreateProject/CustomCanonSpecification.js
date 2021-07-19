@@ -12,7 +12,7 @@ const CustomCanonSpecification = ({ bibleNav, closeBibleNav, handleNav }) => {
   const initialVerse = '1';
   const [name, setName] = React.useState();
   const {
-    states: { canonSpecification },
+    states: { canonSpecification, canonList },
     actions: { setcanonSpecification },
   } = React.useContext(ProjectContext);
   const [selectedBooks, setSelectedBooks] = React.useState([]);
@@ -21,9 +21,17 @@ const CustomCanonSpecification = ({ bibleNav, closeBibleNav, handleNav }) => {
     state: { bookList },
   } = useBibleReference({ initialBook, initialChapter, initialVerse });
   const saveCanon = () => {
-    setcanonSpecification({ title: name, currentScope: selectedBooks });
+    setcanonSpecification({
+      id: canonList.length + 1, title: name, currentScope: selectedBooks, lock: false,
+    });
     closeBibleNav();
-   };
+  };
+  const editCanon = () => {
+    setcanonSpecification({
+      id: canonSpecification.id, title: name, currentScope: selectedBooks, lock: false,
+    });
+    closeBibleNav();
+  };
    React.useEffect(() => {
      if (handleNav === 'edit') {
         setName(canonSpecification.title);
@@ -77,7 +85,7 @@ const CustomCanonSpecification = ({ bibleNav, closeBibleNav, handleNav }) => {
             <button
               type="button"
               className="w-40 h-10  bg-success leading-loose rounded shadow text-xs font-base  text-white tracking-wide  font-light uppercase"
-              onClick={() => saveCanon()}
+              onClick={() => (handleNav === 'edit' ? editCanon() : saveCanon())}
             >
               Save
             </button>
