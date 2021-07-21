@@ -81,26 +81,40 @@ export default function StatsModal(props) {
                     </Dialog.Title>
 
                     <div className="flex cursor-pointer border-0 border-b border-gray-300">
-                      <div onClick={() => setTabNumber(0)} className={`flex items-center justify-center p-2 leading-6 text-sm text-black hover:text-primary uppercase tracking-wide font-bold border-0 border-b-4 ${tabNumber === 0 ? 'border-primary' : 'border-transparent hover:border-black'}`}>
+                      <button
+                        type="button"
+                        onClick={() => setTabNumber(0)}
+                        className={`flex items-center justify-center p-2 leading-6 text-sm text-black hover:text-primary uppercase tracking-wide font-bold border-0 border-b-4 ${tabNumber === 0 ? 'border-primary' : 'border-transparent hover:border-black'}`}
+                      >
                         <InformationCircleIcon
                           className="h-5 w-5 mr-2"
                           aria-hidden="true"
                         />
                         About
-                      </div>
-                      <div onClick={() => setTabNumber(1)} className={`flex items-center justify-center p-2 leading-6 text-sm text-black hover:text-primary uppercase tracking-wide font-bold border-0 border-b-4 ${tabNumber === 1 ? 'border-primary' : 'border-transparent hover:border-black'}`}>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setTabNumber(1)}
+                        className={`flex items-center justify-center p-2 leading-6 text-sm text-black hover:text-primary uppercase tracking-wide font-bold border-0 border-b-4 ${tabNumber === 1 ? 'border-primary' : 'border-transparent hover:border-black'}`}
+                      >
                         <DocumentTextIcon
                           className="h-5 w-5 mr-2"
                           aria-hidden="true"
                         />
                         Licence
-                      </div>
+                      </button>
                     </div>
                     <div className="mt-5 prose">
                       {tabNumber === 0
                         && (
                           <p className="text-sm text-gray-500">
-                            This is a standalone desktop application which hopes to aid and be a friendly companion of the Bible Translator. In essence it is a basic USFM editor which is capable of import and export of USFM files. It has handy features like color-coded diffs across imported texts for comparison between revisions, search and replace and export to formatted HTML and autographa will include capabilities for syncing data with online repositories and that this application is licensed differently.
+                            This is a standalone desktop application which hopes to aid and be a
+                            friendly companion of the Bible Translator. In essence it is a basic
+                            USFM editor which is capable of import and export of USFM files. It has
+                            handy features like color-coded diffs across imported texts for
+                            comparison between revisions, search and replace and export to formatted
+                            HTML and autographa will include capabilities for syncing data with
+                            online repositories and that this application is licensed differently.
                           </p>
                         )}
                       {tabNumber === 1
@@ -111,26 +125,32 @@ export default function StatsModal(props) {
                             <p className="text-sm text-gray-500">Copyright &copy; 2020 Friends of Agape</p>
 
                             <p className="text-sm text-gray-500">
-                              Permission is hereby granted, free of charge, to any person obtaining a copy
-                              of this software and associated documentation files (the "Software"), to deal
-                              in the Software without restriction, including without limitation the rights
-                              to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+                              Permission is hereby granted, free of charge, to any person obtaining
+                              a copy of this software and associated documentation files
+                              (the &quot;Software&quot;), to deal in the Software without
+                              restriction,
+                              including without limitation the rights to use, copy, modify, merge,
+                              publish, distribute, sublicense, and/or sell
                               copies of the Software, and to permit persons to whom the Software is
                               furnished to do so, subject to the following conditions:
                             </p>
 
                             <p className="text-sm text-gray-500">
-                              The above copyright notice and this permission notice shall be included in all
-                              copies or substantial portions of the Software.
+                              The above copyright notice and this permission notice shall be
+                              included in all copies or substantial portions of the Software.
                             </p>
 
                             <p className="text-sm text-gray-500">
-                              THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-                              IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-                              FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-                              AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-                              LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-                              OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+                              THE SOFTWARE IS PROVIDED &quote; AS IS &quote;, WITHOUT WARRANTY OF
+                              ANY KIND,
+                              EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+                              MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+                              IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+                              CLAIM, DAMAGES OR OTHER
+                              LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+                              ARISING FROM,
+                              OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+                              DEALINGS IN THE
                               SOFTWARE.
                             </p>
 
