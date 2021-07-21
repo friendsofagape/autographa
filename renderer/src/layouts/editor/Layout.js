@@ -15,7 +15,7 @@ export default function EditorLayout(props) {
         <MenuBar />
         <SubMenuBar />
 
-        <main>
+        <main className="bg-gray-100">
           {children}
         </main>
 

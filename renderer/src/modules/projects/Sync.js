@@ -1,7 +1,7 @@
 import { useState, Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 
-import ProjectsLayout from '@/layouts/ProjectsLayout';
+import ProjectsLayout from '@/layouts/projects/Layout';
 import Gitea from '@/components/Sync/Gitea/Gitea';
 // import styles from './breadcrumbs.module.css';
 import ProjectFileBrowser from '@/components/Sync/ProjectFileBrowser';
