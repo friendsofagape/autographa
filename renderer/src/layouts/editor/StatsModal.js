@@ -1,5 +1,3 @@
-/* eslint-disable react/no-unescaped-entities */
-/* eslint-disable max-len */
 import PropTypes from 'prop-types';
 import {
   Fragment, useRef, useState,
@@ -14,9 +12,9 @@ import {
   DocumentTextIcon,
 } from '@heroicons/react/outline';
 
-import LogoIcon from '../../../public/Logo.svg';
+import LogoIcon from '/public/logo.svg';
 
-export default function AboutModal(props) {
+export default function StatsModal(props) {
   const { openModal, open } = props;
   const [tabNumber, setTabNumber] = useState(0);
 
@@ -65,7 +63,7 @@ export default function AboutModal(props) {
             leaveTo="opacity-0 scale-95"
           >
 
-            <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+            <div className="inline-block bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all align-middle h-2/3 w-2/3">
               <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                 <div className="sm:flex sm:items-start">
 
@@ -83,24 +81,14 @@ export default function AboutModal(props) {
                     </Dialog.Title>
 
                     <div className="flex cursor-pointer border-0 border-b border-gray-300">
-                      <div
-                        onClick={() => setTabNumber(0)}
-                        role="button"
-                        tabIndex="0"
-                        className={`flex items-center justify-center p-2 leading-6 text-sm text-black hover:text-primary uppercase tracking-wide font-bold border-0 border-b-4 ${tabNumber === 0 ? 'border-primary' : 'border-transparent hover:border-black'}`}
-                      >
+                      <div onClick={() => setTabNumber(0)} className={`flex items-center justify-center p-2 leading-6 text-sm text-black hover:text-primary uppercase tracking-wide font-bold border-0 border-b-4 ${tabNumber === 0 ? 'border-primary' : 'border-transparent hover:border-black'}`}>
                         <InformationCircleIcon
                           className="h-5 w-5 mr-2"
                           aria-hidden="true"
                         />
                         About
                       </div>
-                      <div
-                        onClick={() => setTabNumber(1)}
-                        role="button"
-                        tabIndex="0"
-                        className={`flex items-center justify-center p-2 leading-6 text-sm text-black hover:text-primary uppercase tracking-wide font-bold border-0 border-b-4 ${tabNumber === 1 ? 'border-primary' : 'border-transparent hover:border-black'}`}
-                      >
+                      <div onClick={() => setTabNumber(1)} className={`flex items-center justify-center p-2 leading-6 text-sm text-black hover:text-primary uppercase tracking-wide font-bold border-0 border-b-4 ${tabNumber === 1 ? 'border-primary' : 'border-transparent hover:border-black'}`}>
                         <DocumentTextIcon
                           className="h-5 w-5 mr-2"
                           aria-hidden="true"
@@ -196,7 +184,7 @@ export default function AboutModal(props) {
   );
 }
 
-AboutModal.propTypes = {
+StatsModal.propTypes = {
   openModal: PropTypes.func,
   open: PropTypes.bool,
 };

@@ -20,7 +20,7 @@ const home = () => (
             <EditorLayout>
               <div className="grid grid-cols-3 h-editor">
                 <ReferencePlaceholder />
-                <div className="m-3 ml-0 border-b-2 border-secondary rounded-md shadow overflow-hidden">
+                <div className="bg-white m-3 ml-0 border-b-2 border-secondary rounded-md shadow overflow-hidden">
                   <UsfmEditor />
                 </div>
               </div>

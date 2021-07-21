@@ -126,6 +126,7 @@ export default function TopMenuBar() {
                 </div>
 
                 <div className="flex justify-end">
+
                   <div className="mr-4 flex items-center">
                     <div className="inline-flex">
                       <button
@@ -205,6 +206,13 @@ export default function TopMenuBar() {
                         </>
                       )}
                     </Popover>
+
+                    <button type="button" className={styles.btn}>
+
+                      <div className="h6 w-6 hover:text-black font-bold border-r border-gray-200 text-center">A</div>
+                      <div className="h6 w-6 hover:text-black font-bold text-lg text-center">A</div>
+
+                    </button>
 
                     <button type="button" className={styles.btn}>
                       <ExpandIcon fill="currentColor" className="h-6 w-6" aria-hidden="true" />

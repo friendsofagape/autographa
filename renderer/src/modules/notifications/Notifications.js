@@ -1,4 +1,4 @@
-import { Fragment } from 'react';
+import { Fragment, useRef } from 'react';
 import {
    Dialog, Transition,
 } from '@headlessui/react';
@@ -13,6 +13,8 @@ export default function Notifications(props) {
     closeNotifications,
   } = props;
 
+  const cancelButtonRef = useRef(null);
+
   function closeSideBars() {
     closeNotifications(false);
   }
@@ -25,6 +27,7 @@ export default function Notifications(props) {
         className="fixed inset-0 z-10 overflow-y-auto"
         open={isOpen}
         onClose={closeSideBars}
+        initialFocus={cancelButtonRef}
       >
 
         <div className="min-h-screen px-4">
@@ -64,7 +67,7 @@ export default function Notifications(props) {
                   notifications
                 </div>
                 <div className="flex justify-end">
-                  <button type="button" className="w-9 h-9 bg-gray-900 p-2 focus:outline-none" onClick={closeSideBars}>
+                  <button type="button" ref={cancelButtonRef} className="w-9 h-9 bg-gray-900 p-2 focus:outline-none" onClick={closeSideBars}>
                     <XIcon />
                   </button>
                 </div>

@@ -1,4 +1,4 @@
-import ProjectsLayout from '@/layouts/ProjectsLayout';
+import ProjectsLayout from '@/layouts/projects/Layout';
 import React from 'react';
 import PropTypes from 'prop-types';
 import AdvancedSettingsDropdown from '@/components/ProjectsPage/CreateProject/AdvancedSettingsDropdown';
