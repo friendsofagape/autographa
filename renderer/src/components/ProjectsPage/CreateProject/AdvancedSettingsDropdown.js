@@ -8,14 +8,23 @@ import LicencePopover from './LicencePopover';
 function BookNumberTag(props) {
   const { children } = props;
 
+  let numberOfBooks = 'books';
+
+  if (children.toString() === '1') {
+    numberOfBooks = 'book';
+  }
+
   return (
-    <div className="rounded-full  px-3 py-1 bg-gray-200 text-xs uppercase font-semibold">
+    <div className="rounded-full  px-2 py-1 bg-gray-200 text-xs uppercase font-semibold">
       <div className="flex">
         <span>
           {' '}
           {children}
           {' '}
-          <span> books</span>
+          <span>
+            {' '}
+            { numberOfBooks }
+          </span>
         </span>
       </div>
     </div>
@@ -75,7 +84,7 @@ export default function AdvancedSettingsDropdown() {
     <>
       <div>
         <button
-          className="min-w-max flex justify-between pt-3 shadow tracking-wider leading-none h-10 px-4 py-2 w-96	 text-sm font-medium text-black bg-gray-100 rounded-sm hover:bg-gray-200 focus:outline-none"
+          className="min-w-max flex justify-between pt-3 shadow tracking-wider leading-none h-10 px-4 py-2 w-96 text-sm font-medium text-black bg-gray-100 rounded-sm hover:bg-gray-200 focus:outline-none"
           onClick={handleClick}
           type="button"
         >
@@ -102,40 +111,43 @@ export default function AdvancedSettingsDropdown() {
               />
             </button> */}
           </div>
-          <div className="flex relative gap-5 mt-5">
-            <div className="absolute left-72 ml-4">
+          <div className="relative">
+            <div className="absolute left-64">
               <BookNumberTag>
                 {(canonSpecification.currentScope).length}
               </BookNumberTag>
             </div>
+            <div className="mt-8 flex relative">
+              <div className="flex">
 
-            <CustomAutocomplete label="Canon Specificationse" list={canonList} setValue={setValue} />
-            <button
-              className="mt-5 flex-shrink-0"
-              type="button"
-              label="na"
-              onClick={() => openBibleNav('new')}
-            >
-              <img
-                className="min-w-10"
-                src="illustrations/add-button.svg"
-                alt="add button"
-              />
-            </button>
-            <button
-              className="mt-5 flex-shrink-0"
-              type="button"
-              label="na"
-              onClick={() => openBibleNav('edit')}
-            >
-              <img
-                className=" w-10 h-10"
-                src="illustrations/edit.svg"
-                alt="add button"
-              />
-            </button>
+                <CustomAutocomplete label="Canon Specification" list={canonList} setValue={setValue} />
+                <div className="flex gap-3 ml-3">
+                  <button
+                    onClick={() => openBibleNav('new')}
+                    type="button"
+                    className="focus:outline-none pt-8"
+                  >
+                    <img
+                      label="na"
+                      src="illustrations/add-button.svg"
+                      alt="add button"
+                    />
+                  </button>
+                  <button
+                    onClick={() => openBibleNav('edit')}
+                    type="button"
+                    className="focus:outline-none pt-8"
+                  >
+                    <img
+                      src="illustrations/edit.svg"
+                      alt="add button"
+                    />
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
-          <div className="flex gap-5 mt-5">
+          <div className="flex gap-3 mt-5">
             <CustomAutocomplete label="Licence" list={licenceList} setValue={setValue} />
             <div className="mt-8 w-8 min-w-max">
               <LicencePopover />

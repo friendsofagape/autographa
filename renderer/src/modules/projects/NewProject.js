@@ -87,31 +87,31 @@ export default function NewProject() {
               </div>
               <div className="flex gap-8">
                 <div>
-                <h4 className="text-xs font-base mb-2 text-primary  tracking-wide leading-4  font-light">Version</h4>
-                <input
-                  type="text"
-                  name="version"
-                  id=""
-                  value={version.name}
-                  onChange={(e) => {
+                  <h4 className="text-xs font-base mb-2 text-primary  tracking-wide leading-4  font-light">Version</h4>
+                  <input
+                    type="text"
+                    name="version"
+                    id=""
+                    value={version.name}
+                    onChange={(e) => {
                     handleVersion(e);
                   }}
-                  className="bg-white w-80 block rounded shadow-sm sm:text-sm focus:border-primary border-gray-300"
+                    className="bg-white w-80 block rounded shadow-sm sm:text-sm focus:border-primary border-gray-300"
                   />
-                  </div>
-               <div>
-                <h4 className="text-xs font-base mb-2 text-primary  tracking-wide leading-4  font-light">Abbreviation</h4>
-                <input
-                  type="text"
-                  name="version_abbreviated"
-                  id=""
-                  value={version.abbreviation}
-                  onChange={(e) => {
+                </div>
+                <div>
+                  <h4 className="text-xs font-base mb-2 text-primary  tracking-wide leading-4  font-light">Abbreviation</h4>
+                  <input
+                    type="text"
+                    name="version_abbreviated"
+                    id=""
+                    value={version.abbreviation}
+                    onChange={(e) => {
                     setVersion({ ...version, abbreviation: e.target.value });
                   }}
-                  className="bg-white w-24 block rounded  sm:text-sm focus:border-primary border-gray-300"
+                    className="bg-white w-24 block rounded  sm:text-sm focus:border-primary border-gray-300"
                   />
-                  </div>
+                </div>
               </div>
               <div>
                 <h4 className="text-xs font-base mb-2 text-primary leading-4 tracking-wide  font-light">Description</h4>
@@ -135,7 +135,7 @@ export default function NewProject() {
                   <TargetLanguagePopover />
                 </div>
               </div>
-              
+
             </div>
           </div>
           <div className="overflow-auto relative">
@@ -143,12 +143,12 @@ export default function NewProject() {
               <AdvancedSettingsDropdown />
             </div>
             <button
-                type="button"
-                className="w-40 h-10  mb-5 bg-success leading-loose rounded shadow text-xs font-base  text-white tracking-wide  font-light uppercase absolute bottom-0 left-64"
-                onClick={() => createProject()}
-              >
-                Create Project
-              </button>
+              type="button"
+              className="w-40 h-10  mb-5 bg-success leading-loose rounded shadow text-xs font-base  text-white tracking-wide  font-light uppercase absolute bottom-0 left-64"
+              onClick={() => createProject()}
+            >
+              Create Project
+            </button>
           </div>
         </div>
       </div>
