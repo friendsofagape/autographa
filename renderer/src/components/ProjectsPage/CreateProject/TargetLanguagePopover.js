@@ -7,7 +7,7 @@ export default function TargetLanguagePopover() {
   const [lang, setLang] = React.useState();
   const [direction, setDirection] = React.useState();
   const [edit, setEdit] = React.useState(false);
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   const {
     states: {
       language,

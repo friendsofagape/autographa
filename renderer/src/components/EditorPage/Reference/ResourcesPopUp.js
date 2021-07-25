@@ -23,13 +23,10 @@ const translationNotes = [
     createData('Malayalam', 'ml', '2020-12-31'),
     createData('Gujrati Notes', 'gu', '2020-12-29'),
     createData('Gujrati Notes', 'gu', '2020-12-29'),
-<<<<<<< HEAD
     createData('Gujrati Notes', 'gu', '2020-12-29'),
     createData('Gujrati Notes', 'gu', '2020-12-29'),
     createData('Gujrati Notes', 'gu', '2020-12-29'),
 
-=======
->>>>>>> 1b273cbded12e3caa897cb380b75cfe151324f0e
 ];
 const translationWords = [
   createData('Translation Words', 'en', '2021-02-05'),
@@ -134,41 +131,11 @@ const ResourcesPopUp = ({
                     />
                   </button>
                   <div
-<<<<<<< HEAD
                     className="flex gap-6 mb-5 ml-52 mr-10 absolute bottom-0 justify-end left-64 z-10"
                   >
                     <button type="button" className="py-2 px-6 bg-primary rounded shadow text-white uppercase text-xs tracking-widest font-semibold">Upload</button>
                     <button type="button" className="py-2 px-6 rounded shadow bg-error text-white uppercase text-xs tracking-widest font-semibold">Cancel</button>
                     <button type="button" className="py-2 px-7 rounded shadow bg-success text-white uppercase text-xs tracking-widest font-semibold">Open</button>
-=======
-                    className="flex gap-6 mb-5 ml-52 mr-10 absolute bottom-0 justify-end
-                      left-64 z-10"
-                  >
-                    <button
-                      type="button"
-                      className="py-2 px-6 bg-primary rounded shadow
-                      text-white uppercase text-xs tracking-widest font-semibold"
-                    >
-                      Upload
-
-                    </button>
-                    <button
-                      type="button"
-                      className="py-2 px-6 rounded shadow bg-error
-                       text-white uppercase text-xs tracking-widest font-semibold"
-                    >
-                      Cancel
-
-                    </button>
-                    <button
-                      type="button"
-                      className="py-2 px-7 rounded shadow bg-success
-                       text-white uppercase text-xs tracking-widest font-semibold"
-                    >
-                      Open
-
-                    </button>
->>>>>>> 1b273cbded12e3caa897cb380b75cfe151324f0e
                   </div>
                   <div>
                     <div className="uppercase bg-secondary  text-white py-2 px-2 text-xs
@@ -238,14 +205,10 @@ const ResourcesPopUp = ({
                       </div>
                     </div>
                   </div>
-<<<<<<< HEAD
-                  <div style={{ width: 600, height: 550 }} className=" relative divide-y divide-gray-200 ">
-=======
                   <div className=" w-resourcePanel h-resourcePanel relative divide-y
                   divide-gray-200 "
                   >
 
->>>>>>> 1b273cbded12e3caa897cb380b75cfe151324f0e
                     <thead className="bg-white">
                       <tr className="">
                         <th
@@ -259,12 +222,8 @@ const ResourcesPopUp = ({
                           Name
                         </th>
                         <th
-<<<<<<< HEAD
-                          className="px-40 py-3 font-bold text-gray-700 uppercase tracking-wider"
-=======
                           className="px-40 py-3 font-bold text-gray-700 uppercase
                             tracking-wider"
->>>>>>> 1b273cbded12e3caa897cb380b75cfe151324f0e
                         >
                           Language
                         </th>
