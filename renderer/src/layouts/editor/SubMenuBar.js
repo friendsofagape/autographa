@@ -26,6 +26,7 @@ import Notifications from '@/modules/notifications/Notifications';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import MenuBar from '@/components/Menubar/MenuBar';
 import AboutModal from './AboutModal';
+import StatsModal from './StatsModal';
 import MenuDropdown from '../../components/MenuDropdown/MenuDropdown';
 import menuStyles from './MenuBar.module.css';
 import styles from './SubMenuBar.module.css';
@@ -86,6 +87,7 @@ const FormatMenuItems = [
 ];
 export default function SubMenuBar() {
   const [open, setOpen] = useState(false);
+  const [openStats, setOpenStats] = useState(false);
   // const [snackBar, setSnackBar] = useState(true);
   const [openSideBar, setOpenSideBar] = useState(false);
   const {
@@ -99,7 +101,6 @@ export default function SubMenuBar() {
       getFonts,
       setLayout,
       setRefernceLoading,
-      setCounter,
     },
   } = useContext(ReferenceContext);
   const [notificationsText, setNotification] = useState();
@@ -125,18 +126,18 @@ export default function SubMenuBar() {
   }
 
   // Third Attempts
-  useEffect(() => {
-    const timer = counter > 0 && setInterval(() => setCounter(counter - 1), 1000);
-    if (counter <= 0) {
-      // setNotification(refernceLoading.text);
-      setRefernceLoading({
-        status: false,
-        text: '',
-      });
-    }
-    return () => clearInterval(timer);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [counter]);
+  // useEffect(() => {
+  //   const timer = counter > 0 && setInterval(() => setCounter(counter - 1), 1000);
+  //   if (counter <= 0) {
+  //     // setNotification(refernceLoading.text);
+  //     setRefernceLoading({
+  //       status: false,
+  //       text: '',
+  //     });
+  //   }
+  //   return () => clearInterval(timer);
+  // // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [counter]);
 
   function closeSnackBar() {
     setNotification(refernceLoading.text);
@@ -157,10 +158,16 @@ export default function SubMenuBar() {
     setOpen(isOpen);
   }
 
+  function openStatsModal(isOpen) {
+    setOpenStats(isOpen);
+  }
+
   return (
     <>
 
       <AboutModal openModal={openModal} open={open} />
+
+      <StatsModal openModal={openStatsModal} open={openStats} />
 
       <Transition appear show={refernceLoading.status} as={Fragment}>
         <Dialog
@@ -271,7 +278,7 @@ export default function SubMenuBar() {
       </Notifications>
 
       <nav className="flex p-2 shadow">
-        <div>
+        <div className="w-3/5">
           <MenuBar header="File" MenuItems={FileMenuItems} />
           <span>
             <MenuBar header="FORMAT" MenuItems={FormatMenuItems} style={{ left: '-60px' }} />
@@ -283,8 +290,11 @@ export default function SubMenuBar() {
             <span>Format</span>
           </button> */}
         </div>
-        <div className="w-2/3">
-          <div className="flex-1 items-center text-center place-self-center">
+        {/* <div className="w-2/3">
+          <div className="flex-1 items-center text-center place-self-center" />
+        </div> */}
+        <div className="w-2/5">
+          <div className="flex justify-end">
             <button type="button" onClick={() => handleResource()} className={`group ${menuStyles.btn}`}>
               <ColumnsIcon fill="currentColor" className="h-6 w-6" aria-hidden="true" />
               <span className="px-2 ml-1 bg-primary
@@ -301,10 +311,22 @@ export default function SubMenuBar() {
             <button type="button" className={`group ${menuStyles.btn} mx-0`}>
               <ForwardIcon fill="currentColor" className="h-6 w-6" aria-hidden="true" />
             </button>
-          </div>
-        </div>
-        <div className="flex-1">
-          <div className="flex justify-end">
+            <div
+              className="flex items-center px-4"
+              onClick={() => setOpenStats(true)}
+              role="button"
+              tabIndex="0"
+            >
+              <div className="bg-success w-20 h-2 mr-4 rounded overflow-hidden">
+                <div className="bg-gray-300 w-10 h-2" />
+              </div>
+              <span className="text-xs uppercase font-semibold">
+                Saved
+                <span className="text-primary"> 5 Mins </span>
+                ago
+              </span>
+            </div>
+
             <button
               onClick={openSideBars}
               type="button"

@@ -1,5 +1,3 @@
-/* eslint-disable react/no-unescaped-entities */
-/* eslint-disable max-len */
 import PropTypes from 'prop-types';
 import {
   Fragment, useRef, useState,
@@ -16,7 +14,7 @@ import {
 
 import LogoIcon from '../../../public/Logo.svg';
 
-export default function AboutModal(props) {
+export default function StatsModal(props) {
   const { openModal, open } = props;
   const [tabNumber, setTabNumber] = useState(0);
 
@@ -65,7 +63,7 @@ export default function AboutModal(props) {
             leaveTo="opacity-0 scale-95"
           >
 
-            <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+            <div className="inline-block bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all align-middle h-2/3 w-2/3">
               <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                 <div className="sm:flex sm:items-start">
 
@@ -83,10 +81,9 @@ export default function AboutModal(props) {
                     </Dialog.Title>
 
                     <div className="flex cursor-pointer border-0 border-b border-gray-300">
-                      <div
+                      <button
+                        type="button"
                         onClick={() => setTabNumber(0)}
-                        role="button"
-                        tabIndex="0"
                         className={`flex items-center justify-center p-2 leading-6 text-sm text-black hover:text-primary uppercase tracking-wide font-bold border-0 border-b-4 ${tabNumber === 0 ? 'border-primary' : 'border-transparent hover:border-black'}`}
                       >
                         <InformationCircleIcon
@@ -94,11 +91,10 @@ export default function AboutModal(props) {
                           aria-hidden="true"
                         />
                         About
-                      </div>
-                      <div
+                      </button>
+                      <button
+                        type="button"
                         onClick={() => setTabNumber(1)}
-                        role="button"
-                        tabIndex="0"
                         className={`flex items-center justify-center p-2 leading-6 text-sm text-black hover:text-primary uppercase tracking-wide font-bold border-0 border-b-4 ${tabNumber === 1 ? 'border-primary' : 'border-transparent hover:border-black'}`}
                       >
                         <DocumentTextIcon
@@ -106,13 +102,19 @@ export default function AboutModal(props) {
                           aria-hidden="true"
                         />
                         Licence
-                      </div>
+                      </button>
                     </div>
                     <div className="mt-5 prose">
                       {tabNumber === 0
                         && (
                           <p className="text-sm text-gray-500">
-                            This is a standalone desktop application which hopes to aid and be a friendly companion of the Bible Translator. In essence it is a basic USFM editor which is capable of import and export of USFM files. It has handy features like color-coded diffs across imported texts for comparison between revisions, search and replace and export to formatted HTML and autographa will include capabilities for syncing data with online repositories and that this application is licensed differently.
+                            This is a standalone desktop application which hopes to aid and be a
+                            friendly companion of the Bible Translator. In essence it is a basic
+                            USFM editor which is capable of import and export of USFM files. It has
+                            handy features like color-coded diffs across imported texts for
+                            comparison between revisions, search and replace and export to formatted
+                            HTML and autographa will include capabilities for syncing data with
+                            online repositories and that this application is licensed differently.
                           </p>
                         )}
                       {tabNumber === 1
@@ -123,26 +125,32 @@ export default function AboutModal(props) {
                             <p className="text-sm text-gray-500">Copyright &copy; 2020 Friends of Agape</p>
 
                             <p className="text-sm text-gray-500">
-                              Permission is hereby granted, free of charge, to any person obtaining a copy
-                              of this software and associated documentation files (the "Software"), to deal
-                              in the Software without restriction, including without limitation the rights
-                              to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+                              Permission is hereby granted, free of charge, to any person obtaining
+                              a copy of this software and associated documentation files
+                              (the &quot;Software&quot;), to deal in the Software without
+                              restriction,
+                              including without limitation the rights to use, copy, modify, merge,
+                              publish, distribute, sublicense, and/or sell
                               copies of the Software, and to permit persons to whom the Software is
                               furnished to do so, subject to the following conditions:
                             </p>
 
                             <p className="text-sm text-gray-500">
-                              The above copyright notice and this permission notice shall be included in all
-                              copies or substantial portions of the Software.
+                              The above copyright notice and this permission notice shall be
+                              included in all copies or substantial portions of the Software.
                             </p>
 
                             <p className="text-sm text-gray-500">
-                              THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-                              IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-                              FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-                              AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-                              LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-                              OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+                              THE SOFTWARE IS PROVIDED &quote; AS IS &quote;, WITHOUT WARRANTY OF
+                              ANY KIND,
+                              EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+                              MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+                              IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+                              CLAIM, DAMAGES OR OTHER
+                              LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+                              ARISING FROM,
+                              OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+                              DEALINGS IN THE
                               SOFTWARE.
                             </p>
 
@@ -196,7 +204,7 @@ export default function AboutModal(props) {
   );
 }
 
-AboutModal.propTypes = {
+StatsModal.propTypes = {
   openModal: PropTypes.func,
   open: PropTypes.bool,
 };

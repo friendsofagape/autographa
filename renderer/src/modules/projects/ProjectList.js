@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import { ChevronUpIcon } from '@heroicons/react/solid';
 import { StarIcon } from '@heroicons/react/outline';
 import moment from 'moment';
-import ProjectsLayout from '../../layouts/ProjectsLayout';
+import ProjectsLayout from '@/layouts/projects/Layout';
 import EnhancedTableHead from '../../components/ProjectsPage/Projects/EnhancedTableHead';
 import { AutographaContext } from '../../components/context/AutographaContext';
 import { getComparator, stableSort } from '../../components/ProjectsPage/Projects/SortingHelper';
