@@ -13,7 +13,7 @@ export default function Sync() {
       title="Sync"
       isTwoCol
       colOne={(
-        <form action="#" className="flex flex-row mx-5" >
+        <form action="#" className="flex flex-row mx-5">
           <div className="flex items-center h-5">
             <input
               id="comments"

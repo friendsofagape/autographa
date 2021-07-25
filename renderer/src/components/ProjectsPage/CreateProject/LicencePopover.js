@@ -20,6 +20,7 @@ export default function LicencePopover() {
       copyright,
     }, actions: { setCopyRight },
   } = React.useContext(ProjectContext);
+  // eslint-disable-next-line no-unused-vars
   const openlicenceNav = (nav) => {
     if (nav === 'edit') {
       setName(copyright.title);
@@ -109,7 +110,15 @@ export default function LicencePopover() {
                     >
                       create
                     </button>
-                    <button type="button" onClick={closeModal} className=" mt-5 bg-error w-28 h-8 border-color-error rounded uppercase shadow text-white text-xs tracking-wide leading-4 font-light focus:outline-none"> cancel</button>
+                    <button
+                      type="button"
+                      onClick={closeModal}
+                      className=" mt-5
+                     bg-error w-28 h-8 border-color-error rounded uppercase shadow text-white text-xs tracking-wide leading-4 font-light focus:outline-none"
+                    >
+                      {' '}
+                      cancel
+                    </button>
                   </div>
 
                 </div>
