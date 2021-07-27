@@ -23,6 +23,10 @@ const translationNotes = [
     createData('Malayalam', 'ml', '2020-12-31'),
     createData('Gujrati Notes', 'gu', '2020-12-29'),
     createData('Gujrati Notes', 'gu', '2020-12-29'),
+    createData('Gujrati Notes', 'gu', '2020-12-29'),
+    createData('Gujrati Notes', 'gu', '2020-12-29'),
+    createData('Gujrati Notes', 'gu', '2020-12-29'),
+
 ];
 const translationWords = [
   createData('Translation Words', 'en', '2021-02-05'),
@@ -127,33 +131,11 @@ const ResourcesPopUp = ({
                     />
                   </button>
                   <div
-                    className="flex gap-6 mb-5 ml-52 mr-10 absolute bottom-0 justify-end
-                      left-64 z-10"
+                    className="flex gap-6 mb-5 ml-52 mr-10 absolute bottom-0 justify-end left-64 z-10"
                   >
-                    <button
-                      type="button"
-                      className="py-2 px-6 bg-primary rounded shadow
-                      text-white uppercase text-xs tracking-widest font-semibold"
-                    >
-                      Upload
-
-                    </button>
-                    <button
-                      type="button"
-                      className="py-2 px-6 rounded shadow bg-error
-                       text-white uppercase text-xs tracking-widest font-semibold"
-                    >
-                      Cancel
-
-                    </button>
-                    <button
-                      type="button"
-                      className="py-2 px-7 rounded shadow bg-success
-                       text-white uppercase text-xs tracking-widest font-semibold"
-                    >
-                      Open
-
-                    </button>
+                    <button type="button" className="py-2 px-6 bg-primary rounded shadow text-white uppercase text-xs tracking-widest font-semibold">Upload</button>
+                    <button type="button" className="py-2 px-6 rounded shadow bg-error text-white uppercase text-xs tracking-widest font-semibold">Cancel</button>
+                    <button type="button" className="py-2 px-7 rounded shadow bg-success text-white uppercase text-xs tracking-widest font-semibold">Open</button>
                   </div>
                   <div>
                     <div className="uppercase bg-secondary  text-white py-2 px-2 text-xs
