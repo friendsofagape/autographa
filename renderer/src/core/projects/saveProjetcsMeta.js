@@ -1,5 +1,6 @@
 import moment from 'moment';
 import { createVersificationUSFM } from '../../util/createVersificationUSFM';
+import createTranslationSB from '../burrito/createTranslationSB';
 
 const saveProjectsMeta = (
     newProjectFields,
@@ -70,13 +71,26 @@ const saveProjectsMeta = (
                     'projects',
                     'projects.json'),
                     JSON.stringify(obj));
-                    createVersificationUSFM(
-                        'username',
-                        newProjectFields.projectName,
-                        versificationScheme,
-                        canonSpecification.currentScope,
-                    );
-                    status.push({ type: 'success', value: 'projectmeta updated' });
+                // ingredient has the list of created files in the form of SB Ingredients
+                const ingredient = createVersificationUSFM(
+                    'username',
+                    newProjectFields.projectName,
+                    versificationScheme,
+                    canonSpecification.currentScope,
+                );
+                const burritoFile = createTranslationSB('username',
+                newProjectFields.projectName,
+                canonSpecification.currentScope,
+                selectedLanguage.title);
+                burritoFile.ingredients = ingredient;
+                fs.writeFileSync(path.join(newpath,
+                    'autographa',
+                    'users',
+                    'username',
+                    'projects',
+                    newProjectFields.projectName,
+                    'metadata.json'), JSON.stringify(burritoFile));
+                status.push({ type: 'success', value: 'projectmeta updated' });
             }
     } else {
         // Creating new file if nothing present

@@ -1,5 +1,6 @@
 const grammar = require('usfm-grammar');
 const path = require('path');
+const md5 = require('md5');
 
 export const createVersificationUSFM = (username, projectname, versification, books) => {
   const newpath = localStorage.getItem('userPath');
@@ -13,6 +14,7 @@ export const createVersificationUSFM = (username, projectname, versification, bo
     { name: '', file: 'rso.json' },
     { name: '', file: 'vul.json' },
   ];
+  const ingredients = {};
   schemes.forEach((scheme) => {
     if (versification === scheme.name) {
       // eslint-disable-next-line import/no-dynamic-require
@@ -56,9 +58,31 @@ export const createVersificationUSFM = (username, projectname, versification, bo
               fs.mkdirSync(folder, { recursive: true });
             }
             fs.writeFileSync(path.join(folder, `${book}.usfm`), reCreatedUsfm);
+            const stats = fs.statSync(path.join(folder, `${book}.usfm`));
+            ingredients[path.join('ingredients', `${book}.usfm`)] = {
+              checksum: {
+                md5: md5(reCreatedUsfm),
+              },
+              mimeType: 'text/x-usfm',
+              size: stats.size,
+              scope: {},
+            };
+            ingredients[path.join('ingredients', `${book}.usfm`)].scope[book] = [];
           }
         }
       });
+      const fs = window.require('fs');
+      fs.writeFileSync(path.join(folder, 'versification.json'), JSON.stringify(file));
+      const stats = fs.statSync(path.join(folder, 'versification.json'));
+      ingredients[path.join('ingredients', 'versification.json')] = {
+        checksum: {
+          md5: md5(file),
+        },
+        mimeType: 'application/json',
+        size: stats.size,
+        role: 'x-versification',
+      };
     }
   });
+  return ingredients;
 };
