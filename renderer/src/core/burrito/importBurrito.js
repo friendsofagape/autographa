@@ -1,4 +1,6 @@
-import burrito from '../../lib/BurritoTemplete.json';
+/* eslint-disable no-alert */
+/* eslint-disable no-console */
+// import burrito from '../../lib/BurritoTemplete.json';
 
 const md5 = require('md5');
 
