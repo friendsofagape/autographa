@@ -112,7 +112,7 @@ export default function TopMenuBar() {
                                 {({ active }) => (
                                   <a
                                     href="#profile"
-                                    // onClick={() => logout()}
+                                    onClick={() => logout()}
                                     className={classNames(
                                           active ? 'bg-gray-100' : '',
                                           'block px-4 py-2 text-sm text-gray-700',

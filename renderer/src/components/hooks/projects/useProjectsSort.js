@@ -40,7 +40,7 @@ function useProjectsSort() {
         }
       }).then(() => {
         projectArrayTemp[0].projects.forEach((project) => {
-          if (project.projectName === name) {
+          if (project.identification.name.en === name) {
             const status = project.starred;
             const selectedProject = project;
             selectedProject.starred = !status;
@@ -170,12 +170,14 @@ function useProjectsSort() {
         projects.then((value) => {
           if (value) {
             value.projects.forEach((project) => {
+              const created = Object.keys(project.identification.primary.ag);
               if (project.starred === true) {
-                  FetchStarred(project.projectName,
-                    project.language, project.createdAt, project.updatedAt);
+                // FetchStarred(projectName,language, createdAt, updatedAt);
+                FetchUnstarred(project.identification.name.en, project.languages[0].name.en,
+                  project.identification.primary.ag[created].timestamp, project.meta.dateCreated);
               } else {
-                FetchUnstarred(project.projectName,
-                  project.language, project.createdAt, project.updatedAt);
+                FetchUnstarred(project.identification.name.en, project.languages[0].name.en,
+                  project.identification.primary.ag[created].timestamp, project.meta.dateCreated);
               }
             });
           }
