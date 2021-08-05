@@ -126,10 +126,13 @@ export default function Editor({
               initialVerse={verse}
             />
         )}
-        <div className="text-center h-6 rounded-t text-gray-100  text-xs uppercase tracking-widest font-bold leading-3">
+        {/* <div className="text-center h-6 rounded-t text-gray-100  text-xs uppercase tracking-widest font-bold leading-3">
           <div className="text-center pt-1">
             Editor
           </div>
+        </div> */}
+        <div className="h-4 flex justify-center items-center text-white text-xxs uppercase tracking-wider font-bold leading-3 truncate">
+          Editor
         </div>
         <div className="flex items-center">
           {scrollLock === true ? (
@@ -146,7 +149,7 @@ export default function Editor({
             onClick={(event) => handleBookmarks(event)}
             role="button"
             tabIndex="0"
-            className="mx-2 px-2 py-2 focus:outline-none border-r-2 border-l-2 border-white border-opacity-10"
+            className="mx-2 px-2 focus:outline-none border-r-2 border-l-2 border-white border-opacity-10"
           >
             <BookmarkIcon className={`${bookMarked ? 'fill-current' : ''}  h-5 w-5 text-white`} aria-hidden="true" />
           </div>

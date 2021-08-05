@@ -1,14 +1,15 @@
 import { ReferenceContext } from '@/components/context/ReferenceContext';
-import EditorSectionSmall from '@/modules/projects/SmallEditorSection';
+import EditorSection from '@/layouts/editor/EditorSection';
 import dynamic from 'next/dynamic';
 import { useContext, useState } from 'react';
-import ReferenceBible from './ReferenceBible/ReferenceBible';
+import ReferenceBible from '@/components/EditorPage/Reference/ReferenceBible/ReferenceBible';
 
 const TranslationHelps = dynamic(
   () => import('@/components/EditorPage/Reference/TranslationHelps'),
   { ssr: false },
 );
-const ReferencePlaceholder = () => {
+
+const SectionPlaceholder = () => {
   const [referenceColumnOneData, setReferenceCoulumnOneData] = useState({
     languageId: 'en',
     selectedResource: 'tq',
@@ -30,8 +31,8 @@ const ReferencePlaceholder = () => {
     <>
       {layout === 1 && (
         <>
-          <div className="m-3 ml-0 border-b-2 rounded-md shadow overflow-y-auto ">
-            <EditorSectionSmall
+          <div className="m-3 rounded-md overflow-hidden  pb-4">
+            <EditorSection
               title={referenceColumnOneData.header === 'Notes' ? 'Translation Notes' : referenceColumnOneData.header}
               selectedResource={referenceColumnOneData.selectedResource}
               setReferenceResources={setReferenceCoulumnOneData}
@@ -49,39 +50,46 @@ const ReferencePlaceholder = () => {
                 // refName={referenceColumnOneData.refName}
                 />
               )}
-            </EditorSectionSmall>
+            </EditorSection>
           </div>
-          <div className="m-3 ml-0 border-b-2 rounded-md shadow overflow-y-auto" />
+          <div className="m-3 ml-0 rounded-md overflow-hidden  pb-4" />
         </>
       )}
 
       {layout === 2 && (
         <>
-          <div className="m-3 ml-0 border-b-2 rounded-md shadow overflow-y-auto">
-            <EditorSectionSmall
+          <div className="m-3 rounded-md overflow-hidden  pb-4">
+            <EditorSection
               column="1"
               title={referenceColumnOneData.header === 'Notes' ? 'Translation Notes' : referenceColumnOneData.header}
               selectedResource={referenceColumnOneData.selectedResource}
               setReferenceResources={setReferenceCoulumnOneData}
               languageId={referenceColumnOneData.languageId}
+            />
+          </div>
+
+          <div className="m-3 ml-0 rounded-md overflow-hidden  pb-4">
+            <EditorSection
+              column="2"
+              // title="Translation Notes Long Title"
+              title={referenceColumnTwoData.header === 'Notes' ? 'Translation Notes' : referenceColumnTwoData.header}
+              selectedResource={referenceColumnTwoData.selectedResource}
+              languageId={referenceColumnTwoData.languageId}
+              setReferenceResources={setReferenceCoulumnTwoData}
             >
-              {referenceColumnOneData.selectedResource === 'bible' ? (
+              {referenceColumnTwoData.selectedResource === 'bible' ? (
                 <ReferenceBible
-                  languageId={referenceColumnOneData.languageId}
-                  refName={referenceColumnOneData.refName}
+                  languageId={referenceColumnTwoData.languageId}
+                  refName={referenceColumnTwoData.refName}
                 />
               ) : (
                 <TranslationHelps
-                  selectedResource={referenceColumnOneData.selectedResource}
-                  languageId={referenceColumnOneData.languageId}
-                // refName={referenceColumnOneData.refName}
+                  selectedResource={referenceColumnTwoData.selectedResource}
+                  languageId={referenceColumnTwoData.languageId}
                 />
               )}
-            </EditorSectionSmall>
-          </div>
-
-          <div className="m-3 rounded-md shadow overflow-y-auto">
-            <EditorSectionSmall
+            </EditorSection>
+            <EditorSection
               column="2"
               title={referenceColumnTwoData.header === 'Notes' ? 'Translation Notes' : referenceColumnTwoData.header}
               selectedResource={referenceColumnTwoData.selectedResource}
@@ -99,18 +107,18 @@ const ReferencePlaceholder = () => {
                   languageId={referenceColumnTwoData.languageId}
                 />
               )}
-            </EditorSectionSmall>
+            </EditorSection>
           </div>
 
         </>
       )}
       {(layout >= 3 || layout === 0) && (
         <>
-          <div className="bg-white m-3 px-3 py-2 rounded-md shadow">column 1</div>
-          <div className="bg-white m-3 ml-0 px-3 py-2 rounded-md shadow">column 2</div>
+          <div className="m-3 rounded-md overflow-hidden  pb-4" />
+          <div className="m-3 ml-0 rounded-md overflow-hidden  pb-4" />
         </>
       )}
     </>
   );
 };
-export default ReferencePlaceholder;
+export default SectionPlaceholder;

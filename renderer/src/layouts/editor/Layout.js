@@ -8,20 +8,16 @@ export default function EditorLayout(props) {
   } = props;
 
   return (
-    <div className="flex">
+    <>
 
-      <div className="w-full">
+      <MenuBar />
+      <SubMenuBar />
 
-        <MenuBar />
-        <SubMenuBar />
+      <main className="bg-gray-50-x">
+        {children}
+      </main>
 
-        <main className="bg-gray-100">
-          {children}
-        </main>
-
-      </div>
-
-    </div>
+    </>
 
   );
 }
