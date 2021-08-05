@@ -4,7 +4,7 @@ import {
 } from 'react';
 
 import {
- Dialog, Transition,
+  Dialog, Transition,
 } from '@headlessui/react';
 
 import {
@@ -107,7 +107,7 @@ export default function SubMenuBar() {
 
   useEffect(() => {
     getFonts();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleResource = () => {
@@ -242,15 +242,15 @@ export default function SubMenuBar() {
 
       <Notifications isOpen={openSideBar} closeNotifications={closeNotifications}>
         {notificationsText && (
-        <div className="relative mb-2 bg-gray-200 rounded-lg text-sm text-black overflow-hidden">
-          <div className="flex justify-between px-4 py-1 text-xs uppercase font-semibold bg-gray-300 text-gray-700">
-            Resources
-            <span className="opacity-100 text-xxs text-gray-400">
-              a min ago
-            </span>
+          <div className="relative mb-2 bg-gray-200 rounded-lg text-sm text-black overflow-hidden">
+            <div className="flex justify-between px-4 py-1 text-xs uppercase font-semibold bg-gray-300 text-gray-700">
+              Resources
+              <span className="opacity-100 text-xxs text-gray-400">
+                a min ago
+              </span>
+            </div>
+            <p className="px-4 py-2">{notificationsText}</p>
           </div>
-          <p className="px-4 py-2">{notificationsText}</p>
-        </div>
         )}
         <div className="relative mb-2 bg-validation rounded-lg text-sm text-black">
           <div className="flex justify-between px-4 py-1 text-xs uppercase font-semibold bg-secondary text-error rounded-t">
@@ -277,7 +277,7 @@ export default function SubMenuBar() {
         </div>
       </Notifications>
 
-      <nav className="flex p-2 shadow">
+      <nav className="flex p-2 shadow-sm border-b border-gray-200">
         <div className="w-3/5">
           <MenuBar header="File" MenuItems={FileMenuItems} />
           <span>
@@ -286,9 +286,14 @@ export default function SubMenuBar() {
           <button type="button" className={styles.menu} aria-expanded="false">
             <span>Insert</span>
           </button>
-          {/* <button type="button" className={styles.menu} aria-expanded="false">
-            <span>Format</span>
-          </button> */}
+          <button
+            type="button"
+            onClick={() => setOpen(true)}
+            className={styles.menu}
+            aria-expanded="false"
+          >
+            <span>About</span>
+          </button>
         </div>
         {/* <div className="w-2/3">
           <div className="flex-1 items-center text-center place-self-center" />
@@ -320,10 +325,9 @@ export default function SubMenuBar() {
               <div className="bg-success w-20 h-2 mr-4 rounded overflow-hidden">
                 <div className="bg-gray-300 w-10 h-2" />
               </div>
-              <span className="text-xs uppercase font-semibold">
+              <span className="text-xxs uppercase font-semibold">
                 Saved
                 <span className="text-primary"> 5 Mins </span>
-                ago
               </span>
             </div>
 
@@ -332,17 +336,21 @@ export default function SubMenuBar() {
               type="button"
               className={`group ${menuStyles.btn}`}
             >
-              <BellIcon className="h-6 w-6" aria-hidden="true" />
-              <span className="px-2 ml-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-success text-white group-hover:bg-white group-hover:text-primary ">21</span>
+              <BellIcon className="h-5 w-5" aria-hidden="true" />
+              <span
+                className="px-1 ml-1 inline-flex text-xxs leading-5 font-semibold rounded-full bg-success text-white group-hover:bg-white group-hover:text-primary "
+              >
+                21
+              </span>
             </button>
 
-            <button
+            {/* <button
               type="button"
               onClick={() => setOpen(true)}
               className={menuStyles.btn}
             >
               <InformationCircleIcon className="h-6 w-6" aria-hidden="true" />
-            </button>
+            </button> */}
 
           </div>
         </div>

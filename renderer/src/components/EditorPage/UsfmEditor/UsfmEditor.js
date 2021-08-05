@@ -3,15 +3,15 @@
 import { ProjectContext } from '@/components/context/ProjectContext';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import React, {
- useContext, useEffect, useRef, useState, useMemo,
- useCallback,
+  useContext, useEffect, useRef, useState, useMemo,
+  useCallback,
 } from 'react';
 import * as localforage from 'localforage';
 import {
- createBasicUsfmEditor,
- withChapterPaging,
-//  withChapterSelection,
- withToolbar,
+  createBasicUsfmEditor,
+  withChapterPaging,
+  //  withChapterSelection,
+  withToolbar,
 } from 'usfm-editor';
 import Editor from '@/modules/editor/Editor';
 import { readFile } from '../../../core/editor/readFile';
@@ -38,7 +38,7 @@ const UsfmEditor = () => {
       scrollLock,
       username,
     },
-   } = useContext(ProjectContext);
+  } = useContext(ProjectContext);
 
   const {
     state: {
@@ -67,22 +67,22 @@ const UsfmEditor = () => {
     applyBooksFilter(supportedBooks);
   }, [applyBooksFilter, supportedBooks]);
 
-   const CustomEditor = useMemo(
+  const CustomEditor = useMemo(
     () => withToolbar((withChapterPaging(createBasicUsfmEditor()))),
     [usfmInput],
-    );
+  );
 
-   const saveToParse = async () => {
-      try {
-        const usfm = await localforage.getItem('editorData');
-        writeToParse({
-          username, projectName, usfmData: usfm, scope: _bookId.toUpperCase(), write: true,
-        });
-      } catch (err) {
-        // eslint-disable-next-line no-console
-        console.log(err);
-      }
-    };
+  const saveToParse = async () => {
+    try {
+      const usfm = await localforage.getItem('editorData');
+      writeToParse({
+        username, projectName, usfmData: usfm, scope: _bookId.toUpperCase(), write: true,
+      });
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.log(err);
+    }
+  };
 
   const handleEditorChange = (usfm) => {
     if (isElectron()) {
@@ -94,12 +94,12 @@ const UsfmEditor = () => {
     } else {
       localforage.setItem('editorData', usfm).then(
         () => localforage.getItem('editorData'),
-        ).then(() => {
-          setActiveTyping(true);
-        }).catch((err) => {
-          // we got an error
-          throw err;
-        });
+      ).then(() => {
+        setActiveTyping(true);
+      }).catch((err) => {
+        // we got an error
+        throw err;
+      });
     }
   };
 
@@ -119,9 +119,9 @@ const UsfmEditor = () => {
   useEffect(() => {
     localStorage.setItem('_tabhistory', 'Editor');
     const intervalId = intervalRef.current;
-      return () => {
-        clearInterval(intervalId);
-      };
+    return () => {
+      clearInterval(intervalId);
+    };
   }, []);
 
   const handleInputChange = useCallback((usfm) => {
@@ -131,18 +131,18 @@ const UsfmEditor = () => {
 
   const handleVersChange = useCallback(
     (val) => {
-    if (val && scrollLock === false) {
-       onChangeChapter(val.chapter.toString());
-       onChangeVerse(val.verseStart.toString());
-    }
-  }, [onChangeChapter, onChangeVerse],
+      if (val && scrollLock === false) {
+        onChangeChapter(val.chapter.toString());
+        onChangeVerse(val.verseStart.toString());
+      }
+    }, [onChangeChapter, onChangeVerse],
   );
 
   const onIdentificationChange = useCallback(
     (id) => {
-    const identification = typeof id === 'string' ? JSON.parse(id) : id;
-    setIdentification(identification);
-    // onChangeBook((identification.id).toLowerCase());
+      const identification = typeof id === 'string' ? JSON.parse(id) : id;
+      setIdentification(identification);
+      // onChangeBook((identification.id).toLowerCase());
     },
     [_bookId],
   );
@@ -162,17 +162,17 @@ const UsfmEditor = () => {
         scopefiles.forEach((file) => {
           if (file === _bookId.toUpperCase()) {
             fetchFromParse({
-            username, projectName, scope: _bookId.toUpperCase(),
+              username, projectName, scope: _bookId.toUpperCase(),
             }).then(async (data) => {
               if (data) {
                 localforage.setItem('editorData', data).then(
                   () => localforage.getItem('editorData'),
-                  ).then(() => {
-                    handleInputChange(data);
-                  }).catch((err) => {
-                    // we got an error
-                    throw err;
-                  });
+                ).then(() => {
+                  handleInputChange(data);
+                }).catch((err) => {
+                  // we got an error
+                  throw err;
+                });
               }
             });
           } else {
@@ -181,7 +181,7 @@ const UsfmEditor = () => {
         });
       });
     } else {
-       readFile({
+      readFile({
         projectname: selectedProject,
         filename: _bookId,
       }).then((data) => {
@@ -194,19 +194,19 @@ const UsfmEditor = () => {
 
   useEffect(() => {
     if (!isElectron()) {
-    fetchFromParse({
-      username, projectName, scope: _bookId.toUpperCase(),
-    }).then((data) => {
-      if (data) {
-        localforage.setItem('editorData', data).then(
-          () => localforage.getItem('editorData'),
+      fetchFromParse({
+        username, projectName, scope: _bookId.toUpperCase(),
+      }).then((data) => {
+        if (data) {
+          localforage.setItem('editorData', data).then(
+            () => localforage.getItem('editorData'),
           ).then(() => {
             handleInputChange(data);
           }).catch((err) => {
             // we got an error
             throw err;
           });
-      }
+        }
       });
     } else {
       readFile({
@@ -214,7 +214,7 @@ const UsfmEditor = () => {
         filename: _bookId,
       }).then((data) => {
         if (data) {
-            handleInputChange(data);
+          handleInputChange(data);
         }
       });
     }
@@ -222,34 +222,31 @@ const UsfmEditor = () => {
 
   useEffect(() => {
     setGoToVersePropValue({
-          chapter: parseInt(_chapter, 10),
-          verse: parseInt(_verse, 10),
-          key: Date.now(),
-      });
+      chapter: parseInt(_chapter, 10),
+      verse: parseInt(_verse, 10),
+      key: Date.now(),
+    });
   }, [_chapter]);
 
-return (
-  <>
-    <span>
-      <Editor
-        setNavigation={setNavigation}
-      >
+  return (
+    <>
+      <Editor setNavigation={setNavigation}>
         {usfmInput && (
-        <CustomEditor
-          usfmString={usfmInput}
-          key={usfmInput}
-          onChange={handleEditorChange}
-          onVerseChange={handleVersChange}
-          goToVerse={goToVersePropValue}
-          readOnly={readOnly}
-          identification={identification}
-          onIdentificationChange={onIdentificationChange}
-        />
+          <CustomEditor
+            usfmString={usfmInput}
+            key={usfmInput}
+            onChange={handleEditorChange}
+            onVerseChange={handleVersChange}
+            goToVerse={goToVersePropValue}
+            readOnly={readOnly}
+            identification={identification}
+            onIdentificationChange={onIdentificationChange}
+          />
         )}
       </Editor>
-    </span>
-  </>
-);
+
+    </>
+  );
 };
 
 export default UsfmEditor;

@@ -32,14 +32,14 @@ module.exports = {
       },
       height: {
         editor: 'calc(-7.25rem + 100vh)',
-        resourcePanel: '550px'
       },
-      width: {
-        resourcePanel: '600px' 
-      }
     },
-},
+  },
   variants: {
+    extend: {
+      display: ['group-hover'],
+    },
+    width: ['first', 'last'],
     fontFamily: {
       sans: ['Graphik', 'sans-serif'],
       serif: ['Merriweather', 'serif'],
