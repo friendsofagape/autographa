@@ -1,8 +1,6 @@
 import BibleNavigation from '@/modules/biblenavigation/BibleNavigation';
 
-import {
-  TrashIcon, PencilIcon, PencilAltIcon,
-} from '@heroicons/react/outline';
+import { TrashIcon } from '@heroicons/react/outline';
 
 import {
   XIcon,

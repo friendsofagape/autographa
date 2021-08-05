@@ -178,26 +178,26 @@ export default function TopMenuBar() {
                             <div className="relative grid gap-0 bg-black p-4 grid-cols-2">
                               {solutions.map((item) => (
                                 <a
-                                    key={item.name}
-                                    href={item.href}
-                                    className="flex text-white hover:text-primary items-center justify-center flex-col py-3 transition duration-150 ease-in-out rounded-lg hover:bg-white focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
-                                  >
+                                  key={item.name}
+                                  href={item.href}
+                                  className="flex text-white hover:text-primary items-center justify-center flex-col py-3 transition duration-150 ease-in-out rounded-lg hover:bg-white focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
+                                >
 
-                                    <item.icon
+                                  <item.icon
                                       // stroke="currentColor"
-                                      fill="currentColor"
+                                    fill="currentColor"
                                       // viewBox="0 0 24 24"
                                       // width="24"
                                       // height="24"
-                                      className="w-6 h-6 "
-                                      aria-hidden="true"
-                                    />
+                                    className="w-6 h-6 "
+                                    aria-hidden="true"
+                                  />
 
-                                    <p className="mt-3 text-sm tracking-wider">
-                                      {item.name}
-                                    </p>
+                                  <p className="mt-3 text-sm tracking-wider">
+                                    {item.name}
+                                  </p>
 
-                                  </a>
+                                </a>
                                 ))}
                             </div>
 
@@ -257,16 +257,16 @@ export default function TopMenuBar() {
                             <Menu.Item key={item}>
                               {({ active }) => (
                                 <Link href="/profile">
-                                    <a
-                                      href="#profile"
-                                      className={classNames(
+                                  <a
+                                    href="#profile"
+                                    className={classNames(
                                         active ? 'bg-gray-100' : '',
                                         'block px-4 py-2 text-sm text-gray-700',
                                       )}
-                                    >
-                                      {item}
-                                    </a>
-                                  </Link>
+                                  >
+                                    {item}
+                                  </a>
+                                </Link>
                                 )}
                             </Menu.Item>
                             ))}
