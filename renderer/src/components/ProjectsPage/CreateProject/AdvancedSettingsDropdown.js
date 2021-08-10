@@ -65,7 +65,7 @@ export default function AdvancedSettingsDropdown() {
         }
       });
     }
-    if (value.label === 'Canon Specificationse') {
+    if (value.label === 'Canon Specification') {
       canonList.forEach((c) => {
         if (c.title === value.data) {
           setcanonSpecification(c);

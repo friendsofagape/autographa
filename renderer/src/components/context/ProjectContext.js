@@ -1,6 +1,8 @@
 /* eslint-disable no-console */
 import React from 'react';
 import PropTypes from 'prop-types';
+import * as localforage from 'localforage';
+import { useRouter } from 'next/router';
 import { isElectron } from '../../core/handleElectron';
 import * as logger from '../../logger';
 import saveProjectsMeta from '../../core/projects/saveProjetcsMeta';
@@ -11,6 +13,7 @@ const advanceSettings = require('../../lib/AdvanceSettings.json');
 export const ProjectContext = React.createContext();
 
 const ProjectContextProvider = ({ children }) => {
+  const router = useRouter();
     const [drawer, setDrawer] = React.useState(false);
     const [scrollLock, setScrollLock] = React.useState(false);
     // const []
@@ -22,9 +25,9 @@ const ProjectContextProvider = ({ children }) => {
       name: '',
       abbreviation: '',
     });
-    const [licenceList, setLicenseList] = React.useState();
+    const [licenceList, setLicenseList] = React.useState(advanceSettings.copyright);
     const [copyright, setCopyRight] = React.useState(advanceSettings.copyright[0]);
-    const [canonList, setCanonList] = React.useState();
+    const [canonList, setCanonList] = React.useState(advanceSettings.canonSpecification);
     const [canonSpecification, setcanonSpecification] = React.useState(
       advanceSettings.canonSpecification[0],
     );
@@ -44,10 +47,17 @@ const ProjectContextProvider = ({ children }) => {
     };
 
     const uniqueId = (list, id) => list.some((obj) => obj.id === id);
-    const loadSettings = () => {
+    const loadSettings = async () => {
       const newpath = localStorage.getItem('userPath');
+      let currentUser;
+      await localforage.getItem('userProfile').then((value) => {
+        currentUser = value?.username;
+      });
+      if (!currentUser) {
+        return;
+      }
       const fs = window.require('fs');
-      const file = path.join(newpath, 'autographa', 'users', 'username', 'usersetting.json');
+      const file = path.join(newpath, 'autographa', 'users', currentUser, 'usersetting.json');
       if (fs.existsSync(file)) {
         fs.readFile(file, (err, data) => {
           logger.debug('ProjectContext.js', 'Successfully read the data from file');
@@ -73,10 +83,14 @@ const ProjectContextProvider = ({ children }) => {
     };
     // Json for storing advance settings
     // eslint-disable-next-line no-unused-vars
-    const updateJson = (currentSettings) => {
+    const updateJson = async (currentSettings) => {
       const newpath = localStorage.getItem('userPath');
+      let currentUser;
+      await localforage.getItem('userProfile').then((value) => {
+        currentUser = value.username;
+      });
       const fs = window.require('fs');
-      const file = path.join(newpath, 'autographa', 'users', 'username', 'usersetting.json');
+      const file = path.join(newpath, 'autographa', 'users', currentUser, 'usersetting.json');
       if (fs.existsSync(file)) {
         fs.readFile(file, 'utf8', (err, data) => {
           if (err) {
@@ -109,7 +123,7 @@ const ProjectContextProvider = ({ children }) => {
         });
       }
     };
-    const createProject = () => {
+    const createProject = async () => {
       // Add / update language into current list.
       if (uniqueId(languages, language.id)) {
         languages.forEach((lang) => {
@@ -139,7 +153,7 @@ const ProjectContextProvider = ({ children }) => {
       // if (!uniqueSetting(licenceList, copyright.title)) {
       //   updateJson('copyright');
       // }
-      saveProjectsMeta(
+      const status = await saveProjectsMeta(
         newProjectFields,
         version,
         language,
@@ -147,6 +161,9 @@ const ProjectContextProvider = ({ children }) => {
         canonSpecification,
         copyright,
       );
+      if (status[0].type === 'success') {
+        router.push('/projects');
+      }
     };
     const resetProjectStates = () => {
       const initialState = {

@@ -1,116 +1,64 @@
-import moment from 'moment';
+/* eslint-disable no-unused-vars */
+// import moment from 'moment';
+import * as localforage from 'localforage';
 import { createVersificationUSFM } from '../../util/createVersificationUSFM';
 import createTranslationSB from '../burrito/createTranslationSB';
 
-const saveProjectsMeta = (
-    newProjectFields,
-    selectedVersion,
-    selectedLanguage,
-    versificationScheme,
-    canonSpecification,
-    copyright,
+const saveProjectsMeta = async (
+  newProjectFields,
+  selectedVersion,
+  selectedLanguage,
+  versificationScheme,
+  canonSpecification,
+  copyright,
 ) => {
-    const newpath = localStorage.getItem('userPath');
-    const status = [];
-    const userdata = {
-        projects: [
-            {
-            id: Date.now(),
-            projectName: newProjectFields.projectName,
-            bibleVersion: selectedVersion.name,
-            abbreviation: selectedVersion.abbreviation,
-            language: selectedLanguage.title,
-            scriptDirection: selectedLanguage.scriptDirection,
-            projectDescription: newProjectFields.description,
-            versificationScheme,
-            canonspecification:
-            {
-                canonSpecification: canonSpecification.title,
-                canoncontent: canonSpecification.currentScope,
-            },
-            license: copyright.license,
-            starred: false,
-            createdAt: moment().format('DD-MM-YYYY'),
-            updatedAt: moment().format('YYYY-MM-DD h:mm:ss'),
-            },
-
-        ],
-    };
-    const fs = window.require('fs');
-    const path = require('path');
-    const json = JSON.stringify(userdata);
-    const projectsMetaPath = path.join(
-        newpath, 'autographa', 'users', 'username', 'projects', 'projects.json',
-    );
-    fs.mkdirSync(path.join(
-        newpath, 'autographa', 'users', 'username', 'projects',
-    ), {
-        recursive: true,
-    });
-    if (fs.existsSync(projectsMetaPath)) {
-        let projectNameExists = false;
-            // eslint-disable-next-line
-            const fileContent = fs.readFileSync(
-              path.join(projectsMetaPath),
-              'utf8',
-            );
-            const obj = JSON.parse(fileContent);
-            obj.projects.forEach((element) => {
-                if (element.projectName === newProjectFields.projectName) {
-                    projectNameExists = true;
-                    status.push({ type: 'Warning', value: 'projectname exists' }); // checking for duplicates
-                }
-            });
-            if (projectNameExists === false) {
-                // appending to an existing file
-                obj.projects.push(userdata.projects[0]);
-                fs.writeFileSync(path.join(newpath,
-                    'autographa',
-                    'users',
-                    'username',
-                    'projects',
-                    'projects.json'),
-                    JSON.stringify(obj));
-                // ingredient has the list of created files in the form of SB Ingredients
-                const ingredient = createVersificationUSFM(
-                    'username',
-                    newProjectFields.projectName,
-                    versificationScheme,
-                    canonSpecification.currentScope,
-                );
-                const burritoFile = createTranslationSB('username',
-                newProjectFields.projectName,
-                canonSpecification.currentScope,
-                selectedLanguage.title);
-                burritoFile.ingredients = ingredient;
-                fs.writeFileSync(path.join(newpath,
-                    'autographa',
-                    'users',
-                    'username',
-                    'projects',
-                    newProjectFields.projectName,
-                    'metadata.json'), JSON.stringify(burritoFile));
-                status.push({ type: 'success', value: 'projectmeta updated' });
-            }
-    } else {
-        // Creating new file if nothing present
-        fs.writeFileSync(path.join(
-            newpath,
-            'autographa',
-            'users',
-            'username',
-            'projects',
-            'projects.json',
-        ), json);
-        status.push({ type: 'success', value: 'new project created' });
-        createVersificationUSFM(
-            'username',
-            newProjectFields.projectName,
-            versificationScheme,
-            canonSpecification.currentScope,
-        );
+  const newpath = localStorage.getItem('userPath');
+  const status = [];
+  const fs = window.require('fs');
+  const path = require('path');
+  let currentUser;
+  await localforage.getItem('userProfile').then((value) => {
+    currentUser = value?.username;
+  });
+  fs.mkdirSync(path.join(
+    newpath, 'autographa', 'users', currentUser, 'projects',
+  ), {
+    recursive: true,
+  });
+  const projectDir = path.join(newpath, 'autographa', 'users', currentUser, 'projects');
+  let projectNameExists = false;
+  const folderList = fs.readdirSync(projectDir);
+  folderList.forEach((folder) => {
+    if (folder === newProjectFields.projectName) {
+      projectNameExists = true;
+      // checking for duplicates
+      status.push({ type: 'Warning', value: 'projectname exists' });
     }
-    return status;
+  });
+
+  if (projectNameExists === false) {
+    // Create New burrito
+    // ingredient has the list of created files in the form of SB Ingredients
+    await createVersificationUSFM(
+      currentUser,
+      newProjectFields.projectName,
+      versificationScheme,
+      canonSpecification.currentScope,
+    ).then(async (ingredient) => {
+      const burritoFile = await createTranslationSB(currentUser,
+        newProjectFields.projectName,
+        canonSpecification.currentScope,
+        selectedLanguage.title);
+      burritoFile.ingredients = ingredient;
+      await fs.writeFileSync(path.join(projectDir, newProjectFields.projectName,
+        'metadata.json'), JSON.stringify(burritoFile));
+    }).finally(() => {
+      status.push({ type: 'success', value: 'new project created' });
+    });
+  } else {
+    status.push({ type: 'error', value: 'Project already exists' });
+  }
+  return status;
 };
 
 export default saveProjectsMeta;

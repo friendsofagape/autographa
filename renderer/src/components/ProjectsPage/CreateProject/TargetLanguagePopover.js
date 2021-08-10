@@ -48,8 +48,7 @@ export default function TargetLanguagePopover() {
         <button
           className="focus:outline-none"
           type="button"
-        // onClick={() => openLanguageNav('add')}
-          onClick={openModal}
+          onClick={() => { openLanguageNav('add'); openModal(); }}
         >
           <img
             src="illustrations/add-button.svg"
@@ -60,8 +59,7 @@ export default function TargetLanguagePopover() {
         <button
           type="button"
           className="focus:outline-none"
-        // onClick={() => openLanguageNav('edit')}
-          onClick={openModal}
+          onClick={() => { openLanguageNav('edit'); openModal(); }}
         >
           <img
             src="illustrations/edit.svg"
