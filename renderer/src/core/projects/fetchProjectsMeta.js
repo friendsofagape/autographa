@@ -17,17 +17,15 @@ const fetchProjectsMeta = async () => {
   const burritos = [];
   return new Promise((resolve) => {
     arrayItems.forEach((dir) => {
+      const stat = fs.lstatSync(path.join(projectsMetaPath, dir));
+      if (stat.isDirectory() && fs.existsSync(path.join(projectsMetaPath, dir, 'metadata.json'))) {
+        const data = fs.readFileSync(path.join(projectsMetaPath, dir, 'metadata.json'), 'utf8');
+        burritos.push(JSON.parse(data));
+        resolve({ projects: burritos });
+      }
       fs.stat(path.join(projectsMetaPath, dir), (err, stats) => {
         if (err) { throw err; }
-        if (stats.isDirectory() && fs.existsSync(path.join(projectsMetaPath, dir, 'metadata.json'))) {
-          fs.readFile(path.join(projectsMetaPath, dir, 'metadata.json'), 'utf8', (err, data) => {
-            if (err) {
-              return;
-            }
-            burritos.push(JSON.parse(data));
-            resolve({ projects: burritos });
-          });
-        }
+        console.log(stats);
       });
     });
   });

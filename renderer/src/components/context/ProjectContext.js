@@ -39,8 +39,8 @@ const ProjectContextProvider = ({ children }) => {
       projectName: '',
       description: '',
     });
-    const [username, setUsername] = React.useState('Michael');
-    const [selectedProject, setSelectedProject] = React.useState('newprodir');
+    const [username, setUsername] = React.useState('Asher');
+    const [selectedProject, setSelectedProject] = React.useState('Test Burrito Project');
 
     const handleProjectFields = (prop) => (event) => {
       setNewProjectFields({ ...newProjectFields, [prop]: event.target.value });
@@ -88,6 +88,7 @@ const ProjectContextProvider = ({ children }) => {
       let currentUser;
       await localforage.getItem('userProfile').then((value) => {
         currentUser = value.username;
+        setUsername(value.username);
       });
       const fs = window.require('fs');
       const file = path.join(newpath, 'autographa', 'users', currentUser, 'usersetting.json');
