@@ -120,15 +120,39 @@ function useProjectsSort() {
     const FetchProjects = async () => {
       if (isElectron()) {
         const projectsData = fetchProjectsMeta();
-          projectsData.then((value) => {
-            if (value) {
-              localForage.setItem('projectmeta', value)
-              .then(() => localForage.getItem('projectmeta'))
-              .catch((err) => {
-                // we got an error
-                throw err;
+        projectsData.then((value) => {
+          if (value) {
+            localForage.setItem('projectmeta', value)
+            .then(() => {
+              localForage.getItem('projectmeta')
+              .then((value) => {
+                if (value) {
+                  value.projects.forEach((project) => {
+                    const created = Object.keys(project.identification.primary.ag);
+                    if (project.starred === true) {
+                      // FetchStarred(projectName,language, createdAt, updatedAt);
+                      FetchStarred(project.identification.name.en, project.languages[0].name.en,
+                        project.identification.primary.ag[created].timestamp,
+                        project.meta.dateCreated);
+                    } else {
+                      FetchUnstarred(project.identification.name.en, project.languages[0].name.en,
+                        project.identification.primary.ag[created].timestamp,
+                        project.meta.dateCreated);
+                    }
+                  });
+                }
+              }).then(() => {
+                setStarredRow(starrtedData);
+                setStarredProjets(starrtedData);
+                setUnStarredRow(unstarrtedData);
+                setUnStarredProjets(unstarrtedData);
               });
-            }
+            })
+            .catch((err) => {
+              // we got an error
+              throw err;
+            });
+          }
         });
       } else {
         // const projectName = 'Newcanon based Pro';
@@ -162,33 +186,6 @@ function useProjectsSort() {
     React.useEffect(() => {
       FetchProjects();
       // eslint-disable-next-line
-    }, []);
-
-    useEffect(() => {
-      if (isElectron()) {
-        const projects = localForage.getItem('projectmeta');
-        projects.then((value) => {
-          if (value) {
-            value.projects.forEach((project) => {
-              const created = Object.keys(project.identification.primary.ag);
-              if (project.starred === true) {
-                // FetchStarred(projectName,language, createdAt, updatedAt);
-                FetchUnstarred(project.identification.name.en, project.languages[0].name.en,
-                  project.identification.primary.ag[created].timestamp, project.meta.dateCreated);
-              } else {
-                FetchUnstarred(project.identification.name.en, project.languages[0].name.en,
-                  project.identification.primary.ag[created].timestamp, project.meta.dateCreated);
-              }
-            });
-          }
-        }).finally(() => {
-          setStarredRow(starrtedData);
-          setStarredProjets(starrtedData);
-          setUnStarredRow(unstarrtedData);
-          setUnStarredProjets(unstarrtedData);
-        });
-      }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const response = {
