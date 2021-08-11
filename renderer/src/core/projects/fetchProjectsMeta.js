@@ -23,9 +23,8 @@ const fetchProjectsMeta = async () => {
         burritos.push(JSON.parse(data));
         resolve({ projects: burritos });
       }
-      fs.stat(path.join(projectsMetaPath, dir), (err, stats) => {
+      fs.stat(path.join(projectsMetaPath, dir), (err) => {
         if (err) { throw err; }
-        console.log(stats);
       });
     });
   });

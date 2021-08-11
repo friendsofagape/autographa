@@ -120,7 +120,6 @@ function useProjectsSort() {
     const FetchProjects = async () => {
       if (isElectron()) {
         const projectsData = fetchProjectsMeta();
-        console.log(projectsData);
         projectsData.then((value) => {
           if (value) {
             localForage.setItem('projectmeta', value)

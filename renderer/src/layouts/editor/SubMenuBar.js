@@ -25,6 +25,7 @@ import Font from '@/icons/font.svg';
 import Notifications from '@/modules/notifications/Notifications';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import MenuBar from '@/components/Menubar/MenuBar';
+import { CustomUsfmToolbar } from '@/components/EditorPage/UsfmEditor/UsfmToolbar';
 import AboutModal from './AboutModal';
 import StatsModal from './StatsModal';
 import MenuDropdown from '../../components/MenuDropdown/MenuDropdown';
@@ -85,6 +86,13 @@ const FormatMenuItems = [
     callback: activate,
   },
 ];
+
+const EditorTools = [
+  {
+    renderElement: <CustomUsfmToolbar />,
+  },
+];
+
 export default function SubMenuBar() {
   const [open, setOpen] = useState(false);
   const [openStats, setOpenStats] = useState(false);
@@ -283,9 +291,12 @@ export default function SubMenuBar() {
           <span>
             <MenuBar header="FORMAT" MenuItems={FormatMenuItems} style={{ left: '-60px' }} />
           </span>
-          <button type="button" className={styles.menu} aria-expanded="false">
+          {/* <button type="button" className={styles.menu} aria-expanded="false">
             <span>Insert</span>
-          </button>
+          </button> */}
+          <span>
+            <MenuBar header="EDIT" MenuItems={EditorTools} style={{ left: '-147px', height: '65px' }} />
+          </span>
           <button
             type="button"
             onClick={() => setOpen(true)}
