@@ -1,4 +1,5 @@
 export const readFile = async ({
+    username,
     projectname,
     filename,
 }) => {
@@ -6,7 +7,7 @@ export const readFile = async ({
     const path = require('path');
     const newpath = localStorage.getItem('userPath');
     const projectsPath = path.join(
-        newpath, 'autographa', 'users', 'username', 'projects', projectname, `${filename}.usfm`,
+        newpath, 'autographa', 'users', username, 'projects', projectname, filename,
     );
     return new Promise((resolve) => {
         if (fs.existsSync(projectsPath)) {

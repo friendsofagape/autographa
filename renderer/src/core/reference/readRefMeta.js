@@ -1,12 +1,13 @@
 /* eslint-disable no-underscore-dangle */
 export const readRefMeta = async ({
     projectname,
+    username,
 }) => {
     const fs = window.require('fs');
     const path = require('path');
     const newpath = localStorage.getItem('userPath');
     const metaPath = path.join(
-        newpath, 'autographa', 'users', 'username', 'projects', projectname,
+        newpath, 'autographa', 'users', username, 'projects', projectname,
     );
     return new Promise((resolve) => {
         if (fs.existsSync(metaPath)) {

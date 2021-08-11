@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable react/prop-types */
 import { useBibleReference } from 'bible-reference-rcl';
-import React, { useState, createContext } from 'react';
+import React, { useState, createContext, useRef } from 'react';
 import * as localforage from 'localforage';
 
 export const ReferenceContext = createContext({});
@@ -31,6 +31,7 @@ export default function ReferenceContextProvider({ children }) {
     });
     const [counter, setCounter] = useState(7);
     const [bookmarksVerses, setBookmarksVerses] = useState([]);
+    const myEditorRef = useRef();
 
     const handleClick = (event) => {
       setAnchorEl(event.currentTarget);
@@ -90,6 +91,7 @@ export default function ReferenceContextProvider({ children }) {
         refernceLoading,
         counter,
         bookmarksVerses,
+        myEditorRef,
       },
       actions: {
         setLanguageId,

@@ -1,4 +1,5 @@
 const writeToFile = ({
+    username,
     projectname,
     filename,
     data,
@@ -7,7 +8,7 @@ const writeToFile = ({
     const path = require('path');
     const newpath = localStorage.getItem('userPath');
     const projectsPath = path.join(
-        newpath, 'autographa', 'users', 'username', 'projects', projectname, `${filename.toUpperCase()}.usfm`,
+        newpath, 'autographa', 'users', username, 'projects', projectname, filename,
     );
     if (fs.existsSync(projectsPath)) {
         // appending to an existing file

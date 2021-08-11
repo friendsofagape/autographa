@@ -1,26 +1,22 @@
-export const UsfmToolbar = {
-    'Section Header': {
-        icon: 'S',
-        cssClass: 's-toolbar-button',
-        actionSpec: {
-            buttonType: 'ParagraphButton',
-            usfmMarker: 's',
+import { ReferenceContext } from '@/components/context/ReferenceContext';
+import React, { useContext } from 'react';
+import {
+    UsfmToolbar,
+   //  withChapterSelection,
+} from 'usfm-editor';
+
+export const CustomUsfmToolbar = () => {
+    const {
+        state: {
+          myEditorRef,
         },
-    },
-    'Quoted Book Title': {
-        icon: 'BK',
-        cssClass: 'bk-toolbar-button',
-        actionSpec: {
-            buttonType: 'MarkButton',
-            usfmMarker: 'bk',
-        },
-    },
-    'Nomen Domini': {
-        icon: 'I',
-        cssClass: 'nd-toolbar-button',
-        actionSpec: {
-            buttonType: 'MarkButton',
-            usfmMarker: 'nd',
-        },
-    },
+      } = useContext(ReferenceContext);
+
+    return (
+      <div style={{ marginLeft: '-30px' }}>
+        <UsfmToolbar
+          editor={myEditorRef.current}
+        />
+      </div>
+    );
 };

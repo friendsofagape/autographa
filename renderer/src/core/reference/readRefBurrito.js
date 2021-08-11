@@ -1,12 +1,12 @@
 export const readRefBurrito = async ({
     projectname,
-    filename,
+    username,
 }) => {
     const fs = window.require('fs');
     const path = require('path');
     const newpath = localStorage.getItem('userPath');
     const projectsPath = path.join(
-        newpath, 'autographa', 'users', 'username', 'projects', projectname, filename, 'metadata.json',
+        newpath, 'autographa', 'users', username, 'projects', projectname, 'metadata.json',
     );
     return new Promise((resolve) => {
         if (fs.existsSync(projectsPath)) {
