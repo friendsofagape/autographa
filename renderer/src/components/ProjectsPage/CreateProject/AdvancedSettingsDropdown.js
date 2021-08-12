@@ -117,7 +117,7 @@ export default function AdvancedSettingsDropdown() {
                 {(canonSpecification.currentScope).length}
               </BookNumberTag>
             </div>
-            <div className="mt-8 flex relative">
+            <div className="mt-8 relative">
               <div className="flex">
 
                 <CustomAutocomplete label="Canon Specification" list={canonList} setValue={setValue} />
@@ -131,6 +131,7 @@ export default function AdvancedSettingsDropdown() {
                       label="na"
                       src="illustrations/add-button.svg"
                       alt="add button"
+                      className="w-10 h-10"
                     />
                   </button>
                   <button
@@ -141,6 +142,7 @@ export default function AdvancedSettingsDropdown() {
                     <img
                       src="illustrations/edit.svg"
                       alt="add button"
+                      className="w-10 h-10"
                     />
                   </button>
                 </div>

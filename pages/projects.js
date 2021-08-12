@@ -1,6 +1,6 @@
 import ProjectList from '@/modules/projects/ProjectList';
 import AuthenticationContextProvider from '@/components/Login/AuthenticationContextProvider';
-import AutographaContextProvider from '../renderer/src/components/context/AutographaContext';
+import AutographaContextProvider from '@/components/context/AutographaContext';
 
 const projects = () => (
   <AuthenticationContextProvider>

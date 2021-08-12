@@ -1,10 +1,15 @@
-import React from 'react';
+import React, {
+  Fragment,
+} from 'react';
 import PropTypes from 'prop-types';
 import {
   TableSortLabel,
   TableCell,
 } from '@material-ui/core';
-import { StarIcon, ExternalLinkIcon } from '@heroicons/react/outline';
+import {
+  StarIcon, ExternalLinkIcon, FilterIcon,
+} from '@heroicons/react/outline';
+import { Menu, Transition } from '@headlessui/react';
 
 const headCells = [
   {
@@ -60,23 +65,108 @@ function EnhancedTableHead(props) {
               className="bg-gray-50"
               sortDirection={orderBy === headCell.id ? order : false}
             >
+              <div className="flex content-center">
+                <Menu as="div" className="relative inline-block mr-2 mt-2">
+                  <Menu.Button className="focus:outline-none">
+                    <FilterIcon
+                      className="w-4 h-4 text-gray-400 hover:text-gray-600"
+                      aria-hidden="true"
+                    />
+                  </Menu.Button>
+                  <Transition
+                    as={Fragment}
+                    enter="transition ease-out duration-100"
+                    enterFrom="transform opacity-0 scale-95"
+                    enterTo="transform opacity-100 scale-100"
+                    leave="transition ease-in duration-75"
+                    leaveFrom="transform opacity-100 scale-100"
+                    leaveTo="transform opacity-0 scale-95"
+                  >
+                    <Menu.Items className="absolute right-0 w-56 mt-2 origin-top-right bg-white
+                    divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black
+                    ring-opacity-5 focus:outline-none"
+                    >
+                      <div className="px-3 py-2 bg-gray-100 flex justify-between uppercase text-xs text-gray-500">
+                        Filters
+                      </div>
+                      <div className="px-1 py-1 ">
+                        <Menu.Item>
+                          {({ active }) => (
+                            <div className={`${active ? 'bg-primary text-white' : 'text-gray-600'
+                              } group flex items-center rounded-md w-full px-2 py-2 text-sm`}
+                            >
+                              <input
+                                type="checkbox"
+                                className={`${active ? 'border-black' : 'border-gray-300'}
+                                mr-2 form-tick appearance-none h-4
+                              w-4 border  rounded-md checked:bg-primary 
+                              checked:border-transparent focus:outline-none`}
+                              />
+                              Active
+                            </div>
+                          )}
+                        </Menu.Item>
+                        <Menu.Item>
+                          {({ active }) => (
+                            <div className={`${active ? 'bg-primary text-white' : 'text-gray-600'
+                              } group flex items-center rounded-md w-full px-2 py-2 text-sm`}
+                            >
+                              <input
+                                type="checkbox"
+                                className={`${active ? 'border-black' : 'border-gray-300'}
+                                mr-2 form-tick appearance-none h-4
+                              w-4 border  rounded-md checked:bg-primary 
+                              checked:border-transparent focus:outline-none`}
+                              />
+                              Finished
+                            </div>
+                          )}
+                        </Menu.Item>
+                      </div>
+                      <div className="px-3 py-2 bg-gray-100 flex justify-between">
 
-              <TableSortLabel
-                scope="col"
-                id="sorthead"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                style={{ fontWeight: 'bold', color: 'grey' }}
-                active={orderBy === headCell.id}
-                direction={orderBy === headCell.id ? order : 'asc'}
-                onClick={createSortHandler(headCell.id)}
-              >
-                {headCell.label}
-                {orderBy === headCell.id ? (
-                  <span hidden>
-                    {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-                  </span>
-              ) : null}
-              </TableSortLabel>
+                        <Menu.Item>
+                          <button
+                            type="button"
+                            className="px-3 py-1 rounded btn-xs bg-white border border-gray-400 hover:border-gray-400 text-gray-500 hover:text-gray-600"
+                          >
+                            Clear
+                          </button>
+                        </Menu.Item>
+
+                        <Menu.Item>
+                          <button
+                            type="button"
+                            className="px-3 py-1 rounded btn-xs bg-primary border border-gray-400 hover:border-gray-400 text-white hover:text-gray-600"
+                          >
+                            Apply
+                          </button>
+                        </Menu.Item>
+
+                      </div>
+                    </Menu.Items>
+                  </Transition>
+                </Menu>
+
+                <TableSortLabel
+                  scope="col"
+                  id="sorthead"
+                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  style={{ fontWeight: 'bold', color: 'grey' }}
+                  active={orderBy === headCell.id}
+                  direction={orderBy === headCell.id ? order : 'asc'}
+                  onClick={createSortHandler(headCell.id)}
+                >
+                  {headCell.label}
+                  {orderBy === headCell.id ? (
+                    <span hidden>
+                      {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+                    </span>
+                  ) : null}
+
+                </TableSortLabel>
+
+              </div>
             </TableCell>
           ))}
         </tr>
