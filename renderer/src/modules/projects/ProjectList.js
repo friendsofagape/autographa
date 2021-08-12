@@ -1,13 +1,16 @@
 import React, { Fragment, useState } from 'react';
-import { Disclosure, Transition } from '@headlessui/react';
 import { useRouter } from 'next/router';
-import { ChevronUpIcon, ChevronDownIcon } from '@heroicons/react/solid';
-import { StarIcon, ExternalLinkIcon } from '@heroicons/react/outline';
 import moment from 'moment';
+
+import { Disclosure, Transition } from '@headlessui/react';
+import { ChevronUpIcon, ChevronDownIcon } from '@heroicons/react/solid';
+import { StarIcon, ExternalLinkIcon, PencilAltIcon } from '@heroicons/react/outline';
+
 import ProjectsLayout from '@/layouts/projects/Layout';
-import EnhancedTableHead from '../../components/ProjectsPage/Projects/EnhancedTableHead';
-import { AutographaContext } from '../../components/context/AutographaContext';
-import { getComparator, stableSort } from '../../components/ProjectsPage/Projects/SortingHelper';
+import EnhancedTableHead from '@/components/ProjectsPage/Projects/EnhancedTableHead';
+import { AutographaContext } from '@/components/context/AutographaContext';
+import { getComparator, stableSort } from '@/components/ProjectsPage/Projects/SortingHelper';
+
 import SearchTags from './SearchTags';
 
 export default function ProjectList() {
@@ -172,15 +175,24 @@ export default function ProjectList() {
                               {showRow
                                 && (
                                   <tr key={project.name}>
-                                    <td colSpan="8" className="px-4 py-4 whitespace-nowrap">
-                                      <div className="grid grid-cols-2 gap-4">
-                                        <div>
+                                    <td colSpan="9" className="px-4 py-4 whitespace-nowrap">
+                                      <div className="flex gap-4">
+                                        <div className="flex-grow">
                                           <div className="text-xxs uppercase font-regular text-gray-500 tracking-wider p-1">description</div>
                                           <div className="text-sm tracking-wide p-1">This is project description for this project. This project is about to be description for this project.</div>
                                         </div>
-                                        <div>
+                                        <div className="flex-grow">
                                           <div className="text-xxs uppercase font-regular text-gray-500 tracking-wider p-1">Source Languages</div>
                                           <div className="text-sm tracking-wide p-1">English, Aramic.</div>
+                                        </div>
+                                        <div className="flex flex-shrink items-center justify-center text-center">
+                                          <button
+                                            // onClick={}
+                                            type="button"
+                                            className="px-5"
+                                          >
+                                            <PencilAltIcon className="h-5 w-5 text-primary" aria-hidden="true" />
+                                          </button>
                                         </div>
                                       </div>
                                     </td>
@@ -288,15 +300,24 @@ export default function ProjectList() {
                               >
                                 <Disclosure.Panel as={Fragment}>
                                   <tr key={project.name}>
-                                    <td colSpan="8" className="px-4 py-4 whitespace-nowrap">
-                                      <div className="grid grid-cols-2 gap-4">
-                                        <div>
+                                    <td colSpan="9" className="px-4 py-4 whitespace-nowrap">
+                                      <div className="flex gap-4">
+                                        <div className="flex-grow">
                                           <div className="text-xxs uppercase font-regular text-gray-500 tracking-wider p-1">description</div>
                                           <div className="text-sm tracking-wide p-1">This is project description for this project. This project is about to be description for this project.</div>
                                         </div>
-                                        <div>
+                                        <div className="flex-grow">
                                           <div className="text-xxs uppercase font-regular text-gray-500 tracking-wider p-1">Source Languages</div>
                                           <div className="text-sm tracking-wide p-1">English, Aramic.</div>
+                                        </div>
+                                        <div className="flex flex-shrink items-center justify-center text-center">
+                                          <button
+                                            // onClick={}
+                                            type="button"
+                                            className="px-5"
+                                          >
+                                            <PencilAltIcon className="h-5 w-5 text-primary" aria-hidden="true" />
+                                          </button>
                                         </div>
                                       </div>
                                     </td>
