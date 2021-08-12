@@ -1,6 +1,4 @@
-import React, {
-  useEffect, useRef, useState, Fragment,
-} from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import SideBar from './SideBar';
 import TopMenuBar from './TopMenuBar';

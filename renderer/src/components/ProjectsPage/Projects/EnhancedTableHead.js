@@ -7,7 +7,7 @@ import {
   TableCell,
 } from '@material-ui/core';
 import {
-  StarIcon, ExternalLinkIcon, FilterIcon, ChevronDownIcon,
+  StarIcon, ExternalLinkIcon, FilterIcon,
 } from '@heroicons/react/outline';
 import { Menu, Transition } from '@headlessui/react';
 

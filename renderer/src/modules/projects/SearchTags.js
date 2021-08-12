@@ -1,4 +1,3 @@
-import { XCircleIcon } from '@heroicons/react/solid';
 import PropTypes from 'prop-types';
 import React, { useCallback } from 'react';
 
