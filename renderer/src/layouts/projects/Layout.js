@@ -1,6 +1,10 @@
+import React, {
+  useEffect, useRef, useState, Fragment,
+} from 'react';
 import PropTypes from 'prop-types';
 import SideBar from './SideBar';
 import TopMenuBar from './TopMenuBar';
+import ImportProjectPopUp from './ImportProjectPopUp';
 
 export default function ProjectsLayout(props) {
   const {
@@ -11,6 +15,16 @@ export default function ProjectsLayout(props) {
     colOne,
     colTwo,
   } = props;
+
+  const [openPopUp, setOpenPopUp] = useState(false);
+
+  function openImportPopUp() {
+    setOpenPopUp(true);
+  }
+
+  function closeImportPopUp() {
+    setOpenPopUp(false);
+  }
 
   return (
     <div className="flex">
@@ -24,9 +38,20 @@ export default function ProjectsLayout(props) {
         <header className="bg-white shadow">
           {!isTwoCol
             ? (
-              <div className="mx-auto py-4 px-4 sm:px-4 lg:px-6 border-primary border-b-4 flex items-center">
-                <h1 className="text-xl font-bold text-gray-900 uppercase tracking-wider">{title}</h1>
-                {header}
+              <div className="mx-auto py-4 px-4 sm:px-4 lg:px-6 border-primary border-b-4 flex items-center justify-between">
+                <div className="flex">
+                  <h1 className="text-xl font-bold text-gray-900 uppercase tracking-wider">{title}</h1>
+                  {header}
+                </div>
+                <button
+                  type="button"
+                  className="flex text-white ml-5 font-bold text-xs px-3 py-2 rounded-full leading-3 tracking-wider uppercase bg-primary"
+                  onClick={openImportPopUp}
+                >
+                  import
+                </button>
+                <ImportProjectPopUp open={openPopUp} closePopUp={closeImportPopUp} />
+
               </div>
             )
             : (

@@ -96,125 +96,125 @@ const ResourcesPopUp = ({
   };
 
   return (
-    <>
-      <Transition
-        show={openResourcePopUp}
-        as={Fragment}
-        enter="transition duration-100 ease-out"
-        enterFrom="transform scale-95 opacity-0"
-        enterTo="transform scale-100 opacity-100"
-        leave="transition duration-75 ease-out"
-        leaveFrom="transform scale-100 opacity-100"
-        leaveTo="transform scale-95 opacity-0"
+
+    <Transition
+      show={openResourcePopUp}
+      as={Fragment}
+      enter="transition duration-100 ease-out"
+      enterFrom="transform scale-95 opacity-0"
+      enterTo="transform scale-100 opacity-100"
+      leave="transition duration-75 ease-out"
+      leaveFrom="transform scale-100 opacity-100"
+      leaveTo="transform scale-95 opacity-0"
+    >
+      <Dialog
+        as="div"
+        className="fixed inset-0 z-10 overflow-y-auto"
+        initialFocus={cancelButtonRef}
+        static
+        open={openResourcePopUp}
+        onClose={removeSection}
       >
-        <Dialog
-          as="div"
-          className="fixed inset-0 z-10 overflow-y-auto"
-          initialFocus={cancelButtonRef}
-          static
-          open={openResourcePopUp}
-          onClose={removeSection}
-        >
-          <Dialog.Overlay className="fixed inset-0 bg-black opacity-30" />
-          <div className="flex items-center justify-center h-screen">
-            <div className="w-5/12 h-3/6 items-center justify-center m-auto z-50 shadow overflow-hidden rounded">
+        <Dialog.Overlay className="fixed inset-0 bg-black opacity-30" />
+        <div className="flex items-center justify-center h-screen">
+          <div className="w-5/12 h-3/6 items-center justify-center m-auto z-50 shadow overflow-hidden rounded">
 
-              <div className="flex relative rounded shadow overflow-hidden bg-white">
-                <button
-                  onClick={removeSection}
-                  type="button"
-                  className="focus:outline-none absolute z-10 top-0 right-0"
-                >
-                  <img
-                    src="/illustrations/close-button-black.svg"
-                    alt="/"
-                  />
-                </button>
-                <div>
-                  <div className="uppercase bg-secondary text-white py-2 px-2 text-xs tracking-widest leading-snug rounded-tl text-center">
-                    Resources
-                  </div>
-                  <div className="bg-gray-100 px-3 py-3 h-full">
-                    <input
-                      className="rounded h-8 bg-gray-200 border-none uppercase pr-6 text-xs
+            <div className="flex relative rounded shadow overflow-hidden bg-white">
+              <button
+                onClick={removeSection}
+                type="button"
+                className="focus:outline-none absolute z-10 top-0 right-0"
+              >
+                <img
+                  src="/illustrations/close-button-black.svg"
+                  alt="/"
+                />
+              </button>
+              <div>
+                <div className="uppercase bg-secondary text-white py-2 px-2 text-xs tracking-widest leading-snug rounded-tl text-center">
+                  Resources
+                </div>
+                <div className="bg-gray-100 px-3 py-3 h-full">
+                  <input
+                    className="rounded h-8 bg-gray-200 border-none uppercase pr-6 text-xs
                       tracking-widest leading-snug font-bold"
-                      placeholder="Search"
-                      type="search"
-                      id="gsearch"
-                      name="gsearch"
-                    />
-                    <div className="grid grid-rows-5 py-5 gap-4">
+                    placeholder="Search"
+                    type="search"
+                    id="gsearch"
+                    name="gsearch"
+                  />
+                  <div className="grid grid-rows-5 py-5 gap-4">
 
-                      <ResourceOption
-                        imageUrl="/illustrations/dictionary-icon.svg"
-                        id="tn"
-                        text="Notes"
-                        setSelectResource={setSelectResource}
-                        setTitle={setTitle}
-                        setSubMenuItems={setSubMenuItems}
-                      />
-                      <ResourceOption
-                        imageUrl="/illustrations/bible-icon.svg"
-                        id="bible"
-                        text="Bible"
-                        setSelectResource={setSelectResource}
-                        setTitle={setTitle}
-                        setSubMenuItems={setSubMenuItems}
-                      />
-                      <ResourceOption
-                        imageUrl="/illustrations/image-icon.svg"
-                        id="twlm"
-                        text="TraslationWords"
-                        setSelectResource={setSelectResource}
-                        setTitle={setTitle}
-                        setSubMenuItems={setSubMenuItems}
-                      />
-                      <ResourceOption
-                        imageUrl="/illustrations/dialogue-icon.svg"
-                        id="tq"
-                        text="Questions"
-                        setSelectResource={setSelectResource}
-                        setTitle={setTitle}
-                        setSubMenuItems={setSubMenuItems}
-                      />
-                      <ResourceOption
-                        imageUrl="/illustrations/location-icon.svg"
-                        id="map"
-                        text="Map"
-                        setSelectResource={setSelectResource}
-                        setTitle={setTitle}
-                        setSubMenuItems={setSubMenuItems}
-                      />
-                      <ResourceOption
-                        imageUrl="/illustrations/dialogue-icon.svg"
-                        id="cmtry"
-                        text="Commentary"
-                        setSelectResource={setSelectResource}
-                        setTitle={setTitle}
-                        setSubMenuItems={setSubMenuItems}
-                      />
-                    </div>
+                    <ResourceOption
+                      imageUrl="/illustrations/dictionary-icon.svg"
+                      id="tn"
+                      text="Notes"
+                      setSelectResource={setSelectResource}
+                      setTitle={setTitle}
+                      setSubMenuItems={setSubMenuItems}
+                    />
+                    <ResourceOption
+                      imageUrl="/illustrations/bible-icon.svg"
+                      id="bible"
+                      text="Bible"
+                      setSelectResource={setSelectResource}
+                      setTitle={setTitle}
+                      setSubMenuItems={setSubMenuItems}
+                    />
+                    <ResourceOption
+                      imageUrl="/illustrations/image-icon.svg"
+                      id="twlm"
+                      text="TraslationWords"
+                      setSelectResource={setSelectResource}
+                      setTitle={setTitle}
+                      setSubMenuItems={setSubMenuItems}
+                    />
+                    <ResourceOption
+                      imageUrl="/illustrations/dialogue-icon.svg"
+                      id="tq"
+                      text="Questions"
+                      setSelectResource={setSelectResource}
+                      setTitle={setTitle}
+                      setSubMenuItems={setSubMenuItems}
+                    />
+                    <ResourceOption
+                      imageUrl="/illustrations/location-icon.svg"
+                      id="map"
+                      text="Map"
+                      setSelectResource={setSelectResource}
+                      setTitle={setTitle}
+                      setSubMenuItems={setSubMenuItems}
+                    />
+                    <ResourceOption
+                      imageUrl="/illustrations/dialogue-icon.svg"
+                      id="cmtry"
+                      text="Commentary"
+                      setSelectResource={setSelectResource}
+                      setTitle={setTitle}
+                      setSubMenuItems={setSubMenuItems}
+                    />
                   </div>
                 </div>
+              </div>
 
-                <div className="relative w-full">
+              <div className="relative w-full">
 
-                  <div className="overflow-auto w-full h-5/6 no-scrollbars">
-                    <table className="divide-y divide-gray-200 w-full relative">
-                      <thead className="bg-white sticky top-0">
-                        <tr className="text-xs text-left">
-                          <th className="px-5 py-3 font-medium text-gray-300">
-                            <StarIcon className="h-5 w-5" aria-hidden="true" />
-                          </th>
-                          <th className="px-5 font-bold text-gray-700 uppercase tracking-wider">
-                            Name
-                          </th>
-                          <th className="px-5 font-bold text-gray-700 uppercase tracking-wider">
-                            Language
-                          </th>
-                        </tr>
-                      </thead>
-                      {selectResource === 'tn' && (
+                <div className="overflow-auto w-full h-5/6 no-scrollbars">
+                  <table className="divide-y divide-gray-200 w-full relative">
+                    <thead className="bg-white sticky top-0">
+                      <tr className="text-xs text-left">
+                        <th className="px-5 py-3 font-medium text-gray-300">
+                          <StarIcon className="h-5 w-5" aria-hidden="true" />
+                        </th>
+                        <th className="px-5 font-bold text-gray-700 uppercase tracking-wider">
+                          Name
+                        </th>
+                        <th className="px-5 font-bold text-gray-700 uppercase tracking-wider">
+                          Language
+                        </th>
+                      </tr>
+                    </thead>
+                    {selectResource === 'tn' && (
                       <tbody className="bg-white divide-y divide-gray-200 ">
                         {translationNotes.map((notes) => (
                           <tr className="hover:bg-gray-200" key={notes.name}>
@@ -246,7 +246,7 @@ const ResourcesPopUp = ({
 
                       </tbody>
                     )}
-                      {selectResource === 'twlm' && (
+                    {selectResource === 'twlm' && (
                       <tbody className="bg-white divide-y divide-gray-200  mb-44 ">
                         {translationWords.map((notes) => (
                           <tr className="hover:bg-gray-200" key={notes.name}>
@@ -277,7 +277,7 @@ const ResourcesPopUp = ({
                         ))}
                       </tbody>
                     )}
-                      {selectResource === 'tq' && (
+                    {selectResource === 'tq' && (
                       <tbody className="bg-white divide-y divide-gray-200  mb-44 ">
                         {translationQuestions.map((notes) => (
                           <tr className="hover:bg-gray-200" key={notes.name}>
@@ -308,7 +308,7 @@ const ResourcesPopUp = ({
                         ))}
                       </tbody>
                     )}
-                      {selectResource === 'bible' && (
+                    {selectResource === 'bible' && (
                       <tbody className="bg-white divide-y divide-gray-200  mb-44 ">
                         {(subMenuItems) && (
                           subMenuItems.map((ref) => (
@@ -343,24 +343,25 @@ const ResourcesPopUp = ({
                         )}
                       </tbody>
                     )}
-                    </table>
+                  </table>
 
-                    <div className="flex gap-6 mx-5 absolute bottom-5 right-0 justify-end z-10">
-                      <button type="button" className="py-2 px-6 bg-primary rounded shadow text-white uppercase text-xs tracking-widest font-semibold">Upload</button>
-                      <button type="button" className="py-2 px-6 rounded shadow bg-error text-white uppercase text-xs tracking-widest font-semibold">Cancel</button>
-                      <button type="button" className="py-2 px-7 rounded shadow bg-success text-white uppercase text-xs tracking-widest font-semibold">Open</button>
-                    </div>
+                  <div className="flex gap-6 mx-5 absolute bottom-5 right-0 justify-end z-10">
+                    <button type="button" className="py-2 px-6 bg-primary rounded shadow text-white uppercase text-xs tracking-widest font-semibold">Upload</button>
+                    <button type="button" className="py-2 px-6 rounded shadow bg-error text-white uppercase text-xs tracking-widest font-semibold">Cancel</button>
+                    <button type="button" className="py-2 px-7 rounded shadow bg-success text-white uppercase text-xs tracking-widest font-semibold">Open</button>
                   </div>
-
                 </div>
-              </div>
 
+              </div>
             </div>
 
           </div>
-        </Dialog>
-      </Transition>
-    </>
+
+        </div>
+      </Dialog>
+    </Transition>
+
   );
 };
+
 export default ResourcesPopUp;

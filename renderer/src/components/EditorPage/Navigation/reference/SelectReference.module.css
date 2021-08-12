@@ -1,3 +1,7 @@
 .select {
-  @apply py-2 px-3 hover:bg-primary hover:text-white cursor-pointer;
+  @apply py-1 px-2 hover:bg-primary hover:text-white cursor-pointer rounded;
+}
+
+.active {
+  @apply py-1 px-2 bg-primary text-white cursor-pointer rounded;
 }

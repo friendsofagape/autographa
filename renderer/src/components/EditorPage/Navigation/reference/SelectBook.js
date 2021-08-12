@@ -82,15 +82,14 @@ export default function SelectBook({
               leaveTo="transform scale-95 opacity-0"
             >
               <Disclosure.Panel static>
-                <div className="bg-white grid grid-cols-4 p-4 text-xxs text-left font-bold tracking-wide uppercase">
+                <div className="bg-white grid grid-cols-4 gap-1 p-4 text-xxs text-left font-bold tracking-wide uppercase">
                   {bookList.map((book, index) => (index > 38 && (
                   <div
                     key={book.name}
-                    style={{ color: selectedBooks.includes((book.key).toUpperCase()) ? 'seagreen' : '' }}
                     onClick={(e) => (multiSelectBook
                     ? selectMultipleBooks(e, book.key, book.name)
                     : bookSelect(e, book.key, book.name))}
-                    className={styles.select}
+                    className={`${styles.select} ${selectedBooks.includes((book.key).toUpperCase()) ? styles.active : ''}`}
                   >
                     {book.name}
                   </div>
@@ -120,21 +119,16 @@ export default function SelectBook({
               leaveTo="transform scale-95 opacity-0"
             >
               <Disclosure.Panel static>
-                <div className="bg-white grid grid-cols-4 p-4 text-xxs text-left font-bold tracking-wide uppercase">
+                <div className="bg-white grid grid-cols-4 gap-1 p-4 text-xxs text-left font-bold tracking-wide uppercase">
                   {bookList.map((book, index) => (
                       index <= 38 && (
                         <div
                           key={book.name}
-                          style={{
-                          color:
-                          selectedBooks.includes((book.key).toUpperCase())
-                          ? 'seagreen' : '',
-                          }}
                           onClick={(e) => (
                           multiSelectBook
                           ? selectMultipleBooks(e, book.key, book.name)
                           : bookSelect(e, book.key, book.name))}
-                          className={styles.select}
+                          className={`${styles.select} ${selectedBooks.includes((book.key).toUpperCase()) ? styles.active : ''}`}
                         >
                           {book.name}
                         </div>

@@ -32,13 +32,13 @@ const CustomCanonSpecification = ({ bibleNav, closeBibleNav, handleNav }) => {
     });
     closeBibleNav();
   };
-   React.useEffect(() => {
-     if (handleNav === 'edit') {
-        setName(canonSpecification.title);
-        setSelectedBooks(canonSpecification.currentScope);
-     }
-   // eslint-disable-next-line react-hooks/exhaustive-deps
-   }, [handleNav]);
+  React.useEffect(() => {
+    if (handleNav === 'edit') {
+      setName(canonSpecification.title);
+      setSelectedBooks(canonSpecification.currentScope);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [handleNav]);
   return (
     <Transition
       show={bibleNav}
@@ -59,15 +59,17 @@ const CustomCanonSpecification = ({ bibleNav, closeBibleNav, handleNav }) => {
       >
         <Dialog.Overlay className="fixed inset-0 bg-black opacity-30" />
         <div className="flex items-center justify-center h-screen ">
-          <div className="w-5/12 m-auto z-50 shadow overflow-hidden sm:rounded-lg">
-            <input
-              type="text"
-              name="new spec"
-              id=""
-              value={name}
-              onChange={(e) => { setName(e.target.value); }}
-              className="bg-white w-80 block rounded shadow-sm sm:text-sm focus:ring-gray-500 focus:border-primary border-gray-300"
-            />
+          <div className="w-5/12 m-auto z-50 bg-white shadow overflow-hidden sm:rounded-lg">
+            <div className="p-3">
+              <input
+                type="text"
+                name="new spec"
+                id=""
+                value={name}
+                onChange={(e) => { setName(e.target.value); }}
+                className="bg-white w-80 block rounded shadow-sm sm:text-sm focus:ring-gray-500 focus:border-primary border-gray-300"
+              />
+            </div>
             <SelectBook
               bookList={bookList}
               multiSelectBook
@@ -82,13 +84,22 @@ const CustomCanonSpecification = ({ bibleNav, closeBibleNav, handleNav }) => {
                 <XIcon />
               </button>
             </SelectBook>
-            <button
-              type="button"
-              className="w-40 h-10  bg-success leading-loose rounded shadow text-xs font-base  text-white tracking-wide  font-light uppercase"
-              onClick={() => (handleNav === 'edit' ? editCanon() : saveCanon())}
-            >
-              Save
-            </button>
+            <div className="p-3 flex gap-5 justify-end">
+              <button
+                type="button"
+                className="w-40 h-10  bg-error leading-loose rounded shadow text-xs font-base  text-white tracking-wide  font-light uppercase"
+                // onClick={() => (handleNav === 'edit' ? editCanon() : saveCanon())}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                className="w-40 h-10  bg-success leading-loose rounded shadow text-xs font-base  text-white tracking-wide  font-light uppercase"
+                onClick={() => (handleNav === 'edit' ? editCanon() : saveCanon())}
+              >
+                Save
+              </button>
+            </div>
           </div>
         </div>
       </Dialog>

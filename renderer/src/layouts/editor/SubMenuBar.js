@@ -214,7 +214,6 @@ export default function SubMenuBar() {
                   </button>
                   <p>
                     {refernceLoading.text}
-                    {' '}
                     {counter > 0 ? counter : ''}
                   </p>
                 </div>
