@@ -10,6 +10,7 @@ import {
 import * as localforage from 'localforage';
 // eslint-disable-next-line import/no-unresolved
 import { readIngredients } from '@/core/reference/readIngredients';
+import { ProjectContext } from '@/components/context/ProjectContext';
 import { isElectron } from '../../../../core/handleElectron';
 
 const ReferenceBible = ({
@@ -27,6 +28,11 @@ const ReferenceBible = ({
       setCounter,
     },
   } = useContext(ReferenceContext);
+  const {
+    states: {
+      username,
+    },
+  } = useContext(ProjectContext);
   // const regExp = /\(([^)]+)\)/;
     const [usfmInput, setUsfmInput] = useState();
     const CustomEditor = useMemo(
@@ -37,26 +43,32 @@ const ReferenceBible = ({
 
     useEffect(() => {
       if (isElectron()) {
+        const path = require('path');
+        const newpath = localStorage.getItem('userPath');
+        console.log(refName);
         localforage.getItem('refBibleBurrito')
         .then((refs) => {
           refs.forEach((ref) => {
-            if (ref.languages[0].tag === languageId) {
-                Object.entries(ref.ingredients).forEach(
-                  ([key]) => {
-                    const _bookID = key.split('.')[0];
-                    if (_bookID.split('-').pop() === bookId.toUpperCase() && refName !== null) {
-                      readIngredients({
-                        projectname: 'newprodir',
-                        refName,
-                        filePath: key,
-                      }).then((res) => {
-                        setUsfmInput(res);
-                        setRefernceLoading({
-                          status: true,
-                          text: 'Reference-burrito loaded succesfully',
+            if (ref.value.languages[0].tag === languageId) {
+                Object.entries(ref.value.ingredients).forEach(
+                  ([key, _ingredients]) => {
+                    if (_ingredients.scope) {
+                      const _bookID = Object.entries(_ingredients.scope)[0][0];
+                      if (_bookID.split('-').pop() === bookId.toUpperCase() && refName !== null) {
+                        const filePath = path.join(
+                          newpath, 'autographa', 'users', username, 'reference', refName, key,
+                        );
+                        readIngredients({
+                          filePath,
+                        }).then((res) => {
+                          setUsfmInput(res);
+                          setRefernceLoading({
+                            status: true,
+                            text: 'Reference-burrito loaded succesfully',
+                          });
+                          setCounter(4);
                         });
-                        setCounter(4);
-                      });
+                      }
                     }
                     // console.log(key, value),
                   },

@@ -18,7 +18,7 @@ export default function EditorSection({
   const {
     state: {
       openResource,
-      selectedFont,
+      // selectedFont,
       fontSize,
     },
     actions: {
@@ -101,9 +101,10 @@ export default function EditorSection({
         content
         && (
           <div
-            style={{ fontFamily: selectedFont || 'sans-serif', fontSize: `${fontSize}rem` }}
+            style={{ fontFamily: 'sans-serif', fontSize: `${fontSize}rem` }}
             className="prose-sm p-4 text-xl h-full overflow-y-scroll no-scrollbars"
           >
+            {console.log(React.Children.count(children))}
             {(!React.Children.count(children))
               ? (
                 <div className="w-full h-full flex items-center justify-center">
