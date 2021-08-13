@@ -19,12 +19,16 @@ export default function ReferenceContextProvider({ children }) {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [refName, setRefName] = React.useState('null');
     const [currentScope, setCurrentScope] = React.useState([]);
-    const [openResource, setOpenResource] = React.useState(true);
+    const [openResource1, setOpenResource1] = React.useState(true);
+    const [openResource2, setOpenResource2] = React.useState(true);
+    const [openResource3, setOpenResource3] = React.useState(true);
+    const [openResource4, setOpenResource4] = React.useState(true);
     // const [openResourcePopUp, setOpenResourcePopUp] = React.useState(false);
     const [selectedFont, setSelectedFont] = React.useState('sans-serif');
     const [fontSize, setFontsize] = React.useState(1);
     const [fonts, setFonts] = useState([]);
     const [layout, setLayout] = useState(0);
+    const [row, setRow] = useState(0);
     const [refernceLoading, setRefernceLoading] = useState({
       status: false,
       text: '',
@@ -82,12 +86,16 @@ export default function ReferenceContextProvider({ children }) {
         anchorEl,
         refName,
         currentScope,
-        openResource,
+        openResource1,
+        openResource2,
+        openResource3,
+        openResource4,
         // openResourcePopUp,
         selectedFont,
         fontSize,
         fonts,
         layout,
+        row,
         refernceLoading,
         counter,
         bookmarksVerses,
@@ -108,13 +116,17 @@ export default function ReferenceContextProvider({ children }) {
         handleClick,
         setRefName,
         setCurrentScope,
-        setOpenResource,
+        setOpenResource1,
+        setOpenResource2,
+        setOpenResource3,
+        setOpenResource4,
         // setOpenResourcePopUp,
         setSelectedFont,
         setFontsize,
         setFonts,
         getFonts,
         setLayout,
+        setRow,
         setRefernceLoading,
         setCounter,
         setBookmarksVerses,

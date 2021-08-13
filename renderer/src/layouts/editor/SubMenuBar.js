@@ -105,7 +105,10 @@ export default function SubMenuBar() {
       counter,
     },
     actions: {
-      setOpenResource,
+      setOpenResource1,
+      setOpenResource2,
+      setOpenResource3,
+      setOpenResource4,
       getFonts,
       setLayout,
       setRefernceLoading,
@@ -119,7 +122,10 @@ export default function SubMenuBar() {
   }, []);
 
   const handleResource = () => {
-    setOpenResource(false);
+    setOpenResource1(false);
+        setOpenResource2(false);
+        setOpenResource3(false);
+        setOpenResource4(false);
     if (layout < 3) { setLayout(layout + 1); }
     if (layout >= 3) { setLayout(1); }
     if (layout === 2) { setLayout(0); }

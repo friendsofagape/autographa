@@ -5,6 +5,9 @@
       "@/icons/*": [
         "public/icons/*"
       ],
+      "@/illustrations/*": [
+        "public/illustrations/*"
+      ],
       "@/components/*": [
         "renderer/src/components/*"
       ],

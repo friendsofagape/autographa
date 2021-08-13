@@ -55,6 +55,9 @@ const ResourcesPopUp = ({
     },
   } = useContext(ProjectContext);
 
+  console.log(languageId,
+    openResourcePopUp,
+    selectedResource);
   useEffect(() => {
     setReferenceResources({
       selectedResource: selectResource,
