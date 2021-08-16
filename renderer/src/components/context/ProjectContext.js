@@ -150,9 +150,19 @@ const ProjectContextProvider = ({ children }) => {
       } else {
         updateJson('canonSpecification');
       }
-      // if (!uniqueSetting(licenceList, copyright.title)) {
-      //   updateJson('copyright');
-      // }
+      // Add / update licence into current list.
+      if (uniqueId(licenceList, copyright.id)) {
+        licenceList.forEach((licence) => {
+          if (licence.id === copyright.id) {
+            if (licence.title !== copyright.title
+              || licence.licence !== copyright.licence) {
+              updateJson('copyright');
+            }
+          }
+        });
+      } else {
+        updateJson('copyright');
+      }
       const status = await saveProjectsMeta(
         newProjectFields,
         version,

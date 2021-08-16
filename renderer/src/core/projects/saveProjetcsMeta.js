@@ -48,7 +48,8 @@ const saveProjectsMeta = async (
       const burritoFile = await createTranslationSB(currentUser,
         newProjectFields.projectName,
         canonSpecification.currentScope,
-        selectedLanguage.title);
+        selectedLanguage.title,
+        copyright.licence);
       burritoFile.ingredients = ingredient;
       await fs.writeFileSync(path.join(projectDir, newProjectFields.projectName,
         'metadata.json'), JSON.stringify(burritoFile));
