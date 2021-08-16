@@ -27,21 +27,22 @@ export default function TargetLanguagePopover() {
       setDirection('LTR');
     }
   };
+  function openModal() {
+    setIsOpen(true);
+  }
+  function closeModal() {
+    setIsOpen(false);
+  }
   const addLanguage = () => {
     setLanguage({ id: languages.length + 1, title: lang, scriptDirection: direction });
+    closeModal();
   };
   // eslint-disable-next-line no-unused-vars
   const editLanguage = () => {
     setLanguage({ id, title: lang, scriptDirection: direction });
+    closeModal();
   };
 
-  function closeModal() {
-    setIsOpen(false);
-  }
-
-  function openModal() {
-    setIsOpen(true);
-  }
   return (
     <>
       <div className="flex gap-3">
@@ -145,7 +146,7 @@ export default function TargetLanguagePopover() {
                     <button
                       type="button"
                       className=" bg-success w-28 h-8 border-color-success rounded uppercase text-white text-xs shadow focus:outline-none"
-                      onClick={() => { addLanguage(); closeModal(); }}
+                      onClick={() => (edit === true ? editLanguage() : addLanguage())}
                     >
                       {edit ? 'save' : 'create'}
                     </button>

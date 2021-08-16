@@ -75,6 +75,10 @@ export default function AdvancedSettingsDropdown() {
     if (value.label === 'Licence') {
       licenceList.forEach((l) => {
         if (l.title === value.data) {
+          // eslint-disable-next-line import/no-dynamic-require
+          const licencefile = require(`../../../lib/license/${l.id}.md`);
+          // eslint-disable-next-line no-param-reassign
+          l.licence = licencefile.default;
           setCopyRight(l);
         }
       });

@@ -3,7 +3,7 @@ import burrito from '../../lib/BurritoTemplete.json';
 
 const sha1 = require('sha1');
 
-const createTranslationSB = (username, projectName, currentScope, language) => {
+const createTranslationSB = (username, projectName, currentScope, language, licence) => {
   const names = {};
   return new Promise((resolve) => {
     const json = burrito;
@@ -18,6 +18,7 @@ const createTranslationSB = (username, projectName, currentScope, language) => {
     };
     json.identification.name.en = projectName;
     json.languages[0].name.en = language;
+    json.copyright.fullStatementPlain.en = licence;
     currentScope.forEach((scope) => {
       json.type.flavorType.currentScope[scope] = [];
       names[scope] = json.names[scope];
