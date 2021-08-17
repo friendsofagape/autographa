@@ -228,7 +228,7 @@ const UsfmEditor = () => {
       readRefMeta({
         projectsDir,
       }).then((refs) => {
-        refs.forEach((ref) => {
+        refs.forEach(() => {
           readRefBurrito({
             metaPath,
           }).then((data) => {

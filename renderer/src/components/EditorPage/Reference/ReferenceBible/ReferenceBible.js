@@ -45,7 +45,6 @@ const ReferenceBible = ({
       if (isElectron()) {
         const path = require('path');
         const newpath = localStorage.getItem('userPath');
-        console.log(refName);
         localforage.getItem('refBibleBurrito')
         .then((refs) => {
           refs.forEach((ref) => {

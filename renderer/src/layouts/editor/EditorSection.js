@@ -1,5 +1,6 @@
+/* eslint-disable react/prop-types */
 import PropTypes from 'prop-types';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import ResourcesPopUp from '@/components/EditorPage/Reference/ResourcesPopUp';
 import BibleNavigation from '@/modules/biblenavigation/BibleNavigation';
@@ -13,7 +14,6 @@ export default function EditorSection({
   children,
   languageId,
   column,
-  sectionNum,
   setLoadResource,
   loadResource,
   openResource,
