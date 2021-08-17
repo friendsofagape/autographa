@@ -20,6 +20,9 @@
       "@/icons/*": [
         "public/icons/*"
       ],
+      "@/illustrations/*": [
+        "public/illustrations/*"
+      ],
     }
   }
 }

@@ -20,6 +20,7 @@ import CheckIcon from '@/icons/basil/Outline/Interface/Check.svg';
 import ExpandIcon from '@/icons/basil/Outline/Interface/Expand.svg';
 
 import { ReferenceContext } from '@/components/context/ReferenceContext';
+import { ProjectContext } from '@/components/context/ProjectContext';
 import styles from './MenuBar.module.css';
 
 const profile = ['Your Profile', 'Settings', 'Sign out'];
@@ -54,9 +55,12 @@ function classNames(...classes) {
 export default function TopMenuBar() {
   const [openSideBar, setOpenSideBar] = useState(false);
 
-  function openSideBars() {
-    setOpenSideBar(true);
-  }
+  const {
+    states: {
+      selectedProject,
+    },
+  } = useContext(ProjectContext);
+
   const {
     state: {
       fontSize,
@@ -65,6 +69,11 @@ export default function TopMenuBar() {
       setFontsize,
     },
   } = useContext(ReferenceContext);
+
+  function openSideBars() {
+    setOpenSideBar(true);
+  }
+
   function closeSideBars() {
     setOpenSideBar(false);
   }
@@ -103,7 +112,7 @@ export default function TopMenuBar() {
 
             <div>
               <span className="text-primary px-10 py-2 text-lg tracking-wide font-extrabold uppercase">
-                Project Name
+                {selectedProject}
               </span>
             </div>
 
@@ -129,30 +138,6 @@ export default function TopMenuBar() {
             <div className="flex justify-end">
 
               <div className="mr-4 flex items-center">
-                <div className="inline-flex">
-                  <button
-                    type="button"
-                    onClick={() => { handleFontSize('dec'); }}
-                    className="py-1 px-4 border border-gray-200 rounded-md shadow-sm
-                                text-s text-primary bg-gray-100
-                                hover:bg-primary hover:text-white font-bold
-                                focus:outline-none focus:ring-1 focus:ring-offset-1
-                                focus:ring-offset-gray-300 focus:ring-gray-300;"
-                  >
-                    A-
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => { handleFontSize('inc'); }}
-                    className="py-2 px-4 border border-gray-200 rounded-md shadow-sm
-                                text-lg text-primary bg-gray-100
-                                hover:bg-primary hover:text-white font-bold
-                                focus:outline-none focus:ring-1 focus:ring-offset-1
-                                focus:ring-offset-gray-300 focus:ring-gray-300;"
-                  >
-                    A+
-                  </button>
-                </div>
                 <Popover className="relative">
                   {({ open }) => (
                     <>
@@ -210,8 +195,22 @@ export default function TopMenuBar() {
 
                 <button type="button" className={styles.btn}>
 
-                  <div className="h6 w-6 hover:text-black font-bold border-r border-gray-200 text-center">A</div>
-                  <div className="h6 w-6 hover:text-black font-bold text-lg text-center">A</div>
+                  <div
+                    onClick={() => { handleFontSize('dec'); }}
+                    role="button"
+                    tabIndex="0"
+                    className="h6 w-6 hover:text-black font-bold border-r border-gray-200 text-center"
+                  >
+                    A
+                  </div>
+                  <div
+                    className="h6 w-6 hover:text-black font-bold text-lg text-center"
+                    onClick={() => { handleFontSize('inc'); }}
+                    role="button"
+                    tabIndex="0"
+                  >
+                    A
+                  </div>
 
                 </button>
 

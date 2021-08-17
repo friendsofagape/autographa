@@ -217,15 +217,20 @@ const UsfmEditor = () => {
       //   });
       // });
     } else {
+      const path = require('path');
+      const newpath = localStorage.getItem('userPath');
+      const projectsDir = path.join(
+          newpath, 'autographa', 'users', username, 'projects', selectedProject,
+      );
+      const metaPath = path.join(
+        newpath, 'autographa', 'users', username, 'projects', selectedProject, 'metadata.json',
+      );
       readRefMeta({
-        projectname: 'Test Burrito Project',
-        username,
+        projectsDir,
       }).then((refs) => {
-        refs.forEach((ref) => {
+        refs.forEach(() => {
           readRefBurrito({
-            projectname: selectedProject,
-            filename: ref,
-            username,
+            metaPath,
           }).then((data) => {
             if (data) {
               const _data = JSON.parse(data);

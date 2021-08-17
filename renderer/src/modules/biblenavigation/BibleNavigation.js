@@ -83,9 +83,9 @@ export default function BibleNavigation(props) {
         .then((refs) => {
           refs.forEach((ref) => {
             if (languageId !== null) {
-            if (ref.languages[0].tag === languageId) {
+            if (ref.value.languages[0].tag === languageId) {
               const supportedBooks = [];
-              Object.entries((ref.type.flavorType.currentScope)).forEach(
+              Object.entries((ref.value.type.flavorType.currentScope)).forEach(
                   ([key]) => {
                     supportedBooks.push(key.toLowerCase());
                   },
@@ -135,38 +135,6 @@ export default function BibleNavigation(props) {
             )}
         </div>
       </div>
-
-      {/* <div className="items-center justify-center">
-        <button
-          type="button"
-          onClick={openBooks}
-          className="px-4 py-2 text-sm font-medium text-white bg-black rounded-md bg-opacity-60 hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
-        >
-          BOOK:
-          {' '}
-          {bookName}
-        </button>
-        <button
-          type="button"
-          onClick={selectBook}
-          className="px-4 py-2 text-sm font-medium text-white bg-black rounded-md bg-opacity-60 hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
-        >
-          CHAPTER:
-          {' '}
-          {chapter}
-        </button>
-        <button
-          type="button"
-          className="px-4 py-2 text-sm font-medium text-white bg-black rounded-md bg-opacity-60 hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
-        >
-          VERSE:
-          {' '}
-          {multiSelectVerse
-            ? selectedVerses.join()
-            : verse}
-        </button>
-      </div> */}
-
       <Transition
         show={openBook}
         as={Fragment}

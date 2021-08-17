@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import PropTypes from 'prop-types';
 import React, { useContext, useState } from 'react';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
@@ -13,16 +14,22 @@ export default function EditorSection({
   children,
   languageId,
   column,
+  setLoadResource,
+  loadResource,
+  openResource,
+  setOpenResource,
 }) {
   const [content, setContent] = useState(true);
+
   const {
     state: {
-      openResource,
-      selectedFont,
+      // selectedFont
       fontSize,
+      row,
+      layout,
     },
     actions: {
-      setOpenResource,
+      setRow,
     },
   } = useContext(ReferenceContext);
 
@@ -30,6 +37,7 @@ export default function EditorSection({
 
   const removeSection = () => {
     setOpenResource(!openResource);
+    setLoadResource(false);
   };
 
   const sectionContent = () => {
@@ -38,6 +46,16 @@ export default function EditorSection({
 
   const showResourcesPanel = () => {
     setOpenResourcePopUp(true);
+    setLoadResource(true);
+  };
+
+  const addRow = () => {
+    if (row <= 0 && layout === 2) {
+      setRow(row + 1);
+    }
+    if (row >= 1 && row < 2 && layout >= 2) {
+      setRow(row + 1);
+    }
   };
 
   return (
@@ -101,10 +119,11 @@ export default function EditorSection({
         content
         && (
           <div
-            style={{ fontFamily: selectedFont || 'sans-serif', fontSize: `${fontSize}rem` }}
+            style={{ fontFamily: 'sans-serif', fontSize: `${fontSize}rem` }}
             className="prose-sm p-4 text-xl h-full overflow-y-scroll no-scrollbars"
           >
-            {(!React.Children.count(children))
+            {
+              (loadResource === false)
               ? (
                 <div className="w-full h-full flex items-center justify-center">
                   <div className="text-center">
@@ -118,13 +137,22 @@ export default function EditorSection({
                     </button>
                   </div>
                 </div>
-)
-              : children}
-            <img
-              className="absolute bottom-0 -right-0 invisible group-hover:visible"
-              src="/illustrations/add-section.svg"
-              alt=""
-            />
+              )
+              : children
+            }
+            <span
+              tabIndex={-42}
+              onClick={addRow}
+              role="button"
+            >
+              <img
+                title="Add Section"
+                style={{ marginBottom: '0' }}
+                className="absolute bottom-0 -right-0 invisible group-hover:visible"
+                src="/illustrations/add-section.svg"
+                alt=""
+              />
+            </span>
           </div>
         )
       }

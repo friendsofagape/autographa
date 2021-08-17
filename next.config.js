@@ -47,9 +47,6 @@ module.exports = withTM({
 
     return config;
   },
-  images: {
-    disableStaticImages: true,
-  },
   webpack5: true,
   externals: [nodeExternals()],
   target: 'serverless',

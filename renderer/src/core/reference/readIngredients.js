@@ -1,18 +1,13 @@
 export const readIngredients = async ({
-    projectname,
-    refName,
     filePath,
 }) => {
     const fs = window.require('fs');
     const path = require('path');
-    const newpath = localStorage.getItem('userPath');
-    const projectsPath = path.join(
-        newpath, 'autographa', 'users', 'username', 'projects', projectname, refName, filePath,
-    );
     return new Promise((resolve) => {
-        if (fs.existsSync(projectsPath)) {
+        console.log(filePath, fs.existsSync(filePath));
+        if (fs.existsSync(filePath)) {
            const fileContent = fs.readFileSync(
-                path.join(projectsPath),
+                path.join(filePath),
                 'utf8',
               );
               resolve((fileContent));

@@ -2,13 +2,14 @@
 /* eslint-disable import/no-unresolved */
 import { StarIcon } from '@heroicons/react/outline';
 import React, {
-  useEffect, useRef, useState, Fragment,
+  useEffect, useRef, useState, Fragment, useContext,
 } from 'react';
 import * as localforage from 'localforage';
 import { isElectron } from '@/core/handleElectron';
 import { readRefMeta } from '@/core/reference/readRefMeta';
 import { readRefBurrito } from '@/core/reference/readRefBurrito';
 import { Dialog, Transition } from '@headlessui/react';
+import { ProjectContext } from '@/components/context/ProjectContext';
 import ResourceOption from './ResourceOption';
 
 function createData(name, language, date) {
@@ -47,6 +48,13 @@ const ResourcesPopUp = ({
   const [subMenuItems, setSubMenuItems] = useState();
   const [title, setTitle] = useState(header);
   const [selectResource, setSelectResource] = useState(selectedResource);
+
+  const {
+    states: {
+      username,
+    },
+  } = useContext(ProjectContext);
+
   useEffect(() => {
     setReferenceResources({
       selectedResource: selectResource,
@@ -54,17 +62,27 @@ const ResourcesPopUp = ({
       languageId,
     });
     if (isElectron()) {
+      const path = require('path');
+      const newpath = localStorage.getItem('userPath');
+      const projectsDir = path.join(
+        newpath, 'autographa', 'users', username, 'reference',
+      );
       const parseData = [];
+      const burrito = {};
       readRefMeta({
-        projectname: 'newprodir',
+        projectsDir,
       }).then((refs) => {
         refs.forEach((ref) => {
+          const metaPath = path.join(
+            newpath, 'autographa', 'users', username, 'reference', ref, 'metadata.json',
+          );
           readRefBurrito({
-            projectname: 'newprodir',
-            filename: ref,
+            metaPath,
           }).then((data) => {
             if (data) {
-              parseData.push(JSON.parse(data));
+              burrito.projectDir = ref;
+              burrito.value = JSON.parse(data);
+              parseData.push(burrito);
               localforage.setItem('refBibleBurrito', parseData).then(
                 () => localforage.getItem('refBibleBurrito'),
               ).then((res) => {
@@ -312,7 +330,7 @@ const ResourcesPopUp = ({
                       <tbody className="bg-white divide-y divide-gray-200  mb-44 ">
                         {(subMenuItems) && (
                           subMenuItems.map((ref) => (
-                            <tr className="hover:bg-gray-200" key={ref.identification.name.en}>
+                            <tr className="hover:bg-gray-200" key={ref.value.identification.name.en}>
                               <td className="px-5 py-3">
                                 <StarIcon className="h-5 w-5 text-gray-300" aria-hidden="true" />
                               </td>
@@ -320,22 +338,23 @@ const ResourcesPopUp = ({
                                 <div
                                   className="focus:outline-none"
                                   onClick={(e) => handleRowSelect(e,
-                                    ref.languages[0].tag, ref.identification.abbreviation.en)}
+                                    ref.value.languages[0].tag, ref.projectDir)}
                                   role="button"
                                   tabIndex="0"
                                 >
-                                  {ref.identification.name.en}
+                                  {ref.value.identification.name.en}
                                 </div>
                               </td>
                               <td className="px-5 text-gray-600">
                                 <div
                                   className="focus:outline-none"
                                   onClick={(e) => handleRowSelect(e,
-                                    ref.languages[0].tag, ref.identification.abbreviation.en)}
+                                    ref.value.languages[0].tag,
+                                    ref.projectDir)}
                                   role="button"
                                   tabIndex="0"
                                 >
-                                  {ref.languages[0].name.en}
+                                  {ref.value.languages[0].name.en}
                                 </div>
                               </td>
                             </tr>
