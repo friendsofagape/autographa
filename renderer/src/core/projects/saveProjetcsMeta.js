@@ -41,9 +41,11 @@ const saveProjectsMeta = async (
     // ingredient has the list of created files in the form of SB Ingredients
     await createVersificationUSFM(
       currentUser,
-      newProjectFields.projectName,
+      newProjectFields,
       versificationScheme,
       canonSpecification.currentScope,
+      selectedLanguage.scriptDirection,
+      selectedVersion,
     ).then(async (ingredient) => {
       const burritoFile = await createTranslationSB(currentUser,
         newProjectFields.projectName,

@@ -1,10 +1,13 @@
+import moment from 'moment';
+
 const grammar = require('usfm-grammar');
 const path = require('path');
 const md5 = require('md5');
 
-export const createVersificationUSFM = (username, projectname, versification, books) => {
+export const createVersificationUSFM = (username, project, versification, books, direction,
+  version) => {
   const newpath = localStorage.getItem('userPath');
-  const folder = path.join(newpath, 'autographa', 'users', username, 'projects', projectname, 'ingredients');
+  const folder = path.join(newpath, 'autographa', 'users', username, 'projects', project.projectName, 'ingredients');
   const schemes = [
     { name: 'King James Version (KJV)', file: 'eng.json' },
     { name: '', file: 'lxx.json' },
@@ -81,6 +84,26 @@ export const createVersificationUSFM = (username, projectname, versification, bo
           mimeType: 'application/json',
           size: stats.size,
           role: 'x-versification',
+        };
+        const settings = {
+          Editor: {
+            ScriptureDirection: direction,
+            starred: false,
+            Description: project.description,
+            LastSeen: moment().format(),
+            Version: version.name,
+            Abbreviation: version.abbreviation,
+          },
+        };
+        await fs.writeFileSync(path.join(folder, 'AG.json'), JSON.stringify(settings));
+        const stat = fs.statSync(path.join(folder, 'AG.json'));
+        ingredients[path.join('ingredients', 'AG.json')] = {
+          checksum: {
+            md5: md5(settings),
+          },
+          mimeType: 'application/json',
+          size: stat.size,
+          role: 'x-autographa',
         };
         resolve(ingredients);
       }

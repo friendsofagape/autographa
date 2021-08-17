@@ -27,9 +27,9 @@ const headCells = [
   {
     id: 'view', numeric: true, disablePadding: false, label: 'Last Viewed',
   },
-  {
-    id: 'editors', numeric: false, disablePadding: false, label: 'Editors',
-  },
+  // {
+  //   id: 'editors', numeric: false, disablePadding: false, label: 'Editors',
+  // },
   {
     id: 'more', numeric: false, disablePadding: false, label: '',
   },

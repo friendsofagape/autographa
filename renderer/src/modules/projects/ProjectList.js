@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import React, { Fragment, useState } from 'react';
 import { useRouter } from 'next/router';
 import moment from 'moment';
@@ -53,7 +54,6 @@ export default function ProjectList() {
       setShowRow(true);
     }
   };
-
   return (
     <>
       <ProjectsLayout
@@ -142,7 +142,7 @@ export default function ProjectList() {
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{project.date}</td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{moment(project.view, 'YYYY-MM-DD h:mm:ss').fromNow()}</td>
-                                <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                {/* <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                   <div className="flex -space-x-1 overflow-hidden">
                                     <img
                                       className="inline-block h-6 w-6 rounded-full ring-2 ring-white"
@@ -165,7 +165,7 @@ export default function ProjectList() {
                                       alt=""
                                     />
                                   </div>
-                                </td>
+                                </td> */}
                                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium flex justify-end">
                                   {showRow
                                     ? <ChevronUpIcon className="h-4 w-4 mt-2 fill-current text-gray-400" aria-hidden="true" />
@@ -179,7 +179,7 @@ export default function ProjectList() {
                                       <div className="flex gap-4">
                                         <div className="flex-grow">
                                           <div className="text-xxs uppercase font-regular text-gray-500 tracking-wider p-1">description</div>
-                                          <div className="text-sm tracking-wide p-1">This is project description for this project. This project is about to be description for this project.</div>
+                                          <div className="text-sm tracking-wide p-1">{project.description}</div>
                                         </div>
                                         <div className="flex-grow">
                                           <div className="text-xxs uppercase font-regular text-gray-500 tracking-wider p-1">Source Languages</div>
@@ -259,7 +259,7 @@ export default function ProjectList() {
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{project.date}</td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{moment(project.view, 'YYYY-MM-DD h:mm:ss').fromNow()}</td>
-                                <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                {/* <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                   <div className="flex -space-x-1 overflow-hidden">
                                     <img
                                       className="inline-block h-6 w-6 rounded-full ring-2 ring-white"
@@ -282,7 +282,7 @@ export default function ProjectList() {
                                       alt=""
                                     />
                                   </div>
-                                </td>
+                                </td> */}
                                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                   <Disclosure.Button>
                                     <ChevronUpIcon className="h-4 w-4 fill-current text-gray-400" aria-hidden="true" />
@@ -304,7 +304,7 @@ export default function ProjectList() {
                                       <div className="flex gap-4">
                                         <div className="flex-grow">
                                           <div className="text-xxs uppercase font-regular text-gray-500 tracking-wider p-1">description</div>
-                                          <div className="text-sm tracking-wide p-1">This is project description for this project. This project is about to be description for this project.</div>
+                                          <div className="text-sm tracking-wide p-1">{project.description}</div>
                                         </div>
                                         <div className="flex-grow">
                                           <div className="text-xxs uppercase font-regular text-gray-500 tracking-wider p-1">Source Languages</div>

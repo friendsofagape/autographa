@@ -95,25 +95,27 @@ function useProjectsSort() {
     // eslint-disable-next-line
       }, [temparray, active]);
 
-    const createData = (name, language, date, view) => ({
-          name, language, date, view,
+    const createData = (name, language, date, view, description) => ({
+      name, language, date, view, description,
     });
 
-    const FetchStarred = (ProjectName, Language, createdAt, LastView) => {
+    const FetchStarred = (ProjectName, Language, createdAt, LastView, ProjectDescription) => {
       starrtedData.push(createData(
         ProjectName,
         Language,
         createdAt,
         LastView,
+        ProjectDescription,
       ));
     };
 
-    const FetchUnstarred = (ProjectName, Language, createdAt, LastView) => {
+    const FetchUnstarred = (ProjectName, Language, createdAt, LastView, ProjectDescription) => {
       unstarrtedData.push(createData(
         ProjectName,
         Language,
         createdAt,
         LastView,
+        ProjectDescription,
       ));
     };
 
@@ -129,15 +131,15 @@ function useProjectsSort() {
                 if (value) {
                   value.projects.forEach((project) => {
                     const created = Object.keys(project.identification.primary.ag);
-                    if (project.starred === true) {
+                    if (project.Editor?.starred === true) {
                       // FetchStarred(projectName,language, createdAt, updatedAt);
                       FetchStarred(project.identification.name.en, project.languages[0].name.en,
                         project.identification.primary.ag[created].timestamp,
-                        project.meta.dateCreated);
+                        project.Editor.LastSeen, project.Editor.Description);
                     } else {
                       FetchUnstarred(project.identification.name.en, project.languages[0].name.en,
                         project.identification.primary.ag[created].timestamp,
-                        project.meta.dateCreated);
+                        project.Editor?.LastSeen, project.Editor?.Description);
                     }
                   });
                 }
