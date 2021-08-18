@@ -103,6 +103,7 @@ export default function SubMenuBar() {
       layout,
       refernceLoading,
       counter,
+      row,
     },
     actions: {
       setOpenResource1,
@@ -112,6 +113,7 @@ export default function SubMenuBar() {
       getFonts,
       setLayout,
       setRefernceLoading,
+      setRow,
     },
   } = useContext(ReferenceContext);
   const [notificationsText, setNotification] = useState();
@@ -126,8 +128,14 @@ export default function SubMenuBar() {
         setOpenResource2(false);
         setOpenResource3(false);
         setOpenResource4(false);
-    if (layout < 3) { setLayout(layout + 1); }
-    if (layout >= 3) { setLayout(1); }
+    if (layout < 3) {
+      setLayout(layout + 1);
+      setRow(row + 1);
+    }
+    if (layout >= 3) {
+      setLayout(1);
+      setRow(row + 1);
+    }
     if (layout === 2) { setLayout(0); }
   };
 
