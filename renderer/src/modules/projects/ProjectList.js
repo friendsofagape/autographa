@@ -5,13 +5,16 @@ import moment from 'moment';
 
 import { Disclosure, Transition } from '@headlessui/react';
 import { ChevronUpIcon, ChevronDownIcon } from '@heroicons/react/solid';
-import { StarIcon, ExternalLinkIcon, PencilAltIcon } from '@heroicons/react/outline';
+import {
+ StarIcon, ExternalLinkIcon, PencilAltIcon, DotsVerticalIcon,
+} from '@heroicons/react/outline';
 
 import ProjectsLayout from '@/layouts/projects/Layout';
 import EnhancedTableHead from '@/components/ProjectsPage/Projects/EnhancedTableHead';
 import { AutographaContext } from '@/components/context/AutographaContext';
 import { getComparator, stableSort } from '@/components/ProjectsPage/Projects/SortingHelper';
 
+import ExportProjectPopUp from '@/layouts/projects/ExportProjectPopUp';
 import SearchTags from './SearchTags';
 
 export default function ProjectList() {
@@ -35,7 +38,15 @@ export default function ProjectList() {
       setSelectedProject,
     },
   } = React.useContext(AutographaContext);
-
+  const [openPopUp, setOpenPopUp] = useState(false);
+  const [exportProject, setExportProject] = useState();
+  const openExportPopUp = (project) => {
+    setExportProject(project.name);
+    setOpenPopUp(true);
+  };
+  const closeExportPopUp = () => {
+    setOpenPopUp(false);
+  };
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
@@ -193,6 +204,13 @@ export default function ProjectList() {
                                           >
                                             <PencilAltIcon className="h-5 w-5 text-primary" aria-hidden="true" />
                                           </button>
+                                          <button
+                                            onClick={() => openExportPopUp(project)}
+                                            type="button"
+                                            className="px-5"
+                                          >
+                                            <DotsVerticalIcon className="h-5 w-5 text-primary" aria-hidden="true" />
+                                          </button>
                                         </div>
                                       </div>
                                     </td>
@@ -318,6 +336,13 @@ export default function ProjectList() {
                                           >
                                             <PencilAltIcon className="h-5 w-5 text-primary" aria-hidden="true" />
                                           </button>
+                                          <button
+                                            onClick={() => openExportPopUp(project)}
+                                            type="button"
+                                            className="px-5"
+                                          >
+                                            <DotsVerticalIcon className="h-5 w-5 text-primary" aria-hidden="true" />
+                                          </button>
                                         </div>
                                       </div>
                                     </td>
@@ -333,13 +358,10 @@ export default function ProjectList() {
                 </div>
               </div>
             </div>
-
           </div>
-
         </div>
-
       </ProjectsLayout>
+      <ExportProjectPopUp open={openPopUp} closePopUp={closeExportPopUp} projectName={exportProject} />
     </>
-
   );
 }
