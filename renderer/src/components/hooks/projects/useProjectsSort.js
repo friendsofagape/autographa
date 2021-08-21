@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react';
 import * as localForage from 'localforage';
+import moment from 'moment';
+import { updateAgSettings } from '../../../core/projects/updateAgSettings';
 import parseProjectMetaUpdate from '../../../core/projects/parseProjectMetaUpdate';
-import metaFileReplace from '../../../core/projects/metaFileReplace';
+// import metaFileReplace from '../../../core/projects/metaFileReplace';
 import { isElectron } from '../../../core/handleElectron';
 import fetchProjectsMeta from '../../../core/projects/fetchProjectsMeta';
 import parseFetchProjects from '../../../core/projects/parseFetchProjects';
@@ -22,7 +24,7 @@ function useProjectsSort() {
   const unstarrtedData = [];
   const username = 'Michael';
 
-  const handleClickStarred = (event, name, property) => {
+  const handleClickStarred = async (event, name, property) => {
     logger.debug('project.js', 'converting starred to be unstarred and viceversa');
     property === 'starred' ? setactive('starred') : setactive('unstarred');
     const selectedIndex = property === 'starred'
@@ -32,24 +34,34 @@ function useProjectsSort() {
       ? starredrow.splice(selectedIndex, 1)
       : unstarredrow.splice(selectedIndex, 1);
       const projectArrayTemp = [];
-      if (isElectron()) {
+    if (isElectron()) {
+      let currentUser;
+      await localForage.getItem('userProfile').then((value) => {
+        currentUser = value?.username;
+      });
       const projects = localForage.getItem('projectmeta');
       projects.then((value) => {
         if (value) {
           projectArrayTemp.push(value);
         }
       }).then(() => {
-        projectArrayTemp[0].projects.forEach((project) => {
-          if (project.identification.name.en === name) {
-            const status = project.starred;
-            const selectedProject = project;
-            selectedProject.starred = !status;
+        projectArrayTemp[0].projects.forEach((_project) => {
+          if (_project.identification.name.en === name) {
+            const status = _project.project.textTranslation.starred;
+            const selectedProject = _project;
+            selectedProject.project.textTranslation.starred = !status;
+            selectedProject.project.textTranslation.lastSeen = moment().format();
           }
         });
       }).finally(() => {
         localForage.setItem('projectmeta', projectArrayTemp[0])
         .then(() => {
-            metaFileReplace({ userData: projectArrayTemp[0] });
+          projectArrayTemp[0].projects.forEach((_project) => {
+            if (_project.identification.name.en === name) {
+              updateAgSettings(currentUser, name, _project);
+            }
+          });
+          // metaFileReplace({ userData: projectArrayTemp[0] });
         });
       });
     } else {
@@ -129,17 +141,19 @@ function useProjectsSort() {
               localForage.getItem('projectmeta')
               .then((value) => {
                 if (value) {
-                  value.projects.forEach((project) => {
-                    const created = Object.keys(project.identification.primary.ag);
-                    if (project.Editor?.starred === true) {
+                  value.projects.forEach((_project) => {
+                    const created = Object.keys(_project.identification.primary.ag);
+                    if (_project.project?.textTranslation?.starred === true) {
                       // FetchStarred(projectName,language, createdAt, updatedAt);
-                      FetchStarred(project.identification.name.en, project.languages[0].name.en,
-                        project.identification.primary.ag[created].timestamp,
-                        project.Editor.LastSeen, project.Editor.Description);
+                      FetchStarred(_project.identification.name.en, _project.languages[0].name.en,
+                        _project.identification.primary.ag[created].timestamp,
+                        _project.project?.textTranslation?.lastSeen,
+                        _project.project?.textTranslation?.description);
                     } else {
-                      FetchUnstarred(project.identification.name.en, project.languages[0].name.en,
-                        project.identification.primary.ag[created].timestamp,
-                        project.Editor?.LastSeen, project.Editor?.Description);
+                      FetchUnstarred(_project.identification.name.en, _project.languages[0].name.en,
+                        _project.identification.primary.ag[created].timestamp,
+                        _project.project?.textTranslation?.lastSeen,
+                        _project.project?.textTranslation?.description);
                     }
                   });
                 }
