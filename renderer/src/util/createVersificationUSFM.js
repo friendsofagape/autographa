@@ -1,4 +1,5 @@
 import moment from 'moment';
+import { environment } from '../../environment';
 
 const grammar = require('usfm-grammar');
 const path = require('path');
@@ -86,18 +87,21 @@ export const createVersificationUSFM = (username, project, versification, books,
           role: 'x-versification',
         };
         const settings = {
-          Editor: {
-            ScriptureDirection: direction,
-            starred: false,
-            Description: project.description,
-            LastSeen: moment().format(),
-            Version: version.name,
-            Abbreviation: version.abbreviation,
+          version: environment.AG_SETTING_VERSION,
+          project: {
+            textTranslation: {
+              scriptDirection: direction,
+              starred: false,
+              description: project.description,
+              lastSeen: moment().format(),
+              bibleVersion: version.name,
+              abbreviation: version.abbreviation,
+            },
           },
         };
-        await fs.writeFileSync(path.join(folder, 'AG.json'), JSON.stringify(settings));
-        const stat = fs.statSync(path.join(folder, 'AG.json'));
-        ingredients[path.join('ingredients', 'AG.json')] = {
+        await fs.writeFileSync(path.join(folder, 'ag-settings.json'), JSON.stringify(settings));
+        const stat = fs.statSync(path.join(folder, 'ag-settings.json'));
+        ingredients[path.join('ingredients', 'ag-settings.json')] = {
           checksum: {
             md5: md5(settings),
           },

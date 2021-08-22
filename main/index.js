@@ -14,6 +14,7 @@ app.on('ready', async () => {
     width: 800,
     height: 600,
     webPreferences: {
+      enableRemoteModule: true,
       nodeIntegration: true,
       enableRemoteModule: true,
       preload: join(__dirname, 'preload.js'),

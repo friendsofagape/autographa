@@ -22,7 +22,7 @@ const fetchProjectsMeta = async () => {
         const data = fs.readFileSync(path.join(projectsMetaPath, dir, 'metadata.json'), 'utf8');
         let setting;
         try {
-          setting = fs.readFileSync(path.join(projectsMetaPath, dir, 'ingredients', 'AG.json'), 'utf8');
+          setting = fs.readFileSync(path.join(projectsMetaPath, dir, 'ingredients', 'ag-settings.json'), 'utf8');
         } catch (err) {
           // eslint-disable-next-line no-console
           console.log(err);
