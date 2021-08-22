@@ -61,6 +61,7 @@ const SectionPlaceholder = () => {
       setRow(0);
     }
     setSectionNum(layout);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [layout]);
 
   return (

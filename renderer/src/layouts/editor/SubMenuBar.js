@@ -8,13 +8,13 @@ import {
 } from '@headlessui/react';
 
 import {
-  PencilIcon,
-  DuplicateIcon,
-  ArchiveIcon,
-  TrashIcon,
-  ExternalLinkIcon,
+  // PencilIcon,
+  // DuplicateIcon,
+  // ArchiveIcon,
+  // TrashIcon,
+  // ExternalLinkIcon,
   BellIcon,
-  InformationCircleIcon,
+  // InformationCircleIcon,
   XIcon,
 } from '@heroicons/react/outline';
 
@@ -34,13 +34,6 @@ import MenuDropdown from '../../components/MenuDropdown/MenuDropdown';
 import menuStyles from './MenuBar.module.css';
 import styles from './SubMenuBar.module.css';
 
-const tesfFunc = () => {
-  // console.log('edit');
-};
-
-const tesfFunc1 = () => {
-  // console.log('test2');
-};
 const activate = () => {
   // console.log('rename');
 };
@@ -94,9 +87,6 @@ export default function SubMenuBar() {
     },
   } = useContext(ReferenceContext);
   const {
-    states: {
-      openSideBar,
-    },
     actions: {
       setOpenSideBar,
     },
