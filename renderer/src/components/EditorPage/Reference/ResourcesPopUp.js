@@ -80,6 +80,7 @@ const ResourcesPopUp = ({
             metaPath,
           }).then((data) => {
             if (data) {
+              console.log(data);
               burrito.projectDir = ref;
               burrito.value = JSON.parse(data);
               parseData.push(burrito);

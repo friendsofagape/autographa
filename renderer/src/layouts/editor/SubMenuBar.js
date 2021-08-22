@@ -26,6 +26,8 @@ import Notifications from '@/modules/notifications/Notifications';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import MenuBar from '@/components/Menubar/MenuBar';
 import { CustomUsfmToolbar } from '@/components/EditorPage/UsfmEditor/UsfmToolbar';
+import { BookmarkIcon } from '@heroicons/react/solid';
+import { ProjectContext } from '@/components/context/ProjectContext';
 import AboutModal from './AboutModal';
 import StatsModal from './StatsModal';
 import MenuDropdown from '../../components/MenuDropdown/MenuDropdown';
@@ -43,49 +45,24 @@ const activate = () => {
   // console.log('rename');
 };
 
-const FileMenuItems = [{
-  itemname: 'Edit',
-  icon: <PencilIcon />,
-  callback: tesfFunc,
-},
-{
-  itemname: 'Duplicate',
-  icon: <DuplicateIcon />,
-  callback: tesfFunc1,
-},
-{
-  itemname: 'Archive',
-  icon: <ArchiveIcon />,
-  callback: tesfFunc1,
-},
-{
-  itemname: 'Delete',
-  icon: <TrashIcon />,
-  callback: tesfFunc1,
-},
-{
-  itemname: 'Rename',
-  callback: tesfFunc1,
-},
-];
-const FormatMenuItems = [
-  {
-    itemname: 'Open',
-    icon: <ExternalLinkIcon />,
-    callback: tesfFunc1,
-  },
-  {
-    itemname: 'About',
-    icon: <InformationCircleIcon />,
-    callback: tesfFunc1,
-  },
-  {
-    itemname: 'Font',
-    icon: <Font />,
-    renderElement: <MenuDropdown />,
-    callback: activate,
-  },
-];
+// const FormatMenuItems = [
+//   {
+//     itemname: 'Open',
+//     icon: <ExternalLinkIcon />,
+//     callback: tesfFunc1,
+//   },
+//   {
+//     itemname: 'About',
+//     icon: <InformationCircleIcon />,
+//     callback: tesfFunc1,
+//   },
+//   {
+//     itemname: 'Font',
+//     icon: <Font />,
+//     renderElement: <MenuDropdown />,
+//     callback: activate,
+//   },
+// ];
 
 const EditorTools = [
   {
@@ -97,7 +74,7 @@ export default function SubMenuBar() {
   const [open, setOpen] = useState(false);
   const [openStats, setOpenStats] = useState(false);
   // const [snackBar, setSnackBar] = useState(true);
-  const [openSideBar, setOpenSideBar] = useState(false);
+  const [openSideNotification, setOpenSideNotification] = useState(false);
   const {
     state: {
       layout,
@@ -116,7 +93,52 @@ export default function SubMenuBar() {
       setRow,
     },
   } = useContext(ReferenceContext);
+  const {
+    states: {
+      openSideBar,
+    },
+    actions: {
+      setOpenSideBar,
+    },
+  } = useContext(ProjectContext);
+
   const [notificationsText, setNotification] = useState();
+  const openBookMarks = () => {
+    setOpenSideBar(true);
+  };
+
+  const FileMenuItems = [
+    // {
+    //   itemname: 'Edit',
+    //   icon: <PencilIcon />,
+    //   callback: tesfFunc,
+    // },
+    // {
+    //   itemname: 'Duplicate',
+    //   icon: <DuplicateIcon />,
+    //   callback: tesfFunc1,
+    // },
+    {
+      itemname: 'Bookmarks',
+      icon: <BookmarkIcon />,
+      callback: openBookMarks,
+    },
+    {
+      itemname: 'Font',
+      icon: <Font />,
+      renderElement: <MenuDropdown />,
+      callback: activate,
+    },
+    // {
+    //   itemname: 'Delete',
+    //   icon: <TrashIcon />,
+    //   callback: tesfFunc1,
+    // },
+    // {
+    //   itemname: 'Rename',
+    //   callback: tesfFunc1,
+    // },
+    ];
 
   useEffect(() => {
     getFonts();
@@ -140,11 +162,11 @@ export default function SubMenuBar() {
   };
 
   function openSideBars() {
-    setOpenSideBar(true);
+    setOpenSideNotification(true);
   }
 
   function closeNotifications(open) {
-    setOpenSideBar(open);
+    setOpenSideNotification(open);
   }
 
   // Third Attempts
@@ -261,7 +283,7 @@ export default function SubMenuBar() {
         </Dialog>
       </Transition>
 
-      <Notifications isOpen={openSideBar} closeNotifications={closeNotifications}>
+      <Notifications isOpen={openSideNotification} closeNotifications={closeNotifications}>
         {notificationsText && (
           <div className="relative mb-2 bg-gray-200 rounded-lg text-sm text-black overflow-hidden">
             <div className="flex justify-between px-4 py-1 text-xs uppercase font-semibold bg-gray-300 text-gray-700">
@@ -301,14 +323,14 @@ export default function SubMenuBar() {
       <nav className="flex p-2 shadow-sm border-b border-gray-200">
         <div className="w-3/5">
           <MenuBar header="File" MenuItems={FileMenuItems} />
-          <span>
+          {/* <span>
             <MenuBar header="FORMAT" MenuItems={FormatMenuItems} style={{ left: '-60px' }} />
-          </span>
+          </span> */}
           {/* <button type="button" className={styles.menu} aria-expanded="false">
             <span>Insert</span>
           </button> */}
           <span>
-            <MenuBar header="EDIT" MenuItems={EditorTools} style={{ left: '-147px', height: '65px' }} />
+            <MenuBar header="EDIT" MenuItems={EditorTools} style={{ left: '-60px', height: '65px' }} />
           </span>
           <button
             type="button"

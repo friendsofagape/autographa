@@ -1,8 +1,10 @@
 /* eslint-disable no-console */
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import * as localforage from 'localforage';
 import { useRouter } from 'next/router';
+import { readRefMeta } from '../../core/reference/readRefMeta';
+import { readRefBurrito } from '../../core/reference/readRefBurrito';
 import { isElectron } from '../../core/handleElectron';
 import * as logger from '../../logger';
 import saveProjectsMeta from '../../core/projects/saveProjetcsMeta';
@@ -35,6 +37,7 @@ const ProjectContextProvider = ({ children }) => {
     const [versificationScheme, setVersificationScheme] = React.useState(
       advanceSettings.versification[0],
     );
+    const [openSideBar, setOpenSideBar] = React.useState(false);
     const [newProjectFields, setNewProjectFields] = React.useState({
       projectName: '',
       description: '',
@@ -47,6 +50,7 @@ const ProjectContextProvider = ({ children }) => {
     };
 
     const uniqueId = (list, id) => list.some((obj) => obj.id === id);
+
     const loadSettings = async () => {
       const newpath = localStorage.getItem('userPath');
       let currentUser;
@@ -193,6 +197,44 @@ const ProjectContextProvider = ({ children }) => {
         loadSettings();
       }
     }, []);
+
+    useEffect(() => {
+      if (isElectron()) {
+        const path = require('path');
+        const newpath = localStorage.getItem('userPath');
+        const projectsDir = path.join(
+          newpath, 'autographa', 'users', username, 'reference',
+        );
+        const parseData = [];
+        const burrito = {};
+        readRefMeta({
+          projectsDir,
+        }).then((refs) => {
+          refs.forEach((ref) => {
+            const metaPath = path.join(
+              newpath, 'autographa', 'users', username, 'reference', ref, 'metadata.json',
+            );
+            readRefBurrito({
+              metaPath,
+            }).then((data) => {
+              if (data) {
+                burrito.projectDir = ref;
+                burrito.value = JSON.parse(data);
+                parseData.push(burrito);
+                localforage.setItem('refBibleBurrito', parseData).then(
+                  () => localforage.getItem('refBibleBurrito'),
+                ).catch((err) => {
+                  // we got an error
+                  throw err;
+                });
+              }
+            });
+          });
+        });
+      }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      }, []);
+
     const context = {
         states: {
             newProjectFields,
@@ -211,6 +253,7 @@ const ProjectContextProvider = ({ children }) => {
             language,
             scrollLock,
             username,
+            openSideBar,
         },
         actions: {
             setDrawer,
@@ -227,6 +270,7 @@ const ProjectContextProvider = ({ children }) => {
             setLanguage,
             setScrollLock,
             setUsername,
+            setOpenSideBar,
         },
     };
 
