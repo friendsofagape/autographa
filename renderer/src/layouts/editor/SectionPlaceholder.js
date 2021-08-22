@@ -41,7 +41,6 @@ const SectionPlaceholder = () => {
   const {
     state: {
       layout,
-      row,
       openResource1,
       openResource2,
       openResource3,

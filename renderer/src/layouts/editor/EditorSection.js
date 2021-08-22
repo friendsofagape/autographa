@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import PropTypes from 'prop-types';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import ResourcesPopUp from '@/components/EditorPage/Reference/ResourcesPopUp';
 import BibleNavigation from '@/modules/biblenavigation/BibleNavigation';
@@ -30,11 +30,9 @@ export default function EditorSection({
     state: {
       // selectedFont
       fontSize,
-      row,
       layout,
     },
     actions: {
-      setRow,
       setLayout,
     },
   } = useContext(ReferenceContext);
@@ -86,7 +84,7 @@ export default function EditorSection({
   };
 
   return (
-    <div className={`${openResource && 'hidden'} relative first:mt-0 mt-3 pb-12 h-${ sectionNum > 2 ? '1/2' : 'full'} border bg-white border-gray-200 shadow-sm rounded-b overflow-hidden group`}>
+    <div className={`${openResource && 'hidden'} relative first:mt-0 mt-3 pb-12 ${ sectionNum > 2 ? 'h-1/2' : 'h-full'} border bg-white border-gray-200 shadow-sm rounded-b overflow-hidden group`}>
 
       <div className="bg-gray-200 rounded-t text-center text-gray-600 relative overflow-hidden">
         {openResourcePopUp

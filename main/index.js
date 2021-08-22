@@ -15,6 +15,7 @@ app.on('ready', async () => {
     height: 600,
     webPreferences: {
       nodeIntegration: true,
+      enableRemoteModule: true,
       preload: join(__dirname, 'preload.js'),
       additionalArguments: app.getPath('documents'),
     },

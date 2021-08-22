@@ -1,20 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+const electron = window.require('electron');
+const { remote } = electron;
+const { dialog } = remote;
+console.log(dialog);
+
 const InputSelector = ({ onChange }) => {
-    const handleReadFile = async (e) => {
-        e.preventDefault();
-        const reader = new FileReader();
-        reader.onloadend = async (e) => {
-            const text = await (e.target.result);
-            onChange(text);
-        };
-        reader.readAsText(e.target.files[0]);
+    const handleReadDir = async (e) => {
+      const options = { properties: ['openDirectory'] };
+      // Synchronous
+      const dir = dialog.showOpenDialog(options);
+      console.log(dir);
       };
 
     return (
       <div>
-        <input accept=".usfm,.txt" type="file" onChange={(e) => handleReadFile(e)} />
+        <button onClick={() => handleReadDir()}>
+          Open Dialog to Select a file
+        </button>
       </div>
     );
 };
