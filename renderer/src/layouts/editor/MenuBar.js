@@ -53,11 +53,13 @@ function classNames(...classes) {
 }
 
 export default function TopMenuBar() {
-  const [openSideBar, setOpenSideBar] = useState(false);
-
   const {
     states: {
       selectedProject,
+      openSideBar,
+    },
+    actions: {
+      setOpenSideBar,
     },
   } = useContext(ProjectContext);
 
@@ -129,7 +131,7 @@ export default function TopMenuBar() {
                   id="search"
                   className="bg-gray-100 focus:ring-primary focus:border-primary block w-full pl-10 sm:text-sm border-none rounded-md"
                   placeholder="Search"
-                  onClick={openSideBars}
+                  // onClick={openSideBars}
                 />
               </div>
 

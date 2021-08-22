@@ -17,7 +17,12 @@ export default function EditorSection({
   setLoadResource,
   loadResource,
   openResource,
-  setOpenResource,
+  setOpenResource1,
+  setOpenResource2,
+  setOpenResource3,
+  setOpenResource4,
+  sectionNum,
+  setSectionNum,
 }) {
   const [content, setContent] = useState(true);
 
@@ -25,19 +30,39 @@ export default function EditorSection({
     state: {
       // selectedFont
       fontSize,
-      row,
       layout,
     },
     actions: {
-      setRow,
+      setLayout,
     },
   } = useContext(ReferenceContext);
 
   const [openResourcePopUp, setOpenResourcePopUp] = useState(false);
 
   const removeSection = () => {
-    setOpenResource(!openResource);
-    setLoadResource(false);
+    switch (column) {
+      case '1':
+        setOpenResource1(false);
+        break;
+      case '2':
+        setOpenResource2(false);
+        break;
+      case '3':
+        setOpenResource3(false);
+        break;
+      case '4':
+        setOpenResource4(false);
+        break;
+      default:
+        break;
+    }
+    // setLoadResource(false);
+    if (sectionNum > 0) {
+      setSectionNum(sectionNum - 1);
+      if (sectionNum <= 2) {
+        setLayout(layout - 1);
+      }
+    }
   };
 
   const sectionContent = () => {
@@ -50,23 +75,21 @@ export default function EditorSection({
   };
 
   const addRow = () => {
-    if (row <= 0 && layout === 2) {
-      setRow(row + 1);
-    }
-    if (row >= 1 && row < 2 && layout >= 2) {
-      setRow(row + 1);
+    if (sectionNum >= 0 && sectionNum < 4) {
+      setSectionNum(sectionNum + 1);
+      if (layout < 2 && layout >= 0) {
+        setSectionNum(sectionNum + 2);
+      }
     }
   };
 
   return (
-    <div className={`${openResource && 'hidden'} relative first:mt-0 mt-3 pb-12 h-1/2 border bg-white border-gray-200 shadow-sm rounded-b overflow-hidden group`}>
+    <div className={`${openResource && 'hidden'} relative first:mt-0 mt-3 pb-12 ${ sectionNum > 2 ? 'h-1/2' : 'h-full'} border bg-white border-gray-200 shadow-sm rounded-b overflow-hidden group`}>
 
       <div className="bg-gray-200 rounded-t text-center text-gray-600 relative overflow-hidden">
         {openResourcePopUp
-
           && (
             <div className="fixed z-50 ">
-
               <ResourcesPopUp
                 column={column}
                 header={title}

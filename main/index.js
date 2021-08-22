@@ -16,6 +16,7 @@ app.on('ready', async () => {
     webPreferences: {
       enableRemoteModule: true,
       nodeIntegration: true,
+      enableRemoteModule: true,
       preload: join(__dirname, 'preload.js'),
       additionalArguments: app.getPath('documents'),
     },

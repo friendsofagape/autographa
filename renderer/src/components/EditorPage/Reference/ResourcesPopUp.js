@@ -153,14 +153,14 @@ const ResourcesPopUp = ({
                   Resources
                 </div>
                 <div className="bg-gray-100 px-3 py-3 h-full">
-                  <input
+                  {/* <input
                     className="rounded h-8 bg-gray-200 border-none uppercase pr-6 text-xs
                       tracking-widest leading-snug font-bold"
                     placeholder="Search"
                     type="search"
                     id="gsearch"
                     name="gsearch"
-                  />
+                  /> */}
                   <div className="grid grid-rows-5 py-5 gap-4">
 
                     <ResourceOption
