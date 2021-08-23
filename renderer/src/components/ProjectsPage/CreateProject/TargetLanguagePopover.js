@@ -130,6 +130,7 @@ export default function TargetLanguagePopover() {
                           value="LTR"
                           checked={direction === 'LTR'}
                           onChange={() => setDirection('LTR')}
+                          disabled={lock}
                         />
                         <span className=" ml-4 text-xs font-bold">LTR</span>
                       </div>
@@ -140,6 +141,7 @@ export default function TargetLanguagePopover() {
                           value="RTL"
                           checked={direction === 'RTL'}
                           onChange={() => setDirection('RTL')}
+                          disabled={lock}
                         />
                         <span className=" ml-3 text-xs font-bold">RTL</span>
                       </div>
@@ -147,13 +149,16 @@ export default function TargetLanguagePopover() {
                   </div>
                   <div className="ml-16">
                     <button type="button" onClick={closeModal} className="mr-5 bg-error w-28 h-8 border-color-error rounded uppercase shadow text-white text-xs tracking-wide leading-4 font-light focus:outline-none"> cancel</button>
-                    <button
-                      type="button"
-                      className=" bg-success w-28 h-8 border-color-success rounded uppercase text-white text-xs shadow focus:outline-none"
-                      onClick={() => (edit === true ? editLanguage() : addLanguage())}
-                    >
-                      {edit ? 'save' : 'create'}
-                    </button>
+                    {lock ? <div />
+                    : (
+                      <button
+                        type="button"
+                        className=" bg-success w-28 h-8 border-color-success rounded uppercase text-white text-xs shadow focus:outline-none"
+                        onClick={() => (edit === true ? editLanguage() : addLanguage())}
+                      >
+                        {edit ? 'save' : 'create'}
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>
