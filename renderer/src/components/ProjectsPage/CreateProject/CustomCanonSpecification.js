@@ -16,7 +16,7 @@ const CustomCanonSpecification = ({ bibleNav, closeBibleNav, handleNav }) => {
     actions: { setcanonSpecification },
   } = React.useContext(ProjectContext);
   const [selectedBooks, setSelectedBooks] = React.useState([]);
-
+  const [lock, setLock] = React.useState();
   const {
     state: { bookList },
   } = useBibleReference({ initialBook, initialChapter, initialVerse });
@@ -34,6 +34,7 @@ const CustomCanonSpecification = ({ bibleNav, closeBibleNav, handleNav }) => {
   };
   React.useEffect(() => {
     if (handleNav === 'edit') {
+      setLock(canonSpecification.locked);
       setName(canonSpecification.title);
       setSelectedBooks(canonSpecification.currentScope);
     }
@@ -67,6 +68,7 @@ const CustomCanonSpecification = ({ bibleNav, closeBibleNav, handleNav }) => {
                 id=""
                 value={name}
                 onChange={(e) => { setName(e.target.value); }}
+                disabled={lock}
                 className="bg-white w-80 block rounded shadow-sm sm:text-sm focus:ring-gray-500 focus:border-primary border-gray-300"
               />
             </div>
@@ -88,17 +90,20 @@ const CustomCanonSpecification = ({ bibleNav, closeBibleNav, handleNav }) => {
               <button
                 type="button"
                 className="w-40 h-10  bg-error leading-loose rounded shadow text-xs font-base  text-white tracking-wide  font-light uppercase"
-                // onClick={() => (handleNav === 'edit' ? editCanon() : saveCanon())}
+                onClick={() => closeBibleNav()}
               >
                 Cancel
               </button>
-              <button
-                type="button"
-                className="w-40 h-10  bg-success leading-loose rounded shadow text-xs font-base  text-white tracking-wide  font-light uppercase"
-                onClick={() => (handleNav === 'edit' ? editCanon() : saveCanon())}
-              >
-                Save
-              </button>
+              {lock ? <div />
+              : (
+                <button
+                  type="button"
+                  className="w-40 h-10  bg-success leading-loose rounded shadow text-xs font-base  text-white tracking-wide  font-light uppercase"
+                  onClick={() => (handleNav === 'edit' ? editCanon() : saveCanon())}
+                >
+                  Save
+                </button>
+              )}
             </div>
           </div>
         </div>

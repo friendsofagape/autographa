@@ -8,6 +8,7 @@ export default function TargetLanguagePopover() {
   const [direction, setDirection] = React.useState();
   const [edit, setEdit] = React.useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [lock, setLock] = useState();
   const {
     states: {
       language,
@@ -17,11 +18,13 @@ export default function TargetLanguagePopover() {
   // eslint-disable-next-line no-unused-vars
   const openLanguageNav = (nav) => {
     if (nav === 'edit') {
+      setLock(language.locked);
       setEdit(true);
       setId(language.id);
       setLang(language.title);
       setDirection(language.scriptDirection ? language.scriptDirection : 'LTR');
     } else {
+      setLock();
       setEdit(false);
       setLang();
       setDirection('LTR');
@@ -112,6 +115,7 @@ export default function TargetLanguagePopover() {
                         autoComplete="given-name"
                         value={lang}
                         onChange={(e) => { setLang(e.target.value); }}
+                        disabled={lock}
                         className="bg-gray-200 w-80 block rounded shadow-sm sm:text-sm focus:border-primary border-gray-300"
                       />
                     </div>
