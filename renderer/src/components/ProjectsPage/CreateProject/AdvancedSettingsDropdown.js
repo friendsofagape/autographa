@@ -68,6 +68,9 @@ export default function AdvancedSettingsDropdown() {
     if (value.label === 'Canon Specification') {
       canonList.forEach((c) => {
         if (c.title === value.data) {
+          if (value.data === 'Custom') {
+            openBibleNav('edit');
+          }
           setcanonSpecification(c);
         }
       });
@@ -126,7 +129,7 @@ export default function AdvancedSettingsDropdown() {
 
                 <CustomAutocomplete label="Canon Specification" list={canonList} setValue={setValue} />
                 <div className="flex gap-3 ml-3">
-                  <button
+                  {/* <button
                     onClick={() => openBibleNav('new')}
                     type="button"
                     className="focus:outline-none pt-8"
@@ -137,7 +140,7 @@ export default function AdvancedSettingsDropdown() {
                       alt="add button"
                       className="w-10 h-10"
                     />
-                  </button>
+                  </button> */}
                   <button
                     onClick={() => openBibleNav('edit')}
                     type="button"
