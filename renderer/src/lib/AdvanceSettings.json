@@ -192,10 +192,20 @@
 		{ "title": "New Internation Version (NIV)" }
 	],
 	"languages": [
-		{ "id": 1, "title": "English", "scriptDirection": "LTR" },
-		{ "id": 2, "title": "Hindi", "scriptDirection": "LTR" },
-		{ "id": 3, "title": "Malayalam", "scriptDirection": "LTR" },
-		{ "id": 4, "title": "Tamil", "scriptDirection": "LTR" },
-		{ "id": 5, "title": "Odia", "scriptDirection": "LTR" }
+		{
+			"id": 1,
+			"title": "English",
+			"scriptDirection": "LTR",
+			"locked": true
+		},
+		{ "id": 2, "title": "Hindi", "scriptDirection": "LTR", "locked": true },
+		{
+			"id": 3,
+			"title": "Malayalam",
+			"scriptDirection": "LTR",
+			"locked": true
+		},
+		{ "id": 4, "title": "Tamil", "scriptDirection": "LTR", "locked": true },
+		{ "id": 5, "title": "Odia", "scriptDirection": "LTR", "locked": true }
 	]
 }

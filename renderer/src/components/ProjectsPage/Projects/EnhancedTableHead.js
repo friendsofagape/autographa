@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import React, {
   Fragment,
 } from 'react';
@@ -7,9 +8,10 @@ import {
   TableCell,
 } from '@material-ui/core';
 import {
+  // eslint-disable-next-line no-unused-vars
   StarIcon, ExternalLinkIcon, FilterIcon,
 } from '@heroicons/react/outline';
-import { Menu, Transition } from '@headlessui/react';
+// import { Menu, Transition } from '@headlessui/react';
 
 const headCells = [
   {
@@ -18,9 +20,9 @@ const headCells = [
   {
     id: 'language', numeric: false, disablePadding: true, label: 'Language',
   },
-  {
-    id: 'status', numeric: false, disablePadding: true, label: 'Status',
-  },
+  // {
+  //   id: 'status', numeric: false, disablePadding: true, label: 'Status',
+  // },
   {
     id: 'date', numeric: true, disablePadding: false, label: 'Date',
   },
@@ -30,9 +32,9 @@ const headCells = [
   // {
   //   id: 'editors', numeric: false, disablePadding: false, label: 'Editors',
   // },
-  {
-    id: 'more', numeric: false, disablePadding: false, label: '',
-  },
+  // {
+  //   id: 'more', numeric: false, disablePadding: false, label: '',
+  // },
 ];
 
 function EnhancedTableHead(props) {
@@ -66,7 +68,7 @@ function EnhancedTableHead(props) {
               sortDirection={orderBy === headCell.id ? order : false}
             >
               <div className="flex content-center">
-                <Menu as="div" className="relative inline-block mr-2 mt-2">
+                {/* <Menu as="div" className="relative inline-block mr-2 mt-2">
                   <Menu.Button className="focus:outline-none">
                     <FilterIcon
                       className="w-4 h-4 text-gray-400 hover:text-gray-600"
@@ -99,7 +101,7 @@ function EnhancedTableHead(props) {
                                 type="checkbox"
                                 className={`${active ? 'border-black' : 'border-gray-300'}
                                 mr-2 form-tick appearance-none h-4
-                              w-4 border  rounded-md checked:bg-primary 
+                              w-4 border  rounded-md checked:bg-primary
                               checked:border-transparent focus:outline-none`}
                               />
                               Active
@@ -115,7 +117,7 @@ function EnhancedTableHead(props) {
                                 type="checkbox"
                                 className={`${active ? 'border-black' : 'border-gray-300'}
                                 mr-2 form-tick appearance-none h-4
-                              w-4 border  rounded-md checked:bg-primary 
+                              w-4 border  rounded-md checked:bg-primary
                               checked:border-transparent focus:outline-none`}
                               />
                               Finished
@@ -146,7 +148,7 @@ function EnhancedTableHead(props) {
                       </div>
                     </Menu.Items>
                   </Transition>
-                </Menu>
+                </Menu> */}
 
                 <TableSortLabel
                   scope="col"
