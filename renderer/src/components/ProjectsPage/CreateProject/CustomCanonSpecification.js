@@ -68,7 +68,7 @@ const CustomCanonSpecification = ({ bibleNav, closeBibleNav, handleNav }) => {
                 id=""
                 value={name}
                 onChange={(e) => { setName(e.target.value); }}
-                disabled={lock}
+                disabled
                 className="bg-white w-80 block rounded shadow-sm sm:text-sm focus:ring-gray-500 focus:border-primary border-gray-300"
               />
             </div>

@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import * as localforage from 'localforage';
@@ -18,7 +17,6 @@ const ProjectContextProvider = ({ children }) => {
   const router = useRouter();
     const [drawer, setDrawer] = React.useState(false);
     const [scrollLock, setScrollLock] = React.useState(false);
-    // const []
     const [sideTabTitle, setSideTabTitle] = React.useState('New');
     const [languages, setLanguages] = React.useState(advanceSettings.languages);
     const [language, setLanguage] = React.useState(advanceSettings.languages[0]);
@@ -81,7 +79,13 @@ const ProjectContextProvider = ({ children }) => {
         setCanonList(advanceSettings.canonSpecification);
         setLicenseList(advanceSettings.copyright);
         setLanguages(advanceSettings.languages);
-        const json = { canonSpecification: [], copyright: [], languages: [] };
+        const json = {
+          canonSpecification: [{
+          id: 4, title: 'Custom', currentScope: [], locked: false,
+          }],
+          copyright: [],
+          languages: [],
+        };
         fs.writeFileSync(file, JSON.stringify(json));
       }
     };
@@ -142,17 +146,8 @@ const ProjectContextProvider = ({ children }) => {
       } else {
         updateJson('languages');
       }
-      // Add / update canon into current list.
-      if (uniqueId(canonList, canonSpecification.id)) {
-        canonList.forEach((canon) => {
-          if (canon.id === canonSpecification.id) {
-            if (canon.title !== canonSpecification.title
-              || canon.currentScope !== canonSpecification.currentScope) {
-              updateJson('canonSpecification');
-            }
-          }
-        });
-      } else {
+      // Update Custom canon into current list.
+      if (canonSpecification.title === 'Custom') {
         updateJson('canonSpecification');
       }
       // Add / update licence into current list.
