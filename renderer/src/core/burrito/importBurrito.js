@@ -1,113 +1,105 @@
 /* eslint-disable no-alert */
-/* eslint-disable no-console */
-// import burrito from '../../lib/BurritoTemplete.json';
+import moment from 'moment';
+import { environment } from '../../../environment';
+import * as logger from '../../logger';
 
 const md5 = require('md5');
 
-const fs = window.require('fs');
-const path = require('path');
-
-const uniqueProject = (projectsMetaPath, projectName) => {
-  let projectNameExists = false;
-  const fileContent = fs.readFileSync(
-    path.join(projectsMetaPath),
-    'utf8',
-  );
-  const obj = JSON.parse(fileContent);
-  obj.projects.forEach((element) => {
-    if (element.projectName === projectName) {
-      console.log(projectName, '', element.projectName);
-      projectNameExists = true;
-      // status.push({ type: 'Warning', value: 'projectname exists' }); // checking for duplicates
-    }
-  });
-  return projectNameExists;
-  // console.log(projectNameExists === false);
-};
-const importBurrito = () => {
-  const username = 'username';
+const importBurrito = async (filePath) => {
+  logger.debug('importBurrito.js', 'Inside importBurrito');
+  const fs = window.require('fs');
+  const path = require('path');
+  const currentUser = 'new';
+  const status = [];
   const newpath = localStorage.getItem('userPath');
-  // Location of file to import
-  const filePath = path.join(newpath,
-    'autographa',
-    'users',
-    username,
-    'projects',
-    'Burrito Project');
-  const projectsMetaPath = path.join(
-    newpath, 'autographa', 'users', username, 'projects', 'projects.json',
-  );
-  fs.mkdirSync(path.join(
-    newpath, 'autographa', 'users', username, 'projects',
-  ), {
-    recursive: true,
-  });
+  const projectDir = path.join(newpath, 'autographa', 'users', currentUser, 'projects');
+  fs.mkdirSync(projectDir, { recursive: true });
   // Importing the project
-  const sb = fs.readFileSync(path.join(filePath, 'metadata.json'));
-  const metadata = JSON.parse(sb);
-  let projectName;
-  if (fs.existsSync(projectsMetaPath)) {
-    const existingProject = uniqueProject(projectsMetaPath, metadata.identification.name.en);
+  if (fs.existsSync(path.join(filePath, 'metadata.json'))) {
+    logger.debug('importBurrito.js', 'Project has Burrito file metadata.json.');
+    const sb = fs.readFileSync(path.join(filePath, 'metadata.json'));
+    const metadata = JSON.parse(sb);
+    let projectName;
+    let existingProject;
+    const folderList = fs.readdirSync(projectDir);
+    await folderList.forEach((folder) => {
+      if (folder === metadata.identification.name.en) {
+        existingProject = true;
+      }
+    });
     if (existingProject === true) {
+      logger.debug('importBurrito.js', 'Project already exists.');
       alert('Existing project');
       projectName = `${metadata.identification.name.en}_copy`;
     } else {
+      logger.debug('importBurrito.js', 'This is a New Project.');
       projectName = metadata.identification.name.en;
     }
-  }
-  // console.log(metadata.ingredients);
-  // console.log(metadata.type.flavorType.currentScope);
-  Object.entries(metadata.ingredients).forEach(([key, value]) => {
-    // console.log(`${key}: ${value}`);
-    if (key.includes('.usfm')) {
-      // Check the canonType of the burritos
-      // Object.entries(metadata.type.flavorType.currentScope).forEach(([scope, v]) => {
-      //   console.log(scope, value.scope);
-      // });
-      if (Object.getOwnPropertyNames(value.scope) in (metadata.type.flavorType.currentScope)) {
-        // console.log((metadata.type.flavorType.currentScope), '.includes', (value.scope));
-        console.log(key);
-        const usfm = fs.readFileSync(path.join(filePath, key), 'utf8');
-        const checksum = md5(usfm);
-        // console.log(value.checksum.md5, checksum);
-        if (checksum !== value.checksum.md5) {
-          console.log('Change in the checksum');
-        }
-        const stats = fs.statSync(path.join(newpath,
-          'autographa',
-          'users',
-          username,
-          'projects',
-          'Burrito Project',
-          key));
-        if (stats.size !== value.size) {
-          console.log('Change the size');
-        }
-        metadata.ingredients[key].checksum.md5 = checksum;
-        metadata.ingredients[key].size = stats.size;
-        // fs.writeFileSync(path.join(folder, `${book}.usfm`), usfm);
+    fs.mkdirSync(path.join(projectDir, projectName, 'ingredients'), { recursive: true });
+    // Looping ingredients
+    Object.entries(metadata.ingredients).forEach(([key, value]) => {
+        // Check the canonType of the burritos
+        // Object.entries(metadata.type.flavorType.currentScope).forEach(([scope, v]) => {
+        //   console.log(scope, value.scope);
+        // });
+        // if (Object.getOwnPropertyNames(value.scope) in (metadata.type.flavorType.currentScope)) {
+      const content = fs.readFileSync(path.join(filePath, key), 'utf8');
+      const regex = /ingredients[(/)?(\\)?](.*)\.(.*)/gm;
+      const subst = '$1';
+      const result = key.replace(regex, subst);
+      const checksum = md5(content);
+      if (checksum !== value.checksum.md5) {
+        logger.debug('importBurrito.js', 'Updating the checksum.');
       }
+      const stats = fs.statSync(path.join(filePath, key));
+      if (stats.size !== value.size) {
+        logger.debug('importBurrito.js', 'Updating the size.');
+      }
+      metadata.ingredients[key].checksum.md5 = checksum;
+      metadata.ingredients[key].size = stats.size;
+      if (key.includes('.usfm')) {
+        fs.writeFileSync(path.join(projectDir, projectName, 'ingredients', `${result}.usfm`), content);
+        logger.debug('importBurrito.js', `${result}.usfm created.`);
+      } else {
+        fs.writeFileSync(path.join(projectDir, projectName, 'ingredients', `${result}.json`), content);
+        logger.debug('importBurrito.js', `${result}.json created.`);
+      }
+    });
+    metadata.meta.username = currentUser;
+    metadata.identification.name.en = projectName;
+    if (!fs.existsSync(path.join(filePath, 'ingredients', 'ag-settings.json'))) {
+      const settings = {
+        version: environment.AG_SETTING_VERSION,
+        project: {
+          textTranslation: {
+            scriptDirection: 'LTR',
+            starred: false,
+            description: '',
+            lastSeen: moment().format(),
+            bibleVersion: '',
+            abbreviation: '',
+          },
+        },
+      };
+      logger.debug('importBurrito.js', 'Creating the ag-settings.json file.');
+      await fs.writeFileSync(path.join(projectDir, projectName, 'ingredients', 'ag-settings.json'), JSON.stringify(settings));
+      const stat = fs.statSync(path.join(projectDir, projectName, 'ingredients', 'ag-settings.json'));
+      metadata.ingredients[path.join('ingredients', 'ag-settings.json')] = {
+        checksum: {
+          md5: md5(settings),
+        },
+        mimeType: 'application/json',
+        size: stat.size,
+        role: 'x-autographa',
+      };
     }
-  });
-  metadata.meta.username = 'username1';
-  metadata.identification.name.en = projectName;
-  console.log(metadata);
-  // fs.writeFileSync(path.join(folder, 'versification.json'), JSON.stringify(file));
-  // const stats = fs.statSync(path.join(folder, 'versification.json'));
-  // metadata.ingredients[path.join('ingredients', 'versification.json')] = {
-  //   checksum: {
-  //     md5: md5(file),
-  //   },
-  //   mimeType: 'application/json',
-  //   size: stats.size,
-  //   role: 'x-versification',
-  // };
-  // fs.writeFileSync(path.join(newpath,
-  //   'autographa',
-  //   'users',
-  //   'username',
-  //   'projects',
-  //   projectName,
-  //   'metadata.json'), JSON.stringify(metadata));
+    await fs.writeFileSync(path.join(projectDir, projectName, 'metadata.json'), JSON.stringify(metadata));
+    logger.debug('importBurrito.js', 'Creating the metadata.json Burrito file.');
+    status.push({ type: 'success', value: 'Project Imported' });
+  } else {
+    logger.debug('importBurrito.js', 'Unable to find burrito file (metadata.json).');
+    status.push({ type: 'error', value: 'Unable to find burrito file (metadata.json).' });
+  }
+  return status;
 };
 export default importBurrito;
