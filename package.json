@@ -25,7 +25,7 @@
 		"eslint:github-action": "node ./node_modules/eslint/bin/eslint . --ignore-path .gitignore --max-warnings 0",
 		"build": "next build renderer && next export renderer",
 		"pack-app": "npm run build && electron-builder --dir",
-		"dist": "npm run build && electron-builder",
+		"dist": "npm run build && electron-builder -p never",
 		"deploy": "npm run build && electron-builder --win --publish always"
 	},
 	"eslintIgnore": [
