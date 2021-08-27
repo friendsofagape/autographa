@@ -6,7 +6,13 @@
 	"author": "Friends of Agape <mathew.joel@protonmail.com>",
 	"version": "2.0.0",
 	"license": "MIT",
+	"private": true,
 	"main": "main/index.js",
+	"homepage": "./",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/friendsofagape/autographa"
+	},
 	"scripts": {
 		"clean": "rimraf dist renderer/.next renderer/out",
 		"start": "electron .",
@@ -15,27 +21,52 @@
 		"test": "jest",
 		"lint": "eslint ./renderer/src",
 		"lint:fix": "eslint ./renderer/src --fix",
-		"build": "next build",
 		"maxmemory-allocation": "NODE_OPTIONS=--max_old_space_size=4096",
 		"eslint:github-action": "node ./node_modules/eslint/bin/eslint . --ignore-path .gitignore --max-warnings 0",
+		"build": "next build renderer && next export renderer",
 		"pack-app": "npm run build && electron-builder --dir",
-		"dist": "npm run build && electron-builder -p never",
-		"postbuild": "next export"
+		"dist": "npm run build && electron-builder",
+		"deploy": "npm run build && electron-builder --win --publish always"
 	},
 	"eslintIgnore": [
 		"*.test.js"
 	],
 	"build": {
 		"asar": true,
+		"extraResources": "renderer/public",
 		"files": [
 			"main",
-			"renderer/out"
+			"renderer/out",
+			"public",
+			"renderer/public/**/*",
+			"build/**/*",
+			"main",
+			"postcss.config.js",
+			"renderer/jsconfig.json",
+			"styles/**/*"
 		],
 		"linux": {
 			"target": [
 				"deb"
 			]
-		}
+		},
+		"win": {
+			"target": "nsis",
+			"publish": [
+				"github"
+			]
+		},
+		"nsis": {
+			"allowToChangeInstallationDirectory": true,
+			"oneClick": false
+		},
+		"publish": [
+			{
+				"provider": "github",
+				"owner": "Ashersam",
+				"repo": "Autographa2.0-AutoUpdate"
+			}
+		]
 	},
 	"devDependencies": {
 		"@babel/preset-env": "^7.14.2",
@@ -102,7 +133,7 @@
 		"mobx": "5.15.4",
 		"mobx-react": "6.3.0",
 		"moment": "^2.28.0",
-		"next": "latest",
+		"next": "11.1.0",
 		"next-on-netlify": "^2.6.3",
 		"next-transpile-modules": "^8.0.0",
 		"nprogress": "^0.2.0",

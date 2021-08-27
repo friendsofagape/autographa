@@ -4,6 +4,7 @@ import Router from 'next/router';
 import '../../styles/nprogress.css';
 import '../../styles/globals.css';
 import { initializeParse } from '@parse/react-ssr';
+import AutoUpdate from '@/components/AutoUpdate';
 import { environment } from '../environment';
 
 initializeParse(
@@ -18,7 +19,10 @@ Router.events.on('routeChangeError', () => NProgress.done());
 
 function Autographa({ Component, pageProps }) {
   return (
-    <Component {...pageProps} />
+    <>
+      <Component {...pageProps} />
+      <AutoUpdate />
+    </>
   );
 }
 

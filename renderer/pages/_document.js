@@ -12,7 +12,7 @@ import Document, {
      return (
        <Html>
          <Head>
-           <link rel="stylesheet" href="./loader.css" />
+           <link rel="stylesheet" />
          </Head>
          <body>
            <Main />

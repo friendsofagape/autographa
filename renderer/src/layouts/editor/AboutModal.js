@@ -13,8 +13,8 @@ import {
   InformationCircleIcon,
   DocumentTextIcon,
 } from '@heroicons/react/outline';
-
-import LogoIcon from '../../../public/Logo.svg';
+import packageInfo from '../../../../package.json';
+import LogoIcon from '../../../public/icons/Logo.svg';
 
 export default function AboutModal(props) {
   const { openModal, open } = props;
@@ -79,7 +79,7 @@ export default function AboutModal(props) {
                         />
                       </div>
                       Autographa
-                      <span className="bg-primary text-white text-xxs px-2 py-0 ml-2 rounded-full">2.0</span>
+                      <span className="bg-primary text-white text-xxs px-2 py-0 ml-2 rounded-full">{packageInfo.version}</span>
                     </Dialog.Title>
 
                     <div className="flex cursor-pointer border-0 border-b border-gray-300">
@@ -174,7 +174,7 @@ export default function AboutModal(props) {
                   Source Code
                 </a>
 
-                <a
+                {/* <a
                   // type="button"
                   // href="https://github.com/friendsofagape/autographa/blob/development/LICENSE"
                   // target="_blank"
@@ -183,7 +183,7 @@ export default function AboutModal(props) {
                   rel="noreferrer"
                 >
                   Check For Update
-                </a>
+                </a> */}
 
               </div>
             </div>
