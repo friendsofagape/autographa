@@ -1,0 +1,65 @@
+.usfm-editor {
+	font-family: Arial, Helvetica, sans-serif;
+	background-color: darkslategray;
+	color: oldlace;
+	border-radius: 1em;
+	padding: 2em;
+}
+
+.usfm-marker-s {
+	font-family: cursive;
+}
+
+.usfm-marker-bk {
+	font-family: Georgia, 'Times New Roman', Times, serif;
+	font-style: italic;
+}
+
+.usfm-marker-nd {
+	font-family: Georgia, 'Times New Roman', Times, serif;
+	font-variant: small-caps;
+	font-size: large;
+}
+
+.usfm-marker-c {
+	display: none;
+}
+
+.usfm-marker-v {
+	background-color: transparent;
+	color: lightblue;
+	font-family: Arial, Helvetica, sans-serif;
+	font-weight: bold;
+}
+
+.chapter-selector {
+	min-width: 99%;
+}
+
+.chapter-selector::before {
+	content: 'Choose a chapter:';
+}
+
+.toolbar-button {
+	background-color: lightgray;
+}
+
+.toolbar-button-active {
+	color: blue;
+}
+
+.toolbar-button-inactive {
+	color: rgb(22, 22, 22);
+}
+
+.toolbar-button:hover {
+	background-color: lightblue;
+}
+
+.toolbar-button-active .toolbar-icon {
+	fill: blue;
+}
+
+.toolbar-button-inactive .toolbar-icon {
+	fill: rgb(22, 22, 22);
+}

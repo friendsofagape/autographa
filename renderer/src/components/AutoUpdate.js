@@ -12,7 +12,6 @@ const AutoUpdate = () => {
   const [downloadProgress, setDownloadProgress] = useState();
 
   useEffect(() => {
-      if (isElectron()) {
         localforage.setItem('font-family', global.fonts);
         const electron = window.require('electron');
         const { ipcRenderer } = electron;
@@ -44,7 +43,6 @@ const AutoUpdate = () => {
             setRestartButton(true);
             setNotification(true);
           });
-      }
   });
 
   function closeNotification() {
