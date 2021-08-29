@@ -3,6 +3,7 @@ import EditorSection from '@/layouts/editor/EditorSection';
 import dynamic from 'next/dynamic';
 import { useContext, useEffect, useState } from 'react';
 import ReferenceBible from '@/components/EditorPage/Reference/ReferenceBible/ReferenceBible';
+import localforage from 'localforage';
 
 const TranslationHelps = dynamic(
   () => import('@/components/EditorPage/Reference/TranslationHelps'),
@@ -48,6 +49,7 @@ const SectionPlaceholder = () => {
     },
     actions: {
       setRow,
+      setLayout,
       setOpenResource1,
       setOpenResource2,
       setOpenResource3,
@@ -57,12 +59,58 @@ const SectionPlaceholder = () => {
   const [sectionNum, setSectionNum] = useState();
 
   useEffect(() => {
-    if (layout === 0 && layout < 2) {
-      setRow(0);
-    }
-    setSectionNum(layout);
+    // if (layout === 0 && layout < 2) {
+    //   setRow(0);
+    // }
+    // setSectionNum(layout);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [layout]);
+
+  useEffect(() => {
+    const refsHistory = [];
+    localforage.getItem('projectmeta').then((value) => {
+      refsHistory.push(value.projects[0].project.textTranslation.refResources);
+    }).then(() => {
+      console.log(refsHistory[0]);
+      setLayout(refsHistory[0].length);
+      setSectionNum(4);
+      setLoadResource1(true);
+      setLoadResource2(true);
+      setLoadResource3(true);
+      setLoadResource4(true);
+      setOpenResource1(false);
+      setOpenResource2(false);
+      setOpenResource3(false);
+      setOpenResource4(false);
+      setReferenceCoulumnOneData({
+        languageId: 'English',
+        selectedResource: 'bible',
+        refName: 'English-ULB',
+        header: 'bible',
+      });
+
+      setReferenceColumnThreeData({
+        languageId: 'hi',
+        selectedResource: 'tn',
+        refName: '',
+        header: '',
+      });
+
+      setReferenceCoulumnTwoData({
+      languageId: 'en',
+      selectedResource: 'twlm',
+      refName: '',
+      header: '',
+      });
+
+      setReferenceColumnFourData({
+      languageId: 'en',
+      selectedResource: 'tq',
+      refName: '',
+      header: '',
+      });
+    });
+  }, []);
 
   return (
     <>

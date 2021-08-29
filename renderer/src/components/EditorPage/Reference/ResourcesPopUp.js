@@ -23,11 +23,6 @@ const translationNotes = [
   createData('Bengali', 'bn', '2021-02-25'),
   createData('Malayalam', 'ml', '2020-12-31'),
   createData('Gujrati Notes', 'gu', '2020-12-29'),
-  createData('Gujrati Notes', 'gu', '2020-12-29'),
-  createData('Gujrati Notes', 'gu', '2020-12-29'),
-  createData('Gujrati Notes', 'gu', '2020-12-29'),
-  createData('Gujrati Notes', 'gu', '2020-12-29'),
-
 ];
 const translationWords = [
   createData('Translation Words', 'en', '2021-02-05'),
@@ -68,7 +63,6 @@ const ResourcesPopUp = ({
         newpath, 'autographa', 'users', username, 'reference',
       );
       const parseData = [];
-      const burrito = {};
       readRefMeta({
         projectsDir,
       }).then((refs) => {
@@ -80,6 +74,7 @@ const ResourcesPopUp = ({
             metaPath,
           }).then((data) => {
             if (data) {
+              const burrito = {};
               burrito.projectDir = ref;
               burrito.value = JSON.parse(data);
               parseData.push(burrito);
@@ -338,7 +333,7 @@ const ResourcesPopUp = ({
                                 <div
                                   className="focus:outline-none"
                                   onClick={(e) => handleRowSelect(e,
-                                    ref.value.languages[0].tag, ref.projectDir)}
+                                    ref.value.languages[0].name.en, ref.projectDir)}
                                   role="button"
                                   tabIndex="0"
                                 >
@@ -349,7 +344,7 @@ const ResourcesPopUp = ({
                                 <div
                                   className="focus:outline-none"
                                   onClick={(e) => handleRowSelect(e,
-                                    ref.value.languages[0].tag,
+                                    ref.value.languages[0].name.en,
                                     ref.projectDir)}
                                   role="button"
                                   tabIndex="0"

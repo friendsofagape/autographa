@@ -42,13 +42,13 @@ const ReferenceBible = ({
     );
 
     useEffect(() => {
-      if (isElectron()) {
+      if (isElectron() && refName) {
         const path = require('path');
         const newpath = localStorage.getItem('userPath');
         localforage.getItem('refBibleBurrito')
         .then((refs) => {
           refs.forEach((ref) => {
-            if (ref.value.languages[0].tag === languageId) {
+            if (ref.value.languages[0].name.en === languageId) {
                 Object.entries(ref.value.ingredients).forEach(
                   ([key, _ingredients]) => {
                     if (_ingredients.scope) {
@@ -80,7 +80,7 @@ const ReferenceBible = ({
         });
       }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [bookId, languageId]);
+    }, [bookId, languageId, refName]);
 
     // seting book scope for navigation
     // localforage.getItem('refBibleBurrito')

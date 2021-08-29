@@ -201,7 +201,6 @@ const ProjectContextProvider = ({ children }) => {
           newpath, 'autographa', 'users', username, 'reference',
         );
         const parseData = [];
-        const burrito = {};
         readRefMeta({
           projectsDir,
         }).then((refs) => {
@@ -213,6 +212,7 @@ const ProjectContextProvider = ({ children }) => {
               metaPath,
             }).then((data) => {
               if (data) {
+                const burrito = {};
                 burrito.projectDir = ref;
                 burrito.value = JSON.parse(data);
                 parseData.push(burrito);
