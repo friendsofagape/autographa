@@ -13,7 +13,7 @@ export default function EditorSection({
   setReferenceResources,
   children,
   languageId,
-  column,
+  row,
   setLoadResource,
   loadResource,
   openResource,
@@ -40,7 +40,7 @@ export default function EditorSection({
   const [openResourcePopUp, setOpenResourcePopUp] = useState(false);
 
   const removeSection = () => {
-    switch (column) {
+    switch (row) {
       case '1':
         setOpenResource1(false);
         break;
@@ -59,10 +59,11 @@ export default function EditorSection({
     // setLoadResource(false);
     if (sectionNum > 0) {
       setSectionNum(sectionNum - 1);
-      if (sectionNum <= 2) {
+      if (sectionNum <= 1) {
         setLayout(layout - 1);
       }
     }
+    console.log('secnum', sectionNum);
   };
 
   const sectionContent = () => {
@@ -75,23 +76,24 @@ export default function EditorSection({
   };
 
   const addRow = () => {
-    if (sectionNum >= 0 && sectionNum < 4) {
+    if (sectionNum >= 0 && sectionNum < 2) {
       setSectionNum(sectionNum + 1);
       if (layout < 2 && layout >= 0) {
-        setSectionNum(sectionNum + 2);
+        setSectionNum(sectionNum + 1);
       }
     }
   };
+  console.log(openResource);
 
   return (
-    <div className={`${openResource && 'hidden'} relative first:mt-0 mt-3 pb-12 ${ sectionNum > 2 ? 'h-1/2' : 'h-full'} border bg-white border-gray-200 shadow-sm rounded-b overflow-hidden group`}>
+    <div className={`${openResource && 'hidden'} relative first:mt-0 mt-3 pb-12 ${ sectionNum > 1 ? 'h-1/2' : 'h-full'} border bg-white border-gray-200 shadow-sm rounded-b overflow-hidden group`}>
 
       <div className="bg-gray-200 rounded-t text-center text-gray-600 relative overflow-hidden">
         {openResourcePopUp
           && (
             <div className="fixed z-50 ">
               <ResourcesPopUp
-                column={column}
+                column={row}
                 header={title}
                 languageId={languageId}
                 selectedResource={selectedResource}
@@ -189,6 +191,6 @@ EditorSection.propTypes = {
   children: PropTypes.any,
   selectedResource: PropTypes.string,
   setReferenceResources: PropTypes.func,
-  column: PropTypes.string,
+  row: PropTypes.string,
   languageId: PropTypes.string,
 };
