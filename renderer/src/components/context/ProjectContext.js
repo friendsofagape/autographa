@@ -59,20 +59,23 @@ const ProjectContextProvider = ({ children }) => {
         return;
       }
       const fs = window.require('fs');
-      const file = path.join(newpath, 'autographa', 'users', currentUser, 'usersetting.json');
+      const file = path.join(newpath, 'autographa', 'users', currentUser, 'ag-user-settings.json');
       if (fs.existsSync(file)) {
         fs.readFile(file, (err, data) => {
           logger.debug('ProjectContext.js', 'Successfully read the data from file');
           const json = JSON.parse(data);
           // (json.currentSetting).push(currentSetting);
-          setCanonList(json.canonSpecification
-            ? (advanceSettings.canonSpecification).concat(json.canonSpecification)
+          setCanonList(json.project?.textTranslation.canonSpecification
+            ? (advanceSettings.canonSpecification)
+            .concat(json.project?.textTranslation.canonSpecification)
             : advanceSettings.canonSpecification);
-          setLicenseList(json.copyright
-            ? (advanceSettings.copyright).concat(json.copyright)
+          setLicenseList(json.project?.textTranslation.copyright
+            ? (advanceSettings.copyright)
+            .concat(json.project?.textTranslation.copyright)
             : advanceSettings.copyright);
-          setLanguages(json.languages
-            ? (advanceSettings.languages).concat(json.languages)
+          setLanguages(json.project?.textTranslation.languages
+            ? (advanceSettings.languages)
+            .concat(json.project?.textTranslation.languages)
             : advanceSettings.languages);
         });
       } else {
@@ -80,11 +83,16 @@ const ProjectContextProvider = ({ children }) => {
         setLicenseList(advanceSettings.copyright);
         setLanguages(advanceSettings.languages);
         const json = {
-          canonSpecification: [{
-          id: 4, title: 'Custom', currentScope: [], locked: false,
-          }],
-          copyright: [],
-          languages: [],
+          version: '1.0',
+          project: {
+            textTranslation: {
+              canonSpecification: [{
+              id: 4, title: 'Custom', currentScope: [], locked: false,
+              }],
+              copyright: [],
+              languages: [],
+            },
+          },
         };
         fs.writeFileSync(file, JSON.stringify(json));
       }
@@ -99,7 +107,7 @@ const ProjectContextProvider = ({ children }) => {
         setUsername(value.username);
       });
       const fs = window.require('fs');
-      const file = path.join(newpath, 'autographa', 'users', currentUser, 'usersetting.json');
+      const file = path.join(newpath, 'autographa', 'users', currentUser, 'ag-user-settings.json');
       if (fs.existsSync(file)) {
         fs.readFile(file, 'utf8', (err, data) => {
           if (err) {
@@ -110,8 +118,9 @@ const ProjectContextProvider = ({ children }) => {
             // eslint-disable-next-line no-nested-ternary
             const currentSetting = (currentSettings === 'copyright' ? copyright
             : (currentSettings === 'languages' ? language : canonSpecification));
-            if (json[currentSettings] && uniqueId(json[currentSettings], currentSetting.id)) {
-              (json[currentSettings]).forEach((setting) => {
+            if (json.project?.textTranslation[currentSettings]
+              && uniqueId(json.project?.textTranslation[currentSettings], currentSetting.id)) {
+              (json.project?.textTranslation[currentSettings]).forEach((setting) => {
                 if (setting.id === currentSetting.id) {
                   const keys = Object.keys(setting);
                   keys.forEach((key) => {
@@ -122,7 +131,7 @@ const ProjectContextProvider = ({ children }) => {
               });
             } else {
               // updating the canon
-              (json[currentSettings]).push(currentSetting);
+              (json.project?.textTranslation[currentSettings]).push(currentSetting);
             }
             logger.debug('ProjectContext.js', 'Upadting the settings in existing file');
             fs.writeFileSync(file, JSON.stringify(json));
