@@ -82,7 +82,6 @@ const SectionPlaceholder1 = () => {
                     });
                 }
                 if (_rownum === '2') {
-                    console.log('col1', '_rownum', _rownum, '_value', _value);
                     setReferenceColumnOneData2({
                       languageId: _value?.language,
                       selectedResource: _value?.resouceId,
@@ -101,7 +100,6 @@ const SectionPlaceholder1 = () => {
       // setOpenResource1(false);
     }).then(() => {
       setLayout(refsHistory[0].length);
-      console.log(rows.length);
       if (rows.length > 1) {
         setLoadResource1(true);
         setLoadResource2(true);
@@ -113,8 +111,8 @@ const SectionPlaceholder1 = () => {
         setOpenResource1(false);
       }
       setSectionNum(rows.length);
-      console.log(sectionNum);
     });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

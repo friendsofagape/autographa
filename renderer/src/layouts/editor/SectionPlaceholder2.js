@@ -90,7 +90,6 @@ const SectionPlaceholder2 = () => {
       // setLoadResource1(true);
       // setOpenResource1(false);
     }).then(() => {
-      console.log(rows.length);
       if (rows.length > 1) {
         setLoadResource3(true);
         setLoadResource4(true);
@@ -102,8 +101,8 @@ const SectionPlaceholder2 = () => {
         setOpenResource3(false);
       }
       setSectionNum(rows.length);
-      console.log(sectionNum);
     });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {

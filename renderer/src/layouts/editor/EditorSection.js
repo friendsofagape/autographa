@@ -7,7 +7,6 @@ import BibleNavigation from '@/modules/biblenavigation/BibleNavigation';
 
 import { ViewGridAddIcon } from '@heroicons/react/outline';
 import { ProjectContext } from '@/components/context/ProjectContext';
-import { ChevronDownIcon } from '@heroicons/react/solid';
 
 export default function EditorSection({
   title,
