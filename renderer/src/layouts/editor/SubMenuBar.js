@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable max-len */
 import {
   Fragment, useState, useEffect, useContext,
@@ -197,7 +198,7 @@ export default function SubMenuBar() {
 
       <AboutModal openModal={openModal} open={open} />
 
-      <StatsModal openModal={openStatsModal} open={openStats} />
+      {/* <StatsModal openModal={openStatsModal} open={openStats} /> */}
 
       {/* <Transition appear show={refernceLoading.status} as={Fragment}>
         <Dialog
@@ -342,7 +343,7 @@ export default function SubMenuBar() {
                 {layout + 1}
               </span>
             </button>
-            <button type="button" className={`group ${menuStyles.btn}`}>
+            {/* <button type="button" className={`group ${menuStyles.btn}`}>
               <ReplyIcon fill="currentColor" className="h-6 w-6" aria-hidden="true" />
             </button>
             <button type="button" className={`group ${menuStyles.btn} mx-0`}>
@@ -361,7 +362,7 @@ export default function SubMenuBar() {
                 Saved
                 <span className="text-primary"> 5 Mins </span>
               </span>
-            </div>
+            </div> */}
 
             <button
               onClick={openSideBars}

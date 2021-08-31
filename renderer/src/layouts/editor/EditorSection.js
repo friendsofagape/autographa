@@ -6,6 +6,8 @@ import ResourcesPopUp from '@/components/EditorPage/Reference/ResourcesPopUp';
 import BibleNavigation from '@/modules/biblenavigation/BibleNavigation';
 
 import { ViewGridAddIcon } from '@heroicons/react/outline';
+import { ProjectContext } from '@/components/context/ProjectContext';
+import { ChevronDownIcon } from '@heroicons/react/solid';
 
 export default function EditorSection({
   title,
@@ -26,6 +28,7 @@ export default function EditorSection({
   hideAddition,
 }) {
   const [content, setContent] = useState(true);
+  const [openResourcePopUp, setOpenResourcePopUp] = useState(false);
   const {
     state: {
       // selectedFont
@@ -40,8 +43,11 @@ export default function EditorSection({
       setLayout,
     },
   } = useContext(ReferenceContext);
-
-  const [openResourcePopUp, setOpenResourcePopUp] = useState(false);
+  const {
+    states: {
+      scrollLock,
+    },
+  } = useContext(ProjectContext);
 
   const removeSection = () => {
     switch (row) {
@@ -143,10 +149,23 @@ export default function EditorSection({
 
         <div className="bg-gray-200 z-50 rounded-t overflow-hidden">
           <div className="flex items-center">
-            <BibleNavigation />
-            <div className="ml-4 h-4 flex justify-center items-center text-xxs uppercase tracking-wider font-bold leading-3 truncate">
-              {title}
-            </div>
+            {scrollLock ? (
+              <>
+                <BibleNavigation />
+                <div className="ml-4 h-4 flex justify-center items-center text-xxs uppercase tracking-wider font-bold leading-3 truncate">
+                  {title}
+                </div>
+              </>
+            )
+            : (
+              <div className="flex">
+                <div className="py-2 uppercase tracking-wider text-xs font-semibold">
+                  <div className="ml-4 h-4 flex justify-center items-center text-xxs uppercase tracking-wider font-bold leading-3 truncate">
+                    {title}
+                  </div>
+                </div>
+              </div>
+              )}
             <div className="flex bg-gray-300 absolute h-full -right-0 rounded-tr invisible group-hover:visible ">
               <button onClick={showResourcesPanel} type="button">
                 <img

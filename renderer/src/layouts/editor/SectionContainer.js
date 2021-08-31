@@ -15,21 +15,21 @@ const SectionContainer = () => {
           openResource1,
           openResource2,
           openResource3,
-openResource4,
+          openResource4,
         },
         actions: {
           setLayout,
         },
       } = useContext(ReferenceContext);
 
-      useEffect(() => {
-        if ((openResource1 === true && openResource2 === true
-          && openResource3 === true && openResource4 === true)) {
-            if (layout === 1) {
-              setLayout(0);
-            }
+    useEffect(() => {
+      if ((openResource1 === true && openResource2 === true
+        && openResource3 === true && openResource4 === true)) {
+          if (layout === 1) {
+            setLayout(0);
           }
-      });
+        }
+    });
 
    return (
      <div className={`grid grid-cols-${layout + 1} h-editor`}>

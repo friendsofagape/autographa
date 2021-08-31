@@ -53,60 +53,67 @@ const SectionPlaceholder1 = () => {
   }, [layout]);
 
   useEffect(() => {
-    console.log('sdsdsadasdsd ', sectionNum);
     if (sectionNum === 2) {
       setHideAddition(false);
     } else {
       setHideAddition(true);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sectionNum]);
 
   useEffect(() => {
     const refsHistory = [];
+    const rows = [];
     localforage.getItem('projectmeta').then((value) => {
       refsHistory.push(value.projects[0].project.textTranslation.refResources);
     }).then(() => {
       if (refsHistory[0]) {
         Object.entries(refsHistory[0]).forEach(
           ([_columnnum, _value]) => {
-          // console.log('_columnnum', _columnnum, 'columndata', _value);
           if (_columnnum === '0') {
             Object.entries(_value).forEach(
               ([_rownum, _value]) => {
-                console.log('col1', '_rownum', _rownum, '_value', _value);
+                rows.push(_rownum);
+                if (_rownum === '1') {
+                    setReferenceCoulumnOneData1({
+                      languageId: _value?.language,
+                      selectedResource: _value?.resouceId,
+                      refName: _value?.name,
+                      header: _value?.name,
+                    });
+                }
+                if (_rownum === '2') {
+                    console.log('col1', '_rownum', _rownum, '_value', _value);
+                    setReferenceColumnOneData2({
+                      languageId: _value?.language,
+                      selectedResource: _value?.resouceId,
+                      refName: _value?.name,
+                      header: _value?.name,
+                    });
+                }
               },
             );
-          }
-          if (_columnnum === '1') {
-            Object.entries(_value).forEach(
-            ([_rownum, _value]) => {
-              console.log('col2', '_rownum', _rownum, '_value', _value);
-            },
-          );
           }
         },
       );
       }
-      // setLayout(refsHistory[0].length);
-      // setSectionNum(1);
 
       // setLoadResource1(true);
       // setOpenResource1(false);
-
-      // setReferenceCoulumnOneData1({
-      //   languageId: 'English',
-      //   selectedResource: 'bible',
-      //   refName: 'English-ULB',
-      //   header: 'bible',
-      // });
-
-      // setReferenceColumnOneData2({
-      //   languageId: 'hi',
-      //   selectedResource: 'tn',
-      //   refName: '',
-      //   header: '',
-      // });
+    }).then(() => {
+      setLayout(refsHistory[0].length);
+      console.log(rows.length);
+      if (rows.length > 1) {
+        setLoadResource1(true);
+        setLoadResource2(true);
+        setOpenResource1(false);
+        setOpenResource2(false);
+      }
+      if (rows.length === 1) {
+        setLoadResource1(true);
+        setOpenResource1(false);
+      }
+      setSectionNum(rows.length);
+      console.log(sectionNum);
     });
   }, []);
 

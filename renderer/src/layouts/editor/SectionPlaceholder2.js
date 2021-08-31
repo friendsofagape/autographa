@@ -36,7 +36,6 @@ const SectionPlaceholder2 = () => {
     },
     actions: {
       setRow,
-      setLayout,
       setOpenResource3,
       setOpenResource4,
     },
@@ -54,51 +53,56 @@ const SectionPlaceholder2 = () => {
 
   useEffect(() => {
     const refsHistory = [];
+    const rows = [];
     localforage.getItem('projectmeta').then((value) => {
       refsHistory.push(value.projects[0].project.textTranslation.refResources);
     }).then(() => {
       if (refsHistory[0]) {
         Object.entries(refsHistory[0]).forEach(
           ([_columnnum, _value]) => {
-          // console.log('_columnnum', _columnnum, 'columndata', _value);
-          if (_columnnum === '0') {
+          if (_columnnum === '1') {
             Object.entries(_value).forEach(
               ([_rownum, _value]) => {
-                console.log('col1', '_rownum', _rownum, '_value', _value);
+                rows.push(_rownum);
+                if (_rownum === '1') {
+                    setReferenceColumnTwoData1({
+                      languageId: _value?.language,
+                      selectedResource: _value?.resouceId,
+                      refName: _value?.name,
+                      header: _value?.name,
+                    });
+                }
+                if (_rownum === '2') {
+                    setReferenceColumnTwoData2({
+                      languageId: _value?.language,
+                      selectedResource: _value?.resouceId,
+                      refName: _value?.name,
+                      header: _value?.name,
+                    });
+                }
               },
             );
-          }
-          if (_columnnum === '0') {
-            Object.entries(_value).forEach(
-            ([_rownum, _value]) => {
-              console.log('col2', '_rownum', _rownum, '_value', _value);
-            },
-          );
           }
         },
       );
       }
 
-      // setLayout(refsHistory[0].length);
-      // setSectionNum(1);
-
-      // setLoadResource3(true);
-
-      // setOpenResource3(false);
-
-      // setReferenceColumnTwoData1({
-      // languageId: 'en',
-      // selectedResource: 'twlm',
-      // refName: '',
-      // header: '',
-      // });
-
-      // setReferenceColumnTwoData2({
-      // languageId: 'en',
-      // selectedResource: 'tq',
-      // refName: '',
-      // header: '',
-      // });
+      // setLoadResource1(true);
+      // setOpenResource1(false);
+    }).then(() => {
+      console.log(rows.length);
+      if (rows.length > 1) {
+        setLoadResource3(true);
+        setLoadResource4(true);
+        setOpenResource3(false);
+        setOpenResource4(false);
+      }
+      if (rows.length === 1) {
+        setLoadResource3(true);
+        setOpenResource3(false);
+      }
+      setSectionNum(rows.length);
+      console.log(sectionNum);
     });
   }, []);
 
@@ -108,7 +112,6 @@ const SectionPlaceholder2 = () => {
     } else {
       setHideAddition(true);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sectionNum]);
 
   return (
