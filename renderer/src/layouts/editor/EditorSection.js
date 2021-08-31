@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import PropTypes from 'prop-types';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import ResourcesPopUp from '@/components/EditorPage/Reference/ResourcesPopUp';
 import BibleNavigation from '@/modules/biblenavigation/BibleNavigation';
@@ -23,14 +23,18 @@ export default function EditorSection({
   setOpenResource4,
   sectionNum,
   setSectionNum,
+  hideAddition,
 }) {
   const [content, setContent] = useState(true);
-
   const {
     state: {
       // selectedFont
       fontSize,
       layout,
+      openResource1,
+      openResource2,
+      openResource3,
+      openResource4,
     },
     actions: {
       setLayout,
@@ -42,16 +46,16 @@ export default function EditorSection({
   const removeSection = () => {
     switch (row) {
       case '1':
-        setOpenResource1(false);
+        setOpenResource1(true);
         break;
       case '2':
-        setOpenResource2(false);
+        setOpenResource2(true);
         break;
       case '3':
-        setOpenResource3(false);
+        setOpenResource3(true);
         break;
       case '4':
-        setOpenResource4(false);
+        setOpenResource4(true);
         break;
       default:
         break;
@@ -59,12 +63,29 @@ export default function EditorSection({
     // setLoadResource(false);
     if (sectionNum > 0) {
       setSectionNum(sectionNum - 1);
-      if (sectionNum <= 1) {
-        setLayout(layout - 1);
+    }
+    // if (sectionNum <= 1) {
+    //   setLayout(layout - 1);
+    // }
+  };
+
+  useEffect(() => {
+    if (openResource1 === true && openResource2 === true) {
+      if (layout > 1) { setLayout(1); }
+    }
+    if (openResource3 === true && openResource4 === true) {
+      if (layout > 1) { setLayout(1); }
+      //  else if (layout === 1) { setLayout(0); }
+    }
+
+    if (openResource1 === true && openResource2 === true
+      && openResource3 === true && openResource4 === true) {
+      if (layout === 1) {
+        setLayout(0);
       }
     }
-    console.log('secnum', sectionNum);
-  };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  });
 
   const sectionContent = () => {
     setContent(!content);
@@ -82,8 +103,23 @@ export default function EditorSection({
         setSectionNum(sectionNum + 1);
       }
     }
+    switch (row) {
+      case '1':
+        setOpenResource2(false);
+        break;
+      case '2':
+      setOpenResource1(false);
+        break;
+      case '3':
+        setOpenResource4(false);
+        break;
+      case '4':
+        setOpenResource3(false);
+        break;
+      default:
+        break;
+    }
   };
-  console.log(openResource);
 
   return (
     <div className={`${openResource && 'hidden'} relative first:mt-0 mt-3 pb-12 ${ sectionNum > 1 ? 'h-1/2' : 'h-full'} border bg-white border-gray-200 shadow-sm rounded-b overflow-hidden group`}>
@@ -165,19 +201,21 @@ export default function EditorSection({
               )
               : children
             }
-            <span
-              tabIndex={-42}
-              onClick={addRow}
-              role="button"
-            >
-              <img
-                title="Add Section"
-                style={{ marginBottom: '0' }}
-                className="absolute bottom-0 -right-0 invisible group-hover:visible"
-                src="/illustrations/add-section.svg"
-                alt=""
-              />
-            </span>
+            {hideAddition && (
+              <span
+                tabIndex={-42}
+                onClick={addRow}
+                role="button"
+              >
+                <img
+                  title="Add Section"
+                  style={{ marginBottom: '0' }}
+                  className="absolute bottom-0 -right-0 invisible group-hover:visible"
+                  src="/illustrations/add-section.svg"
+                  alt=""
+                />
+              </span>
+            )}
           </div>
         )
       }

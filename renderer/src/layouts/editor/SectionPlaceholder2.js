@@ -29,6 +29,8 @@ const SectionPlaceholder2 = () => {
   const {
     state: {
       layout,
+      openResource1,
+      openResource2,
       openResource3,
       openResource4,
     },
@@ -39,12 +41,13 @@ const SectionPlaceholder2 = () => {
       setOpenResource4,
     },
   } = useContext(ReferenceContext);
-  const [sectionNum, setSectionNum] = useState();
+  const [sectionNum, setSectionNum] = useState(0);
+  const [hideAddition, setHideAddition] = useState(true);
 
   useEffect(() => {
     if (layout > 0 && layout <= 2) {
       setRow(0);
-      setSectionNum(1);
+      if (sectionNum === 0) { setSectionNum(1); }
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [layout]);
@@ -76,42 +79,49 @@ const SectionPlaceholder2 = () => {
       );
       }
 
-      setLayout(refsHistory[0].length);
-      setSectionNum(2);
+      // setLayout(refsHistory[0].length);
+      // setSectionNum(1);
 
-      setLoadResource3(true);
-      setLoadResource4(true);
+      // setLoadResource3(true);
 
-      setOpenResource3(false);
-      setOpenResource4(false);
+      // setOpenResource3(false);
 
-      setReferenceColumnTwoData1({
-      languageId: 'en',
-      selectedResource: 'twlm',
-      refName: '',
-      header: '',
-      });
+      // setReferenceColumnTwoData1({
+      // languageId: 'en',
+      // selectedResource: 'twlm',
+      // refName: '',
+      // header: '',
+      // });
 
-      setReferenceColumnTwoData2({
-      languageId: 'en',
-      selectedResource: 'tq',
-      refName: '',
-      header: '',
-      });
+      // setReferenceColumnTwoData2({
+      // languageId: 'en',
+      // selectedResource: 'tq',
+      // refName: '',
+      // header: '',
+      // });
     });
   }, []);
 
-  console.log(sectionNum);
+  useEffect(() => {
+    if (sectionNum === 2) {
+      setHideAddition(false);
+    } else {
+      setHideAddition(true);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sectionNum]);
 
   return (
     <>
-      {(layout > 1 && layout <= 2) && (
+      {((openResource1 === true && openResource2 === true)
+      ? (layout >= 1 && layout <= 2) : (layout > 1 && layout <= 2)) && (
       <>
+        {(openResource3 === false || openResource4 === false) && (
         <div className="m-3 ml-0 rounded-md overflow-hidden  pb-4">
-          {(sectionNum > 0 && sectionNum <= 2) && (
           <>
             <EditorSection
               row="3"
+              hideAddition={hideAddition}
               sectionNum={sectionNum}
               setSectionNum={setSectionNum}
               title={referenceColumnTwoData1.header === 'Notes' ? 'Translation Notes' : referenceColumnTwoData1.header}
@@ -122,6 +132,7 @@ const SectionPlaceholder2 = () => {
               loadResource={loadResource3}
               openResource={openResource3}
               setOpenResource3={setOpenResource3}
+              setOpenResource4={setOpenResource4}
             >
               {
               (loadResource3 === true) && (
@@ -139,11 +150,10 @@ const SectionPlaceholder2 = () => {
             }
             </EditorSection>
           </>
-        )}
-          {(sectionNum > 1 && sectionNum <= 2) && (
           <>
             <EditorSection
               row="4"
+              hideAddition={hideAddition}
               sectionNum={sectionNum}
               setSectionNum={setSectionNum}
               title={referenceColumnTwoData2.header === 'Notes' ? 'Translation Notes' : referenceColumnTwoData2.header}
@@ -153,6 +163,7 @@ const SectionPlaceholder2 = () => {
               setLoadResource={setLoadResource4}
               loadResource={loadResource4}
               openResource={openResource4}
+              setOpenResource3={setOpenResource3}
               setOpenResource4={setOpenResource4}
             >
               {
@@ -171,8 +182,8 @@ const SectionPlaceholder2 = () => {
             }
             </EditorSection>
           </>
-          )}
         </div>
+      )}
       </>
       )}
     </>

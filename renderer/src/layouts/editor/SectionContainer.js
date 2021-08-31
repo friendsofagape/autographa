@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import SectionPlaceholder1 from './SectionPlaceholder1';
@@ -12,8 +12,25 @@ const SectionContainer = () => {
     const {
         state: {
           layout,
+          openResource1,
+          openResource2,
+          openResource3,
+openResource4,
+        },
+        actions: {
+          setLayout,
         },
       } = useContext(ReferenceContext);
+
+      useEffect(() => {
+        if ((openResource1 === true && openResource2 === true
+          && openResource3 === true && openResource4 === true)) {
+            if (layout === 1) {
+              setLayout(0);
+            }
+          }
+      });
+
    return (
      <div className={`grid grid-cols-${layout + 1} h-editor`}>
        <SectionPlaceholder1 />

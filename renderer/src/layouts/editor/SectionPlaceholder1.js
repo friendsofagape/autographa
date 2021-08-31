@@ -39,22 +39,28 @@ const SectionPlaceholder1 = () => {
     },
   } = useContext(ReferenceContext);
   const [sectionNum, setSectionNum] = useState(0);
+  const [hideAddition, setHideAddition] = useState(true);
 
   useEffect(() => {
     if (layout > 0 && layout <= 2) {
       setRow(0);
       if (sectionNum === 0) { setSectionNum(1); }
     }
+    // if (openResource1 === true && openResource2 === true) {
+    //   setLayout(layout - 1);
+    // }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [layout]);
 
-  // useEffect(() => {
-  //   if (layout === 0 && layout < 2) {
-  //     setRow(0);
-  //   }
-  //   setSectionNum(layout);
-  // // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [layout]);
+  useEffect(() => {
+    console.log('sdsdsadasdsd ', sectionNum);
+    if (sectionNum === 2) {
+      setHideAddition(false);
+    } else {
+      setHideAddition(true);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sectionNum]);
 
   useEffect(() => {
     const refsHistory = [];
@@ -72,7 +78,7 @@ const SectionPlaceholder1 = () => {
               },
             );
           }
-          if (_columnnum === '0') {
+          if (_columnnum === '1') {
             Object.entries(_value).forEach(
             ([_rownum, _value]) => {
               console.log('col2', '_rownum', _rownum, '_value', _value);
@@ -82,55 +88,52 @@ const SectionPlaceholder1 = () => {
         },
       );
       }
-      setLayout(refsHistory[0].length);
-      setSectionNum(2);
+      // setLayout(refsHistory[0].length);
+      // setSectionNum(1);
 
-      setLoadResource1(true);
-      setLoadResource2(true);
+      // setLoadResource1(true);
+      // setOpenResource1(false);
 
-      setOpenResource1(false);
-      setOpenResource2(false);
+      // setReferenceCoulumnOneData1({
+      //   languageId: 'English',
+      //   selectedResource: 'bible',
+      //   refName: 'English-ULB',
+      //   header: 'bible',
+      // });
 
-      setReferenceCoulumnOneData1({
-        languageId: 'English',
-        selectedResource: 'bible',
-        refName: 'English-ULB',
-        header: 'bible',
-      });
-
-      setReferenceColumnOneData2({
-        languageId: 'hi',
-        selectedResource: 'tn',
-        refName: '',
-        header: '',
-      });
+      // setReferenceColumnOneData2({
+      //   languageId: 'hi',
+      //   selectedResource: 'tn',
+      //   refName: '',
+      //   header: '',
+      // });
     });
   }, []);
-
-  console.log(sectionNum);
 
   return (
     <>
 
       {(layout > 0 && layout <= 2) && (
         <>
+          {(openResource1 === false || openResource2 === false) && (
           <div className="m-3 rounded-md overflow-hidden  pb-4">
-            {(sectionNum > 0 && sectionNum <= 2) && (
-              <>
-                <EditorSection
-                  row="1"
-                  sectionNum={sectionNum}
-                  setSectionNum={setSectionNum}
-                  title={referenceColumnOneData1.header === 'Notes' ? 'Translation Notes' : referenceColumnOneData1.header}
-                  selectedResource={referenceColumnOneData1.selectedResource}
-                  setReferenceResources={setReferenceCoulumnOneData1}
-                  languageId={referenceColumnOneData1.languageId}
-                  setLoadResource={setLoadResource1}
-                  loadResource={loadResource1}
-                  openResource={openResource1}
-                  setOpenResource1={setOpenResource1}
-                >
-                  {
+            <>
+              <EditorSection
+                row="1"
+                hideAddition={hideAddition}
+                sectionNum={sectionNum}
+                setSectionNum={setSectionNum}
+                title={referenceColumnOneData1.header === 'Notes' ? 'Translation Notes' : referenceColumnOneData1.header}
+                selectedResource={referenceColumnOneData1.selectedResource}
+                setReferenceResources={setReferenceCoulumnOneData1}
+                languageId={referenceColumnOneData1.languageId}
+                setLoadResource={setLoadResource1}
+                loadResource={loadResource1}
+                openResource={openResource1}
+                setOpenResource1={setOpenResource1}
+                setOpenResource2={setOpenResource2}
+              >
+                {
             (loadResource1 === true) && (
               referenceColumnOneData1.selectedResource === 'bible' ? (
                 <ReferenceBible
@@ -146,25 +149,25 @@ const SectionPlaceholder1 = () => {
               )
             )
           }
-                </EditorSection>
-              </>
-          )}
-            {(sectionNum > 1 && sectionNum <= 2) && (
-              <>
-                <EditorSection
-                  row="2"
-                  sectionNum={sectionNum}
-                  setSectionNum={setSectionNum}
-                  title={referenceColumnOneData2.header === 'Notes' ? 'Translation Notes' : referenceColumnOneData2.header}
-                  selectedResource={referenceColumnOneData2.selectedResource}
-                  languageId={referenceColumnOneData2.languageId}
-                  setReferenceResources={setReferenceColumnOneData2}
-                  setLoadResource={setLoadResource2}
-                  loadResource={loadResource2}
-                  openResource={openResource2}
-                  setOpenResource2={setOpenResource2}
-                >
-                  {
+              </EditorSection>
+            </>
+            <>
+              <EditorSection
+                row="2"
+                hideAddition={hideAddition}
+                sectionNum={sectionNum}
+                setSectionNum={setSectionNum}
+                title={referenceColumnOneData2.header === 'Notes' ? 'Translation Notes' : referenceColumnOneData2.header}
+                selectedResource={referenceColumnOneData2.selectedResource}
+                languageId={referenceColumnOneData2.languageId}
+                setReferenceResources={setReferenceColumnOneData2}
+                setLoadResource={setLoadResource2}
+                loadResource={loadResource2}
+                openResource={openResource2}
+                setOpenResource1={setOpenResource1}
+                setOpenResource2={setOpenResource2}
+              >
+                {
                 (loadResource2 === true) && (
                   referenceColumnOneData2.selectedResource === 'bible' ? (
                     <ReferenceBible
@@ -178,10 +181,10 @@ const SectionPlaceholder1 = () => {
                 />
               ))
             }
-                </EditorSection>
-              </>
-            )}
+              </EditorSection>
+            </>
           </div>
+        )}
         </>
       )}
     </>

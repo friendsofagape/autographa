@@ -72,14 +72,11 @@ export default function SubMenuBar() {
     state: {
       layout,
       refernceLoading,
-      counter,
       row,
     },
     actions: {
       setOpenResource1,
-      setOpenResource2,
       setOpenResource3,
-      setOpenResource4,
       getFonts,
       setLayout,
       setRefernceLoading,
@@ -137,18 +134,16 @@ export default function SubMenuBar() {
 
   const handleResource = () => {
     setOpenResource1(false);
-        setOpenResource2(false);
-        setOpenResource3(false);
-        setOpenResource4(false);
+    setOpenResource3(false);
     if (layout < 3) {
       setLayout(layout + 1);
       setRow(row + 1);
     }
-    if (layout >= 3) {
-      setLayout(1);
+    if (layout >= 2) {
+      setLayout(0);
       setRow(row + 1);
     }
-    if (layout === 2) { setLayout(0); }
+    // if (layout === 2) { setLayout(0); }
   };
 
   function openSideBars() {
@@ -173,6 +168,7 @@ export default function SubMenuBar() {
   // // eslint-disable-next-line react-hooks/exhaustive-deps
   // }, [counter]);
 
+  // eslint-disable-next-line no-unused-vars
   function closeSnackBar() {
     setNotification(refernceLoading.text);
     // setSnackBar(false);
