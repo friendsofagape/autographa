@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import React, { useContext, useEffect, useState } from 'react';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import ResourcesPopUp from '@/components/EditorPage/Reference/ResourcesPopUp';
-import BibleNavigation from '@/modules/biblenavigation/BibleNavigation';
 
 import { ViewGridAddIcon } from '@heroicons/react/outline';
 import { ProjectContext } from '@/components/context/ProjectContext';
