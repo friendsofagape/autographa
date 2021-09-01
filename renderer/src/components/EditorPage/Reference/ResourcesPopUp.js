@@ -18,11 +18,11 @@ function createData(name, language, date) {
   };
 }
 const translationNotes = [
-  createData('English Notes', 'en', '2021-02-05'),
-  createData('Hindi Translation Notes', 'hi', '2021-02-11'),
-  createData('Bengali', 'bn', '2021-02-25'),
-  createData('Malayalam', 'ml', '2020-12-31'),
-  createData('Gujrati Notes', 'gu', '2020-12-29'),
+  createData('Translation Notes English', 'en', '2021-02-05'),
+  createData('Translation Notes Hindi', 'hi', '2021-02-11'),
+  createData('Translation Notes Bengali', 'bn', '2021-02-25'),
+  createData('Translation Notes Malayalam', 'ml', '2020-12-31'),
+  createData('Translation Notes Gujrati', 'gu', '2020-12-29'),
 ];
 const translationWords = [
   createData('Translation Words', 'en', '2021-02-05'),
@@ -53,7 +53,6 @@ const ResourcesPopUp = ({
   useEffect(() => {
     setReferenceResources({
       selectedResource: selectResource,
-      header,
       languageId,
     });
     if (isElectron()) {
@@ -237,7 +236,7 @@ const ResourcesPopUp = ({
                             <td className="px-5 text-gray-600">
                               <div
                                 className="focus:outline-none"
-                                onClick={(e) => handleRowSelect(e, notes.language)}
+                                onClick={(e) => handleRowSelect(e, notes.language, notes.name)}
                                 role="button"
                                 tabIndex="0"
                               >
@@ -247,7 +246,7 @@ const ResourcesPopUp = ({
                             <td className="px-5 text-gray-600">
                               <div
                                 className="focus:outline-none"
-                                onClick={(e) => handleRowSelect(e, notes.language)}
+                                onClick={(e) => handleRowSelect(e, notes.language, notes.name)}
                                 role="button"
                                 tabIndex="0"
                               >
@@ -269,7 +268,7 @@ const ResourcesPopUp = ({
                             <td className="px-5 text-gray-600">
                               <div
                                 className="focus:outline-none"
-                                onClick={(e) => handleRowSelect(e, notes.language)}
+                                onClick={(e) => handleRowSelect(e, notes.language, notes.name)}
                                 role="button"
                                 tabIndex="0"
                               >
@@ -279,7 +278,7 @@ const ResourcesPopUp = ({
                             <td className="px-5 text-gray-600">
                               <div
                                 className="focus:outline-none"
-                                onClick={(e) => handleRowSelect(e, notes.language)}
+                                onClick={(e) => handleRowSelect(e, notes.language, notes.name)}
                                 role="button"
                                 tabIndex="0"
                               >
@@ -300,7 +299,7 @@ const ResourcesPopUp = ({
                             <td className="px-5 text-gray-600">
                               <div
                                 className="focus:outline-none"
-                                onClick={(e) => handleRowSelect(e, notes.language)}
+                                onClick={(e) => handleRowSelect(e, notes.language, notes.name)}
                                 role="button"
                                 tabIndex="0"
                               >
@@ -310,7 +309,7 @@ const ResourcesPopUp = ({
                             <td className="px-5 text-gray-600">
                               <div
                                 className="focus:outline-none"
-                                onClick={(e) => handleRowSelect(e, notes.language)}
+                                onClick={(e) => handleRowSelect(e, notes.language, notes.name)}
                                 role="button"
                                 tabIndex="0"
                               >

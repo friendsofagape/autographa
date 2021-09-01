@@ -26,7 +26,7 @@ import Font from '@/icons/font.svg';
 import Notifications from '@/modules/notifications/Notifications';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import MenuBar from '@/components/Menubar/MenuBar';
-import { CustomUsfmToolbar } from '@/components/EditorPage/UsfmEditor/UsfmToolbar';
+import CustomUsfmToolbar from '@/components/EditorPage/UsfmEditor/CustomUsfmToolbar';
 import { BookmarkIcon } from '@heroicons/react/solid';
 import { ProjectContext } from '@/components/context/ProjectContext';
 import AboutModal from './AboutModal';

@@ -113,7 +113,7 @@ export default function EditorSection({
         setOpenResource2(false);
         break;
       case '2':
-      setOpenResource1(false);
+        setOpenResource1(false);
         break;
       case '3':
         setOpenResource4(false);

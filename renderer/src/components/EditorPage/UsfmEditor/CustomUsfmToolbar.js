@@ -5,7 +5,7 @@ import {
    //  withChapterSelection,
 } from 'usfm-editor';
 
-export const CustomUsfmToolbar = () => {
+const CustomUsfmToolbar = () => {
     const {
         state: {
           myEditorRef,
@@ -20,3 +20,5 @@ export const CustomUsfmToolbar = () => {
       </div>
     );
 };
+
+export default CustomUsfmToolbar;

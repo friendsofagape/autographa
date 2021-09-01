@@ -1,9 +1,12 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-param-reassign */
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import EditorSection from '@/layouts/editor/EditorSection';
 import dynamic from 'next/dynamic';
 import { useContext, useEffect, useState } from 'react';
 import ReferenceBible from '@/components/EditorPage/Reference/ReferenceBible/ReferenceBible';
 import localforage from 'localforage';
+import { ProjectContext } from '@/components/context/ProjectContext';
 
 const TranslationHelps = dynamic(
   () => import('@/components/EditorPage/Reference/TranslationHelps'),
@@ -25,7 +28,7 @@ const SectionPlaceholder2 = () => {
   });
   const [loadResource3, setLoadResource3] = useState(false);
   const [loadResource4, setLoadResource4] = useState(false);
-  // const [ showRow1, setShowRow1 ] = useState(false)
+
   const {
     state: {
       layout,
@@ -40,6 +43,11 @@ const SectionPlaceholder2 = () => {
       setOpenResource4,
     },
   } = useContext(ReferenceContext);
+  const {
+    states: {
+      selectedProject,
+    },
+  } = useContext(ProjectContext);
   const [sectionNum, setSectionNum] = useState(0);
   const [hideAddition, setHideAddition] = useState(true);
 
@@ -55,7 +63,17 @@ const SectionPlaceholder2 = () => {
     const refsHistory = [];
     const rows = [];
     localforage.getItem('projectmeta').then((value) => {
-      refsHistory.push(value.projects[0].project.textTranslation.refResources);
+      Object.entries(value).forEach(
+        ([_columnnum, _value]) => {
+          Object.entries(_value).forEach(
+            ([_rownum, resources]) => {
+              if (resources.identification.name.en === selectedProject) {
+                refsHistory.push(resources.project.textTranslation.refResources);
+              }
+            },
+          );
+        },
+      );
     }).then(() => {
       if (refsHistory[0]) {
         Object.entries(refsHistory[0]).forEach(
@@ -86,9 +104,6 @@ const SectionPlaceholder2 = () => {
         },
       );
       }
-
-      // setLoadResource1(true);
-      // setOpenResource1(false);
     }).then(() => {
       if (rows.length > 1) {
         setLoadResource3(true);
@@ -113,6 +128,51 @@ const SectionPlaceholder2 = () => {
     }
   }, [sectionNum]);
 
+  useEffect(() => {
+    const refsHistory = [];
+    localforage.getItem('projectmeta').then((value) => {
+      Object.entries(value).forEach(
+        ([_columnnum, _value]) => {
+          Object.entries(_value).forEach(
+            ([_rownum, resources]) => {
+              if (resources.identification.name.en === selectedProject) {
+                refsHistory.push(resources.project.textTranslation.refResources);
+                if (sectionNum === 1) {
+                  resources.project.textTranslation.refResources[1] = {
+                      1: {
+                        resouceId: referenceColumnTwoData1?.selectedResource,
+                        language: referenceColumnTwoData1?.languageId,
+                        name: referenceColumnTwoData1?.refName,
+                        navigation: { book: '1TI', chapter: '1' },
+                      },
+                    };
+                }
+                if (sectionNum === 2) {
+                  resources.project.textTranslation.refResources[1] = {
+                    1: {
+                      resouceId: referenceColumnTwoData1?.selectedResource,
+                      language: referenceColumnTwoData1?.languageId,
+                      name: referenceColumnTwoData1?.refName,
+                      navigation: { book: '1TI', chapter: '1' },
+                    },
+                    2: {
+                      resouceId: referenceColumnTwoData2?.selectedResource,
+                      language: referenceColumnTwoData2?.languageId,
+                      name: referenceColumnTwoData2?.refName,
+                      navigation: { book: '1TI', chapter: '1' },
+                    },
+                  };
+                }
+              }
+            },
+          );
+        },
+      );
+
+    localforage.setItem('projectmeta', value);
+    });
+  });
+
   return (
     <>
       {((openResource1 === true && openResource2 === true)
@@ -126,7 +186,7 @@ const SectionPlaceholder2 = () => {
               hideAddition={hideAddition}
               sectionNum={sectionNum}
               setSectionNum={setSectionNum}
-              title={referenceColumnTwoData1.header === 'Notes' ? 'Translation Notes' : referenceColumnTwoData1.header}
+              title={referenceColumnTwoData1.refName}
               selectedResource={referenceColumnTwoData1.selectedResource}
               languageId={referenceColumnTwoData1.languageId}
               setReferenceResources={setReferenceColumnTwoData1}
@@ -158,7 +218,7 @@ const SectionPlaceholder2 = () => {
               hideAddition={hideAddition}
               sectionNum={sectionNum}
               setSectionNum={setSectionNum}
-              title={referenceColumnTwoData2.header === 'Notes' ? 'Translation Notes' : referenceColumnTwoData2.header}
+              title={referenceColumnTwoData2.refName}
               selectedResource={referenceColumnTwoData2.selectedResource}
               languageId={referenceColumnTwoData2.languageId}
               setReferenceResources={setReferenceColumnTwoData2}

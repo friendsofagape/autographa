@@ -78,6 +78,36 @@ const importBurrito = async (filePath) => {
             lastSeen: moment().format(),
             bibleVersion: '',
             abbreviation: '',
+            refResources: [
+              {
+                1: {
+                  resouceId: '',
+                  language: '',
+                  name: '',
+                  navigation: { book: '1TI', chapter: '1' },
+                },
+                2: {
+                  resouceId: '',
+                  language: '',
+                  name: '',
+                  navigation: { book: '1TI', chapter: '1' },
+                },
+              },
+              {
+                1: {
+                  resouceId: '',
+                  language: '',
+                  name: '',
+                  navigation: { book: '1TI', chapter: '1' },
+                },
+                2: {
+                  resouceId: '',
+                  language: '',
+                  name: '',
+                  navigation: { book: '1TI', chapter: '1' },
+                },
+              },
+            ],
           },
         },
       };
