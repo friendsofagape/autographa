@@ -19,9 +19,9 @@ export default function ReferenceContextProvider({ children }) {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [refName, setRefName] = React.useState('null');
     const [currentScope, setCurrentScope] = React.useState([]);
-    const [openResource1, setOpenResource1] = React.useState(true);
+    const [openResource1, setOpenResource1] = React.useState(false);
     const [openResource2, setOpenResource2] = React.useState(true);
-    const [openResource3, setOpenResource3] = React.useState(true);
+    const [openResource3, setOpenResource3] = React.useState(false);
     const [openResource4, setOpenResource4] = React.useState(true);
     // const [openResourcePopUp, setOpenResourcePopUp] = React.useState(false);
     const [selectedFont, setSelectedFont] = React.useState('sans-serif');

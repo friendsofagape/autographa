@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable max-len */
 import {
   Fragment, useState, useEffect, useContext,
@@ -25,7 +26,7 @@ import Font from '@/icons/font.svg';
 import Notifications from '@/modules/notifications/Notifications';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import MenuBar from '@/components/Menubar/MenuBar';
-import { CustomUsfmToolbar } from '@/components/EditorPage/UsfmEditor/UsfmToolbar';
+import CustomUsfmToolbar from '@/components/EditorPage/UsfmEditor/CustomUsfmToolbar';
 import { BookmarkIcon } from '@heroicons/react/solid';
 import { ProjectContext } from '@/components/context/ProjectContext';
 import AboutModal from './AboutModal';
@@ -72,14 +73,11 @@ export default function SubMenuBar() {
     state: {
       layout,
       refernceLoading,
-      counter,
       row,
     },
     actions: {
       setOpenResource1,
-      setOpenResource2,
       setOpenResource3,
-      setOpenResource4,
       getFonts,
       setLayout,
       setRefernceLoading,
@@ -137,18 +135,16 @@ export default function SubMenuBar() {
 
   const handleResource = () => {
     setOpenResource1(false);
-        setOpenResource2(false);
-        setOpenResource3(false);
-        setOpenResource4(false);
+    setOpenResource3(false);
     if (layout < 3) {
       setLayout(layout + 1);
       setRow(row + 1);
     }
-    if (layout >= 3) {
-      setLayout(1);
+    if (layout >= 2) {
+      setLayout(0);
       setRow(row + 1);
     }
-    if (layout === 2) { setLayout(0); }
+    // if (layout === 2) { setLayout(0); }
   };
 
   function openSideBars() {
@@ -173,6 +169,7 @@ export default function SubMenuBar() {
   // // eslint-disable-next-line react-hooks/exhaustive-deps
   // }, [counter]);
 
+  // eslint-disable-next-line no-unused-vars
   function closeSnackBar() {
     setNotification(refernceLoading.text);
     // setSnackBar(false);
@@ -201,24 +198,24 @@ export default function SubMenuBar() {
 
       <AboutModal openModal={openModal} open={open} />
 
-      <StatsModal openModal={openStatsModal} open={openStats} />
+      {/* <StatsModal openModal={openStatsModal} open={openStats} /> */}
 
-      <Transition appear show={refernceLoading.status} as={Fragment}>
+      {/* <Transition appear show={refernceLoading.status} as={Fragment}>
         <Dialog
           as={Fragment}
           // className="fixed inset-0 z-10 overflow-y-auto"
           onClose={() => { }}
-        >
-          <div className="static">
+        > */}
+      {/* <1div className="static"> */}
 
-            {/* This element is to trick the browser into centering the modal contents. */}
-            <span
+      {/* This element is to trick the browser into centering the modal contents. */}
+      {/* <span
               // className="inline-block h-screen align-bottom"
               aria-hidden="true"
             >
               &#8203;
-            </span>
-            <Transition.Child
+            </span> */}
+      {/* <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"
               enterFrom="opacity-0 scale-95"
@@ -226,9 +223,9 @@ export default function SubMenuBar() {
               leave="ease-in duration-200"
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
-            >
+            > */}
 
-              <div className="inline-block absolute bottom-0 left-0 align-top transform transition-all w-2/5 p-4">
+      {/* <div className="inline-block absolute bottom-0 left-0 align-top transform transition-all w-2/5 p-4">
 
                 <div className="relative p-5 mt-5 bg-validation rounded-lg text-sm font-semibold text-gray-500">
                   <button
@@ -242,9 +239,9 @@ export default function SubMenuBar() {
                     {refernceLoading.text}
                     {counter > 0 ? counter : ''}
                   </p>
-                </div>
+                </div> */}
 
-                {/* <div className="relative p-5 mt-5 bg-light rounded-lg text-sm font-semibold text-gray-500">
+      {/* <div className="relative p-5 mt-5 bg-light rounded-lg text-sm font-semibold text-gray-500">
                   <button
                     type="button"
                     className="bg-black absolute top-0 right-0 h-6 w-6 rounded-full text-center text-white p-1 -mt-2 -mr-2 focus:outline-none"
@@ -266,12 +263,12 @@ export default function SubMenuBar() {
                   <p>This is a Notifiction.</p>
                 </div> */}
 
-              </div>
+      {/* </div>
 
             </Transition.Child>
           </div>
         </Dialog>
-      </Transition>
+      </Transition> */}
 
       <Notifications isOpen={openSideNotification} closeNotifications={closeNotifications}>
         {notificationsText && (
@@ -346,7 +343,7 @@ export default function SubMenuBar() {
                 {layout + 1}
               </span>
             </button>
-            <button type="button" className={`group ${menuStyles.btn}`}>
+            {/* <button type="button" className={`group ${menuStyles.btn}`}>
               <ReplyIcon fill="currentColor" className="h-6 w-6" aria-hidden="true" />
             </button>
             <button type="button" className={`group ${menuStyles.btn} mx-0`}>
@@ -365,7 +362,7 @@ export default function SubMenuBar() {
                 Saved
                 <span className="text-primary"> 5 Mins </span>
               </span>
-            </div>
+            </div> */}
 
             <button
               onClick={openSideBars}

@@ -18,12 +18,12 @@ import BullhornIcon from '@/icons/basil/Outline/Communication/Bullhorn.svg';
 import ProcessorIcon from '@/icons/basil/Outline/Devices/Processor.svg';
 import CheckIcon from '@/icons/basil/Outline/Interface/Check.svg';
 import ExpandIcon from '@/icons/basil/Outline/Interface/Expand.svg';
-
+import LogoIcon from '@/icons/Logo.svg';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import { ProjectContext } from '@/components/context/ProjectContext';
 import styles from './MenuBar.module.css';
 
-const profile = ['Your Profile', 'Settings', 'Sign out'];
+const profile = ['Your Profile', 'Sign out'];
 
 const solutions = [
   {
@@ -105,9 +105,8 @@ export default function TopMenuBar() {
           <>
 
             <div className="h-full w-40 grid justify-items-center items-center border-r border-gray-200">
-              <img
+              <LogoIcon
                 className="h-8 w-8"
-                src="/logo.svg"
                 alt="Workflow"
               />
             </div>
@@ -120,7 +119,8 @@ export default function TopMenuBar() {
 
             <div className="flex-grow">
               <div className="mt-1 relative w-2/5 m-auto focus:ring-primary focus:border-primary bg-gray-100 block rounded-md sm:text-sm border-none placeholder-gray-700">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                {/* <div className="absolute inset-y-0 left-0 pl-3
+                flex items-center pointer-events-none">
                   <span className="text-gray-300 sm:text-sm">
                     <SearchIcon className="h-4 w-4" aria-hidden="true" />
                   </span>
@@ -129,10 +129,11 @@ export default function TopMenuBar() {
                   type="text"
                   name="search"
                   id="search"
-                  className="bg-gray-100 focus:ring-primary focus:border-primary block w-full pl-10 sm:text-sm border-none rounded-md"
+                  className="bg-gray-100 focus:ring-primary
+                  focus:border-primary block w-full pl-10 sm:text-sm border-none rounded-md"
                   placeholder="Search"
                   // onClick={openSideBars}
-                />
+                /> */}
               </div>
 
             </div>
@@ -140,7 +141,7 @@ export default function TopMenuBar() {
             <div className="flex justify-end">
 
               <div className="mr-4 flex items-center">
-                <Popover className="relative">
+                {/* <Popover className="relative">
                   {({ open }) => (
                     <>
                       <Popover.Button className={styles.btn}>
@@ -160,14 +161,20 @@ export default function TopMenuBar() {
                         leaveFrom="opacity-100 translate-y-0"
                         leaveTo="opacity-0 translate-y-1"
                       >
-                        <Popover.Panel className="absolute z-10 w-screen max-w-xs mt-3 transform -translate-x-1/2 left-1/2 sm:px-0">
-                          <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
+                        <Popover.Panel className="absolute z-10 w-screen
+                         max-w-xs mt-3 transform -translate-x-1/2 left-1/2 sm:px-0">
+                          <div className="overflow-hidden rounded-lg
+                          shadow-lg ring-1 ring-black ring-opacity-5">
                             <div className="relative grid gap-0 bg-black p-4 grid-cols-2">
                               {solutions.map((item) => (
                                 <a
                                   key={item.name}
                                   href={item.href}
-                                  className="flex text-white hover:text-primary items-center justify-center flex-col py-3 transition duration-150 ease-in-out rounded-lg hover:bg-white focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
+                                  className="flex text-white hover:text-primary
+                                  items-center justify-center flex-col py-3 transition
+                                  duration-150 ease-in-out rounded-lg hover:bg-white
+                                  focus:outline-none focus-visible:ring
+                                  focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
                                 >
 
                                   <item.icon
@@ -193,7 +200,7 @@ export default function TopMenuBar() {
                       </Transition>
                     </>
                     )}
-                </Popover>
+                </Popover> */}
 
                 <button type="button" className={styles.btn}>
 
@@ -216,13 +223,13 @@ export default function TopMenuBar() {
 
                 </button>
 
-                <button type="button" className={styles.btn}>
+                {/* <button type="button" className={styles.btn}>
                   <ExpandIcon fill="currentColor" className="h-6 w-6" aria-hidden="true" />
                 </button>
 
                 <button type="button" className={styles.btnDark}>
                   <SunIcon className="h-6 w-6" aria-hidden="true" />
-                </button>
+                </button> */}
 
                 {/* Profile dropdown */}
                 <Menu as="div" className="ml-3 relative">

@@ -1,11 +1,11 @@
 /* eslint-disable react/prop-types */
 import PropTypes from 'prop-types';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import ResourcesPopUp from '@/components/EditorPage/Reference/ResourcesPopUp';
-import BibleNavigation from '@/modules/biblenavigation/BibleNavigation';
 
 import { ViewGridAddIcon } from '@heroicons/react/outline';
+import { ProjectContext } from '@/components/context/ProjectContext';
 
 export default function EditorSection({
   title,
@@ -13,7 +13,7 @@ export default function EditorSection({
   setReferenceResources,
   children,
   languageId,
-  column,
+  row,
   setLoadResource,
   loadResource,
   openResource,
@@ -23,35 +23,44 @@ export default function EditorSection({
   setOpenResource4,
   sectionNum,
   setSectionNum,
+  hideAddition,
+  CustomNavigation,
 }) {
   const [content, setContent] = useState(true);
-
+  const [openResourcePopUp, setOpenResourcePopUp] = useState(false);
   const {
     state: {
       // selectedFont
       fontSize,
       layout,
+      openResource1,
+      openResource2,
+      openResource3,
+      openResource4,
     },
     actions: {
       setLayout,
     },
   } = useContext(ReferenceContext);
-
-  const [openResourcePopUp, setOpenResourcePopUp] = useState(false);
+  const {
+    states: {
+      scrollLock,
+    },
+  } = useContext(ProjectContext);
 
   const removeSection = () => {
-    switch (column) {
+    switch (row) {
       case '1':
-        setOpenResource1(false);
+        setOpenResource1(true);
         break;
       case '2':
-        setOpenResource2(false);
+        setOpenResource2(true);
         break;
       case '3':
-        setOpenResource3(false);
+        setOpenResource3(true);
         break;
       case '4':
-        setOpenResource4(false);
+        setOpenResource4(true);
         break;
       default:
         break;
@@ -59,11 +68,29 @@ export default function EditorSection({
     // setLoadResource(false);
     if (sectionNum > 0) {
       setSectionNum(sectionNum - 1);
-      if (sectionNum <= 2) {
-        setLayout(layout - 1);
+    }
+    // if (sectionNum <= 1) {
+    //   setLayout(layout - 1);
+    // }
+  };
+
+  useEffect(() => {
+    if (openResource1 === true && openResource2 === true) {
+      if (layout > 1) { setLayout(1); }
+    }
+    if (openResource3 === true && openResource4 === true) {
+      if (layout > 1) { setLayout(1); }
+      //  else if (layout === 1) { setLayout(0); }
+    }
+
+    if (openResource1 === true && openResource2 === true
+      && openResource3 === true && openResource4 === true) {
+      if (layout === 1) {
+        setLayout(0);
       }
     }
-  };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  });
 
   const sectionContent = () => {
     setContent(!content);
@@ -75,23 +102,39 @@ export default function EditorSection({
   };
 
   const addRow = () => {
-    if (sectionNum >= 0 && sectionNum < 4) {
+    if (sectionNum >= 0 && sectionNum < 2) {
       setSectionNum(sectionNum + 1);
       if (layout < 2 && layout >= 0) {
-        setSectionNum(sectionNum + 2);
+        setSectionNum(sectionNum + 1);
       }
+    }
+    switch (row) {
+      case '1':
+        setOpenResource2(false);
+        break;
+      case '2':
+        setOpenResource1(false);
+        break;
+      case '3':
+        setOpenResource4(false);
+        break;
+      case '4':
+        setOpenResource3(false);
+        break;
+      default:
+        break;
     }
   };
 
   return (
-    <div className={`${openResource && 'hidden'} relative first:mt-0 mt-3 pb-12 ${ sectionNum > 2 ? 'h-1/2' : 'h-full'} border bg-white border-gray-200 shadow-sm rounded-b overflow-hidden group`}>
+    <div className={`${openResource && 'hidden'} relative first:mt-0 mt-3 pb-12 ${ sectionNum > 1 ? 'h-1/2' : 'h-full'} border bg-white border-gray-200 shadow-sm rounded-b overflow-hidden group`}>
 
       <div className="bg-gray-200 rounded-t text-center text-gray-600 relative overflow-hidden">
         {openResourcePopUp
           && (
             <div className="fixed z-50 ">
               <ResourcesPopUp
-                column={column}
+                column={row}
                 header={title}
                 languageId={languageId}
                 selectedResource={selectedResource}
@@ -105,10 +148,23 @@ export default function EditorSection({
 
         <div className="bg-gray-200 z-50 rounded-t overflow-hidden">
           <div className="flex items-center">
-            <BibleNavigation />
-            <div className="ml-4 h-4 flex justify-center items-center text-xxs uppercase tracking-wider font-bold leading-3 truncate">
-              {title}
-            </div>
+            {scrollLock ? (
+              <>
+                {CustomNavigation}
+                <div className="ml-4 h-4 flex justify-center items-center text-xxs uppercase tracking-wider font-bold leading-3 truncate">
+                  {title}
+                </div>
+              </>
+            )
+            : (
+              <div className="flex">
+                <div className="py-2 uppercase tracking-wider text-xs font-semibold">
+                  <div className="ml-4 h-4 flex justify-center items-center text-xxs uppercase tracking-wider font-bold leading-3 truncate">
+                    {title}
+                  </div>
+                </div>
+              </div>
+              )}
             <div className="flex bg-gray-300 absolute h-full -right-0 rounded-tr invisible group-hover:visible ">
               <button onClick={showResourcesPanel} type="button">
                 <img
@@ -163,19 +219,21 @@ export default function EditorSection({
               )
               : children
             }
-            <span
-              tabIndex={-42}
-              onClick={addRow}
-              role="button"
-            >
-              <img
-                title="Add Section"
-                style={{ marginBottom: '0' }}
-                className="absolute bottom-0 -right-0 invisible group-hover:visible"
-                src="/illustrations/add-section.svg"
-                alt=""
-              />
-            </span>
+            {hideAddition && (
+              <span
+                tabIndex={-42}
+                onClick={addRow}
+                role="button"
+              >
+                <img
+                  title="Add Section"
+                  style={{ marginBottom: '0' }}
+                  className="absolute bottom-0 -right-0 invisible group-hover:visible"
+                  src="/illustrations/add-section.svg"
+                  alt=""
+                />
+              </span>
+            )}
           </div>
         )
       }
@@ -189,6 +247,6 @@ EditorSection.propTypes = {
   children: PropTypes.any,
   selectedResource: PropTypes.string,
   setReferenceResources: PropTypes.func,
-  column: PropTypes.string,
+  row: PropTypes.string,
   languageId: PropTypes.string,
 };
