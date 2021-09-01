@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-param-reassign */
 import { ReferenceContext } from '@/components/context/ReferenceContext';
@@ -7,6 +8,7 @@ import { useContext, useEffect, useState } from 'react';
 import ReferenceBible from '@/components/EditorPage/Reference/ReferenceBible/ReferenceBible';
 import localforage from 'localforage';
 import { ProjectContext } from '@/components/context/ProjectContext';
+import CustomNavigation from '@/components/EditorPage/Navigation/CustomNavigation';
 
 const TranslationHelps = dynamic(
   () => import('@/components/EditorPage/Reference/TranslationHelps'),
@@ -14,6 +16,7 @@ const TranslationHelps = dynamic(
 );
 
 const SectionPlaceholder1 = () => {
+  const supportedBooks = null;
   const [referenceColumnOneData1, setReferenceColumnOneData1] = useState({
     languageId: '',
     selectedResource: '',
@@ -33,21 +36,49 @@ const SectionPlaceholder1 = () => {
       layout,
       openResource1,
       openResource2,
+      bookId,
+      chapter,
+      verse,
     },
     actions: {
       setRow,
       setLayout,
       setOpenResource1,
       setOpenResource2,
+      applyBooksFilter,
     },
   } = useContext(ReferenceContext);
   const {
     states: {
       selectedProject,
+      scrollLock,
     },
   } = useContext(ProjectContext);
   const [sectionNum, setSectionNum] = useState(0);
   const [hideAddition, setHideAddition] = useState(true);
+  const [naviagation1, setNavigation1] = useState({
+    bookId,
+    chapter,
+    verse,
+  });
+
+  const [naviagation2, setNavigation2] = useState({
+    bookId,
+    chapter,
+    verse,
+  });
+
+  const _bookId1 = scrollLock === false ? bookId : naviagation1.bookId;
+  const _chapter1 = scrollLock === false ? chapter : naviagation1.chapter;
+  const _verse1 = scrollLock === false ? verse : naviagation1.verse;
+
+  const _bookId2 = scrollLock === false ? bookId : naviagation2.bookId;
+  const _chapter2 = scrollLock === false ? chapter : naviagation2.chapter;
+  const _verse2 = scrollLock === false ? verse : naviagation2.verse;
+
+  useEffect(() => {
+    applyBooksFilter(supportedBooks);
+  }, [applyBooksFilter, supportedBooks]);
 
   useEffect(() => {
     if (layout > 0 && layout <= 2) {
@@ -179,6 +210,24 @@ const SectionPlaceholder1 = () => {
     });
   });
 
+  const CustomNavigation1 = (
+    <CustomNavigation
+      setNavigation={setNavigation1}
+      initialBook={bookId}
+      initialChapter={chapter}
+      initialVerse={verse}
+    />
+  );
+
+  const CustomNavigation2 = (
+    <CustomNavigation
+      setNavigation={setNavigation2}
+      initialBook={bookId}
+      initialChapter={chapter}
+      initialVerse={verse}
+    />
+  );
+
   return (
     <>
 
@@ -189,6 +238,7 @@ const SectionPlaceholder1 = () => {
               <>
                 <EditorSection
                   row="1"
+                  CustomNavigation={CustomNavigation1}
                   hideAddition={hideAddition}
                   sectionNum={sectionNum}
                   setSectionNum={setSectionNum}
@@ -208,11 +258,17 @@ const SectionPlaceholder1 = () => {
                 <ReferenceBible
                   languageId={referenceColumnOneData1.languageId}
                   refName={referenceColumnOneData1.refName}
+                  bookId={_bookId1}
+                  chapter={_chapter1}
+                  verse={_verse1}
                 />
               ) : (
                 <TranslationHelps
                   selectedResource={referenceColumnOneData1.selectedResource}
                   languageId={referenceColumnOneData1.languageId}
+                  bookId={_bookId1}
+                  chapter={_chapter1}
+                  verse={_verse1}
                 />
               ))
             }
@@ -233,6 +289,7 @@ const SectionPlaceholder1 = () => {
                   openResource={openResource2}
                   setOpenResource1={setOpenResource1}
                   setOpenResource2={setOpenResource2}
+                  CustomNavigation={CustomNavigation2}
                 >
                   {
               (loadResource2 === true) && (
@@ -240,11 +297,17 @@ const SectionPlaceholder1 = () => {
                 <ReferenceBible
                   languageId={referenceColumnOneData2.languageId}
                   refName={referenceColumnOneData2.refName}
+                  bookId={_bookId2}
+                  chapter={_chapter2}
+                  verse={_verse2}
                 />
               ) : (
                 <TranslationHelps
                   selectedResource={referenceColumnOneData2.selectedResource}
                   languageId={referenceColumnOneData2.languageId}
+                  bookId={_bookId2}
+                  chapter={_chapter2}
+                  verse={_verse2}
                 />
               ))
             }

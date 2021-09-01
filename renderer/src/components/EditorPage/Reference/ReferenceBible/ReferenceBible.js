@@ -16,13 +16,11 @@ import { isElectron } from '../../../../core/handleElectron';
 const ReferenceBible = ({
  languageId,
   refName,
+  chapter,
+  verse,
+  bookId,
  }) => {
   const {
-      state: {
-        chapter,
-        verse,
-        bookId,
-    },
     actions: {
       setRefernceLoading,
       setCounter,

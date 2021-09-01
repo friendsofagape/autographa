@@ -3,12 +3,11 @@ import React, { useContext } from 'react';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import TranslationHelpsCard from './TranslationHelpsCard';
 
-const TranslationHelps = ({ selectedResource, languageId, refName }) => {
+const TranslationHelps = ({
+ selectedResource, languageId, refName, bookId, chapter, verse,
+}) => {
   const {
     state: {
-        bookId,
-        chapter,
-        verse,
         server,
         branch,
         owner,
@@ -85,6 +84,9 @@ const TranslationHelps = ({ selectedResource, languageId, refName }) => {
               title="Bible"
               languageId={languageId}
               refName={refName}
+              bookId={bookId}
+              chapter={chapter}
+              verse={verse}
             />
           );
         default:

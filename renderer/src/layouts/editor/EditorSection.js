@@ -25,6 +25,7 @@ export default function EditorSection({
   sectionNum,
   setSectionNum,
   hideAddition,
+  CustomNavigation,
 }) {
   const [content, setContent] = useState(true);
   const [openResourcePopUp, setOpenResourcePopUp] = useState(false);
@@ -150,7 +151,7 @@ export default function EditorSection({
           <div className="flex items-center">
             {scrollLock ? (
               <>
-                <BibleNavigation />
+                {CustomNavigation}
                 <div className="ml-4 h-4 flex justify-center items-center text-xxs uppercase tracking-wider font-bold leading-3 truncate">
                   {title}
                 </div>
