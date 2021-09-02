@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {
     Menu, Transition,
 } from '@headlessui/react';
-import styles from '../../layouts/editor/SubMenuBar.module.css';
+import styles from '@/layouts/editor/SubMenuBar.module.css';
 
 const MenuBar = ({
     header,

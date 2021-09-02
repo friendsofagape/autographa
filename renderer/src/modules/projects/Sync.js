@@ -3,11 +3,10 @@ import { Dialog, Transition } from '@headlessui/react';
 
 import ProjectsLayout from '@/layouts/projects/Layout';
 import Gitea from '@/components/Sync/Gitea/Gitea';
-// import styles from './breadcrumbs.module.css';
 import ProjectFileBrowser from '@/components/Sync/ProjectFileBrowser';
 
 export default function Sync() {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   return (
     <ProjectsLayout
       title="Sync"
@@ -108,18 +107,14 @@ export default function Sync() {
 
       </Transition>
 
-      <main>
-        <div className="py-6 sm:px-6 lg:px-6">
-          <div className="grid grid-cols-2 gap-2 sm:px-0">
-            <div className="shadow rounded min-h-screen">
-              <ProjectFileBrowser />
-            </div>
-            <div className="shadow rounded">
-              <Gitea />
-            </div>
-          </div>
+      <div className="grid grid-cols-2 gap-2 py-6 sm:px-6 lg:px-6">
+        <div className="shadow rounded h-full">
+          <ProjectFileBrowser />
         </div>
-      </main>
+        <div className="shadow rounded">
+          <Gitea />
+        </div>
+      </div>
 
     </ProjectsLayout>
 

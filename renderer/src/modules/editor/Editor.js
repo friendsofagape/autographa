@@ -164,7 +164,7 @@ export default function Editor({
                 fontSize: `${fontSize}rem`,
                 lineHeight: (fontSize > 1.3) ? 1.5 : '',
         }}
-        className="border-l-2 hover:border-primary border-r-2 border-secondary px-3 py-4 pb-16 prose-sm max-w-none overflow-y-auto h-full no-scrollbars"
+        className="border-l-2 border-r-2 border-secondary pb-16 prose-sm max-w-none overflow-y-auto h-full no-scrollbars"
       >
         {children}
         {/* styled editor */}

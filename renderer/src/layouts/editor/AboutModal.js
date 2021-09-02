@@ -13,8 +13,8 @@ import {
   InformationCircleIcon,
   DocumentTextIcon,
 } from '@heroicons/react/outline';
+import LogoIcon from '@/icons/logo.svg';
 import packageInfo from '../../../../package.json';
-import LogoIcon from '../../../public/icons/Logo.svg';
 
 export default function AboutModal(props) {
   const { openModal, open } = props;

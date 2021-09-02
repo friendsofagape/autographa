@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import ImportPopUp from '@/modules/projects/ImportPopUp';
+import {
+  UploadIcon,
+} from '@heroicons/react/outline';
 import SideBar from './SideBar';
 import TopMenuBar from './TopMenuBar';
-import ImportProjectPopUp from './ImportProjectPopUp';
 
 export default function ProjectsLayout(props) {
   const {
@@ -43,12 +46,14 @@ export default function ProjectsLayout(props) {
                 </div>
                 <button
                   type="button"
-                  className="flex text-white ml-5 font-bold text-xs px-3 py-2 rounded-full leading-3 tracking-wider uppercase bg-primary"
+                  className="flex text-white ml-5 font-bold text-xs px-3 py-2 rounded-full
+                  leading-3 tracking-wider uppercase bg-primary items-center"
                   onClick={openImportPopUp}
                 >
+                  <UploadIcon className="h-4 mr-2 text-white" />
                   import
                 </button>
-                <ImportProjectPopUp open={openPopUp} closePopUp={closeImportPopUp} />
+                <ImportPopUp open={openPopUp} closePopUp={closeImportPopUp} />
 
               </div>
             )
@@ -65,9 +70,7 @@ export default function ProjectsLayout(props) {
             )}
         </header>
 
-        <main>
-          {children}
-        </main>
+        {children}
 
       </div>
 

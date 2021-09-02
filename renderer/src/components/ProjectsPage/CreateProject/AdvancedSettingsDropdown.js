@@ -1,6 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import CustomAutocomplete from '@/modules/projects/CustomAutocomplete';
 import PropTypes from 'prop-types';
+import {
+  UploadIcon,
+} from '@heroicons/react/outline';
+import ImportPopUp from '@/modules/projects/ImportPopUp';
 import { ProjectContext } from '../../context/ProjectContext';
 import CustomCanonSpecification from './CustomCanonSpecification';
 import LicencePopover from './LicencePopover';
@@ -15,15 +19,13 @@ function BookNumberTag(props) {
   }
 
   return (
-    <div className="rounded-full  px-2 py-1 bg-gray-200 text-xs uppercase font-semibold">
+    <div className="rounded-full px-2 py-1 bg-gray-200 text-xs uppercase font-semibold">
       <div className="flex">
         <span>
-          {' '}
           {children}
           {' '}
           <span>
-            {' '}
-            { numberOfBooks }
+            {numberOfBooks}
           </span>
         </span>
       </div>
@@ -87,6 +89,17 @@ export default function AdvancedSettingsDropdown() {
       });
     }
   };
+
+  const [openPopUp, setOpenPopUp] = useState(false);
+
+  function openImportPopUp() {
+    setOpenPopUp(true);
+  }
+
+  function closeImportPopUp() {
+    setOpenPopUp(false);
+  }
+
   return (
     <>
       <div>
@@ -103,11 +116,11 @@ export default function AdvancedSettingsDropdown() {
           />
         </button>
         {!isShow
-        && (
-        <div>
-          <div className="flex gap-5 mt-8">
-            <CustomAutocomplete label="Versification Scheme" list={versification} setValue={setValue} />
-            {/* <button
+          && (
+            <div>
+              <div className="flex gap-5 mt-8">
+                <CustomAutocomplete label="Versification Scheme" list={versification} setValue={setValue} />
+                {/* <button
               className="mt-5 min-w-max"
               type="button"
               label="na"
@@ -117,19 +130,34 @@ export default function AdvancedSettingsDropdown() {
                 alt="add button"
               />
             </button> */}
-          </div>
-          <div className="relative">
-            <div className="absolute left-64">
-              <BookNumberTag>
-                {(canonSpecification.currentScope).length}
-              </BookNumberTag>
-            </div>
-            <div className="mt-8 relative">
-              <div className="flex">
+              </div>
+              <div className="mt-8">
 
-                <CustomAutocomplete label="Canon Specification" list={canonList} setValue={setValue} />
-                <div className="flex gap-3 ml-3">
-                  {/* <button
+                <div className="flex gap-4">
+                  <div>
+                    <button
+                      type="button"
+                      className="flex text-white font-bold text-xs px-2 py-1 rounded-full leading-3 tracking-wider uppercase bg-primary items-center"
+                      onClick={openImportPopUp}
+                    >
+                      <UploadIcon className="h-4 mr-2 text-white" />
+                      import
+                    </button>
+                    <ImportPopUp open={openPopUp} closePopUp={closeImportPopUp} />
+                  </div>
+                  <div>
+                    <BookNumberTag>
+                      {(canonSpecification.currentScope).length}
+                    </BookNumberTag>
+                  </div>
+                </div>
+
+                <div className="relative">
+                  <div className="flex">
+
+                    <CustomAutocomplete label="Canon Specification" list={canonList} setValue={setValue} />
+                    <div className="flex gap-3 ml-3">
+                      {/* <button
                     onClick={() => openBibleNav('new')}
                     type="button"
                     className="focus:outline-none pt-8"
@@ -141,29 +169,29 @@ export default function AdvancedSettingsDropdown() {
                       className="w-10 h-10"
                     />
                   </button> */}
-                  <button
-                    onClick={() => openBibleNav('edit')}
-                    type="button"
-                    className="focus:outline-none pt-8"
-                  >
-                    <img
-                      src="illustrations/edit.svg"
-                      alt="add button"
-                      className="w-10 h-10"
-                    />
-                  </button>
+                      <button
+                        onClick={() => openBibleNav('edit')}
+                        type="button"
+                        className="focus:outline-none pt-8"
+                      >
+                        <img
+                          src="illustrations/edit.svg"
+                          alt="add button"
+                          className="w-10 h-10"
+                        />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="flex gap-3 mt-5">
+                <CustomAutocomplete label="Licence" list={licenceList} setValue={setValue} />
+                <div className="mt-8 w-8 min-w-max">
+                  <LicencePopover />
                 </div>
               </div>
             </div>
-          </div>
-          <div className="flex gap-3 mt-5">
-            <CustomAutocomplete label="Licence" list={licenceList} setValue={setValue} />
-            <div className="mt-8 w-8 min-w-max">
-              <LicencePopover />
-            </div>
-          </div>
-        </div>
-        )}
+          )}
       </div>
       {bibleNav && (
         <CustomCanonSpecification
