@@ -12,7 +12,7 @@ import {
   DocumentTextIcon,
 } from '@heroicons/react/outline';
 
-import LogoIcon from '../../../public/icons/Logo.svg';
+import LogoIcon from '@/icons/logo.svg';
 
 export default function StatsModal(props) {
   const { openModal, open } = props;

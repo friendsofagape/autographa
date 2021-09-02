@@ -107,6 +107,7 @@ export default function ImportProjectPopUp(props) {
                     </div>
                   </div>
                   <div className="flex gap-6 mx-5 justify-end">
+
                     <button
                       type="button"
                       onClick={close}
@@ -114,6 +115,7 @@ export default function ImportProjectPopUp(props) {
                     >
                       Cancel
                     </button>
+
                     <button
                       type="button"
                       className="py-2 px-7 rounded shadow bg-success text-white uppercase text-xs tracking-widest font-semibold"
@@ -121,6 +123,7 @@ export default function ImportProjectPopUp(props) {
                     >
                       Import
                     </button>
+
                   </div>
                 </div>
               </div>

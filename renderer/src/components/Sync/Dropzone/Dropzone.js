@@ -36,8 +36,9 @@ const DragAndDrop = (props) => {
       onDragOver={(e) => handleDragOver(e)}
       onDragEnter={(e) => handleDragEnter(e)}
       onDragLeave={(e) => handleDragLeave(e)}
+      className="flex flex-col h-96 m-5 justify-center items-center border-2 border-dashed rounded"
     >
-      <p>Drop files here to upload</p>
+      <p className="uppercase text-primary">Drop files here to upload</p>
     </div>
   );
 };
