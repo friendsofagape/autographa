@@ -9,6 +9,8 @@ import ReferenceBible from '@/components/EditorPage/Reference/ReferenceBible/Ref
 import localforage from 'localforage';
 import { ProjectContext } from '@/components/context/ProjectContext';
 import CustomNavigation from '@/components/EditorPage/Navigation/CustomNavigation';
+import { isElectron } from '@/core/handleElectron';
+import { updateAgSettings } from '@/core/projects/updateAgSettings';
 
 const TranslationHelps = dynamic(
   () => import('@/components/EditorPage/Reference/TranslationHelps'),
@@ -55,6 +57,9 @@ const SectionPlaceholder2 = () => {
       selectedProject,
       scrollLock,
     },
+    actions: {
+      setSelectedProject,
+    },
   } = useContext(ProjectContext);
   const [sectionNum, setSectionNum] = useState(0);
   const [hideAddition, setHideAddition] = useState(true);
@@ -93,12 +98,13 @@ const SectionPlaceholder2 = () => {
   useEffect(() => {
     const refsHistory = [];
     const rows = [];
+    localforage.getItem('currentProject').then((projectName) => {
     localforage.getItem('projectmeta').then((value) => {
       Object.entries(value).forEach(
         ([_columnnum, _value]) => {
           Object.entries(_value).forEach(
             ([_rownum, resources]) => {
-              if (resources.identification.name.en === selectedProject) {
+              if (resources.identification.name.en === projectName) {
                 refsHistory.push(resources.project.textTranslation.refResources);
               }
             },
@@ -148,6 +154,7 @@ const SectionPlaceholder2 = () => {
       }
       setSectionNum(rows.length);
     });
+  });
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -161,13 +168,14 @@ const SectionPlaceholder2 = () => {
 
   useEffect(() => {
     const refsHistory = [];
+    localforage.getItem('currentProject').then((projectName) => {
     localforage.getItem('projectmeta').then((value) => {
       Object.entries(value).forEach(
         ([_columnnum, _value]) => {
           Object.entries(_value).forEach(
             ([_rownum, resources]) => {
-              if (resources.identification.name.en === selectedProject) {
-                refsHistory.push(resources.project.textTranslation.refResources);
+              if (resources.identification.name.en === projectName) {
+                refsHistory.push(resources.project.textTranslation);
                 if (sectionNum === 1) {
                   resources.project.textTranslation.refResources[1] = {
                       1: {
@@ -199,9 +207,23 @@ const SectionPlaceholder2 = () => {
           );
         },
       );
-
-    localforage.setItem('projectmeta', value);
+    localforage.setItem('projectmeta', value).then(() => {
+      Object.entries(value).forEach(
+        ([_columnnum, _value]) => {
+          Object.entries(_value).forEach(
+            ([_rownum, resources]) => {
+              if (resources.identification.name.en === projectName) {
+                localforage.getItem('userProfile').then((value) => {
+                  updateAgSettings(value?.username, projectName, resources);
+                });
+              }
+            },
+          );
+          },
+      );
     });
+    });
+  });
   });
 
   const CustomNavigation1 = (

@@ -153,9 +153,9 @@ export default function Editor({
           >
             <BookmarkIcon className={`${bookMarked ? 'fill-current' : ''}  h-5 w-5 text-white`} aria-hidden="true" />
           </div>
-          <div className="mr-2">
+          {/* <div className="mr-2">
             <CogIcon className="h-5 w-5 text-white" aria-hidden="true" />
-          </div>
+          </div> */}
         </div>
       </div>
       <div

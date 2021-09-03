@@ -107,7 +107,7 @@ export default function EditorSideBar(props) {
                       tabIndex="0"
                       className={`text-white h-full w-full hover:bg-primary cursor-pointer ${state.tabIndex === 0 && 'bg-primary'}`}
                     >
-                      <SearchIcon className="w-1/3 m-auto h-full" aria-hidden="true" />
+                      {/* <SearchIcon className="w-1/3 m-auto h-full" aria-hidden="true" /> */}
                     </div>
                     <div
                       role="button"
@@ -115,7 +115,7 @@ export default function EditorSideBar(props) {
                       // onClick={() => dispatch({ type: 'crossreference' })}
                       className={`text-white h-full w-full hover:bg-primary cursor-pointer ${state.tabIndex === 1 && 'bg-primary'}`}
                     >
-                      <CrossReferenceIcon fill="currentColor" className="w-1/5 m-auto h-full" aria-hidden="true" />
+                      {/* <CrossReferenceIcon fill="currentColor" className="w-1/5 m-auto h-full" aria-hidden="true" /> */}
                     </div>
                     <div
                       role="button"
@@ -123,7 +123,7 @@ export default function EditorSideBar(props) {
                       // onClick={() => dispatch({ type: 'footnotes' })}
                       className={`text-white h-full w-full hover:bg-primary cursor-pointer ${state.tabIndex === 2 && 'bg-primary'}`}
                     >
-                      <FootNotesIcon fill="currentColor" className="w-1/6 m-auto h-full" aria-hidden="true" />
+                      {/* <FootNotesIcon fill="currentColor" className="w-1/6 m-auto h-full" aria-hidden="true" /> */}
                     </div>
                   </div>
                   <div className="grid grid-cols-3 col-span-3 gap-0">
@@ -133,7 +133,7 @@ export default function EditorSideBar(props) {
                       // onClick={() => dispatch({ type: 'comments' })}
                       className={`text-white h-full w-full hover:bg-primary cursor-pointer ${state.tabIndex === 3 && 'bg-primary'}`}
                     >
-                      <AnnotationIcon className="w-1/3 m-auto h-full" aria-hidden="true" />
+                      {/* <AnnotationIcon className="w-1/3 m-auto h-full" aria-hidden="true" /> */}
                     </div>
                     <div
                       role="button"
@@ -144,7 +144,7 @@ export default function EditorSideBar(props) {
                       <BookmarkIcon className="w-1/3 m-auto h-full" aria-hidden="true" />
                     </div>
                     <div className="text-white h-full w-full hover:bg-primary cursor-pointer">
-                      <PinIcon fill="currentColor" className="w-2/5 m-auto h-full" aria-hidden="true" />
+                      {/* <PinIcon fill="currentColor" className="w-2/5 m-auto h-full" aria-hidden="true" /> */}
                     </div>
                   </div>
                   <div className="flex justify-end">

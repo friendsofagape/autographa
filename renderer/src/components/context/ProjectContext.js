@@ -41,7 +41,7 @@ const ProjectContextProvider = ({ children }) => {
       description: '',
     });
     const [username, setUsername] = React.useState('Asher');
-    const [selectedProject, setSelectedProject] = React.useState('Test Burrito Project');
+    const [selectedProject, setSelectedProject] = React.useState();
 
     const handleProjectFields = (prop) => (event) => {
       setNewProjectFields({ ...newProjectFields, [prop]: event.target.value });
@@ -200,6 +200,9 @@ const ProjectContextProvider = ({ children }) => {
         const projectsDir = path.join(
           newpath, 'autographa', 'users', username, 'reference',
         );
+        localforage.getItem('currentProject').then((projectName) => {
+          setSelectedProject(projectName);
+        });
         const parseData = [];
         readRefMeta({
           projectsDir,

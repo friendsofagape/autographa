@@ -50,7 +50,6 @@ const SectionPlaceholder1 = () => {
   } = useContext(ReferenceContext);
   const {
     states: {
-      selectedProject,
       scrollLock,
     },
   } = useContext(ProjectContext);
@@ -96,12 +95,13 @@ const SectionPlaceholder1 = () => {
   useEffect(() => {
     const refsHistory = [];
     const rows = [];
+    localforage.getItem('currentProject').then((projectName) => {
     localforage.getItem('projectmeta').then((value) => {
       Object.entries(value).forEach(
         ([_columnnum, _value]) => {
           Object.entries(_value).forEach(
             ([_rownum, resources]) => {
-              if (resources.identification.name.en === selectedProject) {
+              if (resources.identification.name.en === projectName) {
                 refsHistory.push(resources.project.textTranslation.refResources);
               }
             },
@@ -139,6 +139,7 @@ const SectionPlaceholder1 = () => {
       );
       }
     }).then(() => {
+      if (refsHistory[0]) {
       setLayout(refsHistory[0].length);
       if (rows.length > 1) {
         setLoadResource1(true);
@@ -151,7 +152,9 @@ const SectionPlaceholder1 = () => {
         setOpenResource1(false);
       }
       setSectionNum(rows.length);
+    }
     });
+  });
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -165,12 +168,13 @@ const SectionPlaceholder1 = () => {
 
   useEffect(() => {
     const refsHistory = [];
+    localforage.getItem('currentProject').then((projectName) => {
     localforage.getItem('projectmeta').then((value) => {
       Object.entries(value).forEach(
         ([_columnnum, _value]) => {
           Object.entries(_value).forEach(
             ([_rownum, resources]) => {
-              if (resources.identification.name.en === selectedProject) {
+              if (resources.identification.name.en === projectName) {
                 refsHistory.push(resources.project.textTranslation.refResources);
                 if (sectionNum === 1) {
                   resources.project.textTranslation.refResources[0] = {
@@ -208,6 +212,7 @@ const SectionPlaceholder1 = () => {
 
     localforage.setItem('projectmeta', value);
     });
+  });
   });
 
   const CustomNavigation1 = (
@@ -308,6 +313,43 @@ const SectionPlaceholder1 = () => {
                   bookId={_bookId2}
                   chapter={_chapter2}
                   verse={_verse2}
+                />
+              ))
+            }
+                </EditorSection>
+                <EditorSection
+                  row="1"
+                  CustomNavigation={CustomNavigation1}
+                  hideAddition={hideAddition}
+                  sectionNum={sectionNum}
+                  setSectionNum={setSectionNum}
+                  title={referenceColumnOneData1.refName}
+                  selectedResource={referenceColumnOneData1.selectedResource}
+                  languageId={referenceColumnOneData1.languageId}
+                  setReferenceResources={setReferenceColumnOneData1}
+                  setLoadResource={setLoadResource1}
+                  loadResource={loadResource1}
+                  openResource={openResource1}
+                  setOpenResource1={setOpenResource1}
+                  setOpenResource2={setOpenResource2}
+                >
+                  {
+              (loadResource1 === true) && (
+              referenceColumnOneData1.selectedResource === 'bible' ? (
+                <ReferenceBible
+                  languageId={referenceColumnOneData1.languageId}
+                  refName={referenceColumnOneData1.refName}
+                  bookId={_bookId1}
+                  chapter={_chapter1}
+                  verse={_verse1}
+                />
+              ) : (
+                <TranslationHelps
+                  selectedResource={referenceColumnOneData1.selectedResource}
+                  languageId={referenceColumnOneData1.languageId}
+                  bookId={_bookId1}
+                  chapter={_chapter1}
+                  verse={_verse1}
                 />
               ))
             }
