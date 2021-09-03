@@ -10,7 +10,7 @@ import React, {
   useMemo,
   useCallback,
 } from 'react';
-// import * as localforage from 'localforage';
+import * as localforage from 'localforage';
 import {
   createBasicUsfmEditor,
   withChapterPaging,
@@ -39,7 +39,6 @@ const UsfmEditor = () => {
   const supportedBooks = null; // if empty array or null then all books available
   const {
     states: {
-      selectedProject,
       scrollLock,
       username,
     },
@@ -92,13 +91,14 @@ const UsfmEditor = () => {
 
   const handleEditorChange = (usfm) => {
     if (isElectron()) {
+      localforage.getItem('currentProject').then((projectName) => {
       readRefMeta({
-        projectname: selectedProject,
+        projectname: projectName,
         username,
       }).then((refs) => {
         refs.forEach((ref) => {
           readRefBurrito({
-            projectname: selectedProject,
+            projectname: projectName,
             filename: ref,
             username,
           }).then((data) => {
@@ -111,7 +111,7 @@ const UsfmEditor = () => {
                     if (_bookID === bookId.toUpperCase()) {
                       writeToFile({
                         username,
-                        projectname: selectedProject,
+                        projectname: projectName,
                         filename: key,
                         data: usfm,
                       });
@@ -124,6 +124,7 @@ const UsfmEditor = () => {
           });
         });
       });
+    });
     }
     // else {
     //   localforage.setItem('editorData', usfm).then(
@@ -217,13 +218,14 @@ const UsfmEditor = () => {
       //   });
       // });
     } else {
+      localforage.getItem('currentProject').then((projectName) => {
       const path = require('path');
       const newpath = localStorage.getItem('userPath');
       const projectsDir = path.join(
-          newpath, 'autographa', 'users', username, 'projects', selectedProject,
+          newpath, 'autographa', 'users', username, 'projects', projectName,
       );
       const metaPath = path.join(
-        newpath, 'autographa', 'users', username, 'projects', selectedProject, 'metadata.json',
+        newpath, 'autographa', 'users', username, 'projects', projectName, 'metadata.json',
       );
       readRefMeta({
         projectsDir,
@@ -240,7 +242,7 @@ const UsfmEditor = () => {
                     const _bookID = Object.entries(_ingredients.scope)[0][0];
                     if (_bookID === bookId.toUpperCase()) {
                       readFile({
-                        projectname: selectedProject,
+                        projectname: projectName,
                         filename: key,
                         username,
                       }).then((data) => {
@@ -257,6 +259,7 @@ const UsfmEditor = () => {
           });
         });
       });
+    });
     }
   }, [_bookId, _chapter]);
 
@@ -277,13 +280,14 @@ const UsfmEditor = () => {
       //   }
       // });
     } else {
+      localforage.getItem('currentProject').then((projectName) => {
       readRefMeta({
-        projectname: 'Test Burrito Project',
+        projectname: projectName,
         username,
       }).then((refs) => {
         refs.forEach((ref) => {
           readRefBurrito({
-            projectname: selectedProject,
+            projectname: projectName,
             filename: ref,
             username,
           }).then((data) => {
@@ -295,7 +299,7 @@ const UsfmEditor = () => {
                     const _bookID = Object.entries(_ingredients.scope)[0][0];
                     if (_bookID === bookId.toUpperCase()) {
                       readFile({
-                        projectname: selectedProject,
+                        projectname: projectName,
                         filename: key,
                         username,
                       }).then((data) => {
@@ -311,6 +315,7 @@ const UsfmEditor = () => {
           });
         });
       });
+    });
     }
   }, []);
 

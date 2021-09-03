@@ -96,36 +96,7 @@ export const createVersificationUSFM = (username, project, versification, books,
               lastSeen: moment().format(),
               bibleVersion: version.name,
               abbreviation: version.abbreviation,
-              refResources: [
-                {
-                  1: {
-                    resouceId: '',
-                    language: '',
-                    name: '',
-                    navigation: { book: '1TI', chapter: '1' },
-                  },
-                  2: {
-                    resouceId: '',
-                    language: '',
-                    name: '',
-                    navigation: { book: '1TI', chapter: '1' },
-                  },
-                },
-                {
-                  1: {
-                    resouceId: '',
-                    language: '',
-                    name: '',
-                    navigation: { book: '1TI', chapter: '1' },
-                  },
-                  2: {
-                    resouceId: '',
-                    language: '',
-                    name: '',
-                    navigation: { book: '1TI', chapter: '1' },
-                  },
-                },
-              ],
+              refResources: [],
             },
           },
         };

@@ -8,6 +8,7 @@ import { ChevronUpIcon, ChevronDownIcon } from '@heroicons/react/solid';
 import {
  StarIcon, ExternalLinkIcon, PencilAltIcon, DotsVerticalIcon,
 } from '@heroicons/react/outline';
+import localforage from 'localforage';
 
 import ProjectsLayout from '@/layouts/projects/Layout';
 import EnhancedTableHead from '@/components/ProjectsPage/Projects/EnhancedTableHead';
@@ -38,8 +39,10 @@ export default function ProjectList() {
       setSelectedProject,
     },
   } = React.useContext(AutographaContext);
+
   const [openPopUp, setOpenPopUp] = useState(false);
   const [exportProject, setExportProject] = useState();
+
   const openExportPopUp = (project) => {
     setExportProject(project.name);
     setOpenPopUp(true);
@@ -55,6 +58,7 @@ export default function ProjectList() {
 
   const handleSelectProject = (event, projectName) => {
     setSelectedProject(projectName);
+    localforage.setItem('currentProject', projectName);
     router.push('/home');
   };
 
