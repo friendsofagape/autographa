@@ -39,12 +39,8 @@ const UsfmEditor = () => {
   const supportedBooks = null; // if empty array or null then all books available
   const {
     states: {
-      selectedProject,
       scrollLock,
       username,
-    },
-    actions: {
-      setSelectedProject,
     },
   } = useContext(ProjectContext);
 
