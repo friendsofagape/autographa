@@ -34,6 +34,7 @@ export default function Login() {
     action: { generateToken },
     // action: { generateToken, getConfig },
   } = React.useContext(AuthenticationContext);
+  // eslint-disable-next-line no-unused-vars
   const [tabvalue, setTabValue] = React.useState(0);
   const [ui, setUi] = React.useState(isElectron() ? offline : online);
   const [valid, setValid] = React.useState({
@@ -101,7 +102,7 @@ export default function Login() {
   const handleSubmit = async (values) => {
     localForage.setItem('appMode', 'online');
     logger.debug('Login.js', 'In handleSubmit');
-    if (isElectron() && tabvalue === 0) {
+    if (isElectron()) {
       // router.push('/main');
       // The below code is commented for UI dev purpose.
       if (handleValidation(values)) {
@@ -125,8 +126,8 @@ export default function Login() {
       }
     } else {
       // eslint-disable-next-line no-lonely-if
-      if (isElectron()) {
-        router.push('/newproject');
+      // if (isElectron()) {
+      router.push('/projects');
         // const requestOptions = {
         //   method: 'POST',
         //   headers: { 'Content-Type': 'application/json' },
@@ -135,8 +136,8 @@ export default function Login() {
         // fetch(config?.action, requestOptions)
         //   .then((response) => response.json())
         //   .then((data) => console.log(data));
-      } else {
-        router.push('/newproject');
+      // } else {
+        // router.push('/newproject');
         // The below code is commented for UI dev purpose.
         // document.aglogin.action = config.action;
         // document.aglogin.method = config.method;
@@ -147,7 +148,7 @@ export default function Login() {
         //   input.setAttribute('value', token);
         // document.aglogin.appendChild(input);
         // document.aglogin.submit();
-      }
+      // }
       // router.push('/login');
     }
   };
@@ -170,12 +171,12 @@ export default function Login() {
               </div>
             )}
             <div className="text-3xl font-medium text-secondary"> Welcome!</div>
-            <div className="text-lg
+            {/* <div className="text-lg
             font-light
             pb-14 text-gray-400 leading-7"
             >
               Welcome back! Login to access Autographa
-            </div>
+            </div> */}
             <CustomLogin
               ui={ui}
               error={valid}
@@ -205,16 +206,14 @@ export default function Login() {
                   <img src="/illustrations/quote.svg" alt="quote" />
                 </div>
 
-                Lorem ipsum dolor sit amet,
-                consectetur adipiscing elit. Consectetur
-                viverra facilisis platea malesuada faucibus justo.
-                Donec sit amet diam, in. Arcu, felis sed tempor orci,
-                pretium velit amet. Nullam amet, in justo a auctor sem felis.
+                Autographa 2.0 is a completely new way for editing scripture
+                and related resources with powerful yet elegant features to
+                help you focus on the important things!
 
-                <div className="flex pt-5">
+                {/* <div className="flex pt-5">
                   <div className="pr-4">FEATURE</div>
                   <img className="" src="/illustrations/green-check.svg" alt="logo" />
-                </div>
+                </div> */}
               </div>
               <div className="flex pb-20">
                 <div className="pl-24">
@@ -230,14 +229,14 @@ export default function Login() {
             <img src="/illustrations/half-moon.svg" alt="logo" />
           </div>
         </div>
-        <div className="2xl:ml-40 pt-72 2xl:pl-5 pl-14 space-x-14 sm:space-y-2
+        {/* <div className="2xl:ml-40 pt-72 2xl:pl-5 pl-14 space-x-14 sm:space-y-2
           text-black font-bold absolute overflow-auto "
         >
           <a href="/">EN(US)</a>
           <a href="/">ABOUT</a>
           <a href="/">PRIVACY</a>
           <a href="/">TERMS</a>
-        </div>
+        </div> */}
       </div>
     </>
   );
