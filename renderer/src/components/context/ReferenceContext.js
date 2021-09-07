@@ -36,6 +36,7 @@ export default function ReferenceContextProvider({ children }) {
     const [counter, setCounter] = useState(7);
     const [bookmarksVerses, setBookmarksVerses] = useState([]);
     const myEditorRef = useRef();
+    const [closeNavigation, setCloseNavigation] = useState(false);
 
     const handleClick = (event) => {
       setAnchorEl(event.currentTarget);
@@ -100,6 +101,7 @@ export default function ReferenceContextProvider({ children }) {
         counter,
         bookmarksVerses,
         myEditorRef,
+        closeNavigation,
       },
       actions: {
         setLanguageId,
@@ -130,6 +132,7 @@ export default function ReferenceContextProvider({ children }) {
         setRefernceLoading,
         setCounter,
         setBookmarksVerses,
+        setCloseNavigation,
       },
     };
 
