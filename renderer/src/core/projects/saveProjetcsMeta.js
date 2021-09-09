@@ -45,10 +45,9 @@ const saveProjectsMeta = async (
       versificationScheme,
       canonSpecification.currentScope,
       selectedLanguage.scriptDirection,
-      selectedVersion,
     ).then(async (ingredient) => {
       const burritoFile = await createTranslationSB(currentUser,
-        newProjectFields.projectName,
+        selectedVersion,
         canonSpecification.currentScope,
         selectedLanguage.title,
         copyright.licence);

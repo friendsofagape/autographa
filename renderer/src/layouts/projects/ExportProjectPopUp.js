@@ -8,6 +8,7 @@ import { Dialog, Transition } from '@headlessui/react';
 import { FolderOpenIcon } from '@heroicons/react/outline';
 import updateTranslationSB from '@/core/burrito/updateTranslationSB';
 import * as localforage from 'localforage';
+import { validate } from '../../util/validate';
 
 export default function ExportProjectPopUp(props) {
   const {
@@ -32,15 +33,20 @@ export default function ExportProjectPopUp(props) {
   const exportBible = async () => {
     await localforage.getItem('userProfile').then((value) => {
       const path = require('path');
+      const fs = window.require('fs');
       const fse = window.require('fs-extra');
       const newpath = localStorage.getItem('userPath');
       const folder = path.join(newpath, 'autographa', 'users', value.username, 'projects', projectName);
       updateTranslationSB(value.username, projectName)
       .then((updated) => {
         console.log(updated);
-        fse.copy(folder, path.join(folderPath, projectName))
-          .then(() => console.log('success!'))
-          .catch((err) => console.error(err));
+        const data = fs.readFileSync(path.join(folder, 'metadata.json'), 'utf-8');
+        const success = validate('metadata', path.join(folder, 'metadata.json'), data);
+        if (success) {
+          fse.copy(folder, path.join(folderPath, projectName))
+            .then(() => console.log('success!'))
+            .catch((err) => console.error(err));
+        }
       });
     });
   };
