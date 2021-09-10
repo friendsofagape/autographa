@@ -14,9 +14,8 @@ export default function ExportProjectPopUp(props) {
   const {
     open,
     closePopUp,
-    projectName,
+    project,
   } = props;
-
   const cancelButtonRef = useRef(null);
   const [folderPath, setFolderPath] = React.useState();
   function close() {
@@ -36,14 +35,14 @@ export default function ExportProjectPopUp(props) {
       const fs = window.require('fs');
       const fse = window.require('fs-extra');
       const newpath = localStorage.getItem('userPath');
-      const folder = path.join(newpath, 'autographa', 'users', value.username, 'projects', projectName);
-      updateTranslationSB(value.username, projectName)
+      const folder = path.join(newpath, 'autographa', 'users', value.username, 'projects', `${project.name}_${project.id[0]}`);
+      updateTranslationSB(value.username, project)
       .then((updated) => {
         console.log(updated);
         const data = fs.readFileSync(path.join(folder, 'metadata.json'), 'utf-8');
         const success = validate('metadata', path.join(folder, 'metadata.json'), data);
         if (success) {
-          fse.copy(folder, path.join(folderPath, projectName))
+          fse.copy(folder, path.join(folderPath, project.name))
             .then(() => console.log('success!'))
             .catch((err) => console.error(err));
         }
@@ -76,7 +75,7 @@ export default function ExportProjectPopUp(props) {
               <div className="flex justify-between items-center bg-secondary">
                 <div className="uppercase bg-secondary text-white py-2 px-2 text-xs tracking-widest leading-snug rounded-tl text-center">
                   Export Project (
-                  {projectName}
+                  {project?.name}
                   )
                 </div>
                 <button
