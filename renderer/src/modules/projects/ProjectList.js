@@ -197,8 +197,8 @@ export default function ProjectList() {
                                           <div className="text-sm tracking-wide p-1">{project.description}</div>
                                         </div>
                                         <div className="flex-grow">
-                                          <div className="text-xxs uppercase font-regular text-gray-500 tracking-wider p-1">Source Languages</div>
-                                          <div className="text-sm tracking-wide p-1">English, Aramic.</div>
+                                          <div className="text-xxs uppercase font-regular text-gray-500 tracking-wider p-1">Project ID</div>
+                                          <div className="text-sm tracking-wide p-1">{project.id}</div>
                                         </div>
                                         <div className="flex flex-shrink items-center justify-center text-center">
                                           <button
@@ -329,8 +329,8 @@ export default function ProjectList() {
                                           <div className="text-sm tracking-wide p-1">{project.description}</div>
                                         </div>
                                         <div className="flex-grow">
-                                          <div className="text-xxs uppercase font-regular text-gray-500 tracking-wider p-1">Source Languages</div>
-                                          <div className="text-sm tracking-wide p-1">English, Aramic.</div>
+                                          <div className="text-xxs uppercase font-regular text-gray-500 tracking-wider p-1">Project ID</div>
+                                          <div className="text-sm tracking-wide p-1">{project.id}</div>
                                         </div>
                                         <div className="flex flex-shrink items-center justify-center text-center">
                                           <button

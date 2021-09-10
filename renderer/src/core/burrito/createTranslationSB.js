@@ -3,8 +3,6 @@ import burrito from '../../lib/BurritoTemplete.json';
 import { OT, NT } from '../../lib/CanonSpecification';
 import languageCode from '../../lib/LanguageCode.json';
 
-const sha1 = require('sha1');
-
 const findCode = (list, id) => {
   let code = '';
   list.forEach((obj) => {
@@ -15,7 +13,7 @@ const findCode = (list, id) => {
   return code;
 };
 const uniqType = (canon) => [...new Set(canon)];
-const createTranslationSB = (username, version, currentScope, language, licence) => {
+const createTranslationSB = (username, version, currentScope, language, licence, id) => {
   const names = {};
   const canonTypes = [];
   const canonSpec = {
@@ -31,7 +29,7 @@ const createTranslationSB = (username, version, currentScope, language, licence)
     json.meta.generator.userName = username;
     json.identification.primary = {
       ag: {
-        [sha1(username + version.name + moment().format())]: {
+        [id]: {
         revision: '1',
         timestamp: moment().format(),
         },
@@ -46,7 +44,9 @@ const createTranslationSB = (username, version, currentScope, language, licence)
     json.identification.name.en = version.name;
     json.identification.abbreviation.en = version.abbreviation;
     json.languages[0].name.en = language;
-    json.copyright.fullStatementPlain.en = licence;
+    const newLicence1 = licence.replace(/(\n)/gm, '\\n');
+    const newLicence = newLicence1.replace(/(\r)/gm, '\\r');
+    json.copyright.fullStatementPlain.en = newLicence.replace(/"/gm, '\'');
     currentScope.forEach((scope) => {
       json.type.flavorType.currentScope[scope] = [];
       names[scope] = json.names[scope];

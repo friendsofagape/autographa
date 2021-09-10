@@ -5,9 +5,9 @@ const grammar = require('usfm-grammar');
 const path = require('path');
 const md5 = require('md5');
 
-export const createVersificationUSFM = (username, project, versification, books, direction) => {
+export const createVersificationUSFM = (username, project, versification, books, direction, id) => {
   const newpath = localStorage.getItem('userPath');
-  const folder = path.join(newpath, 'autographa', 'users', username, 'projects', project.projectName, 'ingredients');
+  const folder = path.join(newpath, 'autographa', 'users', username, 'projects', `${project.projectName}_${id}`, 'ingredients');
   const schemes = [
     { name: 'King James Version (KJV)', file: 'eng.json' },
     { name: '', file: 'lxx.json' },
