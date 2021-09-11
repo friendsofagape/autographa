@@ -99,8 +99,10 @@ export default function ReferenceSelector() {
                               type="button"
                               className={`p-1 w-6 h-6 flex items-center justify-center absolute
                               bottom-3 right-3 rounded-md hover:bg-primary hover:text-white
-                              ${story.id === 2 ? 'bg-primary text-white' : story.id === 4 ? 'bg-success text-black' : 'text-primary bg-gray-200' }
-                              
+                              ${story.id === 2
+                              ? 'bg-primary text-white'
+                              : story.id === 4 ? 'bg-success text-black'
+                              : 'text-primary bg-gray-200' }
                               `}
                             >
                               <VolumeUpIcon

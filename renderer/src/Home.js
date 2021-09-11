@@ -4,8 +4,9 @@ import AuthenticationContextProvider, { AuthenticationContext } from './componen
 import { loadUsers } from './core/Login/handleJson';
 import ProjectContextProvider from './components/context/ProjectContext';
 import ReferenceContextProvider from './components/context/ReferenceContext';
-import NewProject from './modules/projects/NewProject';
 import * as logger from './logger';
+import ProjectList from './modules/projects/ProjectList';
+import AutographaContextProvider from './components/context/AutographaContext';
 
 const Home = () => {
   const { states, action } = React.useContext(AuthenticationContext);
@@ -27,7 +28,9 @@ const Home = () => {
           <AuthenticationContextProvider>
             <ProjectContextProvider>
               <ReferenceContextProvider>
-                <NewProject />
+                <AutographaContextProvider>
+                  <ProjectList />
+                </AutographaContextProvider>
               </ReferenceContextProvider>
             </ProjectContextProvider>
           </AuthenticationContextProvider>

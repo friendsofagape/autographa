@@ -36,11 +36,13 @@ export default function BibleNavigation(props) {
        chapterList,
        verseList,
        languageId,
+      //  closeNavigation,
     }, actions: {
        onChangeBook,
        onChangeChapter,
        onChangeVerse,
        applyBooksFilter,
+       setCloseNavigation,
      },
    } = useContext(ReferenceContext);
 
@@ -102,6 +104,16 @@ export default function BibleNavigation(props) {
   useEffect(() => {
     localforage.setItem('navigationHistory', [bookId, chapter]);
   });
+
+  useEffect(() => {
+      if (openBook === false && openVerse === false) {
+        setCloseNavigation(true);
+      }
+      if (openBook || openVerse) {
+        setCloseNavigation(false);
+      }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [openVerse, openBook]);
 
   return (
     <>

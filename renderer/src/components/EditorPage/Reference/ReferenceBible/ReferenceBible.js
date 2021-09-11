@@ -11,7 +11,11 @@ import * as localforage from 'localforage';
 // eslint-disable-next-line import/no-unresolved
 import { readIngredients } from '@/core/reference/readIngredients';
 import { ProjectContext } from '@/components/context/ProjectContext';
+import { AutographaContext } from '@/components/context/AutographaContext';
+import moment from 'moment';
 import { isElectron } from '../../../../core/handleElectron';
+
+// General scroll to element function
 
 const ReferenceBible = ({
  languageId,
@@ -31,8 +35,18 @@ const ReferenceBible = ({
       username,
     },
   } = useContext(ProjectContext);
+  const {
+    states: {
+      activeNotificationCount,
+    },
+    action: {
+      setNotifications,
+      setActiveNotificationCount,
+    },
+  } = useContext(AutographaContext);
   // const regExp = /\(([^)]+)\)/;
     const [usfmInput, setUsfmInput] = useState();
+
     const CustomEditor = useMemo(
       () => (withChapterPaging(createBasicUsfmEditor())),
       // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -64,6 +78,21 @@ const ReferenceBible = ({
                             text: 'Reference-burrito loaded succesfully',
                           });
                           setCounter(4);
+                        }).then(() => {
+                            localforage.getItem('notification').then((value) => {
+                                const temp = [...value];
+                                if (temp.length !== 0) {
+                                  temp.push({
+                                    title: 'Resources',
+                                    text: `successfully loaded ${refName} files`,
+                                    type: 'success',
+                                    time: moment().format(),
+                                    hidden: true,
+                                });
+                                  setNotifications(temp);
+                                  setActiveNotificationCount(activeNotificationCount + 1);
+                                }
+                              });
                         });
                       }
                     }
@@ -74,6 +103,17 @@ const ReferenceBible = ({
           });
         }).catch((err) => {
           // we got an error
+          localforage.getItem('notification').then((value) => {
+            const temp = [...value];
+            temp.push({
+                title: 'Resources',
+                text: `failed to loaded ${refName}`,
+                type: 'failure',
+                time: moment().format(),
+                hidden: true,
+            });
+            setNotifications(temp);
+          });
           throw err;
         });
       }
@@ -109,7 +149,6 @@ const ReferenceBible = ({
               key: Date.now(),
           }}
         />
-
       )}
     </span>
   );

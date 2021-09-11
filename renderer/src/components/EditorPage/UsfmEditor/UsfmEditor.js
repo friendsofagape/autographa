@@ -32,8 +32,8 @@ const UsfmEditor = () => {
   const [usfmInput, setUsfmInput] = useState();
   const [readOnly] = useState(false);
   // const [activeTyping, setActiveTyping] = useState(false);
-  const [identification, setIdentification] = useState({});
-  const [goToVersePropValue, setGoToVersePropValue] = useState({});
+  const [identification, setIdentification] = useState();
+  // const [goToVersePropValue, setGoToVersePropValue] = useState({});
   // const projectName = 'Spanish Pro';
 
   const supportedBooks = null; // if empty array or null then all books available
@@ -48,7 +48,7 @@ const UsfmEditor = () => {
     state: {
       bookId,
       chapter,
-      verse,
+      // verse,
       myEditorRef,
     }, actions: {
       onChangeBook,
@@ -57,16 +57,6 @@ const UsfmEditor = () => {
       applyBooksFilter,
     },
   } = useContext(ReferenceContext);
-
-  const [naviagation, setNavigation] = useState({
-    bookId,
-    chapter,
-    verse,
-  });
-
-  const _bookId = scrollLock === false ? bookId : naviagation.bookId;
-  const _chapter = scrollLock === false ? chapter : naviagation.chapter;
-  const _verse = scrollLock === false ? verse : naviagation.verse;
 
   useEffect(() => {
     applyBooksFilter(supportedBooks);
@@ -88,55 +78,6 @@ const UsfmEditor = () => {
   //     console.log(err);
   //   }
   // };
-
-  const handleEditorChange = (usfm) => {
-    if (isElectron()) {
-      localforage.getItem('currentProject').then((projectName) => {
-      readRefMeta({
-        projectname: projectName,
-        username,
-      }).then((refs) => {
-        refs.forEach((ref) => {
-          readRefBurrito({
-            projectname: projectName,
-            filename: ref,
-            username,
-          }).then((data) => {
-            if (data) {
-              const _data = JSON.parse(data);
-              Object.entries(_data.ingredients).forEach(
-                ([key, _ingredients]) => {
-                  if (_ingredients.scope) {
-                    const _bookID = Object.entries(_ingredients.scope)[0][0];
-                    if (_bookID === bookId.toUpperCase()) {
-                      writeToFile({
-                        username,
-                        projectname: projectName,
-                        filename: key,
-                        data: usfm,
-                      });
-                    }
-                   }
-                  // console.log(key, value),
-                },
-              );
-            }
-          });
-        });
-      });
-    });
-    }
-    // else {
-    //   localforage.setItem('editorData', usfm).then(
-    //     () => localforage.getItem('editorData'),
-    //   ).then(() => {
-    //     setActiveTyping(true);
-    //   }).catch((err) => {
-    //     // we got an error
-    //     throw err;
-    //   });
-    // }
-  };
 
   // handle on active state change
   // useEffect(() => {
@@ -161,7 +102,6 @@ const UsfmEditor = () => {
 
   const handleInputChange = useCallback((usfm) => {
     setUsfmInput(usfm);
-    setIdentification({});
   }, [usfmInput]);
 
   // reference tabs navigation
@@ -181,7 +121,7 @@ const UsfmEditor = () => {
       setIdentification(identification);
       // onChangeBook((identification.id).toLowerCase());
     },
-    [_bookId],
+    [bookId],
   );
 
   useEffect(() => {
@@ -260,8 +200,8 @@ const UsfmEditor = () => {
         });
       });
     });
-    }
-  }, [_bookId, _chapter]);
+  }
+  }, [bookId]);
 
   useEffect(() => {
     if (!isElectron()) {
@@ -319,17 +259,78 @@ const UsfmEditor = () => {
     }
   }, []);
 
-  useEffect(() => {
-    setGoToVersePropValue({
-      chapter: parseInt(_chapter, 10),
-      verse: parseInt(_verse, 10),
-      key: Date.now(),
+  const handleEditorChange = (usfm) => {
+    if (isElectron()) {
+      localforage.getItem('currentProject').then((projectName) => {
+        const path = require('path');
+      const newpath = localStorage.getItem('userPath');
+      const projectsDir = path.join(
+          newpath, 'autographa', 'users', username, 'projects', projectName,
+      );
+      const metaPath = path.join(
+        newpath, 'autographa', 'users', username, 'projects', projectName, 'metadata.json',
+      );
+      readRefMeta({
+        projectsDir,
+      }).then((refs) => {
+        refs.forEach(() => {
+          readRefBurrito({
+            metaPath,
+          }).then((data) => {
+            if (data) {
+              const _data = JSON.parse(data);
+              Object.entries(_data.ingredients).forEach(
+                ([key, _ingredients]) => {
+                  if (_ingredients.scope) {
+                    const _bookID = Object.entries(_ingredients.scope)[0][0];
+                    if (_bookID === bookId.toUpperCase()) {
+                      const arrayOfLines = usfm.split('\n');
+                      const splitLine = arrayOfLines[0].split(/ +/);
+                       if (splitLine[0] === '\\id') {
+                          const id = splitLine[1];
+                          if (id.toUpperCase() === bookId.toUpperCase()) {
+                            writeToFile({
+                              username,
+                              projectname: projectName,
+                              filename: key,
+                              data: usfm,
+                            });
+                          }
+                        }
+                    }
+                   }
+                  // console.log(key, value),
+                },
+              );
+            }
+          });
+        });
+      });
     });
-  }, [_chapter]);
+    }
+    // else {
+    //   localforage.setItem('editorData', usfm).then(
+    //     () => localforage.getItem('editorData'),
+    //   ).then(() => {
+    //     setActiveTyping(true);
+    //   }).catch((err) => {
+    //     // we got an error
+    //     throw err;
+    //   });
+    // }
+  };
+
+  // useEffect(() => {
+  //   setGoToVersePropValue({
+  //     chapter: parseInt(chapter, 10),
+  //     verse: parseInt(verse, 10),
+  //     key: Date.now(),
+  //   });
+  // }, []);
 
   return (
     <>
-      <Editor setNavigation={setNavigation}>
+      <Editor>
         {usfmInput && (
           <CustomEditor
             ref={myEditorRef}
@@ -337,7 +338,7 @@ const UsfmEditor = () => {
             key={usfmInput}
             onChange={handleEditorChange}
             onVerseChange={handleVersChange}
-            goToVerse={goToVersePropValue}
+            // goToVerse={goToVersePropValue}
             readOnly={readOnly}
             identification={identification}
             onIdentificationChange={onIdentificationChange}
