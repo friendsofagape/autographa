@@ -36,7 +36,7 @@ export default function BibleNavigation(props) {
        chapterList,
        verseList,
        languageId,
-       closeNavigation,
+      //  closeNavigation,
     }, actions: {
        onChangeBook,
        onChangeChapter,
@@ -106,14 +106,13 @@ export default function BibleNavigation(props) {
   });
 
   useEffect(() => {
-    console.log(openBook,
-      openVerse);
       if (openBook === false && openVerse === false) {
         setCloseNavigation(true);
       }
       if (openBook || openVerse) {
         setCloseNavigation(false);
       }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [openVerse, openBook]);
 
   return (

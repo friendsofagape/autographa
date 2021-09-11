@@ -1,7 +1,9 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable react/prop-types */
 import { useBibleReference } from 'bible-reference-rcl';
-import React, { useState, createContext, useRef } from 'react';
+import React, {
+ useState, createContext, useRef,
+} from 'react';
 import * as localforage from 'localforage';
 
 export const ReferenceContext = createContext({});
@@ -42,11 +44,11 @@ export default function ReferenceContextProvider({ children }) {
       setAnchorEl(event.currentTarget);
     };
 
-  async function getFonts() {
-    const _fonts = await localforage.getItem('font-family');
-    fonts.push(_fonts);
-    setFonts(fonts);
-  }
+    async function getFonts() {
+      const _fonts = await localforage.getItem('font-family');
+      fonts.push(_fonts);
+      setFonts(fonts);
+    }
 
     const {
    state: {

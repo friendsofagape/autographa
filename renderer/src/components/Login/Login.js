@@ -126,7 +126,7 @@ export default function Login() {
     } else {
       // eslint-disable-next-line no-lonely-if
       if (isElectron()) {
-        router.push('/newproject');
+        router.push('/projects');
         // const requestOptions = {
         //   method: 'POST',
         //   headers: { 'Content-Type': 'application/json' },
@@ -136,7 +136,7 @@ export default function Login() {
         //   .then((response) => response.json())
         //   .then((data) => console.log(data));
       } else {
-        router.push('/newproject');
+        router.push('/projects');
         // The below code is commented for UI dev purpose.
         // document.aglogin.action = config.action;
         // document.aglogin.method = config.method;

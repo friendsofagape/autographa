@@ -33,7 +33,7 @@ const UsfmEditor = () => {
   const [readOnly] = useState(false);
   // const [activeTyping, setActiveTyping] = useState(false);
   const [identification, setIdentification] = useState();
-  const [goToVersePropValue, setGoToVersePropValue] = useState({});
+  // const [goToVersePropValue, setGoToVersePropValue] = useState({});
   // const projectName = 'Spanish Pro';
 
   const supportedBooks = null; // if empty array or null then all books available
@@ -48,7 +48,7 @@ const UsfmEditor = () => {
     state: {
       bookId,
       chapter,
-      verse,
+      // verse,
       myEditorRef,
     }, actions: {
       onChangeBook,
@@ -101,7 +101,6 @@ const UsfmEditor = () => {
   // }, []);
 
   const handleInputChange = useCallback((usfm) => {
-    console.log('input>>>>>>', usfm);
     setUsfmInput(usfm);
   }, [usfmInput]);
 
@@ -261,7 +260,6 @@ const UsfmEditor = () => {
   }, []);
 
   const handleEditorChange = (usfm) => {
-    console.log('output>>>>>>>>', usfm);
     if (isElectron()) {
       localforage.getItem('currentProject').then((projectName) => {
         const path = require('path');
@@ -288,7 +286,6 @@ const UsfmEditor = () => {
                     if (_bookID === bookId.toUpperCase()) {
                       const arrayOfLines = usfm.split('\n');
                       const splitLine = arrayOfLines[0].split(/ +/);
-
                        if (splitLine[0] === '\\id') {
                           const id = splitLine[1];
                           if (id.toUpperCase() === bookId.toUpperCase()) {
@@ -323,13 +320,13 @@ const UsfmEditor = () => {
     // }
   };
 
-  useEffect(() => {
-    setGoToVersePropValue({
-      chapter: parseInt(chapter, 10),
-      verse: parseInt(verse, 10),
-      key: Date.now(),
-    });
-  }, [chapter]);
+  // useEffect(() => {
+  //   setGoToVersePropValue({
+  //     chapter: parseInt(chapter, 10),
+  //     verse: parseInt(verse, 10),
+  //     key: Date.now(),
+  //   });
+  // }, []);
 
   return (
     <>
@@ -341,7 +338,7 @@ const UsfmEditor = () => {
             key={usfmInput}
             onChange={handleEditorChange}
             onVerseChange={handleVersChange}
-            goToVerse={goToVersePropValue}
+            // goToVerse={goToVersePropValue}
             readOnly={readOnly}
             identification={identification}
             onIdentificationChange={onIdentificationChange}
