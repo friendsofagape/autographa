@@ -1,7 +1,9 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable react/prop-types */
 import { useBibleReference } from 'bible-reference-rcl';
-import React, { useState, createContext, useRef } from 'react';
+import React, {
+ useState, createContext, useRef,
+} from 'react';
 import * as localforage from 'localforage';
 
 export const ReferenceContext = createContext({});
@@ -36,16 +38,17 @@ export default function ReferenceContextProvider({ children }) {
     const [counter, setCounter] = useState(7);
     const [bookmarksVerses, setBookmarksVerses] = useState([]);
     const myEditorRef = useRef();
+    const [closeNavigation, setCloseNavigation] = useState(false);
 
     const handleClick = (event) => {
       setAnchorEl(event.currentTarget);
     };
 
-  async function getFonts() {
-    const _fonts = await localforage.getItem('font-family');
-    fonts.push(_fonts);
-    setFonts(fonts);
-  }
+    async function getFonts() {
+      const _fonts = await localforage.getItem('font-family');
+      fonts.push(_fonts);
+      setFonts(fonts);
+    }
 
     const {
    state: {
@@ -100,6 +103,7 @@ export default function ReferenceContextProvider({ children }) {
         counter,
         bookmarksVerses,
         myEditorRef,
+        closeNavigation,
       },
       actions: {
         setLanguageId,
@@ -130,6 +134,7 @@ export default function ReferenceContextProvider({ children }) {
         setRefernceLoading,
         setCounter,
         setBookmarksVerses,
+        setCloseNavigation,
       },
     };
 

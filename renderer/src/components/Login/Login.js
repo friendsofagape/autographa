@@ -126,8 +126,8 @@ export default function Login() {
       }
     } else {
       // eslint-disable-next-line no-lonely-if
-      // if (isElectron()) {
-      router.push('/projects');
+      if (isElectron()) {
+        router.push('/projects');
         // const requestOptions = {
         //   method: 'POST',
         //   headers: { 'Content-Type': 'application/json' },
@@ -136,6 +136,8 @@ export default function Login() {
         // fetch(config?.action, requestOptions)
         //   .then((response) => response.json())
         //   .then((data) => console.log(data));
+      } else {
+        router.push('/projects');
       // } else {
         // router.push('/newproject');
         // The below code is commented for UI dev purpose.

@@ -26,7 +26,6 @@ import { ProjectContext } from '@/components/context/ProjectContext';
 // import styles from './Editor.module.css';
 
 export default function Editor({
-  setNavigation,
   children,
 }) {
   const {
@@ -116,16 +115,7 @@ export default function Editor({
   return (
     <>
       <div className="flex items-center justify-between bg-secondary">
-        {scrollLock === false ? (
-          <BibleNavigation />
-          ) : (
-            <CustomNavigation
-              setNavigation={setNavigation}
-              initialBook={bookId}
-              initialChapter={chapter}
-              initialVerse={verse}
-            />
-        )}
+        <BibleNavigation />
         {/* <div className="text-center h-6 rounded-t text-gray-100  text-xs uppercase tracking-widest font-bold leading-3">
           <div className="text-center pt-1">
             Editor

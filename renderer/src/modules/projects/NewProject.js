@@ -1,5 +1,5 @@
 import ProjectsLayout from '@/layouts/projects/Layout';
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import AdvancedSettingsDropdown from '@/components/ProjectsPage/CreateProject/AdvancedSettingsDropdown';
 import { ProjectContext } from '@/components/context/ProjectContext';

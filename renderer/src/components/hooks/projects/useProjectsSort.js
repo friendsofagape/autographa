@@ -20,9 +20,23 @@ function useProjectsSort() {
   const [starredProjects, setStarredProjets] = React.useState();
   const [unstarredProjects, setUnStarredProjets] = React.useState();
   const [selectedProject, setSelectedProject] = React.useState('');
+  const [notifications, setNotifications] = React.useState([]);
+  const [activeNotificationCount, setActiveNotificationCount] = React.useState(0);
+
   const starrtedData = [];
   const unstarrtedData = [];
   const username = 'Michael';
+
+  useEffect(() => {
+    if (notifications.length !== 0) {
+      localForage.setItem('notification', notifications);
+    }
+    localForage.getItem('notification').then((val) => {
+      if (val === null) {
+        localForage.setItem('notification', []);
+      }
+    });
+  }, [notifications]);
 
   const handleClickStarred = async (event, name, property) => {
     logger.debug('project.js', 'converting starred to be unstarred and viceversa');
@@ -213,6 +227,8 @@ function useProjectsSort() {
         starredProjects,
         unstarredProjects,
         selectedProject,
+        notifications,
+        activeNotificationCount,
       },
       actions: {
         handleClickStarred,
@@ -226,6 +242,8 @@ function useProjectsSort() {
         setOrderByUnstarred,
         FetchProjects,
         setSelectedProject,
+        setNotifications,
+        setActiveNotificationCount,
       },
     };
   return response;

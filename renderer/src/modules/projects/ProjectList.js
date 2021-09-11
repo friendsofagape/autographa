@@ -31,12 +31,15 @@ export default function ProjectList() {
       unstarredrow,
       starredProjects,
       unstarredProjects,
+      activeNotificationCount,
     },
     action: {
       setStarredRow,
       setUnStarredRow,
       handleClickStarred,
       setSelectedProject,
+      setNotifications,
+      setActiveNotificationCount,
     },
   } = React.useContext(AutographaContext);
 
@@ -60,6 +63,17 @@ export default function ProjectList() {
     setSelectedProject(projectName);
     localforage.setItem('currentProject', projectName);
     router.push('/home');
+    localforage.getItem('notification').then((value) => {
+      const temp = [...value];
+      temp.push({
+          title: 'Project',
+          text: `successfully loaded ${projectName} files`,
+          type: 'success',
+          time: moment().format(),
+          hidden: true,
+      });
+      setNotifications(temp);
+    }).then(() => setActiveNotificationCount(activeNotificationCount + 1));
   };
 
   const toggleShowRow = () => {
