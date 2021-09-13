@@ -121,27 +121,29 @@ function useProjectsSort() {
     // eslint-disable-next-line
       }, [temparray, active]);
 
-    const createData = (name, language, date, view, description) => ({
-      name, language, date, view, description,
+    const createData = (name, language, date, view, description, id) => ({
+      name, language, date, view, description, id,
     });
 
-    const FetchStarred = (ProjectName, Language, createdAt, LastView, ProjectDescription) => {
+    const FetchStarred = (ProjectName, Language, createdAt, LastView, ProjectDescription, id) => {
       starrtedData.push(createData(
         ProjectName,
         Language,
         createdAt,
         LastView,
         ProjectDescription,
+        id,
       ));
     };
 
-    const FetchUnstarred = (ProjectName, Language, createdAt, LastView, ProjectDescription) => {
+    const FetchUnstarred = (ProjectName, Language, createdAt, LastView, ProjectDescription, id) => {
       unstarrtedData.push(createData(
         ProjectName,
         Language,
         createdAt,
         LastView,
         ProjectDescription,
+        id,
       ));
     };
 
@@ -159,15 +161,17 @@ function useProjectsSort() {
                     const created = Object.keys(_project.identification.primary.ag);
                     if (_project.project?.textTranslation?.starred === true) {
                       // FetchStarred(projectName,language, createdAt, updatedAt);
-                      FetchStarred(_project.identification.name.en, _project.languages[0].name.en,
+                      FetchStarred(_project.project?.textTranslation?.projectName,
+                        _project.languages[0].name.en,
                         _project.identification.primary.ag[created].timestamp,
                         _project.project?.textTranslation?.lastSeen,
-                        _project.project?.textTranslation?.description);
+                        _project.project?.textTranslation?.description, created);
                     } else {
-                      FetchUnstarred(_project.identification.name.en, _project.languages[0].name.en,
+                      FetchUnstarred(_project.project?.textTranslation?.projectName,
+                        _project.languages[0].name.en,
                         _project.identification.primary.ag[created].timestamp,
                         _project.project?.textTranslation?.lastSeen,
-                        _project.project?.textTranslation?.description);
+                        _project.project?.textTranslation?.description, created);
                     }
                   });
                 }

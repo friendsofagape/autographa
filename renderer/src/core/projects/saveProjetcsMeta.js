@@ -1,8 +1,10 @@
 /* eslint-disable no-unused-vars */
-// import moment from 'moment';
+import moment from 'moment';
 import * as localforage from 'localforage';
 import { createVersificationUSFM } from '../../util/createVersificationUSFM';
 import createTranslationSB from '../burrito/createTranslationSB';
+
+const sha1 = require('sha1');
 
 const saveProjectsMeta = async (
   newProjectFields,
@@ -29,7 +31,8 @@ const saveProjectsMeta = async (
   let projectNameExists = false;
   const folderList = fs.readdirSync(projectDir);
   folderList.forEach((folder) => {
-    if (folder === newProjectFields.projectName) {
+    const name = folder.split('_');
+    if (name[0] === newProjectFields.projectName) {
       projectNameExists = true;
       // checking for duplicates
       status.push({ type: 'Warning', value: 'projectname exists' });
@@ -37,6 +40,7 @@ const saveProjectsMeta = async (
   });
 
   if (projectNameExists === false) {
+    const id = sha1(currentUser + newProjectFields.projectName + moment().format());
     // Create New burrito
     // ingredient has the list of created files in the form of SB Ingredients
     await createVersificationUSFM(
@@ -45,15 +49,16 @@ const saveProjectsMeta = async (
       versificationScheme,
       canonSpecification.currentScope,
       selectedLanguage.scriptDirection,
-      selectedVersion,
+      id,
     ).then(async (ingredient) => {
       const burritoFile = await createTranslationSB(currentUser,
-        newProjectFields.projectName,
+        selectedVersion,
         canonSpecification.currentScope,
         selectedLanguage.title,
-        copyright.licence);
+        copyright.licence,
+        id);
       burritoFile.ingredients = ingredient;
-      await fs.writeFileSync(path.join(projectDir, newProjectFields.projectName,
+      await fs.writeFileSync(path.join(projectDir, `${newProjectFields.projectName}_${id}`,
         'metadata.json'), JSON.stringify(burritoFile));
     }).finally(() => {
       status.push({ type: 'success', value: 'new project created' });
