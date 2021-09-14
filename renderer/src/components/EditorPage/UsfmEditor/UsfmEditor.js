@@ -32,7 +32,7 @@ const UsfmEditor = () => {
   const [usfmInput, setUsfmInput] = useState();
   const [readOnly] = useState(false);
   // const [activeTyping, setActiveTyping] = useState(false);
-  const [identification, setIdentification] = useState();
+  // const [identification, setIdentification] = useState();
   // const [goToVersePropValue, setGoToVersePropValue] = useState({});
   // const projectName = 'Spanish Pro';
 
@@ -48,7 +48,7 @@ const UsfmEditor = () => {
     state: {
       bookId,
       chapter,
-      // verse,
+      verse,
       myEditorRef,
     }, actions: {
       onChangeBook,
@@ -109,20 +109,20 @@ const UsfmEditor = () => {
   const handleVersChange = useCallback(
     (val) => {
       if (val && scrollLock === false) {
-        onChangeChapter(val.chapter.toString());
+        // onChangeChapter(val.chapter.toString());
         onChangeVerse(val.verseStart.toString());
       }
     }, [onChangeChapter, onChangeVerse],
   );
 
-  const onIdentificationChange = useCallback(
-    (id) => {
-      const identification = typeof id === 'string' ? JSON.parse(id) : id;
-      setIdentification(identification);
-      // onChangeBook((identification.id).toLowerCase());
-    },
-    [bookId],
-  );
+  // const onIdentificationChange = useCallback(
+  //   (id) => {
+  //     const identification = typeof id === 'string' ? JSON.parse(id) : id;
+  //     setIdentification(identification);
+  //     // onChangeBook((identification.id).toLowerCase());
+  //   },
+  //   [bookId],
+  // );
 
   useEffect(() => {
     if (scrollLock === false) {
@@ -338,10 +338,13 @@ const UsfmEditor = () => {
             key={usfmInput}
             onChange={handleEditorChange}
             onVerseChange={handleVersChange}
-            // goToVerse={goToVersePropValue}
             readOnly={readOnly}
-            identification={identification}
-            onIdentificationChange={onIdentificationChange}
+            goToVerse={{
+              chapter: parseInt(chapter, 10),
+              verse: parseInt(verse, 10),
+            }}
+            // identification={identification}
+            // onIdentificationChange={onIdentificationChange}
           />
         )}
       </Editor>

@@ -83,6 +83,7 @@ export default function ProjectList() {
       setShowRow(true);
     }
   };
+
   return (
     <>
       <ProjectsLayout
