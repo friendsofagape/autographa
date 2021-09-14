@@ -40,7 +40,7 @@ const saveProjectsMeta = async (
   });
 
   if (projectNameExists === false) {
-    const id = sha1(currentUser + newProjectFields.projectName + moment().format());
+    const id = sha1(currentUser + selectedVersion.name + moment().format());
     // Create New burrito
     // ingredient has the list of created files in the form of SB Ingredients
     await createVersificationUSFM(

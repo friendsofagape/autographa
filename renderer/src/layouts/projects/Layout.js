@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import ImportPopUp from '@/modules/projects/ImportPopUp';
 import {
   UploadIcon,
 } from '@heroicons/react/outline';
+import ImportProjectPopUp from './ImportProjectPopUp';
 import SideBar from './SideBar';
 import TopMenuBar from './TopMenuBar';
 
@@ -53,7 +53,7 @@ export default function ProjectsLayout(props) {
                   <UploadIcon className="h-4 mr-2 text-white" />
                   import
                 </button>
-                <ImportPopUp open={openPopUp} closePopUp={closeImportPopUp} />
+                <ImportProjectPopUp open={openPopUp} closePopUp={closeImportPopUp} />
 
               </div>
             )
