@@ -100,43 +100,51 @@ export default function EditorSideBar(props) {
 
               <div className="relative text-center bg-black text-white text-xs font-medium tracking-wider uppercase">
                 <div className="grid grid-cols-7 gap-0">
-                  <div className="grid grid-cols-3 col-span-3 gap-0">
+                  {/* <div className="grid grid-cols-3 col-span-3 gap-0">
                     <div
-                      // onClick={() => dispatch({ type: 'search' })}
+                      onClick={() => dispatch({ type: 'search' })}
                       role="button"
                       tabIndex="0"
                       className={`text-white h-full w-full hover:bg-primary cursor-pointer ${state.tabIndex === 0 && 'bg-primary'}`}
                     >
-                      {/* <SearchIcon className="w-1/3 m-auto h-full" aria-hidden="true" /> */}
-                    </div>
-                    <div
+                      <SearchIcon className="w-1/3 m-auto h-full" aria-hidden="true" />
+                      {' '}
+                      */}
+                  {/* </div> */}
+                  {/* <div
                       role="button"
                       tabIndex="0"
-                      // onClick={() => dispatch({ type: 'crossreference' })}
+                      onClick={() => dispatch({ type: 'crossreference' })}
                       className={`text-white h-full w-full hover:bg-primary cursor-pointer ${state.tabIndex === 1 && 'bg-primary'}`}
                     >
-                      {/* <CrossReferenceIcon
-                      fill="currentColor" className="w-1/5 m-auto h-full" aria-hidden="true" /> */}
-                    </div>
-                    <div
+                      <CrossReferenceIcon
+                        fill="currentColor"
+                        className="w-1/5 m-auto h-full"
+                        aria-hidden="true"
+                      />
+                    </div> */}
+                  {/* <div
                       role="button"
                       tabIndex="0"
-                      // onClick={() => dispatch({ type: 'footnotes' })}
+                      onClick={() => dispatch({ type: 'footnotes' })}
                       className={`text-white h-full w-full hover:bg-primary cursor-pointer ${state.tabIndex === 2 && 'bg-primary'}`}
                     >
-                      {/* <FootNotesIcon fill="currentColor"
-                      className="w-1/6 m-auto h-full" aria-hidden="true" /> */}
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-3 col-span-3 gap-0">
-                    <div
+                      <FootNotesIcon
+                        fill="currentColor"
+                        className="w-1/6 m-auto h-full"
+                        aria-hidden="true"
+                      /> */}
+                  {/* </div> */}
+                  {/* </div> */}
+                  <div className="grid grid-cols-6 col-span-6 gap-0">
+                    {/* <div
                       role="button"
                       tabIndex="0"
                       // onClick={() => dispatch({ type: 'comments' })}
                       className={`text-white h-full w-full hover:bg-primary cursor-pointer ${state.tabIndex === 3 && 'bg-primary'}`}
                     >
-                      {/* <AnnotationIcon className="w-1/3 m-auto h-full" aria-hidden="true" /> */}
-                    </div>
+                      <AnnotationIcon className="w-1/3 m-auto h-full" aria-hidden="true" />
+                    </div> */}
                     <div
                       role="button"
                       tabIndex="0"
@@ -145,10 +153,13 @@ export default function EditorSideBar(props) {
                     >
                       <BookmarkIcon className="w-1/3 m-auto h-full" aria-hidden="true" />
                     </div>
-                    <div className="text-white h-full w-full hover:bg-primary cursor-pointer">
-                      {/* <PinIcon fill="currentColor"
-                      className="w-2/5 m-auto h-full" aria-hidden="true" /> */}
-                    </div>
+                    {/* <div className="text-white h-full w-full hover:bg-primary cursor-pointer">
+                      <PinIcon
+                        fill="currentColor"
+                        className="w-2/5 m-auto h-full"
+                        aria-hidden="true"
+                      />
+                    </div> */}
                   </div>
                   <div className="flex justify-end">
                     <button type="button" className="w-9 h-9 bg-gray-900 p-2 focus:outline-none" onClick={closeSideBars}>

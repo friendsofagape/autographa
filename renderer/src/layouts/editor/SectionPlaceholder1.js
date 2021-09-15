@@ -220,11 +220,13 @@ const SectionPlaceholder1 = () => {
           );
         },
       );
-
     localforage.setItem('projectmeta', value);
     });
   });
-  });
+  }, [openResource1, openResource2, referenceColumnOneData1?.languageId,
+    referenceColumnOneData1.refName, referenceColumnOneData1?.selectedResource,
+    referenceColumnOneData2?.languageId, referenceColumnOneData2?.refName,
+    referenceColumnOneData2?.selectedResource, sectionNum]);
 
   const CustomNavigation1 = (
     <CustomNavigation

@@ -97,6 +97,7 @@ export const createVersificationUSFM = (username, project, versification, books,
               bibleVersion: version.name,
               abbreviation: version.abbreviation,
               refResources: [],
+              bookMarks: [],
             },
           },
         };

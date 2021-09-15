@@ -79,6 +79,7 @@ const importBurrito = async (filePath) => {
             bibleVersion: '',
             abbreviation: '',
             refResources: [],
+            bookMarks: [],
           },
         },
       };

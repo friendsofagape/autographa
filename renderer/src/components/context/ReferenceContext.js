@@ -2,7 +2,7 @@
 /* eslint-disable react/prop-types */
 import { useBibleReference } from 'bible-reference-rcl';
 import React, {
- useState, createContext, useRef,
+ useState, createContext, useRef, useEffect,
 } from 'react';
 import * as localforage from 'localforage';
 
@@ -50,6 +50,13 @@ export default function ReferenceContextProvider({ children }) {
       setFonts(fonts);
     }
 
+    useEffect(() => {
+      localforage.getItem('projectmeta').then((val) => {
+        setBookmarksVerses(val.projects[4].project.textTranslation.bookMarks);
+        console.log(val.projects[4].project.textTranslation.bookMarks);
+      });
+    }, []);
+
     const {
    state: {
       chapter,
@@ -70,6 +77,13 @@ export default function ReferenceContextProvider({ children }) {
       initialChapter,
       initialVerse,
     });
+
+    useEffect(() => {
+      localforage.getItem('navigationHistory').then((book) => {
+        onChangeBook(book[0]);
+        onChangeChapter(book[1]);
+      });
+    }, []);
 
     const value = {
       state: {

@@ -50,6 +50,7 @@ const UsfmEditor = () => {
       chapter,
       verse,
       myEditorRef,
+      closeNavigation,
     }, actions: {
       onChangeBook,
       onChangeChapter,
@@ -66,6 +67,8 @@ const UsfmEditor = () => {
     () => (withChapterPaging(createBasicUsfmEditor())),
     [usfmInput],
   );
+
+  const timeout = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
   // const saveToParse = async () => {
   //   try {
@@ -158,6 +161,7 @@ const UsfmEditor = () => {
       //   });
       // });
     } else {
+      console.log('closeNavigation', closeNavigation);
       localforage.getItem('currentProject').then((projectName) => {
       const path = require('path');
       const newpath = localStorage.getItem('userPath');
@@ -187,7 +191,9 @@ const UsfmEditor = () => {
                         username,
                       }).then((data) => {
                         if (data) {
-                          handleInputChange(data);
+                            timeout(3000).then(() => {
+                                handleInputChange(data);
+                            }).finally(() => console.log('editor loaded'));
                         }
                       });
                     }
@@ -289,12 +295,14 @@ const UsfmEditor = () => {
                        if (splitLine[0] === '\\id') {
                           const id = splitLine[1];
                           if (id.toUpperCase() === bookId.toUpperCase()) {
-                            writeToFile({
-                              username,
-                              projectname: projectName,
-                              filename: key,
-                              data: usfm,
-                            });
+                            setTimeout(() => {
+                                writeToFile({
+                                  username,
+                                  projectname: projectName,
+                                  filename: key,
+                                  data: usfm,
+                                });
+                            }, 2000);
                           }
                         }
                     }
