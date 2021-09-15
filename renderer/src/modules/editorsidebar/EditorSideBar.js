@@ -105,7 +105,9 @@ export default function EditorSideBar(props) {
                       onClick={() => dispatch({ type: 'search' })}
                       role="button"
                       tabIndex="0"
-                      className={`text-white h-full w-full hover:bg-primary cursor-pointer ${state.tabIndex === 0 && 'bg-primary'}`}
+                      className={`text-white h-full
+                       w-full hover:bg-primary
+                       cursor-pointer ${state.tabIndex === 0 && 'bg-primary'}`}
                     >
                       <SearchIcon className="w-1/3 m-auto h-full" aria-hidden="true" />
                       {' '}
@@ -115,7 +117,9 @@ export default function EditorSideBar(props) {
                       role="button"
                       tabIndex="0"
                       onClick={() => dispatch({ type: 'crossreference' })}
-                      className={`text-white h-full w-full hover:bg-primary cursor-pointer ${state.tabIndex === 1 && 'bg-primary'}`}
+                      className={`text-white h-full
+                       w-full hover:bg-primary
+                       cursor-pointer ${state.tabIndex === 1 && 'bg-primary'}`}
                     >
                       <CrossReferenceIcon
                         fill="currentColor"
@@ -127,7 +131,9 @@ export default function EditorSideBar(props) {
                       role="button"
                       tabIndex="0"
                       onClick={() => dispatch({ type: 'footnotes' })}
-                      className={`text-white h-full w-full hover:bg-primary cursor-pointer ${state.tabIndex === 2 && 'bg-primary'}`}
+                      className={`text-white
+                      h-full w-full hover:bg-primary
+                       cursor-pointer ${state.tabIndex === 2 && 'bg-primary'}`}
                     >
                       <FootNotesIcon
                         fill="currentColor"
@@ -141,7 +147,9 @@ export default function EditorSideBar(props) {
                       role="button"
                       tabIndex="0"
                       // onClick={() => dispatch({ type: 'comments' })}
-                      className={`text-white h-full w-full hover:bg-primary cursor-pointer ${state.tabIndex === 3 && 'bg-primary'}`}
+                      className={`text-white h-full
+                      w-full hover:bg-primary
+                      cursor-pointer ${state.tabIndex === 3 && 'bg-primary'}`}
                     >
                       <AnnotationIcon className="w-1/3 m-auto h-full" aria-hidden="true" />
                     </div> */}

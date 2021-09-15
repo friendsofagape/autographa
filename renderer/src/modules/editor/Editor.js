@@ -79,6 +79,7 @@ export default function Editor({
                   resources.project.textTranslation.bookMarks = [...bookmarksVerses];
                   localforage.setItem('projectmeta', value).then((val) => {
                     localforage.setItem('projectmeta', value).then((val) => {
+                      // eslint-disable-next-line no-console
                       console.log(val.projects);
                     });
                   });
