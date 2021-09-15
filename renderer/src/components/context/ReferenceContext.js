@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable react/prop-types */
 import { useBibleReference } from 'bible-reference-rcl';
@@ -51,10 +52,23 @@ export default function ReferenceContextProvider({ children }) {
     }
 
     useEffect(() => {
+      localforage.getItem('currentProject').then((projectName) => {
       localforage.getItem('projectmeta').then((val) => {
-        setBookmarksVerses(val.projects[4].project.textTranslation.bookMarks);
-        console.log(val.projects[4].project.textTranslation.bookMarks);
+        Object?.entries(val).forEach(
+          ([_columnnum, _value]) => {
+            Object?.entries(_value).forEach(
+              ([_rownum, resources]) => {
+                if (resources.identification.name.en === projectName) {
+                  // eslint-disable-next-line no-param-reassign
+                  setBookmarksVerses(resources.project.textTranslation.bookMarks);
+                }
+              },
+            );
+          },
+        );
       });
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const {
