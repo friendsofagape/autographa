@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable no-unused-vars */
 import Link from 'next/link';
 import { Fragment, useContext, useState } from 'react';
@@ -73,6 +74,9 @@ export default function TopMenuBar() {
     },
   } = useContext(ReferenceContext);
 
+  const _projectnamewithId = selectedProject;
+  const projectname = _projectnamewithId?.split('_');
+
   function openSideBars() {
     setOpenSideBar(true);
   }
@@ -114,7 +118,7 @@ export default function TopMenuBar() {
 
             <div>
               <span className="text-primary px-10 py-2 text-lg tracking-wide font-extrabold uppercase">
-                {selectedProject}
+                {projectname?.[0]}
               </span>
             </div>
 

@@ -166,17 +166,21 @@ function useProjectsSort() {
                         const created = Object.keys(_project.identification.primary.ag);
                         if (_project.project?.textTranslation?.starred === true) {
                           // FetchStarred(projectName,language, createdAt, updatedAt);
-                          FetchStarred(_project.project?.textTranslation?.projectName,
+                          FetchStarred(
+                            _project.project?.textTranslation?.projectName,
                             _project.languages[0].name.en,
                             _project.identification.primary.ag[created].timestamp,
                             _project.project?.textTranslation?.lastSeen,
-                            _project.project?.textTranslation?.description, created);
+                            _project.project?.textTranslation?.description, created,
+                            );
                         } else {
-                          FetchUnstarred(_project.project?.textTranslation?.projectName,
+                          FetchUnstarred(
+                            _project.project?.textTranslation?.projectName,
                             _project.languages[0].name.en,
                             _project.identification.primary.ag[created].timestamp,
                             _project.project?.textTranslation?.lastSeen,
-                            _project.project?.textTranslation?.description, created);
+                            _project.project?.textTranslation?.description, created,
+                            );
                         }
                       });
                     }

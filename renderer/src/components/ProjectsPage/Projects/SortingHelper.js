@@ -26,10 +26,10 @@ moment.updateLocale('en', {
 
 function descendingComparator(a, b, orderBy) {
   if (orderBy !== 'date' && (orderBy !== 'status') && orderBy !== 'editors') {
-    if (b[orderBy].toLowerCase() < a[orderBy].toLowerCase()) {
+    if (b[orderBy]?.toLowerCase() < a[orderBy]?.toLowerCase()) {
       return -1;
     }
-    if (b[orderBy].toLowerCase() > a[orderBy].toLowerCase()) {
+    if (b[orderBy]?.toLowerCase() > a[orderBy]?.toLowerCase()) {
       return 1;
     }
     return 0;
