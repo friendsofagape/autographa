@@ -1,4 +1,6 @@
-import React, { Fragment } from 'react';
+import React, {
+ Fragment, useContext, useEffect, useState,
+} from 'react';
 import { XIcon } from '@heroicons/react/outline';
 import { Dialog, Transition } from '@headlessui/react';
 import PropTypes from 'prop-types';
@@ -11,11 +13,44 @@ const SnackBar = ({
   setSnackText,
   error,
 }) => {
+  const [timeLeft, setTimeLeft] = useState(3);
+
   const closeSnackBar = () => {
     setOpenSnackBar(false);
     setSnackText('');
+    setTimeLeft(null);
   };
+
+  useEffect(() => {
+    if (timeLeft === 0) {
+      setTimeLeft(null);
+   }
+
+   // exit early when we reach 0
+   if (!timeLeft) { return; }
+
+   // save intervalId to clear the interval when the
+   // component re-renders
+   const intervalId = setInterval(() => {
+     setTimeLeft(timeLeft - 1);
+     if (timeLeft <= 1) {
+       closeSnackBar();
+     }
+   }, 1000);
+
+   // clear interval on re-render to avoid memory leaks
+   return () => clearInterval(intervalId);
+   // add timeLeft as a dependency to re-rerun the effect
+   // when we update it
+ }, [timeLeft]);
+  useEffect(() => {
+    if (openSnackBar) {
+      setTimeLeft(3);
+    }
+  }, [openSnackBar]);
+
   return (
+
     <Transition appear show={openSnackBar} as={Fragment}>
       <Dialog
         as={Fragment}

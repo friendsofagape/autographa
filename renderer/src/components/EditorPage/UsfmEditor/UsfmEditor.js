@@ -17,6 +17,7 @@ import {
   //  withChapterSelection,
 } from 'usfm-editor';
 import Editor from '@/modules/editor/Editor';
+import LoadingScreen from '@/components/Loading/LoadingScreen';
 import { readRefMeta } from '../../../core/reference/readRefMeta';
 import { readRefBurrito } from '../../../core/reference/readRefBurrito';
 import { readFile } from '../../../core/editor/readFile';
@@ -31,6 +32,7 @@ const UsfmEditor = () => {
   // const intervalRef = useRef();
   const [usfmInput, setUsfmInput] = useState();
   const [readOnly] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   // const [activeTyping, setActiveTyping] = useState(false);
   // const [identification, setIdentification] = useState();
   // const [goToVersePropValue, setGoToVersePropValue] = useState({});
@@ -50,7 +52,6 @@ const UsfmEditor = () => {
       chapter,
       verse,
       myEditorRef,
-      closeNavigation,
     }, actions: {
       onChangeBook,
       onChangeChapter,
@@ -161,7 +162,6 @@ const UsfmEditor = () => {
       //   });
       // });
     } else {
-      console.log('closeNavigation', closeNavigation);
       localforage.getItem('currentProject').then((projectName) => {
       const path = require('path');
       const newpath = localStorage.getItem('userPath');
@@ -174,6 +174,7 @@ const UsfmEditor = () => {
       readRefMeta({
         projectsDir,
       }).then((refs) => {
+        setIsLoading(true);
         refs.forEach(() => {
           readRefBurrito({
             metaPath,
@@ -191,9 +192,11 @@ const UsfmEditor = () => {
                         username,
                       }).then((data) => {
                         if (data) {
-                            timeout(3000).then(() => {
+                            timeout(2000).then(() => {
                                 handleInputChange(data);
-                            }).finally(() => console.log('editor loaded'));
+                            }).finally(() => {
+                              setIsLoading(false);
+                            });
                         }
                       });
                     }
@@ -340,23 +343,24 @@ const UsfmEditor = () => {
     <>
       <Editor>
         {usfmInput && (
-          <CustomEditor
-            ref={myEditorRef}
-            usfmString={usfmInput}
-            key={usfmInput}
-            onChange={handleEditorChange}
-            onVerseChange={handleVersChange}
-            readOnly={readOnly}
-            goToVerse={{
+          isLoading ? (
+            <LoadingScreen />
+          ) : (
+            <CustomEditor
+              ref={myEditorRef}
+              usfmString={usfmInput}
+              key={usfmInput}
+              onChange={handleEditorChange}
+              onVerseChange={handleVersChange}
+              readOnly={readOnly}
+              goToVerse={{
               chapter: parseInt(chapter, 10),
               verse: parseInt(verse, 10),
             }}
-            // identification={identification}
-            // onIdentificationChange={onIdentificationChange}
-          />
+            />
+          )
         )}
       </Editor>
-
     </>
   );
 };
