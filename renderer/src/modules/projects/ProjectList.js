@@ -59,9 +59,9 @@ export default function ProjectList() {
     setOrderBy(property);
   };
 
-  const handleSelectProject = (event, projectName) => {
+  const handleSelectProject = (event, projectName, projectId) => {
     setSelectedProject(projectName);
-    localforage.setItem('currentProject', projectName);
+    localforage.setItem('currentProject', `${projectName}_${projectId}`);
     router.push('/home');
     localforage.getItem('notification').then((value) => {
       const temp = [...value];
@@ -270,7 +270,7 @@ export default function ProjectList() {
                                     <div className="ml-0">
                                       <div
                                         onClick={
-                                          (event) => handleSelectProject(event, project.name)
+                                          (event) => handleSelectProject(event, project.name, project.id[0])
                                         }
                                         role="button"
                                         tabIndex="0"
