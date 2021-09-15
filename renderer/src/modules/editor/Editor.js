@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable array-callback-return */
 /* eslint-disable max-len */
 /* eslint-disable react/prop-types */
@@ -69,12 +70,13 @@ export default function Editor({
 
   const updateBookMarksDB = (bookmarksVerses) => {
     localforage.getItem('currentProject').then((projectName) => {
+      const _projectname = projectName?.split('_');
       localforage.getItem('projectmeta').then((value) => {
         Object?.entries(value).forEach(
           ([_columnnum, _value]) => {
             Object?.entries(_value).forEach(
               ([_rownum, resources]) => {
-                if (resources.identification.name.en === projectName) {
+                if (resources.project.textTranslation.projectName === _projectname[0]) {
                   // eslint-disable-next-line no-param-reassign
                   resources.project.textTranslation.bookMarks = [...bookmarksVerses];
                   localforage.setItem('projectmeta', value).then((val) => {

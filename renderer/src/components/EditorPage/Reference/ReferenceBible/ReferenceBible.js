@@ -13,6 +13,8 @@ import { readIngredients } from '@/core/reference/readIngredients';
 import { ProjectContext } from '@/components/context/ProjectContext';
 import { AutographaContext } from '@/components/context/AutographaContext';
 import moment from 'moment';
+import LoadingScreen from '@/components/Loading/LoadingScreen';
+import { SnackBar } from '@/components/SnackBar';
 import { isElectron } from '../../../../core/handleElectron';
 
 // General scroll to element function
@@ -46,6 +48,10 @@ const ReferenceBible = ({
   } = useContext(AutographaContext);
   // const regExp = /\(([^)]+)\)/;
     const [usfmInput, setUsfmInput] = useState();
+    const [isLoading, setIsLoading] = useState(false);
+    const [snackBar, setOpenSnackBar] = React.useState(false);
+    const [snackText, setSnackText] = React.useState('');
+    const [notify, setNotify] = React.useState();
 
     const CustomEditor = useMemo(
       () => (withChapterPaging(createBasicUsfmEditor())),
@@ -74,10 +80,14 @@ useEffect(() => {
                         readIngredients({
                           filePath,
                         }).then((res) => {
-                          timeout(3000).then(() => {
+                          setIsLoading(true);
+                          timeout(2000).then(() => {
                             setUsfmInput(res);
                           }).finally(() => {
-                            console.log('dooonee');
+                            setIsLoading(false);
+                            setOpenSnackBar(true);
+                            setSnackText(`successfully loaded ${refName} files`);
+                            setNotify('success');
                           });
                           setRefernceLoading({
                             status: true,
@@ -109,6 +119,9 @@ useEffect(() => {
           });
         }).catch((err) => {
           // we got an error
+            setOpenSnackBar(true);
+            setSnackText(`failed to loaded ${refName} files`);
+            setNotify('failure');
           localforage.getItem('notification').then((value) => {
             const temp = [...value];
             temp.push({
@@ -144,18 +157,32 @@ useEffect(() => {
 
   return (
     <span>
-      {usfmInput && (
-        <CustomEditor
-          usfmString={usfmInput}
-          key={usfmInput}
-          readOnly
-          goToVerse={{
+      <>
+        {usfmInput && (
+        isLoading === false ? (
+          <CustomEditor
+            usfmString={usfmInput}
+            key={usfmInput}
+            readOnly
+            goToVerse={{
               chapter: parseInt(chapter, 10),
               verse: parseInt(verse, 10),
               key: Date.now(),
           }}
-        />
+          />
+        ) : (
+          <LoadingScreen />
+        )
+
       )}
+        <SnackBar
+          openSnackBar={snackBar}
+          snackText={snackText}
+          setOpenSnackBar={setOpenSnackBar}
+          setSnackText={setSnackText}
+          error={notify}
+        />
+      </>
     </span>
   );
 };

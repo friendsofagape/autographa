@@ -98,12 +98,13 @@ const SectionPlaceholder1 = () => {
     const refsHistory = [];
     const rows = [];
     localforage.getItem('currentProject').then((projectName) => {
+    const _projectname = projectName?.split('_');
     localforage.getItem('projectmeta').then((value) => {
       Object?.entries(value).forEach(
         ([_columnnum, _value]) => {
           Object?.entries(_value).forEach(
             ([_rownum, resources]) => {
-              if (resources.identification.name.en === projectName) {
+              if (resources.project.textTranslation.projectName === _projectname[0]) {
                 refsHistory.push(resources.project.textTranslation.refResources);
               }
             },
@@ -174,12 +175,13 @@ const SectionPlaceholder1 = () => {
   useEffect(() => {
     const refsHistory = [];
     localforage.getItem('currentProject').then((projectName) => {
+    const _projectname = projectName?.split('_');
     localforage.getItem('projectmeta').then((value) => {
       Object?.entries(value).forEach(
         ([_columnnum, _value]) => {
           Object?.entries(_value).forEach(
             ([_rownum, resources]) => {
-              if (resources.identification.name.en === projectName) {
+              if (resources.project.textTranslation.projectName === _projectname[0]) {
                 refsHistory.push(resources.project.textTranslation.refResources);
                 if (sectionNum === 1 || sectionNum === 0) {
                   if (openResource1
