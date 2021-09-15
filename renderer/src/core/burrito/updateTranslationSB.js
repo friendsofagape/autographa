@@ -3,9 +3,9 @@ import moment from 'moment';
 const path = require('path');
 const md5 = require('md5');
 
-const updateTranslationSB = (username, projectName) => new Promise((resolve) => {
+const updateTranslationSB = (username, project) => new Promise((resolve) => {
     const newpath = localStorage.getItem('userPath');
-    const folder = path.join(newpath, 'autographa', 'users', username, 'projects', projectName);
+    const folder = path.join(newpath, 'autographa', 'users', username, 'projects', `${project.name}_${project.id[0]}`);
     const fs = window.require('fs');
     const sb = fs.readFileSync(path.join(folder, 'metadata.json'));
     const metadata = JSON.parse(sb);

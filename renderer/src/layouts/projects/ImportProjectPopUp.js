@@ -5,6 +5,7 @@ import React, {
 import { Dialog, Transition } from '@headlessui/react';
 import { FolderOpenIcon } from '@heroicons/react/outline';
 import { useRouter } from 'next/router';
+import { SnackBar } from '@/components/SnackBar';
 import importBurrito from '../../core/burrito/importBurrito';
 import * as logger from '../../logger';
 
@@ -17,6 +18,9 @@ export default function ImportProjectPopUp(props) {
   const cancelButtonRef = useRef(null);
   const [folderPath, setFolderPath] = React.useState();
   const [valid, setValid] = React.useState(false);
+  const [snackBar, setOpenSnackBar] = React.useState(false);
+  const [snackText, setSnackText] = React.useState('');
+  const [notify, setNotify] = React.useState();
 
   function close() {
     setValid(false);
@@ -38,9 +42,21 @@ export default function ImportProjectPopUp(props) {
       const status = await importBurrito(folderPath);
       if (status[0].type === 'success') {
         router.push('/projects');
+        setNotify('success');
+        setSnackText('Imported Successfully');
+        setOpenSnackBar(true);
+        closePopUp(false);
+      } else {
+        setNotify('failure');
+        setSnackText('Import Failed');
+        setOpenSnackBar(true);
+        closePopUp(false);
       }
     } else {
       setValid(true);
+      setNotify('failure');
+      setSnackText('Invalid Path');
+      setOpenSnackBar(true);
     }
   };
   return (
@@ -135,6 +151,14 @@ export default function ImportProjectPopUp(props) {
           </div>
         </Dialog>
       </Transition>
+      <SnackBar
+        openSnackBar={snackBar}
+        snackText={snackText}
+        setOpenSnackBar={setOpenSnackBar}
+        setSnackText={setSnackText}
+        error={notify}
+      />
+
     </>
   );
 }
