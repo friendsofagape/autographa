@@ -95,6 +95,7 @@ export const createVersificationUSFM = (username, project, versification, books,
               description: project.description,
               lastSeen: moment().format(),
               refResources: [],
+              bookMarks: [],
             },
           },
         };

@@ -32,7 +32,7 @@ const UsfmEditor = () => {
   const [usfmInput, setUsfmInput] = useState();
   const [readOnly] = useState(false);
   // const [activeTyping, setActiveTyping] = useState(false);
-  const [identification, setIdentification] = useState();
+  // const [identification, setIdentification] = useState();
   // const [goToVersePropValue, setGoToVersePropValue] = useState({});
   // const projectName = 'Spanish Pro';
 
@@ -48,8 +48,9 @@ const UsfmEditor = () => {
     state: {
       bookId,
       chapter,
-      // verse,
+      verse,
       myEditorRef,
+      closeNavigation,
     }, actions: {
       onChangeBook,
       onChangeChapter,
@@ -66,6 +67,8 @@ const UsfmEditor = () => {
     () => (withChapterPaging(createBasicUsfmEditor())),
     [usfmInput],
   );
+
+  const timeout = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
   // const saveToParse = async () => {
   //   try {
@@ -109,20 +112,20 @@ const UsfmEditor = () => {
   const handleVersChange = useCallback(
     (val) => {
       if (val && scrollLock === false) {
-        onChangeChapter(val.chapter.toString());
+        // onChangeChapter(val.chapter.toString());
         onChangeVerse(val.verseStart.toString());
       }
     }, [onChangeChapter, onChangeVerse],
   );
 
-  const onIdentificationChange = useCallback(
-    (id) => {
-      const identification = typeof id === 'string' ? JSON.parse(id) : id;
-      setIdentification(identification);
-      // onChangeBook((identification.id).toLowerCase());
-    },
-    [bookId],
-  );
+  // const onIdentificationChange = useCallback(
+  //   (id) => {
+  //     const identification = typeof id === 'string' ? JSON.parse(id) : id;
+  //     setIdentification(identification);
+  //     // onChangeBook((identification.id).toLowerCase());
+  //   },
+  //   [bookId],
+  // );
 
   useEffect(() => {
     if (scrollLock === false) {
@@ -158,6 +161,7 @@ const UsfmEditor = () => {
       //   });
       // });
     } else {
+      console.log('closeNavigation', closeNavigation);
       localforage.getItem('currentProject').then((projectName) => {
       const path = require('path');
       const newpath = localStorage.getItem('userPath');
@@ -187,7 +191,9 @@ const UsfmEditor = () => {
                         username,
                       }).then((data) => {
                         if (data) {
-                          handleInputChange(data);
+                            timeout(3000).then(() => {
+                                handleInputChange(data);
+                            }).finally(() => console.log('editor loaded'));
                         }
                       });
                     }
@@ -289,12 +295,14 @@ const UsfmEditor = () => {
                        if (splitLine[0] === '\\id') {
                           const id = splitLine[1];
                           if (id.toUpperCase() === bookId.toUpperCase()) {
-                            writeToFile({
-                              username,
-                              projectname: projectName,
-                              filename: key,
-                              data: usfm,
-                            });
+                            setTimeout(() => {
+                                writeToFile({
+                                  username,
+                                  projectname: projectName,
+                                  filename: key,
+                                  data: usfm,
+                                });
+                            }, 2000);
                           }
                         }
                     }
@@ -338,10 +346,13 @@ const UsfmEditor = () => {
             key={usfmInput}
             onChange={handleEditorChange}
             onVerseChange={handleVersChange}
-            // goToVerse={goToVersePropValue}
             readOnly={readOnly}
-            identification={identification}
-            onIdentificationChange={onIdentificationChange}
+            goToVerse={{
+              chapter: parseInt(chapter, 10),
+              verse: parseInt(verse, 10),
+            }}
+            // identification={identification}
+            // onIdentificationChange={onIdentificationChange}
           />
         )}
       </Editor>

@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import * as localForage from 'localforage';
 import moment from 'moment';
+import router from 'next/router';
 import { updateAgSettings } from '../../../core/projects/updateAgSettings';
 import parseProjectMetaUpdate from '../../../core/projects/parseProjectMetaUpdate';
 // import metaFileReplace from '../../../core/projects/metaFileReplace';
@@ -149,46 +150,52 @@ function useProjectsSort() {
 
     const FetchProjects = async () => {
       if (isElectron()) {
-        const projectsData = fetchProjectsMeta();
-        projectsData.then((value) => {
-          if (value) {
-            localForage.setItem('projectmeta', value)
-            .then(() => {
-              localForage.getItem('projectmeta')
-              .then((value) => {
-                if (value) {
-                  value.projects.forEach((_project) => {
-                    const created = Object.keys(_project.identification.primary.ag);
-                    if (_project.project?.textTranslation?.starred === true) {
-                      // FetchStarred(projectName,language, createdAt, updatedAt);
-                      FetchStarred(_project.project?.textTranslation?.projectName,
-                        _project.languages[0].name.en,
-                        _project.identification.primary.ag[created].timestamp,
-                        _project.project?.textTranslation?.lastSeen,
-                        _project.project?.textTranslation?.description, created);
-                    } else {
-                      FetchUnstarred(_project.project?.textTranslation?.projectName,
-                        _project.languages[0].name.en,
-                        _project.identification.primary.ag[created].timestamp,
-                        _project.project?.textTranslation?.lastSeen,
-                        _project.project?.textTranslation?.description, created);
+        localForage.getItem('userProfile').then((user) => {
+            if (user === null) {
+              router.push('/projects');
+        } else {
+            const projectsData = fetchProjectsMeta({ currentUser: user?.username });
+            projectsData.then((value) => {
+              if (value) {
+                localForage.setItem('projectmeta', value)
+                .then(() => {
+                  localForage.getItem('projectmeta')
+                  .then((value) => {
+                    if (value) {
+                      value.projects.forEach((_project) => {
+                        const created = Object.keys(_project.identification.primary.ag);
+                        if (_project.project?.textTranslation?.starred === true) {
+                          // FetchStarred(projectName,language, createdAt, updatedAt);
+                          FetchStarred(_project.project?.textTranslation?.projectName,
+                            _project.languages[0].name.en,
+                            _project.identification.primary.ag[created].timestamp,
+                            _project.project?.textTranslation?.lastSeen,
+                            _project.project?.textTranslation?.description, created);
+                        } else {
+                          FetchUnstarred(_project.project?.textTranslation?.projectName,
+                            _project.languages[0].name.en,
+                            _project.identification.primary.ag[created].timestamp,
+                            _project.project?.textTranslation?.lastSeen,
+                            _project.project?.textTranslation?.description, created);
+                        }
+                      });
                     }
+                  }).then(() => {
+                    setStarredRow(starrtedData);
+                    setStarredProjets(starrtedData);
+                    setUnStarredRow(unstarrtedData);
+                    setUnStarredProjets(unstarrtedData);
                   });
-                }
-              }).then(() => {
-                setStarredRow(starrtedData);
-                setStarredProjets(starrtedData);
-                setUnStarredRow(unstarrtedData);
-                setUnStarredProjets(unstarrtedData);
-              });
-            })
-            .catch((err) => {
-              // we got an error
-              throw err;
+                })
+                .catch((err) => {
+                  // we got an error
+                  throw err;
+                });
+              }
             });
-          }
-        });
-      } else {
+        }
+    });
+    } else {
         // const projectName = 'Newcanon based Pro';
         parseFetchProjects(username).then((res) => {
           res.forEach((projects) => {

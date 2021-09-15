@@ -67,6 +67,31 @@ export default function Editor({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [bookName, chapter]);
 
+  const updateBookMarksDB = (bookmarksVerses) => {
+    localforage.getItem('currentProject').then((projectName) => {
+      localforage.getItem('projectmeta').then((value) => {
+        Object?.entries(value).forEach(
+          ([_columnnum, _value]) => {
+            Object?.entries(_value).forEach(
+              ([_rownum, resources]) => {
+                if (resources.identification.name.en === projectName) {
+                  // eslint-disable-next-line no-param-reassign
+                  resources.project.textTranslation.bookMarks = [...bookmarksVerses];
+                  localforage.setItem('projectmeta', value).then((val) => {
+                    localforage.setItem('projectmeta', value).then((val) => {
+                      // eslint-disable-next-line no-console
+                      console.log(val.projects);
+                    });
+                  });
+                }
+              },
+            );
+          },
+        );
+      });
+    });
+  };
+
   const handleBookmarks = (e) => {
     const temp = [...bookmarksVerses];
     if (bookmarksVerses.length !== 0) {
@@ -110,6 +135,7 @@ export default function Editor({
             setBookmarksVerses(temp);
             setBookMarks(true);
     }
+    updateBookMarksDB(bookmarksVerses);
   };
 
   return (

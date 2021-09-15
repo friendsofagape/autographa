@@ -21,10 +21,12 @@ export default function ImportProjectPopUp(props) {
   const [snackBar, setOpenSnackBar] = React.useState(false);
   const [snackText, setSnackText] = React.useState('');
   const [notify, setNotify] = React.useState();
+
   function close() {
     setValid(false);
     closePopUp(false);
   }
+
   const openFileDialogSettingData = async () => {
     logger.debug('ImportProjectPopUp.js', 'Inside openFileDialogSettingData');
     const options = { properties: ['openDirectory'] };
@@ -156,6 +158,7 @@ export default function ImportProjectPopUp(props) {
         setSnackText={setSnackText}
         error={notify}
       />
+
     </>
   );
 }

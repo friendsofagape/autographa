@@ -53,7 +53,9 @@ const ReferenceBible = ({
       [usfmInput],
     );
 
-    useEffect(() => {
+    const timeout = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+useEffect(() => {
       if (isElectron() && refName) {
         const path = require('path');
         const newpath = localStorage.getItem('userPath');
@@ -72,7 +74,11 @@ const ReferenceBible = ({
                         readIngredients({
                           filePath,
                         }).then((res) => {
-                          setUsfmInput(res);
+                          timeout(3000).then(() => {
+                            setUsfmInput(res);
+                          }).finally(() => {
+                            console.log('dooonee');
+                          });
                           setRefernceLoading({
                             status: true,
                             text: 'Reference-burrito loaded succesfully',

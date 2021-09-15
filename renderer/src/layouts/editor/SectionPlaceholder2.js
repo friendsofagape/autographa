@@ -51,6 +51,7 @@ const SectionPlaceholder2 = () => {
       setOpenResource3,
       setOpenResource4,
       applyBooksFilter,
+      setLayout,
     },
   } = useContext(ReferenceContext);
   const {
@@ -101,9 +102,9 @@ const SectionPlaceholder2 = () => {
     const rows = [];
     localforage.getItem('currentProject').then((projectName) => {
     localforage.getItem('projectmeta').then((value) => {
-      Object.entries(value).forEach(
+      Object?.entries(value).forEach(
         ([_columnnum, _value]) => {
-          Object.entries(_value).forEach(
+          Object?.entries(_value).forEach(
             ([_rownum, resources]) => {
               if (resources.identification.name.en === projectName) {
                 refsHistory.push(resources.project.textTranslation.refResources);
@@ -114,10 +115,10 @@ const SectionPlaceholder2 = () => {
       );
     }).then(() => {
       if (refsHistory[0]) {
-        Object.entries(refsHistory[0]).forEach(
+        Object?.entries(refsHistory[0]).forEach(
           ([_columnnum, _value]) => {
           if (_columnnum === '1') {
-            Object.entries(_value).forEach(
+            Object?.entries(_value).forEach(
               ([_rownum, _value]) => {
                 rows.push(_rownum);
                 if (_rownum === '1') {
@@ -165,20 +166,34 @@ const SectionPlaceholder2 = () => {
     } else {
       setHideAddition(true);
     }
-  }, [sectionNum]);
+    if (openResource1 === true && openResource2 === true
+      && openResource3 === true && openResource4 === true) {
+      if (layout === 1) {
+        setLayout(0);
+      }
+    }
+  }, [layout, openResource1, openResource2, openResource3, openResource4, sectionNum, setLayout]);
 
   useEffect(() => {
     const refsHistory = [];
     localforage.getItem('currentProject').then((projectName) => {
     localforage.getItem('projectmeta').then((value) => {
-      Object.entries(value).forEach(
+      Object?.entries(value).forEach(
         ([_columnnum, _value]) => {
-          Object.entries(_value).forEach(
+          Object?.entries(_value).forEach(
             ([_rownum, resources]) => {
               if (resources.identification.name.en === projectName) {
                 refsHistory.push(resources.project.textTranslation);
+                if (sectionNum === 1 || sectionNum === 0) {
+                  if (openResource3
+                    && openResource4) {
+                      resources.project.textTranslation.refResources.splice(1, 1);
+                    }
+                }
                 if (sectionNum === 1) {
-                  resources.project.textTranslation.refResources[1] = {
+                  if (openResource3 === false
+                    || openResource4 === false) {
+                      resources.project.textTranslation.refResources[1] = {
                       1: {
                         resouceId: referenceColumnTwoData1?.selectedResource,
                         language: referenceColumnTwoData1?.languageId,
@@ -186,6 +201,7 @@ const SectionPlaceholder2 = () => {
                         navigation: { book: '1TI', chapter: '1' },
                       },
                     };
+                  }
                 }
                 if (sectionNum === 2) {
                   resources.project.textTranslation.refResources[1] = {
@@ -209,9 +225,9 @@ const SectionPlaceholder2 = () => {
         },
       );
     localforage.setItem('projectmeta', value).then(() => {
-      Object.entries(value).forEach(
+      Object?.entries(value).forEach(
         ([_columnnum, _value]) => {
-          Object.entries(_value).forEach(
+          Object?.entries(_value).forEach(
             ([_rownum, resources]) => {
               if (resources.identification.name.en === projectName) {
                 localforage.getItem('userProfile').then((value) => {

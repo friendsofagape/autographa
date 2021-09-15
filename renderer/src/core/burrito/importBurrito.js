@@ -107,6 +107,7 @@ const importBurrito = async (filePath) => {
               description: '',
               lastSeen: moment().format(),
               refResources: [],
+              bookMarks: [],
             },
           },
         };

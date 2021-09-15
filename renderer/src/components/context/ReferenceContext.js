@@ -1,8 +1,9 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable react/prop-types */
 import { useBibleReference } from 'bible-reference-rcl';
 import React, {
- useState, createContext, useRef,
+ useState, createContext, useRef, useEffect,
 } from 'react';
 import * as localforage from 'localforage';
 
@@ -50,6 +51,26 @@ export default function ReferenceContextProvider({ children }) {
       setFonts(fonts);
     }
 
+    useEffect(() => {
+      localforage.getItem('currentProject').then((projectName) => {
+      localforage.getItem('projectmeta').then((val) => {
+        Object?.entries(val).forEach(
+          ([_columnnum, _value]) => {
+            Object?.entries(_value).forEach(
+              ([_rownum, resources]) => {
+                if (resources.identification.name.en === projectName) {
+                  // eslint-disable-next-line no-param-reassign
+                  setBookmarksVerses(resources.project.textTranslation.bookMarks);
+                }
+              },
+            );
+          },
+        );
+      });
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     const {
    state: {
       chapter,
@@ -70,6 +91,13 @@ export default function ReferenceContextProvider({ children }) {
       initialChapter,
       initialVerse,
     });
+
+    useEffect(() => {
+      localforage.getItem('navigationHistory').then((book) => {
+        onChangeBook(book[0]);
+        onChangeChapter(book[1]);
+      });
+    }, []);
 
     const value = {
       state: {
