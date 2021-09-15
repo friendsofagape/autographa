@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import CustomAutocomplete from '@/modules/projects/CustomAutocomplete';
 import PropTypes from 'prop-types';
-import {
-  UploadIcon,
-} from '@heroicons/react/outline';
-import ImportPopUp from '@/modules/projects/ImportPopUp';
+// import {
+//   UploadIcon,
+// } from '@heroicons/react/outline';
+// import ImportPopUp from '@/modules/projects/ImportPopUp';
 import { ProjectContext } from '../../context/ProjectContext';
 import CustomCanonSpecification from './CustomCanonSpecification';
 import LicencePopover from './LicencePopover';
@@ -90,15 +90,15 @@ export default function AdvancedSettingsDropdown() {
     }
   };
 
-  const [openPopUp, setOpenPopUp] = useState(false);
+  // const [openPopUp, setOpenPopUp] = useState(false);
 
-  function openImportPopUp() {
-    setOpenPopUp(true);
-  }
+  // function openImportPopUp() {
+  //   setOpenPopUp(true);
+  // }
 
-  function closeImportPopUp() {
-    setOpenPopUp(false);
-  }
+  // function closeImportPopUp() {
+  //   setOpenPopUp(false);
+  // }
 
   return (
     <>
@@ -134,17 +134,18 @@ export default function AdvancedSettingsDropdown() {
               <div className="mt-8">
 
                 <div className="flex gap-4">
-                  <div>
+                  {/* <div>
                     <button
                       type="button"
-                      className="flex text-white font-bold text-xs px-2 py-1 rounded-full leading-3 tracking-wider uppercase bg-primary items-center"
+                      className="flex text-white font-bold text-xs px-2 py-1
+                      rounded-full leading-3 tracking-wider uppercase bg-primary items-center"
                       onClick={openImportPopUp}
                     >
                       <UploadIcon className="h-4 mr-2 text-white" />
                       import
                     </button>
                     <ImportPopUp open={openPopUp} closePopUp={closeImportPopUp} />
-                  </div>
+                  </div> */}
                   <div>
                     <BookNumberTag>
                       {(canonSpecification.currentScope).length}

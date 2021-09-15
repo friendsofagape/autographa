@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import * as localforage from 'localforage';
-import { useRouter } from 'next/router';
 import { readRefMeta } from '../../core/reference/readRefMeta';
 import { readRefBurrito } from '../../core/reference/readRefBurrito';
 import { isElectron } from '../../core/handleElectron';
@@ -14,7 +13,6 @@ const advanceSettings = require('../../lib/AdvanceSettings.json');
 export const ProjectContext = React.createContext();
 
 const ProjectContextProvider = ({ children }) => {
-  const router = useRouter();
     const [drawer, setDrawer] = React.useState(false);
     const [scrollLock, setScrollLock] = React.useState(false);
     const [sideTabTitle, setSideTabTitle] = React.useState('New');
@@ -180,9 +178,7 @@ const ProjectContextProvider = ({ children }) => {
         canonSpecification,
         copyright,
       );
-      if (status[0].type === 'success') {
-        router.push('/projects');
-      }
+      return status;
     };
     const resetProjectStates = () => {
       const initialState = {
