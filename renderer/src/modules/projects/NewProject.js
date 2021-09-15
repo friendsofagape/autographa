@@ -5,15 +5,16 @@ import AdvancedSettingsDropdown from '@/components/ProjectsPage/CreateProject/Ad
 import { ProjectContext } from '@/components/context/ProjectContext';
 import TargetLanguagePopover from '@/components/ProjectsPage/CreateProject/TargetLanguagePopover';
 import PopoverProjectType from '@/layouts/editor/PopoverProjectType';
-
+import { SnackBar } from '@/components/SnackBar';
 import LayoutIcon from '@/icons/basil/Outline/Interface/Layout.svg';
 import BullhornIcon from '@/icons/basil/Outline/Communication/Bullhorn.svg';
 import ProcessorIcon from '@/icons/basil/Outline/Devices/Processor.svg';
 // import CheckIcon from '@/icons/basil/Outline/Interface/Check.svg';
 import ImageIcon from '@/icons/basil/Outline/Files/Image.svg';
-
+import { useRouter } from 'next/router';
 // import ImportPopUp from './ImportPopUp';
 import CustomAutocomplete from './CustomAutocomplete';
+import * as logger from '../../logger';
 
 const solutions = [
   {
@@ -76,7 +77,11 @@ export default function NewProject() {
       createProject,
     },
   } = React.useContext(ProjectContext);
-
+  const router = useRouter();
+  const [snackBar, setOpenSnackBar] = React.useState(false);
+  const [snackText, setSnackText] = React.useState('');
+  const [notify, setNotify] = React.useState();
+  const [loading, setLoading] = React.useState(false);
   function getAbbreviation(text) {
     if (typeof text !== 'string' || !text) {
       return '';
@@ -104,6 +109,43 @@ export default function NewProject() {
     }
   };
 
+  const validate = () => {
+    logger.debug('NewProject.js', 'Validating the fields.');
+    setLoading(true);
+    let create = false;
+    if (newProjectFields.projectName && newProjectFields.description && version.name
+      && version.abbreviation) {
+      create = true;
+    } else {
+      create = false;
+    }
+    if (create === true) {
+      logger.debug('NewProject.js', 'Creating new project.');
+      const value = createProject();
+      value.then((status) => {
+        if (status[0].type === 'success') {
+          logger.debug('NewProject.js', 'Project created successfully.');
+          setLoading(false);
+          setNotify('success');
+          setSnackText('Created Successfully');
+          setOpenSnackBar(true);
+          router.push('/projects');
+        } else {
+          logger.debug('NewProject.js', 'Failed to Create Project.');
+          setLoading(false);
+          setNotify('failure');
+          setSnackText('Failed to Create');
+          setOpenSnackBar(true);
+        }
+      });
+    } else {
+      logger.debug('NewProject.js', 'Validation Failed - Fill all the fields.');
+      setLoading(false);
+      setNotify('warning');
+      setSnackText('Fill all the fields');
+      setOpenSnackBar(true);
+    }
+  };
   // const [openPopUp, setOpenPopUp] = useState(false);
 
   // function openImportPopUp() {
@@ -119,73 +161,83 @@ export default function NewProject() {
       title="new project"
       header={BibleHeaderTagDropDown()}
     >
-      <div className=" rounded-md border shadow-sm mt-4 ml-5 mr-5 mb-5">
-        <div className="grid grid-cols-1 lg:grid-cols-3 m-10 gap-5">
-
-          <div>
-            <h4 className="text-xs font-base mb-2 text-primary  tracking-wide leading-4  font-light">Project Name</h4>
-            <input
-              type="text"
-              name="project_name"
-              id=""
-              value={newProjectFields.projectName}
-              onChange={handleProjectFields('projectName')}
-              className="w-52 lg:w-80 block rounded shadow-sm sm:text-sm focus:border-primary border-gray-300"
-            />
-            <h4 className="mt-5 text-xs font-base mb-2 text-primary leading-4 tracking-wide  font-light">Description</h4>
-            <textarea
-              type="text"
-              name="Description"
-              id=""
-              value={version.description}
-              onChange={handleProjectFields('description')}
-              className="bg-white w-52 lg:w-80 h-28  block rounded shadow-sm sm:text-sm focus:border-primary border-gray-300"
-            />
+      {loading === true
+        ? (
+          <div className="h-full items-center justify-center flex">
+            <svg className="animate-spin h-10 w-10 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+            </svg>
           </div>
+          )
+        : (
+          <div className=" rounded-md border shadow-sm mt-4 ml-5 mr-5 mb-5">
+            <div className="grid grid-cols-1 lg:grid-cols-3 m-10 gap-5">
 
-          <div className="col-span-2">
-            <div className="flex gap-5">
               <div>
-                <h4 className="text-xs font-base mb-2 text-primary  tracking-wide leading-4  font-light">Version</h4>
+                <h4 className="text-xs font-base mb-2 text-primary  tracking-wide leading-4  font-light">Project Name</h4>
                 <input
                   type="text"
-                  name="version"
+                  name="project_name"
                   id=""
-                  value={version.name}
-                  onChange={(e) => {
+                  value={newProjectFields.projectName}
+                  onChange={handleProjectFields('projectName')}
+                  className="w-52 lg:w-80 block rounded shadow-sm sm:text-sm focus:border-primary border-gray-300"
+                />
+                <h4 className="mt-5 text-xs font-base mb-2 text-primary leading-4 tracking-wide  font-light">Description</h4>
+                <textarea
+                  type="text"
+                  name="Description"
+                  id=""
+                  value={newProjectFields.description}
+                  onChange={handleProjectFields('description')}
+                  className="bg-white w-52 lg:w-80 h-28  block rounded shadow-sm sm:text-sm focus:border-primary border-gray-300"
+                />
+              </div>
+
+              <div className="col-span-2">
+                <div className="flex gap-5">
+                  <div>
+                    <h4 className="text-xs font-base mb-2 text-primary  tracking-wide leading-4  font-light">Version</h4>
+                    <input
+                      type="text"
+                      name="version"
+                      id=""
+                      value={version.name}
+                      onChange={(e) => {
                     handleVersion(e);
                   }}
-                  className="bg-white w-52 lg:w-80 block rounded shadow-sm sm:text-sm focus:border-primary border-gray-300"
-                />
-              </div>
-              <div>
-                <h4 className="text-xs font-base mb-2 text-primary  tracking-wide leading-4  font-light">Abbreviation</h4>
-                <input
-                  type="text"
-                  name="version_abbreviated"
-                  id=""
-                  value={version.abbreviation}
-                  onChange={(e) => {
+                      className="bg-white w-52 lg:w-80 block rounded shadow-sm sm:text-sm focus:border-primary border-gray-300"
+                    />
+                  </div>
+                  <div>
+                    <h4 className="text-xs font-base mb-2 text-primary  tracking-wide leading-4  font-light">Abbreviation</h4>
+                    <input
+                      type="text"
+                      name="version_abbreviated"
+                      id=""
+                      value={version.abbreviation}
+                      onChange={(e) => {
                     setVersion({ ...version, abbreviation: e.target.value });
                   }}
-                  className="bg-white w-24 block rounded  sm:text-sm focus:border-primary border-gray-300"
-                />
-              </div>
-            </div>
-            <div className="flex gap-5 mt-5">
-              <div className="relative">
-                <div className="absolute top-0 right-0">
-                  <TargetLanguageTag>
-                    {language.scriptDirection ? language.scriptDirection : 'LTR'}
-                  </TargetLanguageTag>
+                      className="bg-white w-24 block rounded  sm:text-sm focus:border-primary border-gray-300"
+                    />
+                  </div>
                 </div>
-                <CustomAutocomplete label="Target Langauge" list={languages} setValue={setValue} />
-              </div>
-              <div className="mt-8">
-                <TargetLanguagePopover />
-              </div>
-            </div>
-            {/* <div className="mt-5">
+                <div className="flex gap-5 mt-5">
+                  <div className="relative">
+                    <div className="absolute top-0 right-0">
+                      <TargetLanguageTag>
+                        {language.scriptDirection ? language.scriptDirection : 'LTR'}
+                      </TargetLanguageTag>
+                    </div>
+                    <CustomAutocomplete label="Target Langauge" list={languages} setValue={setValue} />
+                  </div>
+                  <div className="mt-8">
+                    <TargetLanguagePopover />
+                  </div>
+                </div>
+                {/* <div className="mt-5">
               <button
                 type="button"
                 className="rounded-full px-3 py-1 bg-primary hover:bg-black
@@ -196,22 +248,30 @@ export default function NewProject() {
               </button>
               <ImportPopUp open={openPopUp} closePopUp={closeImportPopUp} />
             </div> */}
-          </div>
+              </div>
 
-          <div>
-            <AdvancedSettingsDropdown />
-            <div>
-              <button
-                type="button"
-                className="w-40 h-10 my-5 bg-success leading-loose rounded shadow text-xs font-base text-white tracking-wide font-light uppercase"
-                onClick={() => createProject()}
-              >
-                Create Project
-              </button>
+              <div>
+                <AdvancedSettingsDropdown />
+                <div>
+                  <button
+                    type="button"
+                    className="w-40 h-10 my-5 bg-success leading-loose rounded shadow text-xs font-base text-white tracking-wide font-light uppercase"
+                    onClick={() => validate()}
+                  >
+                    Create Project
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
+      )}
+      <SnackBar
+        openSnackBar={snackBar}
+        snackText={snackText}
+        setOpenSnackBar={setOpenSnackBar}
+        setSnackText={setSnackText}
+        error={notify}
+      />
     </ProjectsLayout>
   );
 }
