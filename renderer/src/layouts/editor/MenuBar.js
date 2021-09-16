@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-unused-vars */
 import Link from 'next/link';
-import { Fragment, useContext, useState } from 'react';
+import React, { Fragment, useContext, useState } from 'react';
 import {
   Disclosure, Menu, Popover, Transition,
 } from '@headlessui/react';
@@ -22,10 +22,11 @@ import ExpandIcon from '@/icons/basil/Outline/Interface/Expand.svg';
 import LogoIcon from '@/icons/logo.svg';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import { ProjectContext } from '@/components/context/ProjectContext';
+import { AuthenticationContext } from '@/components/Login/AuthenticationContextProvider';
 import PopoverProjectType from './PopoverProjectType';
 import styles from './MenuBar.module.css';
 
-const profile = ['Your Profile', 'Sign out'];
+const profile = ['Your Profile'];
 
 const solutions = [
   {
@@ -76,6 +77,7 @@ export default function TopMenuBar() {
 
   const _projectnamewithId = selectedProject;
   const projectname = _projectnamewithId?.split('_');
+  const { action: { logout } } = React.useContext(AuthenticationContext);
 
   function openSideBars() {
     setOpenSideBar(true);
@@ -217,28 +219,43 @@ export default function TopMenuBar() {
                           className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
                         >
                           {profile.map((item) => (
-                            <Menu.Item key={item}>
-                              {({ active }) => (
-                                <Link href="/profile">
-                                  <a
-                                    href="#profile"
-                                    className={classNames(
+                            <>
+                              <Menu.Item key={item}>
+                                {({ active }) => (
+                                  <Link href="/profile">
+                                    <a
+                                      href="#profile"
+                                      className={classNames(
                                         active ? 'bg-gray-100' : '',
                                         'block px-4 py-2 text-sm text-gray-700',
                                       )}
-                                  >
-                                    {item}
-                                  </a>
-                                </Link>
+                                    >
+                                      {item}
+                                    </a>
+                                  </Link>
                                 )}
-                            </Menu.Item>
+                              </Menu.Item>
+                              <Menu.Item key="Sign out">
+                                {({ active }) => (
+                                  <a
+                                    href="#profile"
+                                    onClick={() => logout()}
+                                    className={classNames(
+                                          active ? 'bg-gray-100' : '',
+                                          'block px-4 py-2 text-sm text-gray-700',
+                                        )}
+                                  >
+                                    Sign out
+                                  </a>
+                                  )}
+                              </Menu.Item>
+                            </>
                             ))}
                         </Menu.Items>
                       </Transition>
                     </>
                     )}
                 </Menu>
-
               </div>
             </div>
 

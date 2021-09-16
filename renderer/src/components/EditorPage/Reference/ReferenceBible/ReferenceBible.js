@@ -68,6 +68,7 @@ useEffect(() => {
         localforage.getItem('refBibleBurrito')
         .then((refs) => {
           refs.forEach((ref) => {
+            setIsLoading(true);
             if (ref.value.languages[0].name.en === languageId) {
                 Object.entries(ref.value.ingredients).forEach(
                   ([key, _ingredients]) => {
@@ -80,7 +81,6 @@ useEffect(() => {
                         readIngredients({
                           filePath,
                         }).then((res) => {
-                          setIsLoading(true);
                           timeout(2000).then(() => {
                             setUsfmInput(res);
                           }).finally(() => {
@@ -94,22 +94,23 @@ useEffect(() => {
                             text: 'Reference-burrito loaded succesfully',
                           });
                           setCounter(4);
-                        }).then(() => {
-                            localforage.getItem('notification').then((value) => {
-                                const temp = [...value];
-                                if (temp.length !== 0) {
-                                  temp.push({
-                                    title: 'Resources',
-                                    text: `successfully loaded ${refName} files`,
-                                    type: 'success',
-                                    time: moment().format(),
-                                    hidden: true,
-                                });
-                                  setNotifications(temp);
-                                  setActiveNotificationCount(activeNotificationCount + 1);
-                                }
-                              });
                         });
+                        // .then(() => {
+                        //     localforage.getItem('notification').then((value) => {
+                        //         const temp = [...value];
+                        //         if (temp.length !== 0) {
+                        //           temp.push({
+                        //             title: 'Resources',
+                        //             text: `successfully loaded ${refName} files`,
+                        //             type: 'success',
+                        //             time: moment().format(),
+                        //             hidden: true,
+                        //         });
+                        //           setNotifications(temp);
+                        //           setActiveNotificationCount(activeNotificationCount + 1);
+                        //         }
+                        //       });
+                        // });
                       }
                     }
                     // console.log(key, value),

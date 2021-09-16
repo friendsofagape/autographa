@@ -1,5 +1,7 @@
 import React, { Fragment, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
+import AddIcon from '@/illustrations/add-button.svg';
+import EditIcon from '@/illustrations/edit.svg';
 import { ProjectContext } from '../../context/ProjectContext';
 
 export default function TargetLanguagePopover() {
@@ -54,9 +56,9 @@ export default function TargetLanguagePopover() {
           type="button"
           onClick={() => { openLanguageNav('add'); openModal(); }}
         >
-          <img
-            src="illustrations/add-button.svg"
-            alt="add button"
+          <AddIcon
+            className="h-8 w-8"
+            aria-hidden="true"
           />
 
         </button>
@@ -65,9 +67,9 @@ export default function TargetLanguagePopover() {
           className="focus:outline-none"
           onClick={() => { openLanguageNav('edit'); openModal(); }}
         >
-          <img
-            src="illustrations/edit.svg"
-            alt="edit button"
+          <EditIcon
+            className="h-8 w-8"
+            aria-hidden="true"
           />
         </button>
       </div>

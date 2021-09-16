@@ -2,6 +2,14 @@ import ProjectsLayout from '@/layouts/projects/Layout';
 import { PropTypes } from 'prop-types';
 import React from 'react';
 import * as localForage from 'localforage';
+
+import ClearIcon from '@/illustrations/clear-button.svg';
+import GreencheckIcon from '@/illustrations/green-check.svg';
+import SteptwoIcon from '@/illustrations/step-two.svg';
+import StepthreeIcon from '@/illustrations/step-three.svg';
+import StepfourIcon from '@/illustrations/step-four.svg';
+import StepfiveIcon from '@/illustrations/step-five.svg';
+import EditpasswordIcon from '@/illustrations/edit-password.svg';
 import { saveProfile } from '../../core/projects/handleProfile';
 import CustomAutocomplete from './CustomAutocomplete';
 import { isElectron } from '../../core/handleElectron';
@@ -36,10 +44,9 @@ function InputBar({ title }) {
             onClick={clearText}
             type="button"
           >
-            <img
-              className=" w-5 h-5 m-2 "
-              src="/illustrations/clear-button.svg"
-              alt="xbutton"
+            <ClearIcon
+              className="w-5 h-5 m-2"
+              aria-hidden="true"
             />
           </button>
         </div>
@@ -93,43 +100,41 @@ function InputBar({ title }) {
             <div className="w-60  bg-secondary ">
               <div className="grid grid-rows-5 p-8 gap-16 pb-20 mr-20">
                 <div className="grid grid-cols-2">
-                  <img
-                    className=""
-                    src="/illustrations/green-check.svg"
-                    alt="Workflow"
+                  <GreencheckIcon
+                    className="w-7 h-7"
+                    aria-hidden="true"
                   />
                   <div className="text-white tracking-wider pl-3"> Name</div>
                 </div>
 
                 <div className="grid grid-cols-2">
-                  <img
-                    className="flex-shrink-0"
-                    src="/illustrations/step-two.svg"
-                    alt="Workflow1"
+                  <SteptwoIcon
+                    className="w-7 h-7"
+                    aria-hidden="true"
                   />
                   <div className="text-white tracking-wider  pl-3"> Email</div>
                 </div>
 
                 <div className="grid grid-cols-2">
-                  <img
-                    src="/illustrations/step-three.svg"
-                    alt="Workflow2"
+                  <StepthreeIcon
+                    className="w-7 h-7"
+                    aria-hidden="true"
                   />
                   <span className="text-white tracking-wider pl-3 "> Password</span>
                 </div>
 
                 <div className="grid grid-cols-2">
-                  <img
-                    src="/illustrations/step-four.svg"
-                    alt="Workflow3"
+                  <StepfourIcon
+                    className="w-7 h-7"
+                    aria-hidden="true"
                   />
                   <span className="text-white tracking-wider  pl-3"> Organisation</span>
                 </div>
 
                 <div className="grid grid-cols-2">
-                  <img
-                    src="/illustrations/step-five.svg"
-                    alt="Workflow4"
+                  <StepfiveIcon
+                    className="w-7 h-7"
+                    aria-hidden="true"
                   />
                   <span className="text-white tracking-wider pl-3  "> Region</span>
                 </div>
@@ -200,10 +205,9 @@ function InputBar({ title }) {
                       />
                       <button type="button" className="pt-1">
 
-                        <img
-                          className=""
-                          src="/illustrations/edit-password.svg"
-                          alt="edit password"
+                        <EditpasswordIcon
+                          className="w-7 h-7"
+                          aria-hidden="true"
                         />
                       </button>
 

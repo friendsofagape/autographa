@@ -5,6 +5,9 @@ import PropTypes from 'prop-types';
 //   UploadIcon,
 // } from '@heroicons/react/outline';
 // import ImportPopUp from '@/modules/projects/ImportPopUp';
+import ArrowDownIcon from '@/illustrations/arrow-down.svg';
+import EditIcon from '@/illustrations/edit.svg';
+
 import { ProjectContext } from '../../context/ProjectContext';
 import CustomCanonSpecification from './CustomCanonSpecification';
 import LicencePopover from './LicencePopover';
@@ -109,10 +112,9 @@ export default function AdvancedSettingsDropdown() {
           type="button"
         >
           <h3>Advanced Settings</h3>
-          <img
-            className="justify-self-end mt-1"
-            src="illustrations/arrow-down.svg"
-            alt=""
+          <ArrowDownIcon
+            className="justify-self-end mt-1 h-3 w-3"
+            aria-hidden="true"
           />
         </button>
         {!isShow
@@ -175,10 +177,9 @@ export default function AdvancedSettingsDropdown() {
                         type="button"
                         className="focus:outline-none pt-8"
                       >
-                        <img
-                          src="illustrations/edit.svg"
-                          alt="add button"
-                          className="w-10 h-10"
+                        <EditIcon
+                          className="h-8 w-8"
+                          aria-hidden="true"
                         />
                       </button>
                     </div>

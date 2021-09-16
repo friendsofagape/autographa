@@ -10,6 +10,7 @@ import PauseIcon from '@/icons/basil/Outline/Media/Pause.svg';
 import Waveform from '@/icons/waveform.svg';
 
 import { TrashIcon, MicrophoneIcon, VolumeUpIcon } from '@heroicons/react/outline';
+import AutographaContextProvider from '@/components/context/AutographaContext';
 
 const stories = [
   {
@@ -67,14 +68,15 @@ const stories = [
 export default function ReferenceSelector() {
   return (
     <AuthenticationContextProvider>
-      <ProjectContextProvider>
-        <ReferenceContextProvider>
-          <CustomNavigationContextProvider>
-            <EditorLayout>
-              <div className="grid grid-cols-3 h-editor">
-                <div className="bg-white col-span-2 m-3 rounded-md shadow overflow-hidden">
-                  <div className="px-3 py-2 rounded-md shadow overflow-y-auto h-full no-scrollbars">
-                    {
+      <AutographaContextProvider>
+        <ProjectContextProvider>
+          <ReferenceContextProvider>
+            <CustomNavigationContextProvider>
+              <EditorLayout>
+                <div className="grid grid-cols-3 h-editor">
+                  <div className="bg-white col-span-2 m-3 rounded-md shadow overflow-hidden">
+                    <div className="px-3 py-2 rounded-md shadow overflow-y-auto h-full no-scrollbars">
+                      {
                       stories.map((story) => (
                         <div key={story.id} className="flex gap-5 mb-5 justify-center items-center">
                           <img className="w-1/4 rounded-lg" src={story.img} alt="" />
@@ -84,11 +86,11 @@ export default function ReferenceSelector() {
                         </div>
                       ))
                     }
+                    </div>
                   </div>
-                </div>
-                <div className="bg-white m-3 ml-0 border-b-2 border-secondary rounded-md shadow overflow-hidden">
-                  <Editor>
-                    {
+                  <div className="bg-white m-3 ml-0 border-b-2 border-secondary rounded-md shadow overflow-hidden">
+                    <Editor>
+                      {
                       stories.map((story) => (
                         <>
                           <div key={story.id} className={`relative px-3 py-4 border-b border-gray-100 justify-center items-center hover:bg-light cursor-pointer ${story.id === 2 && 'bg-light'}`}>
@@ -160,13 +162,14 @@ export default function ReferenceSelector() {
                         </>
                       ))
                     }
-                  </Editor>
+                    </Editor>
+                  </div>
                 </div>
-              </div>
-            </EditorLayout>
-          </CustomNavigationContextProvider>
-        </ReferenceContextProvider>
-      </ProjectContextProvider>
+              </EditorLayout>
+            </CustomNavigationContextProvider>
+          </ReferenceContextProvider>
+        </ProjectContextProvider>
+      </AutographaContextProvider>
     </AuthenticationContextProvider>
   );
 }
