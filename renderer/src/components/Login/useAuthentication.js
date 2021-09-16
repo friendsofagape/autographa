@@ -54,7 +54,7 @@ function useAuthentication() {
     localForage.removeItem('sessionToken');
     localForage.removeItem('userProfile');
     localForage.setItem('appMode','online');
-    router.push('/index')
+    router.push('/');
   };
   const getConfig = (flowId) => {
     logger.debug('useAuthentication.js', 'getConfig fetch the config from the Kratos using flowID');

@@ -83,7 +83,7 @@ export default function BibleNavigation(props) {
     if (isElectron()) {
       localforage.getItem('refBibleBurrito')
         .then((refs) => {
-          refs.forEach((ref) => {
+          refs?.forEach((ref) => {
             if (languageId !== null) {
             if (ref.value.languages[0].tag === languageId) {
               const supportedBooks = [];
