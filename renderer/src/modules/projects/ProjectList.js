@@ -88,6 +88,7 @@ export default function ProjectList() {
     <>
       <ProjectsLayout
         title="Projects"
+        isImport
         header={(
           <SearchTags
             contentList1={starredProjects}

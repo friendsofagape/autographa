@@ -95,7 +95,7 @@ function InputBar({ title }) {
       // }
     };
       return (
-        <ProjectsLayout title="personal information">
+        <ProjectsLayout title="personal information" isImport>
           <div className=" bg-gray-100 flex">
             <div className="w-60  bg-secondary ">
               <div className="grid grid-rows-5 p-8 gap-16 pb-20 mr-20">
