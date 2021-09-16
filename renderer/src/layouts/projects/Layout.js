@@ -13,6 +13,7 @@ export default function ProjectsLayout(props) {
     title,
     header,
     isTwoCol,
+    isImport,
     colOne,
     colTwo,
   } = props;
@@ -44,16 +45,22 @@ export default function ProjectsLayout(props) {
                   <h1 className="text-xl font-bold text-gray-900 uppercase tracking-wider">{title}</h1>
                   {header}
                 </div>
-                <button
-                  type="button"
-                  className="flex text-white ml-5 font-bold text-xs px-3 py-2 rounded-full
+
+                {isImport
+                  && (
+                    <>
+                      <button
+                        type="button"
+                        className="flex text-white ml-5 font-bold text-xs px-3 py-2 rounded-full
                   leading-3 tracking-wider uppercase bg-primary items-center"
-                  onClick={openImportPopUp}
-                >
-                  <UploadIcon className="h-4 mr-2 text-white" />
-                  import
-                </button>
-                <ImportProjectPopUp open={openPopUp} closePopUp={closeImportPopUp} />
+                        onClick={openImportPopUp}
+                      >
+                        <UploadIcon className="h-4 mr-2 text-white" />
+                        import
+                      </button>
+                      <ImportProjectPopUp open={openPopUp} closePopUp={closeImportPopUp} />
+                    </>
+                  )}
 
               </div>
             )
@@ -84,6 +91,7 @@ ProjectsLayout.propTypes = {
   title: PropTypes.string.isRequired,
   header: PropTypes.element,
   isTwoCol: PropTypes.bool,
+  isImport: PropTypes.bool,
   colOne: PropTypes.element,
   colTwo: PropTypes.element,
 };
