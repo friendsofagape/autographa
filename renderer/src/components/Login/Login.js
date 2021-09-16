@@ -1,6 +1,11 @@
 import React, { useEffect } from 'react';
 // import 'tailwindcss/tailwind.css';
-
+import LogoIcon from '@/icons/logo.svg';
+import GroupIcon from '@/illustrations/group.svg';
+import QuoteIcon from '@/illustrations/quote.svg';
+import SittingIcon from '@/illustrations/sitting.svg';
+import VectorIcon from '@/illustrations/vector-one.svg';
+import HalfMoonIcon from '@/illustrations/half-moon.svg';
 import * as localForage from 'localforage';
 import { useRouter } from 'next/router';
 import * as logger from '../../logger';
@@ -197,16 +202,25 @@ export default function Login() {
           <div className="grid grid-rows-1 justify-items-center relative">
             <div className="justify-center">
               <div className="flex gap-3 ">
-                <img src="/Logo.svg" alt="logo" />
+                <LogoIcon
+                  className="h-5 w-5 text-white group-hover:text-white"
+                  aria-hidden="true"
+                />
                 <div className="text-white uppercase">AUTOGRAPHA</div>
                 <div className="text-primary font-bold">2.0</div>
               </div>
               <div className="pt-8 pl-72">
-                <img src="/illustrations/group.svg" alt="Group" />
+                <GroupIcon
+                  className="h-20 w-20 text-white group-hover:text-white"
+                  aria-hidden="true"
+                />
               </div>
               <div className="w-96 pt-16 mb-10 text-xl text-white leading-9">
                 <div className="pb-5">
-                  <img src="/illustrations/quote.svg" alt="quote" />
+                  <QuoteIcon
+                    className="h-10 w-10 text-white group-hover:text-white"
+                    aria-hidden="true"
+                  />
                 </div>
 
                 Autographa 2.0 is a completely new way for editing scripture
@@ -220,16 +234,25 @@ export default function Login() {
               </div>
               <div className="flex pb-20">
                 <div className="pl-24">
-                  <img className="w-56 h-80" src="/illustrations/sitting.svg" alt="Sitting" />
+                  <SittingIcon
+                    className="h-60 w-60 text-white group-hover:text-white"
+                    aria-hidden="true"
+                  />
                 </div>
                 <div>
-                  <img className="pl-10" src="/illustrations/vector-one.svg" alt="VectorOne" />
+                  <VectorIcon
+                    className="h-60 w-60 text-white group-hover:text-white"
+                    aria-hidden="true"
+                  />
                 </div>
               </div>
             </div>
           </div>
           <div className=" bottom-0 pt-10 absolute left-5">
-            <img src="/illustrations/half-moon.svg" alt="logo" />
+            <HalfMoonIcon
+              className="h-10 w-10 text-white group-hover:text-white"
+              aria-hidden="true"
+            />
           </div>
         </div>
         {/* <div className="2xl:ml-40 pt-72 2xl:pl-5 pl-14 space-x-14 sm:space-y-2

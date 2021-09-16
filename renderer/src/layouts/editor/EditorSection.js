@@ -6,6 +6,10 @@ import ResourcesPopUp from '@/components/EditorPage/Reference/ResourcesPopUp';
 
 import { ViewGridAddIcon } from '@heroicons/react/outline';
 import { ProjectContext } from '@/components/context/ProjectContext';
+import AddSectionIcon from '@/illustrations/add-section.svg';
+import SettingsIcon from '@/illustrations/settings-small.svg';
+import MinimizeIcon from '@/illustrations/minimize.svg';
+import CloseIcon from '@/illustrations/small-close-button.svg';
 
 export default function EditorSection({
   title,
@@ -167,26 +171,25 @@ export default function EditorSection({
               )}
             <div className="flex bg-gray-300 absolute h-full -right-0 rounded-tr invisible group-hover:visible ">
               <button onClick={showResourcesPanel} type="button">
-                <img
-                  src="/illustrations/settings-small.svg"
-                  alt="/"
-                  className="py-2 px-2"
+                <SettingsIcon
+                  strokeCurrent="none"
+                  className="h-4 w-8 text-dark group-hover:text-white"
                 />
               </button>
               <button
                 onClick={sectionContent}
                 type="button"
               >
-                <img
-                  className="px-2 py-2"
-                  src="/illustrations/minimize.svg"
-                  alt=""
+                <MinimizeIcon
+                  strokeCurrent="none"
+                  className="h-4 w-8 text-dark group-hover:text-white"
                 />
               </button>
               <button type="button" onClick={removeSection}>
-                <img
-                  src="/illustrations/small-close-button.svg"
-                  alt=""
+                <CloseIcon
+                  fill="none"
+                  strokeCurrent="none"
+                  className="h-7 w-7 text-dark group-hover:text-white"
                 />
               </button>
             </div>
@@ -220,19 +223,18 @@ export default function EditorSection({
               : children
             }
             {hideAddition && (
-              <span
-                tabIndex={-42}
+              <button
+                type="button"
                 onClick={addRow}
-                role="button"
               >
-                <img
+                <AddSectionIcon
                   title="Add Section"
-                  style={{ marginBottom: '0' }}
-                  className="absolute bottom-0 -right-0 invisible group-hover:visible"
-                  src="/illustrations/add-section.svg"
-                  alt=""
+                  // fill="none"
+                  strokeCurrent="none"
+                  className="h-10 w-10 text-dark absolute bottom-0 -right-0 invisible group-hover:visible"
+                  aria-hidden="true"
                 />
-              </span>
+              </button>
             )}
           </div>
         )

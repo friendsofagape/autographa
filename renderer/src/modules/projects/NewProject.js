@@ -13,6 +13,7 @@ import ProcessorIcon from '@/icons/basil/Outline/Devices/Processor.svg';
 import ImageIcon from '@/icons/basil/Outline/Files/Image.svg';
 import { useRouter } from 'next/router';
 // import ImportPopUp from './ImportPopUp';
+import ArrowDownIcon from '@/illustrations/arrow-down.svg';
 import CustomAutocomplete from './CustomAutocomplete';
 import * as logger from '../../logger';
 
@@ -52,10 +53,9 @@ function BibleHeaderTagDropDown() {
     <PopoverProjectType items={solutions}>
       <button type="button" className="flex text-white ml-5 font-bold text-xs px-3 py-2 rounded-full leading-3 tracking-wider uppercase bg-primary">
         <div>Bible</div>
-        <img
-          className=" w-3 h-3 ml-2"
-          src="illustrations/down-arrow.svg"
-          alt="down arrow"
+        <ArrowDownIcon
+          className="w-3 h-3 ml-2"
+          aria-hidden="true"
         />
       </button>
     </PopoverProjectType>

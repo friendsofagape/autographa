@@ -260,7 +260,9 @@ export default function ProjectList() {
                                 </td>
                                 <td className="px-4 py-4 whitespace-nowrap">
                                   <button
-                                    // onClick={}
+                                    onClick={
+                                        (event) => handleSelectProject(event, project.name, project.id[0])
+                                    }
                                     type="button"
                                   >
                                     <ExternalLinkIcon className="h-5 w-5 text-primary" aria-hidden="true" />

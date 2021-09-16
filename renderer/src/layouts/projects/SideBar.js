@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import LogoIcon from '@/icons/logo.svg';
 
 import ProjectsIcon from '@/icons/projects.svg';
 import NewProjectIcon from '@/icons/new.svg';
@@ -8,9 +9,8 @@ export default function SideBar() {
   return (
     <div className="w-28 bg-white shadow min-h-screen">
       <div className="grid justify-items-center items-center h-16 border border-b-1">
-        <img
+        <LogoIcon
           className="h-8 w-8"
-          src="/icons/logo.svg"
           alt="Workflow"
         />
       </div>
