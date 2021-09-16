@@ -88,14 +88,9 @@ export default function ColumnOne(props) {
         <button
           type="button"
           onClick={addRow}
-          className="h-10 w-10 absolute bottom-0 -right-0 invisible group-hover:visible group-last:hidden"
+          className="absolute p-2 bg-primary rounded bottom-0 -right-0 invisible group-hover:visible group-last:hidden"
         >
-          <Image
-            title="Add Section"
-            src="/illustrations/add-section.svg"
-            alt=""
-            layout="fill"
-          />
+          <ViewGridAddIcon className="h-6 w-6 text-white" aria-hidden="true" />
         </button>
 
       </div>

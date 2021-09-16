@@ -2,14 +2,11 @@
 import PropTypes from 'prop-types';
 import React, { useContext, useEffect, useState } from 'react';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
+import { ProjectContext } from '@/components/context/ProjectContext';
 import ResourcesPopUp from '@/components/EditorPage/Reference/ResourcesPopUp';
 
-import { ViewGridAddIcon } from '@heroicons/react/outline';
-import { ProjectContext } from '@/components/context/ProjectContext';
-import AddSectionIcon from '@/illustrations/add-section.svg';
-import SettingsIcon from '@/illustrations/settings-small.svg';
 import MinimizeIcon from '@/illustrations/minimize.svg';
-import CloseIcon from '@/illustrations/small-close-button.svg';
+import { ViewGridAddIcon, CogIcon, XIcon } from '@heroicons/react/outline';
 
 export default function EditorSection({
   title,
@@ -170,10 +167,13 @@ export default function EditorSection({
               </div>
               )}
             <div className="flex bg-gray-300 absolute h-full -right-0 rounded-tr invisible group-hover:visible ">
-              <button onClick={showResourcesPanel} type="button">
-                <SettingsIcon
-                  strokeCurrent="none"
-                  className="h-4 w-8 text-dark group-hover:text-white"
+              <button
+                type="button"
+                onClick={showResourcesPanel}
+                className="px-2"
+              >
+                <CogIcon
+                  className="h-5 w-5 text-dark"
                 />
               </button>
               <button
@@ -185,11 +185,13 @@ export default function EditorSection({
                   className="h-4 w-8 text-dark group-hover:text-white"
                 />
               </button>
-              <button type="button" onClick={removeSection}>
-                <CloseIcon
-                  fill="none"
-                  strokeCurrent="none"
-                  className="h-7 w-7 text-dark group-hover:text-white"
+              <button
+                type="button"
+                onClick={removeSection}
+                className="px-2"
+              >
+                <XIcon
+                  className="h-5 w-5 text-dark"
                 />
               </button>
             </div>
@@ -226,12 +228,10 @@ export default function EditorSection({
               <button
                 type="button"
                 onClick={addRow}
+                className="absolute p-2 bg-primary rounded bottom-0 -right-0 invisible group-hover:visible"
               >
-                <AddSectionIcon
-                  title="Add Section"
-                  // fill="none"
-                  strokeCurrent="none"
-                  className="h-10 w-10 text-dark absolute bottom-0 -right-0 invisible group-hover:visible"
+                <ViewGridAddIcon
+                  className="h-6 w-6 text-white"
                   aria-hidden="true"
                 />
               </button>

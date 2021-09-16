@@ -1,8 +1,7 @@
 import React, { Fragment, useState } from 'react';
 import { Dialog, Transition, Switch } from '@headlessui/react';
 
-import AddIcon from '@/illustrations/add-button.svg';
-import EditIcon from '@/illustrations/edit.svg';
+import { PlusIcon, PencilAltIcon } from '@heroicons/react/outline';
 
 import { BlockEditable } from 'markdown-translatable/dist/components';
 import { ProjectContext } from '../../context/ProjectContext';
@@ -61,16 +60,22 @@ export default function LicencePopover() {
         <button
           type="button"
           onClick={() => { openlicenceNav('add'); openModal(); }}
-          className="focus:outline-none"
+          className="focus:outline-none bg-primary h-8 w-8 flex items-center justify-center rounded-full"
         >
-          <AddIcon className="h-7 w-7" aria-hidden="true" />
+          <PlusIcon
+            className="h-5 w-5 text-white"
+            aria-hidden="true"
+          />
         </button>
         <button
           type="button"
           onClick={() => { openlicenceNav('edit'); openModal(); }}
-          className="focus:outline-none"
+          className="focus:outline-none bg-primary h-8 w-8 flex items-center justify-center rounded-full"
         >
-          <EditIcon className="h-7 w-7" aria-hidden="true" />
+          <PencilAltIcon
+            className="h-5 w-5 text-white"
+            aria-hidden="true"
+          />
         </button>
       </div>
 
