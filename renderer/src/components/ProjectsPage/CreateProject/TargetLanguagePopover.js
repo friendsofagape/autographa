@@ -1,5 +1,7 @@
 import React, { Fragment, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
+import { PlusIcon, PencilAltIcon } from '@heroicons/react/outline';
+
 import { ProjectContext } from '../../context/ProjectContext';
 
 export default function TargetLanguagePopover() {
@@ -50,24 +52,24 @@ export default function TargetLanguagePopover() {
     <>
       <div className="flex gap-3">
         <button
-          className="focus:outline-none"
           type="button"
+          className="focus:outline-none bg-primary h-8 w-8 flex items-center justify-center rounded-full"
           onClick={() => { openLanguageNav('add'); openModal(); }}
         >
-          <img
-            src="illustrations/add-button.svg"
-            alt="add button"
+          <PlusIcon
+            className="h-5 w-5 text-white"
+            aria-hidden="true"
           />
 
         </button>
         <button
           type="button"
-          className="focus:outline-none"
+          className="focus:outline-none bg-primary h-8 w-8 flex items-center justify-center rounded-full"
           onClick={() => { openLanguageNav('edit'); openModal(); }}
         >
-          <img
-            src="illustrations/edit.svg"
-            alt="edit button"
+          <PencilAltIcon
+            className="h-5 w-5 text-white"
+            aria-hidden="true"
           />
         </button>
       </div>

@@ -2,6 +2,7 @@ import AuthenticationContextProvider from '@/components/Login/AuthenticationCont
 import ProjectContextProvider from '@/components/context/ProjectContext';
 import ReferenceContextProvider from '@/components/context/ReferenceContext';
 import CustomNavigationContextProvider from '@/components/context/CustomNavigationContext';
+import AutographaContextProvider from '@/components/context/AutographaContext';
 import EditorLayout from '@/layouts/editor/Layout';
 import Editor from '@/modules/editor/Editor';
 
@@ -10,7 +11,6 @@ import PauseIcon from '@/icons/basil/Outline/Media/Pause.svg';
 import Waveform from '@/icons/waveform.svg';
 
 import { TrashIcon, MicrophoneIcon, VolumeUpIcon } from '@heroicons/react/outline';
-import AutographaContextProvider from '@/components/context/AutographaContext';
 
 const stories = [
   {
@@ -77,91 +77,89 @@ export default function ReferenceSelector() {
                   <div className="bg-white col-span-2 m-3 rounded-md shadow overflow-hidden">
                     <div className="px-3 py-2 rounded-md shadow overflow-y-auto h-full no-scrollbars">
                       {
-                      stories.map((story) => (
-                        <div key={story.id} className="flex gap-5 mb-5 justify-center items-center">
-                          <img className="w-1/4 rounded-lg" src={story.img} alt="" />
-                          <p className="text-sm text-gray-600">
-                            {story.text}
-                          </p>
-                        </div>
-                      ))
-                    }
+                        stories.map((story) => (
+                          <div key={story.id} className="flex gap-5 mb-5 justify-center items-center">
+                            <img className="w-1/4 rounded-lg" src={story.img} alt="" />
+                            <p className="text-sm text-gray-600">
+                              {story.text}
+                            </p>
+                          </div>
+                        ))
+                      }
                     </div>
                   </div>
                   <div className="bg-white m-3 ml-0 border-b-2 border-secondary rounded-md shadow overflow-hidden">
                     <Editor>
                       {
-                      stories.map((story) => (
-                        <>
-                          <div key={story.id} className={`relative px-3 py-4 border-b border-gray-100 justify-center items-center hover:bg-light cursor-pointer ${story.id === 2 && 'bg-light'}`}>
-                            <p className="text-sm text-gray-600">
-                              {story.text}
-                            </p>
-                            <button
-                              type="button"
-                              className={`p-1 w-6 h-6 flex items-center justify-center absolute
-                              bottom-3 right-3 rounded-md hover:bg-primary hover:text-white
-                              ${story.id === 2
-                              ? 'bg-primary text-white'
-                              : story.id === 4 ? 'bg-success text-black'
-                              : 'text-primary bg-gray-200' }
-                              `}
-                            >
-                              <VolumeUpIcon
-                                aria-hidden="true"
-                              />
-                            </button>
-                          </div>
-                          {
-                            story.id === 2
-                            && (
-                              <div className="flex p-2 px-4 justify-between items-center bg-black text-white">
-                                <div className="text-primary">
-                                  <Waveform
-                                    fill="currentColor"
-                                    className="w-full h-1/2"
-                                  />
-                                </div>
-                                <div className="flex gap-5">
-
-                                  <button type="button" className="p-2 bg-dark rounded-md hover:bg-error">
-                                    <MicrophoneIcon
-                                      className="w-5 h-5"
-                                      aria-hidden="true"
-                                    />
-                                  </button>
-
-                                  <button type="button" className="p-2 bg-dark rounded-md hover:bg-primary">
-                                    <PlayIcon
+                        stories.map((story) => (
+                          <>
+                            <div key={story.id} className={`relative px-3 py-4 border-b border-gray-100 justify-center items-center hover:bg-light cursor-pointer ${story.id === 2 && 'bg-light'}`}>
+                              <p className="text-sm text-gray-600">
+                                {story.text}
+                              </p>
+                              <button
+                                type="button"
+                                className={`p-1 w-6 h-6 flex items-center justify-center absolute
+                                bottom-3 right-3 rounded-md hover:bg-primary hover:text-white
+                                // eslint-disable-next-line no-nested-ternary
+                                ${story.id === 2
+                                ? 'bg-primary text-white'
+                                : story.id === 4 ? 'bg-success text-black'
+                                : 'text-primary bg-gray-200' }
+                                `}
+                              >
+                                <VolumeUpIcon
+                                  aria-hidden="true"
+                                />
+                              </button>
+                            </div>
+                            {
+                              story.id === 2
+                              && (
+                                <div className="flex p-2 px-4 justify-between items-center bg-black text-white">
+                                  <div className="text-primary">
+                                    <Waveform
                                       fill="currentColor"
-                                      className="w-5 h-5"
-                                      aria-hidden="true"
+                                      className="w-full h-1/3"
                                     />
-                                  </button>
-
-                                  <button type="button" className="p-2 bg-dark rounded-md hover:bg-primary">
-                                    <PauseIcon
-                                      fill="currentColor"
-                                      className="w-5 h-5"
-                                      aria-hidden="true"
-                                    />
-                                  </button>
-
-                                  <button type="button" className="p-2 bg-dark rounded-md hover:bg-error">
-                                    <TrashIcon
-                                      className="w-5 h-5"
-                                      aria-hidden="true"
-                                    />
-                                  </button>
-
+                                  </div>
+                                  <div className="text-white text-sm tracking-wider">
+                                    10:30
+                                  </div>
+                                  <div className="flex gap-5">
+                                    <button type="button" className="p-2 bg-dark rounded-md hover:bg-error">
+                                      <MicrophoneIcon
+                                        className="w-5 h-5"
+                                        aria-hidden="true"
+                                      />
+                                    </button>
+                                    <button type="button" className="p-2 bg-dark rounded-md hover:bg-primary">
+                                      <PlayIcon
+                                        fill="currentColor"
+                                        className="w-5 h-5"
+                                        aria-hidden="true"
+                                      />
+                                    </button>
+                                    <button type="button" className="p-2 bg-dark rounded-md hover:bg-primary">
+                                      <PauseIcon
+                                        fill="currentColor"
+                                        className="w-5 h-5"
+                                        aria-hidden="true"
+                                      />
+                                    </button>
+                                    <button type="button" className="p-2 bg-dark rounded-md hover:bg-error">
+                                      <TrashIcon
+                                        className="w-5 h-5"
+                                        aria-hidden="true"
+                                      />
+                                    </button>
+                                  </div>
                                 </div>
-
-                              </div>
-                            )
-                          }
-                        </>
-                      ))
-                    }
+                              )
+                            }
+                          </>
+                        ))
+                      }
                     </Editor>
                   </div>
                 </div>

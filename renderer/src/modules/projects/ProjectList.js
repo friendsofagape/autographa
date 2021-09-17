@@ -6,7 +6,7 @@ import moment from 'moment';
 import { Disclosure, Transition } from '@headlessui/react';
 import { ChevronUpIcon } from '@heroicons/react/solid';
 import {
- StarIcon, ExternalLinkIcon, PencilAltIcon, DotsVerticalIcon,
+  StarIcon, ExternalLinkIcon, PencilAltIcon, DotsVerticalIcon,
 } from '@heroicons/react/outline';
 import localforage from 'localforage';
 
@@ -65,11 +65,11 @@ export default function ProjectList() {
     localforage.getItem('notification').then((value) => {
       const temp = [...value];
       temp.push({
-          title: 'Project',
-          text: `successfully loaded ${projectName} files`,
-          type: 'success',
-          time: moment().format(),
-          hidden: true,
+        title: 'Project',
+        text: `successfully loaded ${projectName} files`,
+        type: 'success',
+        time: moment().format(),
+        hidden: true,
       });
       setNotifications(temp);
     }).then(() => setActiveNotificationCount(activeNotificationCount + 1));
@@ -124,7 +124,12 @@ export default function ProjectList() {
                                       </button>
                                     </td>
                                     <td className="px-4 py-4 whitespace-nowrap">
-                                      <button type="button">
+                                      <button
+                                        type="button"
+                                        onClick={
+                                          (event) => handleSelectProject(event, project.name, project.id[0])
+                                        }
+                                      >
                                         <ExternalLinkIcon className="h-5 w-5 text-primary" aria-hidden="true" />
                                       </button>
                                     </td>
@@ -135,14 +140,13 @@ export default function ProjectList() {
                                         <div className="ml-0">
                                           <div
                                             onClick={
-                                          (event) => handleSelectProject(event, project.name)
-                                        }
+                                              (event) => handleSelectProject(event, project.name, project.id[0])
+                                            }
                                             role="button"
                                             tabIndex="0"
                                             className="focus:outline-none text-sm font-medium text-gray-900"
                                           >
                                             {project.name}
-
                                           </div>
                                         </div>
                                       </div>
@@ -187,7 +191,7 @@ export default function ProjectList() {
                                 </td> */}
                                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium flex justify-end">
                                       <Disclosure.Button className="flex justify-between w-full px-4 py-2 text-sm font-medium text-left text-purple-900 bg-purple-100 rounded-lg hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75">
-                                        <ChevronUpIcon className={`${ open ? 'transform rotate-180' : '' } w-5 h-5 text-purple-500`} />
+                                        <ChevronUpIcon className={`${open ? 'transform rotate-180' : ''} w-5 h-5 text-purple-500`} />
                                       </Disclosure.Button>
                                     </td>
                                   </tr>
@@ -255,7 +259,12 @@ export default function ProjectList() {
                                       </button>
                                     </td>
                                     <td className="px-4 py-4 whitespace-nowrap">
-                                      <button type="button">
+                                      <button
+                                        type="button"
+                                        onClick={
+                                          (event) => handleSelectProject(event, project.name, project.id[0])
+                                        }
+                                      >
                                         <ExternalLinkIcon className="h-5 w-5 text-primary" aria-hidden="true" />
                                       </button>
                                     </td>
@@ -264,8 +273,8 @@ export default function ProjectList() {
                                         <div className="ml-0">
                                           <div
                                             onClick={
-                                          (event) => handleSelectProject(event, project.name, project.id[0])
-                                        }
+                                              (event) => handleSelectProject(event, project.name, project.id[0])
+                                            }
                                             role="button"
                                             tabIndex="0"
                                             className="text-sm font-medium text-gray-900"
@@ -316,7 +325,7 @@ export default function ProjectList() {
                                 </td> */}
                                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                       <Disclosure.Button className="flex justify-between w-full px-4 py-2 text-sm font-medium text-left text-purple-900 bg-purple-100 rounded-lg hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75">
-                                        <ChevronUpIcon className={`${ open ? 'transform rotate-180' : '' } w-5 h-5 text-purple-500`} />
+                                        <ChevronUpIcon className={`${open ? 'transform rotate-180' : ''} w-5 h-5 text-purple-500`} />
                                       </Disclosure.Button>
                                     </td>
                                   </tr>

@@ -2,9 +2,14 @@ import ProjectsLayout from '@/layouts/projects/Layout';
 import { PropTypes } from 'prop-types';
 import React from 'react';
 import * as localForage from 'localforage';
-import { saveProfile } from '../../core/projects/handleProfile';
-import CustomAutocomplete from './CustomAutocomplete';
+
+// import EditpasswordIcon from '@/illustrations/edit-password.svg';
+import { XIcon, CheckIcon } from '@heroicons/react/solid';
+import { PencilIcon } from '@heroicons/react/outline';
+
 import { isElectron } from '../../core/handleElectron';
+import CustomAutocomplete from './CustomAutocomplete';
+import { saveProfile } from '../../core/projects/handleProfile';
 
 const regions = [
   { title: 'New Delhi, India' },
@@ -26,20 +31,20 @@ function InputBar({ title }) {
     return (
       <div>
         <h4 className="text-xs font-base mb-2 ml-2 text-primary  tracking-wide leading-4  font-light">{title}</h4>
-        <div className=" flex justify-between h-10 w-96 border-2 bg-white  border-gray-300  rounded">
+        <div className="flex justify-center items-center h-10 w-96 border-2 bg-white  border-gray-300  rounded">
           <input
             type="text"
-            className="border-1 border-white  bg-white rounded-full m-1 focus:ring-white focus:border-none font-light"
+            className="flex-1 h-8 border-0 m-1 focus:ring-white focus:border-none font-light"
             id={title}
           />
           <button
             onClick={clearText}
             type="button"
+            className="m-1 w-6 h-6 flex justify-center items-center bg-primary text-white rounded-full"
           >
-            <img
-              className=" w-5 h-5 m-2 "
-              src="/illustrations/clear-button.svg"
-              alt="xbutton"
+            <XIcon
+              className="w-3 h-3"
+              aria-hidden="true"
             />
           </button>
         </div>
@@ -88,49 +93,57 @@ function InputBar({ title }) {
       // }
     };
       return (
-        <ProjectsLayout title="personal information">
+        <ProjectsLayout title="personal information" isImport>
           <div className=" bg-gray-100 flex">
             <div className="w-60  bg-secondary ">
               <div className="grid grid-rows-5 p-8 gap-16 pb-20 mr-20">
                 <div className="grid grid-cols-2">
-                  <img
-                    className=""
-                    src="/illustrations/green-check.svg"
-                    alt="Workflow"
-                  />
+                  <div
+                    className="w-7 h-7 bg-success text-white text-sm rounded-full flex justify-center items-center"
+                    aria-hidden="true"
+                  >
+                    <CheckIcon className="w-4" />
+                  </div>
                   <div className="text-white tracking-wider pl-3"> Name</div>
                 </div>
 
                 <div className="grid grid-cols-2">
-                  <img
-                    className="flex-shrink-0"
-                    src="/illustrations/step-two.svg"
-                    alt="Workflow1"
-                  />
+                  <div
+                    className="w-7 h-7 bg-gray-700 text-white text-sm rounded-full flex justify-center items-center"
+                    aria-hidden="true"
+                  >
+                    2
+                  </div>
                   <div className="text-white tracking-wider  pl-3"> Email</div>
                 </div>
 
                 <div className="grid grid-cols-2">
-                  <img
-                    src="/illustrations/step-three.svg"
-                    alt="Workflow2"
-                  />
+                  <div
+                    className="w-7 h-7 bg-gray-700 text-white text-sm rounded-full flex justify-center items-center"
+                    aria-hidden="true"
+                  >
+                    3
+                  </div>
                   <span className="text-white tracking-wider pl-3 "> Password</span>
                 </div>
 
                 <div className="grid grid-cols-2">
-                  <img
-                    src="/illustrations/step-four.svg"
-                    alt="Workflow3"
-                  />
+                  <div
+                    className="w-7 h-7 bg-gray-700 text-white text-sm rounded-full flex justify-center items-center"
+                    aria-hidden="true"
+                  >
+                    4
+                  </div>
                   <span className="text-white tracking-wider  pl-3"> Organisation</span>
                 </div>
 
                 <div className="grid grid-cols-2">
-                  <img
-                    src="/illustrations/step-five.svg"
-                    alt="Workflow4"
-                  />
+                  <div
+                    className="w-7 h-7 bg-gray-700 text-white text-sm rounded-full flex justify-center items-center"
+                    aria-hidden="true"
+                  >
+                    5
+                  </div>
                   <span className="text-white tracking-wider pl-3  "> Region</span>
                 </div>
               </div>
@@ -200,12 +213,20 @@ function InputBar({ title }) {
                         className="bg-gray-100 w-96 block rounded shadow-sm sm:text-sm focus:ring-gray-500 focus:border-primary border-gray-200 h-10 font-light"
                         type="password"
                       />
-                      <button type="button" className="pt-1">
+                      {/* <button type="button" className="pt-1">
+                        <EditpasswordIcon
+                          className="w-7 h-7"
+                          aria-hidden="true"
+                        />
+                      </button> */}
 
-                        <img
-                          className=""
-                          src="/illustrations/edit-password.svg"
-                          alt="edit password"
+                      <button
+                        type="button"
+                        className="mt-1 focus:outline-none bg-primary h-8 w-8 flex items-center justify-center rounded-full"
+                      >
+                        <PencilIcon
+                          className="h-4 w-4 text-white"
+                          aria-hidden="true"
                         />
                       </button>
 

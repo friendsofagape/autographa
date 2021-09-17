@@ -1,10 +1,15 @@
+import React, { useState } from 'react';
+
 import AuthenticationContextProvider from '@/components/Login/AuthenticationContextProvider';
 import ProjectContextProvider from '@/components/context/ProjectContext';
 import ReferenceContextProvider from '@/components/context/ReferenceContext';
 import CustomNavigationContextProvider from '@/components/context/CustomNavigationContext';
+import AutographaContextProvider from '@/components/context/AutographaContext';
+
 import EditorLayout from '@/layouts/editor/Layout';
 import Editor from '@/modules/editor/Editor';
-import AutographaContextProvider from '@/components/context/AutographaContext';
+import { EyeIcon, EyeOffIcon } from '@heroicons/react/outline';
+import RowSection from './RowSection';
 
 const stories = [
   {
@@ -59,7 +64,13 @@ const stories = [
   },
 ];
 
+function classNames(...classes) {
+  return classes.filter(Boolean).join(' ');
+}
+
 export default function ReferenceSelector() {
+  const [blur, setBlur] = useState(false);
+
   return (
     <AuthenticationContextProvider>
       <AutographaContextProvider>
@@ -67,32 +78,68 @@ export default function ReferenceSelector() {
           <ReferenceContextProvider>
             <CustomNavigationContextProvider>
               <EditorLayout>
-                <div className="grid grid-cols-3 h-editor">
-                  <div className="bg-white col-span-2 m-3 rounded-md shadow overflow-hidden">
-                    <div className="px-3 py-2 rounded-md shadow overflow-y-auto h-full no-scrollbars">
-                      {
-                      stories.map((story) => (
-                        <div key={story.id} className="flex gap-5 mb-5 justify-center items-center">
-                          <img className="w-1/4 rounded-lg" src={story.img} alt="" />
-                          <p className="text-sm text-gray-600">
-                            {story.text}
-                          </p>
+                <div className="grid grid-flow-col auto-cols-fr m-3 h-editor gap-2">
+
+                  <div className="bg-white rounded-md grid auto-rows-fr gap-2">
+                    <RowSection ishidden />
+                  </div>
+
+                  <div className="bg-white rounded-md shadow overflow-hidden filter group">
+
+                    <div className="bg-gray-200 rounded-t text-center text-gray-600 relative overflow-hidden">
+                      <div className="bg-gray-200 z-50 rounded-t overflow-hidden">
+                        <div className="flex items-center">
+                          <div className="ml-4 h-8 flex justify-center items-center text-xxs uppercase tracking-wider font-bold leading-3 truncate">
+                            Bible
+                          </div>
+
+                          <div className="flex bg-gray-300 absolute h-full -right-0 rounded-tr invisible group-hover:visible">
+                            <button
+                              type="button"
+                              onClick={() => setBlur(!blur)}
+                            >
+                              {blur
+                                ? (
+                                  <EyeIcon
+                                    className="h-5 w-5 mx-3 text-gray-800"
+                                  />
+)
+                                : (
+                                  <EyeOffIcon
+                                    className="h-5 w-5 mx-3 text-gray-800"
+                                  />
+)}
+                            </button>
+                          </div>
                         </div>
-                      ))
-                    }
+                      </div>
+                    </div>
+
+                    <div className={classNames(blur ? 'blur-xl' : '', 'px-3 py-2 rounded-md shadow overflow-y-auto h-full no-scrollbars')}>
+                      {
+                        stories.map((story) => (
+                          <div key={story.id} className="flex gap-5 mb-5 justify-center items-center">
+                            <img className="w-1/4 rounded-lg" src={story.img} alt="" />
+                            <p className="text-sm text-gray-600">
+                              {story.text}
+                            </p>
+                          </div>
+                        ))
+                      }
                     </div>
                   </div>
-                  <div className="bg-white m-3 ml-0 border-b-2 border-secondary rounded-md shadow overflow-hidden">
+
+                  <div className="bg-white border-b-2 border-secondary rounded-md shadow overflow-hidden">
                     <Editor>
                       {
-                      stories.map((story) => (
-                        <div key={story.id} className={`px-3 py-4 border-b border-gray-100 justify-center items-center hover:bg-light cursor-pointer ${story.id === 2 && 'bg-light'}`}>
-                          <p className="text-sm text-gray-600">
-                            {story.text}
-                          </p>
-                        </div>
-                      ))
-                    }
+                        stories.map((story) => (
+                          <div key={story.id} className={`px-3 py-4 border-b border-gray-100 justify-center items-center hover:bg-light cursor-pointer ${story.id === 2 && 'bg-light'}`}>
+                            <p className="text-sm text-gray-600">
+                              {story.text}
+                            </p>
+                          </div>
+                        ))
+                      }
                     </Editor>
                   </div>
                 </div>

@@ -6,6 +6,7 @@ import React, {
 } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { FolderOpenIcon } from '@heroicons/react/outline';
+import CloseIcon from '@/illustrations/close-button-black.svg';
 import updateTranslationSB from '@/core/burrito/updateTranslationSB';
 import * as localforage from 'localforage';
 import { SnackBar } from '@/components/SnackBar';
@@ -115,9 +116,9 @@ export default function ExportProjectPopUp(props) {
                     type="button"
                     className="focus:outline-none"
                   >
-                    <img
-                      src="/illustrations/close-button-black.svg"
-                      alt="/"
+                    <CloseIcon
+                      className="h-6 w-7"
+                      aria-hidden="true"
                     />
                   </button>
                 </div>

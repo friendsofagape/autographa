@@ -6,6 +6,7 @@ import { Dialog, Transition } from '@headlessui/react';
 import { FolderOpenIcon } from '@heroicons/react/outline';
 import { useRouter } from 'next/router';
 import { SnackBar } from '@/components/SnackBar';
+import CloseIcon from '@/illustrations/close-button-black.svg';
 import importBurrito from '../../core/burrito/importBurrito';
 import * as logger from '../../logger';
 
@@ -92,9 +93,9 @@ export default function ImportProjectPopUp(props) {
                     type="button"
                     className="focus:outline-none"
                   >
-                    <img
-                      src="/illustrations/close-button-black.svg"
-                      alt="/"
+                    <CloseIcon
+                      className="h-6 w-7"
+                      aria-hidden="true"
                     />
                   </button>
                 </div>

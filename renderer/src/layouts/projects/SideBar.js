@@ -1,6 +1,10 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import * as localForage from 'localforage';
+import LogoIcon from '@/icons/logo.svg';
+import ProjectsIcon from '@/icons/projects.svg';
+import NewProjectIcon from '@/icons/new.svg';
+import SyncIcon from '@/icons/sync.svg';
 
 export default function SideBar() {
   const [appMode, setAppMode] = useState();
@@ -13,32 +17,31 @@ export default function SideBar() {
   return (
     <div className="w-28 bg-white shadow min-h-screen">
       <div className="grid justify-items-center items-center h-16 border border-b-1">
-        <img
+        <LogoIcon
           className="h-8 w-8"
-          src="/Logo.svg"
           alt="Workflow"
         />
       </div>
       <ul>
-        <li className="text-gray-900 font-medium hover:text-white hover:bg-primary cursor-pointer py-5">
+        <li className="text-gray-900 font-medium hover:text-white hover:bg-primary cursor-pointer py-5 group">
           <Link href="/projects">
             <a className="flex flex-col items-center" href="#projects">
-              <img
-                className="h-7 w-7"
-                src="/icons/projects.svg"
-                alt="projects"
+              <ProjectsIcon
+                fill="none"
+                strokeCurrent="none"
+                className="h-7 w-7 text-dark group-hover:text-white"
               />
               <div className="text-xs mt-3 uppercase">projects</div>
             </a>
           </Link>
         </li>
-        <li className="text-gray-900 font-medium hover:text-white hover:bg-primary cursor-pointer py-5">
+        <li className="text-gray-900 font-medium hover:text-white hover:bg-primary cursor-pointer py-5 group">
           <Link href="/newproject">
             <a className="flex flex-col items-center" href="#new">
-              <img
-                className="h-7 w-7"
-                src="/icons/new.svg"
-                alt="newproject"
+              <NewProjectIcon
+                fill="none"
+                strokeCurrent="none"
+                className="h-7 w-7 text-dark group-hover:text-white"
               />
               <div className="text-xs mt-3 uppercase">new</div>
             </a>
@@ -49,10 +52,10 @@ export default function SideBar() {
           <li className="text-gray-900 font-medium hover:text-white hover:bg-primary cursor-pointer py-5">
             <Link href="/sync">
               <a className="flex flex-col items-center" href="#sync">
-                <img
-                  className="h-7 w-7"
-                  src="/icons/sync.svg"
-                  alt="sync"
+                <SyncIcon
+                  fill="none"
+                  strokeCurrent="none"
+                  className="h-7 w-7 text-dark group-hover:text-white"
                 />
                 <div className="text-xs mt-3 uppercase">sync</div>
               </a>

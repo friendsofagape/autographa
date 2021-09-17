@@ -2,10 +2,11 @@
 import PropTypes from 'prop-types';
 import React, { useContext, useEffect, useState } from 'react';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
+import { ProjectContext } from '@/components/context/ProjectContext';
 import ResourcesPopUp from '@/components/EditorPage/Reference/ResourcesPopUp';
 
-import { ViewGridAddIcon } from '@heroicons/react/outline';
-import { ProjectContext } from '@/components/context/ProjectContext';
+import MinimizeIcon from '@/illustrations/minimize.svg';
+import { ViewGridAddIcon, CogIcon, XIcon } from '@heroicons/react/outline';
 
 export default function EditorSection({
   title,
@@ -166,27 +167,31 @@ export default function EditorSection({
               </div>
               )}
             <div className="flex bg-gray-300 absolute h-full -right-0 rounded-tr invisible group-hover:visible ">
-              <button onClick={showResourcesPanel} type="button">
-                <img
-                  src="/illustrations/settings-small.svg"
-                  alt="/"
-                  className="py-2 px-2"
+              <button
+                type="button"
+                onClick={showResourcesPanel}
+                className="px-2"
+              >
+                <CogIcon
+                  className="h-5 w-5 text-dark"
                 />
               </button>
               <button
                 onClick={sectionContent}
                 type="button"
               >
-                <img
-                  className="px-2 py-2"
-                  src="/illustrations/minimize.svg"
-                  alt=""
+                <MinimizeIcon
+                  strokeCurrent="none"
+                  className="h-4 w-8 text-dark group-hover:text-white"
                 />
               </button>
-              <button type="button" onClick={removeSection}>
-                <img
-                  src="/illustrations/small-close-button.svg"
-                  alt=""
+              <button
+                type="button"
+                onClick={removeSection}
+                className="px-2"
+              >
+                <XIcon
+                  className="h-5 w-5 text-dark"
                 />
               </button>
             </div>
@@ -220,19 +225,16 @@ export default function EditorSection({
               : children
             }
             {hideAddition && (
-              <span
-                tabIndex={-42}
+              <button
+                type="button"
                 onClick={addRow}
-                role="button"
+                className="absolute p-2 bg-primary rounded bottom-0 -right-0 invisible group-hover:visible"
               >
-                <img
-                  title="Add Section"
-                  style={{ marginBottom: '0' }}
-                  className="absolute bottom-0 -right-0 invisible group-hover:visible"
-                  src="/illustrations/add-section.svg"
-                  alt=""
+                <ViewGridAddIcon
+                  className="h-6 w-6 text-white"
+                  aria-hidden="true"
                 />
-              </span>
+              </button>
             )}
           </div>
         )
