@@ -95,9 +95,12 @@ export default function ReferenceContextProvider({ children }) {
 
     useEffect(() => {
       localforage.getItem('navigationHistory').then((book) => {
+        if (book) {
         onChangeBook(book[0]);
         onChangeChapter(book[1]);
+        }
       });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const value = {

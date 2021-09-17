@@ -42,7 +42,6 @@ const UsfmEditor = () => {
   const {
     states: {
       scrollLock,
-      username,
     },
   } = useContext(ProjectContext);
 
@@ -162,54 +161,57 @@ const UsfmEditor = () => {
       //   });
       // });
     } else {
-      localforage.getItem('currentProject').then((projectName) => {
-      const path = require('path');
-      const newpath = localStorage.getItem('userPath');
-      const projectsDir = path.join(
-          newpath, 'autographa', 'users', username, 'projects', projectName,
-      );
-      const metaPath = path.join(
-        newpath, 'autographa', 'users', username, 'projects', projectName, 'metadata.json',
-      );
-      readRefMeta({
-        projectsDir,
-      }).then((refs) => {
-        setIsLoading(true);
-        refs.forEach(() => {
-          readRefBurrito({
-            metaPath,
-          }).then((data) => {
-            if (data) {
-              const _data = JSON.parse(data);
-              Object.entries(_data.ingredients).forEach(
-                ([key, _ingredients]) => {
-                  if (_ingredients.scope) {
-                    const _bookID = Object.entries(_ingredients.scope)[0][0];
-                    if (_bookID === bookId.toUpperCase()) {
-                      readFile({
-                        projectname: projectName,
-                        filename: key,
-                        username,
-                      }).then((data) => {
-                        if (data) {
-                            timeout(2000).then(() => {
-                                handleInputChange(data);
-                            }).finally(() => {
-                              setIsLoading(false);
-                            });
+      localforage.getItem('userProfile').then((value) => {
+        const username = value?.username;
+        localforage.getItem('currentProject').then((projectName) => {
+          const path = require('path');
+          const newpath = localStorage.getItem('userPath');
+          const projectsDir = path.join(
+              newpath, 'autographa', 'users', username, 'projects', projectName,
+          );
+          const metaPath = path.join(
+            newpath, 'autographa', 'users', username, 'projects', projectName, 'metadata.json',
+          );
+          readRefMeta({
+            projectsDir,
+          }).then((refs) => {
+            setIsLoading(true);
+            refs.forEach(() => {
+              readRefBurrito({
+                metaPath,
+              }).then((data) => {
+                if (data) {
+                  const _data = JSON.parse(data);
+                  Object.entries(_data.ingredients).forEach(
+                    ([key, _ingredients]) => {
+                      if (_ingredients.scope) {
+                        const _bookID = Object.entries(_ingredients.scope)[0][0];
+                        if (_bookID === bookId.toUpperCase()) {
+                          readFile({
+                            projectname: projectName,
+                            filename: key,
+                            username,
+                          }).then((data) => {
+                            if (data) {
+                                timeout(2000).then(() => {
+                                    handleInputChange(data);
+                                }).finally(() => {
+                                  setIsLoading(false);
+                                });
+                            }
+                          });
                         }
-                      });
-                    }
-                   }
-                  // console.log(key, value),
-                },
-              );
-            }
+                      }
+                      // console.log(key, value),
+                    },
+                  );
+                }
+              });
+            });
           });
         });
       });
-    });
-  }
+    }
   }, [bookId]);
 
   useEffect(() => {
@@ -229,95 +231,101 @@ const UsfmEditor = () => {
       //   }
       // });
     } else {
-      localforage.getItem('currentProject').then((projectName) => {
-      readRefMeta({
-        projectname: projectName,
-        username,
-      }).then((refs) => {
-        refs.forEach((ref) => {
-          readRefBurrito({
-            projectname: projectName,
-            filename: ref,
-            username,
-          }).then((data) => {
-            if (data) {
-              const _data = JSON.parse(data);
-              Object.entries(_data.ingredients).forEach(
-                ([key, _ingredients]) => {
-                  if (_ingredients.scope) {
-                    const _bookID = Object.entries(_ingredients.scope)[0][0];
-                    if (_bookID === bookId.toUpperCase()) {
-                      readFile({
-                        projectname: projectName,
-                        filename: key,
-                        username,
-                      }).then((data) => {
-                        if (data) {
-                          handleInputChange(data);
-                        }
-                      });
+      localforage.getItem('userProfile').then((value) => {
+        const username = value?.username;
+        localforage.getItem('currentProject').then((projectName) => {
+        readRefMeta({
+          projectname: projectName,
+          username,
+        }).then((refs) => {
+          refs.forEach((ref) => {
+            readRefBurrito({
+              projectname: projectName,
+              filename: ref,
+              username,
+            }).then((data) => {
+              if (data) {
+                const _data = JSON.parse(data);
+                Object.entries(_data.ingredients).forEach(
+                  ([key, _ingredients]) => {
+                    if (_ingredients.scope) {
+                      const _bookID = Object.entries(_ingredients.scope)[0][0];
+                      if (_bookID === bookId.toUpperCase()) {
+                        readFile({
+                          projectname: projectName,
+                          filename: key,
+                          username,
+                        }).then((data) => {
+                          if (data) {
+                            handleInputChange(data);
+                          }
+                        });
+                      }
                     }
-                   }
-                },
-              );
-            }
+                  },
+                );
+              }
+            });
           });
         });
+        });
       });
-    });
     }
   }, []);
 
   const handleEditorChange = (usfm) => {
     if (isElectron()) {
-      localforage.getItem('currentProject').then((projectName) => {
-        const path = require('path');
-      const newpath = localStorage.getItem('userPath');
-      const projectsDir = path.join(
-          newpath, 'autographa', 'users', username, 'projects', projectName,
-      );
-      const metaPath = path.join(
-        newpath, 'autographa', 'users', username, 'projects', projectName, 'metadata.json',
-      );
-      readRefMeta({
-        projectsDir,
-      }).then((refs) => {
-        refs.forEach(() => {
-          readRefBurrito({
-            metaPath,
-          }).then((data) => {
-            if (data) {
-              const _data = JSON.parse(data);
-              Object.entries(_data.ingredients).forEach(
-                ([key, _ingredients]) => {
-                  if (_ingredients.scope) {
-                    const _bookID = Object.entries(_ingredients.scope)[0][0];
-                    if (_bookID === bookId.toUpperCase()) {
-                      const arrayOfLines = usfm.split('\n');
-                      const splitLine = arrayOfLines[0].split(/ +/);
-                       if (splitLine[0] === '\\id') {
-                          const id = splitLine[1];
-                          if (id.toUpperCase() === bookId.toUpperCase()) {
-                            setTimeout(() => {
-                                writeToFile({
-                                  username,
-                                  projectname: projectName,
-                                  filename: key,
-                                  data: usfm,
-                                });
-                            }, 2000);
-                          }
+      localforage.getItem('userProfile').then((value) => {
+        const username = value?.username;
+        localforage.getItem('currentProject').then((projectName) => {
+          const path = require('path');
+          const newpath = localStorage.getItem('userPath');
+          const projectsDir = path.join(
+              newpath, 'autographa', 'users', username, 'projects', projectName,
+          );
+          const metaPath = path.join(
+            newpath, 'autographa', 'users', username, 'projects', projectName, 'metadata.json',
+          );
+          readRefMeta({
+            projectsDir,
+          }).then((refs) => {
+            refs.forEach(() => {
+              readRefBurrito({
+                metaPath,
+              }).then((data) => {
+                if (data) {
+                  const _data = JSON.parse(data);
+                  Object.entries(_data.ingredients).forEach(
+                    ([key, _ingredients]) => {
+                      if (_ingredients.scope) {
+                        const _bookID = Object.entries(_ingredients.scope)[0][0];
+                        if (_bookID === bookId.toUpperCase()) {
+                          const arrayOfLines = usfm.split('\n');
+                          const splitLine = arrayOfLines[0].split(/ +/);
+                          if (splitLine[0] === '\\id') {
+                              const id = splitLine[1];
+                              if (id.toUpperCase() === bookId.toUpperCase()) {
+                                setTimeout(() => {
+                                    writeToFile({
+                                      username,
+                                      projectname: projectName,
+                                      filename: key,
+                                      data: usfm,
+                                    });
+                                }, 2000);
+                              }
+                            }
                         }
-                    }
-                   }
-                  // console.log(key, value),
-                },
-              );
-            }
+                      }
+                      // console.log(key, value),
+                    },
+                  );
+                }
+              });
+            });
           });
         });
       });
-    });
     }
     // else {
     //   localforage.setItem('editorData', usfm).then(

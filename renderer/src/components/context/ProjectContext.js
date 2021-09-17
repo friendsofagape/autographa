@@ -38,7 +38,7 @@ const ProjectContextProvider = ({ children }) => {
       projectName: '',
       description: '',
     });
-    const [username, setUsername] = React.useState('Asher');
+    const [username, setUsername] = React.useState();
     const [selectedProject, setSelectedProject] = React.useState();
 
     const handleProjectFields = (prop) => (event) => {
@@ -52,6 +52,7 @@ const ProjectContextProvider = ({ children }) => {
       let currentUser;
       await localforage.getItem('userProfile').then((value) => {
         currentUser = value?.username;
+        setUsername(currentUser);
       });
       if (!currentUser) {
         return;
@@ -201,36 +202,44 @@ const ProjectContextProvider = ({ children }) => {
     useEffect(() => {
       if (isElectron()) {
         const path = require('path');
+        const fs = window.require('fs');
         const newpath = localStorage.getItem('userPath');
-        const projectsDir = path.join(
-          newpath, 'autographa', 'users', username, 'reference',
-        );
-        localforage.getItem('currentProject').then((projectName) => {
-          setSelectedProject(projectName);
-        });
-        const parseData = [];
-        readRefMeta({
-          projectsDir,
-        }).then((refs) => {
-          refs.forEach((ref) => {
-            const metaPath = path.join(
-              newpath, 'autographa', 'users', username, 'reference', ref, 'metadata.json',
-            );
-            readRefBurrito({
-              metaPath,
-            }).then((data) => {
-              if (data) {
-                const burrito = {};
-                burrito.projectDir = ref;
-                burrito.value = JSON.parse(data);
-                parseData.push(burrito);
-                localforage.setItem('refBibleBurrito', parseData).then(
-                  () => localforage.getItem('refBibleBurrito'),
-                ).catch((err) => {
-                  // we got an error
-                  throw err;
-                });
-              }
+        localforage.getItem('userProfile').then((value) => {
+          const username = value?.username;
+          setUsername(value?.username);
+          fs.mkdirSync(path.join(newpath, 'autographa', 'users', username, 'reference'), {
+            recursive: true,
+          });
+          const projectsDir = path.join(
+            newpath, 'autographa', 'users', username, 'reference',
+          );
+          localforage.getItem('currentProject').then((projectName) => {
+            setSelectedProject(projectName);
+          });
+          const parseData = [];
+          readRefMeta({
+            projectsDir,
+          }).then((refs) => {
+            refs.forEach((ref) => {
+              const metaPath = path.join(
+                newpath, 'autographa', 'users', username, 'reference', ref, 'metadata.json',
+              );
+              readRefBurrito({
+                metaPath,
+              }).then((data) => {
+                if (data) {
+                  const burrito = {};
+                  burrito.projectDir = ref;
+                  burrito.value = JSON.parse(data);
+                  parseData.push(burrito);
+                  localforage.setItem('refBibleBurrito', parseData).then(
+                    () => localforage.getItem('refBibleBurrito'),
+                  ).catch((err) => {
+                    // we got an error
+                    throw err;
+                  });
+                }
+              });
             });
           });
         });

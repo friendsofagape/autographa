@@ -23,6 +23,7 @@ import LogoIcon from '@/icons/logo.svg';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import { ProjectContext } from '@/components/context/ProjectContext';
 import { AuthenticationContext } from '@/components/Login/AuthenticationContextProvider';
+import router from 'next/router';
 import PopoverProjectType from './PopoverProjectType';
 import styles from './MenuBar.module.css';
 
@@ -98,7 +99,9 @@ export default function TopMenuBar() {
       setFontsize(fontSize + 0.2);
     }
   };
-
+  const goToProjectPage = () => {
+    router.push('/projects');
+  };
   return (
     <>
 
@@ -119,9 +122,11 @@ export default function TopMenuBar() {
             </div>
 
             <div>
-              <span className="text-primary px-10 py-2 text-lg tracking-wide font-extrabold uppercase">
-                {projectname?.[0]}
-              </span>
+              <button type="button" onClick={() => goToProjectPage()}>
+                <span className="text-primary px-10 py-2 text-lg tracking-wide font-extrabold uppercase">
+                  {projectname?.[0]}
+                </span>
+              </button>
             </div>
 
             <div className="flex-grow">
