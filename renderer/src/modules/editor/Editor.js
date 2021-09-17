@@ -59,7 +59,7 @@ export default function Editor({
   };
 
   useEffect(() => {
-      if (((bookmarksVerses.find((x) => x.bookname === bookName && x.chapter === chapter)
+      if (((bookmarksVerses?.find((x) => x.bookname === bookName && x.chapter === chapter)
             !== undefined))) {
         setBookMarks(true);
       } else {
