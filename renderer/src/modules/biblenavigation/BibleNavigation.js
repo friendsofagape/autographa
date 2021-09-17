@@ -103,7 +103,7 @@ export default function BibleNavigation(props) {
 
   useEffect(() => {
     localforage.setItem('navigationHistory', [bookId, chapter]);
-  });
+  }, [bookId, chapter]);
 
   useEffect(() => {
       if (openBook === false && openVerse === false) {

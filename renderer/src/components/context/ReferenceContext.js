@@ -10,9 +10,9 @@ import * as localforage from 'localforage';
 export const ReferenceContext = createContext({});
 
 export default function ReferenceContextProvider({ children }) {
-    const initialBook = '1TI';
-    const initialChapter = '1';
-    const initialVerse = '1';
+    const [initialBook, setInitialBook] = useState('1ti');
+    const [initialChapter, setInitialChapter] = useState('1');
+    const [initialVerse, setInitialVerse] = useState('1');
     const [owner, setOwner] = useState('Door43-Catalog');
     const [languageId, setLanguageId] = useState('en');
     const [selectedResource, SetSelectedResource] = useState('tn');
@@ -73,25 +73,27 @@ export default function ReferenceContextProvider({ children }) {
     }, []);
 
     const {
-   state: {
-      chapter,
-      verse,
-      bookList,
-      chapterList,
-      verseList,
-      bookName,
-      bookId,
-   }, actions: {
-      onChangeBook,
-      onChangeChapter,
-      onChangeVerse,
-      applyBooksFilter,
-    },
-  } = useBibleReference({
-      initialBook,
-      initialChapter,
-      initialVerse,
-    });
+      state: {
+         chapter,
+         verse,
+         bookList,
+         chapterList,
+         verseList,
+         bookName,
+         bookId,
+      }, actions: {
+         onChangeBook,
+         onChangeChapter,
+         onChangeVerse,
+         applyBooksFilter,
+       },
+     } = useBibleReference(
+        {
+          initialBook,
+          initialChapter,
+          initialVerse,
+        },
+      );
 
     useEffect(() => {
       localforage.getItem('navigationHistory').then((book) => {
