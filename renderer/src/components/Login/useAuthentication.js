@@ -54,7 +54,6 @@ function useAuthentication() {
     localForage.removeItem('sessionToken');
     localForage.removeItem('userProfile');
     localForage.setItem('appMode','online');
-    console.log(router)
     router.push('/')
   };
   const getConfig = (flowId) => {

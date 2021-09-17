@@ -152,7 +152,7 @@ function InputBar({ title }) {
 
               <form className="grid gap-12 grid-rows-8 pt-5 pl-5" onSubmit={(e) => handleSave(e)}>
                 {(appMode === 'offline')
-                  ? (
+                  && (
                     <div>
                       <h4 className="text-xs font-base mb-2 ml-2 text-primary  tracking-wide leading-4  font-light">Username</h4>
                       <input
@@ -164,8 +164,7 @@ function InputBar({ title }) {
                         className="bg-gray-100 w-96 block rounded shadow-sm sm:text-sm focus:ring-gray-500 focus:border-primary border-gray-200 h-10 font-light"
                       />
                     </div>
-                  )
-                : <div />}
+                )}
                 <div>
                   <h4 className="text-xs font-base mb-2 ml-2 text-primary  tracking-wide leading-4  font-light">Name</h4>
                   <div className="flex gap-8">
@@ -178,7 +177,7 @@ function InputBar({ title }) {
                       onChange={(e) => {
                       setValues({ ...values, firstname: e.target.value });
                     }}
-                      className="bg-gray-100 w-44 block rounded shadow-sm sm:text-sm focus:ring-gray-500 focus:border-primary border-gray-200 h-10 font-light"
+                      className="w-44 block rounded shadow-sm sm:text-sm focus:ring-gray-500 focus:border-primary border-gray-200 h-10 font-light"
                     />
                     <input
                       type="text"
@@ -189,23 +188,26 @@ function InputBar({ title }) {
                       onChange={(e) => {
                       setValues({ ...values, lastname: e.target.value });
                     }}
-                      className="bg-gray-100 w-44 h-10  block rounded  sm:text-sm focus:ring-gray-500 focus:border-primary border-gray-200 font-light "
+                      className="w-44 h-10  block rounded  sm:text-sm focus:ring-gray-500 focus:border-primary border-gray-200 font-light "
                     />
                   </div>
                 </div>
-                <input
-                  type="text"
-                  name="email"
-                  id="email"
-                  autoComplete="email"
-                  defaultValue={values?.email}
-                  onChange={(e) => {
+                <div>
+                  <h4 className="text-xs font-base mb-2 ml-2 text-primary  tracking-wide leading-4  font-light">Email</h4>
+                  <input
+                    type="text"
+                    name="email"
+                    id="email"
+                    autoComplete="email"
+                    defaultValue={values?.email}
+                    onChange={(e) => {
                     setValues({ ...values, email: e.target.value });
                     }}
-                  className="bg-gray-100 w-96 block rounded shadow-sm sm:text-sm focus:ring-gray-500 focus:border-primary border-gray-200 h-10 font-light"
-                />
+                    className="w-96 block rounded shadow-sm sm:text-sm focus:ring-gray-500 focus:border-primary border-gray-200 h-10 font-light"
+                  />
+                </div>
                 {(appMode === 'online')
-                  ? (
+                  && (
                     <div className="flex gap-3">
                       <input
                         className="bg-gray-100 w-96 block rounded shadow-sm sm:text-sm focus:ring-gray-500 focus:border-primary border-gray-200 h-10 font-light"
@@ -229,7 +231,7 @@ function InputBar({ title }) {
                       </button>
 
                     </div>
-                  ) : <div />}
+                  )}
                 <InputBar title=" Organisation" />
                 <div>
                   <CustomAutocomplete list={regions} label="Region" setValue={setValue} />
