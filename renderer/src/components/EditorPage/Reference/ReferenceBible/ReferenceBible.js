@@ -41,11 +41,11 @@ const ReferenceBible = ({
   } = useContext(ProjectContext);
   const {
     states: {
-      activeNotificationCount,
+      // activeNotificationCount,
     },
     action: {
       setNotifications,
-      setActiveNotificationCount,
+      // setActiveNotificationCount,
     },
   } = useContext(AutographaContext);
   // const regExp = /\(([^)]+)\)/;
@@ -62,10 +62,14 @@ const ReferenceBible = ({
       [usfmInput],
     );
 
-    const timeout = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+    const timeout = (ms) => {
+      setIsLoading(true);
+     return new Promise((resolve) => setTimeout(resolve, ms));
+    };
 
 useEffect(() => {
       if (isElectron() && refName) {
+        setIsLoading(true);
         setDisplayScreen(false);
         const path = require('path');
         const newpath = localStorage.getItem('userPath');
@@ -122,7 +126,6 @@ useEffect(() => {
                       }
                     }
                     if (_ingredients.scope === undefined) {
-                      console.log(_books);
                       if (_books.includes(bookId.toUpperCase()) === false) {
                         setDisplayScreen(true);
                       }
@@ -190,8 +193,13 @@ useEffect(() => {
             <EmptyScreen />
           ) : (<LoadingScreen />)
         )
-
       )}
+        {usfmInput === undefined && (
+          displyScreen === true ? (
+            <EmptyScreen />
+          )
+          : <LoadingScreen />
+        )}
         <SnackBar
           openSnackBar={snackBar}
           snackText={snackText}

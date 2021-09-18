@@ -71,7 +71,10 @@ const UsfmEditor = () => {
     [usfmInput],
   );
 
-  const timeout = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+  const timeout = (ms) => {
+    setIsLoading(true);
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  };
 
   // const saveToParse = async () => {
   //   try {
@@ -165,7 +168,7 @@ const UsfmEditor = () => {
       // });
     } else {
       setDisplayScreen(false);
-
+      setIsLoading(true);
       localforage.getItem('userProfile').then((value) => {
         const username = value?.username;
         localforage.getItem('currentProject').then((projectName) => {
@@ -225,15 +228,7 @@ const UsfmEditor = () => {
                       if (_ingredients.scope === undefined) {
                         if (_books.includes(bookId.toUpperCase()) === false) {
                           setDisplayScreen(true);
-                            localforage.getItem('navigationHistory').then((book) => {
-                              if (book) {
-                                onChangeBook(book[0]);
-                                onChangeChapter(book[1]);
-                                  if (book[0].toUpperCase() !== bookId.toUpperCase()) {
-                                    setDisplayScreen(true);
-                                  }
-                              }
-                          });
+                          setIsLoading(false);
                         }
                       }
                       // console.log(key, value),
@@ -248,8 +243,8 @@ const UsfmEditor = () => {
     }
   }, [bookId]);
 
-  useEffect(() => {
-    if (!isElectron()) {
+  // useEffect(() => {
+  //   if (!isElectron()) {
       // fetchFromParse({
       //   username, projectName, scope: _bookId.toUpperCase(),
       // }).then((data) => {
@@ -264,7 +259,7 @@ const UsfmEditor = () => {
       //     });
       //   }
       // });
-    } else {
+    // } else {
     //   setDisplayScreen(false);
     //   timeout(1000).then(() => {
     //       localforage.getItem('navigationHistory').then((book) => {
@@ -320,8 +315,8 @@ const UsfmEditor = () => {
     //     });
     //   });
     // });
-    }
-  }, []);
+    // }
+  // }, []);
 
   const handleEditorChange = (usfm) => {
     if (isElectron()) {
@@ -422,12 +417,14 @@ const UsfmEditor = () => {
               verse: parseInt(verse, 10),
             }}
             />
-)
-
+            )
           )
         )}
-          {displyScreen && (
+          {usfmInput === undefined && (
+          displyScreen === true ? (
             <EmptyScreen />
+          )
+          : <LoadingScreen />
           )}
         </>
       </Editor>
