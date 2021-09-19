@@ -154,7 +154,7 @@ export default function TopMenuBar() {
 
               <div className="mr-4 flex items-center">
 
-                <PopoverProjectType items={solutions}>
+                {/* <PopoverProjectType items={solutions}>
                   <button type="button" className={styles.btn}>
                     <AppsIcon
                       fill="currentColor"
@@ -162,7 +162,7 @@ export default function TopMenuBar() {
                       aria-hidden="true"
                     />
                   </button>
-                </PopoverProjectType>
+                </PopoverProjectType> */}
 
                 <button type="button" className={styles.btn}>
 

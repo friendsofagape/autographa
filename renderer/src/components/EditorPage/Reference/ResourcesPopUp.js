@@ -57,8 +57,12 @@ const ResourcesPopUp = ({
       languageId,
     });
     if (isElectron()) {
+      const fs = window.require('fs');
       const path = require('path');
       const newpath = localStorage.getItem('userPath');
+      fs.mkdirSync(path.join(newpath, 'autographa', 'users', username, 'reference'), {
+        recursive: true,
+      });
       const projectsDir = path.join(
         newpath, 'autographa', 'users', username, 'reference',
       );
@@ -398,7 +402,10 @@ const ResourcesPopUp = ({
                         Upload
 
                       </button>
-                      {/* <button type="button" className="py-2 px-6 rounded shadow bg-error text-white uppercase text-xs tracking-widest font-semibold">Cancel</button> */}
+                      {/* <button type="button"
+                      className="py-2 px-6 rounded shadow
+                       bg-error text-white uppercase text-xs
+                       tracking-widest font-semibold">Cancel</button> */}
                       <button
                         type="button"
                         onClick={() => uploadRefBible()}

@@ -40,9 +40,9 @@ const ReferenceBible = ({
     },
   } = useContext(ProjectContext);
   const {
-    states: {
-      // activeNotificationCount,
-    },
+    // states: {
+    //   // activeNotificationCount,
+    // },
     action: {
       setNotifications,
       // setActiveNotificationCount,
