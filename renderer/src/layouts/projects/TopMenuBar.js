@@ -11,7 +11,7 @@ import {
 import { AuthenticationContext } from '@/components/Login/AuthenticationContextProvider';
 import Notifications from '@/modules/notifications/Notifications';
 
-const profile = ['Your Profile', 'Settings'];
+const profile = ['Your Profile'];
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');

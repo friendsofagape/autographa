@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { ProjectContext } from '@/components/context/ProjectContext';
@@ -18,6 +19,7 @@ import {
 } from 'usfm-editor';
 import Editor from '@/modules/editor/Editor';
 import LoadingScreen from '@/components/Loading/LoadingScreen';
+import EmptyScreen from '@/components/Loading/EmptySrceen';
 import { readRefMeta } from '../../../core/reference/readRefMeta';
 import { readRefBurrito } from '../../../core/reference/readRefBurrito';
 import { readFile } from '../../../core/editor/readFile';
@@ -33,6 +35,7 @@ const UsfmEditor = () => {
   const [usfmInput, setUsfmInput] = useState();
   const [readOnly] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [displyScreen, setDisplayScreen] = useState(false);
   // const [activeTyping, setActiveTyping] = useState(false);
   // const [identification, setIdentification] = useState();
   // const [goToVersePropValue, setGoToVersePropValue] = useState({});
@@ -68,7 +71,10 @@ const UsfmEditor = () => {
     [usfmInput],
   );
 
-  const timeout = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+  const timeout = (ms) => {
+    setIsLoading(true);
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  };
 
   // const saveToParse = async () => {
   //   try {
@@ -161,6 +167,8 @@ const UsfmEditor = () => {
       //   });
       // });
     } else {
+      setDisplayScreen(false);
+      setIsLoading(true);
       localforage.getItem('userProfile').then((value) => {
         const username = value?.username;
         localforage.getItem('currentProject').then((projectName) => {
@@ -182,10 +190,12 @@ const UsfmEditor = () => {
               }).then((data) => {
                 if (data) {
                   const _data = JSON.parse(data);
+                  const _books = [];
                   Object.entries(_data.ingredients).forEach(
                     ([key, _ingredients]) => {
-                      if (_ingredients.scope) {
+                      if (_ingredients?.scope) {
                         const _bookID = Object.entries(_ingredients.scope)[0][0];
+                        _books.push(_bookID);
                         if (_bookID === bookId.toUpperCase()) {
                           readFile({
                             projectname: projectName,
@@ -194,12 +204,31 @@ const UsfmEditor = () => {
                           }).then((data) => {
                             if (data) {
                                 timeout(2000).then(() => {
-                                    handleInputChange(data);
+                                  localforage.getItem('navigationHistory').then((book) => {
+                                    if (book) {
+                                      onChangeBook(book[0]);
+                                      onChangeChapter(book[1]);
+                                        if (book[0].toUpperCase() !== bookId.toUpperCase()) {
+                                          setDisplayScreen(true);
+                                        } else {
+                                          handleInputChange(data);
+                                        }
+                                    }
+                                    });
                                 }).finally(() => {
                                   setIsLoading(false);
+                                  setDisplayScreen(false);
                                 });
                             }
                           });
+                        }
+
+                        // console.log(Object.entries(_ingredients.scope));
+                      }
+                      if (_ingredients.scope === undefined) {
+                        if (_books.includes(bookId.toUpperCase()) === false) {
+                          setDisplayScreen(true);
+                          setIsLoading(false);
                         }
                       }
                       // console.log(key, value),
@@ -214,8 +243,8 @@ const UsfmEditor = () => {
     }
   }, [bookId]);
 
-  useEffect(() => {
-    if (!isElectron()) {
+  // useEffect(() => {
+  //   if (!isElectron()) {
       // fetchFromParse({
       //   username, projectName, scope: _bookId.toUpperCase(),
       // }).then((data) => {
@@ -230,48 +259,64 @@ const UsfmEditor = () => {
       //     });
       //   }
       // });
-    } else {
-      localforage.getItem('userProfile').then((value) => {
-        const username = value?.username;
-        localforage.getItem('currentProject').then((projectName) => {
-        readRefMeta({
-          projectname: projectName,
-          username,
-        }).then((refs) => {
-          refs.forEach((ref) => {
-            readRefBurrito({
-              projectname: projectName,
-              filename: ref,
-              username,
-            }).then((data) => {
-              if (data) {
-                const _data = JSON.parse(data);
-                Object.entries(_data.ingredients).forEach(
-                  ([key, _ingredients]) => {
-                    if (_ingredients.scope) {
-                      const _bookID = Object.entries(_ingredients.scope)[0][0];
-                      if (_bookID === bookId.toUpperCase()) {
-                        readFile({
-                          projectname: projectName,
-                          filename: key,
-                          username,
-                        }).then((data) => {
-                          if (data) {
-                            handleInputChange(data);
-                          }
-                        });
-                      }
-                    }
-                  },
-                );
-              }
-            });
-          });
-        });
-        });
-      });
-    }
-  }, []);
+    // } else {
+    //   setDisplayScreen(false);
+    //   timeout(1000).then(() => {
+    //       localforage.getItem('navigationHistory').then((book) => {
+    //         if (book) {
+    //         onChangeBook(book[0]);
+    //         onChangeChapter(book[1]);
+    //         console.log(book[0],
+    //           book[1]);
+    //         }
+    //       });
+    //   }).then(() => {
+    //   localforage.getItem('userProfile').then((value) => {
+    //     const username = value?.username;
+    //     localforage.getItem('currentProject').then((projectName) => {
+    //     readRefMeta({
+    //       projectname: projectName,
+    //       username,
+    //     }).then((refs) => {
+    //       refs.forEach((ref) => {
+    //         readRefBurrito({
+    //           projectname: projectName,
+    //           filename: ref,
+    //           username,
+    //         }).then((data) => {
+    //           if (data) {
+    //             const _data = JSON.parse(data);
+    //             Object.entries(_data.ingredients).forEach(
+    //               ([key, _ingredients]) => {
+    //                 if (_ingredients.scope) {
+    //                   const _bookID = Object.entries(_ingredients.scope)[0][0];
+    //                   if (_bookID === bookId.toUpperCase()) {
+    //                     readFile({
+    //                       projectname: projectName,
+    //                       filename: key,
+    //                       username,
+    //                     }).then((data) => {
+    //                       console.log('>>>>>>', data);
+    //                       if (data) {
+    //                         handleInputChange(data);
+    //                         setDisplayScreen(false);
+    //                       } else {
+    //                         setDisplayScreen(true);
+    //                       }
+    //                     });
+    //                   }
+    //                 }
+    //               },
+    //             );
+    //           }
+    //         });
+    //       });
+    //     });
+    //     });
+    //   });
+    // });
+    // }
+  // }, []);
 
   const handleEditorChange = (usfm) => {
     if (isElectron()) {
@@ -350,9 +395,15 @@ const UsfmEditor = () => {
   return (
     <>
       <Editor>
-        {usfmInput && (
+        <>
+          {usfmInput && (
           isLoading ? (
-            <LoadingScreen />
+            displyScreen === true ? (
+              <EmptyScreen />
+          ) : (<LoadingScreen />)
+          ) : (
+            displyScreen === true ? (
+              <EmptyScreen />
           ) : (
             <CustomEditor
               ref={myEditorRef}
@@ -366,8 +417,16 @@ const UsfmEditor = () => {
               verse: parseInt(verse, 10),
             }}
             />
+            )
           )
         )}
+          {usfmInput === undefined && (
+          displyScreen === true ? (
+            <EmptyScreen />
+          )
+          : <LoadingScreen />
+          )}
+        </>
       </Editor>
     </>
   );

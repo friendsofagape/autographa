@@ -1,8 +1,6 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import * as localforage from 'localforage';
-import { readRefMeta } from '../../core/reference/readRefMeta';
-import { readRefBurrito } from '../../core/reference/readRefBurrito';
 import { isElectron } from '../../core/handleElectron';
 import * as logger from '../../logger';
 import saveProjectsMeta from '../../core/projects/saveProjetcsMeta';
@@ -196,56 +194,14 @@ const ProjectContextProvider = ({ children }) => {
     React.useEffect(() => {
       if (isElectron()) {
         loadSettings();
-      }
-    }, []);
-
-    useEffect(() => {
-      if (isElectron()) {
-        const path = require('path');
-        const fs = window.require('fs');
-        const newpath = localStorage.getItem('userPath');
         localforage.getItem('userProfile').then((value) => {
-          const username = value?.username;
           setUsername(value?.username);
-          fs.mkdirSync(path.join(newpath, 'autographa', 'users', username, 'reference'), {
-            recursive: true,
-          });
-          const projectsDir = path.join(
-            newpath, 'autographa', 'users', username, 'reference',
-          );
+        });
           localforage.getItem('currentProject').then((projectName) => {
             setSelectedProject(projectName);
           });
-          const parseData = [];
-          readRefMeta({
-            projectsDir,
-          }).then((refs) => {
-            refs.forEach((ref) => {
-              const metaPath = path.join(
-                newpath, 'autographa', 'users', username, 'reference', ref, 'metadata.json',
-              );
-              readRefBurrito({
-                metaPath,
-              }).then((data) => {
-                if (data) {
-                  const burrito = {};
-                  burrito.projectDir = ref;
-                  burrito.value = JSON.parse(data);
-                  parseData.push(burrito);
-                  localforage.setItem('refBibleBurrito', parseData).then(
-                    () => localforage.getItem('refBibleBurrito'),
-                  ).catch((err) => {
-                    // we got an error
-                    throw err;
-                  });
-                }
-              });
-            });
-          });
-        });
       }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      }, []);
+    }, []);
 
     const context = {
         states: {

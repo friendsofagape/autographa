@@ -103,9 +103,9 @@ const SectionPlaceholder2 = () => {
     localforage.getItem('currentProject').then((projectName) => {
     const _projectname = projectName?.split('_');
     localforage.getItem('projectmeta').then((value) => {
-      Object?.entries(value).forEach(
+      Object.entries(value).forEach(
         ([_columnnum, _value]) => {
-          Object?.entries(_value).forEach(
+          Object.entries(_value).forEach(
             ([_rownum, resources]) => {
               if (resources.project.textTranslation.projectName === _projectname[0]) {
                 refsHistory.push(resources.project.textTranslation.refResources);
@@ -116,10 +116,10 @@ const SectionPlaceholder2 = () => {
       );
     }).then(() => {
       if (refsHistory[0]) {
-        Object?.entries(refsHistory[0]).forEach(
+        Object.entries(refsHistory[0]).forEach(
           ([_columnnum, _value]) => {
-          if (_columnnum === '1') {
-            Object?.entries(_value).forEach(
+          if (_columnnum === '1' && _value) {
+            Object.entries(_value).forEach(
               ([_rownum, _value]) => {
                 rows.push(_rownum);
                 if (_rownum === '1') {
@@ -180,9 +180,9 @@ const SectionPlaceholder2 = () => {
     localforage.getItem('currentProject').then((projectName) => {
       const _projectname = projectName?.split('_');
     localforage.getItem('projectmeta').then((value) => {
-      Object?.entries(value).forEach(
+      Object.entries(value).forEach(
         ([_columnnum, _value]) => {
-          Object?.entries(_value).forEach(
+          Object.entries(_value).forEach(
             ([_rownum, resources]) => {
               if (resources.project.textTranslation.projectName === _projectname[0]) {
                 refsHistory.push(resources.project.textTranslation);
@@ -227,9 +227,9 @@ const SectionPlaceholder2 = () => {
         },
       );
     localforage.setItem('projectmeta', value).then(() => {
-      Object?.entries(value).forEach(
+      Object.entries(value).forEach(
         ([_columnnum, _value]) => {
-          Object?.entries(_value).forEach(
+          Object.entries(_value).forEach(
             ([_rownum, resources]) => {
               if (resources.project.textTranslation.projectName === _projectname[0]) {
                 localforage.getItem('userProfile').then((value) => {

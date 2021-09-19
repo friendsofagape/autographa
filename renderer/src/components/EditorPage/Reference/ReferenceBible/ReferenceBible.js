@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable react/prop-types */
 /* eslint-disable no-underscore-dangle */
 import { ReferenceContext } from '@/components/context/ReferenceContext';
@@ -15,6 +16,7 @@ import { AutographaContext } from '@/components/context/AutographaContext';
 import moment from 'moment';
 import LoadingScreen from '@/components/Loading/LoadingScreen';
 import { SnackBar } from '@/components/SnackBar';
+import EmptyScreen from '@/components/Loading/EmptySrceen';
 import { isElectron } from '../../../../core/handleElectron';
 
 // General scroll to element function
@@ -38,12 +40,12 @@ const ReferenceBible = ({
     },
   } = useContext(ProjectContext);
   const {
-    states: {
-      activeNotificationCount,
-    },
+    // states: {
+    //   // activeNotificationCount,
+    // },
     action: {
       setNotifications,
-      setActiveNotificationCount,
+      // setActiveNotificationCount,
     },
   } = useContext(AutographaContext);
   // const regExp = /\(([^)]+)\)/;
@@ -52,6 +54,7 @@ const ReferenceBible = ({
     const [snackBar, setOpenSnackBar] = React.useState(false);
     const [snackText, setSnackText] = React.useState('');
     const [notify, setNotify] = React.useState();
+    const [displyScreen, setDisplayScreen] = useState(false);
 
     const CustomEditor = useMemo(
       () => (withChapterPaging(createBasicUsfmEditor())),
@@ -59,21 +62,29 @@ const ReferenceBible = ({
       [usfmInput],
     );
 
-    const timeout = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+    const timeout = (ms) => {
+      setIsLoading(true);
+     return new Promise((resolve) => setTimeout(resolve, ms));
+    };
 
 useEffect(() => {
       if (isElectron() && refName) {
+        setIsLoading(true);
+        setDisplayScreen(false);
         const path = require('path');
         const newpath = localStorage.getItem('userPath');
         localforage.getItem('refBibleBurrito')
         .then((refs) => {
           refs.forEach((ref) => {
             setIsLoading(true);
+            const _books = [];
+            setDisplayScreen(false);
             if (ref.value.languages[0].name.en === languageId) {
                 Object.entries(ref.value.ingredients).forEach(
                   ([key, _ingredients]) => {
                     if (_ingredients.scope) {
                       const _bookID = Object.entries(_ingredients.scope)[0][0];
+                      _books.push(_bookID);
                       if (_bookID.split('-').pop() === bookId.toUpperCase() && refName !== null) {
                         const filePath = path.join(
                           newpath, 'autographa', 'users', username, 'reference', refName, key,
@@ -88,6 +99,7 @@ useEffect(() => {
                             setOpenSnackBar(true);
                             setSnackText(`successfully loaded ${refName} files`);
                             setNotify('success');
+                            setDisplayScreen(false);
                           });
                           setRefernceLoading({
                             status: true,
@@ -111,6 +123,11 @@ useEffect(() => {
                         //         }
                         //       });
                         // });
+                      }
+                    }
+                    if (_ingredients.scope === undefined) {
+                      if (_books.includes(bookId.toUpperCase()) === false) {
+                        setDisplayScreen(true);
                       }
                     }
                     // console.log(key, value),
@@ -172,10 +189,17 @@ useEffect(() => {
           }}
           />
         ) : (
-          <LoadingScreen />
+          displyScreen === true ? (
+            <EmptyScreen />
+          ) : (<LoadingScreen />)
         )
-
       )}
+        {usfmInput === undefined && (
+          displyScreen === true ? (
+            <EmptyScreen />
+          )
+          : <LoadingScreen />
+        )}
         <SnackBar
           openSnackBar={snackBar}
           snackText={snackText}

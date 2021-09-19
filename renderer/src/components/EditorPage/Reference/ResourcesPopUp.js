@@ -43,6 +43,7 @@ const ResourcesPopUp = ({
   const [subMenuItems, setSubMenuItems] = useState();
   const [title, setTitle] = useState(header);
   const [selectResource, setSelectResource] = useState(selectedResource);
+  const [folderPath, setFolderPath] = React.useState();
 
   const {
     states: {
@@ -56,8 +57,12 @@ const ResourcesPopUp = ({
       languageId,
     });
     if (isElectron()) {
+      const fs = window.require('fs');
       const path = require('path');
       const newpath = localStorage.getItem('userPath');
+      fs.mkdirSync(path.join(newpath, 'autographa', 'users', username, 'reference'), {
+        recursive: true,
+      });
       const projectsDir = path.join(
         newpath, 'autographa', 'users', username, 'reference',
       );
@@ -107,6 +112,35 @@ const ResourcesPopUp = ({
     removeSection();
   };
 
+  const openResourceDialog = async () => {
+      const options = { properties: ['openDirectory'] };
+      const { remote } = window.require('electron');
+      const { dialog } = remote;
+      const WIN = remote.getCurrentWindow();
+      const chosenFolder = await dialog.showOpenDialog(WIN, options);
+      setFolderPath(chosenFolder.filePaths[0]);
+  };
+
+  const uploadRefBible = async () => {
+    if (isElectron()) {
+      const fs = window.require('fs');
+      const fse = window.require('fs-extra');
+      const path = require('path');
+      localforage.getItem('userProfile').then(async (user) => {
+        const newpath = localStorage.getItem('userPath');
+        fs.mkdirSync(path.join(newpath, 'autographa', 'users', user?.username, 'reference'), {
+          recursive: true,
+        });
+        const projectsDir = path.join(
+          newpath, 'autographa', 'users', user?.username, 'reference',
+        );
+        await fse.copy(folderPath, projectsDir, { overwrite: true }).then(() => {
+          window.location.reload();
+        });
+      });
+    }
+  };
+
   return (
 
     <Transition
@@ -127,6 +161,7 @@ const ResourcesPopUp = ({
         open={openResourcePopUp}
         onClose={removeSection}
       >
+
         <Dialog.Overlay className="fixed inset-0 bg-black opacity-30" />
         <div className="flex items-center justify-center h-screen">
           <div className="w-5/12 h-3/6 items-center justify-center m-auto z-50 shadow overflow-hidden rounded">
@@ -357,12 +392,30 @@ const ResourcesPopUp = ({
                       </tbody>
                     )}
                   </table>
+                  {selectResource === 'bible' && (
+                    <div className="flex gap-6 mx-5 absolute bottom-5 right-0 justify-end z-10">
+                      <button
+                        type="button"
+                        onClick={() => openResourceDialog()}
+                        className="py-2 px-6 bg-primary rounded shadow text-white uppercase text-xs tracking-widest font-semibold"
+                      >
+                        Upload
 
-                  <div className="flex gap-6 mx-5 absolute bottom-5 right-0 justify-end z-10">
-                    <button type="button" className="py-2 px-6 bg-primary rounded shadow text-white uppercase text-xs tracking-widest font-semibold">Upload</button>
-                    <button type="button" className="py-2 px-6 rounded shadow bg-error text-white uppercase text-xs tracking-widest font-semibold">Cancel</button>
-                    <button type="button" className="py-2 px-7 rounded shadow bg-success text-white uppercase text-xs tracking-widest font-semibold">Open</button>
-                  </div>
+                      </button>
+                      {/* <button type="button"
+                      className="py-2 px-6 rounded shadow
+                       bg-error text-white uppercase text-xs
+                       tracking-widest font-semibold">Cancel</button> */}
+                      <button
+                        type="button"
+                        onClick={() => uploadRefBible()}
+                        className="py-2 px-7 rounded shadow bg-success text-white uppercase text-xs tracking-widest font-semibold"
+                      >
+                        Open
+
+                      </button>
+                    </div>
+                  )}
                 </div>
 
               </div>
