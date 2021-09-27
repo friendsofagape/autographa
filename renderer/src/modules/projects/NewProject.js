@@ -66,15 +66,13 @@ export default function NewProject() {
   const {
     states: {
       newProjectFields,
-      version,
       languages,
       language,
     },
     actions: {
-      handleProjectFields,
-      setVersion,
       setLanguage,
       createProject,
+      setNewProjectFields,
     },
   } = React.useContext(ProjectContext);
   const router = useRouter();
@@ -94,9 +92,9 @@ export default function NewProject() {
     return abbr.join('').toUpperCase();
   }
 
-  const handleVersion = (e) => {
+  const handleProjectName = (e) => {
     const abbreviation = getAbbreviation(e.target.value);
-    setVersion({ ...version, name: e.target.value, abbreviation });
+    setNewProjectFields({ ...newProjectFields, projectName: e.target.value, abbreviation });
   };
 
   const setValue = async (value) => {
@@ -113,8 +111,7 @@ export default function NewProject() {
     logger.debug('NewProject.js', 'Validating the fields.');
     setLoading(true);
     let create = false;
-    if (newProjectFields.projectName && newProjectFields.description && version.name
-      && version.abbreviation) {
+    if (newProjectFields.projectName && newProjectFields.abbreviation) {
       create = true;
     } else {
       create = false;
@@ -139,7 +136,7 @@ export default function NewProject() {
         }
       });
     } else {
-      logger.debug('NewProject.js', 'Validation Failed - Fill all the fields.');
+      logger.debug('NewProject.js', 'Validation Failed - Fill all the required fields.');
       setLoading(false);
       setNotify('warning');
       setSnackText('Fill all the fields');
@@ -175,13 +172,18 @@ export default function NewProject() {
             <div className="grid grid-cols-1 lg:grid-cols-3 m-10 gap-5">
 
               <div>
-                <h4 className="text-xs font-base mb-2 text-primary  tracking-wide leading-4  font-light">Project Name</h4>
+                <h4 className="text-xs font-base mb-2 text-primary  tracking-wide leading-4  font-light">
+                  Project Name
+                  <span style={{ color: 'red' }}>*</span>
+                </h4>
                 <input
                   type="text"
                   name="project_name"
                   id=""
                   value={newProjectFields.projectName}
-                  onChange={handleProjectFields('projectName')}
+                  onChange={(e) => {
+                    handleProjectName(e);
+                  }}
                   className="w-52 lg:w-80 block rounded shadow-sm sm:text-sm focus:border-primary border-gray-300"
                 />
                 <h4 className="mt-5 text-xs font-base mb-2 text-primary leading-4 tracking-wide  font-light">Description</h4>
@@ -190,7 +192,9 @@ export default function NewProject() {
                   name="Description"
                   id=""
                   value={newProjectFields.description}
-                  onChange={handleProjectFields('description')}
+                  onChange={(e) => {
+                    setNewProjectFields({ ...newProjectFields, description: e.target.value });
+                  }}
                   className="bg-white w-52 lg:w-80 h-28  block rounded shadow-sm sm:text-sm focus:border-primary border-gray-300"
                 />
               </div>
@@ -198,28 +202,18 @@ export default function NewProject() {
               <div className="col-span-2">
                 <div className="flex gap-5">
                   <div>
-                    <h4 className="text-xs font-base mb-2 text-primary  tracking-wide leading-4  font-light">Version</h4>
-                    <input
-                      type="text"
-                      name="version"
-                      id=""
-                      value={version.name}
-                      onChange={(e) => {
-                    handleVersion(e);
-                  }}
-                      className="bg-white w-52 lg:w-80 block rounded shadow-sm sm:text-sm focus:border-primary border-gray-300"
-                    />
-                  </div>
-                  <div>
-                    <h4 className="text-xs font-base mb-2 text-primary  tracking-wide leading-4  font-light">Abbreviation</h4>
+                    <h4 className="text-xs font-base mb-2 text-primary  tracking-wide leading-4  font-light">
+                      Abbreviation
+                      <span style={{ color: 'red' }}>*</span>
+                    </h4>
                     <input
                       type="text"
                       name="version_abbreviated"
                       id=""
-                      value={version.abbreviation}
+                      value={newProjectFields.abbreviation}
                       onChange={(e) => {
-                    setVersion({ ...version, abbreviation: e.target.value });
-                  }}
+                        setNewProjectFields({ ...newProjectFields, abbreviation: e.target.value });
+                      }}
                       className="bg-white w-24 block rounded  sm:text-sm focus:border-primary border-gray-300"
                     />
                   </div>

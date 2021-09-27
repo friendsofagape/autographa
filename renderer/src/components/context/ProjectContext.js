@@ -16,11 +16,6 @@ const ProjectContextProvider = ({ children }) => {
     const [sideTabTitle, setSideTabTitle] = React.useState('New');
     const [languages, setLanguages] = React.useState(advanceSettings.languages);
     const [language, setLanguage] = React.useState(advanceSettings.languages[0]);
-    const [selectedVersion, setSelectedVersion] = React.useState('');
-    const [version, setVersion] = React.useState({
-      name: '',
-      abbreviation: '',
-    });
     const [licenceList, setLicenseList] = React.useState(advanceSettings.copyright);
     const [copyright, setCopyRight] = React.useState(advanceSettings.copyright[0]);
     const [canonList, setCanonList] = React.useState(advanceSettings.canonSpecification);
@@ -35,6 +30,7 @@ const ProjectContextProvider = ({ children }) => {
     const [newProjectFields, setNewProjectFields] = React.useState({
       projectName: '',
       description: '',
+      abbreviation: '',
     });
     const [username, setUsername] = React.useState();
     const [selectedProject, setSelectedProject] = React.useState();
@@ -171,7 +167,6 @@ const ProjectContextProvider = ({ children }) => {
       }
       const status = await saveProjectsMeta(
         newProjectFields,
-        version,
         language,
         versificationScheme.title,
         canonSpecification,
@@ -186,7 +181,6 @@ const ProjectContextProvider = ({ children }) => {
         scriptDirection: 'LTR',
       };
         setNewProjectFields({ ...initialState });
-        setSelectedVersion('');
         setCopyRight();
         setcanonSpecification('OT');
         setVersificationScheme('kjv');
@@ -207,7 +201,6 @@ const ProjectContextProvider = ({ children }) => {
         states: {
             newProjectFields,
             drawer,
-            selectedVersion,
             copyright,
             canonSpecification,
             versification,
@@ -216,7 +209,6 @@ const ProjectContextProvider = ({ children }) => {
             selectedProject,
             canonList,
             licenceList,
-            version,
             languages,
             language,
             scrollLock,
@@ -225,7 +217,6 @@ const ProjectContextProvider = ({ children }) => {
         },
         actions: {
             setDrawer,
-            setSelectedVersion,
             setCopyRight,
             setcanonSpecification,
             setVersificationScheme,
@@ -233,12 +224,12 @@ const ProjectContextProvider = ({ children }) => {
             resetProjectStates,
             setSideTabTitle,
             setSelectedProject,
-            setVersion,
             createProject,
             setLanguage,
             setScrollLock,
             setUsername,
             setOpenSideBar,
+            setNewProjectFields,
         },
     };
 

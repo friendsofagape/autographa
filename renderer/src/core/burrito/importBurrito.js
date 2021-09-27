@@ -25,22 +25,50 @@ const importBurrito = async (filePath) => {
     const success = validate('metadata', path.join(filePath, 'metadata.json'), sb);
     if (success) {
       logger.debug('importBurrito.js', 'Burrito file validated successfully');
-      let projectName;
+      let projectName = metadata.identification?.name?.en;
       let existingProject;
       let id;
       const folderList = fs.readdirSync(projectDir);
-      if (fs.existsSync(path.join(filePath, 'ingredients', 'ag-settings.json'))) {
-        logger.debug('importBurrito.js', 'Project has Burrito file ag-settings.json');
-        const setting = fs.readFileSync(path.join(filePath, 'ingredients', 'ag-settings.json'));
-        const agSetting = JSON.parse(setting);
-        projectName = agSetting.project?.textTranslation?.projectName;
-      }
       logger.debug('importBurrito.js', 'Checking for AG primary key');
       if (metadata.identification.primary.ag !== undefined) {
         Object.entries(metadata.identification?.primary?.ag).forEach(([key]) => {
           logger.debug('importBurrito.js', 'Fetching the key from burrito.');
           id = key;
         });
+      } else if (metadata.identification.upstream.ag !== undefined) {
+        Object.entries(metadata.identification.primary).forEach(([key]) => {
+          logger.debug('importBurrito.js', 'Swapping data between primary and upstream');
+          const identity = metadata.identification.primary[key];
+          metadata.identification.upstream[key] = [identity];
+          delete metadata.identification.primary[key];
+          delete metadata.idAuthorities;
+        });
+        metadata.idAuthorities = {
+          ag: {
+            id: 'http://www.autographa.org',
+            name: {
+              en: 'Autographa application',
+            },
+          },
+        };
+        const list = metadata.identification?.upstream?.ag;
+        logger.debug('importBurrito.js', 'Fetching the latest key from list.');
+        // eslint-disable-next-line max-len
+        const latest = list.reduce((a, b) => (new Date(a.timestamp) > new Date(b.timestamp) ? a : b));
+        Object.entries(latest).forEach(([key]) => {
+          logger.debug('importBurrito.js', 'Fetching the key from burrito.');
+          id = key;
+        });
+        if (list.length > 1) {
+          (metadata.identification.upstream.ag).forEach((e, i) => {
+            if (e === latest) {
+              (metadata.identification?.upstream?.ag).splice(i, 1);
+            }
+          });
+        } else {
+          delete metadata.identification?.upstream?.ag;
+        }
+        metadata.identification.primary.ag = latest;
       }
       if (id && projectName) {
         await folderList.forEach((folder) => {
@@ -51,13 +79,21 @@ const importBurrito = async (filePath) => {
         });
       } else {
         if (!id) {
+          Object.entries(metadata.identification.primary).forEach(([key]) => {
+            logger.debug('importBurrito.js', 'Swapping data between primary and upstream');
+            if (key !== 'ag') {
+              const identity = metadata.identification.primary[key];
+              metadata.identification.upstream[key] = [identity];
+              delete metadata.identification.primary[key];
+            }
+          });
           logger.debug('importBurrito.js', 'Creating a new key.');
           id = sha1(currentUser + metadata.identification.name.en + moment().format());
           metadata.identification.primary.ag = {
-              [id]: {
-              revision: '1',
-              timestamp: moment().format(),
-              },
+            [id]: {
+            revision: '0',
+            timestamp: moment().format(),
+            },
           };
         }
         if (!projectName) {
@@ -101,7 +137,6 @@ const importBurrito = async (filePath) => {
           version: environment.AG_SETTING_VERSION,
           project: {
             textTranslation: {
-              projectName,
               scriptDirection: 'LTR',
               starred: false,
               description: '',
