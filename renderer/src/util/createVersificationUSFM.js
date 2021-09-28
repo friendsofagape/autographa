@@ -89,7 +89,6 @@ export const createVersificationUSFM = (username, project, versification, books,
           version: environment.AG_SETTING_VERSION,
           project: {
             textTranslation: {
-              projectName: project.projectName,
               scriptDirection: direction,
               starred: false,
               description: project.description,
