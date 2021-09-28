@@ -1,4 +1,4 @@
-const { devDependencies } = require('../package.json');
+const { dependencies } = require('../package.json');
 
 module.exports = {
   presets: [
@@ -7,7 +7,7 @@ module.exports = {
       {
         'preset-env': {
           targets: {
-            electron: devDependencies.electron.replace(/^\^|~/, ''),
+            electron: dependencies.electronite.replace(/^\^|~/, ''),
           },
         },
       },

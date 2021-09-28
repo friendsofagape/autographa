@@ -40,6 +40,7 @@ export default function ReferenceContextProvider({ children }) {
     const [bookmarksVerses, setBookmarksVerses] = useState([]);
     const myEditorRef = useRef();
     const [closeNavigation, setCloseNavigation] = useState(false);
+    const [projectScriptureDir, setProjectScriptureDir] = useState();
 
     const handleClick = (event) => {
       setAnchorEl(event.currentTarget);
@@ -62,6 +63,7 @@ export default function ReferenceContextProvider({ children }) {
                 if (resources.project.textTranslation.projectName === _projectname[0]) {
                   // eslint-disable-next-line no-param-reassign
                   setBookmarksVerses(resources.project.textTranslation.bookMarks);
+                  setProjectScriptureDir(resources.project.textTranslation.scriptDirection);
                 }
               },
             );
@@ -138,6 +140,7 @@ export default function ReferenceContextProvider({ children }) {
         bookmarksVerses,
         myEditorRef,
         closeNavigation,
+        projectScriptureDir,
       },
       actions: {
         setLanguageId,
@@ -169,6 +172,7 @@ export default function ReferenceContextProvider({ children }) {
         setCounter,
         setBookmarksVerses,
         setCloseNavigation,
+        setProjectScriptureDir,
       },
     };
 
