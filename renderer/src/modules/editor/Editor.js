@@ -46,9 +46,11 @@ export default function Editor({
       bookName,
       chapter,
       verse,
+      projectScriptureDir,
     },
     actions: {
       setBookmarksVerses,
+      setProjectScriptureDir,
     },
   } = useContext(ReferenceContext);
   const [bookMarked, setBookMarks] = useState(false);
@@ -181,6 +183,7 @@ export default function Editor({
                 fontFamily: selectedFont || 'sans-serif',
                 fontSize: `${fontSize}rem`,
                 lineHeight: (fontSize > 1.3) ? 1.5 : '',
+                direction: `${projectScriptureDir === 'RTL' ? 'rtl' : ''}`,
         }}
         className="border-l-2 border-r-2 border-secondary pb-16 prose-sm max-w-none overflow-y-auto h-full no-scrollbars"
       >
