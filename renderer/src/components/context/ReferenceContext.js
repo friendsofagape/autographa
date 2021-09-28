@@ -54,23 +54,25 @@ export default function ReferenceContextProvider({ children }) {
 
     useEffect(() => {
       localforage.getItem('currentProject').then((projectName) => {
-        const _projectname = projectName?.split('_');
-      localforage.getItem('projectmeta').then((val) => {
-        Object?.entries(val).forEach(
-          ([_columnnum, _value]) => {
-            Object?.entries(_value).forEach(
-              ([_rownum, resources]) => {
-                if (resources.project.textTranslation.projectName === _projectname[0]) {
-                  // eslint-disable-next-line no-param-reassign
-                  setBookmarksVerses(resources.project.textTranslation.bookMarks);
-                  setProjectScriptureDir(resources.project.textTranslation.scriptDirection);
-                }
+        if (projectName) {
+          const _projectname = projectName?.split('_');
+          localforage.getItem('projectmeta').then((val) => {
+            Object?.entries(val).forEach(
+              ([_columnnum, _value]) => {
+                Object?.entries(_value).forEach(
+                  ([_rownum, resources]) => {
+                    if (resources.project.textTranslation.projectName === _projectname[0]) {
+                      // eslint-disable-next-line no-param-reassign
+                      setBookmarksVerses(resources.project.textTranslation.bookMarks);
+                      setProjectScriptureDir(resources.project.textTranslation.scriptDirection);
+                    }
+                  },
+                );
               },
             );
-          },
-        );
+          });
+        }
       });
-    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 

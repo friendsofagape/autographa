@@ -167,7 +167,7 @@ function useProjectsSort() {
                         if (_project.project?.textTranslation?.starred === true) {
                           // FetchStarred(projectName,language, createdAt, updatedAt);
                           FetchStarred(
-                            _project.project?.textTranslation?.projectName,
+                            _project.identification.name.en,
                             _project.languages[0].name.en,
                             _project.identification.primary.ag[created].timestamp,
                             _project.project?.textTranslation?.lastSeen,
@@ -175,7 +175,7 @@ function useProjectsSort() {
                             );
                         } else {
                           FetchUnstarred(
-                            _project.project?.textTranslation?.projectName,
+                            _project.identification.name.en,
                             _project.languages[0].name.en,
                             _project.identification.primary.ag[created].timestamp,
                             _project.project?.textTranslation?.lastSeen,

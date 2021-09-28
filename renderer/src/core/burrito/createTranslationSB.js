@@ -13,7 +13,7 @@ const findCode = (list, id) => {
   return code;
 };
 const uniqType = (canon) => [...new Set(canon)];
-const createTranslationSB = (username, version, currentScope, language, licence, id) => {
+const createTranslationSB = (username, projectFields, currentScope, language, licence, id) => {
   const names = {};
   const canonTypes = [];
   const canonSpec = {
@@ -41,8 +41,8 @@ const createTranslationSB = (username, version, currentScope, language, licence,
     } else {
       json.languages[0].tag = language.substring(0, 3);
     }
-    json.identification.name.en = version.name;
-    json.identification.abbreviation.en = version.abbreviation;
+    json.identification.name.en = projectFields.projectName;
+    json.identification.abbreviation.en = projectFields.abbreviation;
     json.languages[0].name.en = language;
     const newLicence1 = licence.replace(/(\n)/gm, '\\n');
     const newLicence = newLicence1.replace(/(\r)/gm, '\\r');
