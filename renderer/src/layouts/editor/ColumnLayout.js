@@ -9,10 +9,6 @@ const UsfmEditor = dynamic(
   { ssr: false },
 );
 
-function classNames(...classes) {
-  return classes.filter(Boolean).join(' ');
-}
-
 export default function ColumnSection(props) {
   const { colNumber } = props;
   const maxRows = 3;
