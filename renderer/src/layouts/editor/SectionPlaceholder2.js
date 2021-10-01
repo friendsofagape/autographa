@@ -184,7 +184,7 @@ const SectionPlaceholder2 = () => {
         ([_columnnum, _value]) => {
           Object.entries(_value).forEach(
             ([_rownum, resources]) => {
-              if (resources.project.textTranslation.projectName === _projectname[0]) {
+              if (resources.identification.name.en === _projectname[0]) {
                 refsHistory.push(resources.project.textTranslation);
                 if (sectionNum === 1 || sectionNum === 0) {
                   if (openResource3
@@ -231,7 +231,7 @@ const SectionPlaceholder2 = () => {
         ([_columnnum, _value]) => {
           Object.entries(_value).forEach(
             ([_rownum, resources]) => {
-              if (resources.project.textTranslation.projectName === _projectname[0]) {
+              if (resources.identification.name.en === _projectname[0]) {
                 localforage.getItem('userProfile').then((value) => {
                   updateAgSettings(value?.username, projectName, resources);
                 });
