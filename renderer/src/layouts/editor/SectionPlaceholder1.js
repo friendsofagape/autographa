@@ -104,7 +104,7 @@ const SectionPlaceholder1 = () => {
         ([_columnnum, _value]) => {
           Object.entries(_value).forEach(
             ([_rownum, resources]) => {
-              if (resources.project.textTranslation.projectName === _projectname[0]) {
+              if (resources.identification.name.en === _projectname[0]) {
                 refsHistory.push(resources.project.textTranslation.refResources);
               }
             },
@@ -181,7 +181,7 @@ const SectionPlaceholder1 = () => {
         ([_columnnum, _value]) => {
           Object?.entries(_value).forEach(
             ([_rownum, resources]) => {
-              if (resources.project.textTranslation.projectName === _projectname[0]) {
+              if (resources.identification.name.en === _projectname[0]) {
                 refsHistory.push(resources.project.textTranslation.refResources);
                 if (sectionNum === 1 || sectionNum === 0) {
                   if (openResource1

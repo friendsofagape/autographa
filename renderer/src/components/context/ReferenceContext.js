@@ -26,7 +26,7 @@ export default function ReferenceContextProvider({ children }) {
     const [openResource2, setOpenResource2] = React.useState(true);
     const [openResource3, setOpenResource3] = React.useState(false);
     const [openResource4, setOpenResource4] = React.useState(true);
-    // const [openResourcePopUp, setOpenResourcePopUp] = React.useState(false);
+    const [openResourcePopUp, setOpenResourcePopUp] = React.useState(false);
     const [selectedFont, setSelectedFont] = React.useState('sans-serif');
     const [fontSize, setFontsize] = React.useState(1);
     const [fonts, setFonts] = useState([]);
@@ -61,7 +61,7 @@ export default function ReferenceContextProvider({ children }) {
               ([_columnnum, _value]) => {
                 Object?.entries(_value).forEach(
                   ([_rownum, resources]) => {
-                    if (resources.project.textTranslation.projectName === _projectname[0]) {
+                    if (resources.identification.name.en === _projectname[0]) {
                       // eslint-disable-next-line no-param-reassign
                       setBookmarksVerses(resources.project.textTranslation.bookMarks);
                       setProjectScriptureDir(resources.project.textTranslation.scriptDirection);
@@ -131,7 +131,7 @@ export default function ReferenceContextProvider({ children }) {
         openResource2,
         openResource3,
         openResource4,
-        // openResourcePopUp,
+        openResourcePopUp,
         selectedFont,
         fontSize,
         fonts,
@@ -163,7 +163,7 @@ export default function ReferenceContextProvider({ children }) {
         setOpenResource2,
         setOpenResource3,
         setOpenResource4,
-        // setOpenResourcePopUp,
+        setOpenResourcePopUp,
         setSelectedFont,
         setFontsize,
         setFonts,
