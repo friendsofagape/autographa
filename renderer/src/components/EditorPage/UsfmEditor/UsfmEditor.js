@@ -34,7 +34,7 @@ const UsfmEditor = () => {
   // const intervalRef = useRef();
   const [usfmInput, setUsfmInput] = useState();
   const [readOnly] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+
   const [displyScreen, setDisplayScreen] = useState(false);
   // const [activeTyping, setActiveTyping] = useState(false);
   // const [identification, setIdentification] = useState();
@@ -54,11 +54,13 @@ const UsfmEditor = () => {
       chapter,
       verse,
       myEditorRef,
+      isLoading,
     }, actions: {
       onChangeBook,
       onChangeChapter,
       onChangeVerse,
       applyBooksFilter,
+      setIsLoading,
     },
   } = useContext(ReferenceContext);
 

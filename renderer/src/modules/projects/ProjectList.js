@@ -79,6 +79,7 @@ export default function ProjectList() {
     <>
       <ProjectsLayout
         title="Projects"
+        isImport
         header={(
           <SearchTags
             contentList1={starredProjects}
@@ -351,9 +352,9 @@ export default function ProjectList() {
                                               <div className="text-sm tracking-wide p-1">{project.id[0]}</div>
                                             </div>
                                             <div className="flex flex-shrink items-center justify-center text-center">
-                                              <button type="button" className="px-5">
+                                              {/* <button type="button" className="px-5">
                                                 <PencilAltIcon className="h-5 w-5 text-primary" aria-hidden="true" />
-                                              </button>
+                                              </button> */}
                                               <button
                                                 onClick={() => openExportPopUp(project)}
                                                 type="button"

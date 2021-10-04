@@ -93,7 +93,7 @@ function InputBar({ title }) {
       // }
     };
       return (
-        <ProjectsLayout title="personal information" isImport>
+        <ProjectsLayout title="personal information">
           <div className=" bg-gray-100 flex">
             <div className="w-60  bg-secondary ">
               <div className="grid grid-rows-5 p-8 gap-16 pb-20 mr-20">

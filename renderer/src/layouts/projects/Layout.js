@@ -52,7 +52,7 @@ export default function ProjectsLayout(props) {
                       <button
                         type="button"
                         className="flex text-white ml-5 font-bold text-xs px-3 py-2 rounded-full
-                  leading-3 tracking-wider uppercase bg-primary items-center"
+                                    leading-3 tracking-wider uppercase bg-primary items-center"
                         onClick={openImportPopUp}
                       >
                         <UploadIcon className="h-4 mr-2 text-white" />

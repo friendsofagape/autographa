@@ -49,16 +49,23 @@ function TargetLanguageTag(props) {
 
 function BibleHeaderTagDropDown() {
   return (
-
-    <PopoverProjectType items={solutions}>
-      <button type="button" className="flex justify-center items-center px-4 py-1 text-white ml-5 font-bold text-xs rounded-full leading-3 tracking-wider uppercase bg-primary">
-        <div>Bible</div>
-        <ChevronDownIcon
+    <>
+      <button
+        type="button"
+        className="flex justify-center items-center px-5 py-1 text-white ml-5
+        font-bold text-xs rounded-full leading-3 tracking-wider uppercase bg-primary"
+      >
+        <div className="w-7 h-4">Bible</div>
+        {/* <ChevronDownIcon
           className="w-5 h-5 ml-2"
           aria-hidden="true"
-        />
+        /> */}
       </button>
-    </PopoverProjectType>
+      {/* <PopoverProjectType items={solutions}> */}
+
+      {/* </PopoverProjectType> */}
+    </>
+
   );
 }
 
