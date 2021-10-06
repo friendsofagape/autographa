@@ -67,6 +67,7 @@ const CustomNofications = () => {
         <button
           onClick={openSideBars}
           type="button"
+          title="notification"
           className={`group ${menuStyles.btn}`}
         >
           <BellIcon className="h-5 w-5" aria-hidden="true" />

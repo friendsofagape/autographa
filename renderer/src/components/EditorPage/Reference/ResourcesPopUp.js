@@ -10,6 +10,7 @@ import { readRefMeta } from '@/core/reference/readRefMeta';
 import { readRefBurrito } from '@/core/reference/readRefBurrito';
 import { Dialog, Transition } from '@headlessui/react';
 import { ProjectContext } from '@/components/context/ProjectContext';
+import { XIcon } from '@heroicons/react/solid';
 import ResourceOption from './ResourceOption';
 
 function createData(name, language, date) {
@@ -168,20 +169,19 @@ const ResourcesPopUp = ({
 
             <div className="flex relative rounded shadow overflow-hidden bg-white">
               <button
-                onClick={removeSection}
                 type="button"
-                className="focus:outline-none absolute z-10 top-0 right-0"
+                onClick={removeSection}
+                className="px-2 focus:outline-none bg-black absolute z-10 b top-0 right-0"
               >
-                <img
-                  src="/illustrations/close-button-black.svg"
-                  alt="/"
+                <XIcon
+                  className="h-5 w-5  text-white"
                 />
               </button>
               <div>
                 <div className="uppercase bg-secondary text-white py-2 px-2 text-xs tracking-widest leading-snug rounded-tl text-center">
                   Resources
                 </div>
-                <div className="bg-gray-100 px-3 py-3 h-full">
+                <div style={{ width: 'max-content' }} className="bg-gray-100 px-3 py-3 h-full">
                   {/* <input
                     className="rounded h-8 bg-gray-200 border-none uppercase pr-6 text-xs
                       tracking-widest leading-snug font-bold"
@@ -211,7 +211,7 @@ const ResourcesPopUp = ({
                     <ResourceOption
                       imageUrl="/illustrations/image-icon.svg"
                       id="twlm"
-                      text="TraslationWords"
+                      text="Translation Words"
                       setSelectResource={setSelectResource}
                       setTitle={setTitle}
                       setSubMenuItems={setSubMenuItems}

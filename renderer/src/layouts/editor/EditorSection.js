@@ -169,6 +169,7 @@ export default function EditorSection({
             <div className="flex bg-gray-300 absolute h-full -right-0 rounded-tr invisible group-hover:visible ">
               <button
                 type="button"
+                title="resources selector"
                 onClick={showResourcesPanel}
                 className="px-2"
               >
@@ -187,6 +188,7 @@ export default function EditorSection({
               </button>
               <button
                 type="button"
+                title="remove section"
                 onClick={removeSection}
                 className="px-2"
               >
@@ -227,6 +229,7 @@ export default function EditorSection({
             {hideAddition && (
               <button
                 type="button"
+                title="add section"
                 onClick={addRow}
                 className="absolute p-2 bg-primary rounded bottom-0 -right-0 invisible group-hover:visible"
               >

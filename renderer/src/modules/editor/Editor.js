@@ -166,7 +166,7 @@ export default function Editor({
         <div className="h-4 flex justify-center items-center text-white text-xxs uppercase tracking-wider font-bold leading-3 truncate">
           Editor
         </div>
-        <div className="flex items-center">
+        <div title="navigation lock/unlock" className="flex items-center">
           {scrollLock === true ? (
             <div>
               <LockOpenIcon onClick={() => setScrollLock(!scrollLock)} className="h-5 w-5 text-white" aria-hidden="true" />
@@ -181,6 +181,7 @@ export default function Editor({
             onClick={(event) => handleBookmarks(event)}
             role="button"
             tabIndex="0"
+            title="bookmark"
             className="mx-1 px-2 focus:outline-none border-r-2 border-l-2 border-white border-opacity-10"
           >
             <BookmarkIcon className={`${bookMarked ? 'fill-current' : ''}  h-5 w-5 text-white`} aria-hidden="true" />
