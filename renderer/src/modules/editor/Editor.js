@@ -186,7 +186,7 @@ export default function Editor({
             <BookmarkIcon className={`${bookMarked ? 'fill-current' : ''}  h-5 w-5 text-white`} aria-hidden="true" />
 
           </div>
-          <Menu as="div" className="px-2 py-1 focus:outline-none border-r-1 border-white border-opacity-10">
+          {/* <Menu as="div" className="px-2 py-1 focus:outline-none border-r-1 border-white border-opacity-10">
             {({ open }) => (
               <>
                 <div>
@@ -230,7 +230,7 @@ export default function Editor({
                 </Transition>
               </>
             )}
-          </Menu>
+          </Menu> */}
           {/* <div className="mr-2">
             <CogIcon className="h-5 w-5 text-white" aria-hidden="true" />
           </div> */}
@@ -241,7 +241,7 @@ export default function Editor({
                 fontFamily: selectedFont || 'sans-serif',
                 fontSize: `${fontSize}rem`,
                 lineHeight: (fontSize > 1.3) ? 1.5 : '',
-                direction: `${projectScriptureDir === 'RTL' ? 'rtl' : ''}`,
+                direction: `${projectScriptureDir === 'RTL' ? 'rtl' : 'auto'}`,
         }}
         className="border-l-2 border-r-2 border-secondary pb-16 prose-sm max-w-none overflow-y-auto h-full no-scrollbars"
       >
