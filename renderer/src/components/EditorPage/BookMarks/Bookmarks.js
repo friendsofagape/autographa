@@ -1,5 +1,5 @@
 import { ReferenceContext } from '@/components/context/ReferenceContext';
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 
 export default function Bookmarks() {
   const {

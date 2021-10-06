@@ -4,7 +4,7 @@ import {
   Disclosure, Menu, Transition,
 } from '@headlessui/react';
 import {
-  BellIcon,
+  // BellIcon,
   MenuIcon,
   XIcon,
 } from '@heroicons/react/outline';
@@ -22,9 +22,9 @@ export default function TopMenuBar() {
   // eslint-disable-next-line no-unused-vars
   const { action: { logout } } = React.useContext(AuthenticationContext);
 
-  function openSideBars() {
-    setOpenSideBar(true);
-  }
+  // function openSideBars() {
+  //   setOpenSideBar(true);
+  // }
 
   function closeNotifications(open) {
     setOpenSideBar(open);
