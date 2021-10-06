@@ -4,7 +4,7 @@ import {
   Disclosure, Menu, Transition,
 } from '@headlessui/react';
 import {
-  BellIcon,
+  // BellIcon,
   MenuIcon,
   XIcon,
 } from '@heroicons/react/outline';
@@ -21,9 +21,10 @@ export default function TopMenuBar() {
   const [openSideBar, setOpenSideBar] = useState(false);
   // eslint-disable-next-line no-unused-vars
   const { action: { logout } } = React.useContext(AuthenticationContext);
-  function openSideBars() {
-    setOpenSideBar(true);
-  }
+
+  // function openSideBars() {
+  //   setOpenSideBar(true);
+  // }
 
   function closeNotifications(open) {
     setOpenSideBar(open);
@@ -49,17 +50,21 @@ export default function TopMenuBar() {
                 </div>
                 <div className="hidden md:block">
                   <div className="ml-4 flex items-center md:ml-6">
-                    <button
+                    {/* <button
                       onClick={openSideBars}
                       type="button"
-                      className="inline-flex items-center px-2 py-1 border border-transparent rounded-md shadow-sm
+                      className="inline-flex items-center
+                      px-2 py-1 border border-transparent rounded-md shadow-sm
                         text-sm font-medium text-white bg-gray-800
-                        hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-gray-700"
+                        hover:bg-gray-700 focus:outline-none
+                        focus:ring-2 focus:ring-offset-2
+                        focus:ring-offset-gray-800 focus:ring-gray-700"
                     >
                       <BellIcon className="h-6 w-6" aria-hidden="true" />
-                      {/* <CheckIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" /> */}
-                      <span className="px-2 ml-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-success text-white">21</span>
-                    </button>
+                      <CheckIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
+                      <span className="px-2 ml-2 inline-flex
+                      text-xs leading-5 font-semibold rounded-full bg-success text-white">21</span>
+                    </button> */}
 
                     {/* Profile dropdown */}
                     <Menu as="div" className="ml-3 relative">

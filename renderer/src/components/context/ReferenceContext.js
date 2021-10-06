@@ -41,6 +41,7 @@ export default function ReferenceContextProvider({ children }) {
     const myEditorRef = useRef();
     const [closeNavigation, setCloseNavigation] = useState(false);
     const [projectScriptureDir, setProjectScriptureDir] = useState();
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleClick = (event) => {
       setAnchorEl(event.currentTarget);
@@ -143,6 +144,7 @@ export default function ReferenceContextProvider({ children }) {
         myEditorRef,
         closeNavigation,
         projectScriptureDir,
+        isLoading,
       },
       actions: {
         setLanguageId,
@@ -175,6 +177,7 @@ export default function ReferenceContextProvider({ children }) {
         setBookmarksVerses,
         setCloseNavigation,
         setProjectScriptureDir,
+        setIsLoading,
       },
     };
 

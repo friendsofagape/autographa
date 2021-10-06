@@ -79,6 +79,7 @@ export default function ProjectList() {
     <>
       <ProjectsLayout
         title="Projects"
+        isImport
         header={(
           <SearchTags
             contentList1={starredProjects}
@@ -117,6 +118,7 @@ export default function ProjectList() {
                                   >
                                     <td className="px-4 py-4 whitespace-nowrap">
                                       <button
+                                        title="star/unstar project"
                                         onClick={(event) => handleClickStarred(event, project.name, 'starred')}
                                         type="button"
                                       >
@@ -126,6 +128,7 @@ export default function ProjectList() {
                                     <td className="px-4 py-4 whitespace-nowrap">
                                       <button
                                         type="button"
+                                        title="open project"
                                         onClick={
                                           (event) => handleSelectProject(event, project.name, project.id[0])
                                         }
@@ -252,6 +255,7 @@ export default function ProjectList() {
                                       className="px-4 py-3 text-left text-xs font-medium text-gray-400"
                                     >
                                       <button
+                                        title="star/unstar project"
                                         onClick={(event) => handleClickStarred(event, project.name, 'unstarred')}
                                         type="button"
                                       >
@@ -261,6 +265,7 @@ export default function ProjectList() {
                                     <td className="px-4 py-4 whitespace-nowrap">
                                       <button
                                         type="button"
+                                        title="open project"
                                         onClick={
                                           (event) => handleSelectProject(event, project.name, project.id[0])
                                         }
@@ -351,9 +356,9 @@ export default function ProjectList() {
                                               <div className="text-sm tracking-wide p-1">{project.id[0]}</div>
                                             </div>
                                             <div className="flex flex-shrink items-center justify-center text-center">
-                                              <button type="button" className="px-5">
+                                              {/* <button type="button" className="px-5">
                                                 <PencilAltIcon className="h-5 w-5 text-primary" aria-hidden="true" />
-                                              </button>
+                                              </button> */}
                                               <button
                                                 onClick={() => openExportPopUp(project)}
                                                 type="button"

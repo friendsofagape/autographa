@@ -298,7 +298,7 @@ export default function SubMenuBar() {
         </div> */}
         <div className="w-2/5">
           <div className="flex justify-end">
-            <button type="button" onClick={() => handleResource()} className={`group ${menuStyles.btn}`}>
+            <button title="layout" type="button" onClick={() => handleResource()} className={`group ${menuStyles.btn}`}>
               <ColumnsIcon fill="currentColor" className="h-6 w-6" aria-hidden="true" />
               <span className="px-2 ml-1 bg-primary
               text-white  group-hover:bg-white

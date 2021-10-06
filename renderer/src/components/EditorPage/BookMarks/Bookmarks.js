@@ -6,6 +6,9 @@ export default function Bookmarks() {
     state: {
       bookmarksVerses,
       bookList,
+      chapter,
+      bookName,
+      isLoading,
     },
     actions: {
       onChangeBook,
@@ -14,16 +17,25 @@ export default function Bookmarks() {
     },
   } = useContext(ReferenceContext);
 
+  const timeout = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
   const gotoChapter = (bookname,
-    chapter) => {
+    chapterNum) => {
         bookList.forEach((book) => {
             if (bookname === book.name) {
+              if (bookName !== book.key && chapter !== chapterNum) {
                 onChangeBook(book.key);
-                onChangeChapter(chapter);
-                onChangeVerse('1');
+                timeout(3000).then(() => {
+                  if (isLoading === false) {
+                    onChangeChapter(chapterNum);
+                    onChangeVerse('1');
+                 }
+                });
+              }
             }
         });
   };
+
   return (
     <>
       <div className="bg-gray-800 uppercase text-white text-xs p-2 tracking-wider">

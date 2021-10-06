@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import AdvancedSettingsDropdown from '@/components/ProjectsPage/CreateProject/AdvancedSettingsDropdown';
 import { ProjectContext } from '@/components/context/ProjectContext';
 import TargetLanguagePopover from '@/components/ProjectsPage/CreateProject/TargetLanguagePopover';
-import PopoverProjectType from '@/layouts/editor/PopoverProjectType';
+// import PopoverProjectType from '@/layouts/editor/PopoverProjectType';
 import { SnackBar } from '@/components/SnackBar';
 import LayoutIcon from '@/icons/basil/Outline/Interface/Layout.svg';
 import BullhornIcon from '@/icons/basil/Outline/Communication/Bullhorn.svg';
@@ -13,10 +13,11 @@ import ProcessorIcon from '@/icons/basil/Outline/Devices/Processor.svg';
 import ImageIcon from '@/icons/basil/Outline/Files/Image.svg';
 import { useRouter } from 'next/router';
 // import ImportPopUp from './ImportPopUp';
-import { ChevronDownIcon } from '@heroicons/react/solid';
+// import { ChevronDownIcon } from '@heroicons/react/solid';
 import CustomAutocomplete from './CustomAutocomplete';
 import * as logger from '../../logger';
 
+// eslint-disable-next-line no-unused-vars
 const solutions = [
   {
     name: 'Translation',
@@ -49,16 +50,23 @@ function TargetLanguageTag(props) {
 
 function BibleHeaderTagDropDown() {
   return (
-
-    <PopoverProjectType items={solutions}>
-      <button type="button" className="flex justify-center items-center px-4 py-1 text-white ml-5 font-bold text-xs rounded-full leading-3 tracking-wider uppercase bg-primary">
-        <div>Bible</div>
-        <ChevronDownIcon
+    <>
+      <button
+        type="button"
+        className="flex justify-center items-center px-5 py-1 text-white ml-5
+        font-bold text-xs rounded-full leading-3 tracking-wider uppercase bg-primary"
+      >
+        <div className="w-7 h-4">Bible</div>
+        {/* <ChevronDownIcon
           className="w-5 h-5 ml-2"
           aria-hidden="true"
-        />
+        /> */}
       </button>
-    </PopoverProjectType>
+      {/* <PopoverProjectType items={solutions}> */}
+
+      {/* </PopoverProjectType> */}
+    </>
+
   );
 }
 

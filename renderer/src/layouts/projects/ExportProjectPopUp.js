@@ -141,6 +141,7 @@ export default function ExportProjectPopUp(props) {
                         <div>
                           <button
                             type="button"
+                            title="open folder location"
                             className="px-5"
                             onClick={() => openFileDialogSettingData()}
                           >

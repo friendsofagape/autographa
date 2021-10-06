@@ -122,7 +122,7 @@ export default function TopMenuBar() {
             </div>
 
             <div>
-              <button type="button" onClick={() => goToProjectPage()}>
+              <button title="project name" type="button" onClick={() => goToProjectPage()}>
                 <span className="text-primary px-10 py-2 text-lg tracking-wide font-extrabold uppercase">
                   {projectname?.[0]}
                 </span>
@@ -170,6 +170,7 @@ export default function TopMenuBar() {
                     onClick={() => { handleFontSize('dec'); }}
                     role="button"
                     tabIndex="0"
+                    title="decrease font size"
                     className="h6 w-6 hover:text-black font-bold border-r border-gray-200 text-center"
                   >
                     A
@@ -178,6 +179,7 @@ export default function TopMenuBar() {
                     className="h6 w-6 hover:text-black font-bold text-lg text-center"
                     onClick={() => { handleFontSize('inc'); }}
                     role="button"
+                    title="increase font size"
                     tabIndex="0"
                   >
                     A
