@@ -4,8 +4,7 @@ import React, {
   useRef, Fragment,
 } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
-import { DocumentTextIcon } from '@heroicons/react/outline';
-
+import { DocumentTextIcon, FolderOpenIcon } from '@heroicons/react/outline';
 import styles from './ImportPopUp.module.css';
 
 export default function ImportProjectPopUp(props) {
@@ -21,7 +20,16 @@ export default function ImportProjectPopUp(props) {
   }
 
   const books = ['Genesis', 'Exodus', 'Leviticus', 'Numbers', 'Deuteronomy', 'Joshua', 'Judges', 'Ruth', '1 Samuel', '2 Samuel', '1 Kings', '2 Kings', '1 Chronicles', '2 Chronicles', 'Ezra', 'Nehemiah', 'Esther', 'Job', 'Psalms', 'Proverbs', 'Ecclesiastes', 'Song of Solomon', 'Isaiah', 'Jeremiah', 'Lamentations', 'Ezekiel', 'Daniel', 'Hosea', 'Joel', 'Amos', 'Obadiah', 'Jonah', 'Micah', 'Nahum', 'Habakkuk', 'Zephaniah', 'Haggai', 'Zechariah', 'Malachi', 'Matthew', 'Mark', 'Luke', 'John', 'Acts', 'Romans', '1 Corinthians', '2 Corinthians', 'Galatians', 'Ephesians', 'Philippians', 'Colossians', '1 Thessalonians', '2 Thessalonians', '1 Timothy', '2 Timothy', 'Titus', 'Philemon', 'Hebrews', 'James', '1 Peter', '2 Peter', '1 John', '2 John', '3 John', 'Jude', 'Revelation'];
-
+  const [folderPath, setFolderPath] = React.useState();
+  const openFileDialogSettingData = async () => {
+    // logger.debug('ImportProjectPopUp.js', 'Inside openFileDialogSettingData');
+    const options = { properties: ['openDirectory'] };
+    const { remote } = window.require('electron');
+    const { dialog } = remote;
+    const WIN = remote.getCurrentWindow();
+    const chosenFolder = await dialog.showOpenDialog(WIN, options);
+    setFolderPath(chosenFolder.filePaths[0]);
+  };
   return (
     <Transition
       show={open}
@@ -65,6 +73,31 @@ export default function ImportProjectPopUp(props) {
 
               <div className="relative w-full h-full">
                 <div className="overflow-auto w-full h-full no-scrollbars flex flex-col justify-between relative">
+                  <div className="bg-white grid grid-cols-4 gap-2 p-4 text-sm text-left tracking-wide">
+                    <div className="flex gap-5 col-span-2">
+                      <div>
+                        <h4 className="text-xs font-base mb-2 text-primary  tracking-wide leading-4  font-light">Import Location</h4>
+                        <input
+                          type="text"
+                          name="location"
+                          id=""
+                          value={folderPath}
+                          onChange={(e) => setFolderPath(e.target.value)}
+                          className="bg-white w-52 lg:w-80 block rounded shadow-sm sm:text-sm focus:border-primary border-gray-300"
+                        />
+                        {/* <h4 className="text-red-500">{valid === true ? 'Enter location' : ''}</h4> */}
+                      </div>
+                      <div>
+                        <button
+                          type="button"
+                          className="px-5"
+                          onClick={() => openFileDialogSettingData()}
+                        >
+                          <FolderOpenIcon className="h-5 w-5 text-primary" aria-hidden="true" />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
                   <div className="bg-white grid grid-cols-4 gap-2 p-4 pb-24 text-sm text-left tracking-wide">
                     {
                       books.map((book) => (
