@@ -233,7 +233,7 @@ export default function NewProject() {
                         {language.scriptDirection ? language.scriptDirection : 'LTR'}
                       </TargetLanguageTag>
                     </div>
-                    <CustomAutocomplete label="Target Langauge" list={languages} setValue={setValue} />
+                    <CustomAutocomplete label="Target Language" list={languages} setValue={setValue} />
                   </div>
                   <div className="mt-8">
                     <TargetLanguagePopover />

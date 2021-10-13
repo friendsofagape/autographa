@@ -52,14 +52,22 @@ export default function SelectBook({
       setSelectedBooks(_selectedBooks);
     }
   }
-
+  React.useEffect(() => {
+    if (selectedBooks.length === 39) {
+      toggleOT();
+    } else if (selectedBooks.length === 27) {
+      toggleNT();
+    } else {
+      toggle();
+    }
+  }, [selectedBooks]);
   return (
     <>
       <div className="flex flex-row text-center bg-gray-800 text-white text-sm font-bold tracking-wide uppercase">
         <div className="w-40 m-auto grid grid-cols-3 gap-0 bg-primary">
           <div onClick={toggle} className="p-2 bg-black hover:bg-primary backdrop-opacity-20 cursor-pointer">All</div>
-          <div onClick={toggleNT} className="p-2 border-r-2 border-black hover:bg-black border-opacity-5 cursor-pointer">NT</div>
-          <div onClick={toggleOT} className="p-2 hover:bg-black cursor-pointer">OT</div>
+          <div onClick={toggleNT} className={openNT === false ? 'p-2 bg-black hover:bg-primary backdrop-opacity-20 cursor-pointer' : 'p-2 border-r-2 border-black hover:bg-black border-opacity-5 cursor-pointer'}>NT</div>
+          <div onClick={toggleOT} className={openOT === false ? 'p-2 bg-black hover:bg-primary backdrop-opacity-20 cursor-pointer' : 'p-2 border-r-2 border-black hover:bg-black border-opacity-5 cursor-pointer'}>OT</div>
         </div>
         <div className="flex justify-end">
           {children}
