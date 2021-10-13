@@ -39,13 +39,13 @@ export default function ImportProjectPopUp(props) {
   const getBooks = (filePaths) => {
     const book = [];
     // regex to split path to two groups '(.*[\\\/])' for path and '(.*)' for file name
+    // eslint-disable-next-line no-useless-escape
     const regexPath = /^(.*[\\\/])(.*)$/;
     // execute the match on the string filePath
     filePaths.forEach((filePath) => {
       const match = regexPath.exec(filePath);
       if (match !== null) {
         // we ignore the match[0] because it's the match for the hole path string
-        const filePath = match[1];
         const fileName = match[2];
         book.push(fileName);
       }
@@ -58,7 +58,6 @@ export default function ImportProjectPopUp(props) {
       properties: ['openFile', 'multiSelections'],
       filters: [{ name: 'usfm files', extensions: ['usfm', 'sfm', 'USFM', 'SFM'] }],
     };
-    const path = require('path');
     const { remote } = window.require('electron');
     const { dialog } = remote;
     const WIN = remote.getCurrentWindow();
@@ -181,9 +180,6 @@ export default function ImportProjectPopUp(props) {
 
                 <div className="absolute bottom-0 right-0 left-0 bg-white">
                   <div className="flex gap-6 mx-5 justify-end my-4">
-                    {/* <button type="button" className="py-2 px-6 rounded shadow bg-error text-white uppercase text-xs tracking-widest font-semibold">Delete</button> */}
-                    {/* <button type="button" className="py-2 px-6 bg-primary rounded shadow text-white uppercase text-xs tracking-widest font-semibold">Upload</button> */}
-                    {/* <button type="button" className="py-2 px-7 rounded shadow bg-success text-white uppercase text-xs tracking-widest font-semibold">Import</button> */}
                     <button
                       type="button"
                       onClick={close}

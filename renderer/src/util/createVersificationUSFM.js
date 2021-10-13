@@ -6,7 +6,8 @@ const path = require('path');
 const md5 = require('md5');
 
 const bookAvailable = (list, id) => list.some((obj) => obj.id === id);
-export const createVersificationUSFM = (username, project, versification, books, direction, id, importedFiles) => {
+export const createVersificationUSFM = (username, project, versification, books, direction, id,
+  importedFiles) => {
   const newpath = localStorage.getItem('userPath');
   const folder = path.join(newpath, 'autographa', 'users', username, 'projects', `${project.projectName}_${id}`, 'ingredients');
   const schemes = [
