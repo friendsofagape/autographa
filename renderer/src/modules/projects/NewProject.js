@@ -128,19 +128,13 @@ export default function NewProject() {
       logger.debug('NewProject.js', 'Creating new project.');
       const value = createProject();
       value.then((status) => {
+        logger.debug('NewProject.js', status[0].value);
+        setLoading(false);
+        setNotify(status[0].type);
+        setSnackText(status[0].value);
+        setOpenSnackBar(true);
         if (status[0].type === 'success') {
-          logger.debug('NewProject.js', 'Project created successfully.');
-          setLoading(false);
-          setNotify('success');
-          setSnackText('Created Successfully');
-          setOpenSnackBar(true);
           router.push('/projects');
-        } else {
-          logger.debug('NewProject.js', 'Failed to Create Project.');
-          setLoading(false);
-          setNotify('failure');
-          setSnackText('Failed to Create');
-          setOpenSnackBar(true);
         }
       });
     } else {

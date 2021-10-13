@@ -5,7 +5,8 @@ const grammar = require('usfm-grammar');
 const path = require('path');
 const md5 = require('md5');
 
-export const createVersificationUSFM = (username, project, versification, books, direction, id) => {
+const bookAvailable = (list, id) => list.some((obj) => obj.id === id);
+export const createVersificationUSFM = (username, project, versification, books, direction, id, importedFiles) => {
   const newpath = localStorage.getItem('userPath');
   const folder = path.join(newpath, 'autographa', 'users', username, 'projects', `${project.projectName}_${id}`, 'ingredients');
   const schemes = [
@@ -23,54 +24,73 @@ export const createVersificationUSFM = (username, project, versification, books,
         // eslint-disable-next-line import/no-dynamic-require
         const file = require(`../lib/versification/${scheme.file}`);
         await books.forEach((book) => {
-          const list = file.maxVerses;
-          if (list[book]) {
-            const chapters = [];
-            (list[book]).forEach((verse, i) => {
-              // eslint-disable-next-line vars-on-top
-              let contents = [{ p: null }];
-              const verses = [];
-              for (let i = 1; i <= parseInt(verse, 10); i += 1) {
-                verses.push({
-                  verseNumber: i.toString(),
-                  verseText: '',
-                  // contents: [],
-                });
-              }
-              contents = contents.concat(verses);
-              chapters.push({
-                chapterNumber: (i + 1).toString(),
-                contents,
-              });
-            });
-            const usfm = {
-              book: {
-                bookCode: book,
+          if (bookAvailable(importedFiles, book)) {
+            const file = importedFiles.filter((obj) => (obj.id === book));
+            const fs = window.require('fs');
+            if (!fs.existsSync(folder)) {
+              fs.mkdirSync(folder, { recursive: true });
+            }
+            fs.writeFileSync(path.join(folder, `${book}.usfm`), file[0].content, 'utf-8');
+            const stats = fs.statSync(path.join(folder, `${book}.usfm`));
+            ingredients[path.join('ingredients', `${book}.usfm`)] = {
+              checksum: {
+                md5: md5(file[0].content),
               },
-              chapters,
-              // _messages: {
-              //   _warnings: [],
-              // },
+              mimeType: 'text/x-usfm',
+              size: stats.size,
+              scope: {},
             };
-            const myJsonParser = new grammar.JSONParser(usfm);
-            const isJsonValid = myJsonParser.validate();
-            if (isJsonValid) {
-              const reCreatedUsfm = myJsonParser.toUSFM();
-              const fs = window.require('fs');
-              if (!fs.existsSync(folder)) {
-                fs.mkdirSync(folder, { recursive: true });
-              }
-              fs.writeFileSync(path.join(folder, `${book}.usfm`), reCreatedUsfm);
-              const stats = fs.statSync(path.join(folder, `${book}.usfm`));
-              ingredients[path.join('ingredients', `${book}.usfm`)] = {
-                checksum: {
-                  md5: md5(reCreatedUsfm),
+            ingredients[path.join('ingredients', `${book}.usfm`)].scope[book] = [];
+          } else {
+            const list = file.maxVerses;
+            if (list[book]) {
+              const chapters = [];
+              (list[book]).forEach((verse, i) => {
+                // eslint-disable-next-line vars-on-top
+                let contents = [{ p: null }];
+                const verses = [];
+                for (let i = 1; i <= parseInt(verse, 10); i += 1) {
+                  verses.push({
+                    verseNumber: i.toString(),
+                    verseText: '',
+                    // contents: [],
+                  });
+                }
+                contents = contents.concat(verses);
+                chapters.push({
+                  chapterNumber: (i + 1).toString(),
+                  contents,
+                });
+              });
+              const usfm = {
+                book: {
+                  bookCode: book,
                 },
-                mimeType: 'text/x-usfm',
-                size: stats.size,
-                scope: {},
+                chapters,
+                // _messages: {
+                //   _warnings: [],
+                // },
               };
-              ingredients[path.join('ingredients', `${book}.usfm`)].scope[book] = [];
+              const myJsonParser = new grammar.JSONParser(usfm);
+              const isJsonValid = myJsonParser.validate();
+              if (isJsonValid) {
+                const reCreatedUsfm = myJsonParser.toUSFM();
+                const fs = window.require('fs');
+                if (!fs.existsSync(folder)) {
+                  fs.mkdirSync(folder, { recursive: true });
+                }
+                fs.writeFileSync(path.join(folder, `${book}.usfm`), reCreatedUsfm);
+                const stats = fs.statSync(path.join(folder, `${book}.usfm`));
+                ingredients[path.join('ingredients', `${book}.usfm`)] = {
+                  checksum: {
+                    md5: md5(reCreatedUsfm),
+                  },
+                  mimeType: 'text/x-usfm',
+                  size: stats.size,
+                  scope: {},
+                };
+                ingredients[path.join('ingredients', `${book}.usfm`)].scope[book] = [];
+              }
             }
           }
         });

@@ -34,6 +34,7 @@ const ProjectContextProvider = ({ children }) => {
     });
     const [username, setUsername] = React.useState();
     const [selectedProject, setSelectedProject] = React.useState();
+    const [importedFiles, setImportedFiles] = React.useState([]);
 
     const handleProjectFields = (prop) => (event) => {
       setNewProjectFields({ ...newProjectFields, [prop]: event.target.value });
@@ -171,6 +172,7 @@ const ProjectContextProvider = ({ children }) => {
         versificationScheme.title,
         canonSpecification,
         copyright,
+        importedFiles,
       );
       return status;
     };
@@ -230,6 +232,7 @@ const ProjectContextProvider = ({ children }) => {
             setUsername,
             setOpenSideBar,
             setNewProjectFields,
+            setImportedFiles,
         },
     };
 
