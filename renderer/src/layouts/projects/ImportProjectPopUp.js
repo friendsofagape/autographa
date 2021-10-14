@@ -7,9 +7,9 @@ import { FolderOpenIcon } from '@heroicons/react/outline';
 import { useRouter } from 'next/router';
 import { SnackBar } from '@/components/SnackBar';
 import CloseIcon from '@/illustrations/close-button-black.svg';
+import localforage from 'localforage';
 import importBurrito from '../../core/burrito/importBurrito';
 import * as logger from '../../logger';
-import localforage from 'localforage';
 
 export default function ImportProjectPopUp(props) {
   const {
@@ -41,8 +41,8 @@ export default function ImportProjectPopUp(props) {
   const importProject = async () => {
     if (folderPath) {
       setValid(false);
-      await localforage.getItem('userProfile').then(async(value) => {
-        const status = await importBurrito(folderPath,value.username);
+      await localforage.getItem('userProfile').then(async (value) => {
+        const status = await importBurrito(folderPath, value.username);
         setOpenSnackBar(true);
         closePopUp(false);
         setNotify(status[0].type);
