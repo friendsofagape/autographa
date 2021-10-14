@@ -7,12 +7,14 @@ import * as logger from '../../logger';
 
 const sha1 = require('sha1');
 
+const bookAvailable = (list, id) => list.some((obj) => obj === id);
 const saveProjectsMeta = async (
   newProjectFields,
   selectedLanguage,
   versificationScheme,
   canonSpecification,
   copyright,
+  importedFiles,
 ) => {
   logger.error('saveProjectsMeta.js', 'In saveProjectsMeta');
   const newpath = localStorage.getItem('userPath');
@@ -31,44 +33,53 @@ const saveProjectsMeta = async (
   });
   const projectDir = path.join(newpath, 'autographa', 'users', currentUser, 'projects');
   let projectNameExists = false;
+  let checkCanon = false;
   const folderList = fs.readdirSync(projectDir);
   folderList.forEach((folder) => {
     const name = folder.split('_');
     if (name[0] === newProjectFields.projectName) {
       projectNameExists = true;
       // checking for duplicates
-      status.push({ type: 'Warning', value: 'projectname exists' });
+      status.push({ type: 'warning', value: 'projectname exists' });
     }
   });
-
+  importedFiles.forEach((file) => {
+    if (!bookAvailable(canonSpecification.currentScope, file.id)) {
+      checkCanon = true;
+      status.push({ type: 'warning', value: `${file.id} is not added in Canon Specification` });
+    }
+  });
   if (projectNameExists === false) {
-    const id = sha1(currentUser + newProjectFields.projectName + moment().format());
-    // Create New burrito
-    // ingredient has the list of created files in the form of SB Ingredients
-    logger.error('saveProjectsMeta.js', 'Calling creatVersification for generating USFM files.');
-    await createVersificationUSFM(
-      currentUser,
-      newProjectFields,
-      versificationScheme,
-      canonSpecification.currentScope,
-      selectedLanguage.scriptDirection,
-      id,
-    ).then(async (ingredient) => {
-      logger.error('saveProjectsMeta.js', 'Calling createTranslationSB for creating burrito.');
-      const burritoFile = await createTranslationSB(currentUser,
+    if (checkCanon === false) {
+      const id = sha1(currentUser + newProjectFields.projectName + moment().format());
+      // Create New burrito
+      // ingredient has the list of created files in the form of SB Ingredients
+      logger.error('saveProjectsMeta.js', 'Calling creatVersification for generating USFM files.');
+      await createVersificationUSFM(
+        currentUser,
         newProjectFields,
+        versificationScheme,
         canonSpecification.currentScope,
-        selectedLanguage.title,
-        copyright.licence,
-        id);
-      burritoFile.ingredients = ingredient;
-      logger.error('saveProjectsMeta.js', 'Creating a burrito file.');
-      await fs.writeFileSync(path.join(projectDir, `${newProjectFields.projectName}_${id}`,
-        'metadata.json'), JSON.stringify(burritoFile));
-    }).finally(() => {
-      logger.error('saveProjectsMeta.js', 'New project created successfully.');
-      status.push({ type: 'success', value: 'new project created' });
-    });
+        selectedLanguage.scriptDirection,
+        id,
+        importedFiles,
+      ).then(async (ingredient) => {
+        logger.error('saveProjectsMeta.js', 'Calling createTranslationSB for creating burrito.');
+        const burritoFile = await createTranslationSB(currentUser,
+          newProjectFields,
+          canonSpecification.currentScope,
+          selectedLanguage.title,
+          copyright.licence,
+          id);
+        burritoFile.ingredients = ingredient;
+        logger.error('saveProjectsMeta.js', 'Creating a burrito file.');
+        await fs.writeFileSync(path.join(projectDir, `${newProjectFields.projectName}_${id}`,
+          'metadata.json'), JSON.stringify(burritoFile));
+      }).finally(() => {
+        logger.error('saveProjectsMeta.js', 'New project created successfully.');
+        status.push({ type: 'success', value: 'new project created' });
+      });
+    }
   } else {
     logger.error('saveProjectsMeta.js', 'Project already exists');
     status.push({ type: 'error', value: 'Project already exists' });

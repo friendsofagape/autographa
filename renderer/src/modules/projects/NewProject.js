@@ -12,7 +12,7 @@ import ProcessorIcon from '@/icons/basil/Outline/Devices/Processor.svg';
 // import CheckIcon from '@/icons/basil/Outline/Interface/Check.svg';
 import ImageIcon from '@/icons/basil/Outline/Files/Image.svg';
 import { useRouter } from 'next/router';
-// import ImportPopUp from './ImportPopUp';
+import ImportPopUp from './ImportPopUp';
 // import { ChevronDownIcon } from '@heroicons/react/solid';
 import CustomAutocomplete from './CustomAutocomplete';
 import * as logger from '../../logger';
@@ -128,19 +128,13 @@ export default function NewProject() {
       logger.debug('NewProject.js', 'Creating new project.');
       const value = createProject();
       value.then((status) => {
+        logger.debug('NewProject.js', status[0].value);
+        setLoading(false);
+        setNotify(status[0].type);
+        setSnackText(status[0].value);
+        setOpenSnackBar(true);
         if (status[0].type === 'success') {
-          logger.debug('NewProject.js', 'Project created successfully.');
-          setLoading(false);
-          setNotify('success');
-          setSnackText('Created Successfully');
-          setOpenSnackBar(true);
           router.push('/projects');
-        } else {
-          logger.debug('NewProject.js', 'Failed to Create Project.');
-          setLoading(false);
-          setNotify('failure');
-          setSnackText('Failed to Create');
-          setOpenSnackBar(true);
         }
       });
     } else {
@@ -151,15 +145,15 @@ export default function NewProject() {
       setOpenSnackBar(true);
     }
   };
-  // const [openPopUp, setOpenPopUp] = useState(false);
+  const [openPopUp, setOpenPopUp] = React.useState(false);
 
-  // function openImportPopUp() {
-  //   setOpenPopUp(true);
-  // }
+  function openImportPopUp() {
+    setOpenPopUp(true);
+  }
 
-  // function closeImportPopUp() {
-  //   setOpenPopUp(false);
-  // }
+  function closeImportPopUp() {
+    setOpenPopUp(false);
+  }
 
   return (
     <ProjectsLayout
@@ -239,17 +233,17 @@ export default function NewProject() {
                     <TargetLanguagePopover />
                   </div>
                 </div>
-                {/* <div className="mt-5">
-              <button
-                type="button"
-                className="rounded-full px-3 py-1 bg-primary hover:bg-black
-                text-white text-xs uppercase font-semibold"
-                onClick={openImportPopUp}
-              >
-                22 books imported
-              </button>
-              <ImportPopUp open={openPopUp} closePopUp={closeImportPopUp} />
-            </div> */}
+                <div className="mt-5">
+                  <button
+                    type="button"
+                    className="rounded-full px-3 py-1 bg-primary hover:bg-black
+                      text-white text-xs uppercase font-semibold"
+                    onClick={openImportPopUp}
+                  >
+                    Import books
+                  </button>
+                  <ImportPopUp open={openPopUp} closePopUp={closeImportPopUp} />
+                </div>
               </div>
 
               <div>
