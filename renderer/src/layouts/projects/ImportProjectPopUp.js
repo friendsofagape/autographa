@@ -9,6 +9,7 @@ import { SnackBar } from '@/components/SnackBar';
 import CloseIcon from '@/illustrations/close-button-black.svg';
 import importBurrito from '../../core/burrito/importBurrito';
 import * as logger from '../../logger';
+import localforage from 'localforage';
 
 export default function ImportProjectPopUp(props) {
   const {
@@ -40,19 +41,16 @@ export default function ImportProjectPopUp(props) {
   const importProject = async () => {
     if (folderPath) {
       setValid(false);
-      const status = await importBurrito(folderPath);
-      if (status[0].type === 'success') {
-        router.push('/projects');
-        setNotify('success');
-        setSnackText('Imported Successfully');
+      await localforage.getItem('userProfile').then(async(value) => {
+        const status = await importBurrito(folderPath,value.username);
         setOpenSnackBar(true);
         closePopUp(false);
-      } else {
-        setNotify('failure');
-        setSnackText('Import Failed');
-        setOpenSnackBar(true);
-        closePopUp(false);
-      }
+        setNotify(status[0].type);
+        setSnackText(status[0].value);
+        if (status[0].type === 'success') {
+          router.push('/projects');
+        }
+      });
     } else {
       setValid(true);
       setNotify('failure');

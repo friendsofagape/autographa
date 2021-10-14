@@ -7,12 +7,11 @@ import { validate } from '../../util/validate';
 const md5 = require('md5');
 const sha1 = require('sha1');
 
-const importBurrito = async (filePath) => {
+const importBurrito = async (filePath,currentUser) => {
   logger.debug('importBurrito.js', 'Inside importBurrito');
   const fs = window.require('fs');
   const fse = window.require('fs-extra');
   const path = require('path');
-  const currentUser = 'new';
   const status = [];
   const newpath = localStorage.getItem('userPath');
   const projectDir = path.join(newpath, 'autographa', 'users', currentUser, 'projects');
@@ -160,7 +159,7 @@ const importBurrito = async (filePath) => {
       }
       await fs.writeFileSync(path.join(projectDir, `${projectName}_${id}`, 'metadata.json'), JSON.stringify(metadata));
       logger.debug('importBurrito.js', 'Creating the metadata.json Burrito file.');
-      status.push({ type: 'success', value: 'Project Imported' });
+      status.push({ type: 'success', value: 'Project Imported Successfully' });
     } else {
       logger.debug('importBurrito.js', 'Invalid burrito file (metadata.json).');
       status.push({ type: 'error', value: 'Invalid burrito file (metadata.json).' });
