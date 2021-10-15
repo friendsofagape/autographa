@@ -110,6 +110,89 @@ export default function ReferenceContextProvider({ children }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    // const readBibleData = (bookId, chapter) => {
+    //   setDisplayScreen(false);
+    //   setIsLoading(true);
+    //   localforage.getItem('userProfile').then((value) => {
+    //     const username = value?.username;
+    //     localforage.getItem('currentProject').then((projectName) => {
+    //       const path = require('path');
+    //       const newpath = localStorage.getItem('userPath');
+    //       const projectsDir = path.join(
+    //           newpath, 'autographa', 'users', username, 'projects', projectName,
+    //       );
+    //       const metaPath = path.join(
+    //         newpath, 'autographa', 'users', username, 'projects', projectName, 'metadata.json',
+    //       );
+    //       readRefMeta({
+    //         projectsDir,
+    //       }).then((refs) => {
+    //         setIsLoading(true);
+    //         refs.forEach(() => {
+    //           readRefBurrito({
+    //             metaPath,
+    //           }).then((data) => {
+    //             if (data) {
+    //               const _data = JSON.parse(data);
+    //               const _books = [];
+    //               Object.entries(_data.ingredients).forEach(
+    //                 ([key, _ingredients]) => {
+    //                   if (_ingredients?.scope) {
+    //                     const _bookID = Object.entries(_ingredients.scope)[0][0];
+    //                     _books.push(_bookID);
+    //                     if (_bookID === bookId.toUpperCase()) {
+    //                       readFile({
+    //                         projectname: projectName,
+    //                         filename: key,
+    //                         username,
+    //                       }).then((data) => {
+    //                         if (data) {
+    //                             timeout(2000).then(() => {
+    //                               localforage.getItem('navigationHistory').then((book) => {
+    //                                 if (book) {
+    //                                   onChangeBook(book[0]);
+    //                                   onChangeChapter(book[1]);
+    //                                     if (book[0].toUpperCase() !== bookId.toUpperCase()) {
+    //                                       setDisplayScreen(true);
+    //                                     } else {
+    //                                       handleInputChange(data);
+    //                                     }
+    //                                 }
+    //                                 });
+    //                             }).finally(() => {
+    //                               setIsLoading(false);
+    //                               setDisplayScreen(false);
+    //                             });
+    //                         }
+    //                       });
+    //                     }
+
+    //                     // console.log(Object.entries(_ingredients.scope));
+    //                   }
+    //                   if (_ingredients.scope === undefined) {
+    //                     if (_books.includes(bookId.toUpperCase()) === false) {
+    //                       setDisplayScreen(true);
+    //                       setIsLoading(false);
+    //                     }
+    //                   }
+    //                   // console.log(key, value),
+    //                 },
+    //               );
+    //             }
+    //           });
+    //         });
+    //       });
+    //     });
+    //   });
+    // };
+
+    const goToChapter = (chapternum, versenum) => (
+      {
+        chapter: parseInt(chapternum || chapter, 10),
+        verse: parseInt(versenum || verse, 10),
+      }
+    );
+
     const value = {
       state: {
         chapter,
@@ -178,6 +261,7 @@ export default function ReferenceContextProvider({ children }) {
         setCloseNavigation,
         setProjectScriptureDir,
         setIsLoading,
+        goToChapter,
       },
     };
 

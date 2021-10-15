@@ -1,5 +1,5 @@
 import { ReferenceContext } from '@/components/context/ReferenceContext';
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 export default function Bookmarks() {
   const {
@@ -14,27 +14,35 @@ export default function Bookmarks() {
       onChangeBook,
       onChangeChapter,
       onChangeVerse,
+      setIsLoading,
     },
   } = useContext(ReferenceContext);
+
+  const [tempBook, setTempBook] = useState();
+  const [tempChapter, setTempChapter] = useState(chapter);
 
   const timeout = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
   const gotoChapter = (bookname,
     chapterNum) => {
-        bookList.forEach((book) => {
+        bookList.forEach(async (book) => {
             if (bookname === book.name) {
-              if (bookName !== book.key && chapter !== chapterNum) {
-                onChangeBook(book.key);
-                timeout(3000).then(() => {
-                  if (isLoading === false) {
-                    onChangeChapter(chapterNum);
-                    onChangeVerse('1');
-                 }
-                });
+              if (bookName !== book.key || chapter !== chapterNum) {
+                  setTempBook(book.key);
+                  onChangeBook(book.key);
+                  setTempChapter(chapterNum);
+                  onChangeVerse('1');
               }
             }
         });
   };
+
+  useEffect(() => {
+    timeout(3000).then(async () => {
+        onChangeChapter(tempChapter);
+        onChangeVerse('1');
+    });
+  }, [tempChapter]);
 
   return (
     <>

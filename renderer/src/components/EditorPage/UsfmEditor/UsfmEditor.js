@@ -15,7 +15,7 @@ import * as localforage from 'localforage';
 import {
   createBasicUsfmEditor,
   withChapterPaging,
-  //  withChapterSelection,
+   withChapterSelection,
 } from 'usfm-editor';
 import Editor from '@/modules/editor/Editor';
 import LoadingScreen from '@/components/Loading/LoadingScreen';
@@ -61,6 +61,7 @@ const UsfmEditor = () => {
       onChangeVerse,
       applyBooksFilter,
       setIsLoading,
+      goToChapter,
     },
   } = useContext(ReferenceContext);
 
@@ -69,7 +70,7 @@ const UsfmEditor = () => {
   }, [applyBooksFilter, supportedBooks]);
 
   const CustomEditor = useMemo(
-    () => (withChapterPaging(createBasicUsfmEditor())),
+    () => ((withChapterPaging(createBasicUsfmEditor()))),
     [usfmInput],
   );
 
@@ -77,6 +78,13 @@ const UsfmEditor = () => {
     setIsLoading(true);
     return new Promise((resolve) => setTimeout(resolve, ms));
   };
+
+  // const goToChapter = () => (
+  //     {
+  //       chapter: parseInt(chapter, 10),
+  //       verse: parseInt(verse, 10),
+  //     }
+  // );
 
   // const saveToParse = async () => {
   //   try {
@@ -209,13 +217,15 @@ const UsfmEditor = () => {
                                   localforage.getItem('navigationHistory').then((book) => {
                                     if (book) {
                                       onChangeBook(book[0]);
-                                      onChangeChapter(book[1]);
-                                        if (book[0].toUpperCase() !== bookId.toUpperCase()) {
-                                          setDisplayScreen(true);
-                                        } else {
-                                          handleInputChange(data);
-                                        }
                                     }
+                                    return book;
+                                    }).then((book) => {
+                                      onChangeChapter(book[1]);
+                                      if (book[0].toUpperCase() !== bookId.toUpperCase()) {
+                                        setDisplayScreen(true);
+                                      } else {
+                                        handleInputChange(data);
+                                      }
                                     });
                                 }).finally(() => {
                                   setIsLoading(false);
@@ -414,10 +424,7 @@ const UsfmEditor = () => {
               onChange={handleEditorChange}
               onVerseChange={handleVersChange}
               readOnly={readOnly}
-              goToVerse={{
-              chapter: parseInt(chapter, 10),
-              verse: parseInt(verse, 10),
-            }}
+              goToVerse={goToChapter()}
             />
             )
           )
