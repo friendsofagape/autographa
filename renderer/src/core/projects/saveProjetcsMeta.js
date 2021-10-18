@@ -7,8 +7,6 @@ import createTranslationSB from '../burrito/createTranslationSB';
 import * as logger from '../../logger';
 import { environment } from '../../../environment';
 
-const sha1 = require('sha1');
-
 const bookAvailable = (list, id) => list.some((obj) => obj === id);
 const saveProjectsMeta = async (
   newProjectFields,

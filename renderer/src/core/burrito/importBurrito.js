@@ -6,7 +6,6 @@ import * as logger from '../../logger';
 import { validate } from '../../util/validate';
 
 const md5 = require('md5');
-const sha1 = require('sha1');
 
 const importBurrito = async (filePath, currentUser) => {
   logger.debug('importBurrito.js', 'Inside importBurrito');
