@@ -1,5 +1,6 @@
 /* eslint-disable no-alert */
 import moment from 'moment';
+import { v5 as uuidv5 } from 'uuid';
 import { environment } from '../../../environment';
 import * as logger from '../../logger';
 import { validate } from '../../util/validate';
@@ -87,7 +88,8 @@ const importBurrito = async (filePath, currentUser) => {
             }
           });
           logger.debug('importBurrito.js', 'Creating a new key.');
-          id = sha1(currentUser + metadata.identification.name.en + moment().format());
+          const key = currentUser + metadata.identification.name.en + moment().format();
+          id = uuidv5(key, environment.uuidToken);
           metadata.identification.primary.ag = {
             [id]: {
             revision: '0',
