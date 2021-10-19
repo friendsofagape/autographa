@@ -99,6 +99,7 @@ const CustomLogin = ({
           className="text-xs
            focus:border-blue-600
            max-w-md h-12 appearance-none
+           cursor-pointer
            border rounded
            w-full py-2 px-3 text-white focus:outline-none bg-primary"
         />

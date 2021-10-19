@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {
   UploadIcon,
 } from '@heroicons/react/outline';
-import ImportProjectPopUp from './ImportProjectPopUp';
+import ImportResource from '@/components/EditorPage/Reference/ImportResource';
 import SideBar from './SideBar';
 import TopMenuBar from './TopMenuBar';
 
@@ -58,7 +58,7 @@ export default function ProjectsLayout(props) {
                         <UploadIcon className="h-4 mr-2 text-white" />
                         import
                       </button>
-                      <ImportProjectPopUp open={openPopUp} closePopUp={closeImportPopUp} />
+                      <ImportResource open={openPopUp} closePopUp={closeImportPopUp} />
                     </>
                   )}
 
