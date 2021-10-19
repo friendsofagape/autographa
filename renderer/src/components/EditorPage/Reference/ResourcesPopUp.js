@@ -12,6 +12,7 @@ import { Dialog, Transition } from '@headlessui/react';
 import { ProjectContext } from '@/components/context/ProjectContext';
 import { XIcon } from '@heroicons/react/solid';
 import ResourceOption from './ResourceOption';
+import ImportResource from './ImportResource';
 
 function createData(name, language, date) {
   return {
@@ -43,8 +44,8 @@ const ResourcesPopUp = ({
   const cancelButtonRef = useRef(null);
   const [subMenuItems, setSubMenuItems] = useState();
   const [title, setTitle] = useState(header);
+  const [openPopUp, setOpenPopUp] = useState(false);
   const [selectResource, setSelectResource] = useState(selectedResource);
-  const [folderPath, setFolderPath] = React.useState();
 
   const {
     states: {
@@ -53,10 +54,6 @@ const ResourcesPopUp = ({
   } = useContext(ProjectContext);
 
   useEffect(() => {
-    setReferenceResources({
-      selectedResource: selectResource,
-      languageId,
-    });
     if (isElectron()) {
       const fs = window.require('fs');
       const path = require('path');
@@ -113,37 +110,15 @@ const ResourcesPopUp = ({
     removeSection();
   };
 
-  const openResourceDialog = async () => {
-      const options = { properties: ['openDirectory'] };
-      const { remote } = window.require('electron');
-      const { dialog } = remote;
-      const WIN = remote.getCurrentWindow();
-      const chosenFolder = await dialog.showOpenDialog(WIN, options);
-      setFolderPath(chosenFolder.filePaths[0]);
-  };
+  const openResourceDialog = () => (
+    setOpenPopUp(true)
+  );
 
-  const uploadRefBible = async () => {
-    if (isElectron()) {
-      const fs = window.require('fs');
-      const fse = window.require('fs-extra');
-      const path = require('path');
-      localforage.getItem('userProfile').then(async (user) => {
-        const newpath = localStorage.getItem('userPath');
-        fs.mkdirSync(path.join(newpath, 'autographa', 'users', user?.username, 'reference'), {
-          recursive: true,
-        });
-        const projectsDir = path.join(
-          newpath, 'autographa', 'users', user?.username, 'reference',
-        );
-        await fse.copy(folderPath, projectsDir, { overwrite: true }).then(() => {
-          window.location.reload();
-        });
-      });
-    }
-  };
+  function closeImportPopUp() {
+    setOpenPopUp(false);
+  }
 
   return (
-
     <Transition
       show={openResourcePopUp}
       as={Fragment}
@@ -165,7 +140,7 @@ const ResourcesPopUp = ({
 
         <Dialog.Overlay className="fixed inset-0 bg-black opacity-30" />
         <div className="flex items-center justify-center h-screen">
-          <div className="w-5/12 h-3/6 items-center justify-center m-auto z-50 shadow overflow-hidden rounded">
+          <div className="w-5/12 h-2/6 items-center justify-center m-auto z-50 shadow overflow-hidden rounded">
 
             <div className="flex relative rounded shadow overflow-hidden bg-white">
               <button
@@ -362,7 +337,7 @@ const ResourcesPopUp = ({
                       <tbody className="bg-white divide-y divide-gray-200  mb-44 ">
                         {(subMenuItems) && (
                           subMenuItems.map((ref) => (
-                            <tr className="hover:bg-gray-200" key={ref.value.identification.name.en}>
+                            <tr className="hover:bg-gray-200" key={ref.value.identification.name.en + ref.projectDir}>
                               <td className="px-5 py-3">
                                 <StarIcon className="h-5 w-5 text-gray-300" aria-hidden="true" />
                               </td>
@@ -375,6 +350,10 @@ const ResourcesPopUp = ({
                                   tabIndex="0"
                                 >
                                   {ref.value.identification.name.en}
+                                  {' '}
+                                  (
+                                  {ref.projectDir}
+                                  )
                                 </div>
                               </td>
                               <td className="px-5 text-gray-600">
@@ -403,20 +382,20 @@ const ResourcesPopUp = ({
                         className="py-2 px-6 bg-primary rounded shadow text-white uppercase text-xs tracking-widest font-semibold"
                       >
                         Upload
-
                       </button>
                       {/* <button type="button"
                       className="py-2 px-6 rounded shadow
                        bg-error text-white uppercase text-xs
                        tracking-widest font-semibold">Cancel</button> */}
-                      <button
+                      {/* <button
                         type="button"
                         onClick={() => uploadRefBible()}
-                        className="py-2 px-7 rounded shadow bg-success text-white uppercase text-xs tracking-widest font-semibold"
+                        className="py-2 px-7 rounded shadow
+                        bg-success text-white uppercase text-xs tracking-widest font-semibold"
                       >
                         Open
-
-                      </button>
+                      </button> */}
+                      <ImportResource open={openPopUp} closePopUp={closeImportPopUp} />
                     </div>
                   )}
                 </div>
