@@ -4,7 +4,7 @@
 	"description": "A Bible translation editor for everyone.",
 	"email": "autographa.support@bridgeconn.com",
 	"author": "Friends of Agape <autographa.support@bridgeconn.com>",
-	"version": "2.0.0-beta.1",
+	"version": "2.0.0-beta.2",
 	"license": "MIT",
 	"private": true,
 	"main": "main/index.js",
@@ -26,7 +26,7 @@
 		"build": "next build renderer && next export renderer",
 		"pack-app": "npm run build && electron-builder --dir",
 		"dist": "npm run build && electron-builder -p never",
-		"deploy": "npm run build && electron-builder --win --publish always"
+		"deploy": "npm run build && electron-builder -p always"
 	},
 	"eslintIgnore": [
 		"*.test.js"
@@ -45,13 +45,22 @@
 			"renderer/jsconfig.json",
 			"styles/**/*"
 		],
+		"electronVersion": "null",
+		"electronDist": "./node_modules/electronite/dist",
 		"linux": {
 			"target": [
 				"deb"
 			]
 		},
+		"mac": {
+			"category": "public.app-category.Utilities",
+			"target": "dmg",
+			"icon": "styles/autographa_logo.ico",
+			"type": "distribution"
+		},
 		"win": {
 			"target": "nsis",
+			"icon": "styles/autographa_icon.png",
 			"publish": [
 				"github"
 			]
@@ -64,7 +73,7 @@
 			{
 				"provider": "github",
 				"owner": "Ashersam",
-				"repo": "Autographa2.0-AutoUpdate"
+				"repo": "autographa"
 			}
 		]
 	},
