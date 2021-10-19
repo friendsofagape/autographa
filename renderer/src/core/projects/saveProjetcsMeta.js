@@ -1,11 +1,11 @@
 /* eslint-disable no-unused-vars */
 import moment from 'moment';
 import * as localforage from 'localforage';
+import { v5 as uuidv5 } from 'uuid';
 import { createVersificationUSFM } from '../../util/createVersificationUSFM';
 import createTranslationSB from '../burrito/createTranslationSB';
 import * as logger from '../../logger';
-
-const sha1 = require('sha1');
+import { environment } from '../../../environment';
 
 const bookAvailable = (list, id) => list.some((obj) => obj === id);
 const saveProjectsMeta = async (
@@ -51,7 +51,8 @@ const saveProjectsMeta = async (
   });
   if (projectNameExists === false) {
     if (checkCanon === false) {
-      const id = sha1(currentUser + newProjectFields.projectName + moment().format());
+      const key = currentUser + newProjectFields.projectName + moment().format();
+      const id = uuidv5(key, environment.uuidToken);
       // Create New burrito
       // ingredient has the list of created files in the form of SB Ingredients
       logger.error('saveProjectsMeta.js', 'Calling creatVersification for generating USFM files.');
