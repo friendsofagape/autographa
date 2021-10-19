@@ -35,7 +35,7 @@ const translationQuestions = [
 
 const ResourcesPopUp = ({
   header,
-  languageId,
+  // languageId,
   openResourcePopUp,
   setOpenResourcePopUp,
   selectedResource,

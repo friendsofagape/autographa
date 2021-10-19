@@ -4,7 +4,6 @@ import {
   UploadIcon,
 } from '@heroicons/react/outline';
 import ImportResource from '@/components/EditorPage/Reference/ImportResource';
-import ImportProjectPopUp from './ImportProjectPopUp';
 import SideBar from './SideBar';
 import TopMenuBar from './TopMenuBar';
 
