@@ -15,7 +15,7 @@ import * as localforage from 'localforage';
 import {
   createBasicUsfmEditor,
   withChapterPaging,
-   withChapterSelection,
+  //  withChapterSelection,
 } from 'usfm-editor';
 import Editor from '@/modules/editor/Editor';
 import LoadingScreen from '@/components/Loading/LoadingScreen';
@@ -52,7 +52,7 @@ const UsfmEditor = () => {
     state: {
       bookId,
       chapter,
-      verse,
+      // verse,
       myEditorRef,
       isLoading,
     }, actions: {

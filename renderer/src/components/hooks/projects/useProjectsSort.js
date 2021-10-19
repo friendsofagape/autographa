@@ -73,7 +73,9 @@ function useProjectsSort() {
         .then(() => {
           projectArrayTemp[0].projects.forEach((_project) => {
             if (_project.identification.name.en === name) {
-              updateAgSettings(currentUser, name, _project);
+              const id = Object.keys(_project.identification.primary.ag);
+              const projectName = `${name}_${id}`;
+              updateAgSettings(currentUser, projectName, _project);
             }
           });
           // metaFileReplace({ userData: projectArrayTemp[0] });

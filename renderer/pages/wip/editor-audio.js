@@ -1,3 +1,4 @@
+/* eslint-disable */
 import AuthenticationContextProvider from '@/components/Login/AuthenticationContextProvider';
 import ProjectContextProvider from '@/components/context/ProjectContext';
 import ReferenceContextProvider from '@/components/context/ReferenceContext';

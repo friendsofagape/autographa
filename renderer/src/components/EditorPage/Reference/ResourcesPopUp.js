@@ -191,19 +191,20 @@ const ResourcesPopUp = ({
                     name="gsearch"
                   /> */}
                   <div className="grid grid-rows-5 py-5 gap-4">
-
                     <ResourceOption
-                      imageUrl="/illustrations/dictionary-icon.svg"
-                      id="tn"
-                      text="Notes"
+                      imageUrl="/illustrations/bible-icon.svg"
+                      id="bible"
+                      text="Bible"
+                      selectResource={selectResource}
                       setSelectResource={setSelectResource}
                       setTitle={setTitle}
                       setSubMenuItems={setSubMenuItems}
                     />
                     <ResourceOption
-                      imageUrl="/illustrations/bible-icon.svg"
-                      id="bible"
-                      text="Bible"
+                      imageUrl="/illustrations/dictionary-icon.svg"
+                      id="tn"
+                      text="Translation Notes"
+                      selectResource={selectResource}
                       setSelectResource={setSelectResource}
                       setTitle={setTitle}
                       setSubMenuItems={setSubMenuItems}
@@ -212,6 +213,7 @@ const ResourcesPopUp = ({
                       imageUrl="/illustrations/image-icon.svg"
                       id="twlm"
                       text="Translation Words"
+                      selectResource={selectResource}
                       setSelectResource={setSelectResource}
                       setTitle={setTitle}
                       setSubMenuItems={setSubMenuItems}
@@ -219,12 +221,13 @@ const ResourcesPopUp = ({
                     <ResourceOption
                       imageUrl="/illustrations/dialogue-icon.svg"
                       id="tq"
-                      text="Questions"
+                      text="Translation Questions"
+                      selectResource={selectResource}
                       setSelectResource={setSelectResource}
                       setTitle={setTitle}
                       setSubMenuItems={setSubMenuItems}
                     />
-                    <ResourceOption
+                    {/* <ResourceOption
                       imageUrl="/illustrations/location-icon.svg"
                       id="map"
                       text="Map"
@@ -239,7 +242,7 @@ const ResourcesPopUp = ({
                       setSelectResource={setSelectResource}
                       setTitle={setTitle}
                       setSubMenuItems={setSubMenuItems}
-                    />
+                    /> */}
                   </div>
                 </div>
               </div>

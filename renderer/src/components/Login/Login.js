@@ -178,7 +178,7 @@ export default function Login() {
                 </a>
               </div>
             )}
-            <div className="text-3xl font-medium text-secondary"> Welcome!</div>
+            <div className="text-3xl font-medium text-secondary">Sign In</div>
             {/* <div className="text-lg
             font-light
             pb-14 text-gray-400 leading-7"

@@ -8,16 +8,15 @@ export default function Bookmarks() {
       bookList,
       chapter,
       bookName,
-      isLoading,
     },
     actions: {
       onChangeBook,
       onChangeChapter,
       onChangeVerse,
-      setIsLoading,
     },
   } = useContext(ReferenceContext);
 
+  // eslint-disable-next-line no-unused-vars
   const [tempBook, setTempBook] = useState();
   const [tempChapter, setTempChapter] = useState(chapter);
 
@@ -42,6 +41,7 @@ export default function Bookmarks() {
         onChangeChapter(tempChapter);
         onChangeVerse('1');
     });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tempChapter]);
 
   return (

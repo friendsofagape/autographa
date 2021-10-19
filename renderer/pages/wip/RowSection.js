@@ -1,4 +1,4 @@
-/* eslint-disable no-nested-ternary */
+/* eslint-disable */
 import React, { useState } from 'react';
 import Image from 'next/image';
 
