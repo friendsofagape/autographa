@@ -27,8 +27,8 @@ import { readFile } from '../../../core/editor/readFile';
 import { isElectron } from '../../../core/handleElectron';
 import writeToFile from '../../../core/editor/writeToFile';
 // import InputSelector from './InputSelector';
-// import fetchFromParse from '../../../core/editor/fetchFromParse';
-// import findBookFromParse from '../../../core/editor/findBookFromParse';
+import fetchFromParse from '../../../core/editor/fetchFromParse';
+import findBookFromParse from '../../../core/editor/findBookFromParse';
 
 const UsfmEditor = () => {
   // const intervalRef = useRef();
@@ -150,32 +150,29 @@ const UsfmEditor = () => {
     }
   }, []);
 
+  // Read selected book from file / parse
   useEffect(() => {
     if (!isElectron()) {
-      // findBookFromParse({
-      //   username, projectName, scope: _bookId.toUpperCase(),
-      // }).then((scopefiles) => {
-      //   scopefiles.forEach((file) => {
-      //     if (file === _bookId.toUpperCase()) {
-      //       fetchFromParse({
-      //         username, projectName, scope: _bookId.toUpperCase(),
-      //       }).then(async (data) => {
-      //         if (data) {
-      //           localforage.setItem('editorData', data).then(
-      //             () => localforage.getItem('editorData'),
-      //           ).then(() => {
-      //             handleInputChange(data);
-      //           }).catch((err) => {
-      //             // we got an error
-      //             throw err;
-      //           });
-      //         }
-      //       });
-      //     } else {
-      //       handleInputChange(undefined);
-      //     }
-      //   });
-      // });
+      const _username = 'test@mail.co.in';
+      const _projectName = 'Malayalam New';
+      findBookFromParse({
+        _username, _projectName, scope: bookId.toUpperCase(),
+      }).then((scopefiles) => {
+        console.log(scopefiles);
+        scopefiles.forEach((file) => {
+          if (file === bookId.toUpperCase()) {
+            fetchFromParse({
+              _username, _projectName, scope: bookId.toUpperCase(),
+            }).then(async (data) => {
+              if (data) {
+                  handleInputChange(data);
+              }
+            });
+          } else {
+            handleInputChange(undefined);
+          }
+        });
+      });
     } else {
       setDisplayScreen(false);
       setIsLoading(true);
@@ -330,6 +327,7 @@ const UsfmEditor = () => {
     // }
   // }, []);
 
+  // Write the changes on to the file/parse server
   const handleEditorChange = (usfm) => {
     if (isElectron()) {
       localforage.getItem('userProfile').then((value) => {

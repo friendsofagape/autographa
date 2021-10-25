@@ -98,66 +98,68 @@ const SectionPlaceholder2 = () => {
   }, [applyBooksFilter, supportedBooks]);
 
   useEffect(() => {
-    const refsHistory = [];
-    const rows = [];
-    localforage.getItem('currentProject').then((projectName) => {
-    const _projectname = projectName?.split('_');
-    localforage.getItem('projectmeta').then((value) => {
-      Object.entries(value).forEach(
-        ([_columnnum, _value]) => {
-          Object.entries(_value).forEach(
-            ([_rownum, resources]) => {
-              if (resources.project.textTranslation.projectName === _projectname[0]) {
-                refsHistory.push(resources.project.textTranslation.refResources);
-              }
-            },
-          );
-        },
-      );
-    }).then(() => {
-      if (refsHistory[0]) {
-        Object.entries(refsHistory[0]).forEach(
+    if (isElectron()) {
+      const refsHistory = [];
+      const rows = [];
+      localforage.getItem('currentProject').then((projectName) => {
+      const _projectname = projectName?.split('_');
+      localforage.getItem('projectmeta').then((value) => {
+        Object.entries(value).forEach(
           ([_columnnum, _value]) => {
-          if (_columnnum === '1' && _value) {
             Object.entries(_value).forEach(
-              ([_rownum, _value]) => {
-                rows.push(_rownum);
-                if (_rownum === '1') {
-                    setReferenceColumnTwoData1({
-                      languageId: _value?.language,
-                      selectedResource: _value?.resouceId,
-                      refName: _value?.name,
-                      header: _value?.name,
-                    });
-                }
-                if (_rownum === '2') {
-                    setReferenceColumnTwoData2({
-                      languageId: _value?.language,
-                      selectedResource: _value?.resouceId,
-                      refName: _value?.name,
-                      header: _value?.name,
-                    });
+              ([_rownum, resources]) => {
+                if (resources.project.textTranslation.projectName === _projectname[0]) {
+                  refsHistory.push(resources.project.textTranslation.refResources);
                 }
               },
             );
-          }
-        },
-      );
-      }
-    }).then(() => {
-      if (rows.length > 1) {
-        setLoadResource3(true);
-        setLoadResource4(true);
-        setOpenResource3(false);
-        setOpenResource4(false);
-      }
-      if (rows.length === 1) {
-        setLoadResource3(true);
-        setOpenResource3(false);
-      }
-      setSectionNum(rows.length);
+          },
+        );
+      }).then(() => {
+        if (refsHistory[0]) {
+          Object.entries(refsHistory[0]).forEach(
+            ([_columnnum, _value]) => {
+            if (_columnnum === '1' && _value) {
+              Object.entries(_value).forEach(
+                ([_rownum, _value]) => {
+                  rows.push(_rownum);
+                  if (_rownum === '1') {
+                      setReferenceColumnTwoData1({
+                        languageId: _value?.language,
+                        selectedResource: _value?.resouceId,
+                        refName: _value?.name,
+                        header: _value?.name,
+                      });
+                  }
+                  if (_rownum === '2') {
+                      setReferenceColumnTwoData2({
+                        languageId: _value?.language,
+                        selectedResource: _value?.resouceId,
+                        refName: _value?.name,
+                        header: _value?.name,
+                      });
+                  }
+                },
+              );
+            }
+          },
+        );
+        }
+      }).then(() => {
+        if (rows.length > 1) {
+          setLoadResource3(true);
+          setLoadResource4(true);
+          setOpenResource3(false);
+          setOpenResource4(false);
+        }
+        if (rows.length === 1) {
+          setLoadResource3(true);
+          setOpenResource3(false);
+        }
+        setSectionNum(rows.length);
+      });
     });
-  });
+    }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -176,6 +178,7 @@ const SectionPlaceholder2 = () => {
   }, [layout, openResource1, openResource2, openResource3, openResource4, sectionNum, setLayout]);
 
   useEffect(() => {
+    if (isElectron()) {
     const refsHistory = [];
     localforage.getItem('currentProject').then((projectName) => {
       const _projectname = projectName?.split('_');
@@ -243,7 +246,8 @@ const SectionPlaceholder2 = () => {
     });
     });
   });
-  });
+  }
+});
 
   const CustomNavigation1 = (
     <CustomNavigation

@@ -2,8 +2,8 @@
 import Parse from 'parse';
 
 const findBookFromParse = async ({
-    username,
-    projectName,
+    _username,
+    _projectName,
 }) => {
         const ProjectMeta = Parse.Object.extend('ProjectMeta');
         const Files = Parse.Object.extend('Files');
@@ -16,9 +16,9 @@ const findBookFromParse = async ({
         const filesResult = await filesQuery.find();
         return new Promise((resolve) => {
         filesResult.forEach(async (element) => {
-            if (element.get('owner').get('owner').get('name') === username) {
-                if (element.get('owner').get('projectName') === projectName) {
-                    scopeFiles.push(element.get('scope'));
+            if (element?.get('owner')?.get('owner')?.get('email') === _username) {
+                if (element?.get('owner')?.get('projectName') === _projectName) {
+                    scopeFiles.push(element?.get('scope'));
                        resolve(scopeFiles);
                 }
             }

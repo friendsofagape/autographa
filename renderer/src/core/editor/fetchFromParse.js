@@ -2,8 +2,8 @@
 import Parse from 'parse';
 
 const fetchFromParse = async ({
-    username,
-    projectName,
+    _username,
+    _projectName,
     scope,
 }) => {
         const ProjectMeta = Parse.Object.extend('ProjectMeta');
@@ -16,10 +16,16 @@ const fetchFromParse = async ({
         const filesResult = await filesQuery.find();
         return new Promise((resolve) => {
         filesResult.forEach(async (element) => {
-            if (element.get('owner').get('owner').get('name') === username) {
-                if (element.get('owner').get('projectName') === projectName) {
-                    if (element.get('scope') === scope) {
-                       await resolve(element.get('data'));
+            if (element?.get('owner')?.get('owner')?.get('email') === _username) {
+                if (element?.get('owner')?.get('projectName') === _projectName) {
+                    if (element?.get('scope') === scope) {
+                        const file = await element.get('ingredients');
+                        fetch(file._url)
+                        .then((response) => response.text())
+                        .then((res) => {
+                            resolve(res);
+                        });
+                        console.log(file);
                     }
                 }
             }

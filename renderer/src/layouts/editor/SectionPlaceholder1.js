@@ -9,6 +9,7 @@ import ReferenceBible from '@/components/EditorPage/Reference/ReferenceBible/Ref
 import localforage from 'localforage';
 import { ProjectContext } from '@/components/context/ProjectContext';
 import CustomNavigation from '@/components/EditorPage/Navigation/CustomNavigation';
+import { isElectron } from '@/core/handleElectron';
 
 const TranslationHelps = dynamic(
   () => import('@/components/EditorPage/Reference/TranslationHelps'),
@@ -95,6 +96,7 @@ const SectionPlaceholder1 = () => {
   }, [layout]);
 
   useEffect(() => {
+    if (isElectron()) {
     const refsHistory = [];
     const rows = [];
     localforage.getItem('currentProject').then((projectName) => {
@@ -161,6 +163,7 @@ const SectionPlaceholder1 = () => {
     }
     });
   });
+}
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -173,62 +176,64 @@ const SectionPlaceholder1 = () => {
   }, [sectionNum]);
 
   useEffect(() => {
-    const refsHistory = [];
-    localforage.getItem('currentProject').then((projectName) => {
-    const _projectname = projectName?.split('_');
-    localforage.getItem('projectmeta').then((value) => {
-      Object?.entries(value).forEach(
-        ([_columnnum, _value]) => {
-          Object?.entries(_value).forEach(
-            ([_rownum, resources]) => {
-              if (resources.identification.name.en === _projectname[0]) {
-                refsHistory.push(resources.project.textTranslation.refResources);
-                if (sectionNum === 1 || sectionNum === 0) {
-                  if (openResource1
-                    && openResource2) {
-                      resources.project.textTranslation.refResources.splice(0, 1);
-                    }
-                }
-                if (sectionNum === 1) {
-                  resources.project.textTranslation.refResources[0] = {
+    if (isElectron()) {
+      const refsHistory = [];
+      localforage.getItem('currentProject').then((projectName) => {
+      const _projectname = projectName?.split('_');
+      localforage.getItem('projectmeta').then((value) => {
+        Object?.entries(value).forEach(
+          ([_columnnum, _value]) => {
+            Object?.entries(_value).forEach(
+              ([_rownum, resources]) => {
+                if (resources.identification.name.en === _projectname[0]) {
+                  refsHistory.push(resources.project.textTranslation.refResources);
+                  if (sectionNum === 1 || sectionNum === 0) {
+                    if (openResource1
+                      && openResource2) {
+                        resources.project.textTranslation.refResources.splice(0, 1);
+                      }
+                  }
+                  if (sectionNum === 1) {
+                    resources.project.textTranslation.refResources[0] = {
+                        1: {
+                          resouceId: referenceColumnOneData1?.selectedResource,
+                          language: referenceColumnOneData1?.languageId,
+                          name: referenceColumnOneData1?.refName,
+                          navigation: { book: '1TI', chapter: '1' },
+                        },
+                      };
+                  }
+                  if (sectionNum === 2) {
+                    if (referenceColumnOneData1.refName !== undefined) {
+                      resources.project.textTranslation.refResources[0] = {
                       1: {
                         resouceId: referenceColumnOneData1?.selectedResource,
                         language: referenceColumnOneData1?.languageId,
                         name: referenceColumnOneData1?.refName,
                         navigation: { book: '1TI', chapter: '1' },
                       },
+                      2: {
+                        resouceId: referenceColumnOneData2?.selectedResource,
+                        language: referenceColumnOneData2?.languageId,
+                        name: referenceColumnOneData2?.refName,
+                        navigation: { book: '1TI', chapter: '1' },
+                      },
                     };
+                  }
                 }
-                if (sectionNum === 2) {
-                  if (referenceColumnOneData1.refName !== undefined) {
-                    resources.project.textTranslation.refResources[0] = {
-                    1: {
-                      resouceId: referenceColumnOneData1?.selectedResource,
-                      language: referenceColumnOneData1?.languageId,
-                      name: referenceColumnOneData1?.refName,
-                      navigation: { book: '1TI', chapter: '1' },
-                    },
-                    2: {
-                      resouceId: referenceColumnOneData2?.selectedResource,
-                      language: referenceColumnOneData2?.languageId,
-                      name: referenceColumnOneData2?.refName,
-                      navigation: { book: '1TI', chapter: '1' },
-                    },
-                  };
                 }
-              }
-              }
-            },
-          );
-        },
-      );
-    localforage.setItem('projectmeta', value);
+              },
+            );
+          },
+        );
+      localforage.setItem('projectmeta', value);
+      });
     });
-  });
+    }
   }, [openResource1, openResource2, referenceColumnOneData1?.languageId,
     referenceColumnOneData1.refName, referenceColumnOneData1?.selectedResource,
     referenceColumnOneData2?.languageId, referenceColumnOneData2?.refName,
-    referenceColumnOneData2?.selectedResource, sectionNum]);
+    referenceColumnOneData2?.selectedResource, sectionNum, isElectron()]);
 
   const CustomNavigation1 = (
     <CustomNavigation
