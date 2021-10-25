@@ -73,7 +73,7 @@ useEffect(() => {
         setDisplayScreen(false);
         const path = require('path');
         const newpath = localStorage.getItem('userPath');
-        localforage.getItem('refBibleBurrito')
+        localforage.getItem('resources')
         .then((refs) => {
           refs.forEach((ref) => {
             setIsLoading(true);
@@ -87,10 +87,32 @@ useEffect(() => {
                       _books.push(_bookID);
                       if (_bookID.split('-').pop() === bookId.toUpperCase() && refName !== null) {
                         const filePath = path.join(
-                          newpath, 'autographa', 'users', username, 'reference', refName, key,
+                          newpath, 'autographa', 'users', username, 'resources', refName, key,
                         );
                         readIngredients({
                           filePath,
+                        }).then((res) => {
+                          timeout(2000).then(() => {
+                            setUsfmInput(res);
+                          }).finally(() => {
+                            setIsLoading(false);
+                            setOpenSnackBar(true);
+                            setSnackText(`successfully loaded ${refName} files`);
+                            setNotify('success');
+                            setDisplayScreen(false);
+                          });
+                          setRefernceLoading({
+                            status: true,
+                            text: 'Reference-burrito loaded succesfully',
+                          });
+                          setCounter(4);
+                        });
+
+                        const commonResourcePath = path.join(
+                          newpath, 'autographa', 'common', 'resources', refName, key,
+                        );
+                        readIngredients({
+                          filePath: commonResourcePath,
                         }).then((res) => {
                           timeout(2000).then(() => {
                             setUsfmInput(res);
