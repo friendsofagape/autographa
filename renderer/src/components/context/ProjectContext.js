@@ -81,9 +81,11 @@ const ProjectContextProvider = ({ children }) => {
           project: {
             textTranslation: {
               canonSpecification: [{
-              id: 4, title: 'Custom', currentScope: [], locked: false,
+              id: 4, title: 'Other', currentScope: [], locked: false,
               }],
-              copyright: [],
+              copyright: [{
+                id: 'Other', title: 'Custom', licence: '', locked: false,
+                }],
               languages: [],
             },
           },
@@ -135,7 +137,7 @@ const ProjectContextProvider = ({ children }) => {
         });
       }
     };
-    const createProject = async () => {
+    const createProject = async (call, project) => {
       // Add / update language into current list.
       if (uniqueId(languages, language.id)) {
         languages.forEach((lang) => {
@@ -150,22 +152,31 @@ const ProjectContextProvider = ({ children }) => {
         updateJson('languages');
       }
       // Update Custom canon into current list.
-      if (canonSpecification.title === 'Custom') {
+      if (canonSpecification.title === 'Other') {
         updateJson('canonSpecification');
       }
-      // Add / update licence into current list.
-      if (uniqueId(licenceList, copyright.id)) {
-        licenceList.forEach((licence) => {
-          if (licence.id === copyright.id) {
-            if (licence.title !== copyright.title
-              || licence.licence !== copyright.licence) {
-              updateJson('copyright');
-            }
-          }
-        });
-      } else {
+      // Update Custom licence into current list.
+      if (copyright.title === 'Custom') {
         updateJson('copyright');
+      } else {
+        const myLicence = licenceList.find((item) => item.title === copyright.title);
+        const licensefile = require(`../../lib/license/${copyright.title}.md`);
+        myLicence.licence = licensefile.default;
+        setCopyRight(myLicence);
       }
+      // Add / update licence into current list.
+      // if (uniqueId(licenceList, copyright.id)) {
+      //   licenceList.forEach((licence) => {
+      //     if (licence.id === copyright.id) {
+      //       if (licence.title !== copyright.title
+      //         || licence.licence !== copyright.licence) {
+      //         updateJson('copyright');
+      //       }
+      //     }
+      //   });
+      // } else {
+      //   updateJson('copyright');
+      // }
       const status = await saveProjectsMeta(
         newProjectFields,
         language,
@@ -173,6 +184,8 @@ const ProjectContextProvider = ({ children }) => {
         canonSpecification,
         copyright,
         importedFiles,
+        call,
+        project,
       );
       return status;
     };

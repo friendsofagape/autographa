@@ -7,21 +7,21 @@ const md5 = require('md5');
 
 const bookAvailable = (list, id) => list.some((obj) => obj.id === id);
 export const createVersificationUSFM = (username, project, versification, books, direction, id,
-  importedFiles) => {
+  importedFiles, copyright) => {
   const newpath = localStorage.getItem('userPath');
   const folder = path.join(newpath, 'autographa', 'users', username, 'projects', `${project.projectName}_${id}`, 'ingredients');
   const schemes = [
-    { name: 'King James Version (KJV)', file: 'eng.json' },
-    { name: '', file: 'lxx.json' },
-    { name: '', file: 'org.json' },
-    { name: '', file: 'rsc.json' },
-    { name: '', file: 'rso.json' },
-    { name: '', file: 'vul.json' },
+    { name: 'eng', file: 'eng.json' },
+    { name: 'lxx', file: 'lxx.json' },
+    { name: 'org', file: 'org.json' },
+    { name: 'rsc', file: 'rsc.json' },
+    { name: 'rso', file: 'rso.json' },
+    { name: 'vul', file: 'vul.json' },
   ];
   const ingredients = {};
   return new Promise((resolve) => {
     schemes.forEach(async (scheme) => {
-      if (versification === scheme.name) {
+      if (versification.toLowerCase() === scheme.name) {
         // eslint-disable-next-line import/no-dynamic-require
         const file = require(`../lib/versification/${scheme.file}`);
         await books.forEach((book) => {
@@ -113,6 +113,7 @@ export const createVersificationUSFM = (username, project, versification, books,
               scriptDirection: direction,
               starred: false,
               description: project.description,
+              copyright,
               lastSeen: moment().format(),
               refResources: [],
               bookMarks: [],

@@ -32,10 +32,11 @@ export default function ImportProjectPopUp(props) {
   function close() {
     setValid(false);
     closePopUp(false);
+  }
+  function clear() {
     setFolderPath([]);
     setBooks([]);
   }
-
   const getBooks = (filePaths) => {
     const book = [];
     // regex to split path to two groups '(.*[\\\/])' for path and '(.*)' for file name
@@ -187,7 +188,13 @@ export default function ImportProjectPopUp(props) {
                     >
                       Cancel
                     </button>
-
+                    <button
+                      type="button"
+                      onClick={clear}
+                      className="py-2 px-6 rounded shadow bg-primary text-white uppercase text-xs tracking-widest font-semibold"
+                    >
+                      Clear
+                    </button>
                     <button
                       type="button"
                       className="py-2 px-7 rounded shadow bg-success text-white uppercase text-xs tracking-widest font-semibold"

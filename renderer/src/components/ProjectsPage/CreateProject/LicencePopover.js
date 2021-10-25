@@ -6,12 +6,12 @@ import { PlusIcon, PencilAltIcon } from '@heroicons/react/outline';
 import { BlockEditable } from 'markdown-translatable/dist/components';
 import { ProjectContext } from '../../context/ProjectContext';
 
-export default function LicencePopover() {
+export default function LicencePopover({ call }) {
   const [name, setName] = React.useState();
   const [content, setContent] = React.useState();
   const [isOpen, setIsOpen] = useState(false);
   const [edit, setEdit] = React.useState(false);
-  const [lock, setLock] = React.useState(false);
+  // const [lock, setLock] = React.useState(false);
   const [preview, setPreview] = useState(true);
 
   function closeModal() {
@@ -31,19 +31,17 @@ export default function LicencePopover() {
   } = React.useContext(ProjectContext);
   // eslint-disable-next-line no-unused-vars
   const openlicenceNav = (nav) => {
-    if (nav === 'edit') {
-      // eslint-disable-next-line import/no-dynamic-require
-      const licensefile = require(`../../../lib/license/${copyright.id}.md`);
-      setEdit(true);
-      setName(copyright.title);
-      setLock(copyright.locked);
-      setContent(licensefile.default);
-    } else {
-      setEdit(false);
-      setName();
-      setContent();
-      setLock(false);
-    }
+    // if (call==='edit'){
+      setName(copyright.id);
+      setEdit(!copyright.locked);
+      setContent(copyright.licence);
+    // }else if (nav === 'edit') {
+    //   // eslint-disable-next-line import/no-dynamic-require
+    //   const licensefile = require(`../../../lib/license/${copyright.title}.md`);
+    //   setName(copyright.id);
+    //   setEdit(!copyright.locked);
+    //   setContent(licensefile.default);
+    // }
   };
   const callback = (markdown) => {
     // logger.debug('markdownviewer.js', `set translation as ${markdown}`);
@@ -51,13 +49,14 @@ export default function LicencePopover() {
   };
   const addLicence = () => {
     // eslint-disable-next-line no-template-curly-in-string
-    setCopyRight({ id: `custom${licenceList.length + 1}`, title: name, licence: content });
+    console.log({ id: name, title: copyright.title, licence: content });
+    setCopyRight({ id: name, title: copyright.title, licence: content });
   };
   return (
 
     <>
       <div className="flex gap-3">
-        <button
+        {/* <button
           type="button"
           onClick={() => { openlicenceNav('add'); openModal(); }}
           className="focus:outline-none bg-primary h-8 w-8 flex items-center justify-center rounded-full"
@@ -66,7 +65,7 @@ export default function LicencePopover() {
             className="h-5 w-5 text-white"
             aria-hidden="true"
           />
-        </button>
+        </button> */}
         <button
           type="button"
           onClick={() => { openlicenceNav('edit'); openModal(); }}
@@ -144,7 +143,7 @@ export default function LicencePopover() {
                       className="bg-gray-200 w-96 block rounded shadow-sm sm:text-sm border border-gray-300 h-10 focus:ring-primary pl-3"
                       value={name}
                       onChange={(e) => { setName(e.target.value); }}
-                      disabled={lock}
+                      disabled
                     />
                   </div>
                   <div>
@@ -167,16 +166,16 @@ export default function LicencePopover() {
                     />
                   </div>
                   <div className="flex gap-3 justify-end">
-                    {lock ? <div />
-                    : (
+                    {edit
+                      && (
                       <button
                         type="button"
                         className="mt-5 bg-success w-28 h-8 border-color-success rounded uppercase text-white text-xs shadow focus:outline-none"
                         onClick={() => { addLicence(); closeModal(); }}
                       >
-                        {edit ? 'save' : 'create'}
+                        save
                       </button>
-                    )}
+)}
                     <button
                       type="button"
                       onClick={closeModal}
