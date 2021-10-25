@@ -6,6 +6,8 @@ import React, {
  useState, createContext, useRef, useEffect,
 } from 'react';
 import * as localforage from 'localforage';
+import { isElectron } from '../../core/handleElectron';
+import * as logger from '../../logger';
 
 export const ReferenceContext = createContext({});
 
@@ -42,6 +44,8 @@ export default function ReferenceContextProvider({ children }) {
     const [closeNavigation, setCloseNavigation] = useState(false);
     const [projectScriptureDir, setProjectScriptureDir] = useState();
     const [isLoading, setIsLoading] = useState(false);
+    const [folderPath, setFolderPath] = React.useState();
+    const [openImportResourcePopUp, setOpenImportResourcePopUp] = useState(false);
 
     const handleClick = (event) => {
       setAnchorEl(event.currentTarget);
@@ -52,6 +56,18 @@ export default function ReferenceContextProvider({ children }) {
       fonts.push(_fonts);
       setFonts(fonts);
     }
+
+    const openResourceDialog = async () => {
+      if (isElectron()) {
+        logger.debug('ImportResource.js', 'Inside openResourceDialog');
+        const options = { properties: ['openDirectory'] };
+        const { remote } = window.require('electron');
+        const { dialog } = remote;
+        const WIN = remote.getCurrentWindow();
+        const chosenFolder = await dialog.showOpenDialog(WIN, options);
+        setFolderPath(chosenFolder.filePaths[0]);
+      }
+  };
 
     useEffect(() => {
       localforage.getItem('currentProject').then((projectName) => {
@@ -228,6 +244,8 @@ export default function ReferenceContextProvider({ children }) {
         closeNavigation,
         projectScriptureDir,
         isLoading,
+        folderPath,
+        openImportResourcePopUp,
       },
       actions: {
         setLanguageId,
@@ -262,6 +280,9 @@ export default function ReferenceContextProvider({ children }) {
         setProjectScriptureDir,
         setIsLoading,
         goToChapter,
+        setFolderPath,
+        setOpenImportResourcePopUp,
+        openResourceDialog,
       },
     };
 

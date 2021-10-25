@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable import/no-unresolved */
 import React, {
-    useRef, Fragment,
+    useRef, Fragment, useEffect, useContext,
 } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { FolderOpenIcon } from '@heroicons/react/outline';
@@ -9,30 +9,30 @@ import CloseIcon from '@/illustrations/close-button-black.svg';
 import * as localforage from 'localforage';
 import { SnackBar } from '@/components/SnackBar';
 import { isElectron } from '@/core/handleElectron';
+import { ReferenceContext } from '@/components/context/ReferenceContext';
 import * as logger from '../../../logger';
 
-export default function ImportResource({ open, closePopUp }) {
+export default function ImportResource({ open, closePopUp, setOpenResourcePopUp }) {
     const cancelButtonRef = useRef(null);
-    const [folderPath, setFolderPath] = React.useState();
     const [valid, setValid] = React.useState(false);
     const [snackBar, setOpenSnackBar] = React.useState(false);
     const [snackText, setSnackText] = React.useState('');
     const [notify, setNotify] = React.useState();
 
+    const {
+      state: {
+        folderPath,
+      },
+      actions: {
+        setFolderPath,
+        openResourceDialog,
+      },
+    } = useContext(ReferenceContext);
+
     function close() {
       closePopUp(false);
       setValid(false);
     }
-
-    const openResourceDialog = async () => {
-        logger.debug('ImportResource.js', 'Inside openResourceDialog');
-        const options = { properties: ['openDirectory'] };
-        const { remote } = window.require('electron');
-        const { dialog } = remote;
-        const WIN = remote.getCurrentWindow();
-        const chosenFolder = await dialog.showOpenDialog(WIN, options);
-        setFolderPath(chosenFolder.filePaths[0]);
-    };
 
     const uploadRefBible = async () => {
       if (isElectron()) {
@@ -41,18 +41,22 @@ export default function ImportResource({ open, closePopUp }) {
         const path = require('path');
         localforage.getItem('userProfile').then(async (user) => {
           const newpath = localStorage.getItem('userPath');
-          fs.mkdirSync(path.join(newpath, 'autographa', 'users', user?.username, 'reference'), {
+          fs.mkdirSync(path.join(newpath, 'autographa', 'users', user?.username, 'resources'), {
             recursive: true,
           });
           const projectsDir = path.join(
-            newpath, 'autographa', 'users', user?.username, 'reference',
+            newpath, 'autographa', 'users', user?.username, 'resources',
           );
           await fse.copy(folderPath, projectsDir, { overwrite: true }).then(() => {
             setOpenSnackBar(true);
             setSnackText('Resource upload successful! Please check the resource list');
           }).then(() => {
-            window.location.reload();
-          }).catch((err) => {
+            close();
+            setOpenResourcePopUp(false);
+          }).then(() => {
+            setOpenResourcePopUp(true);
+          })
+          .catch((err) => {
             logger.debug('ImportResource.js', 'error in uploading resource to specified location');
             setNotify(err);
         });
@@ -107,7 +111,9 @@ export default function ImportResource({ open, closePopUp }) {
                       <div className="bg-white grid grid-cols-4 gap-2 p-4 text-sm text-left tracking-wide">
                         <div className="flex gap-5 col-span-2">
                           <div>
-                            <h4 className="text-xs font-base mb-2 text-primary  tracking-wide leading-4  font-light">Import Location</h4>
+                            <h4 className="text-xs font-base mb-2 text-primary  tracking-wide leading-4  font-light">
+                              Scripture Burrito Resource filepath
+                            </h4>
                             <input
                               type="text"
                               name="location"

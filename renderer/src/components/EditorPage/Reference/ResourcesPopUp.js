@@ -11,6 +11,7 @@ import { readRefBurrito } from '@/core/reference/readRefBurrito';
 import { Dialog, Transition } from '@headlessui/react';
 import { ProjectContext } from '@/components/context/ProjectContext';
 import { XIcon } from '@heroicons/react/solid';
+import { ReferenceContext } from '@/components/context/ReferenceContext';
 import ResourceOption from './ResourceOption';
 import ImportResource from './ImportResource';
 
@@ -44,7 +45,6 @@ const ResourcesPopUp = ({
   const cancelButtonRef = useRef(null);
   const [subMenuItems, setSubMenuItems] = useState();
   const [title, setTitle] = useState(header);
-  const [openPopUp, setOpenPopUp] = useState(false);
   const [selectResource, setSelectResource] = useState(selectedResource);
 
   const {
@@ -53,16 +53,26 @@ const ResourcesPopUp = ({
     },
   } = useContext(ProjectContext);
 
+  const {
+    state: {
+      openImportResourcePopUp,
+    },
+    actions: {
+      openResourceDialog,
+      setOpenImportResourcePopUp,
+    },
+  } = useContext(ReferenceContext);
+
   useEffect(() => {
     if (isElectron()) {
       const fs = window.require('fs');
       const path = require('path');
       const newpath = localStorage.getItem('userPath');
-      fs.mkdirSync(path.join(newpath, 'autographa', 'users', username, 'reference'), {
+      fs.mkdirSync(path.join(newpath, 'autographa', 'users', username, 'resources'), {
         recursive: true,
       });
       const projectsDir = path.join(
-        newpath, 'autographa', 'users', username, 'reference',
+        newpath, 'autographa', 'users', username, 'resources',
       );
       const parseData = [];
       readRefMeta({
@@ -70,7 +80,7 @@ const ResourcesPopUp = ({
       }).then((refs) => {
         refs.forEach((ref) => {
           const metaPath = path.join(
-            newpath, 'autographa', 'users', username, 'reference', ref, 'metadata.json',
+            newpath, 'autographa', 'users', username, 'resources', ref, 'metadata.json',
           );
           readRefBurrito({
             metaPath,
@@ -80,8 +90,43 @@ const ResourcesPopUp = ({
               burrito.projectDir = ref;
               burrito.value = JSON.parse(data);
               parseData.push(burrito);
-              localforage.setItem('refBibleBurrito', parseData).then(
-                () => localforage.getItem('refBibleBurrito'),
+              localforage.setItem('resources', parseData).then(
+                () => localforage.getItem('resources'),
+              ).then((res) => {
+                setSubMenuItems(res);
+              }).catch((err) => {
+                // we got an error
+                throw err;
+              });
+            }
+          });
+        });
+      });
+
+      fs.mkdirSync(path.join(newpath, 'autographa', 'common', 'resources'), {
+        recursive: true,
+      });
+      const commonResourceDir = path.join(
+        newpath, 'autographa', 'common', 'resources',
+      );
+
+      readRefMeta({
+        projectsDir: commonResourceDir,
+      }).then((refs) => {
+        refs.forEach((ref) => {
+          const metaPath = path.join(
+            newpath, 'autographa', 'common', 'resources', ref, 'metadata.json',
+          );
+          readRefBurrito({
+            metaPath,
+          }).then((data) => {
+            if (data) {
+              const burrito = {};
+              burrito.projectDir = ref;
+              burrito.value = JSON.parse(data);
+              parseData.push(burrito);
+              localforage.setItem('resources', parseData).then(
+                () => localforage.getItem('resources'),
               ).then((res) => {
                 setSubMenuItems(res);
               }).catch((err) => {
@@ -110,12 +155,13 @@ const ResourcesPopUp = ({
     removeSection();
   };
 
-  const openResourceDialog = () => (
-    setOpenPopUp(true)
-  );
+  const openResourceDialogBox = () => {
+    setOpenImportResourcePopUp(true);
+    openResourceDialog();
+  };
 
   function closeImportPopUp() {
-    setOpenPopUp(false);
+    setOpenImportResourcePopUp(false);
   }
 
   return (
@@ -378,7 +424,7 @@ const ResourcesPopUp = ({
                     <div className="flex gap-6 mx-5 absolute bottom-5 right-0 justify-end z-10">
                       <button
                         type="button"
-                        onClick={() => openResourceDialog()}
+                        onClick={() => openResourceDialogBox()}
                         className="py-2 px-6 bg-primary rounded shadow text-white uppercase text-xs tracking-widest font-semibold"
                       >
                         Upload
@@ -395,7 +441,12 @@ const ResourcesPopUp = ({
                       >
                         Open
                       </button> */}
-                      <ImportResource open={openPopUp} closePopUp={closeImportPopUp} />
+                      <ImportResource
+                        open={openImportResourcePopUp}
+                        closePopUp={closeImportPopUp}
+                        openPopUp={setOpenImportResourcePopUp}
+                        setOpenResourcePopUp={setOpenResourcePopUp}
+                      />
                     </div>
                   )}
                 </div>
