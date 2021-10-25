@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable import/no-unresolved */
 import React, {
-    useRef, Fragment, useEffect, useContext,
+    useRef, Fragment, useContext,
 } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { FolderOpenIcon } from '@heroicons/react/outline';
