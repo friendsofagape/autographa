@@ -1,12 +1,12 @@
 import React, { Fragment, useState } from 'react';
 import { Dialog, Transition, Switch } from '@headlessui/react';
 
-import { PlusIcon, PencilAltIcon } from '@heroicons/react/outline';
+import { PencilAltIcon } from '@heroicons/react/outline';
 
 import { BlockEditable } from 'markdown-translatable/dist/components';
 import { ProjectContext } from '../../context/ProjectContext';
 
-export default function LicencePopover({ call }) {
+export default function LicencePopover() {
   const [name, setName] = React.useState();
   const [content, setContent] = React.useState();
   const [isOpen, setIsOpen] = useState(false);
@@ -26,22 +26,13 @@ export default function LicencePopover({ call }) {
   const {
     states: {
       copyright,
-      licenceList,
     }, actions: { setCopyRight },
   } = React.useContext(ProjectContext);
   // eslint-disable-next-line no-unused-vars
-  const openlicenceNav = (nav) => {
-    // if (call==='edit'){
+  const openlicenceNav = () => {
       setName(copyright.id);
       setEdit(!copyright.locked);
       setContent(copyright.licence);
-    // }else if (nav === 'edit') {
-    //   // eslint-disable-next-line import/no-dynamic-require
-    //   const licensefile = require(`../../../lib/license/${copyright.title}.md`);
-    //   setName(copyright.id);
-    //   setEdit(!copyright.locked);
-    //   setContent(licensefile.default);
-    // }
   };
   const callback = (markdown) => {
     // logger.debug('markdownviewer.js', `set translation as ${markdown}`);
@@ -49,7 +40,6 @@ export default function LicencePopover({ call }) {
   };
   const addLicence = () => {
     // eslint-disable-next-line no-template-curly-in-string
-    console.log({ id: name, title: copyright.title, licence: content });
     setCopyRight({ id: name, title: copyright.title, licence: content });
   };
   return (
@@ -59,7 +49,8 @@ export default function LicencePopover({ call }) {
         {/* <button
           type="button"
           onClick={() => { openlicenceNav('add'); openModal(); }}
-          className="focus:outline-none bg-primary h-8 w-8 flex items-center justify-center rounded-full"
+          className="focus:outline-none
+          bg-primary h-8 w-8 flex items-center justify-center rounded-full"
         >
           <PlusIcon
             className="h-5 w-5 text-white"
@@ -82,7 +73,7 @@ export default function LicencePopover({ call }) {
         <Dialog
           as="div"
           className="fixed inset-0 z-10 overflow-y-auto"
-          onClose={closeModal}
+          onClose={() => closeModal}
         >
           <div className="min-h-screen px-4 text-center">
             <Transition.Child
@@ -175,7 +166,7 @@ export default function LicencePopover({ call }) {
                       >
                         save
                       </button>
-)}
+                    )}
                     <button
                       type="button"
                       onClick={closeModal}

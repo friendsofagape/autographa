@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import { useRouter } from 'next/router';
 import moment from 'moment';
 
@@ -87,7 +87,6 @@ export default function ProjectList() {
       const settings = fs.readFileSync(path.join(folder, 'ingredients', 'ag-settings.json'), 'utf-8');
       const agSetting = JSON.parse(settings);
       metadata = { ...metadata, ...agSetting };
-      console.log(metadata);
       setCurrentProject(metadata);
       setCallEditProject(true);
     });
@@ -122,15 +121,15 @@ export default function ProjectList() {
                 <div className="flex flex-col">
                   <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                     <div className="align-middle inline-block min-w-full sm:px-6 lg:px-8">
-              <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-                      <table data-testid="tablelayout" className="min-w-full divide-y divide-gray-200">
-                        <EnhancedTableHead
-                        order={order}
-                        orderBy={orderBy}
-                        onRequestSort={handleRequestSort}
-                      />
-                        <tbody className="bg-white divide-y divide-gray-200">
-                        {starredrow && (stableSort(starredrow,
+                      <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                        <table data-testid="tablelayout" className="min-w-full divide-y divide-gray-200">
+                          <EnhancedTableHead
+                            order={order}
+                            orderBy={orderBy}
+                            onRequestSort={handleRequestSort}
+                          />
+                          <tbody className="bg-white divide-y divide-gray-200">
+                            {starredrow && (stableSort(starredrow,
                           getComparator(order, orderBy),
                           orderBy,
                           order).map((project) => (
@@ -266,9 +265,9 @@ export default function ProjectList() {
                             </Disclosure>
                           ))
                         )}
-                      </tbody>
-                        <tbody className="bg-white divide-y divide-gray-200">
-                        {unstarredrow && (stableSort(unstarredrow,
+                          </tbody>
+                          <tbody className="bg-white divide-y divide-gray-200">
+                            {unstarredrow && (stableSort(unstarredrow,
                           getComparator(order, orderBy),
                           orderBy,
                           order).map((project) => (
@@ -404,19 +403,20 @@ export default function ProjectList() {
                                                       <Menu.Item>
                                                         {({ active }) => (
                                                           <button
+                                                            type="button"
                                                             className={`${
-                                                                active ? 'bg-primary text-white' : 'text-gray-900'
+                                                              active ? 'bg-primary text-white' : 'text-gray-900'
                                                               } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
                                                             onClick={() => editproject(project)}
                                                           >
                                                             Edit
                                                           </button>
-                                                          // </a>
                                                         )}
                                                       </Menu.Item>
                                                       <Menu.Item>
                                                         {({ active }) => (
                                                           <button
+                                                            type="button"
                                                             className={`${
                                                               active ? 'bg-primary text-white' : 'text-gray-900'
                                                             } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
@@ -442,10 +442,10 @@ export default function ProjectList() {
                             </Disclosure>
                           ))
                         )}
-                      </tbody>
-                      </table>
+                          </tbody>
+                        </table>
+                      </div>
                     </div>
-            </div>
                   </div>
                 </div>
               </div>

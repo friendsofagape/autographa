@@ -1,6 +1,8 @@
-import ProjectsLayout from '@/layouts/projects/Layout';
-import React, { useEffect, Fragment } from 'react';
+/* eslint-disable react/prop-types */
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { useRouter } from 'next/router';
+import ProjectsLayout from '@/layouts/projects/Layout';
 import AdvancedSettingsDropdown from '@/components/ProjectsPage/CreateProject/AdvancedSettingsDropdown';
 import { ProjectContext } from '@/components/context/ProjectContext';
 import TargetLanguagePopover from '@/components/ProjectsPage/CreateProject/TargetLanguagePopover';
@@ -11,15 +13,7 @@ import BullhornIcon from '@/icons/basil/Outline/Communication/Bullhorn.svg';
 import ProcessorIcon from '@/icons/basil/Outline/Devices/Processor.svg';
 // import CheckIcon from '@/icons/basil/Outline/Interface/Check.svg';
 import ImageIcon from '@/icons/basil/Outline/Files/Image.svg';
-import { useRouter } from 'next/router';
-// import { ChevronDownIcon } from '@heroicons/react/solid';
-import projects from 'pages/projects';
-import localforage from 'localforage';
-import { Listbox, Transition } from '@headlessui/react';
-import { CheckIcon, SelectorIcon } from '@heroicons/react/solid';
-import { AutographaContext } from '@/components/context/AutographaContext';
 import * as logger from '../../logger';
-import CustomAutocomplete from './CustomAutocomplete';
 import ImportPopUp from './ImportPopUp';
 import CustomList from './CustomList';
 
@@ -77,7 +71,6 @@ function BibleHeaderTagDropDown() {
 }
 
 export default function NewProject({ call, project, closeEdit }) {
-  console.log(call, project);
   const {
     states: {
       newProjectFields,
@@ -163,7 +156,11 @@ export default function NewProject({ call, project, closeEdit }) {
     setOpenPopUp(false);
   }
   const loadData = async (project) => {
-    setNewProjectFields({ projectName: project.identification.name.en, abbreviation: project.identification.abbreviation.en, description: project.project.textTranslation.description });
+    setNewProjectFields({
+      projectName: project.identification.name.en,
+      abbreviation: project.identification.abbreviation.en,
+      description: project.project.textTranslation.description,
+    });
     setValue({ label: 'Target Language', data: project.languages[0].name.en });
     setMetadata(project);
   };
@@ -171,6 +168,7 @@ export default function NewProject({ call, project, closeEdit }) {
     if (call === 'edit') {
       loadData(project);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [call]);
 
   return (
@@ -250,8 +248,12 @@ export default function NewProject({ call, project, closeEdit }) {
                       Target Language
                       <span style={{ color: 'red' }}>*</span>
                     </h4>
-                    {/* <CustomAutocomplete label="Target Language" list={languages} setValue={setValue} /> */}
-                    <CustomList selected={language} setSelected={setLanguage} options={languages} show />
+                    <CustomList
+                      selected={language}
+                      setSelected={setLanguage}
+                      options={languages}
+                      show
+                    />
                   </div>
                   <div className="mt-8">
                     <TargetLanguagePopover />
@@ -266,7 +268,7 @@ export default function NewProject({ call, project, closeEdit }) {
                   >
                     Import books
                   </button>
-                  <ImportPopUp open={openPopUp} closePopUp={closeImportPopUp} />
+                  <ImportPopUp open={openPopUp} closePopUp={() => closeImportPopUp} />
                 </div>
               </div>
 
@@ -283,25 +285,25 @@ export default function NewProject({ call, project, closeEdit }) {
                         Create Project
                       </button>
                     </div>
-)
-                : (
-                  <div className="p-3 flex gap-5 justify-end">
-                    <button
-                      type="button"
-                      className="w-40 h-10  bg-error leading-loose rounded shadow text-xs font-base  text-white tracking-wide  font-light uppercase"
-                      onClick={() => closeEdit()}
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      type="button"
-                      className="w-40 h-10  bg-success leading-loose rounded shadow text-xs font-base  text-white tracking-wide  font-light uppercase"
-                      onClick={() => validate()}
-                    >
-                      Save
-                    </button>
-                  </div>
-)}
+                  )
+                  : (
+                    <div className="p-3 flex gap-5 justify-end">
+                      <button
+                        type="button"
+                        className="w-40 h-10  bg-error leading-loose rounded shadow text-xs font-base  text-white tracking-wide  font-light uppercase"
+                        onClick={() => closeEdit()}
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        type="button"
+                        className="w-40 h-10  bg-success leading-loose rounded shadow text-xs font-base  text-white tracking-wide  font-light uppercase"
+                        onClick={() => validate()}
+                      >
+                        Save
+                      </button>
+                    </div>
+                  )}
               </div>
             </div>
           </div>

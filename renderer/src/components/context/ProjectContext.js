@@ -160,23 +160,11 @@ const ProjectContextProvider = ({ children }) => {
         updateJson('copyright');
       } else {
         const myLicence = licenceList.find((item) => item.title === copyright.title);
+        // eslint-disable-next-line import/no-dynamic-require
         const licensefile = require(`../../lib/license/${copyright.title}.md`);
         myLicence.licence = licensefile.default;
         setCopyRight(myLicence);
       }
-      // Add / update licence into current list.
-      // if (uniqueId(licenceList, copyright.id)) {
-      //   licenceList.forEach((licence) => {
-      //     if (licence.id === copyright.id) {
-      //       if (licence.title !== copyright.title
-      //         || licence.licence !== copyright.licence) {
-      //         updateJson('copyright');
-      //       }
-      //     }
-      //   });
-      // } else {
-      //   updateJson('copyright');
-      // }
       const status = await saveProjectsMeta(
         newProjectFields,
         language,

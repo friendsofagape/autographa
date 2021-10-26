@@ -67,15 +67,11 @@ const saveProjectsMeta = async (
       id = uuidv5(key, environment.uuidToken);
       scope = canonSpecification.currentScope;
       } else {
-        console.log(project, canonSpecification.currentScope);
         // from existing metadata
-        console.log(Object.keys(project.type.flavorType.currentScope));
-        scope = (canonSpecification.currentScope).filter((x) => !(Object.keys(project.type.flavorType.currentScope)).includes(x));
+        scope = (canonSpecification.currentScope)
+        .filter((x) => !(Object.keys(project.type.flavorType.currentScope)).includes(x));
         id = Object.keys(project?.identification?.primary?.ag);
-        console.log('scope', scope);
-        console.log(checker((canonSpecification.currentScope), Object.keys(project.type.flavorType.currentScope)));
       }
-      console.log('new', scope, copyright);
       // Create New burrito
       // ingredient has the list of created files in the form of SB Ingredients
       logger.error('saveProjectsMeta.js', 'Calling creatVersification for generating USFM files.');
@@ -96,13 +92,11 @@ const saveProjectsMeta = async (
           selectedLanguage.title,
           copyright.licence,
           id);
-          console.log('ingredient', ingredient);
         if (call === 'edit') {
           burritoFile.ingredients = { ...project.ingredients, ...ingredient };
         } else {
         burritoFile.ingredients = ingredient;
         }
-        console.log('burrito', burritoFile);
         logger.error('saveProjectsMeta.js', 'Creating a burrito file.');
         await fs.writeFileSync(path.join(projectDir, `${newProjectFields.projectName}_${id}`,
           'metadata.json'), JSON.stringify(burritoFile));

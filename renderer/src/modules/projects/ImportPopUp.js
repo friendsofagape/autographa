@@ -114,7 +114,7 @@ export default function ImportProjectPopUp(props) {
           initialFocus={cancelButtonRef}
           static
           open={open}
-          onClose={close}
+          onClose={() => close}
         >
           <Dialog.Overlay className="fixed inset-0 bg-black opacity-30" />
           <div className="flex items-center justify-center h-screen">

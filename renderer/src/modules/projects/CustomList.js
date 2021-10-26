@@ -1,4 +1,5 @@
-import React, { useEffect, Fragment } from 'react';
+/* eslint-disable react/prop-types */
+import React, { Fragment } from 'react';
 import { Listbox, Transition } from '@headlessui/react';
 import { CheckIcon, SelectorIcon } from '@heroicons/react/solid';
 
@@ -26,9 +27,9 @@ export default function CustomList({
           <Listbox.Options className="absolute w-full py-1 mt-1 overflow-auto text-base bg-white rounded-md shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
             {options.map((option, optionIdx) => (
               <Listbox.Option
-                key={optionIdx}
+                key={optionIdx[0]}
                 className={({ active }) => `${active ? 'text-amber-900 bg-amber-100' : 'text-gray-900'}
-                        cursor-default select-none relative py-2 pl-10 pr-4`}
+                  cursor-default select-none relative py-2 pl-10 pr-4`}
                 value={option}
               >
                 {({ selected, active }) => (
@@ -45,7 +46,7 @@ export default function CustomList({
                         className={`${
                           active ? 'text-amber-600' : 'text-amber-600'
                         }
-                              absolute inset-y-0 left-0 flex items-center pl-3`}
+                        absolute inset-y-0 left-0 flex items-center pl-3`}
                       >
                         <CheckIcon className="w-5 h-5" aria-hidden="true" />
                       </span>
