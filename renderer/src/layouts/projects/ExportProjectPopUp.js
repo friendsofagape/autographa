@@ -107,9 +107,8 @@ export default function ExportProjectPopUp(props) {
               <div className="relative h-full rounded shadow overflow-hidden bg-white">
                 <div className="flex justify-between items-center bg-secondary">
                   <div className="uppercase bg-secondary text-white py-2 px-2 text-xs tracking-widest leading-snug rounded-tl text-center">
-                    Export Project (
-                    {project?.name}
-                    )
+                    Export Project:
+                    {` ${project?.name}`}
                   </div>
                   <button
                     onClick={close}
@@ -127,7 +126,7 @@ export default function ExportProjectPopUp(props) {
                     <div className="bg-white grid grid-cols-4 gap-2 p-4 text-sm text-left tracking-wide">
                       <div className="flex gap-5 col-span-2">
                         <div>
-                          <h4 className="text-xs font-base mb-2 text-primary  tracking-wide leading-4  font-light">Export Location</h4>
+                          <h4 className="text-xs font-base mb-2 text-primary  tracking-wide leading-4  font-light">Export file path</h4>
                           <input
                             type="text"
                             name="location"
