@@ -140,6 +140,7 @@ const importBurrito = async (filePath, currentUser) => {
               scriptDirection: 'LTR',
               starred: false,
               description: '',
+              copyright: '',
               lastSeen: moment().format(),
               refResources: [],
               bookMarks: [],

@@ -1,6 +1,8 @@
-import ProjectsLayout from '@/layouts/projects/Layout';
-import React from 'react';
+/* eslint-disable react/prop-types */
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { useRouter } from 'next/router';
+import ProjectsLayout from '@/layouts/projects/Layout';
 import AdvancedSettingsDropdown from '@/components/ProjectsPage/CreateProject/AdvancedSettingsDropdown';
 import { ProjectContext } from '@/components/context/ProjectContext';
 import TargetLanguagePopover from '@/components/ProjectsPage/CreateProject/TargetLanguagePopover';
@@ -11,11 +13,9 @@ import BullhornIcon from '@/icons/basil/Outline/Communication/Bullhorn.svg';
 import ProcessorIcon from '@/icons/basil/Outline/Devices/Processor.svg';
 // import CheckIcon from '@/icons/basil/Outline/Interface/Check.svg';
 import ImageIcon from '@/icons/basil/Outline/Files/Image.svg';
-import { useRouter } from 'next/router';
-import ImportPopUp from './ImportPopUp';
-// import { ChevronDownIcon } from '@heroicons/react/solid';
-import CustomAutocomplete from './CustomAutocomplete';
 import * as logger from '../../logger';
+import ImportPopUp from './ImportPopUp';
+import CustomList from './CustomList';
 
 // eslint-disable-next-line no-unused-vars
 const solutions = [
@@ -70,7 +70,7 @@ function BibleHeaderTagDropDown() {
   );
 }
 
-export default function NewProject() {
+export default function NewProject({ call, project, closeEdit }) {
   const {
     states: {
       newProjectFields,
@@ -88,6 +88,7 @@ export default function NewProject() {
   const [snackText, setSnackText] = React.useState('');
   const [notify, setNotify] = React.useState();
   const [loading, setLoading] = React.useState(false);
+  const [metadata, setMetadata] = React.useState();
   function getAbbreviation(text) {
     if (typeof text !== 'string' || !text) {
       return '';
@@ -106,7 +107,7 @@ export default function NewProject() {
   };
 
   const setValue = async (value) => {
-    if (value.label === 'Target Langauge') {
+    if (value.label === 'Target Language') {
       languages.forEach((l) => {
         if (l.title === value.data) {
           setLanguage(l);
@@ -126,7 +127,7 @@ export default function NewProject() {
     }
     if (create === true) {
       logger.debug('NewProject.js', 'Creating new project.');
-      const value = createProject();
+      const value = createProject(call, metadata);
       value.then((status) => {
         logger.debug('NewProject.js', status[0].value);
         setLoading(false);
@@ -154,10 +155,25 @@ export default function NewProject() {
   function closeImportPopUp() {
     setOpenPopUp(false);
   }
+  const loadData = async (project) => {
+    setNewProjectFields({
+      projectName: project.identification.name.en,
+      abbreviation: project.identification.abbreviation.en,
+      description: project.project.textTranslation.description,
+    });
+    setValue({ label: 'Target Language', data: project.languages[0].name.en });
+    setMetadata(project);
+  };
+  useEffect(() => {
+    if (call === 'edit') {
+      loadData(project);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [call]);
 
   return (
     <ProjectsLayout
-      title="new project"
+      title={call === 'new' ? 'new project' : 'edit project'}
       header={BibleHeaderTagDropDown()}
     >
       {loading === true
@@ -186,6 +202,7 @@ export default function NewProject() {
                   onChange={(e) => {
                     handleProjectName(e);
                   }}
+                  disabled={call !== 'new'}
                   className="w-52 lg:w-80 block rounded shadow-sm sm:text-sm focus:border-primary border-gray-300"
                 />
                 <h4 className="mt-5 text-xs font-base mb-2 text-primary leading-4 tracking-wide  font-light">Description</h4>
@@ -227,7 +244,16 @@ export default function NewProject() {
                         {language.scriptDirection ? language.scriptDirection : 'LTR'}
                       </TargetLanguageTag>
                     </div>
-                    <CustomAutocomplete label="Target Language" list={languages} setValue={setValue} />
+                    <h4 className="text-xs font-base mb-2 text-primary  tracking-wide leading-4  font-light">
+                      Target Language
+                      <span style={{ color: 'red' }}>*</span>
+                    </h4>
+                    <CustomList
+                      selected={language}
+                      setSelected={setLanguage}
+                      options={languages}
+                      show
+                    />
                   </div>
                   <div className="mt-8">
                     <TargetLanguagePopover />
@@ -242,21 +268,42 @@ export default function NewProject() {
                   >
                     Import books
                   </button>
-                  <ImportPopUp open={openPopUp} closePopUp={closeImportPopUp} />
+                  <ImportPopUp open={openPopUp} closePopUp={() => closeImportPopUp} />
                 </div>
               </div>
 
               <div>
-                <AdvancedSettingsDropdown />
-                <div>
-                  <button
-                    type="button"
-                    className="w-40 h-10 my-5 bg-success leading-loose rounded shadow text-xs font-base text-white tracking-wide font-light uppercase"
-                    onClick={() => validate()}
-                  >
-                    Create Project
-                  </button>
-                </div>
+                <AdvancedSettingsDropdown call={call} project={project} />
+                {call === 'new'
+                  ? (
+                    <div>
+                      <button
+                        type="button"
+                        className="w-40 h-10 my-5 bg-success leading-loose rounded shadow text-xs font-base text-white tracking-wide font-light uppercase"
+                        onClick={() => validate()}
+                      >
+                        Create Project
+                      </button>
+                    </div>
+                  )
+                  : (
+                    <div className="p-3 flex gap-5 justify-end">
+                      <button
+                        type="button"
+                        className="w-40 h-10  bg-error leading-loose rounded shadow text-xs font-base  text-white tracking-wide  font-light uppercase"
+                        onClick={() => closeEdit()}
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        type="button"
+                        className="w-40 h-10  bg-success leading-loose rounded shadow text-xs font-base  text-white tracking-wide  font-light uppercase"
+                        onClick={() => validate()}
+                      >
+                        Save
+                      </button>
+                    </div>
+                  )}
               </div>
             </div>
           </div>

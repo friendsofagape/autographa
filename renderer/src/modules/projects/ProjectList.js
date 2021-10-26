@@ -3,7 +3,7 @@ import React, { Fragment, useState } from 'react';
 import { useRouter } from 'next/router';
 import moment from 'moment';
 
-import { Disclosure, Transition } from '@headlessui/react';
+import { Disclosure, Transition, Menu } from '@headlessui/react';
 import { ChevronUpIcon } from '@heroicons/react/solid';
 import {
   StarIcon, ExternalLinkIcon, PencilAltIcon, DotsVerticalIcon,
@@ -12,11 +12,13 @@ import localforage from 'localforage';
 
 import ProjectsLayout from '@/layouts/projects/Layout';
 import EnhancedTableHead from '@/components/ProjectsPage/Projects/EnhancedTableHead';
-import { AutographaContext } from '@/components/context/AutographaContext';
+import AutographaContextProvider, { AutographaContext } from '@/components/context/AutographaContext';
 import { getComparator, stableSort } from '@/components/ProjectsPage/Projects/SortingHelper';
 
 import ExportProjectPopUp from '@/layouts/projects/ExportProjectPopUp';
+import ProjectContextProvider from '@/components/context/ProjectContext';
 import SearchTags from './SearchTags';
+import NewProject from './NewProject';
 
 export default function ProjectList() {
   const router = useRouter();
@@ -41,12 +43,11 @@ export default function ProjectList() {
       setActiveNotificationCount,
     },
   } = React.useContext(AutographaContext);
-
+  const [callEditProject, setCallEditProject] = useState(false);
   const [openPopUp, setOpenPopUp] = useState(false);
-  const [exportProject, setExportProject] = useState();
-
+  const [currentProject, setCurrentProject] = useState();
   const openExportPopUp = (project) => {
-    setExportProject(project);
+    setCurrentProject(project);
     setOpenPopUp(true);
   };
   const closeExportPopUp = () => {
@@ -75,37 +76,60 @@ export default function ProjectList() {
     }).then(() => setActiveNotificationCount(activeNotificationCount + 1));
   };
 
+  const editproject = async (project) => {
+    const path = require('path');
+    const fs = window.require('fs');
+    const newpath = localStorage.getItem('userPath');
+    await localforage.getItem('userProfile').then((value) => {
+      const folder = path.join(newpath, 'autographa', 'users', value.username, 'projects', `${project.name}_${project.id[0]}`);
+      const data = fs.readFileSync(path.join(folder, 'metadata.json'), 'utf-8');
+      let metadata = JSON.parse(data);
+      const settings = fs.readFileSync(path.join(folder, 'ingredients', 'ag-settings.json'), 'utf-8');
+      const agSetting = JSON.parse(settings);
+      metadata = { ...metadata, ...agSetting };
+      setCurrentProject(metadata);
+      setCallEditProject(true);
+    });
+  };
+  const closeEditProject = () => {
+    setCallEditProject(false);
+    router.push('./projects');
+  };
+
   return (
     <>
-      <ProjectsLayout
-        title="Projects"
-        isImport
-        header={(
-          <SearchTags
-            contentList1={starredProjects}
-            contentList2={unstarredProjects}
-            filterList={filterList}
-            onfilerRequest1={setStarredRow}
-            onfilerRequest2={setUnStarredRow}
-          />
+      { callEditProject === false
+      ? (
+        <>
+          <ProjectsLayout
+            title="Projects"
+            isImport
+            header={(
+              <SearchTags
+                contentList1={starredProjects}
+                contentList2={unstarredProjects}
+                filterList={filterList}
+                onfilerRequest1={setStarredRow}
+                onfilerRequest2={setUnStarredRow}
+              />
         )}
-      >
+          >
 
-        <div className="mx-auto py-6 sm:px-6 lg:px-8">
-          <div className="px-4 py-4 sm:px-0">
+            <div className="mx-auto py-6 sm:px-6 lg:px-8">
+              <div className="px-4 py-4 sm:px-0">
 
-            <div className="flex flex-col">
-              <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-                <div className="align-middle inline-block min-w-full sm:px-6 lg:px-8">
-                  <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-                    <table data-testid="tablelayout" className="min-w-full divide-y divide-gray-200">
-                      <EnhancedTableHead
-                        order={order}
-                        orderBy={orderBy}
-                        onRequestSort={handleRequestSort}
-                      />
-                      <tbody className="bg-white divide-y divide-gray-200">
-                        {starredrow && (stableSort(starredrow,
+                <div className="flex flex-col">
+                  <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                    <div className="align-middle inline-block min-w-full sm:px-6 lg:px-8">
+                      <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                        <table data-testid="tablelayout" className="min-w-full divide-y divide-gray-200">
+                          <EnhancedTableHead
+                            order={order}
+                            orderBy={orderBy}
+                            onRequestSort={handleRequestSort}
+                          />
+                          <tbody className="bg-white divide-y divide-gray-200">
+                            {starredrow && (stableSort(starredrow,
                           getComparator(order, orderBy),
                           orderBy,
                           order).map((project) => (
@@ -194,7 +218,7 @@ export default function ProjectList() {
                                 </td> */}
                                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium flex justify-end">
                                       <Disclosure.Button className="flex justify-between w-full px-4 py-2 text-sm font-medium text-left text-purple-900 bg-purple-100 rounded-lg hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75">
-                                        <ChevronUpIcon className={`${open ? 'transform rotate-180' : ''} w-5 h-5 text-purple-500`} />
+                                        <ChevronUpIcon className={`${open ? '' : 'transform rotate-180'} w-5 h-5 text-purple-500`} />
                                       </Disclosure.Button>
                                     </td>
                                   </tr>
@@ -241,9 +265,9 @@ export default function ProjectList() {
                             </Disclosure>
                           ))
                         )}
-                      </tbody>
-                      <tbody className="bg-white divide-y divide-gray-200">
-                        {unstarredrow && (stableSort(unstarredrow,
+                          </tbody>
+                          <tbody className="bg-white divide-y divide-gray-200">
+                            {unstarredrow && (stableSort(unstarredrow,
                           getComparator(order, orderBy),
                           orderBy,
                           order).map((project) => (
@@ -330,7 +354,7 @@ export default function ProjectList() {
                                 </td> */}
                                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                       <Disclosure.Button className="flex justify-between w-full px-4 py-2 text-sm font-medium text-left text-purple-900 bg-purple-100 rounded-lg hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75">
-                                        <ChevronUpIcon className={`${open ? 'transform rotate-180' : ''} w-5 h-5 text-purple-500`} />
+                                        <ChevronUpIcon className={`${open ? '' : 'transform rotate-180'} w-5 h-5 text-purple-500`} />
                                       </Disclosure.Button>
                                     </td>
                                   </tr>
@@ -359,13 +383,53 @@ export default function ProjectList() {
                                               {/* <button type="button" className="px-5">
                                                 <PencilAltIcon className="h-5 w-5 text-primary" aria-hidden="true" />
                                               </button> */}
-                                              <button
-                                                onClick={() => openExportPopUp(project)}
-                                                type="button"
-                                                className="px-5"
-                                              >
-                                                <DotsVerticalIcon className="h-5 w-5 text-primary" aria-hidden="true" />
-                                              </button>
+                                              <Menu as="div">
+                                                <div>
+                                                  <Menu.Button className="px-5">
+                                                    <DotsVerticalIcon className="h-5 w-5 text-primary" aria-hidden="true" />
+                                                  </Menu.Button>
+                                                </div>
+                                                <Transition
+                                                  as={Fragment}
+                                                  enter="transition ease-out duration-100"
+                                                  enterFrom="transform opacity-0 scale-95"
+                                                  enterTo="transform opacity-100 scale-100"
+                                                  leave="transition ease-in duration-75"
+                                                  leaveFrom="transform opacity-100 scale-100"
+                                                  leaveTo="transform opacity-0 scale-95"
+                                                >
+                                                  <Menu.Items className="absolute right-0 w-56 mt-2 origin-top-right bg-white divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                                                    <div className="px-1 py-1 ">
+                                                      <Menu.Item>
+                                                        {({ active }) => (
+                                                          <button
+                                                            type="button"
+                                                            className={`${
+                                                              active ? 'bg-primary text-white' : 'text-gray-900'
+                                                              } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
+                                                            onClick={() => editproject(project)}
+                                                          >
+                                                            Edit
+                                                          </button>
+                                                        )}
+                                                      </Menu.Item>
+                                                      <Menu.Item>
+                                                        {({ active }) => (
+                                                          <button
+                                                            type="button"
+                                                            className={`${
+                                                              active ? 'bg-primary text-white' : 'text-gray-900'
+                                                            } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
+                                                            onClick={() => openExportPopUp(project)}
+                                                          >
+                                                            Export
+                                                          </button>
+                                                        )}
+                                                      </Menu.Item>
+                                                    </div>
+                                                  </Menu.Items>
+                                                </Transition>
+                                              </Menu>
                                             </div>
                                           </div>
                                         </td>
@@ -378,16 +442,19 @@ export default function ProjectList() {
                             </Disclosure>
                           ))
                         )}
-                      </tbody>
-                    </table>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-      </ProjectsLayout>
-      <ExportProjectPopUp open={openPopUp} closePopUp={closeExportPopUp} project={exportProject} />
+          </ProjectsLayout>
+          <ExportProjectPopUp open={openPopUp} closePopUp={closeExportPopUp} project={currentProject} />
+        </>
+)
+      : <ProjectContextProvider><AutographaContextProvider><NewProject call="edit" project={currentProject} closeEdit={() => closeEditProject()} /></AutographaContextProvider></ProjectContextProvider>}
     </>
   );
 }

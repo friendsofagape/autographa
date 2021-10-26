@@ -155,41 +155,68 @@
 		}
 	],
 	"copyright": [
-		{ "id": "BY", "title": "Attribution", "licence": "", "locked": true },
 		{
-			"id": "BY_ND",
-			"title": "Attribution-NoDerivatives",
+			"title": "BY_SA",
+			"id": "Attribution-ShareAlike",
 			"licence": "",
 			"locked": true
 		},
 		{
-			"id": "BY_NC",
-			"title": "Attribution-NonCommercial",
+			"title": "BY",
+			"id": "Attribution",
 			"licence": "",
 			"locked": true
 		},
 		{
-			"id": "BY_SA",
-			"title": "Attribution-ShareAlike",
+			"title": "BY_ND",
+			"id": "Attribution-NoDerivatives",
 			"licence": "",
 			"locked": true
 		},
 		{
-			"id": "BY_NC_SA",
-			"title": "Attribution-NonCommercial-ShareAlike",
-			"licence": ""
-		},
-		{
-			"id": "BY_NC_ND",
-			"title": "Attribution-NonCommercial-NoDerivatives",
+			"title": "BY_NC",
+			"id": "Attribution-NonCommercial",
 			"licence": "",
 			"locked": true
 		},
-		{ "id": "CC0", "title": "CC0", "licence": "", "locked": true }
+		{
+			"title": "BY_NC_SA",
+			"id": "Attribution-NonCommercial-ShareAlike",
+			"licence": "",
+			"locked": true
+		},
+		{
+			"title": "BY_NC_ND",
+			"id": "Attribution-NonCommercial-NoDerivatives",
+			"licence": "",
+			"locked": true
+		},
+		{
+			"title": "CC0",
+			"id": "CC0",
+			"licence": "",
+			"locked": true
+		}
 	],
 	"versification": [
-		{ "title": "King James Version (KJV)" },
-		{ "title": "New Internation Version (NIV)" }
+		{
+			"title": "ENG"
+		},
+		{
+			"title": "LXX"
+		},
+		{
+			"title": "ORG"
+		},
+		{
+			"title": "RSC"
+		},
+		{
+			"title": "RSO"
+		},
+		{
+			"title": "VUL"
+		}
 	],
 	"languages": [
 		{
@@ -198,14 +225,29 @@
 			"scriptDirection": "LTR",
 			"locked": true
 		},
-		{ "id": 2, "title": "Hindi", "scriptDirection": "LTR", "locked": true },
+		{
+			"id": 2,
+			"title": "Hindi",
+			"scriptDirection": "LTR",
+			"locked": true
+		},
 		{
 			"id": 3,
 			"title": "Malayalam",
 			"scriptDirection": "LTR",
 			"locked": true
 		},
-		{ "id": 4, "title": "Tamil", "scriptDirection": "LTR", "locked": true },
-		{ "id": 5, "title": "Odia", "scriptDirection": "LTR", "locked": true }
+		{
+			"id": 4,
+			"title": "Tamil",
+			"scriptDirection": "LTR",
+			"locked": true
+		},
+		{
+			"id": 5,
+			"title": "Odia",
+			"scriptDirection": "LTR",
+			"locked": true
+		}
 	]
 }

@@ -7,7 +7,7 @@ const newproject = () => (
   <AuthenticationContextProvider>
     <ProjectContextProvider>
       <ReferenceContextProvider>
-        <NewProject />
+        <NewProject call="new"/>
       </ReferenceContextProvider>
     </ProjectContextProvider>
   </AuthenticationContextProvider>
