@@ -201,7 +201,7 @@ export default function AdvancedSettingsDropdown({ call, project }) {
                   show
                 />
                 <div className="mt-8 w-8 min-w-max">
-                  <LicencePopover />
+                  <LicencePopover call={call} />
                 </div>
               </div>
             </div>

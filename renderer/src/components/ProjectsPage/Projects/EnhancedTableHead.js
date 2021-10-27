@@ -24,7 +24,7 @@ const headCells = [
   //   id: 'status', numeric: false, disablePadding: true, label: 'Status',
   // },
   {
-    id: 'date', numeric: true, disablePadding: false, label: 'Date',
+    id: 'date', numeric: true, disablePadding: false, label: 'Created Date',
   },
   {
     id: 'view', numeric: true, disablePadding: false, label: 'Last Viewed',

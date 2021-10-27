@@ -11,7 +11,7 @@ import styles from './ImportPopUp.module.css';
 
 const grammar = require('usfm-grammar');
 
-export default function ImportProjectPopUp(props) {
+export default function ImportPopUp(props) {
   const {
     open,
     closePopUp,
@@ -31,7 +31,7 @@ export default function ImportProjectPopUp(props) {
   } = useContext(ProjectContext);
   function close() {
     setValid(false);
-    closePopUp(false);
+    closePopUp();
   }
   function clear() {
     setFolderPath([]);
@@ -124,7 +124,7 @@ export default function ImportProjectPopUp(props) {
 
                 <div className="flex justify-between items-center bg-secondary">
                   <div className="uppercase bg-secondary text-white py-2 px-5 text-xs tracking-widest leading-snug rounded-tl text-center">
-                    Import Project
+                    Import Book
                   </div>
                   <button
                     onClick={close}
@@ -143,7 +143,7 @@ export default function ImportProjectPopUp(props) {
                     <div className="bg-white grid grid-cols-4 gap-2 p-4 text-sm text-left tracking-wide">
                       <div className="flex gap-5 col-span-2">
                         <div>
-                          <h4 className="text-xs font-base mb-2 text-primary  tracking-wide leading-4  font-light">Import Location</h4>
+                          <h4 className="text-xs font-base mb-2 text-primary  tracking-wide leading-4  font-light">Choose USFM files</h4>
                           <input
                             type="text"
                             name="location"

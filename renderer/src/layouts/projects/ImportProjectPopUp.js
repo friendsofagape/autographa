@@ -102,7 +102,7 @@ export default function ImportProjectPopUp(props) {
                     <div className="bg-white grid grid-cols-4 gap-2 p-4 text-sm text-left tracking-wide">
                       <div className="flex gap-5 col-span-2">
                         <div>
-                          <h4 className="text-xs font-base mb-2 text-primary  tracking-wide leading-4  font-light">Import Location</h4>
+                          <h4 className="text-xs font-base mb-2 text-primary  tracking-wide leading-4  font-light">Scripture burrito directory</h4>
                           <input
                             type="text"
                             name="location"

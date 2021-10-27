@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React, { Fragment, useState } from 'react';
 import { Dialog, Transition, Switch } from '@headlessui/react';
 
@@ -6,7 +7,7 @@ import { PencilAltIcon } from '@heroicons/react/outline';
 import { BlockEditable } from 'markdown-translatable/dist/components';
 import { ProjectContext } from '../../context/ProjectContext';
 
-export default function LicencePopover() {
+export default function LicencePopover({ call }) {
   const [name, setName] = React.useState();
   const [content, setContent] = React.useState();
   const [isOpen, setIsOpen] = useState(false);
@@ -30,9 +31,15 @@ export default function LicencePopover() {
   } = React.useContext(ProjectContext);
   // eslint-disable-next-line no-unused-vars
   const openlicenceNav = () => {
-      setName(copyright.id);
-      setEdit(!copyright.locked);
+    setName(copyright.id);
+    setEdit(!copyright.locked);
+    if (call === 'new') {
+      // eslint-disable-next-line import/no-dynamic-require
+      const licensefile = require(`../../../lib/license/${copyright.title}.md`);
+      setContent(licensefile.default);
+    } else {
       setContent(copyright.licence);
+    }
   };
   const callback = (markdown) => {
     // logger.debug('markdownviewer.js', `set translation as ${markdown}`);
@@ -59,7 +66,7 @@ export default function LicencePopover() {
         </button> */}
         <button
           type="button"
-          onClick={() => { openlicenceNav('edit'); openModal(); }}
+          onClick={() => { openlicenceNav(); openModal(); }}
           className="focus:outline-none bg-primary h-8 w-8 flex items-center justify-center rounded-full"
         >
           <PencilAltIcon

@@ -268,7 +268,7 @@ export default function NewProject({ call, project, closeEdit }) {
                   >
                     Import books
                   </button>
-                  <ImportPopUp open={openPopUp} closePopUp={() => closeImportPopUp} />
+                  <ImportPopUp open={openPopUp} closePopUp={closeImportPopUp} />
                 </div>
               </div>
 
