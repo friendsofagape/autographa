@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable import/no-unresolved */
 import React, {
-  useRef, Fragment, useContext,
+  useRef, Fragment, useContext, useEffect,
 } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { DocumentTextIcon, FolderOpenIcon } from '@heroicons/react/outline';
@@ -24,6 +24,7 @@ export default function ImportPopUp(props) {
   const [snackBar, setOpenSnackBar] = React.useState(false);
   const [snackText, setSnackText] = React.useState('');
   const [notify, setNotify] = React.useState();
+  const [show, setShow] = React.useState(false);
   const {
     actions: {
       setImportedFiles,
@@ -31,6 +32,7 @@ export default function ImportPopUp(props) {
   } = useContext(ProjectContext);
   function close() {
     setValid(false);
+    setShow(false);
     closePopUp();
   }
   function clear() {
@@ -63,6 +65,11 @@ export default function ImportPopUp(props) {
     const { dialog } = remote;
     const WIN = remote.getCurrentWindow();
     const chosenFolder = await dialog.showOpenDialog(WIN, options);
+    if ((chosenFolder.filePaths).length > 0) {
+      setShow(true);
+    } else {
+      close();
+    }
     await getBooks(chosenFolder.filePaths);
     setFolderPath(chosenFolder.filePaths);
   };
@@ -96,10 +103,16 @@ export default function ImportPopUp(props) {
       setOpenSnackBar(true);
     }
   };
+  useEffect(() => {
+    if (open) {
+      openFileDialogSettingData();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open]);
   return (
     <>
       <Transition
-        show={open}
+        show={show}
         as={Fragment}
         enter="transition duration-100 ease-out"
         enterFrom="transform scale-95 opacity-0"
@@ -113,7 +126,7 @@ export default function ImportPopUp(props) {
           className="fixed inset-0 z-10 overflow-y-auto"
           initialFocus={cancelButtonRef}
           static
-          open={open}
+          open={show}
           onClose={() => close}
         >
           <Dialog.Overlay className="fixed inset-0 bg-black opacity-30" />
