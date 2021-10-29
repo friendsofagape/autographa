@@ -119,6 +119,9 @@ function useProjectsSort() {
       active === 'starred'
         ? unstarredrow.push(temparray)
         : starredrow.push(temparray);
+
+      settemparray(null);
+      setactive('');
     }
     handleRequestSortUnstarred('asc', 'view');
     // eslint-disable-next-line
