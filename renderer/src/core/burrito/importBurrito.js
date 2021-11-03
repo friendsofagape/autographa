@@ -7,6 +7,34 @@ import { validate } from '../../util/validate';
 
 const md5 = require('md5');
 
+export const viewBurrito = async (filePath) => {
+  const fs = window.require('fs');
+  const path = require('path');
+  logger.debug('importBurrito.js', 'Inside viewBurrito');
+  const result = {};
+  if (fs.existsSync(path.join(filePath, 'metadata.json'))) {
+    logger.debug('importBurrito.js', 'Project has Burrito file metadata.json.');
+    result.fileExist = true;
+    const sb = fs.readFileSync(path.join(filePath, 'metadata.json'));
+    const metadata = JSON.parse(sb);
+    const success = await validate('metadata', path.join(filePath, 'metadata.json'), sb);
+    if (success) {
+      result.validate = true;
+      logger.debug('importBurrito.js', 'Burrito file validated successfully');
+      result.projectName = metadata.identification?.name?.en;
+      result.language = metadata.languages[0]?.name?.en;
+      result.burritoType = metadata.type?.flavorType?.flavor?.name;
+      result.ingredients = Object.keys(metadata.ingredients).map((key) => key);
+    } else {
+      result.validate = false;
+      logger.debug('importBurrito.js', 'Invalid burrito file (metadata.json).');
+    }
+  } else {
+    logger.debug('importBurrito.js', 'Unable to find burrito file (metadata.json).');
+    result.fileExist = false;
+  }
+  return result;
+};
 const importBurrito = async (filePath, currentUser) => {
   logger.debug('importBurrito.js', 'Inside importBurrito');
   const fs = window.require('fs');
