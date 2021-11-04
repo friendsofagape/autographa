@@ -22,9 +22,12 @@ export const viewBurrito = async (filePath) => {
       result.validate = true;
       logger.debug('importBurrito.js', 'Burrito file validated successfully');
       result.projectName = metadata.identification?.name?.en;
-      result.language = metadata.languages[0]?.name?.en;
-      result.burritoType = metadata.type?.flavorType?.flavor?.name;
+      // result.language = metadata.languages[0]?.name?.en;
+      result.burritoType = `${metadata.type?.flavorType?.name} / ${metadata.type?.flavorType?.flavor?.name}`;
       result.ingredients = Object.keys(metadata.ingredients).map((key) => key);
+      result.primaryKey = metadata.identification.primary;
+      result.publicDomain = metadata.copyright?.publicDomain;
+      result.language = metadata.languages.map((lang) => lang.name.en);
     } else {
       result.validate = false;
       logger.debug('importBurrito.js', 'Invalid burrito file (metadata.json).');
