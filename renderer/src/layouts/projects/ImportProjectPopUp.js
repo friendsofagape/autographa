@@ -1,4 +1,4 @@
-/* eslint-disable react/prop-types */
+/* eslint-disable */
 import React, {
   useRef, Fragment,
 } from 'react';
@@ -8,7 +8,7 @@ import { useRouter } from 'next/router';
 import { SnackBar } from '@/components/SnackBar';
 import CloseIcon from '@/illustrations/close-button-black.svg';
 import localforage from 'localforage';
-import importBurrito from '../../core/burrito/importBurrito';
+import importBurrito, { viewBurrito } from '../../core/burrito/importBurrito';
 import * as logger from '../../logger';
 
 export default function ImportProjectPopUp(props) {
@@ -24,11 +24,13 @@ export default function ImportProjectPopUp(props) {
   const [snackText, setSnackText] = React.useState('');
   const [notify, setNotify] = React.useState();
   const [show, setShow] = React.useState(false);
+  const [sbData, setSbData] = React.useState({});
 
   function close() {
     setValid(false);
     closePopUp(false);
     setShow(false);
+    setSbData({});
   }
 
   const openFileDialogSettingData = async () => {
@@ -40,6 +42,8 @@ export default function ImportProjectPopUp(props) {
     const chosenFolder = await dialog.showOpenDialog(WIN, options);
     if ((chosenFolder.filePaths).length > 0) {
       setShow(true);
+      const result = await viewBurrito(chosenFolder.filePaths[0]);
+      setSbData(result);
     } else {
       close();
     }
@@ -124,7 +128,7 @@ export default function ImportProjectPopUp(props) {
                             onChange={(e) => setFolderPath(e.target.value)}
                             className="bg-white w-52 lg:w-80 block rounded shadow-sm sm:text-sm focus:border-primary border-gray-300"
                           />
-                          <h4 className="text-red-500">{valid === true ? 'Enter location' : ''}</h4>
+                          <h4 className="text-red-500">{valid === true ? 'Enter location' : (sbData?.fileExist ? '' : 'Unable to find burrito file (metadata.json)') }</h4>
                         </div>
                         <div>
                           <button
@@ -137,6 +141,17 @@ export default function ImportProjectPopUp(props) {
                         </div>
                       </div>
                     </div>
+                    {sbData?.fileExist
+                      && (
+                      <div>
+                        <h4>Project</h4>
+                        <input type="text" value={sbData.projectName} disabled />
+                        <h4>Language</h4>
+                        <input type="text" value={sbData.language} disabled />
+                        <h4>Type</h4>
+                        <input type="text" value={sbData.burritoType} disabled />
+                      </div>
+                      )}
                     <div className="flex gap-6 mx-5 justify-end">
 
                       <button
@@ -146,15 +161,16 @@ export default function ImportProjectPopUp(props) {
                       >
                         Cancel
                       </button>
-
-                      <button
-                        type="button"
-                        className="py-2 px-7 rounded shadow bg-success text-white uppercase text-xs tracking-widest font-semibold"
-                        onClick={() => importProject()}
-                      >
-                        Import
-                      </button>
-
+                      {sbData?.validate
+                        && (
+                        <button
+                          type="button"
+                          className="py-2 px-7 rounded shadow bg-success text-white uppercase text-xs tracking-widest font-semibold"
+                          onClick={() => importProject()}
+                        >
+                          Import
+                        </button>
+                      )}
                     </div>
                   </div>
                 </div>
