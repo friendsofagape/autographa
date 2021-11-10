@@ -75,15 +75,20 @@ export default function TopMenuBar() {
                             >
                               <span className="sr-only">Open user menu</span>
 
-                              <div className="h-8 w-8 p-2 bg-primary rounded-full">
-                                <UserIcon className="h-4 w-4 text-white" />
-                              </div>
-
-                              {/* <img
-                                className="h-8 w-8 rounded-full"
-                                src="https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                alt=""
-                              /> */}
+                              {/* check if user pic available  */}
+                              {true
+                                ? (
+                                  <div className="h-8 w-8 p-2 bg-primary rounded-full">
+                                    <UserIcon className="h-4 w-4 text-white" />
+                                  </div>
+                                )
+                                : (
+                                  <img
+                                    className="h-8 w-8 rounded-full"
+                                    src="https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                                    alt=""
+                                  />
+                                )}
 
                             </Menu.Button>
                           </div>
@@ -124,13 +129,13 @@ export default function TopMenuBar() {
                                     href="#profile"
                                     onClick={() => logout()}
                                     className={classNames(
-                                          active ? 'bg-gray-100' : '',
-                                          'block px-4 py-2 text-sm text-gray-700',
-                                        )}
+                                      active ? 'bg-gray-100' : '',
+                                      'block px-4 py-2 text-sm text-gray-700',
+                                    )}
                                   >
                                     Sign out
                                   </a>
-                                  )}
+                                )}
                               </Menu.Item>
                             </Menu.Items>
                           </Transition>

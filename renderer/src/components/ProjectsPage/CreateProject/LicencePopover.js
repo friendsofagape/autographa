@@ -82,7 +82,7 @@ export default function LicencePopover({ call }) {
           className="fixed inset-0 z-10 overflow-y-auto"
           onClose={() => closeModal}
         >
-          <div className="min-h-screen px-4 text-center">
+          <div className="h-2/3 px-4 text-center">
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"
@@ -111,61 +111,70 @@ export default function LicencePopover({ call }) {
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <div className="inline-block  max-w-md overflow-hidden text-left align-middle transition-all transform bg-white rounded">
-                <div className="m-8">
-                  <div className="">
-                    <h2 className="uppercase font-bold leading-5 tracking-widest ">new license</h2>
-                    <Switch.Group as="div" className="flex items-center space-x-4">
-                      <Switch.Label>Preview</Switch.Label>
-                      <Switch
-                        as="button"
-                        checked={preview}
-                        onChange={setPreview}
-                        className={`${
-                          preview ? 'bg-indigo-600' : 'bg-gray-200'
+              <div className="inline-block w-2/3 p-8 h-full relative text-left align-middle transition-all transform bg-white rounded">
+
+                <div className="pb-4">
+                  <h2 className="uppercase font-bold leading-5 tracking-widest ">new license</h2>
+                  <Switch.Group as="div" className="flex items-center space-x-4">
+                    <Switch.Label>Preview</Switch.Label>
+                    <Switch
+                      checked={preview}
+                      onChange={setPreview}
+                      className={`${!preview ? 'bg-primary' : 'bg-dark'}
+                                  relative inline-flex flex-shrink-0 h-5 w-10 border-2 border-transparent rounded-full cursor-pointer
+                                  transition-colors ease-in-out duration-200 focus:outline-none focus-visible:ring-2
+                                focus-visible:ring-white focus-visible:ring-opacity-75`}
+                    >
+                      <span className="sr-only">Use setting</span>
+                      <span
+                        aria-hidden="true"
+                        className={`${!preview ? 'translate-x-5' : 'translate-x-0'}
+                                    pointer-events-none inline-block h-4 w-4 rounded-full bg-white shadow-lg transform ring-0 transition ease-in-out duration-200`}
+                      />
+                    </Switch>
+
+                    {/* <Switch
+                      as="button"
+                      checked={preview}
+                      onChange={setPreview}
+                      className={`${preview ? 'bg-indigo-600' : 'bg-gray-200'
                         } relative inline-flex flex-shrink-0 h-6 transition-colors duration-200 ease-in-out border-2 border-transparent rounded-full cursor-pointer w-11 focus:outline-none focus:shadow-outline`}
-                      >
-                        {({ checked }) => (
-                          <span
-                            className={`${
-                              checked ? 'translate-x-5' : 'translate-x-0'
+                    >
+                      {({ checked }) => (
+                        <span
+                          className={`${checked ? 'translate-x-5' : 'translate-x-0'
                             } inline-block w-5 h-5 transition duration-200 ease-in-out transform bg-white rounded-full`}
-                          />
-                        )}
-                      </Switch>
-                    </Switch.Group>
-                  </div>
-                  <div className="mt-8 mb-10">
-                    <input
-                      placeholder="License Name"
-                      className="bg-gray-200 w-96 block rounded shadow-sm sm:text-sm border border-gray-300 h-10 focus:ring-primary pl-3"
-                      value={name}
-                      onChange={(e) => { setName(e.target.value); }}
-                      disabled
-                    />
-                  </div>
-                  <div>
-                    {/* <textarea
-                      placeholder="License Description"
-                      className="h-96 border rounded border-gray-300 bg-gray-200 w-96 min-h-full"
-                      value={content}
-                      onChange={(e) => { setContent(e.target.value); }}
-                      disabled={lock}
-                    /> */}
-                    <BlockEditable
-                      markdown={content}
-                      preview={preview}
-                      onEdit={callback}
-                      inputFilters={[
-                        [/<br>/gi, '\n'],
-                        [/(<u>|<\/u>)/gi, '__'],
-                      ]}
-                      outputFilters={[[/\n/gi, '<br>']]}
-                    />
-                  </div>
-                  <div className="flex gap-3 justify-end">
-                    {edit
-                      && (
+                        />
+                      )}
+                    </Switch> */}
+
+                  </Switch.Group>
+                </div>
+
+                <div className="h-5/6 overflow-y-auto">
+                  <input
+                    placeholder="License Name"
+                    className="bg-gray-200 w-96 block rounded shadow-sm sm:text-sm border border-gray-300 h-10 focus:ring-primary pl-3"
+                    value={name}
+                    onChange={(e) => { setName(e.target.value); }}
+                    disabled
+                  />
+                  <BlockEditable
+                    markdown={content}
+                    preview={preview}
+                    onEdit={callback}
+                    inputFilters={[
+                      [/<br>/gi, '\n'],
+                      [/(<u>|<\/u>)/gi, '__'],
+                    ]}
+                    outputFilters={[[/\n/gi, '<br>']]}
+                  />
+
+                </div>
+
+                <div className="absolute bottom-5 left-0 right-5 flex gap-3 justify-end">
+                  {edit
+                    && (
                       <button
                         type="button"
                         className="mt-5 bg-success w-28 h-8 border-color-success rounded uppercase text-white text-xs shadow focus:outline-none"
@@ -174,18 +183,18 @@ export default function LicencePopover({ call }) {
                         save
                       </button>
                     )}
-                    <button
-                      type="button"
-                      onClick={closeModal}
-                      className=" mt-5
-                     bg-error w-28 h-8 border-color-error rounded uppercase shadow text-white text-xs tracking-wide leading-4 font-light focus:outline-none"
-                    >
-                      cancel
-                    </button>
-                  </div>
-
+                  <button
+                    type="button"
+                    onClick={closeModal}
+                    className=" mt-5
+                  bg-error w-28 h-8 border-color-error rounded uppercase shadow text-white text-xs tracking-wide leading-4 font-light focus:outline-none"
+                  >
+                    cancel
+                  </button>
                 </div>
+
               </div>
+
             </Transition.Child>
           </div>
         </Dialog>

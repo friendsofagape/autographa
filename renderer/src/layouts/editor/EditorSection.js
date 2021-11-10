@@ -6,7 +6,9 @@ import { ProjectContext } from '@/components/context/ProjectContext';
 import ResourcesPopUp from '@/components/EditorPage/Reference/ResourcesPopUp';
 
 import MinimizeIcon from '@/illustrations/minimize.svg';
-import { ViewGridAddIcon, CogIcon, XIcon } from '@heroicons/react/outline';
+import {
+ ViewGridAddIcon, CogIcon, XIcon, AdjustmentsIcon,
+} from '@heroicons/react/outline';
 
 export default function EditorSection({
   title,
@@ -173,7 +175,7 @@ export default function EditorSection({
                 onClick={showResourcesPanel}
                 className="px-2"
               >
-                <CogIcon
+                <AdjustmentsIcon
                   className="h-5 w-5 text-dark"
                 />
               </button>

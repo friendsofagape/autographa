@@ -194,26 +194,27 @@ export default function AdvancedSettingsDropdown({ call, project }) {
                 </div>
                 {/* </div> */}
               </div>
-              <h4 className="text-xs font-base mb-2 text-primary  tracking-wide leading-4  font-light">
+
+              <h4 className="text-xs font-base mt-4 text-primary  tracking-wide leading-4  font-light">
                 Versification Scheme
                 <span className="text-error">*</span>
               </h4>
-              <div className="mt-8">
+              <div className="mt-2">
                 <CustomList selected={versificationScheme} setSelected={setVersificationScheme} options={versification} show={call === 'new'} />
-
               </div>
-              <h4 className="text-xs font-base mb-2 text-primary  tracking-wide leading-4  font-light">
+
+              <h4 className="text-xs font-base mt-4 text-primary  tracking-wide leading-4  font-light">
                 Licence
                 <span className="text-error">*</span>
               </h4>
-              <div className="flex gap-3 mt-5">
+              <div className="flex gap-3 mt-2">
                 <CustomList
                   selected={copyright}
                   setSelected={setCopyRight}
                   options={licenceList}
                   show
                 />
-                <div className="mt-8 w-8 min-w-max">
+                <div className="w-8">
                   <LicencePopover call={call} />
                 </div>
               </div>

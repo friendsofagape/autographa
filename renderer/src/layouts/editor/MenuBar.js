@@ -12,6 +12,7 @@ import {
   SunIcon,
   SearchIcon,
   UserIcon,
+  ArrowLeftIcon,
 } from '@heroicons/react/outline';
 
 import { classNames } from '@/util/classNames';
@@ -113,7 +114,11 @@ export default function TopMenuBar() {
         {({ open }) => (
           <>
 
-            <div className="h-full w-40 grid justify-items-center items-center border-r border-gray-200">
+            <button className="h-full px-5 border-r border-gray-200" title="project name" type="button" onClick={() => goToProjectPage()}>
+              <ArrowLeftIcon className="h-6 w-6" />
+            </button>
+
+            <div className="h-full w-20 grid justify-items-center items-center border-r border-gray-200 hover:text-primary">
               <LogoIcon
                 className="h-8 w-8"
                 alt="Workflow"
@@ -121,11 +126,9 @@ export default function TopMenuBar() {
             </div>
 
             <div>
-              <button title="project name" type="button" onClick={() => goToProjectPage()}>
-                <span className="text-primary px-10 py-2 text-lg tracking-wide font-extrabold uppercase">
-                  {projectname?.[0]}
-                </span>
-              </button>
+              <span className="text-primary px-10 py-2 text-lg tracking-wide font-bold uppercase">
+                {projectname?.[0]}
+              </span>
             </div>
 
             <div className="flex-grow">
@@ -206,9 +209,20 @@ export default function TopMenuBar() {
 
                           {/* <UserIcon className="h-8 w-8 rounded-full" /> */}
 
-                          <div className="h-8 w-8 p-2 bg-primary rounded-full">
-                            <UserIcon className="h-4 w-4 text-white" />
-                          </div>
+                          {/* check if user pic available  */}
+                          {true
+                            ? (
+                              <div className="h-8 w-8 p-2 bg-primary rounded-full">
+                                <UserIcon className="h-4 w-4 text-white" />
+                              </div>
+                            )
+                            : (
+                              <img
+                                className="h-8 w-8 rounded-full"
+                                src="https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                                alt=""
+                              />
+                            )}
 
                           {/* <img
                             className="h-8 w-8 rounded-full"
@@ -255,20 +269,20 @@ export default function TopMenuBar() {
                                     href="#profile"
                                     onClick={() => logout()}
                                     className={classNames(
-                                          active ? 'bg-gray-100' : '',
-                                          'block px-4 py-2 text-sm text-gray-700',
-                                        )}
+                                      active ? 'bg-gray-100' : '',
+                                      'block px-4 py-2 text-sm text-gray-700',
+                                    )}
                                   >
                                     Sign out
                                   </a>
-                                  )}
+                                )}
                               </Menu.Item>
                             </>
-                            ))}
+                          ))}
                         </Menu.Items>
                       </Transition>
                     </>
-                    )}
+                  )}
                 </Menu>
               </div>
             </div>
