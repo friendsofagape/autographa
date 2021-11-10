@@ -18,57 +18,55 @@ const CustomLogin = ({
     setValue({});
   };
   return (
-    <>
-      <form key="login" name="aglogin" onSubmit={(e) => handleSubmit(e)}>
-        <Typography color="error">{validation?.msg}</Typography>
-        {ui?.autocomplete?.count?.map((v) => (
-          <div>
+
+    <form key="login" name="aglogin" onSubmit={(e) => handleSubmit(e)}>
+      <Typography color="error">{validation?.msg}</Typography>
+      {ui?.autocomplete?.count?.map((v) => (
+        <div>
+          <Grid
+            container
+            alignItems="flex-end"
+          >
+            <Grid item>
+              <PersonOutlineIcon />
+            </Grid>
             <Grid
-              container
-              alignItems="flex-end"
+              item
+              className="text-xs max-w-md h-12 appearance-none w-full py-2 px-3"
             >
-              <Grid item>
-                <PersonOutlineIcon />
-              </Grid>
-              <Grid
-                item
-                className="text-xs
-                max-w-md h-12 appearance-none
-                w-full py-2 px-3"
-              >
-                <Autocomplete
-                  freeSolo
-                  id="username"
-                  data-testid="autocomplete"
-                  options={userlist}
-                  getOptionLabel={(option) => option.username}
-                  getOptionSelected={(option, value) => option.username === value.username}
-                  onInputChange={(event, newInputValue) => {
+              <Autocomplete
+                freeSolo
+                id="username"
+                data-testid="autocomplete"
+                options={userlist}
+                getOptionLabel={(option) => option.username}
+                getOptionSelected={(option, value) => option.username === value.username}
+                onInputChange={(event, newInputValue) => {
                     setValue({ ...values, username: newInputValue });
                   }}
-                  renderInput={(params) => (
-                    <TextField {...params} label={v.label} error={error.username} />
+                renderInput={(params) => (
+                  <TextField className="outline-none" {...params} label={v.label} error={error.username} />
                   )}
-                />
-              </Grid>
+              />
             </Grid>
-          </div>
+          </Grid>
+        </div>
         ))}
-        {ui?.textfield?.count?.map((c) => (
-          <div key={c.name}>
-            <div key={c.label}>
-              <div className=" mb-2 text-base text-left text-gray-500">
-                {c.label}
-                *
-              </div>
-              <input
-                data-testid="text-box"
-                name={c.name}
-                label={c.label}
-                type={c.type}
-                onChange={handleChange(c.label)}
-                placeholder={c.label}
-                className="text-xs
+      {ui?.textfield?.count?.map((c) => (
+        <div key={c.name}>
+          <div key={c.label}>
+            <div className=" mb-2 text-base text-left text-gray-500">
+              {c.label}
+              *
+            </div>
+            <input
+              data-testid="text-box"
+              name={c.name}
+              label={c.label}
+              type={c.type}
+              onChange={handleChange(c.label)}
+              placeholder={c.label}
+              className="text-xs
                 mb-8
                 focus:border-primary
                 h-12 max-w-md
@@ -80,31 +78,31 @@ const CustomLogin = ({
                 px-3
                  text-gray-600
                  "
-              />
-            </div>
-            <Typography color="error">{validation?.[c.name]}</Typography>
+            />
           </div>
-        ))}
-        <div className="text-xs mb-8 max-w-md appearance-none py-2 px-3">
-          {ui?.viewForgot && (
-            <a className="text-xs text-error float-right" href="/signup">
-              Forgot Password?
-            </a>
-          )}
+          <Typography color="error">{validation?.[c.name]}</Typography>
         </div>
-        <input
-          data-testid="login-button"
-          type="submit"
-          value={buttonname}
-          className="text-xs
+        ))}
+      <div className="text-xs mb-8 max-w-md appearance-none py-2 px-3">
+        {ui?.viewForgot && (
+        <a className="text-xs text-error float-right" href="/signup">
+          Forgot Password?
+        </a>
+          )}
+      </div>
+      <input
+        data-testid="login-button"
+        type="submit"
+        value={buttonname}
+        className="text-xs
            focus:border-blue-600
            max-w-md h-12 appearance-none
            cursor-pointer
            border rounded
            w-full py-2 px-3 text-white focus:outline-none bg-primary"
-        />
-      </form>
-    </>
+      />
+    </form>
+
   );
 };
 export default CustomLogin;

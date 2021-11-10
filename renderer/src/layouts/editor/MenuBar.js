@@ -11,7 +11,10 @@ import EditorSideBar from '@/modules/editorsidebar/EditorSideBar';
 import {
   SunIcon,
   SearchIcon,
+  UserIcon,
 } from '@heroicons/react/outline';
+
+import { classNames } from '@/util/classNames';
 
 import AppsIcon from '@/icons/basil/Outline/Interface/Apps.svg';
 import LayoutIcon from '@/icons/basil/Outline/Interface/Layout.svg';
@@ -51,10 +54,6 @@ const solutions = [
     icon: CheckIcon,
   },
 ];
-
-function classNames(...classes) {
-  return classes.filter(Boolean).join(' ');
-}
 
 export default function TopMenuBar() {
   const {
@@ -204,11 +203,19 @@ export default function TopMenuBar() {
                               focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-gray-700"
                         >
                           <span className="sr-only">Open user menu</span>
-                          <img
+
+                          {/* <UserIcon className="h-8 w-8 rounded-full" /> */}
+
+                          <div className="h-8 w-8 p-2 bg-primary rounded-full">
+                            <UserIcon className="h-4 w-4 text-white" />
+                          </div>
+
+                          {/* <img
                             className="h-8 w-8 rounded-full"
                             src="https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
                             alt=""
-                          />
+                          /> */}
+
                         </Menu.Button>
                       </div>
                       <Transition

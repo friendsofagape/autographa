@@ -12,10 +12,10 @@ module.exports = {
     colors: {
       transparent: 'transparent',
       current: 'currentColor',
-      primary: '#0068E2',
+      primary: '#0073E5',
       secondary: '#151515',
-      success: '#32C000',
-      error: '#FF4A4A',
+      success: '#40C000',
+      error: '#FF4D4D',
       validation: '#FFE5E5',
       white: colors.white,
       light: '#E4F1FF',

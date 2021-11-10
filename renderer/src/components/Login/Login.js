@@ -6,6 +6,9 @@ import QuoteIcon from '@/illustrations/quote.svg';
 import SittingIcon from '@/illustrations/sitting.svg';
 import VectorIcon from '@/illustrations/vector-one.svg';
 import HalfMoonIcon from '@/illustrations/half-moon.svg';
+
+import { ChevronRightIcon, UserIcon } from '@heroicons/react/solid';
+
 import * as localForage from 'localforage';
 import { useRouter } from 'next/router';
 import * as logger from '../../logger';
@@ -53,7 +56,7 @@ export default function Login() {
     password: '',
     msg: '',
   });
-   // eslint-disable-next-line no-unused-vars
+  // eslint-disable-next-line no-unused-vars
   const handleChange = (newValue) => {
     setTabValue(newValue);
     setUi(newValue === 0 ? offline : online);
@@ -113,18 +116,18 @@ export default function Login() {
       if (handleValidation(values)) {
         const fs = window.require('fs');
         logger.debug('Login.js',
-      'Triggers handleLogin to check whether the user is existing or not');
+          'Triggers handleLogin to check whether the user is existing or not');
         const user = handleLogin(users, values);
         if (user) {
           logger.debug('Login.js',
-      'Triggers generateToken to generate a Token for the user');
+            'Triggers generateToken to generate a Token for the user');
           generateToken(user);
         } else {
           logger.debug('Login.js', 'Triggers createUser for creating a new user');
           createUser(values, fs)
             .then((val) => {
               logger.debug('Login.js',
-      'Triggers generateToken to generate a Token for the user');
+                'Triggers generateToken to generate a Token for the user');
               generateToken(val);
             });
         }
@@ -143,7 +146,7 @@ export default function Login() {
         //   .then((data) => console.log(data));
       } else {
         router.push('/projects');
-      // } else {
+        // } else {
         // router.push('/newproject');
         // The below code is commented for UI dev purpose.
         // document.aglogin.action = config.action;
@@ -155,36 +158,51 @@ export default function Login() {
         //   input.setAttribute('value', token);
         // document.aglogin.appendChild(input);
         // document.aglogin.submit();
-      // }
-      // router.push('/login');
-     }
+        // }
+        // router.push('/login');
+      }
     }
   };
   return (
     <>
-      <div className="relative">
-        <div className="inline-block  bg-white w-5/12">
-          <div className="ml-10 2xl:ml-40 mt-32">
+      <div className="grid grid-cols-7 h-screen">
+
+        <div className="col-span-3 flex justify-center items-center h-full relative">
+
+          <div className="w-3/4">
             {tab[0] === false ? null
-            : (
-              <div className="text-success pb-12">
-                Don’t have an account?
-                <a
-                  data-testid="signup"
-                  href="/signup"
-                  className="text-primary ml-2"
-                >
-                  Sign Up!
-                </a>
-              </div>
-            )}
+              : (
+                <div className="text-success pb-12">
+                  Don’t have an account?
+                  <a
+                    data-testid="signup"
+                    href="/signup"
+                    className="text-primary ml-2"
+                  >
+                    Sign Up!
+                  </a>
+                </div>
+              )}
             <div className="text-3xl font-medium text-secondary">Sign In</div>
-            {/* <div className="text-lg
-            font-light
-            pb-14 text-gray-400 leading-7"
-            >
-              Welcome back! Login to access Autographa
-            </div> */}
+            {users.map((user, index) => {
+              if (index < 5) {
+                return (
+                  <div className="w-2/3 mx-auto flex justify-between items-center pl-5 pr-10 py-6 m-2 bg-gray-100 text-dark rounded-lg cursor-pointer
+                  border-2 border-transparent
+                  hover:bg-primary hover:text-white hover:border-primary group"
+                  >
+                    <div className="bg-gray-200 rounded-md p-4 group-hover:bg-secondary">
+                      <UserIcon className="h-7 w-7" />
+                    </div>
+                    {user.username}
+                    <div className="bg-gray-200 rounded-full p-2 group-hover:bg-secondary">
+                      <ChevronRightIcon className="h-4 w-4" />
+                    </div>
+                  </div>
+                );
+              }
+              return '';
+            })}
             <CustomLogin
               ui={ui}
               error={valid}
@@ -195,10 +213,16 @@ export default function Login() {
             />
             <div />
           </div>
+
+          <div className="absolute bottom-4 left-0 right-0 flex items-center justify-center gap-5 bg-white text-black font-bold">
+            <a href="/">EN(US)</a>
+            <a href="/">ABOUT</a>
+            <a href="/">PRIVACY</a>
+            <a href="/">TERMS</a>
+          </div>
         </div>
-        <div className="absolute
-        inline-block bg-secondary w-7/12 pt-8 pl-40 pr-40 overflow-auto"
-        >
+
+        <div className="col-span-4 bg-secondary">
           <div className="grid grid-rows-1 justify-items-center relative">
             <div className="justify-center">
               <div className="flex gap-3 ">
@@ -248,22 +272,16 @@ export default function Login() {
               </div>
             </div>
           </div>
-          <div className=" bottom-0 pt-10 absolute left-5">
+          <div className="">
             <HalfMoonIcon
               className="h-10 w-10 text-white group-hover:text-white"
               aria-hidden="true"
             />
           </div>
         </div>
-        {/* <div className="2xl:ml-40 pt-72 2xl:pl-5 pl-14 space-x-14 sm:space-y-2
-          text-black font-bold absolute overflow-auto "
-        >
-          <a href="/">EN(US)</a>
-          <a href="/">ABOUT</a>
-          <a href="/">PRIVACY</a>
-          <a href="/">TERMS</a>
-        </div> */}
+
       </div>
+
     </>
   );
 }

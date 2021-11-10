@@ -32,12 +32,9 @@ import {
 } from 'react';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import { ProjectContext } from '@/components/context/ProjectContext';
+import { classNames } from '@/util/classNames';
 // import styles from './Editor.module.css';
 const profile = ['Your Profile'];
-
-function classNames(...classes) {
-  return classes.filter(Boolean).join(' ');
-}
 
 export default function Editor({
   children,

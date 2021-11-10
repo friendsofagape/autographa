@@ -13,6 +13,7 @@ import BullhornIcon from '@/icons/basil/Outline/Communication/Bullhorn.svg';
 import ProcessorIcon from '@/icons/basil/Outline/Devices/Processor.svg';
 // import CheckIcon from '@/icons/basil/Outline/Interface/Check.svg';
 import ImageIcon from '@/icons/basil/Outline/Files/Image.svg';
+import { classNames } from '@/util/classNames';
 import * as logger from '../../logger';
 import ImportPopUp from './ImportPopUp';
 import CustomList from './CustomList';
@@ -192,7 +193,7 @@ export default function NewProject({ call, project, closeEdit }) {
               <div>
                 <h4 className="text-xs font-base mb-2 text-primary  tracking-wide leading-4  font-light">
                   Project Name
-                  <span style={{ color: 'red' }}>*</span>
+                  <span className="text-error">*</span>
                 </h4>
                 <input
                   type="text"
@@ -203,7 +204,7 @@ export default function NewProject({ call, project, closeEdit }) {
                     handleProjectName(e);
                   }}
                   disabled={call !== 'new'}
-                  className="w-52 lg:w-80 block rounded shadow-sm sm:text-sm focus:border-primary border-gray-300"
+                  className={classNames(call !== 'new' ? 'bg-gray-200' : '', 'w-52 lg:w-80 block rounded shadow-sm sm:text-sm focus:border-primary border-gray-300')}
                 />
                 <h4 className="mt-5 text-xs font-base mb-2 text-primary leading-4 tracking-wide  font-light">Description</h4>
                 <textarea
@@ -223,7 +224,7 @@ export default function NewProject({ call, project, closeEdit }) {
                   <div>
                     <h4 className="text-xs font-base mb-2 text-primary  tracking-wide leading-4  font-light">
                       Abbreviation
-                      <span style={{ color: 'red' }}>*</span>
+                      <span className="text-error">*</span>
                     </h4>
                     <input
                       type="text"
@@ -246,7 +247,7 @@ export default function NewProject({ call, project, closeEdit }) {
                     </div>
                     <h4 className="text-xs font-base mb-2 text-primary  tracking-wide leading-4  font-light">
                       Target Language
-                      <span style={{ color: 'red' }}>*</span>
+                      <span className="text-error">*</span>
                     </h4>
                     <CustomList
                       selected={language}
