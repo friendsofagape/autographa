@@ -114,44 +114,55 @@ export default function ImportProjectPopUp(props) {
                     />
                   </button>
                 </div>
-                <div className="relative w-full h-5/6">
-                  <div className="overflow-auto w-full h-full no-scrollbars flex flex-col justify-between">
-                    <div className="bg-white grid grid-cols-4 gap-2 p-4 text-sm text-left tracking-wide">
-                      <div className="flex gap-5 col-span-2">
-                        <div>
-                          <h4 className="text-xs font-base mb-2 text-primary  tracking-wide leading-4  font-light">Scripture burrito directory</h4>
-                          <input
-                            type="text"
-                            name="location"
-                            id=""
-                            value={folderPath}
-                            onChange={(e) => setFolderPath(e.target.value)}
-                            className="bg-white w-52 lg:w-80 block rounded shadow-sm sm:text-sm focus:border-primary border-gray-300"
-                          />
-                          <h4 className="text-red-500">{valid === true ? 'Enter location' : (sbData?.fileExist ? '' : 'Unable to find burrito file (metadata.json)') }</h4>
-                        </div>
-                        <div>
-                          <button
-                            type="button"
-                            className="px-5"
-                            onClick={() => openFileDialogSettingData()}
-                          >
-                            <FolderOpenIcon className="h-5 w-5 text-primary" aria-hidden="true" />
-                          </button>
-                        </div>
+                <div className="relative w-full h-full">
+                  
+                  <div className="p-8 overflow-auto w-full h-full no-scrollbars">
+
+                    <div className="bg-white text-sm text-left tracking-wide">
+
+                      <h4 className="text-sm font-base mb-2 text-primary  tracking-wide leading-4  font-light">Scripture burrito directory</h4>
+                      <div className="flex items-center mb-4">
+                        <input
+                          type="text"
+                          name="location"
+                          id=""
+                          value={folderPath}
+                          onChange={(e) => setFolderPath(e.target.value)}
+                          className="bg-gray-200 w-full block rounded shadow-sm sm:text-sm focus:border-primary border-gray-300"
+                        />
+                        <button
+                          type="button"
+                          className="px-5"
+                          onClick={() => openFileDialogSettingData()}
+                        >
+                          <FolderOpenIcon className="h-6 w-6 text-primary" aria-hidden="true" />
+                        </button>
                       </div>
+
+                      <div>
+                        <h4 className="text-red-500">{valid === true ? 'Enter location' : (sbData?.fileExist ? '' : 'Unable to find burrito file (metadata.json)')}</h4>
+                      </div>
+
                     </div>
+
                     {sbData?.fileExist
                       && (
-                      <div>
-                        <h4>Project</h4>
-                        <input type="text" value={sbData.projectName} disabled />
-                        <h4>Language</h4>
-                        <input type="text" value={sbData.language} disabled />
-                        <h4>Type</h4>
-                        <input type="text" value={sbData.burritoType} disabled />
-                      </div>
+                        <div>
+                          <h4 className="text-sm font-base mb-2 text-primary tracking-wide leading-4 font-light">Project</h4>
+                          <input
+                            className="w-full mb-4 bg-gray-200 block rounded shadow-sm sm:text-sm focus:border-primary border-gray-300"
+                            type="text" value={sbData.projectName} disabled />
+                          <h4 className="text-sm font-base mb-2 text-primary tracking-wide leading-4 font-light">Language</h4>
+                          <input
+                          className="w-full mb-4 bg-gray-200 block rounded shadow-sm sm:text-sm focus:border-primary border-gray-300"
+                            type="text" value={sbData.language} disabled />
+                          <h4 className="text-sm font-base mb-2 text-primary tracking-wide leading-4 font-light">Type</h4>
+                          <input
+                          className="w-full mb-4 bg-gray-200 block rounded shadow-sm sm:text-sm focus:border-primary border-gray-300"
+                            type="text" value={sbData.burritoType} disabled />
+                        </div>
                       )}
+                    
                     <div className="flex gap-6 mx-5 justify-end">
 
                       <button
@@ -163,15 +174,16 @@ export default function ImportProjectPopUp(props) {
                       </button>
                       {sbData?.validate
                         && (
-                        <button
-                          type="button"
-                          className="py-2 px-7 rounded shadow bg-success text-white uppercase text-xs tracking-widest font-semibold"
-                          onClick={() => importProject()}
-                        >
-                          Import
-                        </button>
-                      )}
+                          <button
+                            type="button"
+                            className="py-2 px-7 rounded shadow bg-success text-white uppercase text-xs tracking-widest font-semibold"
+                            onClick={() => importProject()}
+                          >
+                            Import
+                          </button>
+                        )}
                     </div>
+
                   </div>
                 </div>
               </div>
