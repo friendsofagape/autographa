@@ -3,14 +3,13 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import dynamic from 'next/dynamic';
 import RowSection from './RowSection';
+import { classNames } from '@/util/classNames';
 
 const UsfmEditor = dynamic(
   () => import('@/components/EditorPage/UsfmEditor/UsfmEditor'),
   { ssr: false },
 );
-function classNames(...classes) {
-  return classes.filter(Boolean).join(' ');
-}
+
 
 export default function ColumnSection(props) {
   const { colNumber } = props;

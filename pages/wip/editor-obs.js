@@ -9,6 +9,7 @@ import AutographaContextProvider from '@/components/context/AutographaContext';
 import EditorLayout from '@/layouts/editor/Layout';
 import Editor from '@/modules/editor/Editor';
 import { EyeIcon, EyeOffIcon } from '@heroicons/react/outline';
+import { classNames } from '@/util/classNames';
 import RowSection from './RowSection';
 
 const stories = [
@@ -63,10 +64,6 @@ const stories = [
     text: 'In the middle of the garden, God planted two special trees—the tree of life and the tree of the knowledge of good and evil. God told Adam that he could eat from any tree in the garden except from the tree of the knowledge of good and evil. If he ate from this tree, he would die.',
   },
 ];
-
-function classNames(...classes) {
-  return classes.filter(Boolean).join(' ');
-}
 
 export default function ReferenceSelector() {
   const [blur, setBlur] = useState(false);

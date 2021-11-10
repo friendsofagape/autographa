@@ -4,10 +4,6 @@ import PropTypes from 'prop-types';
 import Editor from '@/modules/editor/Editor';
 import RowSection from './RowSection';
 
-function classNames(...classes) {
-  return classes.filter(Boolean).join(' ');
-}
-
 export default function ColumnSection(props) {
   const { colNumber } = props;
   const maxRows = 3;

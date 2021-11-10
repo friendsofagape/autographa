@@ -111,17 +111,17 @@
 		"null-loader": "^4.0.1",
 		"postcss": "^8.3.6",
 		"prettier": "^2.3.0",
-		"tailwindcss": "^2.2.9"
+		"tailwindcss": "^2.2.17"
 	},
 	"dependencies": {
 		"@headlessui/react": "^1.4.1",
-		"@heroicons/react": "^1.0.4",
+		"@heroicons/react": "^1.0.5",
 		"@material-ui/core": "^4.9.12",
 		"@material-ui/icons": "^4.9.1",
 		"@material-ui/lab": "latest",
 		"@ory/kratos-client": "^0.5.4-alpha.1",
 		"@parse/react-ssr": "0.0.1-alpha.14",
-		"@tailwindcss/forms": "^0.3.2",
+		"@tailwindcss/forms": "^0.3.4",
 		"@tailwindcss/typography": "^0.4.1",
 		"bible-reference-rcl": "^0.2.0",
 		"clsx": "1.1.1",

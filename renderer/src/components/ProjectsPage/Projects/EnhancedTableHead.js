@@ -51,16 +51,12 @@ function EnhancedTableHead(props) {
         <tr>
           <th
             scope="col"
+            // colSpan="2"
             className="px-4 py-3 text-left text-xs font-medium text-gray-400"
           >
-            {/* <StarIcon className="h-5 w-5" aria-hidden="true" /> */}
+            <StarIcon className="h-5 w-5" aria-hidden="true" />
           </th>
-          <th
-            scope="col"
-            className="px-4 py-3 text-left text-xs font-medium text-gray-400"
-          >
-            {/* <ExternalLinkIcon className="h-5 w-5" aria-hidden="true" /> */}
-          </th>
+
           {headCells.map((headCell) => (
             <TableCell
               key={headCell.id}
@@ -171,6 +167,13 @@ function EnhancedTableHead(props) {
               </div>
             </TableCell>
           ))}
+
+          <th
+            scope="col"
+            className="px-4 py-3 text-left text-xs font-medium text-gray-400"
+          >
+            {/* <ExternalLinkIcon className="h-5 w-5" aria-hidden="true" /> */}
+          </th>
         </tr>
       </thead>
     </>

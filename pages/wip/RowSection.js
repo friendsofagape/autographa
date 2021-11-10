@@ -1,21 +1,17 @@
 /* eslint-disable no-nested-ternary */
-import React, { useState } from 'react';
-import Image from 'next/image';
+import React from 'react';
 
 import PropTypes from 'prop-types';
-import { ViewGridAddIcon } from '@heroicons/react/outline';
+import { ViewGridAddIcon, CogIcon, XIcon } from '@heroicons/react/outline';
 
-function classNames(...classes) {
-  return classes.filter(Boolean).join(' ');
-}
+import { classNames } from '@/util/classNames';
 
 export default function ColumnOne(props) {
   const {
-    children,
+
     rowCount,
     ishidden,
     expandRow,
-    isExpand,
     addRow,
     removeRow,
   } = props;
@@ -33,11 +29,7 @@ export default function ColumnOne(props) {
 
               <div className="flex bg-gray-300 absolute h-full -right-0 rounded-tr invisible group-hover:visible">
                 <button type="button">
-                  <img
-                    src="/illustrations/settings-small.svg"
-                    alt="/"
-                    className="py-2 px-4"
-                  />
+                  <CogIcon className="mx-3 h-5 w-5 text-gray-800" />
                 </button>
 
                 <button
@@ -55,11 +47,7 @@ export default function ColumnOne(props) {
                   type="button"
                   onClick={removeRow}
                 >
-                  <img
-                    className="px-2 py-0"
-                    src="/illustrations/small-close-button.svg"
-                    alt=""
-                  />
+                  <XIcon className="mx-3 h-5 w-5 text-gray-800" />
                 </button>
               </div>
             </div>
@@ -99,7 +87,6 @@ export default function ColumnOne(props) {
 }
 
 ColumnOne.propTypes = {
-  children: PropTypes.array,
   rowCount: PropTypes.string,
   ishidden: PropTypes.bool,
   expandRow: PropTypes.func,

@@ -3,7 +3,6 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { ChevronDownIcon } from '@heroicons/react/solid';
-import { PencilAltIcon } from '@heroicons/react/outline';
 
 import CustomList from '@/modules/projects/CustomList';
 import { ProjectContext } from '../../context/ProjectContext';
@@ -149,7 +148,7 @@ export default function AdvancedSettingsDropdown({ call, project }) {
                 <div className="flex gap-4">
                   <h4 className="text-xs font-base mb-2 text-primary  tracking-wide leading-4  font-light">
                     Scope
-                    <span style={{ color: 'red' }}>*</span>
+                    <span className="text-error">*</span>
                   </h4>
                   <div>
                     <BookNumberTag>
@@ -159,16 +158,29 @@ export default function AdvancedSettingsDropdown({ call, project }) {
                 </div>
 
                 {/* <div className="relative"> */}
-                <div className="flex gap-4">
-                  <CustomList
+                <div>
+                  {/* <CustomList
                     selected={canonSpecification}
                     setSelected={setcanonSpecification}
                     options={canonList}
                     show
-                  />
-                  {/* <div className="flex gap-3 ml-3"> */}
+                  /> */}
 
-                  <button
+                  <div className="py-5 flex gap-3 uppercase text-sm font-medium">
+                    <div className="bg-gray-200 hover:bg-primary hover:text-white px-3 py-1 rounded-full cursor-pointer whitespace-nowrap">All Books</div>
+                    <div className="bg-gray-200 hover:bg-primary hover:text-white px-3 py-1 rounded-full cursor-pointer whitespace-nowrap">OT Old Testament</div>
+                    <div className="bg-gray-200 hover:bg-primary hover:text-white px-3 py-1 rounded-full cursor-pointer whitespace-nowrap">NT New Testament</div>
+                    <div
+                      className="bg-primary hover:bg-secondary text-white px-3 py-1 rounded-full cursor-pointer whitespace-nowrap"
+                      onClick={() => openBibleNav('edit')}
+                      role="button"
+                      tabIndex="0"
+                    >
+                      Custom
+                    </div>
+                  </div>
+
+                  {/* <button
                     type="button"
                     className="mt-8 focus:outline-none bg-primary h-8 w-8 flex items-center justify-center rounded-full"
                     onClick={() => openBibleNav('edit')}
@@ -177,30 +189,32 @@ export default function AdvancedSettingsDropdown({ call, project }) {
                       className="h-5 w-5 text-white"
                       aria-hidden="true"
                     />
-                  </button>
+                  </button> */}
                   {/* </div> */}
                 </div>
                 {/* </div> */}
               </div>
-              <h4 className="text-xs font-base mb-2 text-primary  tracking-wide leading-4  font-light">
+
+              <h4 className="text-xs font-base mt-4 text-primary  tracking-wide leading-4  font-light">
                 Versification Scheme
-                <span style={{ color: 'red' }}>*</span>
+                <span className="text-error">*</span>
               </h4>
-              <div className="flex gap-5 mt-8">
+              <div className="mt-2">
                 <CustomList selected={versificationScheme} setSelected={setVersificationScheme} options={versification} show={call === 'new'} />
               </div>
-              <h4 className="text-xs font-base mb-2 text-primary  tracking-wide leading-4  font-light">
+
+              <h4 className="text-xs font-base mt-4 text-primary  tracking-wide leading-4  font-light">
                 Licence
-                <span style={{ color: 'red' }}>*</span>
+                <span className="text-error">*</span>
               </h4>
-              <div className="flex gap-3 mt-5">
+              <div className="flex gap-3 mt-2">
                 <CustomList
                   selected={copyright}
                   setSelected={setCopyRight}
                   options={licenceList}
                   show
                 />
-                <div className="mt-8 w-8 min-w-max">
+                <div className="w-8">
                   <LicencePopover call={call} />
                 </div>
               </div>

@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types';
 import React, { useCallback } from 'react';
 
+import { SearchIcon } from '@heroicons/react/outline';
+
 export default function SearchTags({
   defaultQuery,
   contentList1,
@@ -43,11 +45,12 @@ export default function SearchTags({
       onfilerRequest1(contentList1);
       onfilerRequest2(contentList2);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [query]);
 
   return (
-    <>
+    <div className="relative mx-5">
+      <SearchIcon className="h-5 w-5 absolute left-0 ml-4 my-2 text-primary" />
       <input
         data-testid="search"
         type="text"
@@ -55,30 +58,10 @@ export default function SearchTags({
         id="search_box"
         autoComplete="given-name"
         onChange={(e) => handleChange(e.target.value)}
-        className="bg-gray-100 mx-5 w-full block rounded-full shadow-sm sm:text-sm focus:ring-gray-500 focus:border-primary border-gray-300"
+        className="pl-10 bg-gray-100 w-full block rounded-full shadow-sm sm:text-sm focus:ring-gray-500 focus:border-primary border-gray-300"
       />
 
-      {/* <button
-        type="button"
-        className="rounded-full border border-transparent py-2 pl-5 pr-3 mx-2
-              bg-gray-200 text-xs uppercase flex flex-wrap content-center justify-items-center
-              hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2
-              focus:ring-primary"
-      >
-        <div className="leading-tight">Arabic</div>
-        <XCircleIcon className="h-4 w-4 ml-2 fill-current text-gray-800" aria-hidden="true" />
-      </button>
-      <button
-        type="button"
-        className="rounded-full border border-transparent py-2 pl-5 pr-3 mx-2
-              bg-gray-200 text-xs uppercase flex flex-wrap content-center justify-items-center
-              hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2
-              focus:ring-primary"
-      >
-        <div className="leading-tight">Malayalam</div>
-        <XCircleIcon className="h-4 w-4 ml-2 fill-current text-gray-800" aria-hidden="true" />
-      </button> */}
-    </>
+    </div>
 
   );
 }

@@ -4,10 +4,8 @@ import Image from 'next/image';
 
 import PropTypes from 'prop-types';
 import { ViewGridAddIcon } from '@heroicons/react/outline';
+import { classNames } from '@/util/classNames';
 
-function classNames(...classes) {
-  return classes.filter(Boolean).join(' ');
-}
 
 export default function ColumnOne(props) {
   const {

@@ -41,7 +41,7 @@ export default function ProjectsLayout(props) {
           {!isTwoCol
             ? (
               <div className="mx-auto py-4 px-4 sm:px-4 lg:px-6 border-primary border-b-4 flex items-center justify-between">
-                <div className="flex">
+                <div className="flex items-center">
                   <h1 className="text-xl font-bold text-gray-900 uppercase tracking-wider">{title}</h1>
                   {header}
                 </div>

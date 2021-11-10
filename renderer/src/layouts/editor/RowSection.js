@@ -6,9 +6,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { ViewGridAddIcon } from '@heroicons/react/outline';
 
-function classNames(...classes) {
-  return classes.filter(Boolean).join(' ');
-}
+import { classNames } from '@/util/classNames';
 
 export default function ColumnOne(props) {
   const {

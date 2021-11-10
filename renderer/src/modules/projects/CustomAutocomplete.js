@@ -175,7 +175,7 @@ export default function CustomizedHook({
         <div {...getRootProps()}>
           <Label {...getInputLabelProps()}>
             { label }
-            {label !== 'Region' && <span style={{ color: 'red' }}>*</span>}
+            {label !== 'Region' && <span className="text-error">*</span>}
           </Label>
           <InputWrapper ref={setAnchorEl} className={focused ? 'focused' : ''}>
             {/* {value.map((option, index) => (
