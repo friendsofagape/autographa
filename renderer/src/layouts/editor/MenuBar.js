@@ -102,6 +102,7 @@ export default function TopMenuBar() {
   const goToProjectPage = () => {
     router.push('/projects');
   };
+
   return (
     <>
 
