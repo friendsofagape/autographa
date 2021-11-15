@@ -13,7 +13,7 @@ import BullhornIcon from '@/icons/basil/Outline/Communication/Bullhorn.svg';
 import ProcessorIcon from '@/icons/basil/Outline/Devices/Processor.svg';
 // import CheckIcon from '@/icons/basil/Outline/Interface/Check.svg';
 import ImageIcon from '@/icons/basil/Outline/Files/Image.svg';
-import { classNames } from '@/util/classNames';
+import { classNames } from '../../util/classNames';
 import * as logger from '../../logger';
 import ImportPopUp from './ImportPopUp';
 import CustomList from './CustomList';
@@ -45,7 +45,7 @@ const solutions = [
 function TargetLanguageTag(props) {
   const { children } = props;
   return (
-    <div className="rounded-full px-3 py-1  bg-gray-200 text-xs uppercase font-semibold">{children}</div>
+    <div className="rounded-full px-3 py-1 ml-28 bg-gray-200 text-xs uppercase font-semibold">{children}</div>
   );
 }
 
@@ -239,8 +239,8 @@ export default function NewProject({ call, project, closeEdit }) {
                   </div>
                 </div>
                 <div className="flex gap-5 mt-5">
-                  <div className="relative">
-                    <div className="absolute top-0 right-0">
+                  <div>
+                    <div className="absolute">
                       <TargetLanguageTag>
                         {language.scriptDirection ? language.scriptDirection : 'LTR'}
                       </TargetLanguageTag>

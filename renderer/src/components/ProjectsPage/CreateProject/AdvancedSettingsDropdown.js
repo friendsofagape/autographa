@@ -3,7 +3,6 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { ChevronDownIcon } from '@heroicons/react/solid';
-
 import CustomList from '@/modules/projects/CustomList';
 import { ProjectContext } from '../../context/ProjectContext';
 import CustomCanonSpecification from './CustomCanonSpecification';
@@ -68,7 +67,7 @@ export default function AdvancedSettingsDropdown({ call, project }) {
         setcanonSpecification({ title: 'All Books', currentScope: vals });
       } else {
         const vals = Object.keys(project.type.flavorType.currentScope).map((key) => key);
-        setcanonSpecification({ title: 'Others', currentScope: vals });
+        setcanonSpecification({ title: 'Other', currentScope: vals });
       }
     } else if ((project.type.flavorType.canonType).length === 1) {
       if (project.type.flavorType.canonType[0] === 'ot') {
@@ -77,7 +76,7 @@ export default function AdvancedSettingsDropdown({ call, project }) {
           setcanonSpecification({ title: 'Old Testament (OT)', currentScope: vals });
         } else {
           const vals = Object.keys(project.type.flavorType.currentScope).map((key) => key);
-          setcanonSpecification({ title: 'Others', currentScope: vals });
+          setcanonSpecification({ title: 'Other', currentScope: vals });
         }
       } else if (project.type.flavorType.canonType[0] === 'nt') {
         if (Object.keys(project.type.flavorType.currentScope).length === 27) {
@@ -85,7 +84,7 @@ export default function AdvancedSettingsDropdown({ call, project }) {
           setcanonSpecification({ title: 'Old Testament (OT)', currentScope: vals });
         } else {
           const vals = Object.keys(project.type.flavorType.currentScope).map((key) => key);
-          setcanonSpecification({ title: 'Others', currentScope: vals });
+          setcanonSpecification({ title: 'Other', currentScope: vals });
         }
       }
     }
@@ -106,8 +105,12 @@ export default function AdvancedSettingsDropdown({ call, project }) {
     }
     setCopyRight(myLicence);
   };
+  const selectCanon = (value) => {
+    setcanonSpecification(value);
+    openBibleNav('edit');
+  };
   useEffect(() => {
-    if (canonSpecification.title === 'Others' && call === 'new') {
+    if (canonSpecification.title === 'Other' && call === 'new') {
       openBibleNav('edit');
     }
   }, [canonSpecification]);
@@ -167,32 +170,40 @@ export default function AdvancedSettingsDropdown({ call, project }) {
                   /> */}
 
                   <div className="py-5 flex gap-3 uppercase text-sm font-medium">
-                    <div className="bg-gray-200 hover:bg-primary hover:text-white px-3 py-1 rounded-full cursor-pointer whitespace-nowrap">All Books</div>
-                    <div className="bg-gray-200 hover:bg-primary hover:text-white px-3 py-1 rounded-full cursor-pointer whitespace-nowrap">OT Old Testament</div>
-                    <div className="bg-gray-200 hover:bg-primary hover:text-white px-3 py-1 rounded-full cursor-pointer whitespace-nowrap">NT New Testament</div>
                     <div
-                      className="bg-primary hover:bg-secondary text-white px-3 py-1 rounded-full cursor-pointer whitespace-nowrap"
-                      onClick={() => openBibleNav('edit')}
+                      className={canonSpecification.title === 'All Books' ? 'bg-primary hover:bg-secondary text-white px-3 py-1 rounded-full cursor-pointer whitespace-nowrap' : 'bg-gray-200 hover:bg-primary hover:text-white px-3 py-1 rounded-full cursor-pointer whitespace-nowrap'}
+                      onClick={() => selectCanon(canonList[0])}
+                      role="button"
+                      tabIndex="0"
+                    >
+                      All Books
+                    </div>
+                    <div
+                      className={canonSpecification.title === 'Old Testament (OT)' ? 'bg-primary hover:bg-secondary text-white px-3 py-1 rounded-full cursor-pointer whitespace-nowrap' : 'bg-gray-200 hover:bg-primary hover:text-white px-3 py-1 rounded-full cursor-pointer whitespace-nowrap'}
+                      onClick={() => selectCanon(canonList[1])}
+                      role="button"
+                      tabIndex="0"
+                    >
+                      Old Testament (OT)
+                    </div>
+                    <div
+                      className={canonSpecification.title === 'New Testament (NT)' ? 'bg-primary hover:bg-secondary text-white px-3 py-1 rounded-full cursor-pointer whitespace-nowrap' : 'bg-gray-200 hover:bg-primary hover:text-white px-3 py-1 rounded-full cursor-pointer whitespace-nowrap'}
+                      onClick={() => selectCanon(canonList[2])}
+                      role="button"
+                      tabIndex="0"
+                    >
+                      New Testament (NT)
+                    </div>
+                    <div
+                      className={canonSpecification.title === 'Other' ? 'bg-primary hover:bg-secondary text-white px-3 py-1 rounded-full cursor-pointer whitespace-nowrap' : 'bg-gray-200 hover:bg-primary hover:text-white px-3 py-1 rounded-full cursor-pointer whitespace-nowrap'}
+                      onClick={() => selectCanon(canonList[3])}
                       role="button"
                       tabIndex="0"
                     >
                       Custom
                     </div>
                   </div>
-
-                  {/* <button
-                    type="button"
-                    className="mt-8 focus:outline-none bg-primary h-8 w-8 flex items-center justify-center rounded-full"
-                    onClick={() => openBibleNav('edit')}
-                  >
-                    <PencilAltIcon
-                      className="h-5 w-5 text-white"
-                      aria-hidden="true"
-                    />
-                  </button> */}
-                  {/* </div> */}
                 </div>
-                {/* </div> */}
               </div>
 
               <h4 className="text-xs font-base mt-4 text-primary  tracking-wide leading-4  font-light">
@@ -224,7 +235,7 @@ export default function AdvancedSettingsDropdown({ call, project }) {
       {bibleNav && (
         <CustomCanonSpecification
           bibleNav={bibleNav}
-          closeBibleNav={() => closeBooks}
+          closeBibleNav={() => closeBooks()}
           handleNav={handleNav}
         />
       )}

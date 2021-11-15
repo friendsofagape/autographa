@@ -196,7 +196,7 @@ export default function Login() {
                     </div>
                     {user.username}
                     <div className="bg-gray-200 rounded-full p-2 group-hover:bg-secondary">
-                      <ChevronRightIcon className="h-4 w-4" />
+                      <ChevronRightIcon className="h-4 w-4" onClick={() => { handleSubmit({ username: user.username }); }} />
                     </div>
                   </div>
                 );
