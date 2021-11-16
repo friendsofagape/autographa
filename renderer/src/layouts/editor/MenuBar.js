@@ -1,3 +1,4 @@
+/* eslint-disable no-constant-condition */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-unused-vars */
 import Link from 'next/link';
@@ -15,6 +16,7 @@ import {
   ArrowLeftIcon,
 } from '@heroicons/react/outline';
 
+// eslint-disable-next-line import/no-unresolved
 import { classNames } from '@/util/classNames';
 
 import AppsIcon from '@/icons/basil/Outline/Interface/Apps.svg';

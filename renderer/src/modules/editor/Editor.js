@@ -32,6 +32,7 @@ import {
 } from 'react';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import { ProjectContext } from '@/components/context/ProjectContext';
+// eslint-disable-next-line import/no-unresolved
 import { classNames } from '@/util/classNames';
 // import styles from './Editor.module.css';
 const profile = ['Your Profile'];

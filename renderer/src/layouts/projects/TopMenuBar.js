@@ -1,3 +1,4 @@
+/* eslint-disable no-constant-condition */
 import Link from 'next/link';
 import React, { Fragment, useState } from 'react';
 import {
@@ -12,6 +13,7 @@ import {
 import { AuthenticationContext } from '@/components/Login/AuthenticationContextProvider';
 import Notifications from '@/modules/notifications/Notifications';
 
+// eslint-disable-next-line import/no-unresolved
 import { classNames } from '@/util/classNames';
 
 const profile = ['Your Profile'];

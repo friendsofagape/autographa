@@ -1,8 +1,10 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable max-len */
 import ProjectsLayout from '@/layouts/projects/Layout';
 import { PropTypes } from 'prop-types';
 import React from 'react';
 import * as localForage from 'localforage';
+// eslint-disable-next-line import/no-unresolved
 import { classNames } from '@/util/classNames';
 
 import { XIcon } from '@heroicons/react/solid';

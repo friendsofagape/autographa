@@ -13,6 +13,7 @@ import BullhornIcon from '@/icons/basil/Outline/Communication/Bullhorn.svg';
 import ProcessorIcon from '@/icons/basil/Outline/Devices/Processor.svg';
 // import CheckIcon from '@/icons/basil/Outline/Interface/Check.svg';
 import ImageIcon from '@/icons/basil/Outline/Files/Image.svg';
+// eslint-disable-next-line import/no-unresolved
 import { classNames } from '@/util/classNames';
 import * as logger from '../../logger';
 import ImportPopUp from './ImportPopUp';

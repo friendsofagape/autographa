@@ -6,6 +6,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { ViewGridAddIcon } from '@heroicons/react/outline';
 
+// eslint-disable-next-line import/no-unresolved
 import { classNames } from '@/util/classNames';
 
 export default function ColumnOne(props) {
