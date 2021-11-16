@@ -35,7 +35,7 @@ export default function AdvancedSettingsDropdown({ call, project }) {
   const {
     states: {
       canonSpecification,
-      canonList,
+      // canonList,
       licenceList,
       versification,
       versificationScheme,
@@ -203,6 +203,18 @@ export default function AdvancedSettingsDropdown({ call, project }) {
                       Custom
                     </div>
                   </div>
+                  {/* <button
+                    type="button"
+                    className="mt-8 focus:outline-none bg-primary h-8 w-8
+                    flex items-center justify-center rounded-full"
+                    onClick={() => openBibleNav('edit')}
+                  >
+                    <PencilAltIcon
+                      className="h-5 w-5 text-white"
+                      aria-hidden="true"
+                    />
+                  </button> */}
+                  {/* </div> */}
                 </div>
               </div>
 

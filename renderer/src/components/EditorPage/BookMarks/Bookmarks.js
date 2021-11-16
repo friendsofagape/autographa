@@ -1,4 +1,5 @@
 import { ReferenceContext } from '@/components/context/ReferenceContext';
+import { ProjectContext } from '@/components/context/ProjectContext';
 import { useContext, useEffect, useState } from 'react';
 
 export default function Bookmarks() {
@@ -13,21 +14,27 @@ export default function Bookmarks() {
       onChangeBook,
       onChangeChapter,
       onChangeVerse,
+      setIsLoading,
     },
   } = useContext(ReferenceContext);
 
-  // eslint-disable-next-line no-unused-vars
-  const [tempBook, setTempBook] = useState();
+  const {
+    actions: {
+      setOpenSideBar,
+    },
+  } = useContext(ProjectContext);
+
   const [tempChapter, setTempChapter] = useState(chapter);
 
   const timeout = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
   const gotoChapter = (bookname,
     chapterNum) => {
+      setOpenSideBar(false);
+      setIsLoading(true);
         bookList.forEach(async (book) => {
             if (bookname === book.name) {
               if (bookName !== book.key || chapter !== chapterNum) {
-                  setTempBook(book.key);
                   onChangeBook(book.key);
                   setTempChapter(chapterNum);
                   onChangeVerse('1');
@@ -37,10 +44,11 @@ export default function Bookmarks() {
   };
 
   useEffect(() => {
-    timeout(3000).then(async () => {
+    timeout(2000).then(async () => {
+        setIsLoading(true);
         onChangeChapter(tempChapter);
         onChangeVerse('1');
-    });
+    }).then(() => setIsLoading(false));
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tempChapter]);
 

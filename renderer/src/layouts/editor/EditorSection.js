@@ -4,11 +4,11 @@ import React, { useContext, useEffect, useState } from 'react';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import { ProjectContext } from '@/components/context/ProjectContext';
 import ResourcesPopUp from '@/components/EditorPage/Reference/ResourcesPopUp';
-
-import MinimizeIcon from '@/illustrations/minimize.svg';
 import {
- ViewGridAddIcon, CogIcon, XIcon, AdjustmentsIcon,
+ ViewGridAddIcon, XIcon, AdjustmentsIcon,
 } from '@heroicons/react/outline';
+import ConfirmationModal from './ConfirmationModal';
+// import MinimizeIcon from '@/illustrations/minimize.svg';
 
 export default function EditorSection({
   title,
@@ -31,6 +31,10 @@ export default function EditorSection({
 }) {
   const [content, setContent] = useState(true);
   const [openResourcePopUp, setOpenResourcePopUp] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
+  // eslint-disable-next-line no-unused-vars
+  const [remove, setRemove] = useState(false);
+
   const {
     state: {
       // selectedFont
@@ -50,6 +54,10 @@ export default function EditorSection({
       scrollLock,
     },
   } = useContext(ProjectContext);
+
+  function removeResource() {
+    setOpenModal(true);
+  }
 
   const removeSection = () => {
     switch (row) {
@@ -77,6 +85,10 @@ export default function EditorSection({
     // }
   };
 
+  function confirmRemove() {
+    removeSection();
+   }
+
   useEffect(() => {
     if (openResource1 === true && openResource2 === true) {
       if (layout > 1) { setLayout(1); }
@@ -95,6 +107,7 @@ export default function EditorSection({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   });
 
+  // eslint-disable-next-line no-unused-vars
   const sectionContent = () => {
     setContent(!content);
   };
@@ -130,10 +143,11 @@ export default function EditorSection({
   };
 
   return (
-    <div className={`${openResource && 'hidden'} relative first:mt-0 mt-3 pb-12 ${ sectionNum > 1 ? 'h-1/2' : 'h-full'} border bg-white border-gray-200 shadow-sm rounded-b overflow-hidden group`}>
+    <>
+      <div className={`${openResource && 'hidden'} relative first:mt-0 mt-3 pb-12 ${ sectionNum > 1 ? 'h-1/2' : 'h-full'} border bg-white border-gray-200 shadow-sm rounded-b overflow-hidden group`}>
 
-      <div className="bg-gray-200 rounded-t text-center text-gray-600 relative overflow-hidden">
-        {openResourcePopUp
+        <div className="bg-gray-200 rounded-t text-center text-gray-600 relative overflow-hidden">
+          {openResourcePopUp
           && (
             <div className="fixed z-50 ">
               <ResourcesPopUp
@@ -149,15 +163,15 @@ export default function EditorSection({
             </div>
           )}
 
-        <div className="bg-gray-200 z-50 rounded-t overflow-hidden">
-          <div className="flex items-center">
-            {scrollLock ? (
-              <>
-                {CustomNavigation}
-                <div className="ml-4 h-4 flex justify-center items-center text-xxs uppercase tracking-wider font-bold leading-3 truncate">
-                  {title}
-                </div>
-              </>
+          <div className="bg-gray-200 z-50 rounded-t overflow-hidden">
+            <div className="flex items-center">
+              {scrollLock ? (
+                <>
+                  {CustomNavigation}
+                  <div className="ml-4 h-4 flex justify-center items-center text-xxs uppercase tracking-wider font-bold leading-3 truncate">
+                    {title}
+                  </div>
+                </>
             )
             : (
               <div className="flex">
@@ -168,18 +182,18 @@ export default function EditorSection({
                 </div>
               </div>
               )}
-            <div className="flex bg-gray-300 absolute h-full -right-0 rounded-tr invisible group-hover:visible ">
-              <button
-                type="button"
-                title="resources selector"
-                onClick={showResourcesPanel}
-                className="px-2"
-              >
-                <AdjustmentsIcon
-                  className="h-5 w-5 text-dark"
-                />
-              </button>
-              <button
+              <div className="flex bg-gray-300 absolute h-full -right-0 rounded-tr invisible group-hover:visible ">
+                <button
+                  type="button"
+                  title="resources selector"
+                  onClick={showResourcesPanel}
+                  className="px-2"
+                >
+                  <AdjustmentsIcon
+                    className="h-5 w-5 text-dark"
+                  />
+                </button>
+                {/* <button
                 onClick={sectionContent}
                 type="button"
               >
@@ -187,23 +201,23 @@ export default function EditorSection({
                   strokeCurrent="none"
                   className="h-4 w-8 text-dark group-hover:text-white"
                 />
-              </button>
-              <button
-                type="button"
-                title="remove section"
-                onClick={removeSection}
-                className="px-2"
-              >
-                <XIcon
-                  className="h-5 w-5 text-dark"
-                />
-              </button>
+              </button> */}
+                <button
+                  type="button"
+                  title="remove section"
+                  onClick={removeResource}
+                  className="px-2"
+                >
+                  <XIcon
+                    className="h-5 w-5 text-dark"
+                  />
+                </button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      {
+        {
         content
         && (
           <div
@@ -245,7 +259,16 @@ export default function EditorSection({
         )
       }
 
-    </div>
+      </div>
+      <ConfirmationModal
+        openModal={openModal}
+        setRemove={setRemove}
+        setOpenModal={setOpenModal}
+        confirmMessage="Are you sure you want to remove this resource?"
+        buttonName="Remove"
+        closeModal={confirmRemove}
+      />
+    </>
   );
 }
 

@@ -51,10 +51,11 @@ export default function ReferenceContextProvider({ children }) {
       setAnchorEl(event.currentTarget);
     };
 
-    async function getFonts() {
-      const _fonts = await localforage.getItem('font-family');
-      fonts.push(_fonts);
-      setFonts(fonts);
+    function getFonts() {
+      localforage.getItem('font-family').then((value) => {
+        fonts.push(value);
+        setFonts(fonts);
+      });
     }
 
     const openResourceDialog = async () => {
@@ -91,6 +92,11 @@ export default function ReferenceContextProvider({ children }) {
         }
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    useEffect(() => {
+      getFonts();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const {
