@@ -116,7 +116,7 @@ export default function TopMenuBar() {
         {({ open }) => (
           <>
 
-            <button className="h-full px-5 border-r border-gray-200" title="project name" type="button" onClick={() => goToProjectPage()}>
+            <button className="h-full px-5 border-r border-gray-200" title="Back" type="button" onClick={() => goToProjectPage()}>
               <ArrowLeftIcon className="h-6 w-6" />
             </button>
 
@@ -128,7 +128,7 @@ export default function TopMenuBar() {
             </div>
 
             <div>
-              <span className="text-primary px-10 py-2 text-lg tracking-wide font-bold uppercase">
+              <span className="text-primary px-10 py-2 text-lg tracking-wide font-bold uppercase" title="Project Name">
                 {projectname?.[0]}
               </span>
             </div>
