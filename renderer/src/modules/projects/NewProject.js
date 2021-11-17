@@ -54,10 +54,10 @@ function BibleHeaderTagDropDown() {
     <>
       <button
         type="button"
-        className="flex justify-center items-center px-5 py-1 text-white ml-5
+        className="flex justify-center items-center px-3 py-2 text-white ml-5
         font-bold text-xs rounded-full leading-3 tracking-wider uppercase bg-primary"
       >
-        <div className="w-7 h-4">Bible</div>
+        <div className="">Bible</div>
         {/* <ChevronDownIcon
           className="w-5 h-5 ml-2"
           aria-hidden="true"
@@ -238,7 +238,7 @@ export default function NewProject({ call, project, closeEdit }) {
                     />
                   </div>
                 </div>
-                <div className="flex gap-5 mt-5">
+                <div className="flex gap-5 mt-5 items-center">
                   <div>
                     <div className="absolute">
                       <TargetLanguageTag>
@@ -256,10 +256,11 @@ export default function NewProject({ call, project, closeEdit }) {
                       show
                     />
                   </div>
-                  <div className="mt-8">
+                  <div className="mt-5">
                     <TargetLanguagePopover />
                   </div>
                 </div>
+
                 <div className="mt-5">
                   <button
                     type="button"

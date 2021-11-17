@@ -186,8 +186,8 @@ const ResourcesPopUp = ({
 
         <Dialog.Overlay className="fixed inset-0 bg-black opacity-30" />
         <div className="flex items-center justify-center h-screen">
-          <div className="w-8/12 h-2/6 items-center justify-center m-auto z-50 shadow overflow-hidden rounded">
 
+          <div className="w-8/12 h-4/6 items-center justify-center m-auto z-50 shadow overflow-hidden rounded">
             <div className="h-full flex relative rounded shadow overflow-hidden bg-white">
               <button
                 type="button"

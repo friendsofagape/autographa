@@ -269,25 +269,24 @@ const SectionPlaceholder2 = () => {
       ? (layout >= 1 && layout <= 2) : (layout > 1 && layout <= 2)) && (
       <>
         {(openResource3 === false || openResource4 === false) && (
-        <div className="m-3 ml-0 rounded-md overflow-hidden  pb-4">
-          <>
-            <EditorSection
-              row="3"
-              hideAddition={hideAddition}
-              sectionNum={sectionNum}
-              setSectionNum={setSectionNum}
-              title={referenceColumnTwoData1.refName}
-              selectedResource={referenceColumnTwoData1.selectedResource}
-              languageId={referenceColumnTwoData1.languageId}
-              setReferenceResources={setReferenceColumnTwoData1}
-              setLoadResource={setLoadResource3}
-              loadResource={loadResource3}
-              openResource={openResource3}
-              setOpenResource3={setOpenResource3}
-              setOpenResource4={setOpenResource4}
-              CustomNavigation={CustomNavigation1}
-            >
-              {
+        <div className="bg-white rounded-md grid auto-rows-fr gap-2">
+          <EditorSection
+            row="3"
+            hideAddition={hideAddition}
+            sectionNum={sectionNum}
+            setSectionNum={setSectionNum}
+            title={referenceColumnTwoData1.refName}
+            selectedResource={referenceColumnTwoData1.selectedResource}
+            languageId={referenceColumnTwoData1.languageId}
+            setReferenceResources={setReferenceColumnTwoData1}
+            setLoadResource={setLoadResource3}
+            loadResource={loadResource3}
+            openResource={openResource3}
+            setOpenResource3={setOpenResource3}
+            setOpenResource4={setOpenResource4}
+            CustomNavigation={CustomNavigation1}
+          >
+            {
               (loadResource3 === true) && (
               referenceColumnTwoData1.selectedResource === 'bible' ? (
                 <ReferenceBible
@@ -307,26 +306,24 @@ const SectionPlaceholder2 = () => {
                 />
               ))
             }
-            </EditorSection>
-          </>
-          <>
-            <EditorSection
-              row="4"
-              hideAddition={hideAddition}
-              sectionNum={sectionNum}
-              setSectionNum={setSectionNum}
-              title={referenceColumnTwoData2.refName}
-              selectedResource={referenceColumnTwoData2.selectedResource}
-              languageId={referenceColumnTwoData2.languageId}
-              setReferenceResources={setReferenceColumnTwoData2}
-              setLoadResource={setLoadResource4}
-              loadResource={loadResource4}
-              openResource={openResource4}
-              setOpenResource3={setOpenResource3}
-              setOpenResource4={setOpenResource4}
-              CustomNavigation={CustomNavigation2}
-            >
-              {
+          </EditorSection>
+          <EditorSection
+            row="4"
+            hideAddition={hideAddition}
+            sectionNum={sectionNum}
+            setSectionNum={setSectionNum}
+            title={referenceColumnTwoData2.refName}
+            selectedResource={referenceColumnTwoData2.selectedResource}
+            languageId={referenceColumnTwoData2.languageId}
+            setReferenceResources={setReferenceColumnTwoData2}
+            setLoadResource={setLoadResource4}
+            loadResource={loadResource4}
+            openResource={openResource4}
+            setOpenResource3={setOpenResource3}
+            setOpenResource4={setOpenResource4}
+            CustomNavigation={CustomNavigation2}
+          >
+            {
               (loadResource4 === true) && (
               referenceColumnTwoData2.selectedResource === 'bible' ? (
                 <ReferenceBible
@@ -346,8 +343,45 @@ const SectionPlaceholder2 = () => {
                 />
               ))
             }
-            </EditorSection>
-          </>
+          </EditorSection>
+
+          <EditorSection
+            row="4"
+            hideAddition={hideAddition}
+            sectionNum={sectionNum}
+            setSectionNum={setSectionNum}
+            title={referenceColumnTwoData2.refName}
+            selectedResource={referenceColumnTwoData2.selectedResource}
+            languageId={referenceColumnTwoData2.languageId}
+            setReferenceResources={setReferenceColumnTwoData2}
+            setLoadResource={setLoadResource4}
+            loadResource={loadResource4}
+            openResource={openResource4}
+            setOpenResource3={setOpenResource3}
+            setOpenResource4={setOpenResource4}
+            CustomNavigation={CustomNavigation2}
+          >
+            {
+                  (loadResource4 === true) && (
+                    referenceColumnTwoData2.selectedResource === 'bible' ? (
+                      <ReferenceBible
+                        languageId={referenceColumnTwoData2.languageId}
+                        refName={referenceColumnTwoData2.refName}
+                        bookId={_bookId2}
+                        chapter={_chapter2}
+                        verse={_verse2}
+                      />
+                    ) : (
+                      <TranslationHelps
+                        selectedResource={referenceColumnTwoData2.selectedResource}
+                        languageId={referenceColumnTwoData2.languageId}
+                        bookId={_bookId2}
+                        chapter={_chapter2}
+                        verse={_verse2}
+                      />
+                    ))
+                }
+          </EditorSection>
         </div>
       )}
       </>

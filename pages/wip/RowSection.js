@@ -18,7 +18,7 @@ export default function ColumnOne(props) {
 
   return (
     <>
-      <div className={classNames(!ishidden ? 'hidden' : '', 'relative first:mt-0 pb-12 border bg-white border-gray-200 rounded shadow-sm overflow-hidden group')}>
+      <div className={classNames(!ishidden ? 'hidden' : '', 'relative h-1/3 first:mt-0 pb-12 border bg-white border-gray-200 rounded shadow-sm overflow-hidden group')}>
 
         <div className="bg-gray-200 rounded-t text-center text-gray-600 relative overflow-hidden">
           <div className="bg-gray-200 z-50 rounded-t overflow-hidden">
@@ -55,6 +55,16 @@ export default function ColumnOne(props) {
         </div>
 
         <div className="prose-sm p-4 text-xl h-full overflow-y-scroll no-scrollbars">
+
+          <div className="w-full h-full">
+            <h1>asf</h1>
+            <h1>asf</h1>
+            <h1>asf</h1>
+            <h1>asf</h1>
+            <h1>asf</h1>
+            <h1>asf</h1>
+            <h1>asf</h1>
+          </div>
 
           <div className="w-full h-full flex items-center justify-center">
             <div className="text-center">
