@@ -3,7 +3,7 @@ import React, {
   useRef, Fragment,
 } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
-import { FolderOpenIcon } from '@heroicons/react/outline';
+import { FolderOpenIcon, InformationCircleIcon } from '@heroicons/react/outline';
 import { useRouter } from 'next/router';
 import { SnackBar } from '@/components/SnackBar';
 import CloseIcon from '@/illustrations/close-button-black.svg';
@@ -119,8 +119,12 @@ export default function ImportProjectPopUp(props) {
                   <div className="p-8 overflow-auto w-full h-full no-scrollbars">
 
                     <div className="bg-white text-sm text-left tracking-wide">
-
-                      <h4 className="text-sm font-base mb-2 text-primary  tracking-wide leading-4  font-light">Scripture burrito directory</h4>
+                      <div className="flex gap-6">
+                        <h4 className="text-sm font-base mb-2 text-primary  tracking-wide leading-4  font-light">Scripture burrito directory</h4>
+                        <button title="Select a directory that is a Scripture Burrito for import. It should contain the metadata.json file." type="button" disabled>
+                          <InformationCircleIcon className="h-6 w-6 text-primary" />
+                        </button>
+                      </div>
                       <div className="flex items-center mb-4">
                         <input
                           type="text"
@@ -160,6 +164,14 @@ export default function ImportProjectPopUp(props) {
                           <input
                           className="w-full mb-4 bg-gray-200 block rounded shadow-sm sm:text-sm focus:border-primary border-gray-300"
                             type="text" value={sbData.burritoType} disabled />
+                          <label className="inline-flex items-center">
+                            <input type="checkbox" className="form-checkbox" checked={sbData?.validate} disabled/>
+                            {(sbData?.validate)?
+                            <span className="ml-2">Burrito validated Successfully</span>
+                            :
+                            <span className="ml-2 text-red-500">Burrito validation Failed</span>
+                            }
+                          </label>
                         </div>
                       )}
                     

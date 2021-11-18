@@ -35,7 +35,7 @@ export default function AdvancedSettingsDropdown({ call, project }) {
   const {
     states: {
       canonSpecification,
-      // canonList,
+      canonList,
       licenceList,
       versification,
       versificationScheme,

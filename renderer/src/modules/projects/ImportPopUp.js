@@ -152,31 +152,29 @@ export default function ImportPopUp(props) {
                 </div>
 
                 <div className="relative w-full h-full">
-                  <div className="overflow-auto w-full h-full no-scrollbars flex flex-col justify-between relative">
-                    <div className="bg-white grid grid-cols-4 gap-2 p-4 text-sm text-left tracking-wide">
-                      <div className="flex gap-5 col-span-2">
-                        <div>
-                          <h4 className="text-xs font-base mb-2 text-primary  tracking-wide leading-4  font-light">Choose USFM files</h4>
-                          <input
-                            type="text"
-                            name="location"
-                            id=""
-                            value={folderPath}
-                            onChange={(e) => setFolderPath(e.target.value)}
-                            className="bg-white w-52 lg:w-80 block rounded shadow-sm sm:text-sm focus:border-primary border-gray-300"
-                          />
-                          <h4 className="text-red-500">{valid === true ? 'Enter location' : ''}</h4>
-                        </div>
-                        <div>
-                          <button
-                            type="button"
-                            className="px-5"
-                            onClick={() => openFileDialogSettingData()}
-                          >
-                            <FolderOpenIcon className="h-5 w-5 text-primary" aria-hidden="true" />
-                          </button>
-                        </div>
+                  <div className="p-8 overflow-auto w-full h-full no-scrollbars">
+                    <div className="bg-white text-sm text-left tracking-wide">
+                      <h4 className="text-xs font-base mb-2 text-primary  tracking-wide leading-4  font-light">Choose USFM files</h4>
+                      <div className="flex items-center mb-4">
+                        <input
+                          type="text"
+                          name="location"
+                          id=""
+                          value={folderPath}
+                          onChange={(e) => setFolderPath(e.target.value)}
+                          className="bg-white w-52 lg:w-80 block rounded shadow-sm sm:text-sm focus:border-primary border-gray-300"
+                        />
+                        <button
+                          type="button"
+                          className="px-5"
+                          onClick={() => openFileDialogSettingData()}
+                        >
+                          <FolderOpenIcon className="h-6 w-6 text-primary" aria-hidden="true" />
+                        </button>
                       </div>
+                    </div>
+                    <div>
+                      <h4 className="text-red-500">{valid === true ? 'Enter location' : ''}</h4>
                     </div>
                     <div className="bg-white grid grid-cols-4 gap-2 p-4 pb-24 text-sm text-left tracking-wide">
                       {
