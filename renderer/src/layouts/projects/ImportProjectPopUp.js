@@ -116,7 +116,7 @@ export default function ImportProjectPopUp(props) {
                 </div>
                 <div className="relative w-full h-full">
                   
-                  <div className="p-8 overflow-auto w-full h-full no-scrollbars">
+                  <div className="p-8 overflow-auto w-full h-full no-scrollbars flex flex-col justify-between">
 
                     <div className="bg-white text-sm text-left tracking-wide">
                       <div className="flex gap-6">
@@ -175,7 +175,7 @@ export default function ImportProjectPopUp(props) {
                         </div>
                       )}
                     
-                    <div className="flex gap-6 mx-5 justify-end">
+                    <div className="flex gap-6 mb-5 justify-end">
 
                       <button
                         type="button"

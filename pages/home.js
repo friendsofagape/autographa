@@ -21,7 +21,7 @@ const home = () => (
           <ReferenceContextProvider>
             <CustomNavigationContextProvider>
               <EditorLayout>
-                <div className="grid grid-cols-3 h-editor">
+                <div className="grid grid-flow-col auto-cols-fr m-3 h-editor gap-2">
                   <SectionPlaceholder />
                   <div className="bg-white m-3 ml-0 border-b-2 border-secondary rounded-md shadow overflow-hidden">
                     <UsfmEditor />

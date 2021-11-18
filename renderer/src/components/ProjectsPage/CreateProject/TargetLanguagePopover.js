@@ -149,8 +149,15 @@ export default function TargetLanguagePopover() {
                       </div>
                     </div>
                   </div>
-                  <div className="ml-16">
-                    <button type="button" onClick={closeModal} className="mr-5 bg-error w-28 h-8 border-color-error rounded uppercase shadow text-white text-xs tracking-wide leading-4 font-light focus:outline-none"> cancel</button>
+                  <div className="flex items-center justify-center">
+                    <button
+                      type="button"
+                      onClick={closeModal}
+                      className="mr-5 bg-error w-28 h-8 border-color-error rounded
+                                  uppercase shadow text-white text-xs tracking-wide leading-4 font-light focus:outline-none"
+                    >
+                      cancel
+                    </button>
                     {lock ? <div />
                     : (
                       <button

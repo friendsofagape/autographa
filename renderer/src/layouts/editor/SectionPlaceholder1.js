@@ -254,25 +254,25 @@ const SectionPlaceholder1 = () => {
       {(layout > 0 && layout <= 2) && (
         <>
           {(openResource1 === false || openResource2 === false) && (
-            <div className="m-3 ml-0 rounded-md overflow-hidden  pb-4">
-              <>
-                <EditorSection
-                  row="1"
-                  CustomNavigation={CustomNavigation1}
-                  hideAddition={hideAddition}
-                  sectionNum={sectionNum}
-                  setSectionNum={setSectionNum}
-                  title={referenceColumnOneData1.refName}
-                  selectedResource={referenceColumnOneData1.selectedResource}
-                  languageId={referenceColumnOneData1.languageId}
-                  setReferenceResources={setReferenceColumnOneData1}
-                  setLoadResource={setLoadResource1}
-                  loadResource={loadResource1}
-                  openResource={openResource1}
-                  setOpenResource1={setOpenResource1}
-                  setOpenResource2={setOpenResource2}
-                >
-                  {
+            <div className="bg-white rounded-md grid auto-rows-fr gap-2">
+
+              <EditorSection
+                row="1"
+                CustomNavigation={CustomNavigation1}
+                hideAddition={hideAddition}
+                sectionNum={sectionNum}
+                setSectionNum={setSectionNum}
+                title={referenceColumnOneData1.refName}
+                selectedResource={referenceColumnOneData1.selectedResource}
+                languageId={referenceColumnOneData1.languageId}
+                setReferenceResources={setReferenceColumnOneData1}
+                setLoadResource={setLoadResource1}
+                loadResource={loadResource1}
+                openResource={openResource1}
+                setOpenResource1={setOpenResource1}
+                setOpenResource2={setOpenResource2}
+              >
+                {
               (loadResource1 === true) && (
               referenceColumnOneData1.selectedResource === 'bible' ? (
                 <ReferenceBible
@@ -292,26 +292,25 @@ const SectionPlaceholder1 = () => {
                 />
               ))
             }
-                </EditorSection>
-              </>
-              <>
-                <EditorSection
-                  row="2"
-                  hideAddition={hideAddition}
-                  sectionNum={sectionNum}
-                  setSectionNum={setSectionNum}
-                  title={referenceColumnOneData2.refName}
-                  selectedResource={referenceColumnOneData2.selectedResource}
-                  languageId={referenceColumnOneData2.languageId}
-                  setReferenceResources={setReferenceColumnOneData2}
-                  setLoadResource={setLoadResource2}
-                  loadResource={loadResource2}
-                  openResource={openResource2}
-                  setOpenResource1={setOpenResource1}
-                  setOpenResource2={setOpenResource2}
-                  CustomNavigation={CustomNavigation2}
-                >
-                  {
+              </EditorSection>
+
+              <EditorSection
+                row="2"
+                hideAddition={hideAddition}
+                sectionNum={sectionNum}
+                setSectionNum={setSectionNum}
+                title={referenceColumnOneData2.refName}
+                selectedResource={referenceColumnOneData2.selectedResource}
+                languageId={referenceColumnOneData2.languageId}
+                setReferenceResources={setReferenceColumnOneData2}
+                setLoadResource={setLoadResource2}
+                loadResource={loadResource2}
+                openResource={openResource2}
+                setOpenResource1={setOpenResource1}
+                setOpenResource2={setOpenResource2}
+                CustomNavigation={CustomNavigation2}
+              >
+                {
               (loadResource2 === true) && (
               referenceColumnOneData2.selectedResource === 'bible' ? (
                 <ReferenceBible
@@ -331,24 +330,24 @@ const SectionPlaceholder1 = () => {
                 />
               ))
             }
-                </EditorSection>
-                <EditorSection
-                  row="1"
-                  CustomNavigation={CustomNavigation1}
-                  hideAddition={hideAddition}
-                  sectionNum={sectionNum}
-                  setSectionNum={setSectionNum}
-                  title={referenceColumnOneData1.refName}
-                  selectedResource={referenceColumnOneData1.selectedResource}
-                  languageId={referenceColumnOneData1.languageId}
-                  setReferenceResources={setReferenceColumnOneData1}
-                  setLoadResource={setLoadResource1}
-                  loadResource={loadResource1}
-                  openResource={openResource1}
-                  setOpenResource1={setOpenResource1}
-                  setOpenResource2={setOpenResource2}
-                >
-                  {
+              </EditorSection>
+              <EditorSection
+                row="1"
+                CustomNavigation={CustomNavigation1}
+                hideAddition={hideAddition}
+                sectionNum={sectionNum}
+                setSectionNum={setSectionNum}
+                title={referenceColumnOneData1.refName}
+                selectedResource={referenceColumnOneData1.selectedResource}
+                languageId={referenceColumnOneData1.languageId}
+                setReferenceResources={setReferenceColumnOneData1}
+                setLoadResource={setLoadResource1}
+                loadResource={loadResource1}
+                openResource={openResource1}
+                setOpenResource1={setOpenResource1}
+                setOpenResource2={setOpenResource2}
+              >
+                {
               (loadResource1 === true) && (
               referenceColumnOneData1.selectedResource === 'bible' ? (
                 <ReferenceBible
@@ -368,8 +367,8 @@ const SectionPlaceholder1 = () => {
                 />
               ))
             }
-                </EditorSection>
-              </>
+              </EditorSection>
+
             </div>
         )}
         </>

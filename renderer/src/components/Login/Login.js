@@ -1,10 +1,6 @@
 import React, { useEffect } from 'react';
 // import 'tailwindcss/tailwind.css';
 import LogoIcon from '@/icons/logo.svg';
-import GroupIcon from '@/illustrations/group.svg';
-import QuoteIcon from '@/illustrations/quote.svg';
-import SittingIcon from '@/illustrations/sitting.svg';
-import VectorIcon from '@/illustrations/vector-one.svg';
 import HalfMoonIcon from '@/illustrations/half-moon.svg';
 
 import { ChevronRightIcon, UserIcon } from '@heroicons/react/solid';
@@ -187,16 +183,19 @@ export default function Login() {
             {users.map((user, index) => {
               if (index < 5) {
                 return (
-                  <div className="w-2/3 mx-auto flex justify-between items-center pl-5 pr-10 py-6 m-2 bg-gray-100 text-dark rounded-lg cursor-pointer
+                  <div className="w-4/5 mx-auto grid grid-cols-4 py-3 m-2 justify-center items-center justify-items-center gap-2
+                  bg-gray-100 text-dark rounded-lg cursor-pointer
                   border-2 border-transparent
                   hover:bg-primary hover:text-white hover:border-primary group"
                   >
-                    <div className="bg-gray-200 rounded-md p-4 group-hover:bg-secondary">
-                      <UserIcon className="h-7 w-7" />
+                    <div className="h-10 w-10 flex justify-center items-center bg-gray-200 rounded-full group-hover:bg-secondary">
+                      <UserIcon className="h-5 w-5" />
                     </div>
-                    {user.username}
-                    <div className="bg-gray-200 rounded-full p-2 group-hover:bg-secondary">
-                      <ChevronRightIcon className="h-4 w-4" onClick={() => { handleSubmit({ username: user.username }); }} />
+                    <div className="col-span-2">
+                      {user.username}
+                    </div>
+                    <div className="h-6 w-6 flex items-center justify-center bg-gray-200 rounded-full group-hover:bg-secondary">
+                      <ChevronRightIcon className="h-5 w-5" onClick={() => { handleSubmit({ username: user.username }); }} />
                     </div>
                   </div>
                 );
@@ -222,62 +221,68 @@ export default function Login() {
           </div>
         </div>
 
-        <div className="col-span-4 bg-secondary">
-          <div className="grid grid-rows-1 justify-items-center relative">
-            <div className="justify-center">
-              <div className="flex gap-3 ">
-                <LogoIcon
-                  className="h-5 w-5 text-white group-hover:text-white"
-                  aria-hidden="true"
-                />
-                <div className="text-white uppercase">AUTOGRAPHA</div>
-                <div className="text-primary font-bold">2.0</div>
-              </div>
-              <div className="pt-8 pl-72">
-                <GroupIcon
-                  className="h-20 w-20 text-white group-hover:text-white"
-                  aria-hidden="true"
-                />
-              </div>
-              <div className="w-96 pt-16 mb-10 text-xl text-white leading-9">
-                <div className="pb-5">
-                  <QuoteIcon
-                    className="h-10 w-10 text-white group-hover:text-white"
-                    aria-hidden="true"
-                  />
-                </div>
+        <div className="col-span-4 bg-secondary relative flex flex-col justify-between">
 
+          <div className="my-5 mt-10 flex gap-3 justify-center items-center">
+            <LogoIcon
+              className="h-5 w-5 text-white group-hover:text-white"
+              aria-hidden="true"
+            />
+            <div className="text-white uppercase font-bold tracking-wider text-2xl">AUTOGRAPHA</div>
+            <div className="text-primary font-bold text-3xl">2.0</div>
+          </div>
+
+          <div className="flex flex-col justify-center items-center relative">
+
+            <div className="">
+              <img width="61" height="56" src="/illustrations/group.svg" alt="" />
+            </div>
+
+            <div className="mx-10 md:mx-20 lg:mx-32 text-xl text-white leading-9 relative">
+              <div className="absolute top-0 left-0">
+                <img height="26" src="/illustrations/quote.svg" alt="" />
+              </div>
+
+              <div className="py-10">
                 Autographa 2.0 is a completely new way for editing scripture
                 and related resources with powerful yet elegant features to
                 help you focus on the important things!
-
-                {/* <div className="flex pt-5">
-                  <div className="pr-4">FEATURE</div>
-                  <img className="" src="/illustrations/green-check.svg" alt="logo" />
-                </div> */}
               </div>
-              <div className="flex pb-20">
-                <div className="pl-24">
-                  <SittingIcon
-                    className="h-60 w-60 text-white group-hover:text-white"
-                    aria-hidden="true"
-                  />
-                </div>
-                <div>
-                  <VectorIcon
-                    className="h-60 w-60 text-white group-hover:text-white"
-                    aria-hidden="true"
-                  />
-                </div>
+
+              {/* <div className="flex pt-5">
+                <div className="pr-4">FEATURE</div>
+                <img className="" src="/illustrations/green-check.svg" alt="logo" />
+              </div> */}
+            </div>
+
+            <div className="flex ">
+              <div className="">
+                <img
+                  srcSet="/illustrations/sitting.svg 1200w"
+                  src="/illustrations/sitting.svg"
+                  alt=""
+                />
+              </div>
+              <div>
+                <img
+                  width="34"
+                  height="33"
+                  src="/illustrations/vector-one.svg"
+                  alt=""
+                />
               </div>
             </div>
+
           </div>
+
           <div className="">
-            <HalfMoonIcon
-              className="h-10 w-10 text-white group-hover:text-white"
-              aria-hidden="true"
+            <img
+              srcSet="/illustrations/half-moon.svg 1200w"
+              src="/illustrations/half-moon.svg"
+              alt=""
             />
           </div>
+
         </div>
 
       </div>

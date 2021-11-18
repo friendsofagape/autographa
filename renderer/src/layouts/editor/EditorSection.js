@@ -5,9 +5,11 @@ import { ReferenceContext } from '@/components/context/ReferenceContext';
 import { ProjectContext } from '@/components/context/ProjectContext';
 import ResourcesPopUp from '@/components/EditorPage/Reference/ResourcesPopUp';
 import {
- ViewGridAddIcon, XIcon, AdjustmentsIcon,
+  ViewGridAddIcon, XIcon, AdjustmentsIcon,
 } from '@heroicons/react/outline';
+import { classNames } from '@/util/classNames';
 import ConfirmationModal from './ConfirmationModal';
+
 // import MinimizeIcon from '@/illustrations/minimize.svg';
 
 export default function EditorSection({
@@ -87,7 +89,7 @@ export default function EditorSection({
 
   function confirmRemove() {
     removeSection();
-   }
+  }
 
   useEffect(() => {
     if (openResource1 === true && openResource2 === true) {
@@ -104,7 +106,7 @@ export default function EditorSection({
         setLayout(0);
       }
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   });
 
   // eslint-disable-next-line no-unused-vars
@@ -143,25 +145,28 @@ export default function EditorSection({
   };
 
   return (
+
     <>
-      <div className={`${openResource && 'hidden'} relative first:mt-0 mt-3 pb-12 ${ sectionNum > 1 ? 'h-1/2' : 'h-full'} border bg-white border-gray-200 shadow-sm rounded-b overflow-hidden group`}>
+      <div className={classNames(openResource ? 'hidden' : '', 'relative first:mt-0 pb-12 border bg-white border-gray-200 rounded shadow-sm overflow-hidden group')}>
+
+        {/* <div className={`${openResource && 'hidden'} relative first:mt-0 pb-12 ${sectionNum > 1 ? 'h-1/2' : 'h-full'} border bg-white border-gray-200 shadow-sm rounded-b overflow-hidden group`}> */}
 
         <div className="bg-gray-200 rounded-t text-center text-gray-600 relative overflow-hidden">
           {openResourcePopUp
-          && (
-            <div className="fixed z-50 ">
-              <ResourcesPopUp
-                column={row}
-                header={title}
-                languageId={languageId}
-                selectedResource={selectedResource}
-                setReferenceResources={setReferenceResources}
-                openResourcePopUp={openResourcePopUp}
-                setOpenResourcePopUp={setOpenResourcePopUp}
-              />
+            && (
+              <div className="fixed z-50 ">
+                <ResourcesPopUp
+                  column={row}
+                  header={title}
+                  languageId={languageId}
+                  selectedResource={selectedResource}
+                  setReferenceResources={setReferenceResources}
+                  openResourcePopUp={openResourcePopUp}
+                  setOpenResourcePopUp={setOpenResourcePopUp}
+                />
 
-            </div>
-          )}
+              </div>
+            )}
 
           <div className="bg-gray-200 z-50 rounded-t overflow-hidden">
             <div className="flex items-center">
@@ -172,16 +177,16 @@ export default function EditorSection({
                     {title}
                   </div>
                 </>
-            )
-            : (
-              <div className="flex">
-                <div className="py-2 uppercase tracking-wider text-xs font-semibold">
-                  <div className="ml-4 h-4 flex justify-center items-center text-xxs uppercase tracking-wider font-bold leading-3 truncate">
-                    {title}
+              )
+                : (
+                  <div className="flex">
+                    <div className="py-2 uppercase tracking-wider text-xs font-semibold">
+                      <div className="ml-4 h-4 flex justify-center items-center text-xxs uppercase tracking-wider font-bold leading-3 truncate">
+                        {title}
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-              )}
+                )}
               <div className="flex bg-gray-300 absolute h-full -right-0 rounded-tr invisible group-hover:visible ">
                 <button
                   type="button"
@@ -218,46 +223,46 @@ export default function EditorSection({
         </div>
 
         {
-        content
-        && (
-          <div
-            style={{ fontFamily: 'sans-serif', fontSize: `${fontSize}rem` }}
-            className="prose-sm p-4 text-xl h-full overflow-y-scroll no-scrollbars"
-          >
-            {
-              (loadResource === false)
-              ? (
-                <div className="w-full h-full flex items-center justify-center">
-                  <div className="text-center">
-                    <div className="text-xs uppercase pb-4">Load a Module</div>
-                    <button
-                      type="button"
-                      className="p-4 bg-gray-200 rounded-lg ring-offset-1"
-                      onClick={showResourcesPanel}
-                    >
-                      <ViewGridAddIcon className="h-5 w-5" aria-hidden="true" />
-                    </button>
-                  </div>
-                </div>
-              )
-              : children
-            }
-            {hideAddition && (
-              <button
-                type="button"
-                title="add section"
-                onClick={addRow}
-                className="absolute p-2 bg-primary rounded bottom-0 -right-0 invisible group-hover:visible"
-              >
-                <ViewGridAddIcon
-                  className="h-6 w-6 text-white"
-                  aria-hidden="true"
-                />
-              </button>
-            )}
-          </div>
-        )
-      }
+          content
+          && (
+            <div
+              style={{ fontFamily: 'sans-serif', fontSize: `${fontSize}rem` }}
+              className="prose-sm p-4 text-xl h-full overflow-y-scroll no-scrollbars"
+            >
+              {
+                (loadResource === false)
+                  ? (
+                    <div className="w-full h-full flex items-center justify-center">
+                      <div className="text-center">
+                        <div className="text-xs uppercase pb-4">Load a Module</div>
+                        <button
+                          type="button"
+                          className="p-4 bg-gray-200 rounded-lg ring-offset-1"
+                          onClick={showResourcesPanel}
+                        >
+                          <ViewGridAddIcon className="h-5 w-5" aria-hidden="true" />
+                        </button>
+                      </div>
+                    </div>
+                  )
+                  : children
+              }
+              {hideAddition && (
+                <button
+                  type="button"
+                  title="add section"
+                  onClick={addRow}
+                  className="absolute p-2 bg-primary rounded bottom-0 -right-0 invisible group-hover:visible"
+                >
+                  <ViewGridAddIcon
+                    className="h-6 w-6 text-white"
+                    aria-hidden="true"
+                  />
+                </button>
+              )}
+            </div>
+          )
+        }
 
       </div>
       <ConfirmationModal
