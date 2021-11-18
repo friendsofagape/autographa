@@ -41,6 +41,7 @@ export default function ProjectList() {
       setSelectedProject,
       setNotifications,
       setActiveNotificationCount,
+      FetchProjects,
     },
   } = React.useContext(AutographaContext);
   const [callEditProject, setCallEditProject] = useState(false);
@@ -91,9 +92,9 @@ export default function ProjectList() {
       setCallEditProject(true);
     });
   };
-  const closeEditProject = () => {
+  const closeEditProject = async () => {
     setCallEditProject(false);
-    router.push('./projects');
+    await FetchProjects();
   };
 
   return (

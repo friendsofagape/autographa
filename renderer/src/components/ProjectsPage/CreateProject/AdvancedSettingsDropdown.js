@@ -81,7 +81,7 @@ export default function AdvancedSettingsDropdown({ call, project }) {
       } else if (project.type.flavorType.canonType[0] === 'nt') {
         if (Object.keys(project.type.flavorType.currentScope).length === 27) {
           const vals = Object.keys(project.type.flavorType.currentScope).map((key) => key);
-          setcanonSpecification({ title: 'Old Testament (OT)', currentScope: vals });
+          setcanonSpecification({ title: 'New Testament (NT)', currentScope: vals });
         } else {
           const vals = Object.keys(project.type.flavorType.currentScope).map((key) => key);
           setcanonSpecification({ title: 'Other', currentScope: vals });
@@ -109,11 +109,6 @@ export default function AdvancedSettingsDropdown({ call, project }) {
     setcanonSpecification(value);
     openBibleNav('edit');
   };
-  useEffect(() => {
-    if (canonSpecification.title === 'Other' && call === 'new') {
-      openBibleNav('edit');
-    }
-  }, [canonSpecification]);
   useEffect(() => {
     if (call === 'edit') {
       loadScope(project);
@@ -196,7 +191,7 @@ export default function AdvancedSettingsDropdown({ call, project }) {
                     </div>
                     <div
                       className={canonSpecification.title === 'Other' ? 'bg-primary hover:bg-secondary text-white px-3 py-1 rounded-full cursor-pointer whitespace-nowrap' : 'bg-gray-200 hover:bg-primary hover:text-white px-3 py-1 rounded-full cursor-pointer whitespace-nowrap'}
-                      onClick={() => selectCanon(canonList[3])}
+                      onClick={() => selectCanon(call === 'edit' ? canonSpecification : canonList[3])}
                       role="button"
                       tabIndex="0"
                     >
