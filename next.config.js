@@ -3,15 +3,12 @@ const withTM = require('next-transpile-modules')(['usfm-editor']);
 const path = require('path');
 
 module.exports = withTM({
-  webpack: (config, { isServer, webpack }) => {
+  webpack: (config, { isServer }) => {
     // Fixes npm packages that depend on `fs` module
     if (!isServer) {
       // eslint-disable-next-line no-param-reassign
       config.resolve.fallback.fs = false;
     }
-    config.plugins.push(
-      new webpack.IgnorePlugin(/canvas/),
-    );
     config.module.rules.push({
       test: /\.md$/,
       use: 'raw-loader',
@@ -62,5 +59,4 @@ module.exports = withTM({
   },
   webpack5: true,
   externals: [nodeExternals()],
-  target: 'serverless',
 });

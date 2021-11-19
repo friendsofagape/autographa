@@ -79,7 +79,6 @@ export default function SubMenuBar() {
     actions: {
       setOpenResource1,
       setOpenResource3,
-      getFonts,
       setLayout,
       setRefernceLoading,
       setRow,
@@ -129,11 +128,6 @@ export default function SubMenuBar() {
     //   callback: tesfFunc1,
     // },
     ];
-
-  useEffect(() => {
-    getFonts();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const handleResource = () => {
     setOpenResource1(false);
