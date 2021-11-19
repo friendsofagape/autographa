@@ -1,22 +1,35 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable react/no-array-index-key */
 import {
- Fragment, useContext,
+ Fragment, useContext, useEffect, useState,
 } from 'react';
 import { Listbox, Transition } from '@headlessui/react';
 import { CheckIcon, SelectorIcon } from '@heroicons/react/solid';
+import localforage from 'localforage';
 import { ReferenceContext } from '../context/ReferenceContext';
 
 export default function MenuDropdown() {
   const {
     state: {
       selectedFont,
-      fonts,
     },
     actions: {
       setSelectedFont,
     },
   } = useContext(ReferenceContext);
+
+  const [fonts, setFonts] = useState();
+
+  function getFonts() {
+    localforage.getItem('font-family').then((value) => {
+      setFonts(value);
+    });
+  }
+
+  useEffect(() => {
+    getFonts();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div style={{ width: '150%' }} className="w-100">
@@ -37,9 +50,10 @@ export default function MenuDropdown() {
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
+
             <Listbox.Options className="absolute w-full py-1 mt-1 overflow-auto text-base bg-white rounded-md shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-              { fonts[0] && (
-                fonts[0].map((font, personIdx) => (
+              { fonts && (
+                fonts.map((font, personIdx) => (
                   <Listbox.Option
                     key={personIdx}
                     className={({ active }) => `${active ? 'text-amber-900 bg-amber-100' : 'text-gray-900'}

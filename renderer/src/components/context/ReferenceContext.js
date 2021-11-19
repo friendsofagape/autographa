@@ -31,7 +31,6 @@ export default function ReferenceContextProvider({ children }) {
     const [openResourcePopUp, setOpenResourcePopUp] = React.useState(false);
     const [selectedFont, setSelectedFont] = React.useState('sans-serif');
     const [fontSize, setFontsize] = React.useState(1);
-    const [fonts, setFonts] = useState([]);
     const [layout, setLayout] = useState(0);
     const [row, setRow] = useState(0);
     const [refernceLoading, setRefernceLoading] = useState({
@@ -50,13 +49,6 @@ export default function ReferenceContextProvider({ children }) {
     const handleClick = (event) => {
       setAnchorEl(event.currentTarget);
     };
-
-    function getFonts() {
-      localforage.getItem('font-family').then((value) => {
-        fonts.push(value);
-        setFonts(fonts);
-      });
-    }
 
     const openResourceDialog = async () => {
       if (isElectron()) {
@@ -92,11 +84,6 @@ export default function ReferenceContextProvider({ children }) {
         }
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-    useEffect(() => {
-      getFonts();
-      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const {
@@ -240,7 +227,6 @@ export default function ReferenceContextProvider({ children }) {
         openResourcePopUp,
         selectedFont,
         fontSize,
-        fonts,
         layout,
         row,
         refernceLoading,
@@ -275,8 +261,6 @@ export default function ReferenceContextProvider({ children }) {
         setOpenResourcePopUp,
         setSelectedFont,
         setFontsize,
-        setFonts,
-        getFonts,
         setLayout,
         setRow,
         setRefernceLoading,
