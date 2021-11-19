@@ -7,6 +7,7 @@ import ResourcesPopUp from '@/components/EditorPage/Reference/ResourcesPopUp';
 import {
   ViewGridAddIcon, XIcon, AdjustmentsIcon,
 } from '@heroicons/react/outline';
+// eslint-disable-next-line import/no-unresolved
 import { classNames } from '@/util/classNames';
 import ConfirmationModal from './ConfirmationModal';
 
@@ -149,7 +150,9 @@ export default function EditorSection({
     <>
       <div className={classNames(openResource ? 'hidden' : '', 'relative first:mt-0 pb-12 border bg-white border-gray-200 rounded shadow-sm overflow-hidden group')}>
 
-        {/* <div className={`${openResource && 'hidden'} relative first:mt-0 pb-12 ${sectionNum > 1 ? 'h-1/2' : 'h-full'} border bg-white border-gray-200 shadow-sm rounded-b overflow-hidden group`}> */}
+        {/* <div className={`${openResource && 'hidden'}
+        relative first:mt-0 pb-12 ${sectionNum > 1 ? 'h-1/2' : 'h-full'}
+        border bg-white border-gray-200 shadow-sm rounded-b overflow-hidden group`}> */}
 
         <div className="bg-gray-200 rounded-t text-center text-gray-600 relative overflow-hidden">
           {openResourcePopUp

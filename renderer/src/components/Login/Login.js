@@ -1,8 +1,6 @@
 import React, { useEffect } from 'react';
 // import 'tailwindcss/tailwind.css';
 import LogoIcon from '@/icons/logo.svg';
-import HalfMoonIcon from '@/illustrations/half-moon.svg';
-
 import { ChevronRightIcon, UserIcon } from '@heroicons/react/solid';
 
 import * as localForage from 'localforage';
