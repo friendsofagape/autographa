@@ -1,12 +1,12 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-param-reassign */
-import { ReferenceContext } from '@/components/context/ReferenceContext';
-import EditorSection from '@/layouts/editor/EditorSection';
 import dynamic from 'next/dynamic';
 import { useContext, useEffect, useState } from 'react';
-import ReferenceBible from '@/components/EditorPage/Reference/ReferenceBible/ReferenceBible';
 import localforage from 'localforage';
+import { ReferenceContext } from '@/components/context/ReferenceContext';
+import EditorSection from '@/layouts/editor/EditorSection';
+import ReferenceBible from '@/components/EditorPage/Reference/ReferenceBible/ReferenceBible';
 import { ProjectContext } from '@/components/context/ProjectContext';
 import CustomNavigation from '@/components/EditorPage/Navigation/CustomNavigation';
 
@@ -254,7 +254,7 @@ const SectionPlaceholder1 = () => {
       {(layout > 0 && layout <= 2) && (
         <>
           {(openResource1 === false || openResource2 === false) && (
-            <div className="bg-white rounded-md grid auto-rows-fr gap-2">
+            <div className="bg-white ml-1 rounded-md overflow-hidden grid auto-rows-fr gap-2">
 
               <EditorSection
                 row="1"
@@ -331,44 +331,6 @@ const SectionPlaceholder1 = () => {
               ))
             }
               </EditorSection>
-              <EditorSection
-                row="1"
-                CustomNavigation={CustomNavigation1}
-                hideAddition={hideAddition}
-                sectionNum={sectionNum}
-                setSectionNum={setSectionNum}
-                title={referenceColumnOneData1.refName}
-                selectedResource={referenceColumnOneData1.selectedResource}
-                languageId={referenceColumnOneData1.languageId}
-                setReferenceResources={setReferenceColumnOneData1}
-                setLoadResource={setLoadResource1}
-                loadResource={loadResource1}
-                openResource={openResource1}
-                setOpenResource1={setOpenResource1}
-                setOpenResource2={setOpenResource2}
-              >
-                {
-              (loadResource1 === true) && (
-              referenceColumnOneData1.selectedResource === 'bible' ? (
-                <ReferenceBible
-                  languageId={referenceColumnOneData1.languageId}
-                  refName={referenceColumnOneData1.refName}
-                  bookId={_bookId1}
-                  chapter={_chapter1}
-                  verse={_verse1}
-                />
-              ) : (
-                <TranslationHelps
-                  selectedResource={referenceColumnOneData1.selectedResource}
-                  languageId={referenceColumnOneData1.languageId}
-                  bookId={_bookId1}
-                  chapter={_chapter1}
-                  verse={_verse1}
-                />
-              ))
-            }
-              </EditorSection>
-
             </div>
         )}
         </>

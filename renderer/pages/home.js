@@ -13,9 +13,7 @@ export default function ReferenceSelector() {
         <ReferenceContextProvider>
           <AutographaContextProvider>
             <EditorLayout>
-              <div className="grid grid-flow-col auto-cols-fr m-3 h-editor gap-2">
-                <SectionContainer />
-              </div>
+              <SectionContainer />
             </EditorLayout>
           </AutographaContextProvider>
         </ReferenceContextProvider>
