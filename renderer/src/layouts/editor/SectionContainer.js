@@ -18,7 +18,7 @@ return (
   <div className={`grid grid-cols-${layout + 1} h-editor`}>
     <SectionPlaceholder1 />
     <SectionPlaceholder2 />
-    <div className="bg-white ml-1 border-b-2 border-secondary rounded-md shadow overflow-hidden">
+    <div className="bg-white ml-1 mr-1 border-b-2 border-secondary rounded-md shadow overflow-hidden">
       <UsfmEditor />
     </div>
   </div>

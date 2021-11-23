@@ -30,6 +30,7 @@ export default function ImportPopUp(props) {
       setImportedFiles,
     },
   } = useContext(ProjectContext);
+
   function close() {
     setValid(false);
     setShow(false);
@@ -90,6 +91,7 @@ export default function ImportPopUp(props) {
       }
     });
     setImportedFiles(files);
+    close();
   };
   const importProject = async () => {
     if (folderPath.length > 0) {
