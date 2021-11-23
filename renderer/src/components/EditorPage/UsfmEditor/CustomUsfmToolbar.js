@@ -1,9 +1,9 @@
-import { ReferenceContext } from '@/components/context/ReferenceContext';
 import React, { useContext } from 'react';
 import {
     UsfmToolbar,
    //  withChapterSelection,
 } from 'usfm-editor';
+import { ReferenceContext } from '@/components/context/ReferenceContext';
 
 const CustomUsfmToolbar = () => {
     const {

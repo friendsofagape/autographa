@@ -1,7 +1,6 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable react/prop-types */
 /* eslint-disable no-underscore-dangle */
-import { ReferenceContext } from '@/components/context/ReferenceContext';
 import React, {
  useContext, useEffect, useState, useMemo,
 } from 'react';
@@ -9,11 +8,12 @@ import {
   createBasicUsfmEditor, withChapterPaging,
  } from 'usfm-editor';
 import * as localforage from 'localforage';
+import moment from 'moment';
+import { ReferenceContext } from '@/components/context/ReferenceContext';
 // eslint-disable-next-line import/no-unresolved
 import { readIngredients } from '@/core/reference/readIngredients';
 import { ProjectContext } from '@/components/context/ProjectContext';
 import { AutographaContext } from '@/components/context/AutographaContext';
-import moment from 'moment';
 import LoadingScreen from '@/components/Loading/LoadingScreen';
 import { SnackBar } from '@/components/SnackBar';
 import EmptyScreen from '@/components/Loading/EmptySrceen';

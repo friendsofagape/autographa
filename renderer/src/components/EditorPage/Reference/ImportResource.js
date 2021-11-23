@@ -5,8 +5,8 @@ import React, {
 } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { FolderOpenIcon } from '@heroicons/react/outline';
-import CloseIcon from '@/illustrations/close-button-black.svg';
 import * as localforage from 'localforage';
+import CloseIcon from '@/illustrations/close-button-black.svg';
 import { SnackBar } from '@/components/SnackBar';
 import { isElectron } from '@/core/handleElectron';
 import { ReferenceContext } from '@/components/context/ReferenceContext';

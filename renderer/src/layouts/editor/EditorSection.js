@@ -1,12 +1,12 @@
 /* eslint-disable react/prop-types */
 import PropTypes from 'prop-types';
 import React, { useContext, useEffect, useState } from 'react';
-import { ReferenceContext } from '@/components/context/ReferenceContext';
-import { ProjectContext } from '@/components/context/ProjectContext';
-import ResourcesPopUp from '@/components/EditorPage/Reference/ResourcesPopUp';
 import {
   ViewGridAddIcon, XIcon, AdjustmentsIcon,
 } from '@heroicons/react/outline';
+import { ReferenceContext } from '@/components/context/ReferenceContext';
+import { ProjectContext } from '@/components/context/ProjectContext';
+import ResourcesPopUp from '@/components/EditorPage/Reference/ResourcesPopUp';
 // eslint-disable-next-line import/no-unresolved
 import { classNames } from '@/util/classNames';
 import ConfirmationModal from './ConfirmationModal';

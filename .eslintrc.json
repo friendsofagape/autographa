@@ -21,6 +21,12 @@
                 ]
             }
         ],
+        "react/jsx-no-bind": [1, {
+            "ignoreRefs": true,
+            "allowArrowFunctions": true,
+            "allowFunctions": true,
+            "allowBind": false
+        }],
         "react/jsx-props-no-spreading": "off",
         "eslint no-unused-expressions": "off",
         "no-shadow": "off",
@@ -68,9 +74,18 @@
 				  "map" : [
 					["@/components","./renderer/src/components/"],
 					["@/layouts", "./renderer/src/layouts/"],
-					["@/modules", "./renderer/src/modules/"]
+					["@/modules", "./renderer/src/modules/"],
+                    ["@/util", "./renderer/src/util/"],
+                    ["@/core", "./renderer/src/core/"]
 				  ],
-				  "extensions": [".js"]
+                  "node": {
+                    "extensions": [
+                      ".js",
+                      ".jsx",
+                      ".ts",
+                      ".tsx"
+                    ]
+                  }
 				}
 			}
         },

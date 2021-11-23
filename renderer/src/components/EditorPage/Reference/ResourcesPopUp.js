@@ -5,12 +5,12 @@ import React, {
   useEffect, useRef, useState, Fragment, useContext,
 } from 'react';
 import * as localforage from 'localforage';
+import { Dialog, Transition } from '@headlessui/react';
+import { XIcon } from '@heroicons/react/solid';
 import { isElectron } from '@/core/handleElectron';
 import { readRefMeta } from '@/core/reference/readRefMeta';
 import { readRefBurrito } from '@/core/reference/readRefBurrito';
-import { Dialog, Transition } from '@headlessui/react';
 import { ProjectContext } from '@/components/context/ProjectContext';
-import { XIcon } from '@heroicons/react/solid';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import ResourceOption from './ResourceOption';
 import ImportResource from './ImportResource';

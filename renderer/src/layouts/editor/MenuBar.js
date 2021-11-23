@@ -7,14 +7,14 @@ import {
   Disclosure, Menu, Popover, Transition,
 } from '@headlessui/react';
 
-import EditorSideBar from '@/modules/editorsidebar/EditorSideBar';
-
 import {
   SunIcon,
   SearchIcon,
   UserIcon,
   ArrowLeftIcon,
 } from '@heroicons/react/outline';
+import router from 'next/router';
+import EditorSideBar from '@/modules/editorsidebar/EditorSideBar';
 
 // eslint-disable-next-line import/no-unresolved
 import { classNames } from '@/util/classNames';
@@ -29,7 +29,6 @@ import LogoIcon from '@/icons/logo.svg';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import { ProjectContext } from '@/components/context/ProjectContext';
 import { AuthenticationContext } from '@/components/Login/AuthenticationContextProvider';
-import router from 'next/router';
 import PopoverProjectType from './PopoverProjectType';
 import styles from './MenuBar.module.css';
 

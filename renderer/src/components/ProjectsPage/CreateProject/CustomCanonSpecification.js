@@ -1,9 +1,9 @@
 import React, { Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
-import SelectBook from '@/components/EditorPage/Navigation/reference/SelectBook';
 import { XIcon } from '@heroicons/react/solid';
 import { useBibleReference } from 'bible-reference-rcl';
 import PropTypes from 'prop-types';
+import SelectBook from '@/components/EditorPage/Navigation/reference/SelectBook';
 import { ProjectContext } from '../../context/ProjectContext';
 
 const CustomCanonSpecification = ({ bibleNav, closeBibleNav, handleNav }) => {

@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 // import 'tailwindcss/tailwind.css';
-import LogoIcon from '@/icons/logo.svg';
 import { ChevronRightIcon, UserIcon } from '@heroicons/react/solid';
 
 import * as localForage from 'localforage';
 import { useRouter } from 'next/router';
+import LogoIcon from '@/icons/logo.svg';
 import * as logger from '../../logger';
 import { isElectron } from '../../core/handleElectron';
 import CustomLogin from './CustomLogin';

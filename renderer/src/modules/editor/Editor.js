@@ -3,7 +3,6 @@
 /* eslint-disable max-len */
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
-import BibleNavigation from '@/modules/biblenavigation/BibleNavigation';
 import PropTypes from 'prop-types';
 import {
   LockOpenIcon,
@@ -23,13 +22,14 @@ import {
   ChevronDownIcon, DotsVerticalIcon,
 } from '@heroicons/react/solid';
 
-import CrossReferenceIcon from '@/icons/crossreference.svg';
-import FootNotesIcon from '@/icons/footnotes.svg';
 import * as localforage from 'localforage';
-import CustomNavigation from '@/components/EditorPage/Navigation/CustomNavigation';
 import {
  Fragment, useContext, useEffect, useState,
 } from 'react';
+import CrossReferenceIcon from '@/icons/crossreference.svg';
+import FootNotesIcon from '@/icons/footnotes.svg';
+import CustomNavigation from '@/components/EditorPage/Navigation/CustomNavigation';
+import BibleNavigation from '@/modules/biblenavigation/BibleNavigation';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import { ProjectContext } from '@/components/context/ProjectContext';
 // eslint-disable-next-line import/no-unresolved
