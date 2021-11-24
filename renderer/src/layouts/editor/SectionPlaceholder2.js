@@ -2,12 +2,12 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-param-reassign */
-import { ReferenceContext } from '@/components/context/ReferenceContext';
-import EditorSection from '@/layouts/editor/EditorSection';
 import dynamic from 'next/dynamic';
 import { useContext, useEffect, useState } from 'react';
-import ReferenceBible from '@/components/EditorPage/Reference/ReferenceBible/ReferenceBible';
 import localforage from 'localforage';
+import { ReferenceContext } from '@/components/context/ReferenceContext';
+import EditorSection from '@/layouts/editor/EditorSection';
+import ReferenceBible from '@/components/EditorPage/Reference/ReferenceBible/ReferenceBible';
 import { ProjectContext } from '@/components/context/ProjectContext';
 import CustomNavigation from '@/components/EditorPage/Navigation/CustomNavigation';
 import { isElectron } from '@/core/handleElectron';
@@ -269,7 +269,7 @@ const SectionPlaceholder2 = () => {
       ? (layout >= 1 && layout <= 2) : (layout > 1 && layout <= 2)) && (
       <>
         {(openResource3 === false || openResource4 === false) && (
-        <div className="bg-white rounded-md grid auto-rows-fr gap-2">
+        <div className="ml-1 bg-white rounded-md grid auto-rows-fr gap-2">
           <EditorSection
             row="3"
             hideAddition={hideAddition}
@@ -343,44 +343,6 @@ const SectionPlaceholder2 = () => {
                 />
               ))
             }
-          </EditorSection>
-
-          <EditorSection
-            row="4"
-            hideAddition={hideAddition}
-            sectionNum={sectionNum}
-            setSectionNum={setSectionNum}
-            title={referenceColumnTwoData2.refName}
-            selectedResource={referenceColumnTwoData2.selectedResource}
-            languageId={referenceColumnTwoData2.languageId}
-            setReferenceResources={setReferenceColumnTwoData2}
-            setLoadResource={setLoadResource4}
-            loadResource={loadResource4}
-            openResource={openResource4}
-            setOpenResource3={setOpenResource3}
-            setOpenResource4={setOpenResource4}
-            CustomNavigation={CustomNavigation2}
-          >
-            {
-                  (loadResource4 === true) && (
-                    referenceColumnTwoData2.selectedResource === 'bible' ? (
-                      <ReferenceBible
-                        languageId={referenceColumnTwoData2.languageId}
-                        refName={referenceColumnTwoData2.refName}
-                        bookId={_bookId2}
-                        chapter={_chapter2}
-                        verse={_verse2}
-                      />
-                    ) : (
-                      <TranslationHelps
-                        selectedResource={referenceColumnTwoData2.selectedResource}
-                        languageId={referenceColumnTwoData2.languageId}
-                        bookId={_bookId2}
-                        chapter={_chapter2}
-                        verse={_verse2}
-                      />
-                    ))
-                }
           </EditorSection>
         </div>
       )}

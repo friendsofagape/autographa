@@ -4,13 +4,13 @@ import { Dialog, Transition } from '@headlessui/react';
 import {
   Fragment, useEffect, useRef, useState,
 } from 'react';
-import SelectBook from '@/components/EditorPage/Navigation/reference/SelectBook';
-import SelectVerse from '@/components/EditorPage/Navigation/reference/SelectVerse';
 import {
   XIcon,
   ChevronDownIcon,
 } from '@heroicons/react/solid';
 import { useBibleReference } from 'bible-reference-rcl';
+import SelectBook from '@/components/EditorPage/Navigation/reference/SelectBook';
+import SelectVerse from '@/components/EditorPage/Navigation/reference/SelectVerse';
 
 export default function CustomNavigation({
   initialBook,

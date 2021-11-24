@@ -19,6 +19,7 @@ import {
   XIcon,
 } from '@heroicons/react/outline';
 
+import { BookmarkIcon } from '@heroicons/react/solid';
 import ColumnsIcon from '@/icons/basil/Outline/Interface/Columns.svg';
 import ReplyIcon from '@/icons/basil/Outline/Communication/Reply.svg';
 import ForwardIcon from '@/icons/basil/Outline/Communication/Forward.svg';
@@ -27,7 +28,6 @@ import Notifications from '@/modules/notifications/Notifications';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import MenuBar from '@/components/Menubar/MenuBar';
 import CustomUsfmToolbar from '@/components/EditorPage/UsfmEditor/CustomUsfmToolbar';
-import { BookmarkIcon } from '@heroicons/react/solid';
 import { ProjectContext } from '@/components/context/ProjectContext';
 import CustomNofications from '@/components/Notification/CustomNofications';
 import AboutModal from './AboutModal';

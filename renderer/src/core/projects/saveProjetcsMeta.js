@@ -71,6 +71,9 @@ const saveProjectsMeta = async (
         scope = (canonSpecification.currentScope)
         .filter((x) => !(Object.keys(project.type.flavorType.currentScope)).includes(x));
         id = Object.keys(project?.identification?.primary?.ag);
+        importedFiles.forEach((file) => {
+          scope.push(file.id);
+        });
       }
       // Create New burrito
       // ingredient has the list of created files in the form of SB Ingredients

@@ -1,10 +1,9 @@
-import BibleNavigation from '@/modules/biblenavigation/BibleNavigation';
-
 import { TrashIcon } from '@heroicons/react/outline';
 
 import {
   XIcon,
 } from '@heroicons/react/solid';
+import BibleNavigation from '@/modules/biblenavigation/BibleNavigation';
 
 export default function Comments() {
   return (

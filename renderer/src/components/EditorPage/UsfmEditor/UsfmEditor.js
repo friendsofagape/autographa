@@ -1,8 +1,6 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable react-hooks/exhaustive-deps */
-import { ProjectContext } from '@/components/context/ProjectContext';
-import { ReferenceContext } from '@/components/context/ReferenceContext';
 import React, {
   useContext,
   useEffect,
@@ -17,6 +15,8 @@ import {
   withChapterPaging,
   //  withChapterSelection,
 } from 'usfm-editor';
+import { ReferenceContext } from '@/components/context/ReferenceContext';
+import { ProjectContext } from '@/components/context/ProjectContext';
 import Editor from '@/modules/editor/Editor';
 import LoadingScreen from '@/components/Loading/LoadingScreen';
 import EmptyScreen from '@/components/Loading/EmptySrceen';

@@ -6,9 +6,9 @@ import React, {
 } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { FolderOpenIcon } from '@heroicons/react/outline';
+import * as localforage from 'localforage';
 import CloseIcon from '@/illustrations/close-button-black.svg';
 import updateTranslationSB from '@/core/burrito/updateTranslationSB';
-import * as localforage from 'localforage';
 import { SnackBar } from '@/components/SnackBar';
 import { validate } from '../../util/validate';
 import * as logger from '../../logger';

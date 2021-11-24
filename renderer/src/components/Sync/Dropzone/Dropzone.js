@@ -28,6 +28,7 @@ const DragAndDrop = (props) => {
     e.preventDefault();
     // e.stopPropagation();
     console.log('handleDrop', props);
+    // eslint-disable-next-line react/destructuring-assignment
     props.dropped(true);
   };
   return (

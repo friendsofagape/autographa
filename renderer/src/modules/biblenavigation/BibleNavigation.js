@@ -4,12 +4,13 @@ import { Dialog, Transition } from '@headlessui/react';
 import {
   Fragment, useContext, useEffect, useRef, useState,
 } from 'react';
-import SelectBook from '@/components/EditorPage/Navigation/reference/SelectBook';
-import SelectVerse from '@/components/EditorPage/Navigation/reference/SelectVerse';
 import {
   XIcon,
   ChevronDownIcon,
 } from '@heroicons/react/solid';
+import * as localforage from 'localforage';
+import SelectBook from '@/components/EditorPage/Navigation/reference/SelectBook';
+import SelectVerse from '@/components/EditorPage/Navigation/reference/SelectVerse';
 
 // import {
 //   LockOpenIcon,
@@ -18,7 +19,6 @@ import {
 //   CogIcon,
 //   ChatIcon,
 // } from '@heroicons/react/outline';
-import * as localforage from 'localforage';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import { isElectron } from '../../core/handleElectron';
 

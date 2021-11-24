@@ -1,6 +1,6 @@
+import { useContext, useEffect, useState } from 'react';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import { ProjectContext } from '@/components/context/ProjectContext';
-import { useContext, useEffect, useState } from 'react';
 
 export default function Bookmarks() {
   const {

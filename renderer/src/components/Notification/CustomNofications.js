@@ -3,9 +3,9 @@ import {
     BellIcon,
   } from '@heroicons/react/outline';
 import React, { useContext, useEffect, useState } from 'react';
-import Notifications from '@/modules/notifications/Notifications';
 import localforage from 'localforage';
 import moment from 'moment';
+import Notifications from '@/modules/notifications/Notifications';
 import menuStyles from '../../layouts/editor/MenuBar.module.css';
 import { AutographaContext } from '../context/AutographaContext';
 
