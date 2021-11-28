@@ -13,11 +13,11 @@ import BullhornIcon from '@/icons/basil/Outline/Communication/Bullhorn.svg';
 import ProcessorIcon from '@/icons/basil/Outline/Devices/Processor.svg';
 // import CheckIcon from '@/icons/basil/Outline/Interface/Check.svg';
 import ImageIcon from '@/icons/basil/Outline/Files/Image.svg';
+import useValidator from '@/components/hooks/useValidator';
 import { classNames } from '../../util/classNames';
 import * as logger from '../../logger';
 import ImportPopUp from './ImportPopUp';
 import CustomList from './CustomList';
-
 // eslint-disable-next-line no-unused-vars
 const solutions = [
   {
@@ -84,12 +84,18 @@ export default function NewProject({ call, project, closeEdit }) {
       setNewProjectFields,
     },
   } = React.useContext(ProjectContext);
+  const { action: { validateField } } = useValidator();
   const router = useRouter();
   const [snackBar, setOpenSnackBar] = React.useState(false);
   const [snackText, setSnackText] = React.useState('');
   const [notify, setNotify] = React.useState();
   const [loading, setLoading] = React.useState(false);
   const [metadata, setMetadata] = React.useState();
+  const [error, setError] = React.useState({
+    projectName: {},
+    abbr: {},
+    description: {},
+  });
   function getAbbreviation(text) {
     if (typeof text !== 'string' || !text) {
       return '';
@@ -117,14 +123,36 @@ export default function NewProject({ call, project, closeEdit }) {
     }
   };
 
-  const validate = () => {
+  const validate = async () => {
     logger.debug('NewProject.js', 'Validating the fields.');
     setLoading(true);
-    let create = false;
+    let create = true;
     if (newProjectFields.projectName && newProjectFields.abbreviation) {
-      create = true;
+      logger.debug('NewProject.js', 'Validating all the fields.');
+      const checkName = await validateField(newProjectFields.projectName, { check: true, minLen: 5, maxLen: 40 }, 'nonSpecChar');
+      if (checkName.fieldValid === false || checkName.lenValid === false) {
+        logger.debug('NewProject.js', 'Validation failed for Project Name.');
+        create = false;
+      }
+      const checkAbbr = await validateField(newProjectFields.abbreviation, { check: true, minLen: 1, maxLen: 10 }, 'nonSpecChar');
+      if (checkAbbr.fieldValid === false || checkAbbr.lenValid === false) {
+        logger.debug('NewProject.js', 'Validation failed for Abbreviation.');
+        create = false;
+      }
+      const checkDesc = await validateField(newProjectFields.description, { check: true, minLen: 0, maxLen: 400 }, '');
+      if (checkDesc.lenValid === false) {
+        logger.debug('NewProject.js', 'Validation failed for Description.');
+        create = false;
+      }
+      setError({
+        ...error, projectName: checkName, abbr: checkAbbr, description: checkDesc,
+      });
     } else {
       create = false;
+      logger.debug('NewProject.js', 'Validation Failed - Fill all the required fields.');
+      setNotify('warning');
+      setSnackText('Fill all the fields');
+      setOpenSnackBar(true);
     }
     if (create === true) {
       logger.debug('NewProject.js', 'Creating new project.');
@@ -140,11 +168,7 @@ export default function NewProject({ call, project, closeEdit }) {
         }
       });
     } else {
-      logger.debug('NewProject.js', 'Validation Failed - Fill all the required fields.');
       setLoading(false);
-      setNotify('warning');
-      setSnackText('Fill all the fields');
-      setOpenSnackBar(true);
     }
   };
   const [openPopUp, setOpenPopUp] = React.useState(false);
@@ -206,6 +230,7 @@ export default function NewProject({ call, project, closeEdit }) {
                   disabled={call !== 'new'}
                   className={classNames(call !== 'new' ? 'bg-gray-200' : '', 'w-52 lg:w-80 block rounded shadow-sm sm:text-sm focus:border-primary border-gray-300')}
                 />
+                <span className="text-error">{error.projectName?.fieldMsg || error.projectName?.lenMsg}</span>
                 <h4 className="mt-5 text-xs font-base mb-2 text-primary leading-4 tracking-wide  font-light">Description</h4>
                 <textarea
                   type="text"
@@ -217,6 +242,7 @@ export default function NewProject({ call, project, closeEdit }) {
                   }}
                   className="bg-white w-52 lg:w-80 h-28  block rounded shadow-sm sm:text-sm focus:border-primary border-gray-300"
                 />
+                <span className="text-error">{error.description?.fieldMsg || error.description?.lenMsg}</span>
               </div>
 
               <div className="col-span-2">
@@ -236,6 +262,7 @@ export default function NewProject({ call, project, closeEdit }) {
                       }}
                       className="bg-white w-24 block rounded  sm:text-sm focus:border-primary border-gray-300"
                     />
+                    <span className="text-error">{error.abbr?.fieldMsg || error.abbr?.lenMsg}</span>
                   </div>
                 </div>
                 <div className="flex gap-5 mt-5 items-center">
