@@ -84,7 +84,7 @@ export default function NewProject({ call, project, closeEdit }) {
       setNewProjectFields,
     },
   } = React.useContext(ProjectContext);
-  const { action: { validateField } } = useValidator();
+  const { action: { validateField, isLengthValidated, isTextValidated } } = useValidator();
   const router = useRouter();
   const [snackBar, setOpenSnackBar] = React.useState(false);
   const [snackText, setSnackText] = React.useState('');
@@ -129,18 +129,19 @@ export default function NewProject({ call, project, closeEdit }) {
     let create = true;
     if (newProjectFields.projectName && newProjectFields.abbreviation) {
       logger.debug('NewProject.js', 'Validating all the fields.');
-      const checkName = await validateField(newProjectFields.projectName, { check: true, minLen: 5, maxLen: 40 }, 'nonSpecChar');
-      if (checkName.fieldValid === false || checkName.lenValid === false) {
+      const checkName = await validateField([isLengthValidated(newProjectFields.projectName, { minLen: 5, maxLen: 40 }), isTextValidated(newProjectFields.projectName, 'nonSpecChar')]);
+      if (checkName[0].isValid === false || checkName[1].isValid === false) {
         logger.debug('NewProject.js', 'Validation failed for Project Name.');
         create = false;
       }
-      const checkAbbr = await validateField(newProjectFields.abbreviation, { check: true, minLen: 1, maxLen: 10 }, 'nonSpecChar');
-      if (checkAbbr.fieldValid === false || checkAbbr.lenValid === false) {
+      const checkAbbr = await validateField([isLengthValidated(newProjectFields.abbreviation, { minLen: 1, maxLen: 10 }), isTextValidated(newProjectFields.abbreviation, 'nonSpecChar')]);
+      if (checkAbbr[0].isValid === false || checkAbbr[1].isValid === false) {
         logger.debug('NewProject.js', 'Validation failed for Abbreviation.');
         create = false;
       }
-      const checkDesc = await validateField(newProjectFields.description, { check: true, minLen: 0, maxLen: 400 }, '');
-      if (checkDesc.lenValid === false) {
+      // eslint-disable-next-line max-len
+      const checkDesc = await validateField([isLengthValidated(newProjectFields.description, { minLen: 0, maxLen: 400 })]);
+      if (checkDesc[0].isValid === false) {
         logger.debug('NewProject.js', 'Validation failed for Description.');
         create = false;
       }
@@ -230,7 +231,7 @@ export default function NewProject({ call, project, closeEdit }) {
                   disabled={call !== 'new'}
                   className={classNames(call !== 'new' ? 'bg-gray-200' : '', 'w-52 lg:w-80 block rounded shadow-sm sm:text-sm focus:border-primary border-gray-300')}
                 />
-                <span className="text-error">{error.projectName?.fieldMsg || error.projectName?.lenMsg}</span>
+                <span className="text-error">{error.projectName[0]?.message || error.projectName[1]?.message}</span>
                 <h4 className="mt-5 text-xs font-base mb-2 text-primary leading-4 tracking-wide  font-light">Description</h4>
                 <textarea
                   type="text"
@@ -242,7 +243,7 @@ export default function NewProject({ call, project, closeEdit }) {
                   }}
                   className="bg-white w-52 lg:w-80 h-28  block rounded shadow-sm sm:text-sm focus:border-primary border-gray-300"
                 />
-                <span className="text-error">{error.description?.fieldMsg || error.description?.lenMsg}</span>
+                <span className="text-error">{error.description[0]?.message}</span>
               </div>
 
               <div className="col-span-2">
@@ -262,7 +263,7 @@ export default function NewProject({ call, project, closeEdit }) {
                       }}
                       className="bg-white w-24 block rounded  sm:text-sm focus:border-primary border-gray-300"
                     />
-                    <span className="text-error">{error.abbr?.fieldMsg || error.abbr?.lenMsg}</span>
+                    <span className="text-error">{error.abbr[0]?.message || error.abbr[1]?.message}</span>
                   </div>
                 </div>
                 <div className="flex gap-5 mt-5 items-center">
