@@ -41,9 +41,11 @@ export default function ImportProjectPopUp(props) {
     const WIN = remote.getCurrentWindow();
     const chosenFolder = await dialog.showOpenDialog(WIN, options);
     if ((chosenFolder.filePaths).length > 0) {
-      setShow(true);
-      const result = await viewBurrito(chosenFolder.filePaths[0]);
-      setSbData(result);
+      await localforage.getItem('userProfile').then(async (value) => {
+        setShow(true);
+        const result = await viewBurrito(chosenFolder.filePaths[0],value.username);
+        setSbData(result);
+      });
     } else {
       close();
     }
@@ -52,16 +54,17 @@ export default function ImportProjectPopUp(props) {
   const importProject = async () => {
     if (folderPath) {
       setValid(false);
-      await localforage.getItem('userProfile').then(async (value) => {
-        const status = await importBurrito(folderPath, value.username);
-        setOpenSnackBar(true);
-        closePopUp(false);
-        setNotify(status[0].type);
-        setSnackText(status[0].value);
-        if (status[0].type === 'success') {
-          router.push('/projects');
-        }
-      });
+      console.log(sbData);
+      // await localforage.getItem('userProfile').then(async (value) => {
+      //   const status = await importBurrito(folderPath, value.username);
+      //   setOpenSnackBar(true);
+      //   closePopUp(false);
+      //   setNotify(status[0].type);
+      //   setSnackText(status[0].value);
+      //   if (status[0].type === 'success') {
+      //     router.push('/projects');
+      //   }
+      // });
     } else {
       setValid(true);
       setNotify('failure');
