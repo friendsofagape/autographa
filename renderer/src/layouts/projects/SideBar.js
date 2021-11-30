@@ -25,7 +25,7 @@ export default function SideBar() {
       <ul>
         <li className="text-gray-900 font-medium hover:text-white hover:bg-primary cursor-pointer py-5 group">
           <Link href="/projects">
-            <a className="flex flex-col items-center" href="#projects">
+            <a aria-label="projectList" className="flex flex-col items-center" href="#projects">
               <ProjectsIcon
                 fill="none"
                 strokeCurrent="none"
@@ -37,7 +37,7 @@ export default function SideBar() {
         </li>
         <li className="text-gray-900 font-medium hover:text-white hover:bg-primary cursor-pointer py-5 group">
           <Link href="/newproject">
-            <a className="flex flex-col items-center" href="#new">
+            <a aria-label="new" className="flex flex-col items-center" href="#new">
               <NewProjectIcon
                 fill="none"
                 strokeCurrent="none"

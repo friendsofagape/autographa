@@ -281,6 +281,7 @@ export default function NewProject({ call, project, closeEdit }) {
                     <div>
                       <button
                         type="button"
+                        aria-label="create"
                         className="w-40 h-10 my-5 bg-success leading-loose rounded shadow text-xs font-base text-white tracking-wide font-light uppercase"
                         onClick={() => validate()}
                       >

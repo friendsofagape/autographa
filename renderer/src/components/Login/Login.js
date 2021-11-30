@@ -193,7 +193,7 @@ export default function Login() {
                       {user.username}
                     </div>
                     <div className="h-6 w-6 flex items-center justify-center bg-gray-200 rounded-full group-hover:bg-secondary">
-                      <ChevronRightIcon className="h-5 w-5" onClick={() => { handleSubmit({ username: user.username }); }} />
+                      <ChevronRightIcon data-test-id="submit" className="h-5 w-5" onClick={() => { handleSubmit({ username: user.username }); }} />
                     </div>
                   </div>
                 );
