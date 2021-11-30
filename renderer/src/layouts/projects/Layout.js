@@ -42,7 +42,7 @@ export default function ProjectsLayout(props) {
             ? (
               <div className="mx-auto py-4 px-4 sm:px-4 lg:px-6 border-primary border-b-4 flex items-center justify-between">
                 <div className="flex items-center">
-                  <h1 className="text-xl font-bold text-gray-900 uppercase tracking-wider">{title}</h1>
+                  <h1 aria-label="projects" className="text-xl font-bold text-gray-900 uppercase tracking-wider">{title}</h1>
                   {header}
                 </div>
 
@@ -50,6 +50,7 @@ export default function ProjectsLayout(props) {
                   && (
                     <>
                       <button
+                        aria-label="import"
                         type="button"
                         className="flex text-white ml-5 font-bold text-xs px-3 py-2 rounded-full
                                     leading-3 tracking-wider uppercase bg-primary items-center"
