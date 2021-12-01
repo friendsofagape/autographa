@@ -2,7 +2,7 @@
 /* eslint-disable react/prop-types */
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { ChevronDownIcon } from '@heroicons/react/solid';
+import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/solid';
 import CustomList from '@/modules/projects/CustomList';
 import { ProjectContext } from '../../context/ProjectContext';
 import CustomCanonSpecification from './CustomCanonSpecification';
@@ -134,10 +134,19 @@ export default function AdvancedSettingsDropdown({ call, project }) {
           type="button"
         >
           <h3>Advanced Settings</h3>
-          <ChevronDownIcon
-            className="h-5 w-5 text-primary"
-            aria-hidden="true"
-          />
+          {isShow
+            ? (
+              <ChevronDownIcon
+                className="h-5 w-5 text-primary"
+                aria-hidden="true"
+              />
+            )
+            : (
+              <ChevronUpIcon
+                className="h-5 w-5 text-primary"
+                aria-hidden="true"
+              />
+          )}
         </button>
         {!isShow
           && (
