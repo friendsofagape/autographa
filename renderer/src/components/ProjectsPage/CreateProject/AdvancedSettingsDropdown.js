@@ -191,7 +191,7 @@ export default function AdvancedSettingsDropdown({ call, project }) {
                     </div>
                     <div
                       className={canonSpecification.title === 'Other' ? 'bg-primary hover:bg-secondary text-white px-3 py-1 rounded-full cursor-pointer whitespace-nowrap' : 'bg-gray-200 hover:bg-primary hover:text-white px-3 py-1 rounded-full cursor-pointer whitespace-nowrap'}
-                      onClick={() => selectCanon(call === 'edit' ? canonSpecification : canonList[3])}
+                      onClick={() => selectCanon(canonList[3])}
                       role="button"
                       tabIndex="0"
                     >
