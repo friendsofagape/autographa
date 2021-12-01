@@ -87,13 +87,6 @@ export default function SelectVerse({
           {children}
         </div>
       </div>
-      {/* <p className="p-8 text-sm leading-relaxed tracking-wide">
-        18 Then Jesus came to them and said, “All authority in heaven and on earth has
-        been given to me. 19 Therefore go and make disciples of all nations, baptizing
-        them in the name of the Father and of the Son and of the Holy Spirit, 20 and
-        teaching them to obey everything I have commanded you.
-        And surely I am with you always, to the very end of the age.”
-      </p> */}
 
       <Disclosure>
         {openChapter && (
@@ -106,7 +99,7 @@ export default function SelectVerse({
             leaveFrom="transform scale-100 opacity-100"
             leaveTo="transform scale-95 opacity-0"
           >
-            <Disclosure.Panel className="grid pb-5 grid-cols-10 text-center bg-black text-white text-xs font-medium tracking-wide uppercase" static>
+            <Disclosure.Panel className="grid py-5 grid-cols-10 gap-1 text-center bg-black text-white text-xs font-medium tracking-wide uppercase" static>
               {chapterList.map((chapter) => (
                 <div
                   key={chapter.key}
@@ -133,7 +126,7 @@ export default function SelectVerse({
           leaveFrom="transform scale-100 opacity-100"
           leaveTo="transform scale-95 opacity-0"
         >
-          <Disclosure.Panel className="grid pb-5 grid-cols-10 text-center bg-black text-white text-xs font-medium tracking-wide uppercase">
+          <Disclosure.Panel className="grid py-5 grid-cols-10 gap-1 text-center bg-black text-white text-xs font-medium tracking-wide uppercase">
             {verseList.map((verse) => (
               <div
                 key={verse.key}
