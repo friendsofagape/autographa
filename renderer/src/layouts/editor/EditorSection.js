@@ -35,8 +35,6 @@ export default function EditorSection({
   const [content, setContent] = useState(true);
   const [openResourcePopUp, setOpenResourcePopUp] = useState(false);
   const [openModal, setOpenModal] = useState(false);
-  // eslint-disable-next-line no-unused-vars
-  const [remove, setRemove] = useState(false);
 
   const {
     state: {
@@ -270,7 +268,7 @@ export default function EditorSection({
       </div>
       <ConfirmationModal
         openModal={openModal}
-        setRemove={setRemove}
+        title="Remove Resource"
         setOpenModal={setOpenModal}
         confirmMessage="Are you sure you want to remove this resource?"
         buttonName="Remove"

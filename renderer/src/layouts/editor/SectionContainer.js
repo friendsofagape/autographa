@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
 import dynamic from 'next/dynamic';
+import { ReferenceContext } from '@/components/context/ReferenceContext';
 import SectionPlaceholder1 from './SectionPlaceholder1';
 import SectionPlaceholder2 from './SectionPlaceholder2';
-import { ReferenceContext } from '@/components/context/ReferenceContext';
 
 const UsfmEditor = dynamic(
   () => import('@/components/EditorPage/UsfmEditor/UsfmEditor'),

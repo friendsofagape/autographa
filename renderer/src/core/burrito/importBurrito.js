@@ -69,7 +69,6 @@ export const viewBurrito = async (filePath, currentUser) => {
       result.publicDomain = metadata.copyright?.publicDomain;
       result.language = metadata.languages.map((lang) => lang.name.en);
       const duplicate = await checkDuplicate(metadata, currentUser);
-      console.log(duplicate);
       result.duplicate = duplicate;
     } else {
       result.validate = false;
@@ -213,6 +212,12 @@ const importBurrito = async (filePath, currentUser) => {
           size: stat.size,
           role: 'x-autographa',
         };
+      } else {
+        logger.debug('importBurrito.js', 'Updating ag-settings.json file');
+        const ag = fs.readFileSync(path.join(projectDir, `${projectName}_${id}`, 'ingredients', 'ag-settings.json'));
+        const settings = JSON.parse(ag);
+        settings.project.textTranslation.lastSeen = moment().format();
+        await fs.writeFileSync(path.join(projectDir, `${projectName}_${id}`, 'ingredients', 'ag-settings.json'), JSON.stringify(settings));
       }
       await fs.writeFileSync(path.join(projectDir, `${projectName}_${id}`, 'metadata.json'), JSON.stringify(metadata));
       logger.debug('importBurrito.js', 'Creating the metadata.json Burrito file.');
