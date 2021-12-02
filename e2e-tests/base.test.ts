@@ -16,7 +16,6 @@ test('Launch electron app and Navgate to projects', async () => {
     await window.click('[aria-label=projectList]');
     await window.fill('#search_box', 'new');
     const title = await window.textContent('[aria-label=projects]');
-    console.log(title);
     expect(title).toBe('Projects');
 
     //   await electronApp.close();

@@ -15,7 +15,7 @@ export default function ReferenceContextProvider({ children }) {
     const [initialBook, setInitialBook] = useState('1ti');
     const [initialChapter, setInitialChapter] = useState('1');
     const [initialVerse, setInitialVerse] = useState('1');
-    const [owner, setOwner] = useState('Door43-Catalog');
+    const [owner, setOwner] = useState('Door43-catalog'); // "es-419_gl"
     const [languageId, setLanguageId] = useState('en');
     const [selectedResource, SetSelectedResource] = useState('tn');
     const [server, setServer] = useState('https://git.door43.org');
