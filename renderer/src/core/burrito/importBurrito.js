@@ -7,9 +7,49 @@ import { validate } from '../../util/validate';
 
 const md5 = require('md5');
 
-export const viewBurrito = async (filePath) => {
-  const fs = window.require('fs');
-  const path = require('path');
+const fs = window.require('fs');
+const path = require('path');
+
+export const checkDuplicate = async (metadata, currentUser) => {
+  logger.debug('importBurrito.js', 'In getId for AG primary key');
+  const projectName = metadata.identification?.name?.en;
+  let existingProject;
+  let id;
+  const newpath = localStorage.getItem('userPath');
+  const projectDir = path.join(newpath, 'autographa', 'users', currentUser, 'projects');
+  const folderList = fs.readdirSync(projectDir);
+  logger.debug('importBurrito.js', 'Checking for AG primary key');
+  if (metadata.identification.primary.ag !== undefined) {
+    Object.entries(metadata.identification?.primary?.ag).forEach(([key]) => {
+      logger.debug('importBurrito.js', 'Fetching the key from burrito.');
+      id = key;
+    });
+  } else if (metadata.identification.upstream.ag !== undefined) {
+    const list = metadata.identification?.upstream?.ag;
+    logger.debug('importBurrito.js', 'Fetching the latest key from list.');
+    // eslint-disable-next-line max-len
+    const latest = list.reduce((a, b) => (new Date(a.timestamp) > new Date(b.timestamp) ? a : b));
+    Object.entries(latest).forEach(([key]) => {
+      logger.debug('importBurrito.js', 'Fetching the key from burrito.');
+      id = key;
+    });
+  }
+  if (id && projectName) {
+    await folderList.forEach((folder) => {
+      if (folder === `${projectName}_${id}`) {
+        logger.debug('importBurrito.js', 'Project already exists.');
+        existingProject = true;
+      }
+    });
+  }
+  if (existingProject === true) {
+    logger.debug('importBurrito.js', 'Project already exists.');
+  } else {
+    logger.debug('importBurrito.js', 'This is a New Project.');
+  }
+  return existingProject;
+};
+export const viewBurrito = async (filePath, currentUser) => {
   logger.debug('importBurrito.js', 'Inside viewBurrito');
   const result = {};
   if (fs.existsSync(path.join(filePath, 'metadata.json'))) {
@@ -28,6 +68,8 @@ export const viewBurrito = async (filePath) => {
       result.primaryKey = metadata.identification.primary;
       result.publicDomain = metadata.copyright?.publicDomain;
       result.language = metadata.languages.map((lang) => lang.name.en);
+      const duplicate = await checkDuplicate(metadata, currentUser);
+      result.duplicate = duplicate;
     } else {
       result.validate = false;
       logger.debug('importBurrito.js', 'Invalid burrito file (metadata.json).');
@@ -40,9 +82,7 @@ export const viewBurrito = async (filePath) => {
 };
 const importBurrito = async (filePath, currentUser) => {
   logger.debug('importBurrito.js', 'Inside importBurrito');
-  const fs = window.require('fs');
   const fse = window.require('fs-extra');
-  const path = require('path');
   const status = [];
   const newpath = localStorage.getItem('userPath');
   const projectDir = path.join(newpath, 'autographa', 'users', currentUser, 'projects');
@@ -56,9 +96,7 @@ const importBurrito = async (filePath, currentUser) => {
     if (success) {
       logger.debug('importBurrito.js', 'Burrito file validated successfully');
       let projectName = metadata.identification?.name?.en;
-      let existingProject;
       let id;
-      const folderList = fs.readdirSync(projectDir);
       logger.debug('importBurrito.js', 'Checking for AG primary key');
       if (metadata.identification.primary.ag !== undefined) {
         Object.entries(metadata.identification?.primary?.ag).forEach(([key]) => {
@@ -100,44 +138,29 @@ const importBurrito = async (filePath, currentUser) => {
         }
         metadata.identification.primary.ag = latest;
       }
-      if (id && projectName) {
-        await folderList.forEach((folder) => {
-          if (folder === `${projectName}_${id}`) {
-            logger.debug('importBurrito.js', 'Project already exists.');
-            existingProject = true;
+
+      if (!id) {
+        Object.entries(metadata.identification.primary).forEach(([key]) => {
+          logger.debug('importBurrito.js', 'Swapping data between primary and upstream');
+          if (key !== 'ag') {
+            const identity = metadata.identification.primary[key];
+            metadata.identification.upstream[key] = [identity];
+            delete metadata.identification.primary[key];
           }
         });
-      } else {
-        if (!id) {
-          Object.entries(metadata.identification.primary).forEach(([key]) => {
-            logger.debug('importBurrito.js', 'Swapping data between primary and upstream');
-            if (key !== 'ag') {
-              const identity = metadata.identification.primary[key];
-              metadata.identification.upstream[key] = [identity];
-              delete metadata.identification.primary[key];
-            }
-          });
-          logger.debug('importBurrito.js', 'Creating a new key.');
-          const key = currentUser + metadata.identification.name.en + moment().format();
-          id = uuidv5(key, environment.uuidToken);
-          metadata.identification.primary.ag = {
-            [id]: {
-            revision: '0',
-            timestamp: moment().format(),
-            },
-          };
-        }
-        if (!projectName) {
-          logger.debug('importBurrito.js', 'Folder name as Project Name');
-          projectName = path.basename(filePath);
-        }
+        logger.debug('importBurrito.js', 'Creating a new key.');
+        const key = currentUser + metadata.identification.name.en + moment().format();
+        id = uuidv5(key, environment.uuidToken);
+        metadata.identification.primary.ag = {
+          [id]: {
+          revision: '0',
+          timestamp: moment().format(),
+          },
+        };
       }
-      if (existingProject === true) {
-        logger.debug('importBurrito.js', 'Project already exists.');
-        alert('Existing project');
-        projectName = `${projectName}_copy`;
-      } else {
-        logger.debug('importBurrito.js', 'This is a New Project.');
+      if (!projectName) {
+        logger.debug('importBurrito.js', 'Folder name as Project Name');
+        projectName = path.basename(filePath);
       }
 
       fs.mkdirSync(path.join(projectDir, `${projectName}_${id}`, 'ingredients'), { recursive: true });
@@ -189,6 +212,12 @@ const importBurrito = async (filePath, currentUser) => {
           size: stat.size,
           role: 'x-autographa',
         };
+      } else {
+        logger.debug('importBurrito.js', 'Updating ag-settings.json file');
+        const ag = fs.readFileSync(path.join(projectDir, `${projectName}_${id}`, 'ingredients', 'ag-settings.json'));
+        const settings = JSON.parse(ag);
+        settings.project.textTranslation.lastSeen = moment().format();
+        await fs.writeFileSync(path.join(projectDir, `${projectName}_${id}`, 'ingredients', 'ag-settings.json'), JSON.stringify(settings));
       }
       await fs.writeFileSync(path.join(projectDir, `${projectName}_${id}`, 'metadata.json'), JSON.stringify(metadata));
       logger.debug('importBurrito.js', 'Creating the metadata.json Burrito file.');

@@ -10,6 +10,8 @@ import CloseIcon from '@/illustrations/close-button-black.svg';
 import localforage from 'localforage';
 import importBurrito, { viewBurrito } from '../../core/burrito/importBurrito';
 import * as logger from '../../logger';
+import ConfirmationModal from '../editor/ConfirmationModal';
+import { AutographaContext } from '@/components/context/AutographaContext';
 
 export default function ImportProjectPopUp(props) {
   const {
@@ -25,7 +27,8 @@ export default function ImportProjectPopUp(props) {
   const [notify, setNotify] = React.useState();
   const [show, setShow] = React.useState(false);
   const [sbData, setSbData] = React.useState({});
-
+  const [openModal, setOpenModal] = React.useState(false);
+  const {action: {FetchProjects}} = React.useContext(AutographaContext);
   function close() {
     setValid(false);
     closePopUp(false);
@@ -41,27 +44,37 @@ export default function ImportProjectPopUp(props) {
     const WIN = remote.getCurrentWindow();
     const chosenFolder = await dialog.showOpenDialog(WIN, options);
     if ((chosenFolder.filePaths).length > 0) {
-      setShow(true);
-      const result = await viewBurrito(chosenFolder.filePaths[0]);
-      setSbData(result);
+      await localforage.getItem('userProfile').then(async (value) => {
+        setShow(true);
+        const result = await viewBurrito(chosenFolder.filePaths[0],value.username);
+        setSbData(result);
+      });
     } else {
       close();
     }
     setFolderPath(chosenFolder.filePaths[0]);
   };
+  const callImport = async() =>{
+    await localforage.getItem('userProfile').then(async (value) => {
+      const status = await importBurrito(folderPath, value.username);
+      setOpenSnackBar(true);
+      closePopUp(false);
+      setNotify(status[0].type);
+      setSnackText(status[0].value);
+      if (status[0].type === 'success') {
+        FetchProjects();
+        router.push('/projects');
+      }
+    });
+  }
   const importProject = async () => {
     if (folderPath) {
       setValid(false);
-      await localforage.getItem('userProfile').then(async (value) => {
-        const status = await importBurrito(folderPath, value.username);
-        setOpenSnackBar(true);
-        closePopUp(false);
-        setNotify(status[0].type);
-        setSnackText(status[0].value);
-        if (status[0].type === 'success') {
-          router.push('/projects');
-        }
-      });
+      if (sbData.duplicate===true){
+        setOpenModal(true);
+      } else {
+        callImport();
+      }
     } else {
       setValid(true);
       setNotify('failure');
@@ -210,7 +223,14 @@ export default function ImportProjectPopUp(props) {
         setSnackText={setSnackText}
         error={notify}
       />
-
+      <ConfirmationModal
+        openModal={openModal}
+        title='Replace Resource'
+        setOpenModal={setOpenModal}
+        confirmMessage="An existing project with the same name was found. Press 'Replace' if you want to replace it. This would overwrite any existing content in overlapping books. Otherwise, press 'Cancel' to go back."
+        buttonName="Replace"
+        closeModal={()=>callImport()}
+      />
     </>
   );
 }
