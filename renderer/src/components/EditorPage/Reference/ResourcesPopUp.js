@@ -22,16 +22,19 @@ function createData(name, language, date) {
 }
 const translationNotes = [
   createData('Translation Notes English', 'en', '2021-02-05'),
+  createData('Translation Notes Spanish', 'es-419', '2020-12-29'),
   createData('Translation Notes Hindi', 'hi', '2021-02-11'),
   createData('Translation Notes Bengali', 'bn', '2021-02-25'),
   createData('Translation Notes Malayalam', 'ml', '2020-12-31'),
-  createData('Translation Notes Gujrati', 'gu', '2020-12-29'),
+  createData('Translation Notes Gujarati', 'gu', '2020-12-29'),
 ];
 const translationWords = [
-  createData('Translation Words', 'en', '2021-02-05'),
+  createData('Translation Words English', 'en', '2021-02-05'),
+  createData('Translation Words Spanish', 'es-419', '2021-02-05'),
 ];
 const translationQuestions = [
-  createData('Transaltion Questions', 'en', '2021-02-05'),
+  createData('Transaltion Questions English', 'en', '2021-02-05'),
+  createData('Transaltion Questions Spanish', 'es-419', '2021-02-05'),
 ];
 
 const ResourcesPopUp = ({
@@ -60,6 +63,7 @@ const ResourcesPopUp = ({
     actions: {
       openResourceDialog,
       setOpenImportResourcePopUp,
+      setOwner,
     },
   } = useContext(ReferenceContext);
 
@@ -152,6 +156,11 @@ const ResourcesPopUp = ({
       refName: name,
       header: title,
     });
+    if (name.split(' ')[2] === 'Spanish') {
+      setOwner('es-419_gl');
+    } else {
+      setOwner('Door43-catalog');
+    }
     removeSection();
   };
 
@@ -297,7 +306,7 @@ const ResourcesPopUp = ({
                                 role="button"
                                 tabIndex="0"
                               >
-                                {notes.name}
+                                {notes.name.split(' ')[2]}
                               </div>
                             </td>
                             <td className="px-5 text-gray-600">
@@ -329,7 +338,7 @@ const ResourcesPopUp = ({
                                 role="button"
                                 tabIndex="0"
                               >
-                                {notes.name}
+                                {notes.name.split(' ')[2]}
                               </div>
                             </td>
                             <td className="px-5 text-gray-600">
@@ -360,7 +369,7 @@ const ResourcesPopUp = ({
                                 role="button"
                                 tabIndex="0"
                               >
-                                {notes.name}
+                                {notes.name.split(' ')[2]}
                               </div>
                             </td>
                             <td className="px-5 text-gray-600">

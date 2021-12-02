@@ -4,6 +4,7 @@ import {
   useCardState,
 } from 'translation-helps-rcl';
 import ReferenceCard from './ReferenceCard';
+import TranslationhelpsNav from './TranslationhelpsNav';
 
 export default function TranslationHelpsCard({
   title,
@@ -42,6 +43,12 @@ export default function TranslationHelpsCard({
   } = useCardState({ items });
   return (
     <>
+      <TranslationhelpsNav
+        classes
+        items={items}
+        itemIndex={itemIndex}
+        setItemIndex={setItemIndex}
+      />
       <ReferenceCard
         items={items}
         headers={headers}

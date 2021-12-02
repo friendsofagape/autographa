@@ -14,6 +14,9 @@ const TranslationHelps = ({
     },
   } = useContext(ReferenceContext);
 
+  const translationQuestionsPath = `${(chapter < 10) ? (`0${ chapter}`)
+  : chapter}/${(verse < 10) ? (`0${ verse}`) : verse}.md`;
+
   return (
     <>
       {(() => {
@@ -54,12 +57,12 @@ const TranslationHelps = ({
               verse={verse}
               chapter={chapter}
               projectId={bookId || 'mat'}
-              branch="master"
+              branch={branch}
               viewMode="markdown"
-              languageId="en"
+              languageId={languageId}
               resourceId="twl"
-              owner="test_org"
-              server="https://git.door43.org"
+              owner={owner}
+              server={server}
             />
             );
         case 'tq':
@@ -69,12 +72,12 @@ const TranslationHelps = ({
               verse={verse}
               chapter={chapter}
               projectId={bookId || 'mat'}
-              branch="master"
+              branch={branch}
               viewMode="question"
-              languageId="en"
+              languageId={languageId}
               resourceId="tq"
-              filePath={null}
-              owner="test_org"
+              filePath={translationQuestionsPath}
+              owner={owner}
               server="https://git.door43.org"
             />
           );
