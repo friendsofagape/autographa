@@ -7,6 +7,7 @@ import CustomList from '@/modules/projects/CustomList';
 import { ProjectContext } from '../../context/ProjectContext';
 import CustomCanonSpecification from './CustomCanonSpecification';
 import LicencePopover from './LicencePopover';
+import * as logger from '../../../logger';
 
 function BookNumberTag(props) {
   const { children } = props;
@@ -61,6 +62,7 @@ export default function AdvancedSettingsDropdown({ call, project }) {
     setBibleNav(false);
   }
   const loadScope = (project) => {
+    logger.debug('AdvancedSettingsDropdown.js', 'In loadScope for loading a exact scope from burrito');
     if ((project.type.flavorType.canonType).length === 2) {
       if (Object.keys(project.type.flavorType.currentScope).length === 66) {
         const vals = Object.keys(project.type.flavorType.currentScope).map((key) => key);
@@ -90,6 +92,7 @@ export default function AdvancedSettingsDropdown({ call, project }) {
     }
   };
   const loadLicence = () => {
+    logger.debug('AdvancedSettingsDropdown.js', 'In loadLicence for loading the selected licence');
     const title = project.project.textTranslation.copyright;
     let myLicence = {};
     if (title === 'Custom') {

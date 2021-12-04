@@ -1,6 +1,8 @@
 // eslint-disable-next-line consistent-return
+import * as logger from '../../logger';
 
 const fetchProjectsMeta = async ({ currentUser }) => {
+  logger.debug('fetchProjectsMeta.js', 'In fetchProjectsMeta');
   const newpath = localStorage.getItem('userPath');
   const fs = window.require('fs');
   const path = require('path');
@@ -14,17 +16,21 @@ const fetchProjectsMeta = async ({ currentUser }) => {
     arrayItems.forEach((dir) => {
       const stat = fs.lstatSync(path.join(projectsMetaPath, dir));
       if (stat.isDirectory() && fs.existsSync(path.join(projectsMetaPath, dir, 'metadata.json'))) {
+        logger.debug('fetchProjectsMeta.js', 'Found burrito for the project');
         const data = fs.readFileSync(path.join(projectsMetaPath, dir, 'metadata.json'), 'utf8');
         let setting;
         try {
           setting = fs.readFileSync(path.join(projectsMetaPath, dir, 'ingredients', 'ag-settings.json'), 'utf8');
         } catch (err) {
+          logger.error('fetchProjectsMeta.js', 'Unable to find ag-settings for the project');
           // eslint-disable-next-line no-console
           console.log(err);
         }
         if (setting) {
+          logger.debug('fetchProjectsMeta.js', 'Found ag-settings for the project, merging ag-settings and burrito');
           burritos.push({ ...JSON.parse(setting), ...JSON.parse(data) });
         } else {
+          logger.debug('fetchProjectsMeta.js', 'Unable to find ag-settings for the project so pushing only burrito');
           burritos.push(JSON.parse(data));
         }
         // resolve({ projects: burritos });
@@ -33,6 +39,7 @@ const fetchProjectsMeta = async ({ currentUser }) => {
         if (err) { throw err; }
       });
     });
+    logger.debug('fetchProjectsMeta.js', 'Returning project list');
     resolve({ projects: burritos });
   });
 };

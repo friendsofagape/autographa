@@ -19,6 +19,7 @@ export const handleLogin = (users, values) => {
   if (users) {
     const user = users.find((value) => value.username === values.username);
     if (user) {
+      logger.debug('handleLogin.js', 'Found user');
       return user;
     }
   }

@@ -1,3 +1,5 @@
+import * as logger from '../../logger';
+
 const writeToFile = ({
     username,
     projectname,
@@ -12,9 +14,11 @@ const writeToFile = ({
     );
     if (fs.existsSync(projectsPath)) {
         // appending to an existing file
+        logger.debug('writeToFile.js', 'Appending to the existing file');
         fs.writeFileSync(projectsPath, data);
     } else {
         // Creating new file if nothing present
+        logger.debug('writeToFile.js', 'Creating new file to write');
         fs.writeFileSync(projectsPath, data);
     }
 };

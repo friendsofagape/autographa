@@ -19,6 +19,7 @@ import ExportProjectPopUp from '@/layouts/projects/ExportProjectPopUp';
 import ProjectContextProvider from '@/components/context/ProjectContext';
 import SearchTags from './SearchTags';
 import NewProject from './NewProject';
+import * as logger from '../../logger';
 
 export default function ProjectList() {
   const router = useRouter();
@@ -61,6 +62,7 @@ export default function ProjectList() {
   };
 
   const handleSelectProject = (event, projectName, projectId) => {
+    logger.debug('ProjectList.js', 'In handleSelectProject');
     setSelectedProject(projectName);
     localforage.setItem('currentProject', `${projectName}_${projectId}`);
     router.push('/home');
@@ -78,6 +80,7 @@ export default function ProjectList() {
   };
 
   const editproject = async (project) => {
+    logger.debug('ProjectList.js', 'In editproject');
     const path = require('path');
     const fs = window.require('fs');
     const newpath = localStorage.getItem('userPath');
@@ -88,11 +91,13 @@ export default function ProjectList() {
       const settings = fs.readFileSync(path.join(folder, 'ingredients', 'ag-settings.json'), 'utf-8');
       const agSetting = JSON.parse(settings);
       metadata = { ...metadata, ...agSetting };
+      logger.debug('ProjectList.js', 'Loading current project metadata');
       setCurrentProject(metadata);
       setCallEditProject(true);
     });
   };
   const closeEditProject = async () => {
+    logger.debug('ProjectList.js', 'Closing edit project page and updating the values');
     setCallEditProject(false);
     await FetchProjects();
   };

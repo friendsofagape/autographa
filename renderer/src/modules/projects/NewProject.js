@@ -131,18 +131,18 @@ export default function NewProject({ call, project, closeEdit }) {
       logger.debug('NewProject.js', 'Validating all the fields.');
       const checkName = await validateField([isLengthValidated(newProjectFields.projectName, { minLen: 5, maxLen: 40 }), isTextValidated(newProjectFields.projectName, 'nonSpecChar')]);
       if (checkName[0].isValid === false || checkName[1].isValid === false) {
-        logger.debug('NewProject.js', 'Validation failed for Project Name.');
+        logger.warn('NewProject.js', 'Validation failed for Project Name.');
         create = false;
       }
       const checkAbbr = await validateField([isLengthValidated(newProjectFields.abbreviation, { minLen: 1, maxLen: 10 }), isTextValidated(newProjectFields.abbreviation, 'nonSpecChar')]);
       if (checkAbbr[0].isValid === false || checkAbbr[1].isValid === false) {
-        logger.debug('NewProject.js', 'Validation failed for Abbreviation.');
+        logger.warn('NewProject.js', 'Validation failed for Abbreviation.');
         create = false;
       }
       // eslint-disable-next-line max-len
       const checkDesc = await validateField([isLengthValidated(newProjectFields.description, { minLen: 0, maxLen: 400 })]);
       if (checkDesc[0].isValid === false) {
-        logger.debug('NewProject.js', 'Validation failed for Description.');
+        logger.warn('NewProject.js', 'Validation failed for Description.');
         create = false;
       }
       setError({
@@ -150,7 +150,7 @@ export default function NewProject({ call, project, closeEdit }) {
       });
     } else {
       create = false;
-      logger.debug('NewProject.js', 'Validation Failed - Fill all the required fields.');
+      logger.warn('NewProject.js', 'Validation Failed - Fill all the required fields.');
       setNotify('warning');
       setSnackText('Fill all the fields');
       setOpenSnackBar(true);
@@ -182,6 +182,7 @@ export default function NewProject({ call, project, closeEdit }) {
     setOpenPopUp(false);
   }
   const loadData = async (project) => {
+    logger.debug('NewProject.js', 'In loadData for loading current project details in Edit page');
     setNewProjectFields({
       projectName: project.identification.name.en,
       abbreviation: project.identification.abbreviation.en,

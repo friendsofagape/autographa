@@ -14,6 +14,7 @@ import { SnackBar } from '@/components/SnackBar';
 import { isElectron } from '../../core/handleElectron';
 import { saveProfile } from '../../core/projects/handleProfile';
 import CustomList from './CustomList';
+import * as logger from '../../logger';
 
 const languages = [
   { title: 'English' },
@@ -101,6 +102,7 @@ export default function UserProfile() {
     }
   }, [username, values, appMode]);
   const handleSave = async (e) => {
+    logger.debug('Profile.js', 'In handleSave for Saving profile');
     e.preventDefault();
     const status = await saveProfile(values);
     setNotify(status[0].type);

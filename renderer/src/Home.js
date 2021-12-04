@@ -17,8 +17,10 @@ const Home = () => {
   }, []);
   React.useEffect(() => {
     if (!states.accessToken) {
-      logger.debug('Home.js', 'Triggers getToken to fetch the Token if available');
+      logger.debug('Home.js', 'Triggers getToken to fetch the Token if not available');
       action.getToken();
+    } else {
+      logger.debug('Home.js', 'Token is available');
     }
   });
   return (

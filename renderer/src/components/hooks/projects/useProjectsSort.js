@@ -40,7 +40,7 @@ function useProjectsSort() {
   }, [notifications]);
 
   const handleClickStarred = async (event, name, property) => {
-    logger.debug('project.js', 'converting starred to be unstarred and viceversa');
+    logger.debug('useProjectsSort.js', 'converting starred to be unstarred and viceversa');
     property === 'starred' ? setactive('starred') : setactive('unstarred');
     const selectedIndex = property === 'starred'
       ? starredrow.findIndex((x) => x.name === name)
@@ -75,6 +75,7 @@ function useProjectsSort() {
             if (_project.identification.name.en === name) {
               const id = Object.keys(_project.identification.primary.ag);
               const projectName = `${name}_${id}`;
+              logger.debug('useProjectsSort.js', `Updating star/unstar in AG settings for ${name}`);
               updateAgSettings(currentUser, projectName, _project);
             }
           });
@@ -92,7 +93,7 @@ function useProjectsSort() {
 
   const handleRequestSortUnstarred = (event, property) => {
     logger.debug(
-      'project.js',
+      'useProjectsSort.js',
       `calling unstarred stable sort with value of orderBy=${property}`,
     );
     const isAsc = orderByUnstarred === property && orderUnstarred === 'asc';
@@ -101,11 +102,11 @@ function useProjectsSort() {
   };
 
   const handleDelete = (event, name, property) => {
-    logger.debug('project.js', 'calling handleDelete event');
+    logger.debug('useProjectsSort.js', 'calling handleDelete event');
     const selectedIndex = property === 'starred'
       ? starredrow.findIndex((x) => x.name === name)
       : unstarredrow.findIndex((x) => x.name === name);
-    logger.debug('project.js', `removing the element with name=${name}`);
+    logger.debug('useProjectsSort.js', `removing the element with name=${name}`);
     /* eslint no-unused-expressions: ["error", { "allowTernary": true }] */
     property === 'starred'
       ? (starredrow.splice(selectedIndex, 1))
@@ -159,6 +160,7 @@ function useProjectsSort() {
             if (user === null) {
               router.push('/projects');
         } else {
+          logger.debug('useProjectsSort.js', 'Fetching the projects');
             const projectsData = fetchProjectsMeta({ currentUser: user?.username });
             projectsData.then((value) => {
               if (value) {
@@ -197,6 +199,7 @@ function useProjectsSort() {
                   });
                 })
                 .catch((err) => {
+                  logger.error('useProjectsSort.js', 'Failed to fetch project list');
                   // we got an error
                   throw err;
                 });

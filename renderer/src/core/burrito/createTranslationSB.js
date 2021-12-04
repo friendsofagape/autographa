@@ -2,8 +2,10 @@ import moment from 'moment';
 import burrito from '../../lib/BurritoTemplete.json';
 import { OT, NT } from '../../lib/CanonSpecification';
 import languageCode from '../../lib/LanguageCode.json';
+import * as logger from '../../logger';
 
 const findCode = (list, id) => {
+  logger.debug('createTranslationSB.js', 'In findCode for getting the language code');
   let code = '';
   list.forEach((obj) => {
     if ((obj.name).toLowerCase() === id.toLowerCase()) {
@@ -14,6 +16,7 @@ const findCode = (list, id) => {
 };
 const uniqType = (canon) => [...new Set(canon)];
 const createTranslationSB = (username, projectFields, currentScope, language, licence, id) => {
+  logger.debug('createTranslationSB.js', 'In createTranslationSB');
   const names = {};
   const canonTypes = [];
   const canonSpec = {
@@ -66,6 +69,7 @@ const createTranslationSB = (username, projectFields, currentScope, language, li
       json.type.flavorType.canonSpec[type] = canonSpec[type];
     });
     json.names = names;
+    logger.debug('createTranslationSB.js', 'Created the Translation SB');
     resolve(json);
   });
 };

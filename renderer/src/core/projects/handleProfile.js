@@ -33,6 +33,7 @@ const updateJson = async (userdata) => {
   return status[0];
 };
 const updateOffline = async (data) => {
+  logger.debug('handleProfile.js', 'In updateOffline');
   const status = [];
   await localForage.getItem('userProfile')
   .then(async (userdata) => {
@@ -41,6 +42,7 @@ const updateOffline = async (data) => {
       // eslint-disable-next-line no-param-reassign
       userdata[key] = data[key];
     });
+    logger.debug('handleProfile.js', 'Updating profile data in localForage');
     localForage.setItem('userProfile', userdata);
     const value = updateJson(userdata);
     value.then((val) => {
@@ -50,6 +52,7 @@ const updateOffline = async (data) => {
   return status;
 };
 export const saveProfile = async (values) => {
+  logger.debug('handleProfile.js', 'In saveProfile');
   const status = [];
   await localForage.getItem('appMode')
   .then(async (mode) => {

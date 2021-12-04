@@ -26,6 +26,7 @@ export default function ExportProjectPopUp(props) {
   const [snackText, setSnackText] = React.useState('');
   const [notify, setNotify] = React.useState();
   function close() {
+    logger.debug('ExportProjectPopUp.js', 'Closing the Dialog Box');
     closePopUp(false);
     setValid(false);
   }
@@ -65,7 +66,7 @@ export default function ExportProjectPopUp(props) {
                 closePopUp(false);
               })
               .catch((err) => {
-                logger.debug('ExportProjectPopUp.js', `Failed to export ${err}`);
+                logger.error('ExportProjectPopUp.js', `Failed to export ${err}`);
                 setNotify('failure');
                 setSnackText('Failed to export');
                 setOpenSnackBar(true);
@@ -75,6 +76,7 @@ export default function ExportProjectPopUp(props) {
         });
       });
     } else {
+      logger.warn('ExportProjectPopUp.js', 'Invalid Path');
       setValid(true);
       setNotify('failure');
       setSnackText('Invalid Path');
