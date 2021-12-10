@@ -8,6 +8,7 @@ import { DocumentTextIcon, FolderOpenIcon } from '@heroicons/react/outline';
 import { SnackBar } from '@/components/SnackBar';
 import { ProjectContext } from '@/components/context/ProjectContext';
 import styles from './ImportPopUp.module.css';
+import * as logger from '../../logger';
 
 const grammar = require('usfm-grammar');
 
@@ -32,15 +33,18 @@ export default function ImportPopUp(props) {
   } = useContext(ProjectContext);
 
   function close() {
+    logger.debug('ImportPopUp.js', 'Closing the Import UI');
     setValid(false);
     setShow(false);
     closePopUp();
   }
   function clear() {
+    logger.debug('ImportPopUp.js', 'Clearing the data from the path box');
     setFolderPath([]);
     setBooks([]);
   }
   const getBooks = (filePaths) => {
+    logger.debug('ImportPopUp.js', 'In getBooks for displaying books name using the paths');
     const book = [];
     // regex to split path to two groups '(.*[\\\/])' for path and '(.*)' for file name
     // eslint-disable-next-line no-useless-escape
@@ -57,7 +61,7 @@ export default function ImportPopUp(props) {
     setBooks(book);
   };
   const openFileDialogSettingData = async () => {
-    // logger.debug('ImportProjectPopUp.js', 'Inside openFileDialogSettingData');
+    logger.debug('ImportPopUp.js', 'Inside openFileDialogSettingData');
     const options = {
       properties: ['openFile', 'multiSelections'],
       filters: [{ name: 'usfm files', extensions: ['usfm', 'sfm', 'USFM', 'SFM'] }],
@@ -67,14 +71,17 @@ export default function ImportPopUp(props) {
     const WIN = remote.getCurrentWindow();
     const chosenFolder = await dialog.showOpenDialog(WIN, options);
     if ((chosenFolder.filePaths).length > 0) {
+      logger.debug('ImportPopUp.js', 'Selected the files');
       setShow(true);
     } else {
+      logger.debug('ImportPopUp.js', 'Didn\'t select any file');
       close();
     }
     await getBooks(chosenFolder.filePaths);
     setFolderPath(chosenFolder.filePaths);
   };
   const importFiles = (folderPath) => {
+    logger.debug('ImportPopUp.js', 'Inside importFiles');
     const fs = window.require('fs');
     const files = [];
     folderPath.forEach((filePath) => {
@@ -82,9 +89,11 @@ export default function ImportPopUp(props) {
       const myUsfmParser = new grammar.USFMParser(usfm);
       const isJsonValid = myUsfmParser.validate();
       if (isJsonValid) {
+        logger.debug('ImportPopUp.js', 'Valid USFM file.');
         const jsonOutput = myUsfmParser.toJSON();
         files.push({ id: jsonOutput.book.bookCode, content: usfm });
       } else {
+        logger.warn('ImportPopUp.js', 'Invalid USFM file.');
         setNotify('failure');
         setSnackText('Invalid USFM file.');
         setOpenSnackBar(true);
@@ -94,11 +103,14 @@ export default function ImportPopUp(props) {
     close();
   };
   const importProject = async () => {
+    logger.debug('ImportPopUp.js', 'Inside importProject');
     if (folderPath.length > 0) {
+      logger.debug('ImportPopUp.js', 'Importing the data');
       setValid(false);
       closePopUp(false);
       await importFiles(folderPath);
     } else {
+      logger.debug('ImportPopUp.js', 'Invalid Path');
       setValid(true);
       setNotify('failure');
       setSnackText('Invalid Path');

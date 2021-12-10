@@ -1,7 +1,7 @@
 import React, { Fragment, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { PlusIcon, PencilAltIcon } from '@heroicons/react/outline';
-
+import * as logger from '../../../logger';
 import { ProjectContext } from '../../context/ProjectContext';
 
 export default function TargetLanguagePopover() {
@@ -19,13 +19,16 @@ export default function TargetLanguagePopover() {
   } = React.useContext(ProjectContext);
   // eslint-disable-next-line no-unused-vars
   const openLanguageNav = (nav) => {
+    logger.debug('TargetLanguagePopover.js', 'In openLanguageNav');
     if (nav === 'edit') {
+      logger.debug('TargetLanguagePopover.js', 'Selected a language which can be edited');
       setLock(language.locked);
       setEdit(true);
       setId(language.id);
       setLang(language.title);
       setDirection(language.scriptDirection ? language.scriptDirection : 'LTR');
     } else {
+      logger.debug('TargetLanguagePopover.js', 'Selected the Pre-defined language which can\'t be edited');
       setLock();
       setEdit(false);
       setLang();
@@ -39,11 +42,13 @@ export default function TargetLanguagePopover() {
     setIsOpen(false);
   }
   const addLanguage = () => {
+    logger.debug('TargetLanguagePopover.js', 'Adding a new language');
     setLanguage({ id: languages.length + 1, title: lang, scriptDirection: direction });
     closeModal();
   };
   // eslint-disable-next-line no-unused-vars
   const editLanguage = () => {
+    logger.debug('TargetLanguagePopover.js', 'Editing the language');
     setLanguage({ id, title: lang, scriptDirection: direction });
     closeModal();
   };

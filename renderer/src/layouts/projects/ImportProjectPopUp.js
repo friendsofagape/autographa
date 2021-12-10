@@ -30,6 +30,7 @@ export default function ImportProjectPopUp(props) {
   const [openModal, setOpenModal] = React.useState(false);
   const {action: {FetchProjects}} = React.useContext(AutographaContext);
   function close() {
+    logger.debug('ImportProjectPopUp.js', 'Closing the Dialog box');
     setValid(false);
     closePopUp(false);
     setShow(false);
@@ -44,17 +45,20 @@ export default function ImportProjectPopUp(props) {
     const WIN = remote.getCurrentWindow();
     const chosenFolder = await dialog.showOpenDialog(WIN, options);
     if ((chosenFolder.filePaths).length > 0) {
+      logger.debug('ImportProjectPopUp.js', 'Selected a directory');
       await localforage.getItem('userProfile').then(async (value) => {
         setShow(true);
         const result = await viewBurrito(chosenFolder.filePaths[0],value.username);
         setSbData(result);
       });
     } else {
+      logger.debug('ImportProjectPopUp.js', 'Didn\'t select any project');
       close();
     }
     setFolderPath(chosenFolder.filePaths[0]);
   };
   const callImport = async() =>{
+    logger.debug('ImportProjectPopUp.js', 'Inside callImport');
     await localforage.getItem('userProfile').then(async (value) => {
       const status = await importBurrito(folderPath, value.username);
       setOpenSnackBar(true);
@@ -68,14 +72,18 @@ export default function ImportProjectPopUp(props) {
     });
   }
   const importProject = async () => {
+    logger.debug('ImportProjectPopUp.js', 'Inside importProject');
     if (folderPath) {
       setValid(false);
       if (sbData.duplicate===true){
+        logger.warn('ImportProjectPopUp.js', 'Project already available');
         setOpenModal(true);
       } else {
+        logger.debug('ImportProjectPopUp.js', 'Its a new project');
         callImport();
       }
     } else {
+      logger.error('ImportProjectPopUp.js', 'Invalid Path');
       setValid(true);
       setNotify('failure');
       setSnackText('Invalid Path');

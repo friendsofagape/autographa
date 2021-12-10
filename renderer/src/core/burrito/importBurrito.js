@@ -11,26 +11,26 @@ const fs = window.require('fs');
 const path = require('path');
 
 export const checkDuplicate = async (metadata, currentUser) => {
-  logger.debug('importBurrito.js', 'In getId for AG primary key');
+  logger.debug('importBurrito.js', 'In checkDuplicate');
   const projectName = metadata.identification?.name?.en;
   let existingProject;
   let id;
   const newpath = localStorage.getItem('userPath');
   const projectDir = path.join(newpath, 'autographa', 'users', currentUser, 'projects');
   const folderList = fs.readdirSync(projectDir);
-  logger.debug('importBurrito.js', 'Checking for AG primary key');
+  logger.debug('importBurrito.js', 'Checking for AG key in burrito');
   if (metadata.identification.primary.ag !== undefined) {
     Object.entries(metadata.identification?.primary?.ag).forEach(([key]) => {
-      logger.debug('importBurrito.js', 'Fetching the key from burrito.');
+      logger.debug('importBurrito.js', 'Fetching the key from Primary.');
       id = key;
     });
   } else if (metadata.identification.upstream.ag !== undefined) {
     const list = metadata.identification?.upstream?.ag;
-    logger.debug('importBurrito.js', 'Fetching the latest key from list.');
+    logger.debug('importBurrito.js', 'Fetching the latest key from upstream list.');
     // eslint-disable-next-line max-len
     const latest = list.reduce((a, b) => (new Date(a.timestamp) > new Date(b.timestamp) ? a : b));
     Object.entries(latest).forEach(([key]) => {
-      logger.debug('importBurrito.js', 'Fetching the key from burrito.');
+      logger.debug('importBurrito.js', 'Fetching the latest key from upstream.');
       id = key;
     });
   }
@@ -72,10 +72,10 @@ export const viewBurrito = async (filePath, currentUser) => {
       result.duplicate = duplicate;
     } else {
       result.validate = false;
-      logger.debug('importBurrito.js', 'Invalid burrito file (metadata.json).');
+      logger.error('importBurrito.js', 'Invalid burrito file (metadata.json).');
     }
   } else {
-    logger.debug('importBurrito.js', 'Unable to find burrito file (metadata.json).');
+    logger.warn('importBurrito.js', 'Unable to find burrito file (metadata.json).');
     result.fileExist = false;
   }
   return result;
@@ -124,7 +124,7 @@ const importBurrito = async (filePath, currentUser) => {
         // eslint-disable-next-line max-len
         const latest = list.reduce((a, b) => (new Date(a.timestamp) > new Date(b.timestamp) ? a : b));
         Object.entries(latest).forEach(([key]) => {
-          logger.debug('importBurrito.js', 'Fetching the key from burrito.');
+          logger.debug('importBurrito.js', 'Fetching the latest key from burrito.');
           id = key;
         });
         if (list.length > 1) {
@@ -159,12 +159,12 @@ const importBurrito = async (filePath, currentUser) => {
         };
       }
       if (!projectName) {
-        logger.debug('importBurrito.js', 'Folder name as Project Name');
+        logger.debug('importBurrito.js', 'Taking folder name as Project Name');
         projectName = path.basename(filePath);
       }
 
       fs.mkdirSync(path.join(projectDir, `${projectName}_${id}`, 'ingredients'), { recursive: true });
-      logger.debug('importBurrito.js', 'Creating a directory if not existed.');
+      logger.debug('importBurrito.js', 'Creating a directory if not exists.');
       await fse.copy(filePath, path.join(projectDir, `${projectName}_${id}`))
       .then(() => {
         Object.entries(metadata.ingredients).forEach(([key, value]) => {
@@ -182,7 +182,7 @@ const importBurrito = async (filePath, currentUser) => {
           metadata.ingredients[key].size = stats.size;
         });
       })
-      .catch((err) => logger.debug('importBurrito.js', `${err}`));
+      .catch((err) => logger.error('importBurrito.js', `${err}`));
 
       metadata.meta.generator.userName = currentUser;
       if (!fs.existsSync(path.join(filePath, 'ingredients', 'ag-settings.json'))) {
@@ -223,11 +223,11 @@ const importBurrito = async (filePath, currentUser) => {
       logger.debug('importBurrito.js', 'Creating the metadata.json Burrito file.');
       status.push({ type: 'success', value: 'Project Imported Successfully' });
     } else {
-      logger.debug('importBurrito.js', 'Invalid burrito file (metadata.json).');
+      logger.error('importBurrito.js', 'Invalid burrito file (metadata.json).');
       status.push({ type: 'error', value: 'Invalid burrito file (metadata.json).' });
     }
   } else {
-    logger.debug('importBurrito.js', 'Unable to find burrito file (metadata.json).');
+    logger.warn('importBurrito.js', 'Unable to find burrito file (metadata.json).');
     status.push({ type: 'error', value: 'Unable to find burrito file (metadata.json).' });
   }
   return status;

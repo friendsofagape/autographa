@@ -43,6 +43,7 @@ const ProjectContextProvider = ({ children }) => {
     const uniqueId = (list, id) => list.some((obj) => obj.id === id);
 
     const loadSettings = async () => {
+      logger.debug('ProjectContext.js', 'In loadSettings');
       const newpath = localStorage.getItem('userPath');
       let currentUser;
       await localforage.getItem('userProfile').then((value) => {
@@ -50,6 +51,7 @@ const ProjectContextProvider = ({ children }) => {
         setUsername(currentUser);
       });
       if (!currentUser) {
+        logger.error('ProjectContext.js', 'Unable to find current user');
         return;
       }
       const fs = window.require('fs');
@@ -73,6 +75,7 @@ const ProjectContextProvider = ({ children }) => {
             : advanceSettings.languages);
         });
       } else {
+        logger.debug('ProjectContext.js', 'Loading data from AdvanceSetting.json file');
         setCanonList(advanceSettings.canonSpecification);
         setLicenseList(advanceSettings.copyright);
         setLanguages(advanceSettings.languages);
@@ -90,12 +93,14 @@ const ProjectContextProvider = ({ children }) => {
             },
           },
         };
+        logger.debug('ProjectContext.js', 'Creating a ag-user-settings.json file');
         fs.writeFileSync(file, JSON.stringify(json));
       }
     };
     // Json for storing advance settings
     // eslint-disable-next-line no-unused-vars
     const updateJson = async (currentSettings) => {
+      logger.debug('ProjectContext.js', 'In updateJson');
       const newpath = localStorage.getItem('userPath');
       let currentUser;
       await localforage.getItem('userProfile').then((value) => {
@@ -138,6 +143,7 @@ const ProjectContextProvider = ({ children }) => {
       }
     };
     const createProject = async (call, project) => {
+      logger.debug('ProjectContext.js', 'In createProject');
       // Add / update language into current list.
       if (uniqueId(languages, language.id)) {
         languages.forEach((lang) => {
@@ -165,6 +171,7 @@ const ProjectContextProvider = ({ children }) => {
         myLicence.licence = licensefile.default;
         setCopyRight(myLicence);
       }
+      logger.debug('ProjectContext.js', 'Calling saveProjectsMeta with required props');
       const status = await saveProjectsMeta(
         newProjectFields,
         language,

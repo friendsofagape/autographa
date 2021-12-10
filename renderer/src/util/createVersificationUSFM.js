@@ -1,5 +1,6 @@
 import moment from 'moment';
 import { environment } from '../../environment';
+import * as logger from '../logger';
 
 const grammar = require('usfm-grammar');
 const path = require('path');
@@ -8,6 +9,7 @@ const md5 = require('md5');
 const bookAvailable = (list, id) => list.some((obj) => obj.id === id);
 export const createVersificationUSFM = (username, project, versification, books, direction, id,
   importedFiles, copyright) => {
+  logger.debug('createVersificationUSFM.js', 'In createVersificationUSFM');
   const newpath = localStorage.getItem('userPath');
   const folder = path.join(newpath, 'autographa', 'users', username, 'projects', `${project.projectName}_${id}`, 'ingredients');
   const schemes = [
@@ -22,10 +24,12 @@ export const createVersificationUSFM = (username, project, versification, books,
   return new Promise((resolve) => {
     schemes.forEach(async (scheme) => {
       if (versification.toLowerCase() === scheme.name) {
+        logger.debug('createVersificationUSFM.js', 'Creating the files with selected scheme');
         // eslint-disable-next-line import/no-dynamic-require
         const file = require(`../lib/versification/${scheme.file}`);
         await books.forEach((book) => {
           if (bookAvailable(importedFiles, book)) {
+            logger.debug('createVersificationUSFM.js', `${book} is been Imported`);
             const file = importedFiles.filter((obj) => (obj.id === book));
             const fs = window.require('fs');
             if (!fs.existsSync(folder)) {
@@ -80,6 +84,7 @@ export const createVersificationUSFM = (username, project, versification, books,
                 if (!fs.existsSync(folder)) {
                   fs.mkdirSync(folder, { recursive: true });
                 }
+                logger.debug('createVersificationUSFM.js', `Creating the usfm file using scheme for ${book}`);
                 fs.writeFileSync(path.join(folder, `${book}.usfm`), reCreatedUsfm);
                 const stats = fs.statSync(path.join(folder, `${book}.usfm`));
                 ingredients[path.join('ingredients', `${book}.usfm`)] = {
@@ -96,6 +101,7 @@ export const createVersificationUSFM = (username, project, versification, books,
           }
         });
         const fs = window.require('fs');
+        logger.debug('createVersificationUSFM.js', 'Creating versification.json file in ingredients');
         await fs.writeFileSync(path.join(folder, 'versification.json'), JSON.stringify(file));
         const stats = fs.statSync(path.join(folder, 'versification.json'));
         ingredients[path.join('ingredients', 'versification.json')] = {
@@ -120,6 +126,7 @@ export const createVersificationUSFM = (username, project, versification, books,
             },
           },
         };
+        logger.debug('createVersificationUSFM.js', 'Creating ag-settings.json file in ingredients');
         await fs.writeFileSync(path.join(folder, 'ag-settings.json'), JSON.stringify(settings));
         const stat = fs.statSync(path.join(folder, 'ag-settings.json'));
         ingredients[path.join('ingredients', 'ag-settings.json')] = {
@@ -130,6 +137,7 @@ export const createVersificationUSFM = (username, project, versification, books,
           size: stat.size,
           role: 'x-autographa',
         };
+        logger.debug('createVersificationUSFM.js', 'Returning the ingredients data');
         resolve(ingredients);
       }
     });

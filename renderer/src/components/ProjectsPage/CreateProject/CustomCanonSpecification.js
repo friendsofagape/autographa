@@ -5,6 +5,7 @@ import { useBibleReference } from 'bible-reference-rcl';
 import PropTypes from 'prop-types';
 import SelectBook from '@/components/EditorPage/Navigation/reference/SelectBook';
 import { ProjectContext } from '../../context/ProjectContext';
+import * as logger from '../../../logger';
 
 const CustomCanonSpecification = ({ bibleNav, closeBibleNav, handleNav }) => {
   const initialBook = 'mat';
@@ -27,6 +28,7 @@ const CustomCanonSpecification = ({ bibleNav, closeBibleNav, handleNav }) => {
     closeBibleNav();
   };
   const editCanon = () => {
+    logger.debug('CustomCanonSpecification.js', 'In editCanon for editing the current scope');
     setcanonSpecification({
       id: canonSpecification.id, title: name, currentScope: selectedBooks, lock: false,
     });

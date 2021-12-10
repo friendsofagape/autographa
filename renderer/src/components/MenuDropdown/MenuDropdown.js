@@ -7,6 +7,7 @@ import { Listbox, Transition } from '@headlessui/react';
 import { CheckIcon, SelectorIcon } from '@heroicons/react/solid';
 import localforage from 'localforage';
 import { ReferenceContext } from '../context/ReferenceContext';
+import * as logger from '../../logger';
 
 export default function MenuDropdown() {
   const {
@@ -21,6 +22,7 @@ export default function MenuDropdown() {
   const [fonts, setFonts] = useState();
 
   function getFonts() {
+    logger.debug('MenuDropdown.js', 'In getFonts for fetching the list of font-family');
     localforage.getItem('font-family').then((value) => {
       setFonts(value);
     });

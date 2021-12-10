@@ -49,6 +49,7 @@ function useAuthentication() {
     }
   };
   const logout = () => {
+    logger.debug('useAuthentication.js', 'Logging out');
     setaccessToken();
     setCurrentUser();
     localForage.removeItem('sessionToken');

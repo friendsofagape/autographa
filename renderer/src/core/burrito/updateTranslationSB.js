@@ -5,6 +5,7 @@ const path = require('path');
 const md5 = require('md5');
 
 const updateTranslationSB = (username, project) => new Promise((resolve) => {
+  logger.debug('updateTranslationSB.js', 'In updateTranslationSB for updating the burrito.');
     const newpath = localStorage.getItem('userPath');
     const folder = path.join(newpath, 'autographa', 'users', username, 'projects', `${project.name}_${project.id[0]}`);
     const fs = window.require('fs');
@@ -13,6 +14,7 @@ const updateTranslationSB = (username, project) => new Promise((resolve) => {
     // eslint-disable-next-line no-unused-vars
     let updated = false;
     metadata.meta.dateCreated = moment().format();
+    logger.debug('updateTranslationSB.js', 'Updating the details of ingredients.');
     // eslint-disable-next-line no-unused-vars
     Object.entries(metadata.ingredients).forEach(([key, value]) => {
       const usfm = fs.readFileSync(path.join(folder, key), 'utf8');
@@ -32,9 +34,11 @@ const updateTranslationSB = (username, project) => new Promise((resolve) => {
       });
     }
     try {
+      logger.debug('updateTranslationSB.js', 'Updating the metadata.json (burrito) file.');
       fs.writeFileSync(path.join(folder, 'metadata.json'), JSON.stringify(metadata));
       resolve(true);
     } catch {
+      logger.error('updateTranslationSB.js', 'Failed to update the metadata.json (burrito) file.');
       resolve(false);
     }
   });

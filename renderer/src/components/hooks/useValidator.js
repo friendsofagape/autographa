@@ -1,7 +1,9 @@
 import { validEmailRegex } from '../Validation/helper';
+import * as logger from '../../logger';
 
 export default function useValidator() {
   const isLengthValidated = (data, len) => {
+    logger.debug('useValidator.js', 'In isLengthValidated for validating the length of a string');
     const errors = { };
     if (data.length > len.maxLen || data.length < len.minLen) {
       errors.message = `The input has to be between ${len.minLen} and ${len.maxLen} characters long`;
@@ -13,6 +15,7 @@ export default function useValidator() {
     return errors;
   };
   const isTextValidated = (data, name) => {
+    logger.debug('useValidator.js', 'In isTextValidated for validating the type of text');
     const errors = { };
     switch (name) {
       case 'onlyNum':
