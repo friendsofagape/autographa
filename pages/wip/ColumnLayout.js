@@ -33,7 +33,7 @@ export default function ColumnSection(props) {
     <>
       {colNumber === 3
         && (
-          <div className="bg-white rounded-md grid auto-rows-fr gap-2">
+        <div className="bg-white rounded-md grid gap-2 h-editor overflow-x-auto">
             {
             [...Array(maxRows)].map((e, i) => (
               <RowSection
@@ -45,12 +45,12 @@ export default function ColumnSection(props) {
               />
 ))
             }
-          </div>
+        </div>
         )}
 
       {colNumber >= 2
         && (
-          <div className="bg-white rounded-md grid auto-rows-fr gap-2">
+        <div className="bg-white rounded-md grid gap-2 h-editor overflow-x-auto">
             {
             [...Array(maxRows)].map((e, i) => (
               <RowSection
@@ -63,10 +63,10 @@ export default function ColumnSection(props) {
               />
 ))
             }
-          </div>
+        </div>
         )}
 
-      <div className="bg-white border-b-2 border-secondary rounded-md shadow overflow-hidden">
+      <div className="bg-white border-b-2 border-secondary rounded-md shadow h-editor overflow-hidden">
         <Editor />
       </div>
     </>

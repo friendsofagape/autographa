@@ -34,9 +34,11 @@ export default function ReferenceSelector() {
                   Add Columns
                   {colNumber}
                 </button>
-                <div className="grid grid-flow-col auto-cols-fr m-3 h-editor gap-2">
+
+                <div className="grid grid-flow-col auto-cols-fr m-3 gap-2">
                   <ColumnLayout colNumber={colNumber} />
                 </div>
+
               </EditorLayout>
             </CustomNavigationContextProvider>
           </ReferenceContextProvider>

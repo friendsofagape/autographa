@@ -269,7 +269,7 @@ const SectionPlaceholder2 = () => {
       ? (layout >= 1 && layout <= 2) : (layout > 1 && layout <= 2)) && (
       <>
         {(openResource3 === false || openResource4 === false) && (
-        <div className="ml-1 bg-white rounded-md grid auto-rows-fr gap-2">
+        <div className="bg-white rounded-md grid gap-2 h-editor overflow-x-auto">
           <EditorSection
             row="3"
             hideAddition={hideAddition}

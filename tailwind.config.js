@@ -31,7 +31,7 @@ module.exports = {
         xxs: '.65rem',
       },
       height: {
-        editor: 'calc(-8.5rem + 100vh)',
+        editor: 'calc(-9rem + 100vh)',
       },
     },
   },

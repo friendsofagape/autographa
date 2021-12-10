@@ -254,7 +254,7 @@ const SectionPlaceholder1 = () => {
       {(layout > 0 && layout <= 2) && (
         <>
           {(openResource1 === false || openResource2 === false) && (
-            <div className="bg-white ml-1 rounded-md overflow-hidden grid auto-rows-fr gap-2">
+            <div className="bg-white rounded-md grid gap-2 h-editor overflow-x-auto">
 
               <EditorSection
                 row="1"
