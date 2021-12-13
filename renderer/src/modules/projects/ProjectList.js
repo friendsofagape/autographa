@@ -144,6 +144,7 @@ export default function ProjectList() {
                                           <td className="px-4 py-4">
                                             <button
                                               title="star/unstar project"
+                                              aria-label="unstar-project"
                                               onClick={(event) => handleClickStarred(event, project.name, 'starred')}
                                               type="button"
                                             >
@@ -167,6 +168,7 @@ export default function ProjectList() {
                                                 (event) => handleSelectProject(event, project.name, project.id[0])
                                               }
                                               role="button"
+                                              aria-label="project-name"
                                               tabIndex="0"
                                               className="focus:outline-none text-sm font-medium text-gray-900"
                                             >
@@ -276,6 +278,7 @@ export default function ProjectList() {
                                             className="px-4 py-3 text-left text-xs font-medium text-gray-400"
                                           >
                                             <button
+                                              aria-label="star-project"
                                               title="star/unstar project"
                                               onClick={(event) => handleClickStarred(event, project.name, 'unstarred')}
                                               type="button"
@@ -302,6 +305,7 @@ export default function ProjectList() {
                                                     (event) => handleSelectProject(event, project.name, project.id[0])
                                                   }
                                                   role="button"
+                                                  aria-label="unstar-projectname"
                                                   tabIndex="0"
                                                   className="text-sm font-medium text-gray-900"
                                                 >
@@ -320,7 +324,7 @@ export default function ProjectList() {
                                             <Disclosure.Button className="flex justify-between w-full px-4 py-2 text-sm font-medium text-left text-purple-900 bg-purple-100 rounded-lg hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75">
                                               {open
                                                 ? <ChevronUpIcon className="w-5 h-5 text-purple-500" />
-                                              : <ChevronDownIcon className="w-5 h-5 text-purple-500" />}
+                                              : <ChevronDownIcon aria-label="expand-project" className="w-5 h-5 text-purple-500" />}
                                             </Disclosure.Button>
                                           </td>
                                         </tr>
@@ -338,7 +342,7 @@ export default function ProjectList() {
                                               <td />
                                               <td className="px-6 py-4">
                                                 <div className="text-xxs uppercase font-regular text-gray-500 tracking-wider p-1">description</div>
-                                                <div className="text-sm tracking-wide p-1">{project.description}</div>
+                                                <div aria-label="project-description-display" className="text-sm tracking-wide p-1">{project.description}</div>
                                               </td>
                                               <td colSpan="3" className="px-5">
                                                 <div className="text-xxs uppercase font-regular text-gray-500 tracking-wider p-1">Project ID</div>
@@ -348,7 +352,7 @@ export default function ProjectList() {
                                                 <Menu as="div">
                                                   <div>
                                                     <Menu.Button className="px-5">
-                                                      <DotsVerticalIcon className="h-5 w-5 text-primary" aria-hidden="true" />
+                                                      <DotsVerticalIcon className="h-5 w-5 text-primary" aria-label="menu-project" aria-hidden="true" />
                                                     </Menu.Button>
                                                   </div>
                                                   <Transition
@@ -366,6 +370,7 @@ export default function ProjectList() {
                                                           {({ active }) => (
                                                             <button
                                                               type="button"
+                                                              aria-label="edit-project"
                                                               className={`${active ? 'bg-primary text-white' : 'text-gray-900'
                                                                 } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
                                                               onClick={() => editproject(project)}

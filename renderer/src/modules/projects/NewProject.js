@@ -198,7 +198,7 @@ export default function NewProject({ call, project, closeEdit }) {
                 <input
                   type="text"
                   name="project_name"
-                  id=""
+                  id="project_name"
                   value={newProjectFields.projectName}
                   onChange={(e) => {
                     handleProjectName(e);
@@ -210,7 +210,7 @@ export default function NewProject({ call, project, closeEdit }) {
                 <textarea
                   type="text"
                   name="Description"
-                  id=""
+                  id="project_description"
                   value={newProjectFields.description}
                   onChange={(e) => {
                     setNewProjectFields({ ...newProjectFields, description: e.target.value });
@@ -229,7 +229,7 @@ export default function NewProject({ call, project, closeEdit }) {
                     <input
                       type="text"
                       name="version_abbreviated"
-                      id=""
+                      id="version_abbreviated"
                       value={newProjectFields.abbreviation}
                       onChange={(e) => {
                         setNewProjectFields({ ...newProjectFields, abbreviation: e.target.value });
@@ -300,6 +300,7 @@ export default function NewProject({ call, project, closeEdit }) {
                       </button>
                       <button
                         type="button"
+                        aria-label="save-edit-project"
                         className="w-40 h-10  bg-success leading-loose rounded shadow text-xs font-base  text-white tracking-wide  font-light uppercase"
                         onClick={() => validate()}
                       >

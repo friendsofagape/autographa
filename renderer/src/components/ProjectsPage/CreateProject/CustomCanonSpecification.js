@@ -81,6 +81,7 @@ const CustomCanonSpecification = ({ bibleNav, closeBibleNav, handleNav }) => {
               <button
                 type="button"
                 className="w-9 h-9 bg-black p-2"
+                aria-label="close-custombiblenavigation"
                 onClick={closeBibleNav}
               >
                 <XIcon />
