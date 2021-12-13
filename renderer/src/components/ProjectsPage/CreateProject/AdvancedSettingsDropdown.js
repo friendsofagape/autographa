@@ -135,6 +135,7 @@ export default function AdvancedSettingsDropdown({ call, project }) {
           className="min-w-max flex justify-between items-center pt-3 shadow tracking-wider leading-none h-10 px-4 py-2 w-96 text-sm font-medium text-black bg-gray-100 rounded-sm hover:bg-gray-200 focus:outline-none"
           onClick={handleClick}
           type="button"
+          id="open-advancesettings"
         >
           <h3>Advanced Settings</h3>
           {isShow
@@ -197,6 +198,7 @@ export default function AdvancedSettingsDropdown({ call, project }) {
                       className={canonSpecification.title === 'New Testament (NT)' ? 'bg-primary hover:bg-secondary text-white px-3 py-1 rounded-full cursor-pointer whitespace-nowrap' : 'bg-gray-200 hover:bg-primary hover:text-white px-3 py-1 rounded-full cursor-pointer whitespace-nowrap'}
                       onClick={() => selectCanon(canonList[2])}
                       role="button"
+                      aria-label="new-testament"
                       tabIndex="0"
                     >
                       New Testament (NT)
