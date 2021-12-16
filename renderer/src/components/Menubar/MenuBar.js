@@ -12,7 +12,7 @@ const MenuBar = ({
 }) => (
   <Menu as="div" className="relative inline-block text-left">
     <div>
-      <Menu.Button className={styles.dd}>
+      <Menu.Button aria-label={header === 'File' ? 'select-menu-file' : ''} className={styles.dd}>
         {header}
       </Menu.Button>
     </div>
@@ -53,6 +53,7 @@ const MenuBar = ({
                   <span>
                     <span>
                       <button
+                        aria-label={item.itemname === 'Bookmarks' ? 'select-bookmarks' : ''}
                         onClick={item.callback}
                         type="button"
                         className={`${active ? 'bg-black text-primary' : 'text-gray-900'

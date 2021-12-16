@@ -199,6 +199,7 @@ const ResourcesPopUp = ({
           <div className="w-8/12 h-4/6 items-center justify-center m-auto z-50 shadow overflow-hidden rounded">
             <div className="h-full flex relative rounded shadow overflow-hidden bg-white">
               <button
+                aria-label="close-resources"
                 type="button"
                 onClick={removeSection}
                 className="p-2 focus:outline-none bg-black absolute z-10 b top-0 right-0"
@@ -206,7 +207,7 @@ const ResourcesPopUp = ({
                 <XIcon className="h-4 w-4 text-white" />
               </button>
               <div>
-                <div className="uppercase bg-secondary text-white p-2 text-xs tracking-widest leading-snug rounded-tl text-center">
+                <div aria-label="resources-title" className="uppercase bg-secondary text-white p-2 text-xs tracking-widest leading-snug rounded-tl text-center">
                   Resources
                 </div>
                 <div style={{ width: 'max-content' }} className="bg-gray-100 px-3 py-3 h-full">

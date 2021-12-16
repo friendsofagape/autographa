@@ -127,7 +127,7 @@ export default function TopMenuBar() {
             </div>
 
             <div>
-              <span className="text-primary px-10 py-2 text-lg tracking-wide font-bold uppercase" title="Project Name">
+              <span aria-label="editor-project-name" className="text-primary px-10 py-2 text-lg tracking-wide font-bold uppercase" title="Project Name">
                 {projectname?.[0]}
               </span>
             </div>
@@ -170,6 +170,7 @@ export default function TopMenuBar() {
                 <button type="button" className={styles.btn}>
 
                   <div
+                    aria-label="decrease-font"
                     onClick={() => { handleFontSize('dec'); }}
                     role="button"
                     tabIndex="0"
@@ -179,6 +180,7 @@ export default function TopMenuBar() {
                     A
                   </div>
                   <div
+                    aria-label="increase-font"
                     className="h6 w-6 hover:text-black font-bold text-lg text-center"
                     onClick={() => { handleFontSize('inc'); }}
                     role="button"

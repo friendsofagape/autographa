@@ -322,6 +322,7 @@ export default function NewProject({ call, project, closeEdit }) {
                     <div className="p-3 flex gap-5 justify-end">
                       <button
                         type="button"
+                        aria-label="cancel-edit-project"
                         className="w-40 h-10  bg-error leading-loose rounded shadow text-xs font-base  text-white tracking-wide  font-light uppercase"
                         onClick={() => closeEdit()}
                       >

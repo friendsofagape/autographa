@@ -65,6 +65,7 @@ const CustomNofications = () => {
     return (
       <>
         <button
+          aria-label="notification-button"
           onClick={openSideBars}
           type="button"
           title="notification"

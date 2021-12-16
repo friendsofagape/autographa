@@ -279,6 +279,7 @@ export default function SubMenuBar() {
             <MenuBar header="EDIT" MenuItems={EditorTools} style={{ left: '-60px', height: '65px' }} />
           </span>
           <button
+            aria-label="about-button"
             type="button"
             onClick={() => setOpen(true)}
             className={styles.menu}
@@ -292,9 +293,11 @@ export default function SubMenuBar() {
         </div> */}
         <div className="w-2/5">
           <div className="flex justify-end">
-            <button title="layout" type="button" onClick={() => handleResource()} className={`group ${menuStyles.btn}`}>
+            <button aria-label="add-panels" title="layout" type="button" onClick={() => handleResource()} className={`group ${menuStyles.btn}`}>
               <ColumnsIcon fill="currentColor" className="h-6 w-6" aria-hidden="true" />
-              <span className="px-2 ml-1 bg-primary
+              <span
+                aria-label="number-of-panels"
+                className="px-2 ml-1 bg-primary
               text-white  group-hover:bg-white
               group-hover:text-primary inline-flex
               text-xxs leading-5 font-semibold rounded-full"

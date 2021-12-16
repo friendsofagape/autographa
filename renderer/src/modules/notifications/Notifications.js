@@ -63,11 +63,11 @@ export default function Notifications(props) {
             <div className="absolute top-16 right-0 h-full shadow overflow-hidden rounded-l-md">
 
               <div className="flex flex-row w-96 text-center bg-black text-white text-xs font-medium tracking-wider uppercase">
-                <div className="m-auto">
+                <div aria-label="notification-title" className="m-auto">
                   notifications
                 </div>
                 <div className="flex justify-end">
-                  <button type="button" ref={cancelButtonRef} className="w-9 h-9 bg-gray-900 p-2 focus:outline-none" onClick={closeSideBars}>
+                  <button aria-label="close-notification" type="button" ref={cancelButtonRef} className="w-9 h-9 bg-gray-900 p-2 focus:outline-none" onClick={closeSideBars}>
                     <XIcon />
                   </button>
                 </div>
