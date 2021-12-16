@@ -3,13 +3,7 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-const yaml = require('js-yaml');
-
-function createData(name, language, owner) {
-  return {
-    name, language, owner,
-  };
-}
+// const yaml = require('js-yaml');
 
 const ResourceOption = ({
   imageUrl,
@@ -19,8 +13,6 @@ const ResourceOption = ({
   setSelectResource,
   setTitle,
   setShowInput,
-  translationData,
-  readCustomResources,
 }) => {
   const handleSelectResource = (e, id, text) => {
     if (id) {

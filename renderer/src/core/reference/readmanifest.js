@@ -1,66 +1,66 @@
-// /* eslint-disable no-case-declarations */
-// /* eslint-disable max-len */
-// import localforage from 'localforage';
+/* eslint-disable consistent-return */
+/* eslint-disable no-case-declarations */
+/* eslint-disable max-len */
+import localforage from 'localforage';
 
-// const path = require('path');
+const path = require('path');
 
-// export async function readCustomResources({ resourceId }) {
-//     const fs = window.require('fs');
-//     const newpath = localStorage.getItem('userPath');
-//       let currentUser;
-//       await localforage.getItem('userProfile').then((value) => {
-//         currentUser = value.username;
-//       });
-//       const file = path.join(newpath, 'autographa', 'users', currentUser, 'ag-user-settings.json');
-//       return new Promise((resolve) => {
-//         if (fs.existsSync(file)) {
-//             fs.readFile(file, (err, data) => {
-//                 const agSettingsJson = JSON.parse(data);
-//                     switch (resourceId) {
-//                         case 'tn':
-//                             (agSettingsJson?.resources.door43.translationNotes).forEach(async (url) => {
-//                                     const url2 = url.split('/')[3];
-//                                     const owner = [];
-//                                     const url1 = path.join(url, '/raw/branch/master/', 'manifest.yaml');
-//                                     const response = await fetch(url1);
-//                                     if (response.ok === true) {
-//                                         const data = await response.text();
-//                                         owner.push(data, url2);
-//                                         resolve(owner);
-//                                     }
-//                             });
-//                           break;
-//                         case 'tq':
-//                             (agSettingsJson?.resources.door43.translationQuestions).forEach(async (url) => {
-//                                     const url1 = path.join(url, '/raw/branch/master/', 'manifest.yaml');
-//                                     const url2 = url.split('/')[3];
-//                                     const owner = [];
-//                                     const response = await fetch(url1);
-//                                     if (response.ok === true) {
-//                                         const data = await response.text();
-//                                         owner.push(data, url2);
-//                                         console.log(owner);
-//                                         return (owner);
-//                                     }
-//                             });
-//                           break;
-//                         case 'twlm':
-//                             (agSettingsJson?.resources.door43.translationWords).forEach(async (url) => {
-//                                     const url1 = path.join(url, '/raw/branch/master/', 'manifest.yaml');
-//                                     const url2 = url.split('/')[3];
-//                                     const owner = [];
-//                                     const response = await fetch(url1);
-//                                     if (response.ok === true) {
-//                                         const data = await response.text();
-//                                         owner.push(data, url2);
-//                                         resolve(owner);
-//                                     }
-//                             });
-//                           break;
-//                         default:
-//                           return null;
-//                       }
-//             });
-//         }
-//     });
-// }
+export async function readCustomResources({ resourceId }) {
+    const fs = window.require('fs');
+    const newpath = localStorage.getItem('userPath');
+      let currentUser;
+      await localforage.getItem('userProfile').then((value) => {
+        currentUser = value.username;
+      });
+      const file = path.join(newpath, 'autographa', 'users', currentUser, 'ag-user-settings.json');
+      return new Promise((resolve) => {
+        if (fs.existsSync(file)) {
+            fs.readFile(file, (err, data) => {
+                const agSettingsJson = JSON.parse(data);
+                    switch (resourceId) {
+                        case 'tn':
+                            (agSettingsJson?.resources.door43.translationNotes).forEach(async (url) => {
+                                    const url2 = url.split('/')[3];
+                                    const owner = [];
+                                    const url1 = path.join(url, '/raw/branch/master/', 'manifest.yaml');
+                                    const response = await fetch(url1);
+                                    if (response.ok === true) {
+                                        const data = await response.text();
+                                        owner.push(data, url2);
+                                        resolve(owner);
+                                    }
+                            });
+                          break;
+                        case 'tq':
+                            (agSettingsJson?.resources.door43.translationQuestions).forEach(async (url) => {
+                                    const url1 = path.join(url, '/raw/branch/master/', 'manifest.yaml');
+                                    const url2 = url.split('/')[3];
+                                    const owner = [];
+                                    const response = await fetch(url1);
+                                    if (response.ok === true) {
+                                        const data = await response.text();
+                                        owner.push(data, url2);
+                                        return (owner);
+                                    }
+                            });
+                          break;
+                        case 'twlm':
+                            (agSettingsJson?.resources.door43.translationWords).forEach(async (url) => {
+                                    const url1 = path.join(url, '/raw/branch/master/', 'manifest.yaml');
+                                    const url2 = url.split('/')[3];
+                                    const owner = [];
+                                    const response = await fetch(url1);
+                                    if (response.ok === true) {
+                                        const data = await response.text();
+                                        owner.push(data, url2);
+                                        resolve(owner);
+                                    }
+                            });
+                          break;
+                        default:
+                          return null;
+                      }
+            });
+        }
+    });
+}

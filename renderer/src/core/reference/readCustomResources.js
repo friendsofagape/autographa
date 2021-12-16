@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 /* eslint-disable no-case-declarations */
 /* eslint-disable max-len */
 import localforage from 'localforage';

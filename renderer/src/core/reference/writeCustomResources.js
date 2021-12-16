@@ -1,10 +1,10 @@
+/* eslint-disable consistent-return */
 /* eslint-disable max-len */
 import localforage from 'localforage';
 
 const path = require('path');
 
 export async function writeCustomResources({ resourceUrl }) {
-    console.log(resourceUrl);
     const fs = window.require('fs');
     const newpath = localStorage.getItem('userPath');
       let currentUser;
@@ -28,7 +28,6 @@ export async function writeCustomResources({ resourceUrl }) {
                     }
                       break;
                     case 'twlm':
-                      console.log('twlmmmmmmm');
                     if (agSettingsJson?.resources.door43.translationWords.includes(resourceUrl.url) === false) {
                         agSettingsJson?.resources.door43.translationWords.push(resourceUrl.url);
                     }

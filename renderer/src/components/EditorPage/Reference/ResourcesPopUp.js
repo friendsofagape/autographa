@@ -186,7 +186,6 @@ const ResourcesPopUp = ({
   function handleCustomInput(url, key) {
     removeSection();
     const resourceId = url.split('/');
-    console.log((resourceId[resourceId.length - 1].split('_')[1]), key, url);
     if (((resourceId[resourceId.length - 1].split('_')[1]) === (key === 'twlm' ? 'tw' : key)) && url) {
       writeCustomResources({ resourceUrl: { key, url } }).then(() => {
         setOpenResourcePopUp(true);
@@ -204,6 +203,7 @@ const ResourcesPopUp = ({
     readCustomResources({ resourceId: 'tq', translationData: translationQuestion });
     readCustomResources({ resourceId: 'twlm', translationData: translationWord });
     readCustomResources({ resourceId: 'tn', translationData: translationNote });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showInput]);
 
   return (
