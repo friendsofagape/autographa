@@ -81,15 +81,26 @@ const ProjectContextProvider = ({ children }) => {
         setLanguages(advanceSettings.languages);
         const json = {
           version: '1.0',
-          project: {
+          history: {
+            copyright: [{
+              id: 'Other', title: 'Custom', licence: '', locked: false,
+            }],
+            languages: [],
             textTranslation: {
               canonSpecification: [{
               id: 4, title: 'Other', currentScope: [], locked: false,
               }],
-              copyright: [{
-                id: 'Other', title: 'Custom', licence: '', locked: false,
-                }],
-              languages: [],
+            },
+          },
+          appLanguage: 'en',
+          theme: 'light',
+          userWorkspaceLocation: '',
+          commonWorkspaceLocation: '',
+          resources: {
+            door43: {
+              translationNotes: [],
+              translationQuestions: [],
+              translationWords: [],
             },
           },
         };
