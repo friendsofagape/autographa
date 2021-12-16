@@ -1,6 +1,5 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import dynamic from 'next/dynamic';
-import { ReferenceContext } from '@/components/context/ReferenceContext';
 import SectionPlaceholder1 from './SectionPlaceholder1';
 import SectionPlaceholder2 from './SectionPlaceholder2';
 
@@ -8,13 +7,7 @@ const UsfmEditor = dynamic(
   () => import('@/components/EditorPage/UsfmEditor/UsfmEditor'),
   { ssr: false },
 );
-const SectionContainer = () => {
-  const {
-    state: {
-      layout,
-    },
-  } = useContext(ReferenceContext);
-return (
+const SectionContainer = () => (
   <div className="grid grid-flow-col auto-cols-fr m-3 gap-2">
     <SectionPlaceholder1 />
     <SectionPlaceholder2 />
@@ -23,5 +16,4 @@ return (
     </div>
   </div>
   );
-};
 export default SectionContainer;
