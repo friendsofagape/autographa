@@ -163,7 +163,7 @@ export default function AdvancedSettingsDropdown({ call, project }) {
                   </h4>
                   <div>
                     <BookNumberTag>
-                      {(canonSpecification.currentScope).length}
+                      {(canonSpecification?.currentScope).length}
                     </BookNumberTag>
                   </div>
                 </div>
