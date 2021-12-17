@@ -226,6 +226,7 @@ const ProjectContextProvider = ({ children }) => {
             setSelectedProject(projectName);
           });
       }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const context = {

@@ -18,6 +18,7 @@ import ResourceOption from './ResourceOption';
 import ImportResource from './ImportResource';
 import { readCustomResources } from '@/core/reference/readCustomResources';
 import { SnackBar } from '@/components/SnackBar';
+import * as logger from '../../../logger';
 
 function createData(name, language, owner) {
   return {
@@ -55,6 +56,7 @@ const ResourcesPopUp = ({
   const [selectResource, setSelectResource] = useState(selectedResource);
   const [showInput, setShowInput] = useState(false);
   const [inputUrl, setInputUrl] = useState('');
+  const [resourceName, setResourceName] = useState('');
   const [openSnackBar, setOpenSnackBar] = useState(false);
   const [snackText, setSnackText] = useState('');
   const [error, setError] = useState('');
@@ -183,17 +185,27 @@ const ResourcesPopUp = ({
     setOpenImportResourcePopUp(false);
   }
 
-  function handleCustomInput(url, key) {
-    removeSection();
+  function handleCustomInput(url, key, resourceName) {
+    logger.debug('ResourcePopUp.js', 'Open handleCustomInput function to add write custom resource url');
     const resourceId = url.split('/');
-    if (((resourceId[resourceId.length - 1].split('_')[1]) === (key === 'twlm' ? 'tw' : key)) && url) {
-      writeCustomResources({ resourceUrl: { key, url } }).then(() => {
+    if (((resourceId[resourceId.length - 1].split('_')[1]) === (key === 'twlm' ? 'tw' : key)) && url && resourceName) {
+      removeSection();
+      writeCustomResources({ resourceUrl: { key, url, resourceName } }).then(() => {
+        setOpenSnackBar(true);
+        setError('success');
+        setSnackText('resource added successfully');
         setOpenResourcePopUp(true);
+        setInputUrl('');
+        setResourceName('');
+        setSelectResource(key);
       });
       setShowInput(false);
     } else {
-      setError('error');
+      logger.error('ResourcePopUp.js', 'Error in adding custom resource url');
       setOpenSnackBar(true);
+      setInputUrl('');
+      setResourceName('');
+      setError('failure');
       setShowInput(false);
       setSnackText('unable to fetch selected resource from the given url');
     }
@@ -229,22 +241,22 @@ const ResourcesPopUp = ({
 
           <Dialog.Overlay className="fixed inset-0 bg-black opacity-30" />
           <div className="flex items-center justify-center h-screen">
-          <div className="w-8/12 h-4/6 items-center justify-center m-auto z-50 shadow overflow-hidden rounded">
-            <div className="h-full flex relative rounded shadow overflow-hidden bg-white">
-              <button
-                aria-label="close-resources"
-                type="button"
-                onClick={removeSection}
-                className="p-2 focus:outline-none bg-black absolute z-10 b top-0 right-0"
-              >
-                <XIcon className="h-4 w-4 text-white" />
-              </button>
-              <div>
-                <div aria-label="resources-title" className="uppercase bg-secondary text-white p-2 text-xs tracking-widest leading-snug rounded-tl text-center">
-                  Resources
-                </div>
-                <div style={{ width: 'max-content' }} className="bg-gray-100 px-3 py-3 h-full">
-                  {/* <input
+            <div className="w-8/12 h-4/6 items-center justify-center m-auto z-50 shadow overflow-hidden rounded">
+              <div className="h-full flex relative rounded shadow overflow-hidden bg-white">
+                <button
+                  aria-label="close-resources"
+                  type="button"
+                  onClick={removeSection}
+                  className="p-2 focus:outline-none bg-black absolute z-10 b top-0 right-0"
+                >
+                  <XIcon className="h-4 w-4 text-white" />
+                </button>
+                <div>
+                  <div aria-label="resources-title" className="uppercase bg-secondary text-white p-2 text-xs tracking-widest leading-snug rounded-tl text-center">
+                    Resources
+                  </div>
+                  <div style={{ width: 'max-content' }} className="bg-gray-100 px-3 py-3 h-full">
+                    {/* <input
                     className="rounded h-8 bg-gray-200 border-none uppercase pr-6 text-xs
                       tracking-widest leading-snug font-bold"
                     placeholder="Search"
@@ -318,7 +330,6 @@ const ResourcesPopUp = ({
                     </div>
                   </div>
                 </div>
-
                 <div className="relative w-full">
 
                   <div className="overflow-auto w-full h-5/6 no-scrollbars">
@@ -339,7 +350,7 @@ const ResourcesPopUp = ({
                       {selectResource === 'tn' && (
                       <tbody className="bg-white divide-y divide-gray-200 ">
                         {translationNote.map((notes) => (
-                          <tr className="hover:bg-gray-200" key={notes.name}>
+                          <tr className="hover:bg-gray-200" key={notes.name + notes.owner}>
                             <td className="px-5 py-3">
                               <StarIcon className="h-5 w-5 text-gray-300" aria-hidden="true" />
                             </td>
@@ -350,7 +361,7 @@ const ResourcesPopUp = ({
                                 role="button"
                                 tabIndex="0"
                               >
-                                {notes.name}
+                                {`${notes.name} (${notes.owner})`}
                               </div>
                             </td>
                             <td className="px-5 text-gray-600">
@@ -370,7 +381,7 @@ const ResourcesPopUp = ({
                       {selectResource === 'twlm' && (
                       <tbody className="bg-white divide-y divide-gray-200  mb-44 ">
                         {translationWord.map((notes) => (
-                          <tr className="hover:bg-gray-200" key={notes.name}>
+                          <tr className="hover:bg-gray-200" key={notes.name + notes.language}>
                             <td className="px-5 py-3">
                               <StarIcon className="h-5 w-5 text-gray-300" aria-hidden="true" />
                             </td>
@@ -381,7 +392,7 @@ const ResourcesPopUp = ({
                                 role="button"
                                 tabIndex="0"
                               >
-                                {notes.name}
+                                {`${notes.name} (${notes.owner})`}
                               </div>
                             </td>
                             <td className="px-5 text-gray-600">
@@ -401,7 +412,7 @@ const ResourcesPopUp = ({
                       {selectResource === 'tq' && (
                       <tbody className="bg-white divide-y divide-gray-200  mb-44 ">
                         {translationQuestion.map((notes) => (
-                          <tr className="hover:bg-gray-200" key={notes.name}>
+                          <tr className="hover:bg-gray-200" key={notes.name + notes.language}>
                             <td className="px-5 py-3">
                               <StarIcon className="h-5 w-5 text-gray-300" aria-hidden="true" />
                             </td>
@@ -412,7 +423,7 @@ const ResourcesPopUp = ({
                                 role="button"
                                 tabIndex="0"
                               >
-                                {notes.name}
+                                {`${notes.name} (${notes.owner})`}
                               </div>
                             </td>
                             <td className="px-5 text-gray-600">
@@ -477,6 +488,17 @@ const ResourcesPopUp = ({
                                 <div>
                                   <input
                                     type="text"
+                                    name="resource name"
+                                    id=""
+                                    value={resourceName}
+                                    placeholder="Enter resource name"
+                                    onChange={(e) => setResourceName(e.target.value)}
+                                    className="bg-white w-52 ml-2 lg:w-80 block rounded shadow-sm sm:text-sm focus:border-primary border-gray-300"
+                                  />
+                                </div>
+                                <div>
+                                  <input
+                                    type="text"
                                     name="location"
                                     id=""
                                     value={inputUrl}
@@ -488,7 +510,7 @@ const ResourcesPopUp = ({
                                 <div>
                                   <button
                                     type="button"
-                                    onClick={() => handleCustomInput(inputUrl, 'tn')}
+                                    onClick={() => handleCustomInput(inputUrl, 'tn', resourceName)}
                                     title="load translation noted"
                                     className="py-2 m-1 px-6 bg-primary rounded shadow text-white uppercase text-xs tracking-widest font-semibold"
                                   >
@@ -509,6 +531,17 @@ const ResourcesPopUp = ({
                                 <div>
                                   <input
                                     type="text"
+                                    name="resource name"
+                                    id=""
+                                    value={resourceName}
+                                    placeholder="Enter resource name"
+                                    onChange={(e) => setResourceName(e.target.value)}
+                                    className="bg-white w-52 ml-2 lg:w-80 block rounded shadow-sm sm:text-sm focus:border-primary border-gray-300"
+                                  />
+                                </div>
+                                <div>
+                                  <input
+                                    type="text"
                                     name="location"
                                     id=""
                                     value={inputUrl}
@@ -520,7 +553,7 @@ const ResourcesPopUp = ({
                                 <div>
                                   <button
                                     type="button"
-                                    onClick={() => handleCustomInput(inputUrl, 'tq')}
+                                    onClick={() => handleCustomInput(inputUrl, 'tq', resourceName)}
                                     title="load translation questions"
                                     className="py-2 m-1 px-6 bg-primary rounded shadow text-white uppercase text-xs tracking-widest font-semibold"
                                   >
@@ -541,6 +574,17 @@ const ResourcesPopUp = ({
                                 <div>
                                   <input
                                     type="text"
+                                    name="resource name"
+                                    id=""
+                                    value={resourceName}
+                                    placeholder="Enter resource name"
+                                    onChange={(e) => setResourceName(e.target.value)}
+                                    className="bg-white w-52 ml-2 lg:w-80 block rounded shadow-sm sm:text-sm focus:border-primary border-gray-300"
+                                  />
+                                </div>
+                                <div>
+                                  <input
+                                    type="text"
                                     name="location"
                                     id=""
                                     value={inputUrl}
@@ -552,7 +596,7 @@ const ResourcesPopUp = ({
                                 <div>
                                   <button
                                     type="button"
-                                    onClick={() => handleCustomInput(inputUrl, 'twlm')}
+                                    onClick={() => handleCustomInput(inputUrl, 'twlm', resourceName)}
                                     title="load translation words"
                                     className="py-2 m-1 px-6 bg-primary rounded shadow text-white uppercase text-xs tracking-widest font-semibold"
                                   >
