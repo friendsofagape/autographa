@@ -106,7 +106,7 @@ export default function CustomNavigation({
     <>
       <div className="flex">
         <div className="bg-primary text-white py-2 uppercase tracking-wider text-xs font-semibold">
-          <span className="px-3">{bookName}</span>
+          <span aria-label="resource-bookname" className="px-3">{bookName}</span>
           <span
             className="focus:outline-none bg-white py-4 bg-opacity-10"
             onClick={openBooks}

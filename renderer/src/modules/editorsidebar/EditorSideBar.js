@@ -170,7 +170,7 @@ export default function EditorSideBar(props) {
                     </div> */}
                   </div>
                   <div className="flex justify-end">
-                    <button type="button" className="w-9 h-9 bg-gray-900 p-2 focus:outline-none" onClick={closeSideBars}>
+                    <button aria-label="close-button" type="button" className="w-9 h-9 bg-gray-900 p-2 focus:outline-none" onClick={closeSideBars}>
                       <XIcon />
                     </button>
                   </div>

@@ -146,7 +146,7 @@ export default function EditorSection({
   return (
 
     <>
-      <div className={classNames(openResource ? 'hidden' : '', 'relative first:mt-0 pb-12 border bg-white border-gray-200 rounded shadow-sm overflow-hidden group')}>
+      <div aria-label="resources-panel" className={classNames(openResource ? 'hidden' : '', 'relative first:mt-0 pb-12 border bg-white border-gray-200 rounded shadow-sm overflow-hidden group')}>
 
         {/* <div className={`${openResource && 'hidden'}
         relative first:mt-0 pb-12 ${sectionNum > 1 ? 'h-1/2' : 'h-full'}
@@ -190,6 +190,7 @@ export default function EditorSection({
                 )}
               <div className="flex bg-gray-300 absolute h-full -right-0 rounded-tr invisible group-hover:visible ">
                 <button
+                  aria-label="resources-selector"
                   type="button"
                   title="resources selector"
                   onClick={showResourcesPanel}

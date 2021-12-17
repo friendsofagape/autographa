@@ -161,18 +161,18 @@ export default function Editor({
             Editor
           </div>
         </div> */}
-        <div className="h-4 flex justify-center items-center text-white text-xxs uppercase tracking-wider font-bold leading-3 truncate">
+        <div aria-label="editor-pane" className="h-4 flex justify-center items-center text-white text-xxs uppercase tracking-wider font-bold leading-3 truncate">
           Editor
         </div>
         <div title="navigation lock/unlock" className="flex items-center">
           {scrollLock === true ? (
             <div>
-              <LockOpenIcon onClick={() => setScrollLock(!scrollLock)} className="h-5 w-5 text-white" aria-hidden="true" />
+              <LockOpenIcon aria-label="open-lock" onClick={() => setScrollLock(!scrollLock)} className="h-5 w-5 text-white" aria-hidden="true" />
             </div>
             )
           : (
             <div>
-              <LockClosedIcon onClick={(e) => handleUnlockScroll(e)} className="h-5 w-5 text-white" aria-hidden="true" />
+              <LockClosedIcon aria-label="close-lock" onClick={(e) => handleUnlockScroll(e)} className="h-5 w-5 text-white" aria-hidden="true" />
             </div>
           )}
           <div
