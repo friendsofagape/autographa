@@ -21,10 +21,11 @@ export async function readCustomResources({ resourceId, translationData }) {
                     switch (resourceId) {
                         case 'tn':
                             (agSettingsJson?.resources.door43.translationNotes).forEach(async (url) => {
-                              const language = url.split('/');
+                              const language = url.url?.split('/');
                               let resourceExists = false;
                               translationData.forEach((val) => {
-                                if (val.name === url.split('/')[3]) {
+                                // console.log(val.name, url.url?.split('/')[3]);
+                                if (val.name === url.name) {
                                   if (val.language === (language[language.length - 1]?.split('_')[0])) {
                                     resourceExists = true;
                                   }
@@ -32,9 +33,9 @@ export async function readCustomResources({ resourceId, translationData }) {
                               });
                               if (resourceExists === false && url) {
                                 translationData.push({
-                                  name: url.split('/')[3],
+                                  name: url.name,
                                   language: (language[language.length - 1]?.split('_')[0]),
-                                  owner: url.split('/')[3],
+                                  owner: url.url?.split('/')[3],
                                 });
                               }
                             });
@@ -42,10 +43,10 @@ export async function readCustomResources({ resourceId, translationData }) {
                         case 'tq':
 
                             (agSettingsJson?.resources.door43.translationQuestions).forEach(async (url) => {
-                              const language = url.split('/');
+                              const language = url.url?.split('/');
                               let resourceExists = false;
                               translationData.forEach((val) => {
-                                if (val.name === url.split('/')[3]) {
+                                if (val.name === url.name) {
                                   if (val.language === (language[language.length - 1]?.split('_')[0])) {
                                     resourceExists = true;
                                   }
@@ -53,19 +54,19 @@ export async function readCustomResources({ resourceId, translationData }) {
                               });
                               if (resourceExists === false && url) {
                                 translationData.push({
-                                  name: url.split('/')[3],
+                                  name: url.name,
                                   language: (language[language.length - 1]?.split('_')[0]),
-                                  owner: url.split('/')[3],
+                                  owner: url.url?.split('/')[3],
                                 });
                               }
                             });
                           break;
                         case 'twlm':
                             (agSettingsJson?.resources.door43.translationWords).forEach(async (url) => {
-                              const language = url.split('/');
+                              const language = url.url?.split('/');
                               let resourceExists = false;
                               translationData.forEach((val) => {
-                                if (val.name === url.split('/')[3]) {
+                                if (val.name === url.name) {
                                   if (val.language === (language[language.length - 1]?.split('_')[0])) {
                                     resourceExists = true;
                                   }
@@ -73,9 +74,9 @@ export async function readCustomResources({ resourceId, translationData }) {
                               });
                               if (resourceExists === false && url) {
                                 translationData.push({
-                                  name: url.split('/')[3],
+                                  name: url.name,
                                   language: (language[language.length - 1]?.split('_')[0]),
-                                  owner: url.split('/')[3],
+                                  owner: url.url?.split('/')[3],
                                 });
                               }
                             });

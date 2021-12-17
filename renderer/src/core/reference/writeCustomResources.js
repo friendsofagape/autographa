@@ -19,17 +19,17 @@ export async function writeCustomResources({ resourceUrl }) {
                 switch (resourceUrl.key) {
                     case 'tn':
                       if (agSettingsJson?.resources.door43.translationNotes.includes(resourceUrl.url) === false) {
-                          agSettingsJson?.resources.door43.translationNotes.push(resourceUrl.url);
+                          agSettingsJson?.resources.door43.translationNotes.push({ name: resourceUrl.resourceName, url: resourceUrl.url });
                       }
                       break;
                     case 'tq':
                     if (agSettingsJson?.resources.door43.translationQuestions.includes(resourceUrl.url) === false) {
-                        agSettingsJson?.resources.door43.translationQuestions.push(resourceUrl.url);
+                        agSettingsJson?.resources.door43.translationQuestions.push({ name: resourceUrl.resourceName, url: resourceUrl.url });
                     }
                       break;
                     case 'twlm':
                     if (agSettingsJson?.resources.door43.translationWords.includes(resourceUrl.url) === false) {
-                        agSettingsJson?.resources.door43.translationWords.push(resourceUrl.url);
+                        agSettingsJson?.resources.door43.translationWords.push({ name: resourceUrl.resourceName, url: resourceUrl.url });
                     }
                       break;
                     default:
