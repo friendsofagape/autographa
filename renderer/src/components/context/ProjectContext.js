@@ -42,6 +42,40 @@ const ProjectContextProvider = ({ children }) => {
 
     const uniqueId = (list, id) => list.some((obj) => obj.id === id);
 
+    const createSettingJson = (fs, file) => {
+      logger.debug('ProjectContext.js', 'Loading data from AdvanceSetting.json file');
+      setCanonList(advanceSettings.canonSpecification);
+      setLicenseList(advanceSettings.copyright);
+      setLanguages(advanceSettings.languages);
+      const json = {
+        version: '1.1',
+        history: {
+          copyright: [{
+            id: 'Other', title: 'Custom', licence: '', locked: false,
+          }],
+          languages: [],
+          textTranslation: {
+            canonSpecification: [{
+            id: 4, title: 'Other', currentScope: [], locked: false,
+            }],
+          },
+        },
+        appLanguage: 'en',
+        theme: 'light',
+        userWorkspaceLocation: '',
+        commonWorkspaceLocation: '',
+        resources: {
+          door43: {
+            translationNotes: [],
+            translationQuestions: [],
+            translationWords: [],
+          },
+        },
+      };
+      logger.debug('ProjectContext.js', 'Creating a ag-user-settings.json file');
+      fs.writeFileSync(file, JSON.stringify(json));
+    };
+
     const loadSettings = async () => {
       logger.debug('ProjectContext.js', 'In loadSettings');
       const newpath = localStorage.getItem('userPath');
@@ -60,52 +94,26 @@ const ProjectContextProvider = ({ children }) => {
         fs.readFile(file, (err, data) => {
           logger.debug('ProjectContext.js', 'Successfully read the data from file');
           const json = JSON.parse(data);
-          // (json.currentSetting).push(currentSetting);
-          setCanonList(json.project?.textTranslation.canonSpecification
-            ? (advanceSettings.canonSpecification)
-            .concat(json.project?.textTranslation.canonSpecification)
-            : advanceSettings.canonSpecification);
-          setLicenseList(json.project?.textTranslation.copyright
-            ? (advanceSettings.copyright)
-            .concat(json.project?.textTranslation.copyright)
-            : advanceSettings.copyright);
-          setLanguages(json.project?.textTranslation.languages
-            ? (advanceSettings.languages)
-            .concat(json.project?.textTranslation.languages)
-            : advanceSettings.languages);
+          if (json.version === '1.1') {
+            // (json.currentSetting).push(currentSetting);
+            setCanonList(json.history?.textTranslation.canonSpecification
+              ? (advanceSettings.canonSpecification)
+              .concat(json.history?.textTranslation.canonSpecification)
+              : advanceSettings.canonSpecification);
+            setLicenseList(json.history?.copyright
+              ? (advanceSettings.copyright)
+              .concat(json.history?.copyright)
+              : advanceSettings.copyright);
+            setLanguages(json.history?.languages
+              ? (advanceSettings.languages)
+              .concat(json.history?.languages)
+              : advanceSettings.languages);
+          } else {
+            createSettingJson(fs, file);
+          }
         });
       } else {
-        logger.debug('ProjectContext.js', 'Loading data from AdvanceSetting.json file');
-        setCanonList(advanceSettings.canonSpecification);
-        setLicenseList(advanceSettings.copyright);
-        setLanguages(advanceSettings.languages);
-        const json = {
-          version: '1.0',
-          history: {
-            copyright: [{
-              id: 'Other', title: 'Custom', licence: '', locked: false,
-            }],
-            languages: [],
-            textTranslation: {
-              canonSpecification: [{
-              id: 4, title: 'Other', currentScope: [], locked: false,
-              }],
-            },
-          },
-          appLanguage: 'en',
-          theme: 'light',
-          userWorkspaceLocation: '',
-          commonWorkspaceLocation: '',
-          resources: {
-            door43: {
-              translationNotes: [],
-              translationQuestions: [],
-              translationWords: [],
-            },
-          },
-        };
-        logger.debug('ProjectContext.js', 'Creating a ag-user-settings.json file');
-        fs.writeFileSync(file, JSON.stringify(json));
+        createSettingJson(fs, file);
       }
     };
     // Json for storing advance settings
@@ -130,21 +138,23 @@ const ProjectContextProvider = ({ children }) => {
             // eslint-disable-next-line no-nested-ternary
             const currentSetting = (currentSettings === 'copyright' ? copyright
             : (currentSettings === 'languages' ? language : canonSpecification));
-            if (json.project?.textTranslation[currentSettings]
-              && uniqueId(json.project?.textTranslation[currentSettings], currentSetting.id)) {
-              (json.project?.textTranslation[currentSettings]).forEach((setting) => {
-                if (setting.id === currentSetting.id) {
-                  const keys = Object.keys(setting);
-                  keys.forEach((key) => {
-                    // eslint-disable-next-line no-param-reassign
-                    setting[key] = currentSetting[key];
-                  });
-                }
-              });
-            } else {
-              // updating the canon
-              (json.project?.textTranslation[currentSettings]).push(currentSetting);
-            }
+            if (currentSettings === 'canonSpecification') {
+              (json.history?.textTranslation[currentSettings]).push(currentSetting);
+            } else if (json.history[currentSettings]
+                && uniqueId(json.history[currentSettings], currentSetting.id)) {
+                (json.history[currentSettings]).forEach((setting) => {
+                  if (setting.id === currentSetting.id) {
+                    const keys = Object.keys(setting);
+                    keys.forEach((key) => {
+                      // eslint-disable-next-line no-param-reassign
+                      setting[key] = currentSetting[key];
+                    });
+                  }
+                });
+              } else {
+                // updating the canon
+                (json.history[currentSettings]).push(currentSetting);
+              }
             logger.debug('ProjectContext.js', 'Upadting the settings in existing file');
             fs.writeFileSync(file, JSON.stringify(json));
             logger.debug('ProjectContext.js', 'Loading new settings from file');
