@@ -20,6 +20,7 @@ export default function EditorSection({
   children,
   languageId,
   row,
+  owner,
   setLoadResource,
   loadResource,
   openResource,
@@ -161,6 +162,7 @@ export default function EditorSection({
                   header={title}
                   languageId={languageId}
                   selectedResource={selectedResource}
+                  owner={owner}
                   setReferenceResources={setReferenceResources}
                   openResourcePopUp={openResourcePopUp}
                   setOpenResourcePopUp={setOpenResourcePopUp}

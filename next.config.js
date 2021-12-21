@@ -59,5 +59,4 @@ module.exports = withTM({
   },
   webpack5: true,
   externals: [nodeExternals()],
-  target: 'serverless',
 });

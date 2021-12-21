@@ -76,7 +76,6 @@ const ResourcesPopUp = ({
     actions: {
       openResourceDialog,
       setOpenImportResourcePopUp,
-      setOwner,
     },
   } = useContext(ReferenceContext);
 
@@ -171,8 +170,9 @@ const ResourcesPopUp = ({
       languageId: row,
       refName: name,
       header: title,
+      owner,
     });
-    setOwner(owner);
+    // setOwner(owner);
     removeSection();
   };
 

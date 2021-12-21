@@ -4,13 +4,11 @@ import { ReferenceContext } from '@/components/context/ReferenceContext';
 import TranslationHelpsCard from './TranslationHelpsCard';
 
 const TranslationHelps = ({
- selectedResource, languageId, refName, bookId, chapter, verse,
+ selectedResource, languageId, refName, bookId, chapter, verse, owner,
 }) => {
   const {
     state: {
-        server,
         branch,
-        owner,
     },
   } = useContext(ReferenceContext);
 
@@ -32,7 +30,7 @@ const TranslationHelps = ({
               languageId={languageId}
               resourceId="tn"
               owner={owner}
-              server={server}
+              server="https://git.door43.org"
             />
           );
         case 'twl':
@@ -62,7 +60,7 @@ const TranslationHelps = ({
               languageId={languageId}
               resourceId="twl"
               owner={owner}
-              server={server}
+              server="https://git.door43.org"
             />
             );
         case 'tq':

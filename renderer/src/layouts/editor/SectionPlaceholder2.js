@@ -25,12 +25,14 @@ const SectionPlaceholder2 = () => {
     selectedResource: '',
     refName: '',
     header: '',
+    owner: '',
   });
   const [referenceColumnTwoData2, setReferenceColumnTwoData2] = useState({
     languageId: '',
     selectedResource: '',
     refName: '',
     header: '',
+    owner: '',
   });
   const [loadResource3, setLoadResource3] = useState(false);
   const [loadResource4, setLoadResource4] = useState(false);
@@ -278,6 +280,7 @@ const SectionPlaceholder2 = () => {
             title={referenceColumnTwoData1.refName}
             selectedResource={referenceColumnTwoData1.selectedResource}
             languageId={referenceColumnTwoData1.languageId}
+            owner={referenceColumnTwoData1.owner}
             setReferenceResources={setReferenceColumnTwoData1}
             setLoadResource={setLoadResource3}
             loadResource={loadResource3}
@@ -300,6 +303,7 @@ const SectionPlaceholder2 = () => {
                 <TranslationHelps
                   selectedResource={referenceColumnTwoData1.selectedResource}
                   languageId={referenceColumnTwoData1.languageId}
+                  owner={referenceColumnTwoData1.owner}
                   bookId={_bookId1}
                   chapter={_chapter1}
                   verse={_verse1}
@@ -315,6 +319,7 @@ const SectionPlaceholder2 = () => {
             title={referenceColumnTwoData2.refName}
             selectedResource={referenceColumnTwoData2.selectedResource}
             languageId={referenceColumnTwoData2.languageId}
+            owner={referenceColumnTwoData2.owner}
             setReferenceResources={setReferenceColumnTwoData2}
             setLoadResource={setLoadResource4}
             loadResource={loadResource4}
@@ -337,6 +342,7 @@ const SectionPlaceholder2 = () => {
                 <TranslationHelps
                   selectedResource={referenceColumnTwoData2.selectedResource}
                   languageId={referenceColumnTwoData2.languageId}
+                  owner={referenceColumnTwoData2.owner}
                   bookId={_bookId2}
                   chapter={_chapter2}
                   verse={_verse2}
