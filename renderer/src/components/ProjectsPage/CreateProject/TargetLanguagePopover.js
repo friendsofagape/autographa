@@ -15,8 +15,11 @@ export default function TargetLanguagePopover() {
     states: {
       language,
       languages,
-    }, actions: { setLanguage },
+    }, actions: {
+      setLanguage,
+    },
   } = React.useContext(ProjectContext);
+
   // eslint-disable-next-line no-unused-vars
   const openLanguageNav = (nav) => {
     logger.debug('TargetLanguagePopover.js', 'In openLanguageNav');

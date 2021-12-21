@@ -205,6 +205,7 @@ const ProjectContextProvider = ({ children }) => {
       );
       return status;
     };
+
     const resetProjectStates = () => {
       const initialState = {
         language: '',
@@ -216,6 +217,7 @@ const ProjectContextProvider = ({ children }) => {
         setcanonSpecification('OT');
         setVersificationScheme('kjv');
     };
+
     React.useEffect(() => {
       if (isElectron()) {
         loadSettings();
