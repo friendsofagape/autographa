@@ -76,7 +76,6 @@ const ResourcesPopUp = ({
     actions: {
       openResourceDialog,
       setOpenImportResourcePopUp,
-      setOwner,
     },
   } = useContext(ReferenceContext);
 

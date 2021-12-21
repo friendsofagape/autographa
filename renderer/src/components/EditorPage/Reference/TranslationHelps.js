@@ -8,7 +8,6 @@ const TranslationHelps = ({
 }) => {
   const {
     state: {
-        server,
         branch,
     },
   } = useContext(ReferenceContext);
