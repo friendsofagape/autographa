@@ -165,7 +165,6 @@ const ResourcesPopUp = ({
   };
 
   const handleRowSelect = (e, row, name, owner) => {
-    console.log(e, row, name, owner, title);
     setReferenceResources({
       selectedResource: selectResource,
       languageId: row,
