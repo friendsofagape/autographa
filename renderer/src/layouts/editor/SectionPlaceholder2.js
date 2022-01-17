@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable import/no-unresolved */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-unused-vars */
@@ -12,6 +13,9 @@ import { ProjectContext } from '@/components/context/ProjectContext';
 import CustomNavigation from '@/components/EditorPage/Navigation/CustomNavigation';
 import { isElectron } from '@/core/handleElectron';
 import { updateAgSettings } from '@/core/projects/updateAgSettings';
+import NavigationObs from '@/components/Aa/NavigationObs';
+import ReferenceObs from '@/components/Aa/ReferenceObs';
+import core from '@/components/Aa/core';
 
 const TranslationHelps = dynamic(
   () => import('@/components/EditorPage/Reference/TranslationHelps'),
@@ -264,6 +268,33 @@ const SectionPlaceholder2 = () => {
       initialVerse={verse}
     />
   );
+  const [obsNavigation1, setObsNavigation1] = useState(1);
+  const [obsNavigation2, setObsNavigation2] = useState(1);
+  const [stories1, setStories1] = useState();
+  const [stories2, setStories2] = useState();
+  const ObsNavigation1 = (
+    <NavigationObs
+      onChangeNumber={(value) => setObsNavigation1(value)}
+      number={obsNavigation1}
+    />
+  );
+  const ObsNavigation2 = (
+    <NavigationObs
+      onChangeNumber={(value) => setObsNavigation2(value)}
+      number={obsNavigation2}
+    />
+  );
+  useEffect(() => {
+    if (isElectron()) {
+      const fs = window.require('fs');
+      if (obsNavigation1) {
+        setStories1(core(fs, obsNavigation1));
+      }
+      if (obsNavigation2) {
+        setStories2(core(fs, obsNavigation2));
+      }
+    }
+  }, [obsNavigation1, obsNavigation2]);
 
   return (
     <>
@@ -287,7 +318,7 @@ const SectionPlaceholder2 = () => {
             openResource={openResource3}
             setOpenResource3={setOpenResource3}
             setOpenResource4={setOpenResource4}
-            CustomNavigation={CustomNavigation1}
+            CustomNavigation={referenceColumnTwoData2.selectedResource === 'obs' ? ObsNavigation1 : CustomNavigation1}
           >
             {
               (loadResource3 === true) && (
@@ -299,15 +330,20 @@ const SectionPlaceholder2 = () => {
                   chapter={_chapter1}
                   verse={_verse1}
                 />
-              ) : (
-                <TranslationHelps
-                  selectedResource={referenceColumnTwoData1.selectedResource}
-                  languageId={referenceColumnTwoData1.languageId}
-                  owner={referenceColumnTwoData1.owner}
-                  bookId={_bookId1}
-                  chapter={_chapter1}
-                  verse={_verse1}
+              ) : (referenceColumnTwoData1.selectedResource === 'obs' ? (
+                <ReferenceObs
+                  stories={stories1}
                 />
+                ) : (
+                  <TranslationHelps
+                    selectedResource={referenceColumnTwoData1.selectedResource}
+                    languageId={referenceColumnTwoData1.languageId}
+                    owner={referenceColumnTwoData1.owner}
+                    bookId={_bookId1}
+                    chapter={_chapter1}
+                    verse={_verse1}
+                  />
+                )
               ))
             }
           </EditorSection>
@@ -326,7 +362,7 @@ const SectionPlaceholder2 = () => {
             openResource={openResource4}
             setOpenResource3={setOpenResource3}
             setOpenResource4={setOpenResource4}
-            CustomNavigation={CustomNavigation2}
+            CustomNavigation={referenceColumnTwoData2.selectedResource === 'obs' ? ObsNavigation2 : CustomNavigation2}
           >
             {
               (loadResource4 === true) && (
@@ -338,15 +374,20 @@ const SectionPlaceholder2 = () => {
                   chapter={_chapter2}
                   verse={_verse2}
                 />
-              ) : (
-                <TranslationHelps
-                  selectedResource={referenceColumnTwoData2.selectedResource}
-                  languageId={referenceColumnTwoData2.languageId}
-                  owner={referenceColumnTwoData2.owner}
-                  bookId={_bookId2}
-                  chapter={_chapter2}
-                  verse={_verse2}
+              ) : (referenceColumnTwoData2.selectedResource === 'obs' ? (
+                <ReferenceObs
+                  stories={stories2}
                 />
+                ) : (
+                  <TranslationHelps
+                    selectedResource={referenceColumnTwoData2.selectedResource}
+                    languageId={referenceColumnTwoData2.languageId}
+                    owner={referenceColumnTwoData2.owner}
+                    bookId={_bookId2}
+                    chapter={_chapter2}
+                    verse={_verse2}
+                  />
+                )
               ))
             }
           </EditorSection>
