@@ -13,9 +13,9 @@ import { ProjectContext } from '@/components/context/ProjectContext';
 import CustomNavigation from '@/components/EditorPage/Navigation/CustomNavigation';
 import { isElectron } from '@/core/handleElectron';
 import { updateAgSettings } from '@/core/projects/updateAgSettings';
-import NavigationObs from '@/components/Aa/NavigationObs';
-import ReferenceObs from '@/components/Aa/ReferenceObs';
-import core from '@/components/Aa/core';
+import NavigationObs from '@/components/ObsMode/NavigationObs';
+import ReferenceObs from '@/components/ObsMode/ReferenceObs';
+import core from '@/components/ObsMode/core';
 
 const TranslationHelps = dynamic(
   () => import('@/components/EditorPage/Reference/TranslationHelps'),
@@ -286,15 +286,17 @@ const SectionPlaceholder2 = () => {
   );
   useEffect(() => {
     if (isElectron()) {
-      const fs = window.require('fs');
-      if (obsNavigation1) {
-        setStories1(core(fs, obsNavigation1));
-      }
-      if (obsNavigation2) {
-        setStories2(core(fs, obsNavigation2));
-      }
+      localforage.getItem('userProfile').then((user) => {
+        const fs = window.require('fs');
+        if (obsNavigation1 && referenceColumnTwoData1.refName && referenceColumnTwoData1.selectedResource === 'obs') {
+          setStories1(core(fs, obsNavigation1, referenceColumnTwoData1.refName, user.username));
+        }
+        if (obsNavigation2 && referenceColumnTwoData2.refName && referenceColumnTwoData2.selectedResource === 'obs') {
+          setStories2(core(fs, obsNavigation2, referenceColumnTwoData2.refName, user.username));
+        }
+      });
     }
-  }, [obsNavigation1, obsNavigation2]);
+  }, [obsNavigation1, obsNavigation2, referenceColumnTwoData1, referenceColumnTwoData2]);
 
   return (
     <>
@@ -318,7 +320,7 @@ const SectionPlaceholder2 = () => {
             openResource={openResource3}
             setOpenResource3={setOpenResource3}
             setOpenResource4={setOpenResource4}
-            CustomNavigation={referenceColumnTwoData2.selectedResource === 'obs' ? ObsNavigation1 : CustomNavigation1}
+            CustomNavigation={referenceColumnTwoData1.selectedResource === 'obs' ? ObsNavigation1 : CustomNavigation1}
           >
             {
               (loadResource3 === true) && (

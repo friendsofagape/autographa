@@ -10,10 +10,10 @@ import EditorSection from '@/layouts/editor/EditorSection';
 import ReferenceBible from '@/components/EditorPage/Reference/ReferenceBible/ReferenceBible';
 import { ProjectContext } from '@/components/context/ProjectContext';
 import CustomNavigation from '@/components/EditorPage/Navigation/CustomNavigation';
-import NavigationObs from '@/components/Aa/NavigationObs';
-import ReferenceObs from '@/components/Aa/ReferenceObs';
+import NavigationObs from '@/components/ObsMode/NavigationObs';
+import ReferenceObs from '@/components/ObsMode/ReferenceObs';
 import { isElectron } from '@/core/handleElectron';
-import core from '@/components/Aa/core';
+import core from '@/components/ObsMode/core';
 
 const TranslationHelps = dynamic(
   () => import('@/components/EditorPage/Reference/TranslationHelps'),
@@ -272,15 +272,17 @@ const SectionPlaceholder1 = () => {
   );
   useEffect(() => {
     if (isElectron()) {
-      const fs = window.require('fs');
-      if (obsNavigation1) {
-        setStories1(core(fs, obsNavigation1));
-      }
-      if (obsNavigation2) {
-        setStories2(core(fs, obsNavigation2));
-      }
+      localforage.getItem('userProfile').then((user) => {
+        const fs = window.require('fs');
+        if (obsNavigation1 && referenceColumnOneData1.refName && referenceColumnOneData1.selectedResource === 'obs') {
+          setStories1(core(fs, obsNavigation1, referenceColumnOneData1.refName, user.username));
+        }
+        if (obsNavigation2 && referenceColumnOneData2.refName && referenceColumnOneData2.selectedResource === 'obs') {
+          setStories2(core(fs, obsNavigation2, referenceColumnOneData2.refName, user.username));
+        }
+      });
     }
-  }, [obsNavigation1, obsNavigation2]);
+  }, [obsNavigation1, obsNavigation2, referenceColumnOneData1, referenceColumnOneData2]);
 
   return (
     <>
