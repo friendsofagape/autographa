@@ -109,7 +109,7 @@ const SectionPlaceholder2 = () => {
         ([_columnnum, _value]) => {
           Object.entries(_value).forEach(
             ([_rownum, resources]) => {
-              if (resources.project.textTranslation.projectName === _projectname[0]) {
+              if (resources.project?.textTranslation?.projectName === _projectname[0]) {
                 refsHistory.push(resources.project.textTranslation.refResources);
               }
             },
