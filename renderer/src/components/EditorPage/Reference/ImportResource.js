@@ -47,7 +47,8 @@ export default function ImportResource({ open, closePopUp, setOpenResourcePopUp 
           const projectsDir = path.join(
             newpath, 'autographa', 'users', user?.username, 'resources',
           );
-          await fse.copy(folderPath, projectsDir, { overwrite: true }).then(() => {
+          const name = path.basename(folderPath);
+          await fse.copy(folderPath, path.join(projectsDir, name), { overwrite: true }).then(() => {
             setOpenSnackBar(true);
             setSnackText('Resource upload successful! Please check the resource list');
           }).then(() => {
