@@ -15,6 +15,7 @@ import {
   withChapterPaging,
   //  withChapterSelection,
 } from 'usfm-editor';
+import moment from 'moment';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import { ProjectContext } from '@/components/context/ProjectContext';
 import Editor from '@/modules/editor/Editor';
@@ -336,6 +337,7 @@ const UsfmEditor = () => {
         const username = value?.username;
         localforage.getItem('currentProject').then((projectName) => {
           const path = require('path');
+          const fs = window.require('fs');
           const newpath = localStorage.getItem('userPath');
           const projectsDir = path.join(
               newpath, 'autographa', 'users', username, 'projects', projectName,
@@ -351,6 +353,10 @@ const UsfmEditor = () => {
                 metaPath,
               }).then((data) => {
                 if (data) {
+                  const setting = fs.readFileSync(path.join(newpath, 'autographa', 'users', username, 'projects', projectName, 'ingredients', 'ag-settings.json'), 'utf8');
+                  const settings = JSON.parse(setting);
+                  settings.project.textTranslation.lastSeen = moment().format();
+                  fs.writeFileSync(path.join(newpath, 'autographa', 'users', username, 'projects', projectName, 'ingredients', 'ag-settings.json'), JSON.stringify(settings));
                   const _data = JSON.parse(data);
                   Object.entries(_data.ingredients).forEach(
                     ([key, _ingredients]) => {
