@@ -212,10 +212,10 @@ export default function Login() {
           </div>
 
           <div className="absolute bottom-4 left-0 right-0 flex items-center justify-center gap-5 bg-white text-black font-bold">
-            <a href="/">EN(US)</a>
-            <a href="/">ABOUT</a>
-            <a href="/">PRIVACY</a>
-            <a href="/">TERMS</a>
+            <a href="/" onClick={(event) => event.preventDefault()}>EN(US)</a>
+            <a href="/" onClick={(event) => event.preventDefault()}>ABOUT</a>
+            <a href="/" onClick={(event) => event.preventDefault()}>PRIVACY</a>
+            <a href="/" onClick={(event) => event.preventDefault()}>TERMS</a>
           </div>
         </div>
 
