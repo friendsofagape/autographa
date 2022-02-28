@@ -96,6 +96,7 @@ const CustomLogin = ({
         value={buttonname}
         className="text-xs
            focus:border-blue-600
+           focus:ring
            max-w-md h-12 appearance-none
            cursor-pointer
            border rounded
