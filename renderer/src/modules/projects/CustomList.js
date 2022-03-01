@@ -6,6 +6,7 @@ import { CheckIcon, SelectorIcon } from '@heroicons/react/solid';
 export default function CustomList({
  selected, setSelected, options, show,
 }) {
+  console.log(options);
   return (
     <Listbox value={selected} onChange={setSelected} disabled={!show}>
       <div className="w-52 lg:w-40 block rounded shadow-sm sm:text-sm focus:border-primary border-gray-300">
@@ -24,12 +25,12 @@ export default function CustomList({
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <Listbox.Options className="absolute z-50 w-1/5 py-1 mt-1 overflow-auto text-base bg-white rounded-md shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+          <Listbox.Options className="absolute z-50 w-1/5 py-1 mt-1 overflow-auto scrollbars-width text-base bg-white rounded-md shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
             {options.map((option, optionIdx) => (
               <Listbox.Option
                 key={optionIdx[0]}
                 className={({ active }) => `${active ? 'text-amber-900 bg-amber-100' : 'text-gray-900'}
-                  cursor-default select-none relative py-2 pl-10 pr-4`}
+                  cursor-default select-none relative py-2 pl-10 pr-4 hover:bg-gray-200`}
                 value={option}
               >
                 {({ selected, active }) => (

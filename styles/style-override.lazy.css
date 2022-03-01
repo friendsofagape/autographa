@@ -187,3 +187,9 @@ the last child. */
 	display: flex;
 	flex-flow: column;
 }
+.scrollbars-width::-webkit-scrollbar {
+	width: 15px;
+}
+.scrollbars-width::-webkit-scrollbar-thumb {
+	background: #6b6b6b;
+}
