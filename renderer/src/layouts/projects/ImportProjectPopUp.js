@@ -190,7 +190,7 @@ export default function ImportProjectPopUp(props) {
                             {(sbData?.validate)?
                             <span className="ml-2">Burrito validated Successfully</span>
                             :
-                            <span className="ml-2 text-red-500">Burrito validation Failed</span>
+                            <span className="ml-2 text-red-500">{(sbData?.version)? `Expected burrito version 0.3.0 instead of ${sbData.version}` : `Burrito validation Failed`}</span>
                             }
                           </label>
                         </div>

@@ -72,7 +72,12 @@ export const viewBurrito = async (filePath, currentUser) => {
       result.duplicate = duplicate;
     } else {
       result.validate = false;
-      logger.error('importBurrito.js', 'Invalid burrito file (metadata.json).');
+      if (metadata.meta.version !== '0.3.0') {
+        result.version = metadata.meta.version;
+        logger.error('importBurrito.js', `Expected burrito version 0.3.0 instead of ${metadata.meta.version}`);
+      } else {
+        logger.error('importBurrito.js', 'Invalid burrito file (metadata.json).');
+      }
     }
   } else {
     logger.warn('importBurrito.js', 'Unable to find burrito file (metadata.json).');
