@@ -6,7 +6,6 @@ import { CheckIcon, SelectorIcon } from '@heroicons/react/solid';
 export default function CustomList({
  selected, setSelected, options, show,
 }) {
-  console.log(options);
   return (
     <Listbox value={selected} onChange={setSelected} disabled={!show}>
       <div className="w-52 lg:w-40 block rounded shadow-sm sm:text-sm focus:border-primary border-gray-300">
