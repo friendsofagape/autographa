@@ -53,10 +53,11 @@ export default function SearchTags({
       <SearchIcon className="h-5 w-5 absolute left-0 ml-4 my-2 text-primary" />
       <input
         data-testid="search"
-        type="text"
+        type="search"
         name="search_box"
         id="search_box"
         autoComplete="given-name"
+        placeholder="Search"
         onChange={(e) => handleChange(e.target.value)}
         className="pl-10 bg-gray-100 w-full block rounded-full shadow-sm sm:text-sm focus:ring-gray-500 focus:border-primary border-gray-300"
       />
