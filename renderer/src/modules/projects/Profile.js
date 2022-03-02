@@ -248,12 +248,13 @@ export default function UserProfile() {
                   className="w-96 block rounded shadow-sm sm:text-sm focus:ring-gray-500 focus:border-primary border-gray-200 h-10 font-light"
                 />
               </div>
-              <div className="relative w-1/4">
+              <div className="relative">
                 <h4 className="text-xs font-base mb-2 ml-2 text-primary  tracking-wide leading-4  font-light">
                   App Language
                   <span className="text-error">*</span>
                 </h4>
-                <CustomList selected={appLang} setSelected={setAppLang} options={languages} width="w-20" show />
+                {/* <CustomList selected={appLang} setSelected={setAppLang} options={languages} show /> */}
+                <input type="text" value="English" disabled className="bg-gray-100 w-96 block rounded shadow-sm sm:text-sm border-gray-200 h-10 font-light" />
               </div>
 
               <button
