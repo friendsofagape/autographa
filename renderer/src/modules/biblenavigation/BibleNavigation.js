@@ -117,11 +117,11 @@ export default function BibleNavigation(props) {
 
   return (
     <>
-      <div className="flex">
+      <div className="flex flex-wrap">
         <div className="bg-primary text-white py-2 uppercase tracking-wider text-xs font-semibold">
           <span aria-label="editor-bookname" className="px-3">{bookName}</span>
           <span
-            className="focus:outline-none bg-white py-4 bg-opacity-10"
+            className="focus:outline-none bg-white py-3 bg-opacity-10"
             onClick={openBooks}
             role="button"
             tabIndex="-2"
@@ -130,7 +130,7 @@ export default function BibleNavigation(props) {
           </span>
           <span className="px-3">{chapter}</span>
           <span
-            className="focus:outline-none bg-white py-4 bg-opacity-10"
+            className="focus:outline-none bg-white py-3 bg-opacity-10"
             onClick={selectBook}
             role="button"
             tabIndex="-1"
@@ -167,7 +167,7 @@ export default function BibleNavigation(props) {
         >
           <Dialog.Overlay className="fixed inset-0 bg-black opacity-30" />
           <div className="flex items-center justify-center h-screen ">
-            <div className="w-5/12 m-auto z-50 shadow overflow-hidden sm:rounded-lg">
+            <div className="w-9/12 m-auto z-50 shadow overflow-hidden sm:rounded-lg">
               <SelectBook
                 selectBook={selectBook}
                 bookList={bookList}
@@ -212,7 +212,7 @@ export default function BibleNavigation(props) {
           <Dialog.Overlay className="fixed inset-0 bg-black opacity-30" />
           <div className="flex items-center justify-center h-screen">
 
-            <div className=" w-3/12 m-auto z-50 bg-black text-white shadow overflow-hidden sm:rounded-lg">
+            <div className=" w-6/12 max-w-md m-auto z-50 bg-black text-white shadow overflow-hidden sm:rounded-lg">
               <SelectVerse
                 chapter={chapter}
                 verse={verse}

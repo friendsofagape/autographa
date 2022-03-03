@@ -26,14 +26,14 @@ import * as localforage from 'localforage';
 import {
  Fragment, useContext, useEffect, useState,
 } from 'react';
-import CrossReferenceIcon from '@/icons/crossreference.svg';
-import FootNotesIcon from '@/icons/footnotes.svg';
 import CustomNavigation from '@/components/EditorPage/Navigation/CustomNavigation';
 import BibleNavigation from '@/modules/biblenavigation/BibleNavigation';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import { ProjectContext } from '@/components/context/ProjectContext';
 // eslint-disable-next-line import/no-unresolved
 import { classNames } from '@/util/classNames';
+import FootNotesIcon from '@/icons/footnotes.svg';
+import CrossReferenceIcon from '@/icons/crossreference.svg';
 // import styles from './Editor.module.css';
 const profile = ['Your Profile'];
 
@@ -154,7 +154,7 @@ export default function Editor({
 
   return (
     <>
-      <div className="flex items-center justify-between bg-secondary">
+      <div className="flex flex-wrap items-center justify-between bg-secondary">
         <BibleNavigation />
         {/* <div className="text-center h-6 rounded-t text-gray-100  text-xs uppercase tracking-widest font-bold leading-3">
           <div className="text-center pt-1">

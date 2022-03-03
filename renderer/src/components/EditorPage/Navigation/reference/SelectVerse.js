@@ -67,16 +67,16 @@ export default function SelectVerse({
 
   return (
     <>
-      <div className="flex flex-row justify-between text-center bg-gray-800 font-semibold text-xs tracking-wider uppercase">
-        <div className="grid grid-cols-3 gap-0 bg-gray-700">
-          <div className={`px-3 pt-2 ${openVerse ? 'bg-black border-black' : 'bg-primary border-primary'} hover:bg-primary hover:border-primary border-b-4 cursor-pointer`}>
+      <div className="flex flex-row justify-between text-center font-semibold text-xs tracking-wider uppercase">
+        <div className="grid grid-cols-3 gap-0 w-full bg-gray-700">
+          <div className={`px-2 pt-2 ${openVerse ? 'bg-black border-black' : 'bg-primary border-primary'} hover:bg-primary hover:border-primary border-b-4 cursor-pointer`}>
             {bookName}
           </div>
-          <div className={`px-3 pt-2 ${openVerse ? 'hover:bg-gray-600 border-gray-600' : 'bg-primary border-primary'} border-b-4 cursor-pointer`}>
+          <div className={`px-2 pt-2 ${openVerse ? 'hover:bg-gray-600 border-gray-600' : 'bg-primary border-primary'} border-b-4 cursor-pointer`}>
             Chapter : &nbsp;
             {chapter}
           </div>
-          <div className={`px-3 pt-2 ${openVerse ? 'bg-primary border-primary' : 'hover:bg-gray-600 border-gray-600'} border-b-4 cursor-pointer`}>
+          <div className={`px-2 pt-2 ${openVerse ? 'bg-primary border-primary' : 'hover:bg-gray-600 border-gray-600'} border-b-4 cursor-pointer`}>
             Verse : &nbsp;
             {multiSelectVerse
             ? controlVerseSelect.join()
