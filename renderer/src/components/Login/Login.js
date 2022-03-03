@@ -163,7 +163,7 @@ export default function Login() {
 
         <div className="col-span-3 flex justify-center items-center h-full relative">
 
-          <div className="w-3/4">
+          <div className="flex flex-col justify-center w-3/4 max-w-md">
             {tab[0] === false ? null
               : (
                 <div className="text-success pb-12">
@@ -177,14 +177,18 @@ export default function Login() {
                   </a>
                 </div>
               )}
-            <div className="text-3xl font-medium text-secondary">Sign In</div>
+            <div className="text-3xl font-medium text-secondary text-center">Sign In</div>
             {users.map((user, index) => {
               if (index < 5) {
                 return (
-                  <div className="w-4/5 mx-auto grid grid-cols-4 py-3 m-2 justify-center items-center justify-items-center gap-2
+                  <div
+                    className="grid grid-cols-4 py-3 m-2 justify-center items-center justify-items-center gap-2
                   bg-gray-100 text-dark rounded-lg cursor-pointer
                   border-2 border-transparent
                   hover:bg-primary hover:text-white hover:border-primary group"
+                    role="button"
+                    tabIndex="0"
+                    onClick={() => { handleSubmit({ username: user.username }); }}
                   >
                     <div className="h-10 w-10 flex justify-center items-center bg-gray-200 rounded-full group-hover:bg-secondary">
                       <UserIcon className="h-5 w-5" />
@@ -193,7 +197,7 @@ export default function Login() {
                       {user.username}
                     </div>
                     <div className="h-6 w-6 flex items-center justify-center bg-gray-200 rounded-full group-hover:bg-secondary">
-                      <ChevronRightIcon data-test-id="submit" className="h-5 w-5" onClick={() => { handleSubmit({ username: user.username }); }} />
+                      <ChevronRightIcon data-test-id="submit" className="h-5 w-5" />
                     </div>
                   </div>
                 );

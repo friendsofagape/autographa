@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { TextField, Typography, Grid } from '@material-ui/core';
+import { TextField, Typography } from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import PersonOutlineIcon from '@material-ui/icons/PersonOutline';
 import 'tailwindcss/tailwind.css';
@@ -22,34 +22,26 @@ const CustomLogin = ({
     <form key="login" name="aglogin" onSubmit={(e) => handleSubmit(e)}>
       <Typography color="error">{validation?.msg}</Typography>
       {ui?.autocomplete?.count?.map((v) => (
-        <div>
-          <Grid
-            container
-            alignItems="flex-end"
-          >
-            <Grid item>
-              <PersonOutlineIcon />
-            </Grid>
-            <Grid
-              item
-              className="text-xs max-w-md h-12 appearance-none w-full py-2 px-3"
-            >
-              <Autocomplete
-                freeSolo
-                id="username"
-                data-testid="autocomplete"
-                options={userlist}
-                getOptionLabel={(option) => option.username}
-                getOptionSelected={(option, value) => option.username === value.username}
-                onInputChange={(event, newInputValue) => {
+        <div className="flex">
+          <div className="flex flex-col justify-end">
+            <PersonOutlineIcon />
+          </div>
+
+          <Autocomplete
+            freeSolo
+            id="username"
+            data-testid="autocomplete"
+            className="text-xs h-12 appearance-none w-full py-2 pl-4"
+            options={userlist}
+            getOptionLabel={(option) => option.username}
+            getOptionSelected={(option, value) => option.username === value.username}
+            onInputChange={(event, newInputValue) => {
                     setValue({ ...values, username: newInputValue });
                   }}
-                renderInput={(params) => (
-                  <TextField className="outline-none" {...params} label={v.label} error={error.username} />
+            renderInput={(params) => (
+              <TextField className="outline-none" {...params} label={v.label} error={error.username} />
                   )}
-              />
-            </Grid>
-          </Grid>
+          />
         </div>
         ))}
       {ui?.textfield?.count?.map((c) => (
