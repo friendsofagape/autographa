@@ -5,6 +5,11 @@ import { ChevronRightIcon, UserIcon } from '@heroicons/react/solid';
 import * as localForage from 'localforage';
 import { useRouter } from 'next/router';
 import LogoIcon from '@/icons/logo.svg';
+import GroupIcon from '@/illustrations/group.svg';
+import SittingIcon from '@/illustrations/sitting.svg';
+import VectorOne from '@/illustrations/vector-one.svg';
+import HalfMoon from '@/illustrations/half-moon.svg';
+import Quote from '@/illustrations/quote.svg';
 import * as logger from '../../logger';
 import { isElectron } from '../../core/handleElectron';
 import CustomLogin from './CustomLogin';
@@ -233,12 +238,18 @@ export default function Login() {
           <div className="flex flex-col justify-center items-center relative">
 
             <div className="">
-              <img width="61" height="56" src="/illustrations/group.svg" alt="" />
+              {/* <img width="61" height="56" src="/illustrations/group.svg" alt="" /> */}
+              <GroupIcon
+                fill="#FF4A4A"
+                width={61}
+                height={56}
+              />
             </div>
 
             <div className="mx-10 md:mx-20 lg:mx-32 text-xl text-white leading-9 relative">
               <div className="absolute top-0 left-0">
-                <img height="26" src="/illustrations/quote.svg" alt="" />
+                <Quote height={26} fill="#0068E2" />
+                {/* <img height="26" src="/illustrations/quote.svg" alt="" /> */}
               </div>
 
               <div className="py-10">
@@ -255,30 +266,41 @@ export default function Login() {
 
             <div className="flex ">
               <div className="">
-                <img
+                <SittingIcon
+                  width={236}
+                  height={338}
+                />
+                {/* <img
                   srcSet="/illustrations/sitting.svg 1200w"
                   src="/illustrations/sitting.svg"
                   alt=""
-                />
+                /> */}
+
               </div>
               <div>
-                <img
+                <VectorOne
+                  width={34}
+                  height={33}
+                  fill="#FF4A4A"
+                />
+                {/* <img
                   width="34"
                   height="33"
                   src="/illustrations/vector-one.svg"
                   alt=""
-                />
+                /> */}
               </div>
             </div>
 
           </div>
 
           <div className="">
-            <img
+            <HalfMoon width={124} height={70} />
+            {/* <img
               srcSet="/illustrations/half-moon.svg 1200w"
               src="/illustrations/half-moon.svg"
               alt=""
-            />
+            /> */}
           </div>
 
         </div>

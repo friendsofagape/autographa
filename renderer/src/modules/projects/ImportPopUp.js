@@ -9,6 +9,7 @@ import { SnackBar } from '@/components/SnackBar';
 import { ProjectContext } from '@/components/context/ProjectContext';
 import styles from './ImportPopUp.module.css';
 import * as logger from '../../logger';
+import CloseIcon from '@/illustrations/close-button-black.svg';
 
 const grammar = require('usfm-grammar');
 
@@ -158,9 +159,9 @@ export default function ImportPopUp(props) {
                     type="button"
                     className="focus:outline-none"
                   >
-                    <img
-                      src="/illustrations/close-button-black.svg"
-                      alt="/"
+                    <CloseIcon
+                      className="h-6 w-7"
+                      aria-hidden="true"
                     />
                   </button>
                 </div>
