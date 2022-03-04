@@ -11,9 +11,7 @@ const SectionContainer = () => (
   <div className="grid grid-flow-col auto-cols-fr m-3 gap-2">
     <SectionPlaceholder1 />
     <SectionPlaceholder2 />
-    <div className="bg-white border-b-2 border-secondary rounded-md shadow h-editor overflow-hidden">
-      <UsfmEditor />
-    </div>
+    <UsfmEditor />
   </div>
   );
 export default SectionContainer;

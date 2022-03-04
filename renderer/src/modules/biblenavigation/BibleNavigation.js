@@ -117,7 +117,7 @@ export default function BibleNavigation(props) {
 
   return (
     <>
-      <div className="flex flex-wrap">
+      <div className="flex flex-1 relative">
         <div className="bg-primary text-white py-2 uppercase tracking-wider text-xs font-semibold">
           <span aria-label="editor-bookname" className="px-3">{bookName}</span>
           <span
