@@ -55,6 +55,7 @@ function useAuthentication() {
     localForage.removeItem('sessionToken');
     localForage.removeItem('userProfile');
     localForage.setItem('appMode','online');
+    getToken();
     router.push('/')
   };
   const getConfig = (flowId) => {
@@ -81,7 +82,7 @@ function useAuthentication() {
   const response = {
     state: { accessToken, currentUser, config },
     actions: {
-      getToken, generateToken, logout, getConfig,
+      getToken, generateToken, logout, getConfig,setaccessToken
     },
   };
   return response;
