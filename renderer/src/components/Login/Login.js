@@ -266,10 +266,11 @@ export default function Login() {
 
             <div className="flex ">
               <div className="">
-                <SittingIcon
+                <img src="/illustrations/sitting.svg" alt="" />
+                {/* <SittingIcon
                   width={236}
                   height={338}
-                />
+                /> */}
                 {/* <img
                   srcSet="/illustrations/sitting.svg 1200w"
                   src="/illustrations/sitting.svg"
