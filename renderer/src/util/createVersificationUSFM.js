@@ -118,6 +118,7 @@ export const createVersificationUSFM = (username, project, versification, books,
             textTranslation: {
               scriptDirection: direction,
               starred: false,
+              versification,
               description: project.description,
               copyright,
               lastSeen: moment().format(),

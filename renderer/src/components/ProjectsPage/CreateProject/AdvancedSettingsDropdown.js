@@ -99,7 +99,7 @@ export default function AdvancedSettingsDropdown({ call, project }) {
       myLicence.title = 'Custom';
       myLicence.locked = false;
       myLicence.id = 'Other';
-      myLicence.licence = project.copyright.fullStatementPlain.en;
+      myLicence.licence = project.copyright?.fullStatementPlain?.en;
     } else {
       myLicence = licenceList.find((item) => item.title === title);
       // eslint-disable-next-line import/no-dynamic-require
@@ -116,6 +116,7 @@ export default function AdvancedSettingsDropdown({ call, project }) {
     if (call === 'edit') {
       loadScope(project);
       loadLicence(project);
+      setVersificationScheme({ title: project?.project?.textTranslation?.versification ? project?.project?.textTranslation?.versification : 'ENG' });
     }
   }, []);
   // const [openPopUp, setOpenPopUp] = useState(false);

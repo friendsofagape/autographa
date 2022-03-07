@@ -82,6 +82,7 @@ export default function NewProject({ call, project, closeEdit }) {
       setLanguage,
       createProject,
       setNewProjectFields,
+      setLanguages,
     },
   } = React.useContext(ProjectContext);
   const { action: { validateField, isLengthValidated, isTextValidated } } = useValidator();
@@ -116,9 +117,10 @@ export default function NewProject({ call, project, closeEdit }) {
   const setValue = async (value) => {
     if (value.label === 'Target Language') {
       languages.forEach((l) => {
-        if (l.title === value.data) {
-          setLanguage(l);
+        if (l.title !== value.title) {
+          setLanguages(languages.concat(value));
         }
+        setLanguage(value);
       });
     }
   };
@@ -188,7 +190,7 @@ export default function NewProject({ call, project, closeEdit }) {
       abbreviation: project.identification.abbreviation.en,
       description: project.project.textTranslation.description,
     });
-    setValue({ label: 'Target Language', data: project.languages[0].name.en });
+    setValue({ label: 'Target Language', title: project.languages[0].name.en });
     setMetadata(project);
   };
   useEffect(() => {

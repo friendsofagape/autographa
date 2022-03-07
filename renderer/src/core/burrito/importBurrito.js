@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable no-alert */
 import moment from 'moment';
 import { v5 as uuidv5 } from 'uuid';
@@ -193,6 +194,7 @@ const importBurrito = async (filePath, currentUser) => {
             textTranslation: {
               scriptDirection: 'LTR',
               starred: false,
+              versification: '',
               description: '',
               copyright: '',
               lastSeen: moment().format(),
@@ -215,7 +217,20 @@ const importBurrito = async (filePath, currentUser) => {
       } else {
         logger.debug('importBurrito.js', 'Updating ag-settings.json file');
         const ag = fs.readFileSync(path.join(projectDir, `${projectName}_${id}`, 'ingredients', 'ag-settings.json'));
-        const settings = JSON.parse(ag);
+        let settings = JSON.parse(ag);
+        if (settings.version !== environment.AG_SETTING_VERSION) {
+          // eslint-disable-next-line prefer-const
+          let setting = settings;
+          setting.version = environment.AG_SETTING_VERSION;
+          setting.project.textTranslation.scriptDirection = settings.project.textTranslation?.scriptDirection ? settings.project.textTranslation?.scriptDirection : '';
+          setting.project.textTranslation.starred = settings.project.textTranslation?.starred ? settings.project.textTranslation?.starred : false;
+          setting.project.textTranslation.versification = settings.project.textTranslation?.versification ? settings.project.textTranslation?.versification : 'ENG';
+          setting.project.textTranslation.description = settings.project.textTranslation?.description ? settings.project.textTranslation?.description : '';
+          setting.project.textTranslation.copyright = settings.project.textTranslation?.copyright ? settings.project.textTranslation?.copyright : 'Custom';
+          setting.project.textTranslation.refResources = settings.project.textTranslation?.refResources ? settings.project.textTranslation?.refResources : [];
+          setting.project.textTranslation.bookMarks = settings.project.textTranslation?.bookMarks ? settings.project.textTranslation?.bookMarks : [];
+          settings = setting;
+        }
         settings.project.textTranslation.lastSeen = moment().format();
         await fs.writeFileSync(path.join(projectDir, `${projectName}_${id}`, 'ingredients', 'ag-settings.json'), JSON.stringify(settings));
       }
