@@ -3,7 +3,7 @@ import React, {
   useRef, Fragment,
 } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
-import { FolderOpenIcon, InformationCircleIcon, CheckIcon } from '@heroicons/react/outline';
+import { FolderOpenIcon, InformationCircleIcon, CheckIcon, XIcon } from '@heroicons/react/outline';
 import { useRouter } from 'next/router';
 import { SnackBar } from '@/components/SnackBar';
 import CloseIcon from '@/illustrations/close-button-black.svg';
@@ -12,7 +12,6 @@ import importBurrito, { viewBurrito } from '../../core/burrito/importBurrito';
 import * as logger from '../../logger';
 import ConfirmationModal from '../editor/ConfirmationModal';
 import { AutographaContext } from '@/components/context/AutographaContext';
-import { validate } from 'uuid';
 
 export default function ImportProjectPopUp(props) {
   const {
@@ -189,8 +188,8 @@ export default function ImportProjectPopUp(props) {
                           <label className="inline-flex items-center">
                             {(sbData?.validate)? 
                             <CheckIcon className='w-6 h-6 text-green-500 border' />
-
-                            :<span className='w-6 h-6 text-red-500 text-center px-1 border'> X </span>
+                            :
+                            <XIcon className='w-6 h-6 text-red-500 border'/>
                             }
                             {(sbData?.validate)?
                             <span className="ml-2">Burrito validated Successfully</span>
