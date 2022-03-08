@@ -137,7 +137,7 @@ export default function ImportProjectPopUp(props) {
                 </div>
                 <div className="relative w-full h-full">
                   
-                  <div className="p-8 overflow-auto w-full h-full no-scrollbars flex flex-col justify-between">
+                  <div className="p-8 overflow-auto w-full h-full scrollbars-width flex flex-col justify-between">
 
                     <div className="bg-white text-sm text-left tracking-wide">
                       <div className="flex gap-6">

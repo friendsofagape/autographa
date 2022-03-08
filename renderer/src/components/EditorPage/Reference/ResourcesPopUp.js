@@ -14,10 +14,10 @@ import { readRefBurrito } from '@/core/reference/readRefBurrito';
 import { ProjectContext } from '@/components/context/ProjectContext';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import { writeCustomResources } from '@/core/reference/writeCustomResources';
-import ResourceOption from './ResourceOption';
-import ImportResource from './ImportResource';
 import { readCustomResources } from '@/core/reference/readCustomResources';
 import { SnackBar } from '@/components/SnackBar';
+import ResourceOption from './ResourceOption';
+import ImportResource from './ImportResource';
 import * as logger from '../../../logger';
 
 function createData(name, language, owner) {
@@ -255,7 +255,7 @@ const ResourcesPopUp = ({
                   <div aria-label="resources-title" className="uppercase bg-secondary text-white p-2 text-xs tracking-widest leading-snug rounded-tl text-center">
                     Resources
                   </div>
-                  <div style={{ width: 'max-content' }} className="bg-gray-100 px-3 py-3 h-full">
+                  <div style={{ width: 'max-content' }} className="relative bg-gray-100 px-3 py-3 h-full overflow-auto scrollbars-width">
                     {/* <input
                     className="rounded h-8 bg-gray-200 border-none uppercase pr-6 text-xs
                       tracking-widest leading-snug font-bold"
@@ -330,24 +330,22 @@ const ResourcesPopUp = ({
                     </div>
                   </div>
                 </div>
-                <div className="relative w-full">
-
-                  <div className="overflow-auto w-full h-5/6 no-scrollbars">
-                    <table className="divide-y divide-gray-200 w-full relative">
-                      <thead className="bg-white sticky top-0">
-                        <tr className="text-xs text-left">
-                          <th className="px-5 py-3 font-medium text-gray-300">
-                            <StarIcon className="h-5 w-5" aria-hidden="true" />
-                          </th>
-                          <th className="px-5 font-bold text-gray-700 uppercase tracking-wider">
-                            Name
-                          </th>
-                          <th className="px-5 font-bold text-gray-700 uppercase tracking-wider">
-                            Language
-                          </th>
-                        </tr>
-                      </thead>
-                      {selectResource === 'tn' && (
+                <div className="relative flex flex-wrap w-full max-h-sm scrollbars-width overflow-auto ">
+                  <table className="divide-y divide-gray-200 w-full relative">
+                    <thead className="bg-white sticky top-0">
+                      <tr className="text-xs text-left">
+                        <th className="px-5 py-3 font-medium text-gray-300">
+                          <StarIcon className="h-5 w-5" aria-hidden="true" />
+                        </th>
+                        <th className="px-5 font-bold text-gray-700 uppercase tracking-wider">
+                          Name
+                        </th>
+                        <th className="px-5 font-bold text-gray-700 uppercase tracking-wider">
+                          Language
+                        </th>
+                      </tr>
+                    </thead>
+                    {selectResource === 'tn' && (
                       <tbody className="bg-white divide-y divide-gray-200 ">
                         {translationNote.map((notes) => (
                           <tr className="hover:bg-gray-200" key={notes.name + notes.owner}>
@@ -378,7 +376,7 @@ const ResourcesPopUp = ({
                         ))}
                       </tbody>
                     )}
-                      {selectResource === 'twlm' && (
+                    {selectResource === 'twlm' && (
                       <tbody className="bg-white divide-y divide-gray-200  mb-44 ">
                         {translationWord.map((notes) => (
                           <tr className="hover:bg-gray-200" key={notes.name + notes.language}>
@@ -409,7 +407,7 @@ const ResourcesPopUp = ({
                         ))}
                       </tbody>
                     )}
-                      {selectResource === 'tq' && (
+                    {selectResource === 'tq' && (
                       <tbody className="bg-white divide-y divide-gray-200  mb-44 ">
                         {translationQuestion.map((notes) => (
                           <tr className="hover:bg-gray-200" key={notes.name + notes.language}>
@@ -440,7 +438,7 @@ const ResourcesPopUp = ({
                         ))}
                       </tbody>
                     )}
-                      {selectResource === 'bible' && (
+                    {selectResource === 'bible' && (
                       <tbody className="bg-white divide-y divide-gray-200  mb-44 ">
                         {(subMenuItems) && (
                           subMenuItems.map((ref) => (
@@ -480,8 +478,8 @@ const ResourcesPopUp = ({
                         )}
                       </tbody>
                     )}
-                    </table>
-                    {selectResource === 'tn' && (
+                  </table>
+                  {selectResource === 'tn' && (
                           showInput ? (
                             <div className="bg-white grid grid-cols-4 gap-2 p-4 text-sm text-left tracking-wide">
                               <div className="flex gap-5 col-span-2">
@@ -524,7 +522,7 @@ const ResourcesPopUp = ({
                           )
 
                   )}
-                    {selectResource === 'tq' && (
+                  {selectResource === 'tq' && (
                           showInput ? (
                             <div className="bg-white grid grid-cols-4 gap-2 p-4 text-sm text-left tracking-wide">
                               <div className="flex gap-5 col-span-2">
@@ -567,7 +565,7 @@ const ResourcesPopUp = ({
                           )
 
                   )}
-                    {selectResource === 'twlm' && (
+                  {selectResource === 'twlm' && (
                           showInput ? (
                             <div className="bg-white grid grid-cols-4 gap-2 p-4 text-sm text-left tracking-wide">
                               <div className="flex gap-5 col-span-2">
@@ -610,7 +608,7 @@ const ResourcesPopUp = ({
                           )
 
                   )}
-                    {selectResource === 'bible' && (
+                  {selectResource === 'bible' && (
                     <div className="flex gap-6 mx-5 absolute bottom-5 right-0 justify-end z-10">
                       <button
                         type="button"
@@ -639,7 +637,6 @@ const ResourcesPopUp = ({
                       />
                     </div>
                   )}
-                  </div>
 
                 </div>
               </div>

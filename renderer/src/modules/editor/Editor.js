@@ -26,14 +26,14 @@ import * as localforage from 'localforage';
 import {
  Fragment, useContext, useEffect, useState,
 } from 'react';
-import CrossReferenceIcon from '@/icons/crossreference.svg';
-import FootNotesIcon from '@/icons/footnotes.svg';
 import CustomNavigation from '@/components/EditorPage/Navigation/CustomNavigation';
 import BibleNavigation from '@/modules/biblenavigation/BibleNavigation';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import { ProjectContext } from '@/components/context/ProjectContext';
 // eslint-disable-next-line import/no-unresolved
 import { classNames } from '@/util/classNames';
+import FootNotesIcon from '@/icons/footnotes.svg';
+import CrossReferenceIcon from '@/icons/crossreference.svg';
 // import styles from './Editor.module.css';
 const profile = ['Your Profile'];
 
@@ -154,38 +154,39 @@ export default function Editor({
 
   return (
     <>
-      <div className="flex items-center justify-between bg-secondary">
-        <BibleNavigation />
-        {/* <div className="text-center h-6 rounded-t text-gray-100  text-xs uppercase tracking-widest font-bold leading-3">
+      <div className="flex flex-col bg-white border-b-2 border-secondary rounded-md shadow h-editor scrollbar-width">
+        <div className="flex flex-wrap items-center justify-between bg-secondary ">
+          <BibleNavigation />
+          {/* <div className="text-center h-6 rounded-t text-gray-100  text-xs uppercase tracking-widest font-bold leading-3">
           <div className="text-center pt-1">
             Editor
           </div>
         </div> */}
-        <div aria-label="editor-pane" className="h-4 flex justify-center items-center text-white text-xxs uppercase tracking-wider font-bold leading-3 truncate">
-          Editor
-        </div>
-        <div title="navigation lock/unlock" className="flex items-center">
-          {scrollLock === true ? (
-            <div>
-              <LockOpenIcon aria-label="open-lock" onClick={() => setScrollLock(!scrollLock)} className="h-5 w-5 text-white" aria-hidden="true" />
-            </div>
+          <div aria-label="editor-pane" className="h-4 flex flex-1 justify-center text-white text-xxs uppercase tracking-wider font-bold leading-3 truncate">
+            Editor
+          </div>
+          <div title="navigation lock/unlock" className="flex items-center">
+            {scrollLock === true ? (
+              <div>
+                <LockOpenIcon aria-label="open-lock" onClick={() => setScrollLock(!scrollLock)} className="h-5 w-5 text-white" aria-hidden="true" />
+              </div>
             )
           : (
             <div>
               <LockClosedIcon aria-label="close-lock" onClick={(e) => handleUnlockScroll(e)} className="h-5 w-5 text-white" aria-hidden="true" />
             </div>
           )}
-          <div
-            onClick={(event) => handleBookmarks(event)}
-            role="button"
-            tabIndex="0"
-            title="bookmark"
-            className="mx-1 px-2 focus:outline-none border-r-2 border-l-2 border-white border-opacity-10"
-          >
-            <BookmarkIcon className={`${bookMarked ? 'fill-current' : ''}  h-5 w-5 text-white`} aria-hidden="true" />
+            <div
+              onClick={(event) => handleBookmarks(event)}
+              role="button"
+              tabIndex="0"
+              title="bookmark"
+              className="mx-1 px-2 focus:outline-none border-r-2 border-l-2 border-white border-opacity-10"
+            >
+              <BookmarkIcon className={`${bookMarked ? 'fill-current' : ''}  h-5 w-5 text-white`} aria-hidden="true" />
 
-          </div>
-          {/* <Menu as="div" className="px-2 py-1 focus:outline-none border-r-1 border-white border-opacity-10">
+            </div>
+            {/* <Menu as="div" className="px-2 py-1 focus:outline-none border-r-1 border-white border-opacity-10">
             {({ open }) => (
               <>
                 <div>
@@ -230,24 +231,24 @@ export default function Editor({
               </>
             )}
           </Menu> */}
-          {/* <div className="mr-2">
+            {/* <div className="mr-2">
             <CogIcon className="h-5 w-5 text-white" aria-hidden="true" />
           </div> */}
+          </div>
         </div>
-      </div>
-      <div
-        style={{
+        <div
+          style={{
                 fontFamily: selectedFont || 'sans-serif',
                 fontSize: `${fontSize}rem`,
                 lineHeight: (fontSize > 1.3) ? 1.5 : '',
                 direction: `${projectScriptureDir === 'RTL' ? 'rtl' : 'auto'}`,
         }}
-        className="border-l-2 border-r-2 border-secondary pb-16 prose-sm max-w-none overflow-y-auto h-full no-scrollbars"
-      >
-        {children}
-        {/* styled editor */}
+          className="border-l-2 border-r-2 border-secondary pb-16 prose-sm max-w-none overflow-auto h-full scrollbars-width"
+        >
+          {children}
+          {/* styled editor */}
 
-        {/* <>
+          {/* <>
           <h3 className="text-secondary">Jesus Has Risen</h3>
           <p>
             <sup className={styles.verseNumber}>1</sup>
@@ -379,6 +380,7 @@ export default function Editor({
             </span>
           </p>
         </> */}
+        </div>
       </div>
     </>
   );
