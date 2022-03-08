@@ -6,7 +6,7 @@ import * as localForage from 'localforage';
 import { useRouter } from 'next/router';
 import LogoIcon from '@/icons/logo.svg';
 import GroupIcon from '@/illustrations/group.svg';
-import SittingIcon from '@/illustrations/sitting.svg';
+// import SittingIcon from '@/illustrations/sitting.svg';
 import VectorOne from '@/illustrations/vector-one.svg';
 import HalfMoon from '@/illustrations/half-moon.svg';
 import Quote from '@/illustrations/quote.svg';
