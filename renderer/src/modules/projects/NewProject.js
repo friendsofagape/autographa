@@ -116,11 +116,11 @@ export default function NewProject({ call, project, closeEdit }) {
 
   const setValue = async (value) => {
     if (value.label === 'Target Language') {
+      setLanguage(value);
       languages.forEach((l) => {
         if (l.title !== value.title) {
           setLanguages(languages.concat(value));
         }
-        setLanguage(value);
       });
     }
   };
