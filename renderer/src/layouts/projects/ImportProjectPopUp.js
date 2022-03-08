@@ -3,7 +3,7 @@ import React, {
   useRef, Fragment,
 } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
-import { FolderOpenIcon, InformationCircleIcon } from '@heroicons/react/outline';
+import { FolderOpenIcon, InformationCircleIcon, CheckIcon } from '@heroicons/react/outline';
 import { useRouter } from 'next/router';
 import { SnackBar } from '@/components/SnackBar';
 import CloseIcon from '@/illustrations/close-button-black.svg';
@@ -12,6 +12,7 @@ import importBurrito, { viewBurrito } from '../../core/burrito/importBurrito';
 import * as logger from '../../logger';
 import ConfirmationModal from '../editor/ConfirmationModal';
 import { AutographaContext } from '@/components/context/AutographaContext';
+import { validate } from 'uuid';
 
 export default function ImportProjectPopUp(props) {
   const {
@@ -186,7 +187,11 @@ export default function ImportProjectPopUp(props) {
                           className="w-full mb-4 bg-gray-200 block rounded shadow-sm sm:text-sm focus:border-primary border-gray-300"
                             type="text" value={sbData.burritoType} disabled />
                           <label className="inline-flex items-center">
-                            <input type="checkbox" className="form-checkbox" checked={sbData?.validate} disabled/>
+                            {(sbData?.validate)? 
+                            <CheckIcon className='w-6 h-6 text-green-500 border' />
+
+                            :<span className='w-6 h-6 text-red-500 text-center px-1 border'> X </span>
+                            }
                             {(sbData?.validate)?
                             <span className="ml-2">Burrito validated Successfully</span>
                             :
