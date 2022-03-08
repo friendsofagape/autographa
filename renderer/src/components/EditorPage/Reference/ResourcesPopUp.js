@@ -330,14 +330,14 @@ const ResourcesPopUp = ({
                     </div>
                   </div>
                 </div>
-                <div className="relative flex flex-wrap w-full max-h-sm scrollbars-width overflow-auto ">
+                <div className="relative flex align-top flex-col flex-wrap w-full max-h-sm scrollbars-width overflow-auto ">
                   <table className="divide-y divide-gray-200 w-full relative">
                     <thead className="bg-white sticky top-0">
                       <tr className="text-xs text-left">
-                        <th className="px-5 py-3 font-medium text-gray-300">
+                        <th className="px-5 py-3 font-medium text-gray-300 hidden">
                           <StarIcon className="h-5 w-5" aria-hidden="true" />
                         </th>
-                        <th className="px-5 font-bold text-gray-700 uppercase tracking-wider">
+                        <th className="px-5 py-3.5 font-bold text-gray-700 uppercase tracking-wider">
                           Name
                         </th>
                         <th className="px-5 font-bold text-gray-700 uppercase tracking-wider">
@@ -349,10 +349,10 @@ const ResourcesPopUp = ({
                       <tbody className="bg-white divide-y divide-gray-200 ">
                         {translationNote.map((notes) => (
                           <tr className="hover:bg-gray-200" key={notes.name + notes.owner}>
-                            <td className="px-5 py-3">
+                            <td className="px-5 py-3 hidden">
                               <StarIcon className="h-5 w-5 text-gray-300" aria-hidden="true" />
                             </td>
-                            <td className="px-5 text-gray-600">
+                            <td className="px-5 py-2.5 text-gray-600">
                               <div
                                 className="focus:outline-none"
                                 onClick={(e) => handleRowSelect(e, notes.language, `Translation Notes ${notes.name}`, notes.owner)}
@@ -380,10 +380,10 @@ const ResourcesPopUp = ({
                       <tbody className="bg-white divide-y divide-gray-200  mb-44 ">
                         {translationWord.map((notes) => (
                           <tr className="hover:bg-gray-200" key={notes.name + notes.language}>
-                            <td className="px-5 py-3">
+                            <td className="px-5 py-3 hidden">
                               <StarIcon className="h-5 w-5 text-gray-300" aria-hidden="true" />
                             </td>
-                            <td className="px-5 text-gray-600">
+                            <td className="px-5 py-2.5 text-gray-600">
                               <div
                                 className="focus:outline-none"
                                 onClick={(e) => handleRowSelect(e, notes.language, `Translation Words ${notes.name}`, notes.owner)}
@@ -411,10 +411,10 @@ const ResourcesPopUp = ({
                       <tbody className="bg-white divide-y divide-gray-200  mb-44 ">
                         {translationQuestion.map((notes) => (
                           <tr className="hover:bg-gray-200" key={notes.name + notes.language}>
-                            <td className="px-5 py-3">
+                            <td className="px-5 py-3 hidden">
                               <StarIcon className="h-5 w-5 text-gray-300" aria-hidden="true" />
                             </td>
-                            <td className="px-5 text-gray-600">
+                            <td className="px-5 py-2.5 text-gray-600">
                               <div
                                 className="focus:outline-none"
                                 onClick={(e) => handleRowSelect(e, notes.language, `Translation Questions ${notes.name}`, notes.owner)}
@@ -443,10 +443,10 @@ const ResourcesPopUp = ({
                         {(subMenuItems) && (
                           subMenuItems.map((ref) => (
                             <tr className="hover:bg-gray-200" key={ref.value.identification.name.en + ref.projectDir}>
-                              <td className="px-5 py-3">
+                              <td className="px-5 py-3 hidden">
                                 <StarIcon className="h-5 w-5 text-gray-300" aria-hidden="true" />
                               </td>
-                              <td className="px-5 text-gray-600">
+                              <td className="px-5 py-2.5 text-gray-600">
                                 <div
                                   className="focus:outline-none"
                                   onClick={(e) => handleRowSelect(e,
