@@ -4,7 +4,7 @@
 	"description": "A Bible translation editor for everyone.",
 	"email": "autographa.support@bridgeconn.com",
 	"author": "Friends of Agape <autographa.support@bridgeconn.com>",
-	"version": "2.0.0",
+	"version": "2.0.1-beta.1",
 	"license": "MIT",
 	"private": true,
 	"main": "main/index.js",
@@ -71,7 +71,7 @@
 		"publish": [
 			{
 				"provider": "github",
-				"owner": "Ashersam",
+				"owner": "vipinpaul",
 				"repo": "autographa"
 			}
 		]

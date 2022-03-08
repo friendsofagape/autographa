@@ -13,14 +13,14 @@ import ProjectsLayout from '@/layouts/projects/Layout';
 import { SnackBar } from '@/components/SnackBar';
 import { isElectron } from '../../core/handleElectron';
 import { saveProfile } from '../../core/projects/handleProfile';
-import CustomList from './CustomList';
+// import CustomList from './CustomList';
 import * as logger from '../../logger';
 
-const languages = [
-  { title: 'English' },
-  { title: 'Hindi' },
-  { title: 'Spanish' },
-];
+// const languages = [
+//   { title: 'English' },
+//   { title: 'Hindi' },
+//   { title: 'Spanish' },
+// ];
 
 function ProgressCircle({ isFilled, count, text }) {
   return (
@@ -78,7 +78,7 @@ export default function UserProfile() {
     selectedregion: '',
     organization: '',
   });
-  const [appLang, setAppLang] = React.useState(languages[0]);
+  // const [appLang, setAppLang] = React.useState(languages[0]);
   const [snackBar, setOpenSnackBar] = React.useState(false);
   const [snackText, setSnackText] = React.useState('');
   const [notify, setNotify] = React.useState();
