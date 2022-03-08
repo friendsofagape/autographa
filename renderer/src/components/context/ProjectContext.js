@@ -265,6 +265,7 @@ const ProjectContextProvider = ({ children }) => {
             setOpenSideBar,
             setNewProjectFields,
             setImportedFiles,
+            setLanguages,
         },
     };
 
