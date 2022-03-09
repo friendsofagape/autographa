@@ -90,13 +90,6 @@ const CustomCanonSpecification = ({ bibleNav, closeBibleNav, handleNav }) => {
               </button>
             </SelectBook>
             <div className="p-3 flex gap-5 justify-end">
-              <button
-                type="button"
-                className="w-40 h-10  bg-error leading-loose rounded shadow text-xs font-base  text-white tracking-wide  font-light uppercase"
-                onClick={() => closeBibleNav()}
-              >
-                Cancel
-              </button>
 
               {lock ? (
                 <button
@@ -106,15 +99,24 @@ const CustomCanonSpecification = ({ bibleNav, closeBibleNav, handleNav }) => {
                 >
                   Ok
                 </button>
-)
+                )
               : (
-                <button
-                  type="button"
-                  className="w-40 h-10  bg-success leading-loose rounded shadow text-xs font-base  text-white tracking-wide  font-light uppercase"
-                  onClick={() => (handleNav === 'edit' ? editCanon() : saveCanon())}
-                >
-                  Save
-                </button>
+                <>
+                  <button
+                    type="button"
+                    className="w-40 h-10  bg-error leading-loose rounded shadow text-xs font-base  text-white tracking-wide  font-light uppercase"
+                    onClick={() => closeBibleNav()}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="button"
+                    className="w-40 h-10  bg-success leading-loose rounded shadow text-xs font-base  text-white tracking-wide  font-light uppercase"
+                    onClick={() => (handleNav === 'edit' ? editCanon() : saveCanon())}
+                  >
+                    Save
+                  </button>
+                </>
               )}
             </div>
           </div>
