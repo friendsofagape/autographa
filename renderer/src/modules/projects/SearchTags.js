@@ -25,7 +25,7 @@ export default function SearchTags({
       filteredData = content.filter(
         (item) => Object.keys(item).some((key) => (excludeColumns.includes(key)
           ? false
-          : item[key].toString().toLowerCase().includes(lowercasedValue))),
+          : item[key]?.toString().toLowerCase().includes(lowercasedValue))),
       );
       return filteredData;
     }
