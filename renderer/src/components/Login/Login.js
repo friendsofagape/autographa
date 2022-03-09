@@ -220,7 +220,7 @@ export default function Login() {
             <div />
           </div>
 
-          <div className="absolute bottom-4 left-0 right-0 flex items-center justify-center gap-5 bg-white text-black font-bold">
+          <div className="absolute bottom-4 left-0 right-0 flex items-center justify-center gap-5 bg-white text-black font-bold hidden">
             <a href="/" onClick={(event) => event.preventDefault()}>EN(US)</a>
             <a href="/" onClick={(event) => event.preventDefault()}>ABOUT</a>
             <a href="/" onClick={(event) => event.preventDefault()}>PRIVACY</a>
