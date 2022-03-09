@@ -156,37 +156,37 @@
 	],
 	"copyright": [
 		{
-			"title": "BY_SA",
+			"title": "CC BY-SA",
 			"id": "Attribution-ShareAlike",
 			"licence": "",
 			"locked": true
 		},
 		{
-			"title": "BY",
+			"title": "CC BY",
 			"id": "Attribution",
 			"licence": "",
 			"locked": true
 		},
 		{
-			"title": "BY_ND",
+			"title": "CC BY-ND",
 			"id": "Attribution-NoDerivatives",
 			"licence": "",
 			"locked": true
 		},
 		{
-			"title": "BY_NC",
+			"title": "CC BY-NC",
 			"id": "Attribution-NonCommercial",
 			"licence": "",
 			"locked": true
 		},
 		{
-			"title": "BY_NC_SA",
+			"title": "CC BY-NC-SA",
 			"id": "Attribution-NonCommercial-ShareAlike",
 			"licence": "",
 			"locked": true
 		},
 		{
-			"title": "BY_NC_ND",
+			"title": "CC BY-NC-ND",
 			"id": "Attribution-NonCommercial-NoDerivatives",
 			"licence": "",
 			"locked": true
