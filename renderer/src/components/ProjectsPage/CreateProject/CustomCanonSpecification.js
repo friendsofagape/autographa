@@ -97,7 +97,16 @@ const CustomCanonSpecification = ({ bibleNav, closeBibleNav, handleNav }) => {
               >
                 Cancel
               </button>
-              {lock ? <div />
+
+              {lock ? (
+                <button
+                  type="button"
+                  className="w-40 h-10  bg-success leading-loose rounded shadow text-xs font-base  text-white tracking-wide  font-light uppercase"
+                  onClick={() => closeBibleNav()}
+                >
+                  Ok
+                </button>
+)
               : (
                 <button
                   type="button"
