@@ -66,6 +66,7 @@ export default function CustomNavigation({
   }
 
   function openBooks() {
+    setSelectedBooks([(bookId.toUpperCase())]);
     setOpenBook(true);
   }
 
@@ -162,6 +163,10 @@ export default function CustomNavigation({
                 multiSelectBook={multiSelectBook}
                 selectedBooks={selectedBooks}
                 setSelectedBooks={setSelectedBooks}
+                // The SelectBook is also been used to set the Canon-Scope for the projects and
+                // "scope" is added to disable the click on the book list. scope="Other" will only
+                // allow to click/select the book.
+                scope="Other"
               >
                 <button
                   type="button"
