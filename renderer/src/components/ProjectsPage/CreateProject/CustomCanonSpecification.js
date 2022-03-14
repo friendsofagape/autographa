@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import React, { Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { XIcon } from '@heroicons/react/solid';
@@ -63,7 +64,7 @@ const CustomCanonSpecification = ({ bibleNav, closeBibleNav, handleNav }) => {
         <Dialog.Overlay className="fixed inset-0 bg-black opacity-30" />
         <div className="flex items-center justify-center h-screen ">
           <div className="w-5/12 m-auto z-50 bg-white shadow overflow-hidden sm:rounded-lg">
-            <div className="p-3">
+            {/* <div className="p-3">
               <input
                 type="text"
                 name="new spec"
@@ -73,12 +74,13 @@ const CustomCanonSpecification = ({ bibleNav, closeBibleNav, handleNav }) => {
                 disabled
                 className="bg-white w-80 block rounded shadow-sm sm:text-sm focus:ring-gray-500 focus:border-primary border-gray-300"
               />
-            </div>
+            </div> */}
             <SelectBook
               bookList={bookList}
               multiSelectBook
               selectedBooks={selectedBooks}
               setSelectedBooks={setSelectedBooks}
+              scope={name}
             >
               <button
                 type="button"
