@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import PropTypes from 'prop-types';
 import { Dialog, Transition } from '@headlessui/react';
 import {
@@ -65,6 +64,7 @@ export default function BibleNavigation(props) {
   }
 
   function openBooks() {
+    setSelectedBooks([(bookId.toUpperCase())]);
     setOpenBook(true);
   }
 
@@ -175,6 +175,10 @@ export default function BibleNavigation(props) {
                 multiSelectBook={multiSelectBook}
                 selectedBooks={selectedBooks}
                 setSelectedBooks={setSelectedBooks}
+                // The SelectBook is also been used to set the Canon-Scope for the projects and
+                // "scope" is added to disable the click on the book list. scope="Other" will only
+                // allow to click/select the book.
+                scope="Other"
               >
                 <button
                   type="button"

@@ -51,6 +51,7 @@ export default function AdvancedSettingsDropdown({ call, project }) {
   const [isShow, setIsShow] = React.useState(true);
   const [bibleNav, setBibleNav] = React.useState(false);
   const [handleNav, setHandleNav] = React.useState();
+  const [currentScope, setCurrentScope] = React.useState();
   const handleClick = () => {
     setIsShow(!isShow);
   };
@@ -67,26 +68,32 @@ export default function AdvancedSettingsDropdown({ call, project }) {
       if (Object.keys(project.type.flavorType.currentScope).length === 66) {
         const vals = Object.keys(project.type.flavorType.currentScope).map((key) => key);
         setcanonSpecification({ title: 'All Books', currentScope: vals });
+        setCurrentScope({ title: 'All Books', currentScope: vals });
       } else {
         const vals = Object.keys(project.type.flavorType.currentScope).map((key) => key);
         setcanonSpecification({ title: 'Other', currentScope: vals });
+        setCurrentScope({ title: 'Other', currentScope: vals });
       }
     } else if ((project.type.flavorType.canonType).length === 1) {
       if (project.type.flavorType.canonType[0] === 'ot') {
         if (Object.keys(project.type.flavorType.currentScope).length === 39) {
           const vals = Object.keys(project.type.flavorType.currentScope).map((key) => key);
           setcanonSpecification({ title: 'Old Testament (OT)', currentScope: vals });
+          setCurrentScope({ title: 'Old Testament (OT)', currentScope: vals });
         } else {
           const vals = Object.keys(project.type.flavorType.currentScope).map((key) => key);
           setcanonSpecification({ title: 'Other', currentScope: vals });
+          setCurrentScope({ title: 'Other', currentScope: vals });
         }
       } else if (project.type.flavorType.canonType[0] === 'nt') {
         if (Object.keys(project.type.flavorType.currentScope).length === 27) {
           const vals = Object.keys(project.type.flavorType.currentScope).map((key) => key);
           setcanonSpecification({ title: 'New Testament (NT)', currentScope: vals });
+          setCurrentScope({ title: 'New Testament (NT)', currentScope: vals });
         } else {
           const vals = Object.keys(project.type.flavorType.currentScope).map((key) => key);
           setcanonSpecification({ title: 'Other', currentScope: vals });
+          setCurrentScope({ title: 'Other', currentScope: vals });
         }
       }
     }
@@ -108,7 +115,17 @@ export default function AdvancedSettingsDropdown({ call, project }) {
     }
     setCopyRight(myLicence);
   };
-  const selectCanon = (value) => {
+  const selectCanon = (val) => {
+    const value = val;
+    if (call === 'edit' && value.title === 'Other') {
+      if (canonSpecification.title === 'Other') {
+        value.currentScope = canonSpecification.currentScope;
+      } else {
+       value.currentScope = currentScope.currentScope;
+      }
+    } else if (canonSpecification.title === 'Other' && value.title === 'Other') {
+        value.currentScope = canonSpecification.currentScope;
+      }
     setcanonSpecification(value);
     openBibleNav('edit');
   };

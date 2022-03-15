@@ -15,6 +15,7 @@ export default function SelectBook({
   multiSelectBook,
   selectedBooks,
   setSelectedBooks,
+  scope,
  }) {
   const [openNT, setOpenNT] = useState(true);
   const [openOT, setOpenOT] = useState(true);
@@ -53,63 +54,26 @@ export default function SelectBook({
     }
   }
   React.useEffect(() => {
-    if (selectedBooks.length === 39) {
+    if (scope === 'Old Testament (OT)') {
       toggleOT();
-    } else if (selectedBooks.length === 27) {
+    } else if (scope === 'New Testament (NT)') {
       toggleNT();
     } else {
       toggle();
     }
-  }, [selectedBooks]);
+  }, [scope]);
   return (
     <>
       <div className="flex flex-row text-center bg-gray-800 text-white text-sm font-bold tracking-wide uppercase">
         <div className="w-40 m-auto grid grid-cols-3 gap-0 bg-primary">
           <div onClick={toggle} className="p-2 bg-black hover:bg-primary backdrop-opacity-20 cursor-pointer">All</div>
-          <div onClick={toggleNT} className={openNT === false ? 'p-2 bg-black hover:bg-primary backdrop-opacity-20 cursor-pointer' : 'p-2 border-r-2 border-black hover:bg-black border-opacity-5 cursor-pointer'}>NT</div>
           <div onClick={toggleOT} className={openOT === false ? 'p-2 bg-black hover:bg-primary backdrop-opacity-20 cursor-pointer' : 'p-2 border-r-2 border-black hover:bg-black border-opacity-5 cursor-pointer'}>OT</div>
+          <div onClick={toggleNT} className={openNT === false ? 'p-2 bg-black hover:bg-primary backdrop-opacity-20 cursor-pointer' : 'p-2 border-r-2 border-black hover:bg-black border-opacity-5 cursor-pointer'}>NT</div>
         </div>
         <div className="flex justify-end">
           {children}
         </div>
       </div>
-
-      <Disclosure>
-        {openNT && (
-          <>
-            <div className="p-2 text-center bg-gray-200 text-gray-700 text-xs font-semibold tracking-wide uppercase cursor-pointer">
-              new testament
-            </div>
-            <Transition
-              show={openNT}
-              enter="transition duration-100 ease-out"
-              enterFrom="transform scale-95 opacity-0"
-              enterTo="transform scale-100 opacity-100"
-              leave="transition duration-75 ease-out"
-              leaveFrom="transform scale-100 opacity-100"
-              leaveTo="transform scale-95 opacity-0"
-            >
-              <Disclosure.Panel static>
-                <div className="bg-white grid grid-cols-4 gap-1 p-4 text-xxs text-left font-bold tracking-wide uppercase">
-                  {bookList.map((book, index) => (index > 38 && (
-                  <div
-                    key={book.name}
-                    onClick={(e) => (multiSelectBook
-                    ? selectMultipleBooks(e, book.key, book.name)
-                    : bookSelect(e, book.key, book.name))}
-                    className={`${styles.select} ${selectedBooks.includes((book.key).toUpperCase()) ? styles.active : ''}`}
-                  >
-                    {book.name}
-                  </div>
-                    )
-                  ))}
-                </div>
-              </Disclosure.Panel>
-            </Transition>
-          </>
-        )}
-
-      </Disclosure>
 
       <Disclosure>
         {openOT && (
@@ -127,7 +91,7 @@ export default function SelectBook({
               leaveTo="transform scale-95 opacity-0"
             >
               <Disclosure.Panel static>
-                <div className="bg-white grid grid-cols-4 gap-1 p-4 text-xxs text-left font-bold tracking-wide uppercase">
+                <div className="bg-white grid grid-cols-4 gap-1 p-4 text-xxs text-left font-bold tracking-wide uppercase" style={{ pointerEvents: scope !== 'Other' ? 'none' : 'auto' }}>
                   {bookList.map((book, index) => (
                       index <= 38 && (
                         <div
@@ -149,6 +113,42 @@ export default function SelectBook({
         )}
 
       </Disclosure>
+      <Disclosure>
+        {openNT && (
+          <>
+            <div className="p-2 text-center bg-gray-200 text-gray-700 text-xs font-semibold tracking-wide uppercase cursor-pointer">
+              new testament
+            </div>
+            <Transition
+              show={openNT}
+              enter="transition duration-100 ease-out"
+              enterFrom="transform scale-95 opacity-0"
+              enterTo="transform scale-100 opacity-100"
+              leave="transition duration-75 ease-out"
+              leaveFrom="transform scale-100 opacity-100"
+              leaveTo="transform scale-95 opacity-0"
+            >
+              <Disclosure.Panel static>
+                <div className="bg-white grid grid-cols-4 gap-1 p-4 text-xxs text-left font-bold tracking-wide uppercase" style={{ pointerEvents: scope !== 'Other' ? 'none' : 'auto' }}>
+                  {bookList.map((book, index) => (index > 38 && (
+                  <div
+                    key={book.name}
+                    onClick={(e) => (multiSelectBook
+                    ? selectMultipleBooks(e, book.key, book.name)
+                    : bookSelect(e, book.key, book.name))}
+                    className={`${styles.select} ${selectedBooks.includes((book.key).toUpperCase()) ? styles.active : ''}`}
+                  >
+                    {book.name}
+                  </div>
+                    )
+                  ))}
+                </div>
+              </Disclosure.Panel>
+            </Transition>
+          </>
+        )}
+
+      </Disclosure>
     </>
   );
 }
@@ -161,4 +161,5 @@ SelectBook.propTypes = {
   selectedBooks: PropTypes.array,
   multiSelectBook: PropTypes.bool,
   setSelectedBooks: PropTypes.func,
+  scope: PropTypes.string,
 };
