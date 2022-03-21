@@ -157,7 +157,7 @@
 		"raw-loader": "^4.0.2",
 		"react": "^17.0.2",
 		"react-dom": "^17.0.2",
-		"react-intl": "^5.18.0",
+		"react-intl": "^5.24.7",
 		"translation-helps-rcl": "^1.5.0",
 		"usfm-editor": "0.8.0",
 		"usfm-grammar": "^2.0.0",

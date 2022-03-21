@@ -4,6 +4,8 @@ import Router from 'next/router';
 import '../../styles/nprogress.css';
 import '../../styles/globals.css';
 // import { initializeParse } from '@parse/react-ssr';
+import { IntlProvider } from 'react-intl';
+import i18n from '../translations/i18n';
 import AutoUpdate from '@/components/AutoUpdate';
 import '../../styles/style-override.lazy.css';
 // import { environment } from '../environment';
@@ -19,9 +21,12 @@ Router.events.on('routeChangeComplete', () => NProgress.done());
 Router.events.on('routeChangeError', () => NProgress.done());
 
 function Autographa({ Component, pageProps }) {
+  const locale = i18n();
   return (
     <>
-      <Component {...pageProps} />
+      <IntlProvider locale={locale.appLang} messages={locale.message}>
+        <Component {...pageProps} />
+      </IntlProvider>
       <AutoUpdate />
     </>
   );

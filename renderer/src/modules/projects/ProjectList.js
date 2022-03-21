@@ -10,6 +10,7 @@ import {
 } from '@heroicons/react/outline';
 import localforage from 'localforage';
 
+import { FormattedMessage } from 'react-intl';
 import ProjectsLayout from '@/layouts/projects/Layout';
 import EnhancedTableHead from '@/components/ProjectsPage/Projects/EnhancedTableHead';
 import AutographaContextProvider, { AutographaContext } from '@/components/context/AutographaContext';
@@ -108,7 +109,7 @@ export default function ProjectList() {
         ? (
           <>
             <ProjectsLayout
-              title="Projects"
+              title={<FormattedMessage id="projects-page" />}
               isImport
               header={(
                 <SearchTags

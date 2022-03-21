@@ -10,9 +10,9 @@ import {
   MenuIcon,
   XIcon,
 } from '@heroicons/react/outline';
+import { FormattedMessage } from 'react-intl';
 import { AuthenticationContext } from '@/components/Login/AuthenticationContextProvider';
 import Notifications from '@/modules/notifications/Notifications';
-
 // eslint-disable-next-line import/no-unresolved
 import { classNames } from '@/util/classNames';
 
@@ -43,7 +43,8 @@ export default function TopMenuBar() {
                   <div className="hidden md:block">
                     <div className="-ml-4 flex items-baseline space-x-4">
                       <span className="text-white px-3 py-2 text-lg tracking-wide font-bold uppercase">
-                        Autographa
+                        {/* Autographa */}
+                        <FormattedMessage id="app-name" />
                         <span className="text-primary font-extrabold"> 2.0</span>
                       </span>
                     </div>

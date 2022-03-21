@@ -2,6 +2,7 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useRouter } from 'next/router';
+import { FormattedMessage } from 'react-intl';
 import ProjectsLayout from '@/layouts/projects/Layout';
 import AdvancedSettingsDropdown from '@/components/ProjectsPage/CreateProject/AdvancedSettingsDropdown';
 import { ProjectContext } from '@/components/context/ProjectContext';
@@ -202,7 +203,7 @@ export default function NewProject({ call, project, closeEdit }) {
 
   return (
     <ProjectsLayout
-      title={call === 'new' ? 'new project' : 'edit project'}
+      title={call === 'new' ? <FormattedMessage id="new-project-page" /> : <FormattedMessage id="edit-project" />}
       header={BibleHeaderTagDropDown()}
     >
       {loading === true
