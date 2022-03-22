@@ -1,12 +1,14 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable max-len */
 import { PropTypes } from 'prop-types';
-import React from 'react';
+import React, { useCallback } from 'react';
 import * as localForage from 'localforage';
 // eslint-disable-next-line import/no-unresolved
 
 import { XIcon } from '@heroicons/react/solid';
 import { PencilIcon, CheckIcon } from '@heroicons/react/outline';
+import router from 'next/router';
+import { FormattedMessage } from 'react-intl';
 import { classNames } from '@/util/classNames';
 import ProjectsLayout from '@/layouts/projects/Layout';
 
@@ -15,12 +17,12 @@ import { isElectron } from '../../core/handleElectron';
 import { saveProfile } from '../../core/projects/handleProfile';
 // import CustomList from './CustomList';
 import * as logger from '../../logger';
+import CustomList from './CustomList';
 
-// const languages = [
-//   { title: 'English' },
-//   { title: 'Hindi' },
-//   { title: 'Spanish' },
-// ];
+const languages = [
+  { title: 'English', id: 'en' },
+  { title: 'Hindi', id: 'hi' },
+];
 
 function ProgressCircle({ isFilled, count, text }) {
   return (
@@ -78,15 +80,34 @@ export default function UserProfile() {
     selectedregion: '',
     organization: '',
   });
-  // const [appLang, setAppLang] = React.useState(languages[0]);
   const [snackBar, setOpenSnackBar] = React.useState(false);
   const [snackText, setSnackText] = React.useState('');
   const [notify, setNotify] = React.useState();
+  const [appLanguage, setAppLanguage] = React.useState({ title: 'English', id: 'en' });
 
+  const language = useCallback((use, user) => {
+    const newpath = localStorage.getItem('userPath');
+    const fs = window.require('fs');
+    const path = window.require('path');
+    const file = path.join(newpath, 'autographa', 'users', user, 'ag-user-settings.json');
+    if (fs.existsSync(file)) {
+      fs.readFile(file, (err, data) => {
+        const json = JSON.parse(data);
+        if (use === 'get') {
+          const language = languages.find((obj) => obj.id === (json.appLanguage));
+          setAppLanguage(language);
+        } else {
+          json.appLanguage = appLanguage.id;
+          fs.writeFileSync(file, JSON.stringify(json));
+        }
+      });
+    }
+  }, [appLanguage]);
   React.useEffect(() => {
     if (!username && isElectron()) {
       localForage.getItem('userProfile')
-        .then((value) => {
+        .then(async (value) => {
+          language('get', value?.username);
           setUsername(value.username);
           const keys = Object.keys(values);
           keys.forEach((key) => {
@@ -100,39 +121,41 @@ export default function UserProfile() {
           setAppMode(value);
         });
     }
-  }, [username, values, appMode]);
+  }, [username, values, appMode, language]);
   const handleSave = async (e) => {
     logger.debug('Profile.js', 'In handleSave for Saving profile');
     e.preventDefault();
+    language('set', username);
     const status = await saveProfile(values);
     setNotify(status[0].type);
     setSnackText(status[0].value);
     setOpenSnackBar(true);
+    router.push('./profile');
   };
   return (
     <>
-      <ProjectsLayout title="profile">
+      <ProjectsLayout title={<FormattedMessage id="profile-page" />}>
         <div className=" bg-gray-100 flex">
           <div className="w-60  bg-secondary ">
             <div className="grid grid-rows-5 p-8 gap-16 pb-20 mr-20">
               <div className="grid grid-cols-2">
-                <ProgressCircle isFilled count="1" text="Name" />
+                <ProgressCircle isFilled count="1" text={<FormattedMessage id="name-label" />} />
               </div>
 
               <div className="grid grid-cols-2">
-                <ProgressCircle isFilled={false} count="2" text="Email" />
+                <ProgressCircle isFilled={false} count="2" text={<FormattedMessage id="email-label" />} />
               </div>
 
               <div className="grid grid-cols-2">
-                <ProgressCircle isFilled={false} count="3" text="Password" />
+                <ProgressCircle isFilled={false} count="3" text={<FormattedMessage id="password-label" />} />
               </div>
 
               <div className="grid grid-cols-2">
-                <ProgressCircle isFilled={false} count="4" text="Organisation" />
+                <ProgressCircle isFilled={false} count="4" text={<FormattedMessage id="organisation-label" />} />
               </div>
 
               <div className="grid grid-cols-2">
-                <ProgressCircle isFilled={false} count="5" text="Region" />
+                <ProgressCircle isFilled={false} count="5" text={<FormattedMessage id="region-label" />} />
               </div>
             </div>
           </div>
@@ -142,7 +165,7 @@ export default function UserProfile() {
               {(appMode === 'offline')
                 && (
                   <div>
-                    <h4 className="text-xs font-base mb-2 ml-2 text-primary  tracking-wide leading-4  font-light">Username</h4>
+                    <h4 className="text-xs font-base mb-2 ml-2 text-primary  tracking-wide leading-4  font-light"><FormattedMessage id="username-label" /></h4>
                     <input
                       type="text"
                       name="username"
@@ -154,7 +177,7 @@ export default function UserProfile() {
                   </div>
                 )}
               <div>
-                <h4 className="text-xs font-base mb-2 ml-2 text-primary  tracking-wide leading-4  font-light">Name</h4>
+                <h4 className="text-xs font-base mb-2 ml-2 text-primary  tracking-wide leading-4  font-light"><FormattedMessage id="name-label" /></h4>
                 <div className="flex gap-8">
                   <input
                     type="text"
@@ -181,7 +204,7 @@ export default function UserProfile() {
                 </div>
               </div>
               <div>
-                <h4 className="text-xs font-base mb-2 ml-2 text-primary  tracking-wide leading-4  font-light">Email</h4>
+                <h4 className="text-xs font-base mb-2 ml-2 text-primary  tracking-wide leading-4  font-light"><FormattedMessage id="email-label" /></h4>
                 <input
                   type="text"
                   name="email"
@@ -221,7 +244,7 @@ export default function UserProfile() {
                   </div>
                 )}
               <div>
-                <h4 className="text-xs font-base mb-2 ml-2 text-primary  tracking-wide leading-4  font-light">Organisation</h4>
+                <h4 className="text-xs font-base mb-2 ml-2 text-primary  tracking-wide leading-4  font-light"><FormattedMessage id="organisation-label" /></h4>
                 <input
                   type="text"
                   name="organisation"
@@ -235,7 +258,7 @@ export default function UserProfile() {
                 />
               </div>
               <div>
-                <h4 className="text-xs font-base mb-2 ml-2 text-primary  tracking-wide leading-4  font-light">Region</h4>
+                <h4 className="text-xs font-base mb-2 ml-2 text-primary  tracking-wide leading-4  font-light"><FormattedMessage id="region-label" /></h4>
                 <input
                   type="text"
                   name="selectedregion"
@@ -250,11 +273,11 @@ export default function UserProfile() {
               </div>
               <div className="relative">
                 <h4 className="text-xs font-base mb-2 ml-2 text-primary  tracking-wide leading-4  font-light">
-                  App Language
+                  <FormattedMessage id="app-language-label" />
                   <span className="text-error">*</span>
                 </h4>
-                {/* <CustomList selected={appLang} setSelected={setAppLang} options={languages} show /> */}
-                <input type="text" value="English" disabled className="bg-gray-100 w-96 block rounded shadow-sm sm:text-sm border-gray-200 h-10 font-light" />
+                <CustomList selected={appLanguage} setSelected={setAppLanguage} options={languages} show />
+                {/* <input type="text" value="English" disabled className="bg-gray-100 w-96 block rounded shadow-sm sm:text-sm border-gray-200 h-10 font-light" /> */}
               </div>
 
               <button
