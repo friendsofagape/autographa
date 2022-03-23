@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import * as localForage from 'localforage';
 import moment from 'moment';
 import router from 'next/router';
+import i18n from '../../../translations/i18n';
 import { updateAgSettings } from '../../../core/projects/updateAgSettings';
 import parseProjectMetaUpdate from '../../../core/projects/parseProjectMetaUpdate';
 // import metaFileReplace from '../../../core/projects/metaFileReplace';
@@ -23,7 +24,7 @@ function useProjectsSort() {
   const [selectedProject, setSelectedProject] = React.useState('');
   const [notifications, setNotifications] = React.useState([]);
   const [activeNotificationCount, setActiveNotificationCount] = React.useState(0);
-
+  const [appLanguage, setAppLanguage] = React.useState();
   const starrtedData = [];
   const unstarrtedData = [];
   const username = 'Michael';
@@ -153,13 +154,28 @@ function useProjectsSort() {
         id,
       ));
     };
-
+    const processAppLanguage = (user) => {
+      // This function fetches the app language from the user profile and set in the app
+      const newpath = localStorage.getItem('userPath');
+      const fs = window.require('fs');
+      const path = window.require('path');
+      const file = path.join(newpath, 'autographa', 'users', user, 'ag-user-settings.json');
+      if (fs.existsSync(file)) {
+        fs.readFile(file, (err, data) => {
+          const json = JSON.parse(data);
+          i18n.changeLanguage(json?.appLanguage);
+          setAppLanguage(json?.appLanguage);
+        });
+      }
+    };
     const FetchProjects = async () => {
       if (isElectron()) {
         localForage.getItem('userProfile').then((user) => {
             if (user === null) {
               router.push('/projects');
         } else {
+          logger.debug('useProjectsSort.js', 'set the app language');
+          processAppLanguage(user?.username);
           logger.debug('useProjectsSort.js', 'Fetching the projects');
             const projectsData = fetchProjectsMeta({ currentUser: user?.username });
             projectsData.then((value) => {
@@ -252,6 +268,7 @@ function useProjectsSort() {
         selectedProject,
         notifications,
         activeNotificationCount,
+        appLanguage,
       },
       actions: {
         handleClickStarred,

@@ -1,6 +1,8 @@
 /* eslint-disable no-constant-condition */
 import Link from 'next/link';
 import React, { Fragment, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import '../../translations/i18n';
 import {
   Disclosure, Menu, Transition,
 } from '@headlessui/react';
@@ -22,7 +24,7 @@ export default function TopMenuBar() {
   const [openSideBar, setOpenSideBar] = useState(false);
   // eslint-disable-next-line no-unused-vars
   const { action: { logout } } = React.useContext(AuthenticationContext);
-
+  const { t } = useTranslation();
   // function openSideBars() {
   //   setOpenSideBar(true);
   // }
@@ -43,7 +45,7 @@ export default function TopMenuBar() {
                   <div className="hidden md:block">
                     <div className="-ml-4 flex items-baseline space-x-4">
                       <span className="text-white px-3 py-2 text-lg tracking-wide font-bold uppercase">
-                        Autographa
+                        {t('app-name')}
                         <span className="text-primary font-extrabold"> 2.0</span>
                       </span>
                     </div>

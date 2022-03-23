@@ -6,6 +6,7 @@ import '../../styles/globals.css';
 // import { initializeParse } from '@parse/react-ssr';
 import AutoUpdate from '@/components/AutoUpdate';
 import '../../styles/style-override.lazy.css';
+import '../src/translations/i18n';
 // import { environment } from '../environment';
 
 // initializeParse(
