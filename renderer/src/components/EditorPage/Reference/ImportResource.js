@@ -4,7 +4,7 @@ import React, {
     useRef, Fragment, useContext,
 } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
-import { FolderOpenIcon } from '@heroicons/react/outline';
+import { FolderOpenIcon, InformationCircleIcon } from '@heroicons/react/outline';
 import * as localforage from 'localforage';
 import CloseIcon from '@/illustrations/close-button-black.svg';
 import { SnackBar } from '@/components/SnackBar';
@@ -114,6 +114,9 @@ export default function ImportResource({ open, closePopUp, setOpenResourcePopUp 
                           <div>
                             <h4 className="text-xs font-base mb-2 text-primary  tracking-wide leading-4  font-light">
                               Scripture Burrito Resource filepath
+                              <button title="Select a directory/project that has a Scripture Burrito file i.e. metadata.json file." type="button" disabled>
+                                <InformationCircleIcon className="h-6 w-6 text-primary" />
+                              </button>
                             </h4>
                             <input
                               type="text"

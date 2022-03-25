@@ -66,6 +66,7 @@ export default function ImportProjectPopUp(props) {
       setNotify(status[0].type);
       setSnackText(status[0].value);
       if (status[0].type === 'success') {
+        close();
         FetchProjects();
         router.push('/projects');
       }
