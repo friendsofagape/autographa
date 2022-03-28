@@ -145,6 +145,8 @@ useEffect(() => {
                         //         }
                         //       });
                         // });
+                      } else {
+                        setUsfmInput();
                       }
                     }
                     if (_ingredients.scope === undefined) {
@@ -155,6 +157,10 @@ useEffect(() => {
                     // console.log(key, value),
                   },
                 );
+            } else {
+              timeout(5000).then(() => {
+                setDisplayScreen(true);
+              });
             }
           });
         }).catch((err) => {
@@ -174,6 +180,8 @@ useEffect(() => {
             setNotifications(temp);
           });
           throw err;
+        }).finally(() => {
+          setIsLoading(false);
         });
       }
     // eslint-disable-next-line react-hooks/exhaustive-deps
