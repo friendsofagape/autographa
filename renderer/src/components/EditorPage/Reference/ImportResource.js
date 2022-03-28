@@ -49,7 +49,7 @@ export default function ImportResource({ open, closePopUp, setOpenResourcePopUp 
           );
           // path.basename is not working for windows
           // const name = path.basename(folderPath);
-          const name = (folderPath.split(/[(\\)?(\/)?]/gm)).pop()
+          const name = (folderPath.split(/[(\\)?(/)?]/gm)).pop();
           await fse.copy(folderPath, path.join(projectsDir, name), { overwrite: true }).then(() => {
             setOpenSnackBar(true);
             setSnackText('Resource upload successful! Please check the resource list');
