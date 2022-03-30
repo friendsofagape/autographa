@@ -166,7 +166,9 @@ const importBurrito = async (filePath, currentUser) => {
       }
       if (!projectName) {
         logger.debug('importBurrito.js', 'Taking folder name as Project Name');
-        projectName = path.basename(filePath);
+        // path.basename is not working for windows
+        // projectName = path.basename(filePath);
+        projectName = (filePath.split(/[(\\)?(/)?]/gm)).pop();
       }
 
       fs.mkdirSync(path.join(projectDir, `${projectName}_${id}`, 'ingredients'), { recursive: true });

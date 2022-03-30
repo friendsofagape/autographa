@@ -12,6 +12,6 @@ export const validate = (schemaName, fn, data) => {
     logger.debug('validate.js', `Successfully validated the burrito, Location:${fn}`);
     return true;
   }
-  logger.error('validate.js', `Burrito failed the validation ${validator?.errors}, Location:${fn}`);
+  logger.error('validate.js', `Burrito failed the validation ${JSON.stringify(validator?.errors)}, Location:${fn}`);
   return false;
 };
