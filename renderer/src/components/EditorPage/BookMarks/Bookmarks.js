@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext } from 'react';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import { ProjectContext } from '@/components/context/ProjectContext';
 
@@ -24,33 +24,38 @@ export default function Bookmarks() {
     },
   } = useContext(ProjectContext);
 
-  const [tempChapter, setTempChapter] = useState(chapter);
+  // const [tempChapter, setTempChapter] = useState(chapter);
 
   const timeout = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
   const gotoChapter = (bookname,
     chapterNum) => {
-      setOpenSideBar(false);
-      setIsLoading(true);
-        bookList.forEach(async (book) => {
-            if (bookname === book.name) {
-              if (bookName !== book.key || chapter !== chapterNum) {
-                  onChangeBook(book.key);
-                  setTempChapter(chapterNum);
-                  onChangeVerse('1');
-              }
+    setOpenSideBar(false);
+    setIsLoading(true);
+    timeout(2000).then(async () => {
+      bookList.forEach(async (book) => {
+          if (bookname === book.name) {
+            if (bookName !== book.key) {
+                onChangeBook(book.key);
             }
-        });
+            if (chapter !== chapterNum) {
+              onChangeChapter(chapterNum);
+            }
+            onChangeVerse('1');
+          }
+      });
+    }).finally(() => setIsLoading(false));
   };
 
-  useEffect(() => {
-    timeout(2000).then(async () => {
-        setIsLoading(true);
-        onChangeChapter(tempChapter);
-        onChangeVerse('1');
-    }).then(() => setIsLoading(false));
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tempChapter]);
+  // useEffect(() => {
+  //   console.log('tempChapter', tempChapter, chapter);
+  //   timeout(2000).then(async () => {
+  //       setIsLoading(true);
+  //       onChangeChapter(tempChapter);
+  //       onChangeVerse('1');
+  //   }).then(() => setIsLoading(false));
+  // // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [tempChapter]);
 
   return (
     <>
