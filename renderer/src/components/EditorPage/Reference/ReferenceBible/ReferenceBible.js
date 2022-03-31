@@ -71,6 +71,7 @@ useEffect(() => {
       if (isElectron() && refName) {
         setIsLoading(true);
         setDisplayScreen(false);
+        setUsfmInput();
         const path = require('path');
         const newpath = localStorage.getItem('userPath');
         localforage.getItem('resources')
@@ -155,6 +156,10 @@ useEffect(() => {
                     // console.log(key, value),
                   },
                 );
+            } else {
+              timeout(3000).then(() => {
+                setDisplayScreen(true);
+              });
             }
           });
         }).catch((err) => {
@@ -174,6 +179,8 @@ useEffect(() => {
             setNotifications(temp);
           });
           throw err;
+        }).finally(() => {
+          setIsLoading(false);
         });
       }
     // eslint-disable-next-line react-hooks/exhaustive-deps
