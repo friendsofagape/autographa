@@ -40,12 +40,12 @@ export default function ExportProjectPopUp(props) {
     setFolderPath(chosenFolder.filePaths[0]);
   };
   const exportBible = async () => {
-    if (folderPath) {
+    const fs = window.require('fs');
+    if (folderPath && fs.existsSync(folderPath)) {
       setValid(false);
       logger.debug('ExportProjectPopUp.js', 'Inside exportBible');
       await localforage.getItem('userProfile').then((value) => {
         const path = require('path');
-        const fs = window.require('fs');
         const fse = window.require('fs-extra');
         const newpath = localStorage.getItem('userPath');
         const folder = path.join(newpath, 'autographa', 'users', value.username, 'projects', `${project.name}_${project.id[0]}`);
@@ -147,7 +147,7 @@ export default function ExportProjectPopUp(props) {
                       </div>
                     </div>
                     <div>
-                      <h4 className="text-red-500">{valid === true ? 'Enter location' : ''}</h4>
+                      <h4 className="text-red-500">{valid === true ? 'Enter valid location' : ''}</h4>
                     </div>
                     <div className="absolute bottom-0 right-0 left-0 bg-white">
                       <div className="flex gap-6 mx-5 justify-end">
