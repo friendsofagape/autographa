@@ -2,6 +2,7 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useRouter } from 'next/router';
+import { useTranslation } from 'react-i18next';
 import ProjectsLayout from '@/layouts/projects/Layout';
 import AdvancedSettingsDropdown from '@/components/ProjectsPage/CreateProject/AdvancedSettingsDropdown';
 import { ProjectContext } from '@/components/context/ProjectContext';
@@ -85,6 +86,7 @@ export default function NewProject({ call, project, closeEdit }) {
       setLanguages,
     },
   } = React.useContext(ProjectContext);
+  const { t } = useTranslation();
   const { action: { validateField, isLengthValidated, isTextValidated } } = useValidator();
   const router = useRouter();
   const [snackBar, setOpenSnackBar] = React.useState(false);
@@ -202,7 +204,7 @@ export default function NewProject({ call, project, closeEdit }) {
 
   return (
     <ProjectsLayout
-      title={call === 'new' ? 'new project' : 'edit project'}
+      title={call === 'new' ? t('new-project-page') : t('edit-project')}
       header={BibleHeaderTagDropDown()}
     >
       {loading === true
@@ -220,7 +222,7 @@ export default function NewProject({ call, project, closeEdit }) {
 
               <div>
                 <h4 className="text-xs font-base mb-2 text-primary  tracking-wide leading-4  font-light">
-                  Project Name
+                  {t('label-project-name')}
                   <span className="text-error">*</span>
                 </h4>
                 <input
@@ -235,7 +237,7 @@ export default function NewProject({ call, project, closeEdit }) {
                   className={classNames(call !== 'new' ? 'bg-gray-200' : '', 'w-52 lg:w-80 block rounded shadow-sm sm:text-sm focus:border-primary border-gray-300')}
                 />
                 <span className="text-error">{error.projectName[0]?.message || error.projectName[1]?.message}</span>
-                <h4 className="mt-5 text-xs font-base mb-2 text-primary leading-4 tracking-wide  font-light">Description</h4>
+                <h4 className="mt-5 text-xs font-base mb-2 text-primary leading-4 tracking-wide  font-light">{t('label-description')}</h4>
                 <textarea
                   type="text"
                   name="Description"
@@ -253,7 +255,7 @@ export default function NewProject({ call, project, closeEdit }) {
                 <div className="flex gap-5">
                   <div>
                     <h4 className="text-xs font-base mb-2 text-primary  tracking-wide leading-4  font-light">
-                      Abbreviation
+                      {t('label-abbreviation')}
                       <span className="text-error">*</span>
                     </h4>
                     <input
@@ -273,11 +275,11 @@ export default function NewProject({ call, project, closeEdit }) {
                   <div>
                     <div className="absolute">
                       <TargetLanguageTag>
-                        {language.scriptDirection ? language.scriptDirection : 'LTR'}
+                        {language.scriptDirection ? t(`label-${(language.scriptDirection).toLowerCase()}`) : t('label-ltr')}
                       </TargetLanguageTag>
                     </div>
                     <h4 className="text-xs font-base mb-2 text-primary  tracking-wide leading-4  font-light">
-                      Target Language
+                      {t('label-target-language')}
                       <span className="text-error">*</span>
                     </h4>
                     <CustomList
@@ -299,7 +301,7 @@ export default function NewProject({ call, project, closeEdit }) {
                       text-white text-xs uppercase font-semibold"
                     onClick={openImportPopUp}
                   >
-                    Import books
+                    {t('btn-import-books')}
                   </button>
                   <ImportPopUp open={openPopUp} closePopUp={closeImportPopUp} />
                 </div>
@@ -316,7 +318,7 @@ export default function NewProject({ call, project, closeEdit }) {
                         className="w-40 h-10 my-5 bg-success leading-loose rounded shadow text-xs font-base text-white tracking-wide font-light uppercase"
                         onClick={() => validate()}
                       >
-                        Create Project
+                        {t('btn-create-project')}
                       </button>
                     </div>
                   )
@@ -328,7 +330,7 @@ export default function NewProject({ call, project, closeEdit }) {
                         className="w-40 h-10  bg-error leading-loose rounded shadow text-xs font-base  text-white tracking-wide  font-light uppercase"
                         onClick={() => closeEdit()}
                       >
-                        Cancel
+                        {t('btn-cancel')}
                       </button>
                       <button
                         type="button"
@@ -336,7 +338,7 @@ export default function NewProject({ call, project, closeEdit }) {
                         className="w-40 h-10  bg-success leading-loose rounded shadow text-xs font-base  text-white tracking-wide  font-light uppercase"
                         onClick={() => validate()}
                       >
-                        Save
+                        {t('btn-save')}
                       </button>
                     </div>
                   )}

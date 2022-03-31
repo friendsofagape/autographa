@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React, { useCallback } from 'react';
 
 import { SearchIcon } from '@heroicons/react/outline';
+import { useTranslation } from 'react-i18next';
 
 export default function SearchTags({
   defaultQuery,
@@ -11,6 +12,7 @@ export default function SearchTags({
   onfilerRequest1,
   onfilerRequest2,
 }) {
+  const { t } = useTranslation();
   const [query, setQuery] = React.useState(defaultQuery);
   const excludeColumns = filterList.splice(filterList.indexOf(), 1);
   // eslint-disable-next-line consistent-return
@@ -57,7 +59,7 @@ export default function SearchTags({
         name="search_box"
         id="search_box"
         autoComplete="given-name"
-        placeholder="Search"
+        placeholder={t('label-search')}
         onChange={(e) => handleChange(e.target.value)}
         className="pl-10 bg-gray-100 w-full block rounded-full shadow-sm sm:text-sm focus:ring-gray-500 focus:border-primary border-gray-300"
       />

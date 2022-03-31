@@ -11,33 +11,34 @@ import {
   // eslint-disable-next-line no-unused-vars
   StarIcon, ExternalLinkIcon, FilterIcon,
 } from '@heroicons/react/outline';
+import { useTranslation } from 'react-i18next';
 // import { Menu, Transition } from '@headlessui/react';
 
-const headCells = [
-  {
-    id: 'name', numeric: false, disablePadding: true, label: 'Project Name',
-  },
-  {
-    id: 'language', numeric: false, disablePadding: true, label: 'Language',
-  },
-  // {
-  //   id: 'status', numeric: false, disablePadding: true, label: 'Status',
-  // },
-  {
-    id: 'date', numeric: true, disablePadding: false, label: 'Created Date',
-  },
-  {
-    id: 'view', numeric: true, disablePadding: false, label: 'Last Viewed',
-  },
-  // {
-  //   id: 'editors', numeric: false, disablePadding: false, label: 'Editors',
-  // },
-  // {
-  //   id: 'more', numeric: false, disablePadding: false, label: '',
-  // },
-];
-
 function EnhancedTableHead(props) {
+  const { t } = useTranslation();
+  const headCells = [
+    {
+      id: 'name', numeric: false, disablePadding: true, label: t('label-project-name'),
+    },
+    {
+      id: 'language', numeric: false, disablePadding: true, label: t('label-language'),
+    },
+    // {
+    //   id: 'status', numeric: false, disablePadding: true, label: 'Status',
+    // },
+    {
+      id: 'date', numeric: true, disablePadding: false, label: t('label-created-date'),
+    },
+    {
+      id: 'view', numeric: true, disablePadding: false, label: t('label-last-viewed'),
+    },
+    // {
+    //   id: 'editors', numeric: false, disablePadding: false, label: 'Editors',
+    // },
+    // {
+    //   id: 'more', numeric: false, disablePadding: false, label: '',
+    // },
+  ];
   const {
     order, orderBy, onRequestSort,
   } = props;

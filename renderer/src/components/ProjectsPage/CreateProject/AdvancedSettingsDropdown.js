@@ -3,6 +3,7 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/solid';
+import { useTranslation } from 'react-i18next';
 import CustomList from '@/modules/projects/CustomList';
 import { ProjectContext } from '../../context/ProjectContext';
 import CustomCanonSpecification from './CustomCanonSpecification';
@@ -52,6 +53,7 @@ export default function AdvancedSettingsDropdown({ call, project }) {
   const [bibleNav, setBibleNav] = React.useState(false);
   const [handleNav, setHandleNav] = React.useState();
   const [currentScope, setCurrentScope] = React.useState();
+  const { t } = useTranslation();
   const handleClick = () => {
     setIsShow(!isShow);
   };
@@ -155,7 +157,7 @@ export default function AdvancedSettingsDropdown({ call, project }) {
           type="button"
           id="open-advancesettings"
         >
-          <h3>Advanced Settings</h3>
+          <h3>{t('btn-advance-settings')}</h3>
           {isShow
             ? (
               <ChevronDownIcon

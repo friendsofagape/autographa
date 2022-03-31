@@ -125,23 +125,23 @@ export default function UserProfile() {
           <div className="w-60  bg-secondary ">
             <div className="grid grid-rows-5 p-8 gap-16 pb-20 mr-20">
               <div className="grid grid-cols-2">
-                <ProgressCircle isFilled count="1" text={t('name-label')} />
+                <ProgressCircle isFilled count="1" text={t('label-name')} />
               </div>
 
               <div className="grid grid-cols-2">
-                <ProgressCircle isFilled={false} count="2" text={t('email-label')} />
+                <ProgressCircle isFilled={false} count="2" text={t('label-email')} />
               </div>
 
               <div className="grid grid-cols-2">
-                <ProgressCircle isFilled={false} count="3" text={t('password-label')} />
+                <ProgressCircle isFilled={false} count="3" text={t('label-password')} />
               </div>
 
               <div className="grid grid-cols-2">
-                <ProgressCircle isFilled={false} count="4" text={t('organisation-label')} />
+                <ProgressCircle isFilled={false} count="4" text={t('label-organisation')} />
               </div>
 
               <div className="grid grid-cols-2">
-                <ProgressCircle isFilled={false} count="5" text={t('region-label')} />
+                <ProgressCircle isFilled={false} count="5" text={t('label-region')} />
               </div>
             </div>
           </div>
@@ -151,7 +151,7 @@ export default function UserProfile() {
               {(appMode === 'offline')
                 && (
                   <div>
-                    <h4 className="text-xs font-base mb-2 ml-2 text-primary  tracking-wide leading-4  font-light">{t('username-label')}</h4>
+                    <h4 className="text-xs font-base mb-2 ml-2 text-primary  tracking-wide leading-4  font-light">{t('label-username')}</h4>
                     <input
                       type="text"
                       name="username"
@@ -163,7 +163,7 @@ export default function UserProfile() {
                   </div>
                 )}
               <div>
-                <h4 className="text-xs font-base mb-2 ml-2 text-primary  tracking-wide leading-4  font-light">{t('name-label')}</h4>
+                <h4 className="text-xs font-base mb-2 ml-2 text-primary  tracking-wide leading-4  font-light">{t('label-name')}</h4>
                 <div className="flex gap-8">
                   <input
                     type="text"
@@ -190,7 +190,7 @@ export default function UserProfile() {
                 </div>
               </div>
               <div>
-                <h4 className="text-xs font-base mb-2 ml-2 text-primary  tracking-wide leading-4  font-light">{t('email-label')}</h4>
+                <h4 className="text-xs font-base mb-2 ml-2 text-primary  tracking-wide leading-4  font-light">{t('label-email')}</h4>
                 <input
                   type="text"
                   name="email"
@@ -230,7 +230,7 @@ export default function UserProfile() {
                   </div>
                 )}
               <div>
-                <h4 className="text-xs font-base mb-2 ml-2 text-primary  tracking-wide leading-4  font-light">{t('organisation-label')}</h4>
+                <h4 className="text-xs font-base mb-2 ml-2 text-primary  tracking-wide leading-4  font-light">{t('label-organisation')}</h4>
                 <input
                   type="text"
                   name="organisation"
@@ -244,7 +244,7 @@ export default function UserProfile() {
                 />
               </div>
               <div>
-                <h4 className="text-xs font-base mb-2 ml-2 text-primary  tracking-wide leading-4  font-light">{t('region-label')}</h4>
+                <h4 className="text-xs font-base mb-2 ml-2 text-primary  tracking-wide leading-4  font-light">{t('label-region')}</h4>
                 <input
                   type="text"
                   name="selectedregion"
@@ -259,7 +259,7 @@ export default function UserProfile() {
               </div>
               <div className="relative">
                 <h4 className="text-xs font-base mb-2 ml-2 text-primary  tracking-wide leading-4  font-light">
-                  {t('app-language-label')}
+                  {t('label-app-language')}
                   <span className="text-error">*</span>
                 </h4>
                 <CustomList selected={appLang} setSelected={setAppLang} options={languages} show />
@@ -270,7 +270,7 @@ export default function UserProfile() {
                 type="submit"
                 className=" w-20 h-9 bg-success  shadow-md font-light text-white border-none text-xs leading-5 rounded uppercase mb-5"
               >
-                Save
+                {t('btn-save')}
               </button>
             </form>
           </div>

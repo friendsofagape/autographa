@@ -18,13 +18,12 @@ import Notifications from '@/modules/notifications/Notifications';
 // eslint-disable-next-line import/no-unresolved
 import { classNames } from '@/util/classNames';
 
-const profile = ['Your Profile'];
-
 export default function TopMenuBar() {
   const [openSideBar, setOpenSideBar] = useState(false);
   // eslint-disable-next-line no-unused-vars
   const { action: { logout } } = React.useContext(AuthenticationContext);
   const { t } = useTranslation();
+  const profile = [t('label-your-profile')];
   // function openSideBars() {
   //   setOpenSideBar(true);
   // }
@@ -137,7 +136,7 @@ export default function TopMenuBar() {
                                       'block px-4 py-2 text-sm text-gray-700',
                                     )}
                                   >
-                                    Sign out
+                                    {t('btn-signout')}
                                   </a>
                                 )}
                               </Menu.Item>

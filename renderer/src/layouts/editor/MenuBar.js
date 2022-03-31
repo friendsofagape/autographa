@@ -14,8 +14,8 @@ import {
   ArrowLeftIcon,
 } from '@heroicons/react/outline';
 import router from 'next/router';
+import { useTranslation } from 'react-i18next';
 import EditorSideBar from '@/modules/editorsidebar/EditorSideBar';
-
 // eslint-disable-next-line import/no-unresolved
 import { classNames } from '@/util/classNames';
 
@@ -31,8 +31,6 @@ import { ProjectContext } from '@/components/context/ProjectContext';
 import { AuthenticationContext } from '@/components/Login/AuthenticationContextProvider';
 import PopoverProjectType from './PopoverProjectType';
 import styles from './MenuBar.module.css';
-
-const profile = ['Your Profile'];
 
 const solutions = [
   {
@@ -76,7 +74,8 @@ export default function TopMenuBar() {
       setFontsize,
     },
   } = useContext(ReferenceContext);
-
+  const { t } = useTranslation();
+  const profile = [t('label-your-profile')];
   const _projectnamewithId = selectedProject;
   const projectname = _projectnamewithId?.split('_');
   const { action: { logout } } = React.useContext(AuthenticationContext);
@@ -276,7 +275,7 @@ export default function TopMenuBar() {
                                       'block px-4 py-2 text-sm text-gray-700',
                                     )}
                                   >
-                                    Sign out
+                                    {t('btn-signout')}
                                   </a>
                                 )}
                               </Menu.Item>
