@@ -71,6 +71,7 @@ useEffect(() => {
       if (isElectron() && refName) {
         setIsLoading(true);
         setDisplayScreen(false);
+        setUsfmInput();
         const path = require('path');
         const newpath = localStorage.getItem('userPath');
         localforage.getItem('resources')
@@ -145,8 +146,6 @@ useEffect(() => {
                         //         }
                         //       });
                         // });
-                      } else {
-                        setUsfmInput();
                       }
                     }
                     if (_ingredients.scope === undefined) {
@@ -158,7 +157,7 @@ useEffect(() => {
                   },
                 );
             } else {
-              timeout(5000).then(() => {
+              timeout(3000).then(() => {
                 setDisplayScreen(true);
               });
             }
