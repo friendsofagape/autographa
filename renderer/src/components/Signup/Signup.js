@@ -15,7 +15,7 @@ export default function Signup() {
         { label: 'Email', type: 'email', name: 'email' },
         { label: 'Name', type: 'text', name: 'identifier' },
         { label: 'Password', type: 'password', name: 'password' },
-        { label: 'Confirm Password', type: 'password', name: 'password' },
+        { label: 'Confirm Password', type: 'password', name: 'confirmpassword' },
       ],
     },
     viewForgot: false,
