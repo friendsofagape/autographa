@@ -518,7 +518,9 @@ const ResourcesPopUp = ({
                               </div>
                             </div>
                           ) : (
-                            <PlusCircleIcon className="h-5 w-5 m-5 text-primary" onClick={() => setShowInput(true)} aria-hidden="true" />
+                            <button type="button" className="flex gap-6 mx-5 absolute bottom-5 right-0 justify-end z-10 outline-none">
+                              <PlusCircleIcon title="Upload" className="h-10 w-10 m-5 text-primary" onClick={() => setShowInput(true)} aria-hidden="true" />
+                            </button>
                           )
 
                   )}
@@ -561,7 +563,9 @@ const ResourcesPopUp = ({
                               </div>
                             </div>
                           ) : (
-                            <PlusCircleIcon className="h-5 w-5 m-5 text-primary" onClick={() => setShowInput(true)} aria-hidden="true" />
+                            <button type="button" className="flex gap-6 mx-5 absolute bottom-5 right-0 justify-end z-10 outline-none">
+                              <PlusCircleIcon className="h-10 w-10 m-5 text-primary" onClick={() => setShowInput(true)} aria-hidden="true" />
+                            </button>
                           )
 
                   )}
@@ -604,18 +608,21 @@ const ResourcesPopUp = ({
                               </div>
                             </div>
                           ) : (
-                            <PlusCircleIcon className="h-5 w-5 m-5 text-primary" onClick={() => setShowInput(true)} aria-hidden="true" />
+                            <button type="button" className="flex gap-6 mx-5 absolute bottom-5 right-0 justify-end z-10 outline-none">
+                              <PlusCircleIcon className="h-10 w-10 m-5 text-primary" onClick={() => setShowInput(true)} aria-hidden="true" />
+                            </button>
                           )
 
                   )}
                   {selectResource === 'bible' && (
                     <div className="flex gap-6 mx-5 absolute bottom-5 right-0 justify-end z-10">
-                      <button
+                      {/* <button
                         type="button"
                         onClick={() => openResourceDialogBox()}
                         className="py-2 px-6 bg-primary rounded shadow text-white uppercase text-xs tracking-widest font-semibold"
-                      >
-                        Upload
+                      > */}
+                      <button type="button" className="background-transparent outline-none">
+                        <PlusCircleIcon className="h-11 w-11 m-5 text-primary" onClick={() => openResourceDialogBox()} />
                       </button>
                       {/* <button type="button"
                       className="py-2 px-6 rounded shadow
