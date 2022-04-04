@@ -107,7 +107,7 @@ export default function Login() {
   };
   // eslint-disable-next-line no-unused-vars
   const handleSubmit = async (values) => {
-    localForage.setItem('appMode', 'online');
+    localForage.setItem('appMode', 'offline');
     logger.debug('Login.js', 'In handleSubmit');
     if (isElectron()) {
       // router.push('/main');
