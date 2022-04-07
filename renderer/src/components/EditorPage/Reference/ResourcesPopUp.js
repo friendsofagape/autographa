@@ -217,6 +217,95 @@ const ResourcesPopUp = ({
     readCustomResources({ resourceId: 'tn', translationData: translationNote });
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showInput]);
+  const callResource = (resource) => {
+    logger.debug('ResourcesPopUp.js', 'Displaying resource table');
+    const resources = [
+      { id: 'tn', title: 'Translation Notes', resource: translationNote },
+      { id: 'twlm', title: 'Translation Words', resource: translationWord },
+      { id: 'tq', title: 'Translation Questions', resource: translationQuestion }];
+    const reference = resources.find((r) => r.id === resource);
+    return (
+      reference
+      && (
+      <tbody className="bg-white divide-y divide-gray-200 ">
+        {(reference.resource).map((notes) => (
+          <tr className="hover:bg-gray-200" key={notes.name + notes.owner}>
+            <td className="px-5 py-3 hidden">
+              <StarIcon className="h-5 w-5 text-gray-300" aria-hidden="true" />
+            </td>
+            <td className="px-5 py-2.5 text-gray-600">
+              <div
+                className="focus:outline-none"
+                onClick={(e) => handleRowSelect(e, notes.language, `Translation Notes ${notes.name}`, notes.owner)}
+                role="button"
+                tabIndex="0"
+              >
+                {`${notes.name} (${notes.owner})`}
+              </div>
+            </td>
+            <td className="px-5 text-gray-600">
+              <div
+                className="focus:outline-none"
+                onClick={(e) => handleRowSelect(e, notes.language, `Translation Notes ${notes.name}`, notes.owner)}
+                role="button"
+                tabIndex="0"
+              >
+                {notes.language}
+              </div>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+      )
+    );
+  };
+  const importResources = (resource) => {
+    if (showInput) {
+      return (
+        <div className="bg-white grid grid-cols-4 gap-2 p-4 text-sm text-left tracking-wide">
+          <div className="flex gap-5 col-span-2">
+            <div>
+              <input
+                type="text"
+                name="resource name"
+                id=""
+                value={resourceName}
+                placeholder="Enter resource name"
+                onChange={(e) => setResourceName(e.target.value)}
+                className="bg-white w-52 ml-2 lg:w-80 block rounded shadow-sm sm:text-sm focus:border-primary border-gray-300"
+              />
+            </div>
+            <div>
+              <input
+                type="text"
+                name="location"
+                id=""
+                value={inputUrl}
+                placeholder="Enter door43 url"
+                onChange={(e) => setInputUrl(e.target.value)}
+                className="bg-white w-52 ml-2 lg:w-80 block rounded shadow-sm sm:text-sm focus:border-primary border-gray-300"
+              />
+            </div>
+            <div>
+              <button
+                type="button"
+                onClick={() => handleCustomInput(inputUrl, resource, resourceName)}
+                title="load translation noted"
+                className="py-2 m-1 px-6 bg-primary rounded shadow text-white uppercase text-xs tracking-widest font-semibold"
+              >
+                Import
+              </button>
+            </div>
+          </div>
+        </div>
+      );
+    }
+    return (
+      <button type="button" className="flex gap-6 mx-5 absolute bottom-5 right-0 justify-end z-10 outline-none">
+        <PlusCircleIcon title="Upload" className="h-10 w-10 m-5 text-primary" onClick={() => setShowInput(true)} aria-hidden="true" />
+      </button>
+    );
+  };
 
   return (
     <>
@@ -345,100 +434,7 @@ const ResourcesPopUp = ({
                         </th>
                       </tr>
                     </thead>
-                    {selectResource === 'tn' && (
-                      <tbody className="bg-white divide-y divide-gray-200 ">
-                        {translationNote.map((notes) => (
-                          <tr className="hover:bg-gray-200" key={notes.name + notes.owner}>
-                            <td className="px-5 py-3 hidden">
-                              <StarIcon className="h-5 w-5 text-gray-300" aria-hidden="true" />
-                            </td>
-                            <td className="px-5 py-2.5 text-gray-600">
-                              <div
-                                className="focus:outline-none"
-                                onClick={(e) => handleRowSelect(e, notes.language, `Translation Notes ${notes.name}`, notes.owner)}
-                                role="button"
-                                tabIndex="0"
-                              >
-                                {`${notes.name} (${notes.owner})`}
-                              </div>
-                            </td>
-                            <td className="px-5 text-gray-600">
-                              <div
-                                className="focus:outline-none"
-                                onClick={(e) => handleRowSelect(e, notes.language, `Translation Notes ${notes.name}`, notes.owner)}
-                                role="button"
-                                tabIndex="0"
-                              >
-                                {notes.language}
-                              </div>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    )}
-                    {selectResource === 'twlm' && (
-                      <tbody className="bg-white divide-y divide-gray-200  mb-44 ">
-                        {translationWord.map((notes) => (
-                          <tr className="hover:bg-gray-200" key={notes.name + notes.language}>
-                            <td className="px-5 py-3 hidden">
-                              <StarIcon className="h-5 w-5 text-gray-300" aria-hidden="true" />
-                            </td>
-                            <td className="px-5 py-2.5 text-gray-600">
-                              <div
-                                className="focus:outline-none"
-                                onClick={(e) => handleRowSelect(e, notes.language, `Translation Words ${notes.name}`, notes.owner)}
-                                role="button"
-                                tabIndex="0"
-                              >
-                                {`${notes.name} (${notes.owner})`}
-                              </div>
-                            </td>
-                            <td className="px-5 text-gray-600">
-                              <div
-                                className="focus:outline-none"
-                                onClick={(e) => handleRowSelect(e, notes.language, `Translation Words ${notes.name}`, notes.owner)}
-                                role="button"
-                                tabIndex="0"
-                              >
-                                {notes.language}
-                              </div>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    )}
-                    {selectResource === 'tq' && (
-                      <tbody className="bg-white divide-y divide-gray-200  mb-44 ">
-                        {translationQuestion.map((notes) => (
-                          <tr className="hover:bg-gray-200" key={notes.name + notes.language}>
-                            <td className="px-5 py-3 hidden">
-                              <StarIcon className="h-5 w-5 text-gray-300" aria-hidden="true" />
-                            </td>
-                            <td className="px-5 py-2.5 text-gray-600">
-                              <div
-                                className="focus:outline-none"
-                                onClick={(e) => handleRowSelect(e, notes.language, `Translation Questions ${notes.name}`, notes.owner)}
-                                role="button"
-                                tabIndex="0"
-                              >
-                                {`${notes.name} (${notes.owner})`}
-                              </div>
-                            </td>
-                            <td className="px-5 text-gray-600">
-                              <div
-                                className="focus:outline-none"
-                                onClick={(e) => handleRowSelect(e, notes.language, `Translation Questions ${notes.name}`, notes.owner)}
-                                role="button"
-                                tabIndex="0"
-                              >
-                                {notes.language}
-                              </div>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    )}
-                    {selectResource === 'bible' && (
+                    {selectResource === 'bible' ? (
                       <tbody className="bg-white divide-y divide-gray-200  mb-44 ">
                         {(subMenuItems) && (
                           subMenuItems.map((ref) => (
@@ -477,165 +473,13 @@ const ResourcesPopUp = ({
                           ))
                         )}
                       </tbody>
-                    )}
+                    ) : callResource(selectResource)}
                   </table>
-                  {selectResource === 'tn' && (
-                          showInput ? (
-                            <div className="bg-white grid grid-cols-4 gap-2 p-4 text-sm text-left tracking-wide">
-                              <div className="flex gap-5 col-span-2">
-                                <div>
-                                  <input
-                                    type="text"
-                                    name="resource name"
-                                    id=""
-                                    value={resourceName}
-                                    placeholder="Enter resource name"
-                                    onChange={(e) => setResourceName(e.target.value)}
-                                    className="bg-white w-52 ml-2 lg:w-80 block rounded shadow-sm sm:text-sm focus:border-primary border-gray-300"
-                                  />
-                                </div>
-                                <div>
-                                  <input
-                                    type="text"
-                                    name="location"
-                                    id=""
-                                    value={inputUrl}
-                                    placeholder="Enter door43 url"
-                                    onChange={(e) => setInputUrl(e.target.value)}
-                                    className="bg-white w-52 ml-2 lg:w-80 block rounded shadow-sm sm:text-sm focus:border-primary border-gray-300"
-                                  />
-                                </div>
-                                <div>
-                                  <button
-                                    type="button"
-                                    onClick={() => handleCustomInput(inputUrl, 'tn', resourceName)}
-                                    title="load translation noted"
-                                    className="py-2 m-1 px-6 bg-primary rounded shadow text-white uppercase text-xs tracking-widest font-semibold"
-                                  >
-                                    Import
-                                  </button>
-                                </div>
-                              </div>
-                            </div>
-                          ) : (
-                            <button type="button" className="flex gap-6 mx-5 absolute bottom-5 right-0 justify-end z-10 outline-none">
-                              <PlusCircleIcon title="Upload" className="h-10 w-10 m-5 text-primary" onClick={() => setShowInput(true)} aria-hidden="true" />
-                            </button>
-                          )
-
-                  )}
-                  {selectResource === 'tq' && (
-                          showInput ? (
-                            <div className="bg-white grid grid-cols-4 gap-2 p-4 text-sm text-left tracking-wide">
-                              <div className="flex gap-5 col-span-2">
-                                <div>
-                                  <input
-                                    type="text"
-                                    name="resource name"
-                                    id=""
-                                    value={resourceName}
-                                    placeholder="Enter resource name"
-                                    onChange={(e) => setResourceName(e.target.value)}
-                                    className="bg-white w-52 ml-2 lg:w-80 block rounded shadow-sm sm:text-sm focus:border-primary border-gray-300"
-                                  />
-                                </div>
-                                <div>
-                                  <input
-                                    type="text"
-                                    name="location"
-                                    id=""
-                                    value={inputUrl}
-                                    placeholder="Enter door43 url"
-                                    onChange={(e) => setInputUrl(e.target.value)}
-                                    className="bg-white w-52 ml-2 lg:w-80 block rounded shadow-sm sm:text-sm focus:border-primary border-gray-300"
-                                  />
-                                </div>
-                                <div>
-                                  <button
-                                    type="button"
-                                    onClick={() => handleCustomInput(inputUrl, 'tq', resourceName)}
-                                    title="load translation questions"
-                                    className="py-2 m-1 px-6 bg-primary rounded shadow text-white uppercase text-xs tracking-widest font-semibold"
-                                  >
-                                    Import
-                                  </button>
-                                </div>
-                              </div>
-                            </div>
-                          ) : (
-                            <button type="button" className="flex gap-6 mx-5 absolute bottom-5 right-0 justify-end z-10 outline-none">
-                              <PlusCircleIcon className="h-10 w-10 m-5 text-primary" onClick={() => setShowInput(true)} aria-hidden="true" />
-                            </button>
-                          )
-
-                  )}
-                  {selectResource === 'twlm' && (
-                          showInput ? (
-                            <div className="bg-white grid grid-cols-4 gap-2 p-4 text-sm text-left tracking-wide">
-                              <div className="flex gap-5 col-span-2">
-                                <div>
-                                  <input
-                                    type="text"
-                                    name="resource name"
-                                    id=""
-                                    value={resourceName}
-                                    placeholder="Enter resource name"
-                                    onChange={(e) => setResourceName(e.target.value)}
-                                    className="bg-white w-52 ml-2 lg:w-80 block rounded shadow-sm sm:text-sm focus:border-primary border-gray-300"
-                                  />
-                                </div>
-                                <div>
-                                  <input
-                                    type="text"
-                                    name="location"
-                                    id=""
-                                    value={inputUrl}
-                                    placeholder="Enter door43 url"
-                                    onChange={(e) => setInputUrl(e.target.value)}
-                                    className="bg-white w-52 ml-2 lg:w-80 block rounded shadow-sm sm:text-sm focus:border-primary border-gray-300"
-                                  />
-                                </div>
-                                <div>
-                                  <button
-                                    type="button"
-                                    onClick={() => handleCustomInput(inputUrl, 'twlm', resourceName)}
-                                    title="load translation words"
-                                    className="py-2 m-1 px-6 bg-primary rounded shadow text-white uppercase text-xs tracking-widest font-semibold"
-                                  >
-                                    Import
-                                  </button>
-                                </div>
-                              </div>
-                            </div>
-                          ) : (
-                            <button type="button" className="flex gap-6 mx-5 absolute bottom-5 right-0 justify-end z-10 outline-none">
-                              <PlusCircleIcon className="h-10 w-10 m-5 text-primary" onClick={() => setShowInput(true)} aria-hidden="true" />
-                            </button>
-                          )
-
-                  )}
-                  {selectResource === 'bible' && (
+                  {selectResource === 'bible' ? (
                     <div className="flex gap-6 mx-5 absolute bottom-5 right-0 justify-end z-10">
-                      {/* <button
-                        type="button"
-                        onClick={() => openResourceDialogBox()}
-                        className="py-2 px-6 bg-primary rounded shadow text-white uppercase text-xs tracking-widest font-semibold"
-                      > */}
                       <button type="button" className="background-transparent outline-none">
                         <PlusCircleIcon className="h-11 w-11 m-5 text-primary" onClick={() => openResourceDialogBox()} />
                       </button>
-                      {/* <button type="button"
-                      className="py-2 px-6 rounded shadow
-                       bg-error text-white uppercase text-xs
-                       tracking-widest font-semibold">Cancel</button> */}
-                      {/* <button
-                        type="button"
-                        onClick={() => uploadRefBible()}
-                        className="py-2 px-7 rounded shadow
-                        bg-success text-white uppercase text-xs tracking-widest font-semibold"
-                      >
-                        Open
-                      </button> */}
                       <ImportResource
                         open={openImportResourcePopUp}
                         closePopUp={closeImportPopUp}
@@ -643,8 +487,7 @@ const ResourcesPopUp = ({
                         setOpenResourcePopUp={setOpenResourcePopUp}
                       />
                     </div>
-                  )}
-
+                  ) : importResources(selectResource)}
                 </div>
               </div>
 
