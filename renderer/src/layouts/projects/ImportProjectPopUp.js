@@ -48,7 +48,8 @@ export default function ImportProjectPopUp(props) {
       logger.debug('ImportProjectPopUp.js', 'Selected a directory');
       await localforage.getItem('userProfile').then(async (value) => {
         setShow(true);
-        const result = await viewBurrito(chosenFolder.filePaths[0],value.username);
+        // Adding 'projects' to check the duplication in the user project resources list
+        const result = await viewBurrito(chosenFolder.filePaths[0],value.username,'projects');
         setSbData(result);
       });
     } else {
