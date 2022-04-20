@@ -421,15 +421,9 @@ const UsfmEditor = () => {
     <>
       <Editor>
         <>
-          {usfmInput && (
-          isLoading ? (
-            displyScreen === true ? (
-              <EmptyScreen />
-          ) : (<LoadingScreen />)
-          ) : (
-            displyScreen === true ? (
-              <EmptyScreen />
-          ) : (
+          {isLoading && displyScreen && <EmptyScreen />}
+          {isLoading && !displyScreen && <LoadingScreen /> }
+          {usfmInput && !displyScreen && !isLoading && (
             <CustomEditor
               ref={myEditorRef}
               usfmString={usfmInput}
@@ -439,14 +433,6 @@ const UsfmEditor = () => {
               readOnly={readOnly}
               goToVerse={goToChapter()}
             />
-            )
-          )
-        )}
-          {usfmInput === undefined && (
-          displyScreen === true ? (
-            <EmptyScreen />
-          )
-          : <LoadingScreen />
           )}
         </>
       </Editor>
