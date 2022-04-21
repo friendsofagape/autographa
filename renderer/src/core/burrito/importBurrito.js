@@ -11,13 +11,13 @@ const md5 = require('md5');
 const fs = window.require('fs');
 const path = require('path');
 
-export const checkDuplicate = async (metadata, currentUser) => {
+export const checkDuplicate = async (metadata, currentUser, resource) => {
   logger.debug('importBurrito.js', 'In checkDuplicate');
   const projectName = metadata.identification?.name?.en;
   let existingProject;
   let id;
   const newpath = localStorage.getItem('userPath');
-  const projectDir = path.join(newpath, 'autographa', 'users', currentUser, 'projects');
+  const projectDir = path.join(newpath, 'autographa', 'users', currentUser, resource);
   const folderList = fs.readdirSync(projectDir);
   logger.debug('importBurrito.js', 'Checking for AG key in burrito');
   if (metadata.identification.primary.ag !== undefined) {
@@ -50,7 +50,7 @@ export const checkDuplicate = async (metadata, currentUser) => {
   }
   return existingProject;
 };
-export const viewBurrito = async (filePath, currentUser) => {
+export const viewBurrito = async (filePath, currentUser, resource) => {
   logger.debug('importBurrito.js', 'Inside viewBurrito');
   const result = {};
   if (fs.existsSync(path.join(filePath, 'metadata.json'))) {
@@ -69,7 +69,7 @@ export const viewBurrito = async (filePath, currentUser) => {
       result.primaryKey = metadata.identification.primary;
       result.publicDomain = metadata.copyright?.publicDomain;
       result.language = metadata.languages.map((lang) => lang.name.en);
-      const duplicate = await checkDuplicate(metadata, currentUser);
+      const duplicate = await checkDuplicate(metadata, currentUser, resource);
       result.duplicate = duplicate;
     } else {
       result.validate = false;
