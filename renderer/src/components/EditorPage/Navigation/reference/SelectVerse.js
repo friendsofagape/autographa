@@ -159,7 +159,7 @@ SelectVerse.propTypes = {
   closeBooks: PropTypes.func,
   closeVerses: PropTypes.func,
   multiSelectVerse: PropTypes.bool,
-  selectedVerses: PropTypes.object,
+  selectedVerses: PropTypes.array,
   setSelectedVerses: PropTypes.func,
   verselectActive: PropTypes.bool,
   setVerseSelectActive: PropTypes.func,

@@ -1,5 +1,5 @@
-/* eslint-disable react/prop-types */
 import React, { Fragment } from 'react';
+import PropTypes from 'prop-types';
 import { Listbox, Transition } from '@headlessui/react';
 import { CheckIcon, SelectorIcon } from '@heroicons/react/solid';
 
@@ -62,3 +62,11 @@ export default function CustomList({
     </Listbox>
   );
 }
+
+CustomList.propTypes = {
+  selected: PropTypes.object,
+  setSelected: PropTypes.func,
+  options: PropTypes.object,
+  show: PropTypes.bool,
+  width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+};

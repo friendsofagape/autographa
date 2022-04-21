@@ -1,10 +1,11 @@
 /* eslint-disable max-len */
-/* eslint-disable react/prop-types */
 /* eslint-disable import/no-unresolved */
 import { StarIcon } from '@heroicons/react/outline';
 import React, {
   useEffect, useRef, useState, Fragment, useContext,
 } from 'react';
+import PropTypes from 'prop-types';
+
 import * as localforage from 'localforage';
 import { Dialog, Transition } from '@headlessui/react';
 import { XIcon, PlusCircleIcon } from '@heroicons/react/solid';
@@ -665,3 +666,12 @@ const ResourcesPopUp = ({
 };
 
 export default ResourcesPopUp;
+
+ResourcesPopUp.propTypes = {
+  header: PropTypes.string,
+  openResourcePopUp: PropTypes.bool,
+  setOpenResourcePopUp: PropTypes.func,
+  selectedResource: PropTypes.string,
+  setReferenceResources: PropTypes.func,
+
+};

@@ -279,7 +279,6 @@ const SectionPlaceholder2 = () => {
             title={referenceColumnTwoData1.refName}
             selectedResource={referenceColumnTwoData1.selectedResource}
             languageId={referenceColumnTwoData1.languageId}
-            owner={referenceColumnTwoData1.owner}
             setReferenceResources={setReferenceColumnTwoData1}
             setLoadResource={setLoadResource3}
             loadResource={loadResource3}
@@ -318,7 +317,6 @@ const SectionPlaceholder2 = () => {
             title={referenceColumnTwoData2.refName}
             selectedResource={referenceColumnTwoData2.selectedResource}
             languageId={referenceColumnTwoData2.languageId}
-            owner={referenceColumnTwoData2.owner}
             setReferenceResources={setReferenceColumnTwoData2}
             setLoadResource={setLoadResource4}
             loadResource={loadResource4}

@@ -1,6 +1,5 @@
 /* eslint-disable array-callback-return */
 /* eslint-disable max-len */
-/* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import PropTypes from 'prop-types';
 import {

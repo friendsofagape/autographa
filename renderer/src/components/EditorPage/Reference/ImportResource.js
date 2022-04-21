@@ -1,8 +1,9 @@
-/* eslint-disable react/prop-types */
 /* eslint-disable import/no-unresolved */
 import React, {
     useRef, Fragment, useContext,
 } from 'react';
+import PropTypes from 'prop-types';
+
 import { Dialog, Transition } from '@headlessui/react';
 import { FolderOpenIcon, InformationCircleIcon } from '@heroicons/react/outline';
 import * as localforage from 'localforage';
@@ -169,3 +170,10 @@ export default function ImportResource({ open, closePopUp, setOpenResourcePopUp 
       </>
     );
   }
+
+ImportResource.propTypes = {
+  open: PropTypes.bool,
+  closePopUp: PropTypes.func,
+  setOpenResourcePopUp: PropTypes.func,
+
+};
