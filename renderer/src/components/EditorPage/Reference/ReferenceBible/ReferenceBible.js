@@ -1,6 +1,5 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable react/prop-types */
-/* eslint-disable no-underscore-dangle */
 import React, {
  useContext, useEffect, useState, useMemo,
 } from 'react';

@@ -17,7 +17,6 @@ const Home = () => {
     const fs = window.require('fs');
     loadUsers(fs);
   }, []);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   React.useEffect(() => {
     if (!states.accessToken) {
       logger.debug('Home.js', 'Triggers getToken to fetch the Token if not available');
@@ -32,7 +31,7 @@ const Home = () => {
         setToken(value);
       });
     }
-  });
+  }, [setToken, action, states.accessToken]);
   return (
     <>
       {token

@@ -1,5 +1,4 @@
 /* eslint-disable no-nested-ternary */
-/* eslint-disable no-underscore-dangle */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, {
   useContext,

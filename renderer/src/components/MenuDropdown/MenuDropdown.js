@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 /* eslint-disable react/no-array-index-key */
 import {
  Fragment, useContext, useEffect, useState,

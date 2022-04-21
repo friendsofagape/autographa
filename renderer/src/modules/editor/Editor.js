@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 /* eslint-disable array-callback-return */
 /* eslint-disable max-len */
 /* eslint-disable react/prop-types */

@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 import Parse from 'parse';
 
 const findBookFromParse = async ({

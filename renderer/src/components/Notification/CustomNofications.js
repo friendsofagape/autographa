@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 import {
     BellIcon,
   } from '@heroicons/react/outline';

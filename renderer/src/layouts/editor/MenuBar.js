@@ -1,5 +1,4 @@
 /* eslint-disable no-constant-condition */
-/* eslint-disable no-underscore-dangle */
 /* eslint-disable no-unused-vars */
 import Link from 'next/link';
 import React, { Fragment, useContext, useState } from 'react';
