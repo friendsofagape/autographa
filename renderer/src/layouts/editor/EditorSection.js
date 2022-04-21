@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import PropTypes from 'prop-types';
 import React, { useContext, useEffect, useState } from 'react';
 import {
@@ -7,10 +6,8 @@ import {
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import { ProjectContext } from '@/components/context/ProjectContext';
 import ResourcesPopUp from '@/components/EditorPage/Reference/ResourcesPopUp';
-// eslint-disable-next-line import/no-unresolved
 import { classNames } from '@/util/classNames';
 import ConfirmationModal from './ConfirmationModal';
-
 // import MinimizeIcon from '@/illustrations/minimize.svg';
 
 export default function EditorSection({
@@ -36,7 +33,6 @@ export default function EditorSection({
   const [content, setContent] = useState(true);
   const [openResourcePopUp, setOpenResourcePopUp] = useState(false);
   const [openModal, setOpenModal] = useState(false);
-
   const {
     state: {
       // selectedFont
@@ -106,13 +102,11 @@ export default function EditorSection({
         setLayout(0);
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   });
 
-  // eslint-disable-next-line no-unused-vars
-  const sectionContent = () => {
-    setContent(!content);
-  };
+  // const sectionContent = () => {
+  //   setContent(!content);
+  // };
 
   const showResourcesPanel = () => {
     setOpenResourcePopUp(true);
@@ -231,7 +225,7 @@ export default function EditorSection({
           && (
             <div
               style={{ fontFamily: 'sans-serif', fontSize: `${fontSize}rem` }}
-              className="prose-sm p-4 text-xl h-full overflow-y-scroll no-scrollbars"
+              className="prose-sm p-4 text-xl h-full overflow-auto scrollbars-width"
             >
               {
                 (loadResource === false)
@@ -288,4 +282,16 @@ EditorSection.propTypes = {
   setReferenceResources: PropTypes.func,
   row: PropTypes.string,
   languageId: PropTypes.string,
+  owner: PropTypes.string,
+  setLoadResource: PropTypes.func,
+  loadResource: PropTypes.bool,
+  openResource: PropTypes.bool,
+  setOpenResource1: PropTypes.func,
+  setOpenResource2: PropTypes.func,
+  setOpenResource3: PropTypes.func,
+  setOpenResource4: PropTypes.func,
+  sectionNum: PropTypes.number,
+  setSectionNum: PropTypes.func,
+  hideAddition: PropTypes.bool,
+  CustomNavigation: PropTypes.object,
 };

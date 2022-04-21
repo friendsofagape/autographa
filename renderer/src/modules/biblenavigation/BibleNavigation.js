@@ -98,8 +98,7 @@ export default function BibleNavigation(props) {
           });
       });
   }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [languageId]);
+  }, [languageId, applyBooksFilter]);
 
   useEffect(() => {
     localforage.setItem('navigationHistory', [bookId, chapter]);
@@ -112,8 +111,7 @@ export default function BibleNavigation(props) {
       if (openBook || openVerse) {
         setCloseNavigation(false);
       }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [openVerse, openBook]);
+  }, [openVerse, openBook, setCloseNavigation]);
 
   return (
     <>
