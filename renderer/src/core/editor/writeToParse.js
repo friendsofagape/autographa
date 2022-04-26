@@ -1,5 +1,4 @@
 /* eslint-disable no-console */
-/* eslint-disable no-underscore-dangle */
 import Parse from 'parse';
 
 const writeToParse = async ({

@@ -1,5 +1,4 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable react/prop-types */
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/solid';
@@ -283,4 +282,8 @@ export default function AdvancedSettingsDropdown({ call, project }) {
 }
 BookNumberTag.propTypes = {
   children: PropTypes.number,
+};
+AdvancedSettingsDropdown.propTypes = {
+  call: PropTypes.string,
+  project: PropTypes.object,
 };

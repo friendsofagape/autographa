@@ -1,5 +1,5 @@
-/* eslint-disable react/prop-types */
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
@@ -59,3 +59,10 @@ const TranslationhelpsNav = ({
   };
 
 export default TranslationhelpsNav;
+
+TranslationhelpsNav.propTypes = {
+  items: PropTypes.array,
+  classes: PropTypes.object,
+  itemIndex: PropTypes.number,
+  setItemIndex: PropTypes.func,
+};

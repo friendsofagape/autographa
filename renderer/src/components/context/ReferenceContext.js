@@ -1,10 +1,10 @@
 /* eslint-disable no-unused-vars */
-/* eslint-disable no-underscore-dangle */
-/* eslint-disable react/prop-types */
 import { useBibleReference } from 'bible-reference-rcl';
 import React, {
  useState, createContext, useRef, useEffect,
 } from 'react';
+import PropTypes from 'prop-types';
+
 import * as localforage from 'localforage';
 import { isElectron } from '../../core/handleElectron';
 import * as logger from '../../logger';
@@ -282,3 +282,6 @@ export default function ReferenceContextProvider({ children }) {
       </ReferenceContext.Provider>
     );
   }
+  ReferenceContextProvider.propTypes = {
+    children: PropTypes.any,
+  };

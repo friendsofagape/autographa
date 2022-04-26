@@ -1,6 +1,6 @@
-/* eslint-disable react/prop-types */
-import { Dialog, Transition } from '@headlessui/react';
 import React, { Fragment } from 'react';
+import PropTypes from 'prop-types';
+import { Dialog, Transition } from '@headlessui/react';
 
 export default function TailwindModal({
   isOpen,
@@ -73,3 +73,11 @@ export default function TailwindModal({
     </>
   );
 }
+
+TailwindModal.propTypes = {
+  isOpen: PropTypes.bool,
+  title: PropTypes.string,
+  setIsOpen: PropTypes.func,
+  message: PropTypes.string,
+  actionButtons: PropTypes.func,
+};

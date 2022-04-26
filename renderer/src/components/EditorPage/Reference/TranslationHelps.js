@@ -1,5 +1,5 @@
-/* eslint-disable react/prop-types */
 import React, { useContext } from 'react';
+import PropTypes from 'prop-types';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import TranslationHelpsCard from './TranslationHelpsCard';
 
@@ -138,3 +138,13 @@ const TranslationHelps = ({
 };
 
 export default TranslationHelps;
+
+TranslationHelps.propTypes = {
+  selectedResource: PropTypes.string,
+  languageId: PropTypes.string,
+  refName: PropTypes.string,
+  bookId: PropTypes.string,
+  chapter: PropTypes.string,
+  verse: PropTypes.string,
+  owner: PropTypes.string,
+};

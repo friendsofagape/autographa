@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import PropTypes from 'prop-types';
 import { Dialog, Transition } from '@headlessui/react';
 import {
@@ -240,4 +239,8 @@ export default function CustomNavigation({
 
 CustomNavigation.propTypes = {
   showVerse: PropTypes.bool,
+  initialBook: PropTypes.string,
+  initialChapter: PropTypes.string,
+  initialVerse: PropTypes.string,
+  setNavigation: PropTypes.func,
 };

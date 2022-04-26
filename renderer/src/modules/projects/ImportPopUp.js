@@ -1,8 +1,8 @@
-/* eslint-disable react/prop-types */
 /* eslint-disable import/no-unresolved */
 import React, {
   useRef, Fragment, useContext, useEffect,
 } from 'react';
+import PropTypes from 'prop-types';
 import { Dialog, Transition } from '@headlessui/react';
 import { DocumentTextIcon, FolderOpenIcon } from '@heroicons/react/outline';
 import { SnackBar } from '@/components/SnackBar';
@@ -247,3 +247,7 @@ export default function ImportPopUp(props) {
     </>
   );
 }
+ImportPopUp.propTypes = {
+  open: PropTypes.bool,
+  closePopUp: PropTypes.func,
+};

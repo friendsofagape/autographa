@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useRouter } from 'next/router';
@@ -357,4 +356,10 @@ export default function NewProject({ call, project, closeEdit }) {
 
 TargetLanguageTag.propTypes = {
   children: PropTypes.string,
+};
+
+NewProject.propTypes = {
+  call: PropTypes.string,
+  project: PropTypes.object,
+  closeEdit: PropTypes.func,
 };

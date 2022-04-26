@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-nested-ternary */
 import React from 'react';
@@ -15,7 +14,6 @@ export default function ColumnOne(props) {
     rowCount,
     ishidden,
     expandRow,
-    isExpand,
     addRow,
     removeRow,
   } = props;

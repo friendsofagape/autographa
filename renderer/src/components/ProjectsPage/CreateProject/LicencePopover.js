@@ -1,5 +1,6 @@
-/* eslint-disable react/prop-types */
 import React, { Fragment, useState } from 'react';
+import PropTypes from 'prop-types';
+
 import { Dialog, Transition, Switch } from '@headlessui/react';
 
 import { PencilAltIcon } from '@heroicons/react/outline';
@@ -205,3 +206,6 @@ export default function LicencePopover({ call }) {
     </>
   );
 }
+LicencePopover.propTypes = {
+  call: PropTypes.string,
+};

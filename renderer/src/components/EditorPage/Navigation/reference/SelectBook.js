@@ -1,10 +1,6 @@
-/* eslint-disable no-underscore-dangle */
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-import { Disclosure, Transition } from '@headlessui/react';
 import React, { useState } from 'react';
-
 import PropTypes from 'prop-types';
+import { Disclosure, Transition } from '@headlessui/react';
 import styles from './SelectReference.module.css';
 
 export default function SelectBook({
@@ -66,9 +62,9 @@ export default function SelectBook({
     <>
       <div className="flex flex-row text-center bg-gray-800 text-white text-sm font-bold tracking-wide uppercase">
         <div className="w-40 m-auto grid grid-cols-3 gap-0 bg-primary">
-          <div onClick={toggle} className="p-2 bg-black hover:bg-primary backdrop-opacity-20 cursor-pointer">All</div>
-          <div onClick={toggleOT} className={openOT === false ? 'p-2 bg-black hover:bg-primary backdrop-opacity-20 cursor-pointer' : 'p-2 border-r-2 border-black hover:bg-black border-opacity-5 cursor-pointer'}>OT</div>
-          <div onClick={toggleNT} className={openNT === false ? 'p-2 bg-black hover:bg-primary backdrop-opacity-20 cursor-pointer' : 'p-2 border-r-2 border-black hover:bg-black border-opacity-5 cursor-pointer'}>NT</div>
+          <div role="presentation" onClick={toggle} className="p-2 bg-black hover:bg-primary backdrop-opacity-20 cursor-pointer">All</div>
+          <div role="presentation" onClick={toggleOT} className={openOT === false ? 'p-2 bg-black hover:bg-primary backdrop-opacity-20 cursor-pointer' : 'p-2 border-r-2 border-black hover:bg-black border-opacity-5 cursor-pointer'}>OT</div>
+          <div role="presentation" onClick={toggleNT} className={openNT === false ? 'p-2 bg-black hover:bg-primary backdrop-opacity-20 cursor-pointer' : 'p-2 border-r-2 border-black hover:bg-black border-opacity-5 cursor-pointer'}>NT</div>
         </div>
         <div className="flex justify-end">
           {children}
@@ -95,6 +91,7 @@ export default function SelectBook({
                   {bookList.map((book, index) => (
                       index <= 38 && (
                         <div
+                          role="presentation"
                           key={book.name}
                           onClick={(e) => (
                           multiSelectBook
@@ -133,6 +130,7 @@ export default function SelectBook({
                   {bookList.map((book, index) => (index > 38 && (
                   <div
                     key={book.name}
+                    role="presentation"
                     onClick={(e) => (multiSelectBook
                     ? selectMultipleBooks(e, book.key, book.name)
                     : bookSelect(e, book.key, book.name))}

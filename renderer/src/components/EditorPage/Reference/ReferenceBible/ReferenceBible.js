@@ -1,9 +1,8 @@
 /* eslint-disable no-nested-ternary */
-/* eslint-disable react/prop-types */
-/* eslint-disable no-underscore-dangle */
 import React, {
  useContext, useEffect, useState, useMemo,
 } from 'react';
+import PropTypes from 'prop-types';
 import {
   createBasicUsfmEditor, withChapterPaging,
  } from 'usfm-editor';
@@ -242,3 +241,11 @@ useEffect(() => {
 };
 
 export default ReferenceBible;
+
+ReferenceBible.propTypes = {
+  languageId: PropTypes.string,
+  refName: PropTypes.string,
+  chapter: PropTypes.string,
+  verse: PropTypes.string,
+  bookId: PropTypes.string,
+};

@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 const { ipcRenderer } = require('electron');
 const log = require('electron-log');
 const fontList = require('font-list');

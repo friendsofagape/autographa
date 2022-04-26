@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 /* eslint-disable max-len */
 import { PropTypes } from 'prop-types';
 import React from 'react';
@@ -24,7 +23,6 @@ import * as logger from '../../logger';
 
 function ProgressCircle({ isFilled, count, text }) {
   return (
-
     <>
       <div
         className={classNames(isFilled ? 'bg-success' : 'bg-gray-700', 'w-7 h-7  text-white text-sm rounded-full flex justify-center items-center')}
@@ -280,4 +278,10 @@ export default function UserProfile() {
 
 InputBar.propTypes = {
   title: PropTypes.string,
+};
+
+ProgressCircle.propTypes = {
+  isFilled: PropTypes.bool,
+  count: PropTypes.string,
+  text: PropTypes.string,
 };
