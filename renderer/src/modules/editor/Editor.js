@@ -64,7 +64,6 @@ export default function Editor({
             Object?.entries(_value).forEach(
               ([, resources]) => {
                 if (resources.identification.name.en === _projectname[0]) {
-                  // eslint-disable-next-line no-param-reassign
                   resources.project.textTranslation.bookMarks = [...bookmarksVerses];
                   localforage.setItem('projectmeta', value).then(() => {
                     localforage.setItem('projectmeta', value).then((val) => {

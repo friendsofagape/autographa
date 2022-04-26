@@ -54,7 +54,6 @@ const CustomNofications = () => {
         localforage.getItem('notification').then((value) => {
           const _notfication = [...value];
           _notfication.forEach((notify, index) => {
-            // eslint-disable-next-line no-param-reassign
             value[index].hidden = false;
           });
           localforage.setItem('notification', value);

@@ -71,7 +71,6 @@ export default function ReferenceContextProvider({ children }) {
                 Object?.entries(_value).forEach(
                   ([, resources]) => {
                     if (resources.identification.name.en === _projectname[0]) {
-                      // eslint-disable-next-line no-param-reassign
                       setBookmarksVerses(resources.project.textTranslation.bookMarks);
                       setProjectScriptureDir(resources.project.textTranslation.scriptDirection);
                     }

@@ -88,7 +88,6 @@ export default function UserProfile() {
           setUsername(value.username);
           const keys = Object.keys(values);
           keys.forEach((key) => {
-            // eslint-disable-next-line no-param-reassign
             values[key] = value[key];
           });
           setValues(values);

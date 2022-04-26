@@ -146,7 +146,6 @@ const ProjectContextProvider = ({ children }) => {
                   if (setting.id === currentSetting.id) {
                     const keys = Object.keys(setting);
                     keys.forEach((key) => {
-                      // eslint-disable-next-line no-param-reassign
                       setting[key] = currentSetting[key];
                     });
                   }

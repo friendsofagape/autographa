@@ -6,7 +6,6 @@ module.exports = withTM({
   webpack: (config, { isServer }) => {
     // Fixes npm packages that depend on `fs` module
     if (!isServer) {
-      // eslint-disable-next-line no-param-reassign
       config.resolve.fallback.fs = false;
     }
     config.module.rules.push({
