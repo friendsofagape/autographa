@@ -1,5 +1,4 @@
 /* eslint-disable no-console */
-/* eslint-disable camelcase */
 // id, currentBook, db, direction, column, currentTrans
 import { readIngredients } from '../reference/readIngredients';
 import {

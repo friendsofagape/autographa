@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 // Native
 const { join } = require('path');
 const { format } = require('url');

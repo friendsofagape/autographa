@@ -1,5 +1,4 @@
 /* eslint-disable no-tabs */
-/* eslint-disable camelcase */
 export const css_1_col_ltr = `<style >
 body {
     margin: 0;
