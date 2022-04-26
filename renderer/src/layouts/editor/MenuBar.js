@@ -1,60 +1,24 @@
 /* eslint-disable no-constant-condition */
-/* eslint-disable no-unused-vars */
 import Link from 'next/link';
-import React, { Fragment, useContext, useState } from 'react';
+import React, { Fragment, useContext } from 'react';
 import {
-  Disclosure, Menu, Popover, Transition,
+  Disclosure, Menu, Transition,
 } from '@headlessui/react';
-
 import {
-  SunIcon,
-  SearchIcon,
   UserIcon,
   ArrowLeftIcon,
 } from '@heroicons/react/outline';
 import router from 'next/router';
 import EditorSideBar from '@/modules/editorsidebar/EditorSideBar';
-
 // eslint-disable-next-line import/no-unresolved
 import { classNames } from '@/util/classNames';
-
-import AppsIcon from '@/icons/basil/Outline/Interface/Apps.svg';
-import LayoutIcon from '@/icons/basil/Outline/Interface/Layout.svg';
-import BullhornIcon from '@/icons/basil/Outline/Communication/Bullhorn.svg';
-import ProcessorIcon from '@/icons/basil/Outline/Devices/Processor.svg';
-import CheckIcon from '@/icons/basil/Outline/Interface/Check.svg';
-import ExpandIcon from '@/icons/basil/Outline/Interface/Expand.svg';
 import LogoIcon from '@/icons/logo.svg';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import { ProjectContext } from '@/components/context/ProjectContext';
 import { AuthenticationContext } from '@/components/Login/AuthenticationContextProvider';
-import PopoverProjectType from './PopoverProjectType';
 import styles from './MenuBar.module.css';
 
 const profile = ['Your Profile'];
-
-const solutions = [
-  {
-    name: 'Translation',
-    href: '##',
-    icon: LayoutIcon,
-  },
-  {
-    name: 'Audio',
-    href: '##',
-    icon: BullhornIcon,
-  },
-  {
-    name: 'MT',
-    href: '##',
-    icon: ProcessorIcon,
-  },
-  {
-    name: 'Check',
-    href: '##',
-    icon: CheckIcon,
-  },
-];
 
 export default function TopMenuBar() {
   const {
@@ -80,14 +44,6 @@ export default function TopMenuBar() {
   const projectname = _projectnamewithId?.split('_');
   const { action: { logout } } = React.useContext(AuthenticationContext);
 
-  function openSideBars() {
-    setOpenSideBar(true);
-  }
-
-  function closeSideBars() {
-    setOpenSideBar(false);
-  }
-
   function closeSideBar(open) {
     setOpenSideBar(open);
   }
@@ -111,7 +67,7 @@ export default function TopMenuBar() {
         as="nav"
         className="flex items-center h-16 border-b border-gray-200"
       >
-        {({ open }) => (
+        {() => (
           <>
 
             <button className="h-full px-5 border-r border-gray-200" title="Back" type="button" onClick={() => goToProjectPage()}>

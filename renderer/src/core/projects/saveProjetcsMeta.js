@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import moment from 'moment';
 import * as localforage from 'localforage';
 import { v5 as uuidv5 } from 'uuid';

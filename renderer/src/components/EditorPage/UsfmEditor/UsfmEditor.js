@@ -420,7 +420,7 @@ const UsfmEditor = () => {
     <>
       <Editor>
         <>
-          {isLoading && displyScreen && <EmptyScreen />}
+          {((isLoading || !usfmInput) && displyScreen) && <EmptyScreen />}
           {isLoading && !displyScreen && <LoadingScreen /> }
           {usfmInput && !displyScreen && !isLoading && (
             <CustomEditor

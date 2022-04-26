@@ -1,39 +1,19 @@
 /* eslint-disable array-callback-return */
 /* eslint-disable max-len */
-/* eslint-disable no-unused-vars */
 import PropTypes from 'prop-types';
 import {
   LockOpenIcon,
   LockClosedIcon,
   BookmarkIcon,
-  CogIcon,
-  AnnotationIcon,
-  BellIcon,
-  MenuIcon,
-  XIcon,
 } from '@heroicons/react/outline';
-import {
-  Disclosure, Menu, Transition,
-} from '@headlessui/react';
-import Link from 'next/link';
-import {
-  ChevronDownIcon, DotsVerticalIcon,
-} from '@heroicons/react/solid';
-
 import * as localforage from 'localforage';
 import {
- Fragment, useContext, useEffect, useState,
+  useContext, useEffect, useState,
 } from 'react';
-import CustomNavigation from '@/components/EditorPage/Navigation/CustomNavigation';
 import BibleNavigation from '@/modules/biblenavigation/BibleNavigation';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import { ProjectContext } from '@/components/context/ProjectContext';
 // eslint-disable-next-line import/no-unresolved
-import { classNames } from '@/util/classNames';
-import FootNotesIcon from '@/icons/footnotes.svg';
-import CrossReferenceIcon from '@/icons/crossreference.svg';
-// import styles from './Editor.module.css';
-const profile = ['Your Profile'];
 
 export default function Editor({
   children,
@@ -51,15 +31,12 @@ export default function Editor({
       selectedFont,
       fontSize,
       bookmarksVerses,
-      bookId,
       bookName,
       chapter,
-      verse,
       projectScriptureDir,
     },
     actions: {
       setBookmarksVerses,
-      setProjectScriptureDir,
     },
   } = useContext(ReferenceContext);
   const [bookMarked, setBookMarks] = useState(false);
@@ -83,13 +60,13 @@ export default function Editor({
       const _projectname = projectName?.split('_');
       localforage.getItem('projectmeta').then((value) => {
         Object?.entries(value).forEach(
-          ([_columnnum, _value]) => {
+          ([, _value]) => {
             Object?.entries(_value).forEach(
-              ([_rownum, resources]) => {
+              ([, resources]) => {
                 if (resources.identification.name.en === _projectname[0]) {
                   // eslint-disable-next-line no-param-reassign
                   resources.project.textTranslation.bookMarks = [...bookmarksVerses];
-                  localforage.setItem('projectmeta', value).then((val) => {
+                  localforage.setItem('projectmeta', value).then(() => {
                     localforage.setItem('projectmeta', value).then((val) => {
                       // eslint-disable-next-line no-console
                       console.log(val.projects);
@@ -104,7 +81,7 @@ export default function Editor({
     });
   };
 
-  const handleBookmarks = (e) => {
+  const handleBookmarks = () => {
     const temp = [...bookmarksVerses];
     if (bookmarksVerses.length !== 0) {
       bookmarksVerses.every((markedVerses) => {
@@ -129,7 +106,6 @@ export default function Editor({
         }
         if (markedVerses.bookname !== bookName) {
            if (bookmarksVerses.find((x) => x.bookname === bookName && x.chapter === chapter) === undefined) {
-            const selectedIndex = bookmarksVerses.indexOf({ bookname: bookName, chapter });
             temp.push({ bookname: bookName, chapter });
             bookmarksVerses.push({ bookname: bookName, chapter });
             setBookmarksVerses(temp);

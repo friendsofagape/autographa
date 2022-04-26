@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react';
 import * as localforage from 'localforage';
 import { isElectron } from '../core/handleElectron';
@@ -6,10 +5,8 @@ import TailwindModal from './TailwindModel/TailwindModal';
 
 const AutoUpdate = () => {
   const [message, setMessage] = useState(null);
-  const [version, setVersion] = useState('');
   const [notification, setNotification] = useState(false);
   const [restartButton, setRestartButton] = useState(false);
-  const [downloadProgress, setDownloadProgress] = useState();
 
   useEffect(() => {
         localforage.setItem('font-family', global.fonts);
@@ -18,7 +15,6 @@ const AutoUpdate = () => {
           ipcRenderer.send('app_version');
           ipcRenderer.on('app_version', (event, arg) => {
             ipcRenderer.removeAllListeners('app_version');
-            setVersion(`Version ${ arg.version}`);
             // eslint-disable-next-line no-console
             console.log(arg.version);
             localforage.setItem('userPath', arg.appPath);
@@ -33,7 +29,6 @@ const AutoUpdate = () => {
 
           ipcRenderer.on('download-progress', (event, text) => {
             ipcRenderer.removeAllListeners('download-progress');
-            setDownloadProgress(text);
             setNotification(true);
           });
 

@@ -66,7 +66,7 @@ export default function CustomList({
 CustomList.propTypes = {
   selected: PropTypes.object,
   setSelected: PropTypes.func,
-  options: PropTypes.object,
+  options: PropTypes.array,
   show: PropTypes.bool,
   width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 };

@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable no-param-reassign */
 import dynamic from 'next/dynamic';
 import { useContext, useEffect, useState } from 'react';
@@ -37,8 +36,6 @@ const SectionPlaceholder1 = () => {
       layout,
       openResource1,
       openResource2,
-      openResource3,
-      openResource4,
       bookId,
       chapter,
       verse,
@@ -102,9 +99,9 @@ const SectionPlaceholder1 = () => {
     const _projectname = projectName?.split('_');
     localforage.getItem('projectmeta').then((value) => {
       Object.entries(value).forEach(
-        ([_columnnum, _value]) => {
+        ([, _value]) => {
           Object.entries(_value).forEach(
-            ([_rownum, resources]) => {
+            ([, resources]) => {
               if (resources.identification.name.en === _projectname[0]) {
                 refsHistory.push(resources.project.textTranslation.refResources);
               }
@@ -179,9 +176,9 @@ const SectionPlaceholder1 = () => {
     const _projectname = projectName?.split('_');
     localforage.getItem('projectmeta').then((value) => {
       Object?.entries(value).forEach(
-        ([_columnnum, _value]) => {
+        ([, _value]) => {
           Object?.entries(_value).forEach(
-            ([_rownum, resources]) => {
+            ([, resources]) => {
               if (resources.identification.name.en === _projectname[0]) {
                 refsHistory.push(resources.project.textTranslation.refResources);
                 if (sectionNum === 1 || sectionNum === 0) {

@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable no-nested-ternary */
 import React from 'react';
 
@@ -10,7 +9,6 @@ import { classNames } from '@/util/classNames';
 
 export default function ColumnOne(props) {
   const {
-    children,
     rowCount,
     ishidden,
     expandRow,
@@ -97,7 +95,6 @@ export default function ColumnOne(props) {
 }
 
 ColumnOne.propTypes = {
-  children: PropTypes.array,
   rowCount: PropTypes.string,
   ishidden: PropTypes.bool,
   expandRow: PropTypes.func,

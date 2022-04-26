@@ -1,5 +1,4 @@
 /* eslint-disable import/no-unresolved */
-/* eslint-disable no-unused-vars */
 /* eslint-disable no-param-reassign */
 import dynamic from 'next/dynamic';
 import { useContext, useEffect, useState } from 'react';
@@ -9,7 +8,6 @@ import EditorSection from '@/layouts/editor/EditorSection';
 import ReferenceBible from '@/components/EditorPage/Reference/ReferenceBible/ReferenceBible';
 import { ProjectContext } from '@/components/context/ProjectContext';
 import CustomNavigation from '@/components/EditorPage/Navigation/CustomNavigation';
-import { isElectron } from '@/core/handleElectron';
 import { updateAgSettings } from '@/core/projects/updateAgSettings';
 
 const TranslationHelps = dynamic(
@@ -57,11 +55,7 @@ const SectionPlaceholder2 = () => {
   } = useContext(ReferenceContext);
   const {
     states: {
-      selectedProject,
       scrollLock,
-    },
-    actions: {
-      setSelectedProject,
     },
   } = useContext(ProjectContext);
   const [sectionNum, setSectionNum] = useState(0);
@@ -105,9 +99,9 @@ const SectionPlaceholder2 = () => {
     const _projectname = projectName?.split('_');
     localforage.getItem('projectmeta').then((value) => {
       Object.entries(value).forEach(
-        ([_columnnum, _value]) => {
+        ([, _value]) => {
           Object.entries(_value).forEach(
-            ([_rownum, resources]) => {
+            ([, resources]) => {
               if (resources.project?.textTranslation?.projectName === _projectname[0]) {
                 refsHistory.push(resources.project.textTranslation.refResources);
               }
@@ -182,9 +176,9 @@ const SectionPlaceholder2 = () => {
       const _projectname = projectName?.split('_');
     localforage.getItem('projectmeta').then((value) => {
       Object.entries(value).forEach(
-        ([_columnnum, _value]) => {
+        ([, _value]) => {
           Object.entries(_value).forEach(
-            ([_rownum, resources]) => {
+            ([, resources]) => {
               if (resources.identification.name.en === _projectname[0]) {
                 refsHistory.push(resources.project.textTranslation);
                 if (sectionNum === 1 || sectionNum === 0) {
@@ -229,9 +223,9 @@ const SectionPlaceholder2 = () => {
       );
     localforage.setItem('projectmeta', value).then(() => {
       Object.entries(value).forEach(
-        ([_columnnum, _value]) => {
+        ([, _value]) => {
           Object.entries(_value).forEach(
-            ([_rownum, resources]) => {
+            ([, resources]) => {
               if (resources.identification.name.en === _projectname[0]) {
                 localforage.getItem('userProfile').then((value) => {
                   updateAgSettings(value?.username, projectName, resources);

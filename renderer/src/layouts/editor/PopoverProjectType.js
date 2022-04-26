@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { Fragment } from 'react';
 import PropTypes from 'prop-types';
 
@@ -14,7 +13,7 @@ export default function PopoverProjectType(props) {
 
   return (
     <Popover className="relative">
-      {({ open }) => (
+      {() => (
         <>
           <Popover.Button as={Fragment}>
             {children}

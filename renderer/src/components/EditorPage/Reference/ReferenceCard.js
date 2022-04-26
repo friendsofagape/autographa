@@ -18,8 +18,6 @@ const ReferenceCard = ({
     isLoading,
 }) => (
   <>
-    {
-  }
     <CardContent
       item={item}
       items={items}
