@@ -1,4 +1,3 @@
-/* eslint-disable no-nested-ternary */
 import React, {
  useContext, useEffect, useState, useMemo,
 } from 'react';
@@ -204,8 +203,9 @@ useEffect(() => {
   return (
     <span>
       <>
-        {usfmInput && (
-        isLoading === false ? (
+        {((isLoading || !usfmInput) && displyScreen) && <EmptyScreen />}
+        {isLoading && !displyScreen && <LoadingScreen />}
+        {usfmInput && !displyScreen && !isLoading && (
           <CustomEditor
             usfmString={usfmInput}
             key={usfmInput}
@@ -216,18 +216,7 @@ useEffect(() => {
               key: Date.now(),
           }}
           />
-        ) : (
-          displyScreen === true ? (
-            <EmptyScreen />
-          ) : (<LoadingScreen />)
-        )
       )}
-        {usfmInput === undefined && (
-          displyScreen === true ? (
-            <EmptyScreen />
-          )
-          : <LoadingScreen />
-        )}
         <SnackBar
           openSnackBar={snackBar}
           snackText={snackText}
