@@ -30,7 +30,6 @@ export default function LicencePopover({ call }) {
       copyright,
     }, actions: { setCopyRight },
   } = React.useContext(ProjectContext);
-  // eslint-disable-next-line no-unused-vars
   const openlicenceNav = () => {
     setName(copyright.id);
     setEdit(!copyright.locked);

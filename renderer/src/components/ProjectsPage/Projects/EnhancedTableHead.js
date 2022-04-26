@@ -8,8 +8,7 @@ import {
   TableCell,
 } from '@material-ui/core';
 import {
-  // eslint-disable-next-line no-unused-vars
-  StarIcon, ExternalLinkIcon, FilterIcon,
+  StarIcon,
 } from '@heroicons/react/outline';
 // import { Menu, Transition } from '@headlessui/react';
 

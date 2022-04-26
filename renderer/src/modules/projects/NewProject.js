@@ -7,39 +7,12 @@ import { ProjectContext } from '@/components/context/ProjectContext';
 import TargetLanguagePopover from '@/components/ProjectsPage/CreateProject/TargetLanguagePopover';
 // import PopoverProjectType from '@/layouts/editor/PopoverProjectType';
 import { SnackBar } from '@/components/SnackBar';
-import LayoutIcon from '@/icons/basil/Outline/Interface/Layout.svg';
-import BullhornIcon from '@/icons/basil/Outline/Communication/Bullhorn.svg';
-import ProcessorIcon from '@/icons/basil/Outline/Devices/Processor.svg';
 // import CheckIcon from '@/icons/basil/Outline/Interface/Check.svg';
-import ImageIcon from '@/icons/basil/Outline/Files/Image.svg';
 import useValidator from '@/components/hooks/useValidator';
 import { classNames } from '../../util/classNames';
 import * as logger from '../../logger';
 import ImportPopUp from './ImportPopUp';
 import CustomList from './CustomList';
-// eslint-disable-next-line no-unused-vars
-const solutions = [
-  {
-    name: 'Translation',
-    href: '##',
-    icon: LayoutIcon,
-  },
-  {
-    name: 'Audio',
-    href: '##',
-    icon: BullhornIcon,
-  },
-  {
-    name: 'MT',
-    href: '##',
-    icon: ProcessorIcon,
-  },
-  {
-    name: 'OBS',
-    href: '##',
-    icon: ImageIcon,
-  },
-];
 
 function TargetLanguageTag(props) {
   const { children } = props;

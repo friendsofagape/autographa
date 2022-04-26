@@ -128,8 +128,6 @@ export default function SubMenuBar() {
   // // eslint-disable-next-line react-hooks/exhaustive-deps
   // }, [counter]);
 
-  // eslint-disable-next-line no-unused-vars
-
   // function timeOutClose() {
   //   if (counter <= 0) {
   //     setSnackBar(false);

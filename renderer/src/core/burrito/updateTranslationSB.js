@@ -11,12 +11,10 @@ const updateTranslationSB = (username, project) => new Promise((resolve) => {
     const fs = window.require('fs');
     const sb = fs.readFileSync(path.join(folder, 'metadata.json'));
     const metadata = JSON.parse(sb);
-    // eslint-disable-next-line no-unused-vars
     let updated = false;
     metadata.meta.dateCreated = moment().format();
     logger.debug('updateTranslationSB.js', 'Updating the details of ingredients.');
-    // eslint-disable-next-line no-unused-vars
-    Object.entries(metadata.ingredients).forEach(([key, value]) => {
+    Object.entries(metadata.ingredients).forEach(([key]) => {
       const usfm = fs.readFileSync(path.join(folder, key), 'utf8');
       const checksum = md5(usfm);
       const stats = fs.statSync(path.join(folder, key));

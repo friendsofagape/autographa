@@ -117,7 +117,6 @@ const ProjectContextProvider = ({ children }) => {
       }
     };
     // Json for storing advance settings
-    // eslint-disable-next-line no-unused-vars
     const updateJson = async (currentSettings) => {
       logger.debug('ProjectContext.js', 'In updateJson');
       const newpath = localStorage.getItem('userPath');
