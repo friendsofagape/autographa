@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 /* eslint-disable no-alert */
 import moment from 'moment';
 import { v5 as uuidv5 } from 'uuid';
@@ -28,7 +27,6 @@ export const checkDuplicate = async (metadata, currentUser, resource) => {
   } else if (metadata.identification.upstream.ag !== undefined) {
     const list = metadata.identification?.upstream?.ag;
     logger.debug('importBurrito.js', 'Fetching the latest key from upstream list.');
-    // eslint-disable-next-line max-len
     const latest = list.reduce((a, b) => (new Date(a.timestamp) > new Date(b.timestamp) ? a : b));
     Object.entries(latest).forEach(([key]) => {
       logger.debug('importBurrito.js', 'Fetching the latest key from upstream.');
@@ -127,7 +125,6 @@ const importBurrito = async (filePath, currentUser) => {
         };
         const list = metadata.identification?.upstream?.ag;
         logger.debug('importBurrito.js', 'Fetching the latest key from list.');
-        // eslint-disable-next-line max-len
         const latest = list.reduce((a, b) => (new Date(a.timestamp) > new Date(b.timestamp) ? a : b));
         Object.entries(latest).forEach(([key]) => {
           logger.debug('importBurrito.js', 'Fetching the latest key from burrito.');

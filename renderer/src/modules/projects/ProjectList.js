@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import React, { Fragment, useState } from 'react';
 import { useRouter } from 'next/router';
 import moment from 'moment';

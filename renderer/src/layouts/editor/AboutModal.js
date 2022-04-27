@@ -1,5 +1,4 @@
 /* eslint-disable react/no-unescaped-entities */
-/* eslint-disable max-len */
 import PropTypes from 'prop-types';
 import {
   Fragment, useRef, useState,

@@ -113,7 +113,6 @@ export default function NewProject({ call, project, closeEdit }) {
         logger.warn('NewProject.js', 'Validation failed for Abbreviation.');
         create = false;
       }
-      // eslint-disable-next-line max-len
       const checkDesc = await validateField([isLengthValidated(newProjectFields.description, { minLen: 0, maxLen: 400 })]);
       if (checkDesc[0].isValid === false) {
         logger.warn('NewProject.js', 'Validation failed for Description.');

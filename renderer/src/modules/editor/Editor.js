@@ -1,5 +1,4 @@
 /* eslint-disable array-callback-return */
-/* eslint-disable max-len */
 import PropTypes from 'prop-types';
 import {
   LockOpenIcon,

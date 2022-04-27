@@ -51,7 +51,6 @@ export const createVersificationUSFM = (username, project, versification, books,
             if (list[book]) {
               const chapters = [];
               (list[book]).forEach((verse, i) => {
-                // eslint-disable-next-line vars-on-top
                 let contents = [{ p: null }];
                 const verses = [];
                 for (let i = 1; i <= parseInt(verse, 10); i += 1) {

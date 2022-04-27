@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import { useState, useContext } from 'react';
 import { BookmarkIcon } from '@heroicons/react/solid';
 import ColumnsIcon from '@/icons/basil/Outline/Interface/Columns.svg';

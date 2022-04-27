@@ -1,6 +1,5 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable max-len */
 /* eslint-disable no-alert */
 import React, { useState, useEffect, useContext } from 'react';
 import { ChevronRightIcon } from '@heroicons/react/solid';
