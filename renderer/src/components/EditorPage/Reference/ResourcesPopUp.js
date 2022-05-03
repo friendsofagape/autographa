@@ -1,4 +1,3 @@
-/* eslint-disable import/no-unresolved */
 import { StarIcon } from '@heroicons/react/outline';
 import React, {
   useEffect, useRef, useState, Fragment, useContext,

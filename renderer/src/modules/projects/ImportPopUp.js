@@ -1,4 +1,3 @@
-/* eslint-disable import/no-unresolved */
 import React, {
   useRef, Fragment, useContext, useEffect,
 } from 'react';

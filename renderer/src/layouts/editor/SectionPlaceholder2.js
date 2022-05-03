@@ -1,4 +1,3 @@
-/* eslint-disable import/no-unresolved */
 import dynamic from 'next/dynamic';
 import { useContext, useEffect, useState } from 'react';
 import localforage from 'localforage';
