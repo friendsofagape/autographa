@@ -15,8 +15,6 @@ const AutoUpdate = () => {
           ipcRenderer.send('app_version');
           ipcRenderer.on('app_version', (event, arg) => {
             ipcRenderer.removeAllListeners('app_version');
-            // eslint-disable-next-line no-console
-            console.log(arg.version);
             localforage.setItem('userPath', arg.appPath);
             localStorage.setItem('userPath', arg.appPath);
           });
@@ -27,7 +25,7 @@ const AutoUpdate = () => {
             setNotification(true);
           });
 
-          ipcRenderer.on('download-progress', (event, text) => {
+          ipcRenderer.on('download-progress', () => {
             ipcRenderer.removeAllListeners('download-progress');
             setNotification(true);
           });

@@ -23,8 +23,6 @@ const fetchProjectsMeta = async ({ currentUser }) => {
           setting = fs.readFileSync(path.join(projectsMetaPath, dir, 'ingredients', 'ag-settings.json'), 'utf8');
         } catch (err) {
           logger.error('fetchProjectsMeta.js', 'Unable to find ag-settings for the project');
-          // eslint-disable-next-line no-console
-          console.log(err);
         }
         if (setting) {
           logger.debug('fetchProjectsMeta.js', 'Found ag-settings for the project, merging ag-settings and burrito');

@@ -1,5 +1,6 @@
 /* eslint-disable consistent-return */
 import Parse from 'parse';
+import * as logger from '../../logger';
 
 const parseFetchProjects = async (username) => {
     // const Person = Parse.Object.extend('Person');
@@ -21,8 +22,7 @@ const parseFetchProjects = async (username) => {
         await FindDuplicateProjects();
         return projectsMetadata;
       } catch (e) {
-        // eslint-disable-next-line no-console
-        console.log(e);
+        logger.error('parseFetchProjects.js', e);
       }
 };
 export default parseFetchProjects;

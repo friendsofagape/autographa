@@ -94,7 +94,6 @@ const UsfmEditor = () => {
   //       username, projectName, usfmData: usfm, scope: _bookId.toUpperCase(), write: true,
   //     });
   //   } catch (err) {
-  //     // eslint-disable-next-line no-console
   //     console.log(err);
   //   }
   // };

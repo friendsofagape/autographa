@@ -12,6 +12,7 @@ import {
 import BibleNavigation from '@/modules/biblenavigation/BibleNavigation';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import { ProjectContext } from '@/components/context/ProjectContext';
+import * as logger from '../../logger';
 // eslint-disable-next-line import/no-unresolved
 
 export default function Editor({
@@ -64,11 +65,8 @@ export default function Editor({
               ([, resources]) => {
                 if (resources.identification.name.en === _projectname[0]) {
                   resources.project.textTranslation.bookMarks = [...bookmarksVerses];
-                  localforage.setItem('projectmeta', value).then(() => {
-                    localforage.setItem('projectmeta', value).then((val) => {
-                      // eslint-disable-next-line no-console
-                      console.log(val.projects);
-                    });
+                  localforage.setItem('projectmeta', value).then((val) => {
+                    logger.debug('Editor.js', val);
                   });
                 }
               },
