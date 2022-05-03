@@ -11,7 +11,6 @@ export const getId = (lines) => {
     if (lines[i]) {
       const splitLine = lines[i].split(/ +/);
       if (splitLine[0] === '\\id') {
-        // eslint-disable-next-line prefer-destructuring
         bookCode = splitLine[1];
         break;
       }
