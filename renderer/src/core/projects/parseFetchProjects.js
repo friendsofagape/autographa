@@ -11,7 +11,6 @@ const parseFetchProjects = async (username) => {
         const newUserQuery = new Parse.Query(ProjectMeta);
         newUserQuery.include('owner');
         const result = await newUserQuery.find();
-        // eslint-disable-next-line no-plusplus
         for (let i = 0; i < result.length; i++) {
             if (result[i].get('owner').get('name') === username) {
                 projectsMetadata.push(result[i]);

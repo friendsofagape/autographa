@@ -7,7 +7,6 @@ export const isUSFM = (filename) => {
 };
 export const getId = (lines) => {
   let bookCode;
-  // eslint-disable-next-line no-plusplus
   for (let i = 0; i < 5; i++) {
     if (lines[i]) {
       const splitLine = lines[i].split(/ +/);
