@@ -1,6 +1,5 @@
 export const isUSFM = (filename) => {
   const extension = filename.split('.');
-  // eslint-disable-next-line no-constant-condition
   if (extension[1]?.toLowerCase() === ('usfm' || 'sfm')) {
     return true;
   }
