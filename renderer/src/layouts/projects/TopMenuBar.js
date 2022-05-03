@@ -12,8 +12,6 @@ import {
 } from '@heroicons/react/outline';
 import { AuthenticationContext } from '@/components/Login/AuthenticationContextProvider';
 import Notifications from '@/modules/notifications/Notifications';
-
-// eslint-disable-next-line import/no-unresolved
 import { classNames } from '@/util/classNames';
 
 const profile = ['Your Profile'];

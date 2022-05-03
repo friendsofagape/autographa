@@ -13,7 +13,6 @@ import BibleNavigation from '@/modules/biblenavigation/BibleNavigation';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import { ProjectContext } from '@/components/context/ProjectContext';
 import * as logger from '../../logger';
-// eslint-disable-next-line import/no-unresolved
 
 export default function Editor({
   children,

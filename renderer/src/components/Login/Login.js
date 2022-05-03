@@ -189,6 +189,7 @@ export default function Login() {
                   hover:bg-primary hover:text-white hover:border-primary group"
                     role="button"
                     tabIndex="0"
+                    key={user.username}
                     onClick={() => { handleSubmit({ username: user.username }); }}
                   >
                     <div className="h-10 w-10 flex justify-center items-center bg-gray-200 rounded-full group-hover:bg-secondary">

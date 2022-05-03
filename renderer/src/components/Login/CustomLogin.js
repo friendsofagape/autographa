@@ -23,7 +23,7 @@ const CustomLogin = ({
       <Typography color="error">{validation?.msg}</Typography>
       {ui?.autocomplete?.count?.map((v) => (
         <div className="flex">
-          <div className="flex flex-col justify-end">
+          <div className="flex flex-col justify-end" key={v.label}>
             <PersonOutlineIcon />
           </div>
 

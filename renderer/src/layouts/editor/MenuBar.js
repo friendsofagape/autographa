@@ -10,7 +10,6 @@ import {
 } from '@heroicons/react/outline';
 import router from 'next/router';
 import EditorSideBar from '@/modules/editorsidebar/EditorSideBar';
-// eslint-disable-next-line import/no-unresolved
 import { classNames } from '@/util/classNames';
 import LogoIcon from '@/icons/logo.svg';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
