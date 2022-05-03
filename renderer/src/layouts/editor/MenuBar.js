@@ -1,4 +1,3 @@
-/* eslint-disable no-constant-condition */
 import Link from 'next/link';
 import React, { Fragment, useContext } from 'react';
 import {
