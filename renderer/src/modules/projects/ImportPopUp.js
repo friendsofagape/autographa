@@ -47,8 +47,7 @@ export default function ImportPopUp(props) {
     logger.debug('ImportPopUp.js', 'In getBooks for displaying books name using the paths');
     const book = [];
     // regex to split path to two groups '(.*[\\\/])' for path and '(.*)' for file name
-    // eslint-disable-next-line no-useless-escape
-    const regexPath = /^(.*[\\\/])(.*)$/;
+    const regexPath = /^(.*[\\//])(.*)$/;
     // execute the match on the string filePath
     filePaths.forEach((filePath) => {
       const match = regexPath.exec(filePath);
