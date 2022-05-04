@@ -138,12 +138,11 @@ export default function ProjectList() {
                                 getComparator(order, orderBy),
                                 orderBy,
                                 order).map((project) => (
-                                  <Disclosure>
+                                  <Disclosure key={project.name}>
                                     {({ open }) => (
                                       <>
                                         <tr
                                           className="hover:bg-gray-100 focus:outline-none cursor-pointer"
-                                          key={project.name}
                                         >
                                           <td className="px-4 py-4">
                                             <button
@@ -274,10 +273,10 @@ export default function ProjectList() {
                                 getComparator(order, orderBy),
                                 orderBy,
                                 order).map((project) => (
-                                  <Disclosure>
+                                  <Disclosure key={project.name}>
                                     {({ open }) => (
                                       <>
-                                        <tr key={project.name}>
+                                        <tr>
                                           <td
                                             className="px-4 py-3 text-left text-xs font-medium text-gray-400"
                                           >
