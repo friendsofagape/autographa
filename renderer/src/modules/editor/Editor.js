@@ -1,4 +1,3 @@
-/* eslint-disable array-callback-return */
 import PropTypes from 'prop-types';
 import {
   LockOpenIcon,
@@ -79,7 +78,7 @@ export default function Editor({
   const handleBookmarks = () => {
     const temp = [...bookmarksVerses];
     if (bookmarksVerses.length !== 0) {
-      bookmarksVerses.every((markedVerses) => {
+      bookmarksVerses.forEach((markedVerses) => {
         if (bookmarksVerses.find((x) => x.bookname === bookName && x.chapter === chapter)
         !== undefined) {
           const selectedIndex = bookmarksVerses.indexOf(bookmarksVerses.find((x) => x.bookname === bookName && x.chapter === chapter));
