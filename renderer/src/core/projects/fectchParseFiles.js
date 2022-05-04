@@ -1,5 +1,4 @@
 /* eslint-disable no-unused-expressions */
-/* eslint-disable consistent-return */
 import Parse from 'parse';
 import * as logger from '../../logger';
 

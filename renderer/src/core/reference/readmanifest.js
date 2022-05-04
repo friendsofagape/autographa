@@ -1,4 +1,3 @@
-/* eslint-disable consistent-return */
 import localforage from 'localforage';
 
 const path = require('path');

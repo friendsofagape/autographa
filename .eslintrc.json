@@ -18,6 +18,7 @@
 		"prefer-destructuring": "off",
 		"no-param-reassign": [2, { "props": false }],
 		"camelcase": "off",
+		"consistent-return": "off",
 		"react/jsx-filename-extension": [
 			1,
 			{

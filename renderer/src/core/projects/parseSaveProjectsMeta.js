@@ -1,6 +1,4 @@
-/* eslint-disable consistent-return */
 import Parse from 'parse';
-
 import moment from 'moment';
 import parseFileSave from './parseFileSave';
 
