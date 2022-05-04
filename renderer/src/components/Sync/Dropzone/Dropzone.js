@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import React from 'react';
 import PropTypes from 'prop-types';
 import * as logger from '../../../logger';
@@ -8,26 +7,26 @@ const DragAndDrop = (props) => {
     logger.debug('Dropzone.js', 'calling handleDragEnter event');
     e.preventDefault();
     // e.stopPropagation();
-    console.log('handleDragEnter');
+    logger.info('Dropzone.js', 'handleDragEnter');
   };
   const handleDragLeave = (e) => {
     logger.debug('Dropzone.js', 'calling handleDragLeave event');
     e.preventDefault();
     // e.stopPropagation();
-    console.log('handleDragLeave');
+    logger.info('Dropzone.js', 'handleDragLeave');
   };
   const handleDragOver = (e) => {
     logger.debug('Dropzone.js', 'calling handleDragOver event');
     e.preventDefault();
     // e.stopPropagation();
-    console.log('handleDragOver');
+    logger.info('Dropzone.js', 'handleDragOver');
   };
 
   const handleDrop = (e) => {
     logger.debug('Dropzone.js', 'calling handleDrop event');
     e.preventDefault();
     // e.stopPropagation();
-    console.log('handleDrop', props);
+    logger.info('handleDrop', props);
     // eslint-disable-next-line react/destructuring-assignment
     props.dropped(true);
   };

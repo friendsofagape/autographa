@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import * as logger from '../logger';
 
 const Ajv = require('ajv');

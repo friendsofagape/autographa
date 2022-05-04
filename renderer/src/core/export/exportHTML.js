@@ -1,4 +1,4 @@
-/* eslint-disable no-console */
+import * as logger from '../../logger';
 // id, currentBook, db, direction, column, currentTrans
 import { readIngredients } from '../reference/readIngredients';
 import {
@@ -105,9 +105,9 @@ export const exportHTML = () => {
         const fs = window.require('fs');
         fs.writeFile(filepath, inlineData, (err) => {
           if (err) {
-            console.log('dynamic-msg-went-wrong');
+            logger.info('dynamic-msg-went-wrong', err);
           } else {
-            console.log('exported successfully');
+            logger.info('exported successfully', err);
           }
         });
       });
@@ -167,9 +167,9 @@ export const exportHTML = () => {
       const fs = window.require('fs');
       fs.writeFile(filepath, inlineData, (err) => {
         if (err) {
-          console.log('dynamic-msg-went-wrong');
+          logger.info('dynamic-msg-went-wrong', err);
         } else {
-          console.log('exported successfully');
+          logger('exported successfully', err);
         }
       });
     });

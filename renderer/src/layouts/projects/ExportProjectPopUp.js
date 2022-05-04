@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import React, {
   useRef, Fragment,
 } from 'react';
@@ -51,7 +50,7 @@ export default function ExportProjectPopUp(props) {
         updateTranslationSB(value.username, project)
         .then((updated) => {
           logger.debug('ExportProjectPopUp.js', 'Updated Scripture burrito');
-          console.log(updated);
+          logger.info('ExportProjectPopUp.js', updated);
           const data = fs.readFileSync(path.join(folder, 'metadata.json'), 'utf-8');
           const success = validate('metadata', path.join(folder, 'metadata.json'), data);
           if (success) {
