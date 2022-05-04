@@ -1,4 +1,3 @@
-// eslint-disable-next-line consistent-return
 import * as logger from '../../logger';
 
 const fetchProjectsMeta = async ({ currentUser }) => {
