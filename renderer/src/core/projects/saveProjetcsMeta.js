@@ -91,14 +91,14 @@ const saveProjectsMeta = async (
         selectedLanguage.scriptDirection,
         id,
         importedFiles,
-        copyright.title,
+        copyright,
       ).then(async (ingredient) => {
         logger.debug('saveProjectsMeta.js', 'Calling createTranslationSB for creating burrito.');
         const burritoFile = await createTranslationSB(currentUser,
           newProjectFields,
-          canonSpecification.currentScope,
+          scope,
           selectedLanguage.title,
-          copyright.licence,
+          copyright.title,
           id);
         if (call === 'edit') {
           burritoFile.ingredients = { ...project.ingredients, ...ingredient };

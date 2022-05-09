@@ -1,8 +1,8 @@
 import moment from 'moment';
 import burrito from '../../lib/BurritoTemplete.json';
-import { OT, NT } from '../../lib/CanonSpecification';
 import languageCode from '../../lib/LanguageCode.json';
 import * as logger from '../../logger';
+import packageInfo from '../../../../package.json';
 
 const findCode = (list, id) => {
   logger.debug('createTranslationSB.js', 'In findCode for getting the language code');
@@ -14,22 +14,14 @@ const findCode = (list, id) => {
   });
   return code;
 };
-const uniqType = (canon) => [...new Set(canon)];
-const createTranslationSB = (username, projectFields, currentScope, language, licence, id) => {
+const createTranslationSB = (username, projectFields, selectedScope, language, licence, id) => {
   logger.debug('createTranslationSB.js', 'In createTranslationSB');
-  const names = {};
-  const canonTypes = [];
-  const canonSpec = {
-    ot: {
-      name: 'western',
-    },
-    nt: {
-      name: 'western',
-    },
-  };
+  const localizedNames = {};
   return new Promise((resolve) => {
     const json = burrito;
     json.meta.generator.userName = username;
+    json.meta.generator.softwareVersion = packageInfo.version;
+    json.meta.dateCreated = moment().format();
     json.identification.primary = {
       ag: {
         [id]: {
@@ -47,28 +39,14 @@ const createTranslationSB = (username, projectFields, currentScope, language, li
     json.identification.name.en = projectFields.projectName;
     json.identification.abbreviation.en = projectFields.abbreviation;
     json.languages[0].name.en = language;
-    const newLicence1 = licence?.replace(/(\n)/gm, '\\n');
-    const newLicence = newLicence1?.replace(/(\r)/gm, '\\r');
-    json.copyright.fullStatementPlain.en = newLicence?.replace(/"/gm, '\'');
-    currentScope.forEach((scope) => {
+    // const newLicence = licence;
+    // json.copyright.fullStatementPlain.en = newLicence?.replace(/"/gm, '\'');
+    json.copyright.licenses[0].ingredient = 'license.md';
+    selectedScope.forEach((scope) => {
       json.type.flavorType.currentScope[scope] = [];
-      names[scope] = json.names[scope];
-      const ot = OT.includes(scope);
-      if (ot) {
-        canonTypes.push('ot');
-      } else {
-        const nt = NT.includes(scope);
-        if (nt) {
-          canonTypes.push('nt');
-        }
-      }
+      localizedNames[scope] = json.localizedNames[scope];
     });
-    const canonType = uniqType(canonTypes);
-    json.type.flavorType.canonType = canonType;
-    canonType.forEach((type) => {
-      json.type.flavorType.canonSpec[type] = canonSpec[type];
-    });
-    json.names = names;
+    json.localizedNames = localizedNames;
     logger.debug('createTranslationSB.js', 'Created the Translation SB');
     resolve(json);
   });

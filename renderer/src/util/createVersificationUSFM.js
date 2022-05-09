@@ -112,6 +112,17 @@ export const createVersificationUSFM = (username, project, versification, books,
           size: stats.size,
           role: 'x-versification',
         };
+        logger.debug('createVersificationUSFM.js', 'Creating license.md file in ingredients');
+        await fs.writeFileSync(path.join(folder, 'license.md'), copyright.licence);
+        const copyrightStats = fs.statSync(path.join(folder, 'license.md'));
+        ingredients[path.join('ingredients', 'license.md')] = {
+          checksum: {
+            md5: md5(file),
+          },
+          mimeType: 'text/md',
+          size: copyrightStats.size,
+          role: 'x-licence',
+        };
         const settings = {
           version: environment.AG_SETTING_VERSION,
           project: {
@@ -120,7 +131,7 @@ export const createVersificationUSFM = (username, project, versification, books,
               starred: false,
               versification,
               description: project.description,
-              copyright,
+              copyright: copyright.title,
               lastSeen: moment().format(),
               refResources: [],
               bookMarks: [],

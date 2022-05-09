@@ -3,6 +3,8 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/solid';
+import localforage from 'localforage';
+import { OT, NT } from '../../../lib/CanonSpecification';
 import CustomList from '@/modules/projects/CustomList';
 import { ProjectContext } from '../../context/ProjectContext';
 import CustomCanonSpecification from './CustomCanonSpecification';
@@ -64,50 +66,56 @@ export default function AdvancedSettingsDropdown({ call, project }) {
   }
   const loadScope = (project) => {
     logger.debug('AdvancedSettingsDropdown.js', 'In loadScope for loading a exact scope from burrito');
-    if ((project.type.flavorType.canonType).length === 2) {
-      if (Object.keys(project.type.flavorType.currentScope).length === 66) {
-        const vals = Object.keys(project.type.flavorType.currentScope).map((key) => key);
-        setcanonSpecification({ title: 'All Books', currentScope: vals });
-        setCurrentScope({ title: 'All Books', currentScope: vals });
-      } else {
-        const vals = Object.keys(project.type.flavorType.currentScope).map((key) => key);
-        setcanonSpecification({ title: 'Other', currentScope: vals });
-        setCurrentScope({ title: 'Other', currentScope: vals });
-      }
-    } else if ((project.type.flavorType.canonType).length === 1) {
-      if (project.type.flavorType.canonType[0] === 'ot') {
-        if (Object.keys(project.type.flavorType.currentScope).length === 39) {
-          const vals = Object.keys(project.type.flavorType.currentScope).map((key) => key);
-          setcanonSpecification({ title: 'Old Testament (OT)', currentScope: vals });
-          setCurrentScope({ title: 'Old Testament (OT)', currentScope: vals });
-        } else {
-          const vals = Object.keys(project.type.flavorType.currentScope).map((key) => key);
-          setcanonSpecification({ title: 'Other', currentScope: vals });
-          setCurrentScope({ title: 'Other', currentScope: vals });
-        }
-      } else if (project.type.flavorType.canonType[0] === 'nt') {
-        if (Object.keys(project.type.flavorType.currentScope).length === 27) {
-          const vals = Object.keys(project.type.flavorType.currentScope).map((key) => key);
-          setcanonSpecification({ title: 'New Testament (NT)', currentScope: vals });
-          setCurrentScope({ title: 'New Testament (NT)', currentScope: vals });
-        } else {
-          const vals = Object.keys(project.type.flavorType.currentScope).map((key) => key);
-          setcanonSpecification({ title: 'Other', currentScope: vals });
-          setCurrentScope({ title: 'Other', currentScope: vals });
-        }
-      }
+    const vals = Object.keys(project.type.flavorType.currentScope).map((key) => key);
+    if (vals.length === 66) {
+      setcanonSpecification({ title: 'All Books', currentScope: vals });
+      setCurrentScope({ title: 'All Books', currentScope: vals });
+    } else if (vals.length === 39 && vals.every((val) => OT.includes(val))) {
+      setcanonSpecification({ title: 'Old Testament (OT)', currentScope: vals });
+      setCurrentScope({ title: 'Old Testament (OT)', currentScope: vals });
+    } else if (vals.length === 27 && vals.every((val) => NT.includes(val))) {
+      setcanonSpecification({ title: 'New Testament (NT)', currentScope: vals });
+      setCurrentScope({ title: 'New Testament (NT)', currentScope: vals });
+    } else {
+      setcanonSpecification({ title: 'Other', currentScope: vals });
+      setCurrentScope({ title: 'Other', currentScope: vals });
     }
   };
   const loadLicence = () => {
     logger.debug('AdvancedSettingsDropdown.js', 'In loadLicence for loading the selected licence');
-    const title = project.project.textTranslation.copyright;
-    let myLicence = {};
-    if (title === 'Custom') {
+    let title = project.project?.textTranslation?.copyright;
+    let myLicence = { };
+    const fs = window.require('fs');
+    if (title === 'Custom' || title === undefined) {
       myLicence.title = 'Custom';
       myLicence.locked = false;
       myLicence.id = 'Other';
-      myLicence.licence = project.copyright?.fullStatementPlain?.en;
+      // To support the Projects of 0.3.0 version of burrito
+      if (project.copyright?.fullStatementPlain) {
+        myLicence.licence = project.copyright?.fullStatementPlain?.en;
+      } else {
+        const path = require('path');
+        const newpath = localStorage.getItem('userPath');
+        const id = Object.keys(project.identification.primary.ag);
+        localforage.getItem('userProfile').then((value) => {
+          logger.debug('saveProjectsMeta.js', 'Fetching the current username');
+          const folder = path.join(newpath, 'autographa', 'users', value?.username, 'projects', `${project.identification.name.en}_${id[0]}`, 'ingredients', 'license.md');
+          if (fs.existsSync(folder)) {
+            myLicence.licence = fs.readFileSync(folder);
+          } else {
+            const licensefile = require('../../../lib/license/Custom.md');
+            // console.log(myLicence, licensefile.default);
+            myLicence.licence = licensefile.default;
+          }
+        });
+      }
     } else {
+      // license names are being updated by a prefix 'CC' so to avoid error with previous versions
+      // checking whether the prefix is available or not
+      if (!title.match(/CC/g)) {
+        const str = `CC ${title}`;
+        title = str.replace(/_/gm, '-');
+      }
       myLicence = licenceList.find((item) => item.title === title);
       // eslint-disable-next-line import/no-dynamic-require
       const licensefile = require(`../../../lib/license/${title}.md`);
