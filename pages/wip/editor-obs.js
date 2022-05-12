@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+import { EyeIcon, EyeOffIcon } from '@heroicons/react/outline';
 import AuthenticationContextProvider from '@/components/Login/AuthenticationContextProvider';
 import ProjectContextProvider from '@/components/context/ProjectContext';
 import ReferenceContextProvider from '@/components/context/ReferenceContext';
@@ -8,7 +9,6 @@ import AutographaContextProvider from '@/components/context/AutographaContext';
 
 import EditorLayout from '@/layouts/editor/Layout';
 import Editor from '@/modules/editor/Editor';
-import { EyeIcon, EyeOffIcon } from '@heroicons/react/outline';
 import { classNames } from '@/util/classNames';
 import RowSection from './RowSection';
 

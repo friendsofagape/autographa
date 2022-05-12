@@ -28,7 +28,7 @@ export default function SideBar() {
             <a aria-label="projectList" className="flex flex-col items-center" href="#projects">
               <ProjectsIcon
                 fill="none"
-                strokeCurrent="none"
+                strokecurrent="none"
                 className="h-7 w-7 text-dark group-hover:text-white"
               />
               <div className="text-xs mt-3 uppercase">projects</div>
@@ -40,7 +40,7 @@ export default function SideBar() {
             <a aria-label="new" className="flex flex-col items-center" href="#new">
               <NewProjectIcon
                 fill="none"
-                strokeCurrent="none"
+                strokecurrent="none"
                 className="h-7 w-7 text-dark group-hover:text-white"
               />
               <div className="text-xs mt-3 uppercase">new</div>
@@ -54,7 +54,7 @@ export default function SideBar() {
               <a className="flex flex-col items-center" href="#sync">
                 <SyncIcon
                   fill="none"
-                  strokeCurrent="none"
+                  strokecurrent="none"
                   className="h-7 w-7 text-dark group-hover:text-white"
                 />
                 <div className="text-xs mt-3 uppercase">sync</div>
