@@ -203,38 +203,36 @@ export default function TopMenuBar() {
                           className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
                         >
                           {profile.map((item) => (
-                            <>
-                              <Menu.Item key={item}>
-                                {({ active }) => (
-                                  <Link href="/profile">
-                                    <a
-                                      href="#profile"
-                                      className={classNames(
+                            <Menu.Item key={item}>
+                              {({ active }) => (
+                                <Link href="/profile">
+                                  <a
+                                    href="#profile"
+                                    className={classNames(
                                         active ? 'bg-gray-100' : '',
                                         'block px-4 py-2 text-sm text-gray-700',
                                       )}
-                                    >
-                                      {item}
-                                    </a>
-                                  </Link>
+                                  >
+                                    {item}
+                                  </a>
+                                </Link>
                                 )}
-                              </Menu.Item>
-                              <Menu.Item key="Sign out">
-                                {({ active }) => (
-                                  <a
-                                    href="#profile"
-                                    onClick={() => logout()}
-                                    className={classNames(
+                            </Menu.Item>
+                          ))}
+                          <Menu.Item key="Sign out">
+                            {({ active }) => (
+                              <a
+                                href="#profile"
+                                onClick={() => logout()}
+                                className={classNames(
                                       active ? 'bg-gray-100' : '',
                                       'block px-4 py-2 text-sm text-gray-700',
                                     )}
-                                  >
-                                    Sign out
-                                  </a>
+                              >
+                                Sign out
+                              </a>
                                 )}
-                              </Menu.Item>
-                            </>
-                          ))}
+                          </Menu.Item>
                         </Menu.Items>
                       </Transition>
                     </>

@@ -183,13 +183,13 @@ export default function Login() {
               if (index < 5) {
                 return (
                   <div
+                    key={user.username}
                     className="grid grid-cols-4 py-3 m-2 justify-center items-center justify-items-center gap-2
                   bg-gray-100 text-dark rounded-lg cursor-pointer
                   border-2 border-transparent
                   hover:bg-primary hover:text-white hover:border-primary group"
                     role="button"
                     tabIndex="0"
-                    key={user.username}
                     onClick={() => { handleSubmit({ username: user.username }); }}
                   >
                     <div className="h-10 w-10 flex justify-center items-center bg-gray-200 rounded-full group-hover:bg-secondary">

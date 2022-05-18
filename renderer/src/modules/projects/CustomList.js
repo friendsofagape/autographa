@@ -28,7 +28,7 @@ export default function CustomList({
           <Listbox.Options className={`absolute z-50 w-52 lg:w-${dropdownWidth} py-1 mt-1 z-10 overflow-auto scrollbars-width text-base bg-white rounded-md shadow-lg max-h-48 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm`}>
             {options.map((option) => (
               <Listbox.Option
-                key={option?.id}
+                key={option.title}
                 className={({ active }) => `${active ? 'text-amber-900 bg-amber-100' : 'text-gray-900'}
                   cursor-default select-none relative py-2 pl-10 pr-4 hover:bg-gray-200`}
                 value={option}

@@ -81,7 +81,7 @@ const CustomNofications = () => {
         <Notifications isOpen={openSideNotification} closeNotifications={closeNotifications}>
           <>
             {notifications?.map((val) => (
-              <>
+              <div key={val.time}>
                 {val.type === 'success' ? (
                   <div className={`${val.hidden ? '' : 'opacity-60'}  relative mb-2 bg-gray-200 rounded-lg text-sm text-black overflow-hidden`}>
                     <div className={`flex justify-between px-4 py-1 text-xs uppercase font-semibold bg-gray-300 text-gray-700 ${val.hidden ? '' : 'opacity-60'}`}>
@@ -90,7 +90,9 @@ const CustomNofications = () => {
                         {moment(val.time, 'YYYY-MM-DD h:mm:ss').fromNow()}
                       </span>
                     </div>
-                    <p className="px-4 py-2">{val.text}</p>
+                    <p className="px-4 py-2">
+                      {val.text}
+                    </p>
                   </div>
                 ) : (
                 val.type === 'failure' && (
@@ -121,7 +123,7 @@ const CustomNofications = () => {
                     </p>
                   </div>
                 )}
-              </>
+              </div>
             ))}
             {/* (val.type === 'upload') && (
 

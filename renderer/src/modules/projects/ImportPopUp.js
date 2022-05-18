@@ -192,7 +192,7 @@ export default function ImportPopUp(props) {
                     <div className="bg-white grid grid-cols-4 gap-2 p-4 pb-24 text-sm text-left tracking-wide">
                       {
                         books.map((book) => (
-                          <div className={`${styles.select} group`} key={book}>
+                          <div key={book} className={`${styles.select} group`}>
                             <DocumentTextIcon className="w-6 mr-2 group-hover:text-white" />
                             {book}
                           </div>
