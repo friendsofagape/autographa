@@ -8,6 +8,7 @@ import moment from 'moment';
 import Notifications from '@/modules/notifications/Notifications';
 import menuStyles from '../../layouts/editor/MenuBar.module.css';
 import { AutographaContext } from '../context/AutographaContext';
+import { t } from 'i18next';
 
 const CustomNofications = () => {
     const [notifications, setNotification] = useState();
@@ -68,7 +69,7 @@ const CustomNofications = () => {
           aria-label="notification-button"
           onClick={openSideBars}
           type="button"
-          title="notification"
+          title={t('label-notification')}
           className={`group ${menuStyles.btn}`}
         >
           <BellIcon className="h-5 w-5" aria-hidden="true" />

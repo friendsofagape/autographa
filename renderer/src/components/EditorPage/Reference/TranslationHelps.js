@@ -2,6 +2,7 @@
 import React, { useContext } from 'react';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import TranslationHelpsCard from './TranslationHelpsCard';
+import { useTranslation } from 'react-i18next';
 
 const TranslationHelps = ({
  selectedResource, languageId, refName, bookId, chapter, verse, owner,
@@ -14,15 +15,15 @@ const TranslationHelps = ({
 
   const translationQuestionsPath = `${(chapter < 10) ? (`0${ chapter}`)
   : chapter}/${(verse < 10) ? (`0${ verse}`) : verse}.md`;
-
-  return (
+  const { t } = useTranslation();
+    return (
     <>
       {(() => {
       switch (selectedResource) {
         case 'tn':
           return (
             <TranslationHelpsCard
-              title="Translation Notes"
+              title={t('label-resource-tn')}
               verse={verse}
               chapter={chapter}
               projectId={bookId || 'mat'}
@@ -36,7 +37,7 @@ const TranslationHelps = ({
         case 'twl':
           return (
             <TranslationHelpsCard
-              title="Translation Words List"
+              title={t('label-resource-twl')}
               verse={verse}
               chapter={chapter}
               projectId={bookId || 'mat'}
@@ -51,7 +52,7 @@ const TranslationHelps = ({
         case 'twlm':
           return (
             <TranslationHelpsCard
-              title="Translation Words"
+              title={t('label-resource-twlm')}
               verse={verse}
               chapter={chapter}
               projectId={bookId || 'mat'}
@@ -66,7 +67,7 @@ const TranslationHelps = ({
         case 'tq':
           return (
             <TranslationHelpsCard
-              title="Translation Questions"
+              title={t('label-resource-tq')}
               verse={verse}
               chapter={chapter}
               projectId={bookId || 'mat'}
@@ -82,7 +83,7 @@ const TranslationHelps = ({
         case 'bible':
           return (
             <TranslationHelpsCard
-              title="Bible"
+              title={t('label-resource-bible')}
               languageId={languageId}
               refName={refName}
               bookId={bookId}

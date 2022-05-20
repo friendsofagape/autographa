@@ -6,6 +6,7 @@ import { PencilAltIcon } from '@heroicons/react/outline';
 
 import { BlockEditable } from 'markdown-translatable/dist/components';
 import { ProjectContext } from '../../context/ProjectContext';
+import { useTranslation } from 'react-i18next';
 
 export default function LicencePopover({ call }) {
   const [name, setName] = React.useState();
@@ -14,7 +15,7 @@ export default function LicencePopover({ call }) {
   const [edit, setEdit] = React.useState(false);
   // const [lock, setLock] = React.useState(false);
   const [preview, setPreview] = useState(true);
-
+  const { t } = useTranslation();
   function closeModal() {
     setIsOpen(false);
     setPreview(true);
@@ -183,7 +184,7 @@ export default function LicencePopover({ call }) {
                         className="mt-5 bg-success w-28 h-8 border-color-success rounded uppercase text-white text-xs shadow focus:outline-none"
                         onClick={() => { addLicence(); closeModal(); }}
                       >
-                        save
+                        {t('btn-save')}
                       </button>
                     )}
                   <button
@@ -192,7 +193,7 @@ export default function LicencePopover({ call }) {
                     className=" mt-5
                   bg-error w-28 h-8 border-color-error rounded uppercase shadow text-white text-xs tracking-wide leading-4 font-light focus:outline-none"
                   >
-                    cancel
+                    {t('btn-cancel')}
                   </button>
                 </div>
 

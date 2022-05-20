@@ -11,6 +11,8 @@ import { SnackBar } from '@/components/SnackBar';
 import { isElectron } from '@/core/handleElectron';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import * as logger from '../../../logger';
+import { useTranslation } from 'react-i18next';
+
 
 export default function ImportResource({ open, closePopUp, setOpenResourcePopUp }) {
     const cancelButtonRef = useRef(null);
@@ -18,7 +20,7 @@ export default function ImportResource({ open, closePopUp, setOpenResourcePopUp 
     const [snackBar, setOpenSnackBar] = React.useState(false);
     const [snackText, setSnackText] = React.useState('');
     const [notify, setNotify] = React.useState();
-
+    const { t } = useTranslation();
     const {
       state: {
         folderPath,
@@ -94,7 +96,7 @@ export default function ImportResource({ open, closePopUp, setOpenResourcePopUp 
                 <div className="relative h-full rounded shadow overflow-hidden bg-white">
                   <div className="flex justify-between items-center bg-secondary">
                     <div className="uppercase bg-secondary text-white py-2 px-2 text-xs tracking-widest leading-snug rounded-tl text-center">
-                      Import Resource
+                      {t('label-import-resource')}
                     </div>
                     <button
                       onClick={close}
@@ -113,7 +115,7 @@ export default function ImportResource({ open, closePopUp, setOpenResourcePopUp 
                         <div className="flex gap-5 col-span-2">
                           <div>
                             <h4 className="text-xs font-base mb-2 text-primary  tracking-wide leading-4  font-light">
-                              Scripture Burrito Resource filepath
+                              {t('label-burrito-resource-path')}
                             </h4>
                             <input
                               type="text"
@@ -138,13 +140,13 @@ export default function ImportResource({ open, closePopUp, setOpenResourcePopUp 
                         </div>
                       </div>
                       <div className="flex gap-6 mx-5 justify-end">
-                        <button type="button" className="py-2 px-6 rounded shadow bg-error text-white uppercase text-xs tracking-widest font-semibold" onClick={close}>Cancel</button>
+                        <button type="button" className="py-2 px-6 rounded shadow bg-error text-white uppercase text-xs tracking-widest font-semibold" onClick={close}>{t('btn-cancel')}</button>
                         <button
                           onClick={() => uploadRefBible()}
                           type="button"
                           className="py-2 px-7 rounded shadow bg-success text-white uppercase text-xs tracking-widest font-semibold"
                         >
-                          upload
+                          {t('btn-upload')}
                         </button>
                       </div>
                     </div>

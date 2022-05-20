@@ -19,6 +19,7 @@ import { SnackBar } from '@/components/SnackBar';
 import ResourceOption from './ResourceOption';
 import ImportResource from './ImportResource';
 import * as logger from '../../../logger';
+import { useTranslation } from 'react-i18next';
 
 function createData(name, language, owner) {
   return {
@@ -210,7 +211,7 @@ const ResourcesPopUp = ({
       setSnackText('unable to fetch selected resource from the given url');
     }
   }
-
+  const { t } = useTranslation();
   useEffect(() => {
     readCustomResources({ resourceId: 'tq', translationData: translationQuestion });
     readCustomResources({ resourceId: 'twlm', translationData: translationWord });
@@ -253,7 +254,7 @@ const ResourcesPopUp = ({
                 </button>
                 <div>
                   <div aria-label="resources-title" className="uppercase bg-secondary text-white p-2 text-xs tracking-widest leading-snug rounded-tl text-center">
-                    Resources
+                    {t('label-resource')}
                   </div>
                   <div style={{ width: 'max-content' }} className="relative bg-gray-100 px-3 py-3 h-full overflow-auto scrollbars-width">
                     {/* <input
@@ -268,7 +269,7 @@ const ResourcesPopUp = ({
                       <ResourceOption
                         imageUrl="/illustrations/bible-icon.svg"
                         id="bible"
-                        text="Bible"
+                        text={t('label-resource-bible')}
                         selectResource={selectResource}
                         setSelectResource={setSelectResource}
                         setTitle={setTitle}
@@ -278,7 +279,7 @@ const ResourcesPopUp = ({
                       <ResourceOption
                         imageUrl="/illustrations/dictionary-icon.svg"
                         id="tn"
-                        text="Translation Notes"
+                        text={t('label-resource-tn')}
                         translationData={translationNotes}
                         readCustomResources={readCustomResources}
                         selectResource={selectResource}
@@ -290,7 +291,7 @@ const ResourcesPopUp = ({
                       <ResourceOption
                         imageUrl="/illustrations/image-icon.svg"
                         id="twlm"
-                        text="Translation Words"
+                        text={t('label-resource-twlm')}
                         translationData={translationWords}
                         readCustomResources={readCustomResources}
                         selectResource={selectResource}
@@ -302,7 +303,7 @@ const ResourcesPopUp = ({
                       <ResourceOption
                         imageUrl="/illustrations/dialogue-icon.svg"
                         id="tq"
-                        text="Translation Questions"
+                        text={t('label-resource-tq')}
                         translationData={translationQuestions}
                         readCustomResources={readCustomResources}
                         selectResource={selectResource}
@@ -338,10 +339,10 @@ const ResourcesPopUp = ({
                           <StarIcon className="h-5 w-5" aria-hidden="true" />
                         </th>
                         <th className="px-5 py-3.5 font-bold text-gray-700 uppercase tracking-wider">
-                          Name
+                        {t('label-name')}
                         </th>
                         <th className="px-5 font-bold text-gray-700 uppercase tracking-wider">
-                          Language
+                          {t('label-language')}
                         </th>
                       </tr>
                     </thead>
@@ -512,7 +513,7 @@ const ResourcesPopUp = ({
                                     title="load translation noted"
                                     className="py-2 m-1 px-6 bg-primary rounded shadow text-white uppercase text-xs tracking-widest font-semibold"
                                   >
-                                    Import
+                                    {t('btn-import')}
                                   </button>
                                 </div>
                               </div>
@@ -555,7 +556,7 @@ const ResourcesPopUp = ({
                                     title="load translation questions"
                                     className="py-2 m-1 px-6 bg-primary rounded shadow text-white uppercase text-xs tracking-widest font-semibold"
                                   >
-                                    Import
+                                    {t('btn-import')}
                                   </button>
                                 </div>
                               </div>
@@ -598,7 +599,7 @@ const ResourcesPopUp = ({
                                     title="load translation words"
                                     className="py-2 m-1 px-6 bg-primary rounded shadow text-white uppercase text-xs tracking-widest font-semibold"
                                   >
-                                    Import
+                                    {t('btn-import')}
                                   </button>
                                 </div>
                               </div>
@@ -615,7 +616,7 @@ const ResourcesPopUp = ({
                         onClick={() => openResourceDialogBox()}
                         className="py-2 px-6 bg-primary rounded shadow text-white uppercase text-xs tracking-widest font-semibold"
                       >
-                        Upload
+                        {t('btn-upload')}
                       </button>
                       {/* <button type="button"
                       className="py-2 px-6 rounded shadow

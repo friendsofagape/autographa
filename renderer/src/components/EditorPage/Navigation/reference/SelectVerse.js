@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 // eslint-disable-next-line import/no-unresolved
 import { convertToRange } from '@/util/convertToRange';
 import styles from './SelectReference.module.css';
+import { useTranslation } from 'react-i18next';
 
 export default function SelectVerse({
   children,
@@ -28,6 +29,7 @@ export default function SelectVerse({
   const [controlVerseSelect, setControlVerseSelect] = useState([]);
   const [openChapter, setOpenChapter] = useState(true);
   const [openVerse, setOpenVerse] = useState(false);
+  const { t }  = useTranslation();
 
   const onChapterSelect = (e, chapterNum) => {
     e.preventDefault();
@@ -73,11 +75,11 @@ export default function SelectVerse({
             {bookName}
           </div>
           <div className={`px-2 pt-2 ${openVerse ? 'hover:bg-gray-600 border-gray-600' : 'bg-primary border-primary'} border-b-4 cursor-pointer`}>
-            Chapter : &nbsp;
+            {t('label-chapter')} : &nbsp;
             {chapter}
           </div>
           <div className={`px-2 pt-2 ${openVerse ? 'bg-primary border-primary' : 'hover:bg-gray-600 border-gray-600'} border-b-4 cursor-pointer`}>
-            Verse : &nbsp;
+            {t('label-verse')} : &nbsp;
             {multiSelectVerse
             ? controlVerseSelect.join()
             : verse}

@@ -4,18 +4,19 @@ import { useRouter } from 'next/router';
 import * as logger from '../../logger';
 import useApi from './useApi';
 import CustomLogin from '../Login/CustomLogin'
+import { useTranslation } from 'react-i18next';
 // import configData from '../../config.json';
-
 export default function Signup() {
   const router = useRouter();
+  const { t } = useTranslation();
   const { state: { config }, action: { getFlow } } = useApi();
   const ui = {
     textfield: {
       count: [
-        { label: 'Email', type: 'email', name: 'email' },
-        { label: 'Name', type: 'text', name: 'identifier' },
-        { label: 'Password', type: 'password', name: 'password' },
-        { label: 'Confirm Password', type: 'password', name: 'password' },
+        { label: t('label-email'), type: 'email', name: 'email' },
+        { label: t('label-name'), type: 'text', name: 'identifier' },
+        { label: t('label-password'), type: 'password', name: 'password' },
+        { label: t('label-confirm-password'), type: 'password', name: 'password' },
       ],
     },
     viewForgot: false,
@@ -136,7 +137,7 @@ export default function Signup() {
               login={handleSubmit}
               userlist={[]}
               validation={error}
-              buttonname="SIGN UP"
+              buttonname={t('btn-signup')}
             />
             <div />
           </div>

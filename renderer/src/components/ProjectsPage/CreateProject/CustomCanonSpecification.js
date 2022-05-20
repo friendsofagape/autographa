@@ -7,12 +7,15 @@ import PropTypes from 'prop-types';
 import SelectBook from '@/components/EditorPage/Navigation/reference/SelectBook';
 import { ProjectContext } from '../../context/ProjectContext';
 import * as logger from '../../../logger';
+import { useTranslation } from 'react-i18next';
+
 
 const CustomCanonSpecification = ({ bibleNav, closeBibleNav, handleNav }) => {
   const initialBook = 'mat';
   const initialChapter = '1';
   const initialVerse = '1';
   const [name, setName] = React.useState();
+  const { t } = useTranslation();
   const {
     states: { canonSpecification, canonList },
     actions: { setcanonSpecification },
@@ -99,7 +102,7 @@ const CustomCanonSpecification = ({ bibleNav, closeBibleNav, handleNav }) => {
                   className="w-40 h-10  bg-success leading-loose rounded shadow text-xs font-base  text-white tracking-wide  font-light uppercase"
                   onClick={() => closeBibleNav()}
                 >
-                  Ok
+                  {t('btn-ok')}
                 </button>
                 )
               : (
@@ -109,14 +112,14 @@ const CustomCanonSpecification = ({ bibleNav, closeBibleNav, handleNav }) => {
                     className="w-40 h-10  bg-error leading-loose rounded shadow text-xs font-base  text-white tracking-wide  font-light uppercase"
                     onClick={() => closeBibleNav()}
                   >
-                    Cancel
+                    {t('btn-cancel')}
                   </button>
                   <button
                     type="button"
                     className="w-40 h-10  bg-success leading-loose rounded shadow text-xs font-base  text-white tracking-wide  font-light uppercase"
                     onClick={() => (handleNav === 'edit' ? editCanon() : saveCanon())}
                   >
-                    Save
+                    {t('btn-save')}
                   </button>
                 </>
               )}

@@ -11,6 +11,7 @@ import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
 import * as logger from '../../logger';
 import { ProjectContext } from '../context/ProjectContext';
+import { useTranslation } from 'react-i18next';
 
 function a11yProps(index) {
   return {
@@ -26,6 +27,7 @@ export const MDEditor = ({
 }) => {
   const [onedit, setEdit] = React.useState(0);
   const [preview, setpreview] = React.useState(true);
+  const { t } = useTranslation();
   const {
     states: {
       license,
@@ -118,7 +120,7 @@ export const MDEditor = ({
         data-testid="test-cancel"
         variant="contained"
       >
-        cancel
+        {t('btn-cancel')}
       </Button>
       <Button
         autoFocus
@@ -127,7 +129,7 @@ export const MDEditor = ({
         data-testid="test-save"
         color="primary"
       >
-        save
+        {t('btn-save')}
       </Button>
     </>
   );

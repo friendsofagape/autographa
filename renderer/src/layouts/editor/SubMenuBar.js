@@ -35,6 +35,7 @@ import StatsModal from './StatsModal';
 import MenuDropdown from '../../components/MenuDropdown/MenuDropdown';
 import menuStyles from './MenuBar.module.css';
 import styles from './SubMenuBar.module.css';
+import { useTranslation } from 'react-i18next';
 
 const activate = () => {
   // console.log('rename');
@@ -188,7 +189,7 @@ export default function SubMenuBar() {
   function openStatsModal(isOpen) {
     setOpenStats(isOpen);
   }
-
+  const { t } = useTranslation();
   return (
     <>
 
@@ -268,7 +269,7 @@ export default function SubMenuBar() {
 
       <nav className="flex p-2 shadow-sm border-b border-gray-200">
         <div className="w-3/5">
-          <MenuBar header="File" MenuItems={FileMenuItems} />
+          <MenuBar header={t('label-menu-file')} MenuItems={FileMenuItems} />
           {/* <span>
             <MenuBar header="FORMAT" MenuItems={FormatMenuItems} style={{ left: '-60px' }} />
           </span> */}
@@ -276,7 +277,7 @@ export default function SubMenuBar() {
             <span>Insert</span>
           </button> */}
           <span>
-            <MenuBar header="EDIT" MenuItems={EditorTools} style={{ left: '-60px', height: '65px' }} />
+            <MenuBar header={t('label-menu-edit')} MenuItems={EditorTools} style={{ left: '-60px', height: '65px' }} />
           </span>
           <button
             aria-label="about-button"
@@ -285,7 +286,7 @@ export default function SubMenuBar() {
             className={styles.menu}
             aria-expanded="false"
           >
-            <span>About</span>
+            <span>{t('label-menu-about')}</span>
           </button>
         </div>
         {/* <div className="w-2/3">

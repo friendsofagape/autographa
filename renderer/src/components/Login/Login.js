@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 // import 'tailwindcss/tailwind.css';
 import { ChevronRightIcon, UserIcon } from '@heroicons/react/solid';
+import { useTranslation } from 'react-i18next';
 
 import * as localForage from 'localforage';
 import { useRouter } from 'next/router';
@@ -16,20 +17,22 @@ import CustomLogin from './CustomLogin';
 import { AuthenticationContext } from './AuthenticationContextProvider';
 
 import { createUser, handleLogin } from '../../core/Login/handleLogin';
+import i18n from '../../translations/i18n';
 
 export default function Login() {
   const router = useRouter();
+  const { t } = useTranslation();
   const online = {
     textfield: {
       count: [
-        { label: 'Username', type: 'text', name: 'identifier' },
-        { label: 'Password', type: 'password', name: 'password' },
+        { label: t('label-username'), type: 'text', name: 'identifier' },
+        { label: t('label-password'), type: 'password', name: 'password' },
       ],
     },
     viewForgot: true,
   };
   const offline = {
-    autocomplete: { count: [{ label: 'Username' }] },
+    autocomplete: { count: [{ label: t('label-username') }] },
     viewForgot: false,
   };
   // eslint-disable-next-line no-unused-vars
@@ -215,7 +218,7 @@ export default function Login() {
               login={handleSubmit}
               userlist={users}
               validation={error}
-              buttonname="SIGN IN"
+              buttonname={t('btn-signin')}
             />
             <div />
           </div>
