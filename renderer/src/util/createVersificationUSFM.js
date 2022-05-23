@@ -8,7 +8,7 @@ const md5 = require('md5');
 
 const bookAvailable = (list, id) => list.some((obj) => obj.id === id);
 export const createVersificationUSFM = (username, project, versification, books, direction, id,
-  importedFiles, copyright) => {
+  importedFiles, copyright, currentBurrito, call) => {
   logger.debug('createVersificationUSFM.js', 'In createVersificationUSFM');
   const newpath = localStorage.getItem('userPath');
   const folder = path.join(newpath, 'autographa', 'users', username, 'projects', `${project.projectName}_${id}`, 'ingredients');
@@ -112,17 +112,21 @@ export const createVersificationUSFM = (username, project, versification, books,
           size: stats.size,
           role: 'x-versification',
         };
-        logger.debug('createVersificationUSFM.js', 'Creating license.md file in ingredients');
-        await fs.writeFileSync(path.join(folder, 'license.md'), copyright.licence);
-        const copyrightStats = fs.statSync(path.join(folder, 'license.md'));
-        ingredients[path.join('ingredients', 'license.md')] = {
-          checksum: {
-            md5: md5(file),
-          },
-          mimeType: 'text/md',
-          size: copyrightStats.size,
-          role: 'x-licence',
-        };
+        if (call === 'edit' && currentBurrito?.copyright?.shortStatements && (copyright.licence).length <= 500) {
+          logger.debug('createVersificationUSFM.js', 'Won\'t create license.md file in ingredients and update the current shortStatements');
+        } else {
+          logger.debug('createVersificationUSFM.js', 'Creating license.md file in ingredients');
+          await fs.writeFileSync(path.join(folder, 'license.md'), copyright.licence);
+          const copyrightStats = fs.statSync(path.join(folder, 'license.md'));
+          ingredients[path.join('ingredients', 'license.md')] = {
+            checksum: {
+              md5: md5(file),
+            },
+            mimeType: 'text/md',
+            size: copyrightStats.size,
+            role: 'x-licence',
+          };
+        }
         const settings = {
           version: environment.AG_SETTING_VERSION,
           project: {

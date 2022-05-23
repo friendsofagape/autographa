@@ -15,9 +15,10 @@ export const updateVersion = (metadata) => {
     sb.localizedNames = sb.names;
     delete sb.names;
   }
-  if (!sb.copyright.licenses) {
+  if (sb.copyright.fullStatementPlain) {
     sb.copyright.licenses = [{ ingredient: '' }];
     delete sb.copyright.fullStatementPlain;
+    delete sb.copyright.publicDomain;
   }
   if (!sb.meta.defaultLocale) {
     sb.meta.defaultLocale = sb.meta.defaultLanguage;
@@ -26,7 +27,6 @@ export const updateVersion = (metadata) => {
 
   delete sb.type.flavorType.canonSpec;
   delete sb.type.flavorType.canonType;
-  delete sb.copyright.publicDomain;
   return sb;
 };
 

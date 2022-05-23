@@ -81,27 +81,31 @@ export default function AdvancedSettingsDropdown({ call, project }) {
       setCurrentScope({ title: 'Other', currentScope: vals });
     }
   };
-  const loadLicence = () => {
-    logger.debug('AdvancedSettingsDropdown.js', 'In loadLicence for loading the selected licence');
-    let title = project.project?.textTranslation?.copyright;
+  // selectNew variable is used to track whether its a new selection or loading from the list
+  const setALicense = (licenceTitle, selectNew) => {
+    let title = licenceTitle;
     let myLicence = { };
     const fs = window.require('fs');
-    if (title === 'Custom' || title === undefined) {
+    if ((title === 'Custom' || !title) && !selectNew) {
       myLicence.title = 'Custom';
       myLicence.locked = false;
       myLicence.id = 'Other';
       // To support the Projects of 0.3.0 version of burrito
       if (project.copyright?.fullStatementPlain) {
         myLicence.licence = project.copyright?.fullStatementPlain?.en;
+      } else if (project.copyright?.shortStatements) {
+        myLicence.licence = project.copyright?.shortStatements[0]?.statement;
       } else {
         const path = require('path');
         const newpath = localStorage.getItem('userPath');
         const id = Object.keys(project.identification.primary.ag);
         localforage.getItem('userProfile').then((value) => {
-          logger.debug('saveProjectsMeta.js', 'Fetching the current username');
+          logger.debug('AdvancedSettingsDropdown.js', 'Fetching the current username');
           const folder = path.join(newpath, 'autographa', 'users', value?.username, 'projects', `${project.identification.name.en}_${id[0]}`, 'ingredients', 'license.md');
           if (fs.existsSync(folder)) {
-            myLicence.licence = fs.readFileSync(folder);
+            fs.readFile(folder, 'utf8', (err, data) => {
+              myLicence.licence = data;
+            });
           } else {
             const licensefile = require('../../../lib/license/Custom.md');
             // console.log(myLicence, licensefile.default);
@@ -112,7 +116,7 @@ export default function AdvancedSettingsDropdown({ call, project }) {
     } else {
       // license names are being updated by a prefix 'CC' so to avoid error with previous versions
       // checking whether the prefix is available or not
-      if (!title.match(/CC/g)) {
+      if (!title.match(/CC/g) && title !== 'Custom') {
         const str = `CC ${title}`;
         title = str.replace(/_/gm, '-');
       }
@@ -122,6 +126,10 @@ export default function AdvancedSettingsDropdown({ call, project }) {
       myLicence.licence = licensefile.default;
     }
     setCopyRight(myLicence);
+  };
+  const loadLicence = () => {
+    logger.debug('AdvancedSettingsDropdown.js', 'In loadLicence for loading the selected licence');
+    setALicense(project.project?.textTranslation?.copyright, false);
   };
   const selectCanon = (val) => {
     const value = val;
@@ -138,21 +146,12 @@ export default function AdvancedSettingsDropdown({ call, project }) {
     openBibleNav('edit');
   };
   useEffect(() => {
-    if (call === 'edit') {
+    if (call === 'edit' && !isShow) {
       loadScope(project);
       loadLicence(project);
       setVersificationScheme({ title: project?.project?.textTranslation?.versification ? project?.project?.textTranslation?.versification : 'ENG' });
     }
-  }, []);
-  // const [openPopUp, setOpenPopUp] = useState(false);
-
-  // function openImportPopUp() {
-  //   setOpenPopUp(true);
-  // }
-
-  // function closeImportPopUp() {
-  //   setOpenPopUp(false);
-  // }
+  }, [isShow]);
 
   return (
     <>
@@ -268,7 +267,7 @@ export default function AdvancedSettingsDropdown({ call, project }) {
               <div className="flex gap-3 mt-2">
                 <CustomList
                   selected={copyright}
-                  setSelected={setCopyRight}
+                  setSelected={(value) => setALicense(value.title, true)}
                   options={licenceList}
                   show
                 />

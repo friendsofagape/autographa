@@ -3,6 +3,7 @@ import burrito from '../../lib/BurritoTemplete.json';
 import languageCode from '../../lib/LanguageCode.json';
 import * as logger from '../../logger';
 import packageInfo from '../../../../package.json';
+import { updateVersion } from './updateTranslationSB';
 
 const findCode = (list, id) => {
   logger.debug('createTranslationSB.js', 'In findCode for getting the language code');
@@ -14,11 +15,22 @@ const findCode = (list, id) => {
   });
   return code;
 };
-const createTranslationSB = (username, projectFields, selectedScope, language, licence, id) => {
+const createTranslationSB = (username, projectFields, selectedScope, language, copyright, id,
+  project, call, update) => {
   logger.debug('createTranslationSB.js', 'In createTranslationSB');
   const localizedNames = {};
   return new Promise((resolve) => {
-    const json = burrito;
+    let json = {};
+    if (call === 'edit') {
+      json = project;
+      delete json.project;
+      delete json.version;
+      if (update) {
+        json = updateVersion(json);
+      }
+    } else {
+      json = burrito;
+    }
     json.meta.generator.userName = username;
     json.meta.generator.softwareVersion = packageInfo.version;
     json.meta.dateCreated = moment().format();
@@ -39,9 +51,11 @@ const createTranslationSB = (username, projectFields, selectedScope, language, l
     json.identification.name.en = projectFields.projectName;
     json.identification.abbreviation.en = projectFields.abbreviation;
     json.languages[0].name.en = language;
-    // const newLicence = licence;
-    // json.copyright.fullStatementPlain.en = newLicence?.replace(/"/gm, '\'');
-    json.copyright.licenses[0].ingredient = 'license.md';
+    if (call === 'edit' && project?.copyright?.shortStatements && (copyright.licence).length <= 500) {
+      json.copyright.shortStatements[0].statement = copyright.licence;
+    } else {
+      json.copyright.licenses[0].ingredient = 'license.md';
+    }
     selectedScope.forEach((scope) => {
       json.type.flavorType.currentScope[scope] = [];
       localizedNames[scope] = json.localizedNames[scope];

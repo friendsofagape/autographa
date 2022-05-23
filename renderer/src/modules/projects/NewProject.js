@@ -20,7 +20,7 @@ import ImportPopUp from './ImportPopUp';
 import CustomList from './CustomList';
 import ConfirmationModal from '@/layouts/editor/ConfirmationModal';
 import burrito from '../../lib/BurritoTemplete.json';
-import { updateVersion } from '../../core/burrito/updateTranslationSB';
+import useProjectSorts from '../../components/hooks/projects/useProjectsSort';
 // eslint-disable-next-line no-unused-vars
 const solutions = [
   {
@@ -89,6 +89,7 @@ export default function NewProject({ call, project, closeEdit }) {
     },
   } = React.useContext(ProjectContext);
   const { action: { validateField, isLengthValidated, isTextValidated } } = useValidator();
+  const { actions: { FetchProjects } } = useProjectSorts();
   const router = useRouter();
   const [snackBar, setOpenSnackBar] = React.useState(false);
   const [snackText, setSnackText] = React.useState('');
@@ -128,9 +129,9 @@ export default function NewProject({ call, project, closeEdit }) {
       });
     }
   };
-  const createTheProject = () => {
+  const createTheProject = (update) => {
     logger.debug('NewProject.js', 'Creating new project.');
-    const value = createProject(call, metadata);
+    const value = createProject(call, metadata, update);
     value.then((status) => {
       logger.debug('NewProject.js', status[0].value);
       setLoading(false);
@@ -138,6 +139,8 @@ export default function NewProject({ call, project, closeEdit }) {
       setSnackText(status[0].value);
       setOpenSnackBar(true);
       if (status[0].type === 'success') {
+        FetchProjects();
+        closeEdit();
         router.push('/projects');
       }
     });
@@ -175,11 +178,14 @@ export default function NewProject({ call, project, closeEdit }) {
       setOpenSnackBar(true);
     }
     if (create === true) {
+      // Checking whether the burrito is of latest version
+      logger.warn('NewProject.js', 'Checking whether the burrito is of latest version.');
       if (call === 'edit' && burrito?.meta?.version !== metadata?.meta?.version) {
         setOpenModal(true);
         setLoading(false);
       } else {
-        createTheProject();
+        logger.warn('NewProject.js', 'Calling createTheProject function');
+        createTheProject(false);
       }
     } else {
       setLoading(false);
@@ -187,8 +193,8 @@ export default function NewProject({ call, project, closeEdit }) {
   };
   const updateBurritoVersion = () => {
     setOpenModal(false);
-    const meta = updateVersion(metadata);
-    setMetadata(meta);
+    logger.warn('NewProject.js', 'Calling createTheProject function with burrito update');
+    createTheProject(true);
   };
   const [openPopUp, setOpenPopUp] = React.useState(false);
 

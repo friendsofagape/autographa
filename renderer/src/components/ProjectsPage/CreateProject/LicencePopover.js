@@ -12,7 +12,6 @@ export default function LicencePopover({ call }) {
   const [content, setContent] = React.useState();
   const [isOpen, setIsOpen] = useState(false);
   const [edit, setEdit] = React.useState(false);
-  // const [lock, setLock] = React.useState(false);
   const [preview, setPreview] = useState(true);
 
   function closeModal() {
@@ -37,8 +36,12 @@ export default function LicencePopover({ call }) {
       // eslint-disable-next-line import/no-dynamic-require
       const licensefile = require(`../../../lib/license/${copyright.title}.md`);
       setContent(licensefile.default);
-    } else {
+    } else if (copyright.licence) {
       setContent(copyright.licence);
+    } else {
+      // eslint-disable-next-line import/no-dynamic-require
+      const licensefile = require(`../../../lib/license/${copyright.title}.md`);
+      setContent(licensefile.default);
     }
   };
   const callback = (markdown) => {
