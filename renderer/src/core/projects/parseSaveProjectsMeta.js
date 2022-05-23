@@ -1,6 +1,4 @@
-/* eslint-disable consistent-return */
 import Parse from 'parse';
-
 import moment from 'moment';
 import parseFileSave from './parseFileSave';
 
@@ -31,7 +29,6 @@ const parseSaveProjectsMeta = async (
             const personQuery = new Parse.Query(ProjectMeta);
             personQuery.equalTo('projectName', newProjectFields.projectName);
             const projects = await personQuery.find();
-            // eslint-disable-next-line no-plusplus
             for (let i = 0; i < projects.length; i++) {
                 const Obj = projects[i];
                 return Obj.get('projectName');
@@ -44,7 +41,6 @@ const parseSaveProjectsMeta = async (
             newUserQuery.include('owner');
             newUserQuery.select('name');
             const result = await newUserQuery.find();
-            // eslint-disable-next-line no-plusplus
             for (let i = 0; i < result.length; i++) {
                 if (result[i].get('owner').get('name') === username) {
                     return result[i].get('owner').get('name');

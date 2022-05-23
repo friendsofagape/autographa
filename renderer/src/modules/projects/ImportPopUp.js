@@ -1,4 +1,3 @@
-/* eslint-disable import/no-unresolved */
 import React, {
   useRef, Fragment, useContext, useEffect,
 } from 'react';
@@ -48,8 +47,7 @@ export default function ImportPopUp(props) {
     logger.debug('ImportPopUp.js', 'In getBooks for displaying books name using the paths');
     const book = [];
     // regex to split path to two groups '(.*[\\\/])' for path and '(.*)' for file name
-    // eslint-disable-next-line no-useless-escape
-    const regexPath = /^(.*[\\\/])(.*)$/;
+    const regexPath = /^(.*[\\//])(.*)$/;
     // execute the match on the string filePath
     filePaths.forEach((filePath) => {
       const match = regexPath.exec(filePath);
@@ -194,7 +192,7 @@ export default function ImportPopUp(props) {
                     <div className="bg-white grid grid-cols-4 gap-2 p-4 pb-24 text-sm text-left tracking-wide">
                       {
                         books.map((book) => (
-                          <div className={`${styles.select} group`}>
+                          <div key={book} className={`${styles.select} group`}>
                             <DocumentTextIcon className="w-6 mr-2 group-hover:text-white" />
                             {book}
                           </div>

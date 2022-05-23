@@ -1,4 +1,3 @@
-/* eslint-disable no-nested-ternary */
 import React, {
  useContext, useEffect, useState, useMemo,
 } from 'react';
@@ -9,7 +8,6 @@ import {
 import * as localforage from 'localforage';
 import moment from 'moment';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
-// eslint-disable-next-line import/no-unresolved
 import { readIngredients } from '@/core/reference/readIngredients';
 import { ProjectContext } from '@/components/context/ProjectContext';
 import { AutographaContext } from '@/components/context/AutographaContext';
@@ -204,8 +202,9 @@ useEffect(() => {
   return (
     <span>
       <>
-        {usfmInput && (
-        isLoading === false ? (
+        {((isLoading || !usfmInput) && displyScreen) && <EmptyScreen />}
+        {isLoading && !displyScreen && <LoadingScreen />}
+        {usfmInput && !displyScreen && !isLoading && (
           <CustomEditor
             usfmString={usfmInput}
             key={usfmInput}
@@ -216,18 +215,7 @@ useEffect(() => {
               key: Date.now(),
           }}
           />
-        ) : (
-          displyScreen === true ? (
-            <EmptyScreen />
-          ) : (<LoadingScreen />)
-        )
       )}
-        {usfmInput === undefined && (
-          displyScreen === true ? (
-            <EmptyScreen />
-          )
-          : <LoadingScreen />
-        )}
         <SnackBar
           openSnackBar={snackBar}
           snackText={snackText}

@@ -13,6 +13,13 @@
 	"rules": {
 		"react/react-in-jsx-scope": "off",
 		"no-underscore-dangle": "off",
+		"no-unused-expressions": "off",
+		"max-len": "off",
+		"no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
+		"prefer-destructuring": "off",
+		"no-param-reassign": [2, { "props": false }],
+		"camelcase": "off",
+		"consistent-return": "off",
 		"react/jsx-filename-extension": [
 			1,
 			{

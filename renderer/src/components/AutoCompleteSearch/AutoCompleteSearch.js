@@ -10,8 +10,7 @@ export const AutoCompleteSearch = ({
     options={listarray}
     getOptionLabel={(option) => option}
     inputValue={selectedValue}
-        // eslint-disable-next-line no-shadow
-    onInputChange={(id, region) => {
+    onInputChange={(region) => {
       setSelectedValue(region);
     }}
     renderInput={(params) => (

@@ -1,8 +1,6 @@
-/* eslint-disable max-len */
 import { PropTypes } from 'prop-types';
 import React from 'react';
 import * as localForage from 'localforage';
-// eslint-disable-next-line import/no-unresolved
 
 import { XIcon } from '@heroicons/react/solid';
 import { PencilIcon, CheckIcon } from '@heroicons/react/outline';
@@ -88,7 +86,6 @@ export default function UserProfile() {
           setUsername(value.username);
           const keys = Object.keys(values);
           keys.forEach((key) => {
-            // eslint-disable-next-line no-param-reassign
             values[key] = value[key];
           });
           setValues(values);

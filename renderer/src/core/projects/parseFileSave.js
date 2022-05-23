@@ -1,4 +1,3 @@
-/* eslint-disable consistent-return */
 import Parse from 'parse';
 
 const parseFileSave = async ({

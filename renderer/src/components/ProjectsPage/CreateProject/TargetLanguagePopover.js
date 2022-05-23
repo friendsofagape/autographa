@@ -20,7 +20,6 @@ export default function TargetLanguagePopover() {
     },
   } = React.useContext(ProjectContext);
 
-  // eslint-disable-next-line no-unused-vars
   const openLanguageNav = (nav) => {
     logger.debug('TargetLanguagePopover.js', 'In openLanguageNav');
     if (nav === 'edit') {
@@ -49,7 +48,6 @@ export default function TargetLanguagePopover() {
     setLanguage({ id: languages.length + 1, title: lang, scriptDirection: direction });
     closeModal();
   };
-  // eslint-disable-next-line no-unused-vars
   const editLanguage = () => {
     logger.debug('TargetLanguagePopover.js', 'Editing the language');
     setLanguage({ id, title: lang, scriptDirection: direction });

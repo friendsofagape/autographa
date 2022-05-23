@@ -1,4 +1,3 @@
-/* eslint-disable no-nested-ternary */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, {
   useContext,
@@ -95,7 +94,6 @@ const UsfmEditor = () => {
   //       username, projectName, usfmData: usfm, scope: _bookId.toUpperCase(), write: true,
   //     });
   //   } catch (err) {
-  //     // eslint-disable-next-line no-console
   //     console.log(err);
   //   }
   // };
@@ -420,7 +418,7 @@ const UsfmEditor = () => {
     <>
       <Editor>
         <>
-          {isLoading && displyScreen && <EmptyScreen />}
+          {((isLoading || !usfmInput) && displyScreen) && <EmptyScreen />}
           {isLoading && !displyScreen && <LoadingScreen /> }
           {usfmInput && !displyScreen && !isLoading && (
             <CustomEditor

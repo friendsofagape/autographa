@@ -1,5 +1,3 @@
-/* eslint-disable react/no-unescaped-entities */
-/* eslint-disable max-len */
 import PropTypes from 'prop-types';
 import {
   Fragment, useRef, useState,
@@ -125,7 +123,7 @@ export default function AboutModal(props) {
 
                             <p className="text-sm text-gray-500">
                               Permission is hereby granted, free of charge, to any person obtaining a copy
-                              of this software and associated documentation files (the "Software"), to deal
+                              of this software and associated documentation files (the &#34;Software&#34;), to deal
                               in the Software without restriction, including without limitation the rights
                               to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
                               copies of the Software, and to permit persons to whom the Software is
@@ -138,7 +136,7 @@ export default function AboutModal(props) {
                             </p>
 
                             <p className="text-sm text-gray-500">
-                              THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+                              THE SOFTWARE IS PROVIDED &#34;AS IS&#34;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
                               IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
                               FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
                               AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER

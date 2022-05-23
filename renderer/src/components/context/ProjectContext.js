@@ -130,7 +130,6 @@ const ProjectContextProvider = ({ children }) => {
       }
     };
     // Json for storing advance settings
-    // eslint-disable-next-line no-unused-vars
     const updateJson = async (currentSettings) => {
       logger.debug('ProjectContext.js', 'In updateJson');
       const newpath = localStorage.getItem('userPath');
@@ -159,7 +158,6 @@ const ProjectContextProvider = ({ children }) => {
                   if (setting.id === currentSetting.id) {
                     const keys = Object.keys(setting);
                     keys.forEach((key) => {
-                      // eslint-disable-next-line no-param-reassign
                       setting[key] = currentSetting[key];
                     });
                   }

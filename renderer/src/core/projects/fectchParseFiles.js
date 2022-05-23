@@ -1,6 +1,5 @@
-/* eslint-disable no-unused-expressions */
-/* eslint-disable consistent-return */
 import Parse from 'parse';
+import * as logger from '../../logger';
 
 const fetchParseFiles = async (username, projectname) => {
     const ProjectMeta = Parse.Object.extend('ProjectMeta');
@@ -32,8 +31,7 @@ const fetchParseFiles = async (username, projectname) => {
        const files = await findFiles();
         return files;
       } catch (e) {
-        // eslint-disable-next-line no-console
-        console.log(e);
+        logger.error('fetchParseFiles.js', e);
       }
 };
 

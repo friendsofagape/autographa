@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { useBibleReference } from 'bible-reference-rcl';
 import React, {
  useState, createContext, useRef, useEffect,
@@ -12,9 +11,9 @@ import * as logger from '../../logger';
 export const ReferenceContext = createContext({});
 
 export default function ReferenceContextProvider({ children }) {
-    const [initialBook, setInitialBook] = useState('1ti');
-    const [initialChapter, setInitialChapter] = useState('1');
-    const [initialVerse, setInitialVerse] = useState('1');
+    const initialBook = '1ti';
+    const initialChapter = '1';
+    const initialVerse = '1';
     const [owner, setOwner] = useState('Door43-catalog'); // "es-419_gl"
     const [languageId, setLanguageId] = useState('en');
     const [selectedResource, SetSelectedResource] = useState('tn');
@@ -68,11 +67,10 @@ export default function ReferenceContextProvider({ children }) {
           const _projectname = projectName?.split('_');
           localforage.getItem('projectmeta').then((val) => {
             Object?.entries(val).forEach(
-              ([_columnnum, _value]) => {
+              ([, _value]) => {
                 Object?.entries(_value).forEach(
-                  ([_rownum, resources]) => {
+                  ([, resources]) => {
                     if (resources.identification.name.en === _projectname[0]) {
-                      // eslint-disable-next-line no-param-reassign
                       setBookmarksVerses(resources.project.textTranslation.bookMarks);
                       setProjectScriptureDir(resources.project.textTranslation.scriptDirection);
                     }

@@ -12,7 +12,6 @@ export default function TailwindModal({
   function closeModal() {
     setIsOpen(false);
   }
-
   return (
     <>
       <Transition appear show={isOpen} as={Fragment}>
@@ -79,5 +78,5 @@ TailwindModal.propTypes = {
   title: PropTypes.string,
   setIsOpen: PropTypes.func,
   message: PropTypes.string,
-  actionButtons: PropTypes.func,
+  actionButtons: PropTypes.object,
 };

@@ -1,16 +1,10 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-nested-ternary */
 import React from 'react';
-
 import PropTypes from 'prop-types';
 import { ViewGridAddIcon } from '@heroicons/react/outline';
-
-// eslint-disable-next-line import/no-unresolved
 import { classNames } from '@/util/classNames';
 
 export default function ColumnOne(props) {
   const {
-    children,
     rowCount,
     ishidden,
     expandRow,
@@ -97,7 +91,6 @@ export default function ColumnOne(props) {
 }
 
 ColumnOne.propTypes = {
-  children: PropTypes.array,
   rowCount: PropTypes.string,
   ishidden: PropTypes.bool,
   expandRow: PropTypes.func,

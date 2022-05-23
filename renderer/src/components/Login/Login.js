@@ -32,9 +32,7 @@ export default function Login() {
     autocomplete: { count: [{ label: 'Username' }] },
     viewForgot: false,
   };
-  // eslint-disable-next-line no-unused-vars
   const tab = React.useState(!isElectron());
-  // eslint-disable-next-line no-unused-vars
   const [users, setUsers] = React.useState([]);
   const {
     states: { config },
@@ -94,7 +92,6 @@ export default function Login() {
       setError(err);
     }
   }, [config]);
-  // eslint-disable-next-line no-unused-vars
   const handleValidation = (values) => {
     let user;
     if (values.username) {
@@ -105,7 +102,6 @@ export default function Login() {
     setValid({ ...valid, username: !user });
     return user;
   };
-  // eslint-disable-next-line no-unused-vars
   const handleSubmit = async (values) => {
     localForage.setItem('appMode', 'offline');
     logger.debug('Login.js', 'In handleSubmit');
@@ -187,6 +183,7 @@ export default function Login() {
               if (index < 5) {
                 return (
                   <div
+                    key={user.username}
                     className="grid grid-cols-4 py-3 m-2 justify-center items-center justify-items-center gap-2
                   bg-gray-100 text-dark rounded-lg cursor-pointer
                   border-2 border-transparent

@@ -37,6 +37,7 @@ const TranslationhelpsNav = ({
           setItemIndex(newIndex);
         }
       };
+
   return (
     <>
       {items && (
@@ -62,7 +63,7 @@ export default TranslationhelpsNav;
 
 TranslationhelpsNav.propTypes = {
   items: PropTypes.array,
-  classes: PropTypes.object,
+  classes: PropTypes.bool,
   itemIndex: PropTypes.number,
   setItemIndex: PropTypes.func,
 };
