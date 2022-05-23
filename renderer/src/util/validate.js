@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import * as logger from '../logger';
 
 const Ajv = require('ajv');
@@ -10,33 +9,26 @@ export const validate = (schemaName, fn, data, version) => {
   let schemaIndex;
   switch (version) {
     case '0.3.0':
-      console.log(version);
       schemaIndex = schemaIndex030;
       break;
     case '0.3.1':
-      console.log(version);
       schemaIndex = schemaIndex031;
       break;
       case '1.0.0-rc1':
-        console.log(version);
       schemaIndex = schemaIndex100;
       break;
     default:
-      console.log('default', version);
       schemaIndex = schemaIndex100;
       break;
   }
-  console.log(schemaIndex, schemaName);
   const ajv = new Ajv({ schemas: schemaIndex.schemas });
   logger.debug('validate.js', 'In validate for validation the burrito');
   const validator = ajv.getSchema(schemaIndex.schemaIds[schemaName]);
-  console.log(validator(JSON.parse(data)));
 
   if (validator(JSON.parse(data))) {
     logger.debug('validate.js', `Successfully validated the burrito, Location:${fn}`);
     return true;
   }
-  console.log(validator.errors, '===', validator);
   logger.error('validate.js', `Burrito failed the validation ${JSON.stringify(validator?.errors)}, Location:${fn}`);
   return false;
 };
