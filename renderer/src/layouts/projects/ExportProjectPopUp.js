@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 /* eslint-disable import/no-unresolved */
 import React, {
   useRef, Fragment,
@@ -6,6 +5,7 @@ import React, {
 import { Dialog, Transition } from '@headlessui/react';
 import { FolderOpenIcon } from '@heroicons/react/outline';
 import * as localforage from 'localforage';
+import PropTypes from 'prop-types';
 import CloseIcon from '@/illustrations/close-button-black.svg';
 import updateTranslationSB from '@/core/burrito/updateTranslationSB';
 import { SnackBar } from '@/components/SnackBar';
@@ -209,3 +209,8 @@ export default function ExportProjectPopUp(props) {
     </>
   );
 }
+ExportProjectPopUp.propTypes = {
+  open: PropTypes.bool,
+  closePopUp: PropTypes.func,
+  project: PropTypes.object,
+};
