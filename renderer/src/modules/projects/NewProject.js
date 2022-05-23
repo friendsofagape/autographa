@@ -1,7 +1,6 @@
 /* eslint-disable react/prop-types */
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useRouter } from 'next/router';
 import ProjectsLayout from '@/layouts/projects/Layout';
 import AdvancedSettingsDropdown from '@/components/ProjectsPage/CreateProject/AdvancedSettingsDropdown';
 import { ProjectContext } from '@/components/context/ProjectContext';
@@ -20,7 +19,6 @@ import ImportPopUp from './ImportPopUp';
 import CustomList from './CustomList';
 import ConfirmationModal from '@/layouts/editor/ConfirmationModal';
 import burrito from '../../lib/BurritoTemplete.json';
-import useProjectSorts from '../../components/hooks/projects/useProjectsSort';
 // eslint-disable-next-line no-unused-vars
 const solutions = [
   {
@@ -89,8 +87,6 @@ export default function NewProject({ call, project, closeEdit }) {
     },
   } = React.useContext(ProjectContext);
   const { action: { validateField, isLengthValidated, isTextValidated } } = useValidator();
-  const { actions: { FetchProjects } } = useProjectSorts();
-  const router = useRouter();
   const [snackBar, setOpenSnackBar] = React.useState(false);
   const [snackText, setSnackText] = React.useState('');
   const [notify, setNotify] = React.useState();
@@ -139,9 +135,7 @@ export default function NewProject({ call, project, closeEdit }) {
       setSnackText(status[0].value);
       setOpenSnackBar(true);
       if (status[0].type === 'success') {
-        FetchProjects();
         closeEdit();
-        router.push('/projects');
       }
     });
   };
