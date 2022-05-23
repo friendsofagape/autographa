@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 /* eslint-disable react/prop-types */
 /* eslint-disable import/no-unresolved */
 import React, {
@@ -43,17 +42,17 @@ export default function ExportProjectPopUp(props) {
     const chosenFolder = await dialog.showOpenDialog(WIN, options);
     setFolderPath(chosenFolder.filePaths[0]);
   };
-  const updateBurritoVersion = () => {
-    console.log(metadata.username, project, openModal);
+  const updateBurritoVersion = (username, fs, path, folder) => {
     const fse = window.require('fs-extra');
-    updateTranslationSB(metadata.username, project, openModal)
-        .then((updated) => {
+    updateTranslationSB(username, project, openModal)
+        .then(() => {
           logger.debug('ExportProjectPopUp.js', 'Updated Scripture burrito');
-          console.log(updated);
-          const { fs, path, folder } = metadata;
-          const data = fs.readFileSync(path.join(folder, 'metadata.json'), 'utf-8');
+          let data = fs.readFileSync(path.join(folder, 'metadata.json'), 'utf-8');
           const sb = JSON.parse(data);
-          console.log(sb.meta.version);
+          if (!sb.copyright?.shortStatements && sb.copyright?.licenses) {
+            delete sb.copyright.publicDomain;
+            data = JSON.stringify(sb);
+          }
           const success = validate('metadata', path.join(folder, 'metadata.json'), data, sb.meta.version);
           if (success) {
             logger.debug('ExportProjectPopUp.js', 'Burrito validated successfully');
@@ -87,14 +86,14 @@ export default function ExportProjectPopUp(props) {
         const folder = path.join(newpath, 'autographa', 'users', value.username, 'projects', `${project.name}_${project.id[0]}`);
         const data = fs.readFileSync(path.join(folder, 'metadata.json'), 'utf-8');
         const metadata = JSON.parse(data);
-        console.log(burrito?.meta?.version, '!==', metadata?.meta?.version);
+        const { username } = value;
         setMetadata({
-          metadata, folder, path, fs, username: value.username,
+          metadata, folder, path, fs, username,
         });
         if (burrito?.meta?.version !== metadata?.meta?.version) {
           setOpenModal(true);
         } else {
-          updateBurritoVersion();
+          updateBurritoVersion(username, fs, path, folder);
         }
       });
     } else {
@@ -203,7 +202,9 @@ export default function ExportProjectPopUp(props) {
         setOpenModal={setOpenModal}
         confirmMessage={`Update the the burrito from ${metadata?.metadata?.meta?.version} to ${burrito?.meta?.version}`}
         buttonName="Update"
-        closeModal={() => updateBurritoVersion()}
+        closeModal={
+          () => updateBurritoVersion(metadata.username, metadata.fs, metadata.path, metadata.folder)
+        }
       />
     </>
   );
