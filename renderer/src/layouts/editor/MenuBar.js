@@ -37,7 +37,7 @@ export default function TopMenuBar() {
       setFontsize,
     },
   } = useContext(ReferenceContext);
-
+  const userPic = true;
   const _projectnamewithId = selectedProject;
   const projectname = _projectnamewithId?.split('_');
   const { action: { logout } } = React.useContext(AuthenticationContext);
@@ -166,7 +166,7 @@ export default function TopMenuBar() {
                           {/* <UserIcon className="h-8 w-8 rounded-full" /> */}
 
                           {/* check if user pic available  */}
-                          {true
+                          {userPic
                             ? (
                               <div className="h-8 w-8 p-2 bg-primary rounded-full">
                                 <UserIcon className="h-4 w-4 text-white" />

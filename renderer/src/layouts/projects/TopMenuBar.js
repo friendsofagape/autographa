@@ -18,7 +18,7 @@ const profile = ['Your Profile'];
 export default function TopMenuBar() {
   const [openSideBar, setOpenSideBar] = useState(false);
   const { action: { logout } } = React.useContext(AuthenticationContext);
-
+  const userPic = true;
   // function openSideBars() {
   //   setOpenSideBar(true);
   // }
@@ -74,7 +74,7 @@ export default function TopMenuBar() {
                               <span className="sr-only">Open user menu</span>
 
                               {/* check if user pic available  */}
-                              {true
+                              {userPic
                                 ? (
                                   <div className="h-8 w-8 p-2 bg-primary rounded-full">
                                     <UserIcon className="h-4 w-4 text-white" />
