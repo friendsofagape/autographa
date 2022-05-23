@@ -268,6 +268,7 @@ const importBurrito = async (filePath, currentUser, updateBurritoVersion) => {
           role: 'x-licence',
         };
         delete metadata.copyright.fullStatementPlain;
+        delete metadata.copyright.publicDomain;
       }
       if (updateBurritoVersion) {
         logger.debug('importBurrito.js', 'Updating the burrito version');

@@ -29,7 +29,6 @@ export default function EditorSection({
   hideAddition,
   CustomNavigation,
 }) {
-  const [content, setContent] = useState(true);
   const [openResourcePopUp, setOpenResourcePopUp] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const {
@@ -102,10 +101,6 @@ export default function EditorSection({
       }
     }
   });
-
-  // const sectionContent = () => {
-  //   setContent(!content);
-  // };
 
   const showResourcesPanel = () => {
     setOpenResourcePopUp(true);
@@ -218,47 +213,42 @@ export default function EditorSection({
           </div>
         </div>
 
-        {
-          content
-          && (
-            <div
-              style={{ fontFamily: 'sans-serif', fontSize: `${fontSize}rem` }}
-              className="prose-sm p-4 text-xl h-full overflow-auto scrollbars-width"
-            >
-              {
-                (loadResource === false)
-                  ? (
-                    <div className="w-full h-full flex items-center justify-center">
-                      <div className="text-center">
-                        <div className="text-xs uppercase pb-4">Load a Module</div>
-                        <button
-                          type="button"
-                          className="p-4 bg-gray-200 rounded-lg ring-offset-1"
-                          onClick={showResourcesPanel}
-                        >
-                          <ViewGridAddIcon className="h-5 w-5" aria-hidden="true" />
-                        </button>
-                      </div>
-                    </div>
-                  )
-                  : children
-              }
-              {hideAddition && (
-                <button
-                  type="button"
-                  title="add section"
-                  onClick={addRow}
-                  className="absolute p-2 bg-primary rounded bottom-0 -right-0 invisible group-hover:visible"
-                >
-                  <ViewGridAddIcon
-                    className="h-6 w-6 text-white"
-                    aria-hidden="true"
-                  />
-                </button>
+        <div
+          style={{ fontFamily: 'sans-serif', fontSize: `${fontSize}rem` }}
+          className="prose-sm p-4 text-xl h-full overflow-auto scrollbars-width"
+        >
+          {
+            (loadResource === false)
+              ? (
+                <div className="w-full h-full flex items-center justify-center">
+                  <div className="text-center">
+                    <div className="text-xs uppercase pb-4">Load a Module</div>
+                    <button
+                      type="button"
+                      className="p-4 bg-gray-200 rounded-lg ring-offset-1"
+                      onClick={showResourcesPanel}
+                    >
+                      <ViewGridAddIcon className="h-5 w-5" aria-hidden="true" />
+                    </button>
+                  </div>
+                </div>
+              )
+              : children
+          }
+          {hideAddition && (
+          <button
+            type="button"
+            title="add section"
+            onClick={addRow}
+            className="absolute p-2 bg-primary rounded bottom-0 -right-0 invisible group-hover:visible"
+          >
+            <ViewGridAddIcon
+              className="h-6 w-6 text-white"
+              aria-hidden="true"
+            />
+          </button>
               )}
-            </div>
-          )
-        }
+        </div>
 
       </div>
       <ConfirmationModal

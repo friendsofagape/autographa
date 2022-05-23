@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { useRouter } from 'next/router';
 import ProjectsLayout from '@/layouts/projects/Layout';
 import AdvancedSettingsDropdown from '@/components/ProjectsPage/CreateProject/AdvancedSettingsDropdown';
 import { ProjectContext } from '@/components/context/ProjectContext';
@@ -86,6 +87,7 @@ export default function NewProject({ call, project, closeEdit }) {
     },
   } = React.useContext(ProjectContext);
   const { action: { validateField, isLengthValidated, isTextValidated } } = useValidator();
+  const router = useRouter();
   const [snackBar, setOpenSnackBar] = React.useState(false);
   const [snackText, setSnackText] = React.useState('');
   const [notify, setNotify] = React.useState();
@@ -134,7 +136,11 @@ export default function NewProject({ call, project, closeEdit }) {
       setSnackText(status[0].value);
       setOpenSnackBar(true);
       if (status[0].type === 'success') {
-        closeEdit();
+        if (call === 'edit') {
+          closeEdit();
+        } else {
+          router.push('/projects');
+        }
       }
     });
   };

@@ -84,7 +84,6 @@ export default function ImportProjectPopUp(props) {
   };
 
   const checkBurritoVersion = () => {
-    console.log(sbData)
     logger.debug('ImportProjectPopUp.js', 'Checking the burrito version');
     if (burrito?.meta?.version !== sbData?.version) {
       setModel({

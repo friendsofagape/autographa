@@ -78,6 +78,7 @@ const updateTranslationSB = async (username, project, updateBurrito) => new Prom
         role: 'x-licence',
       };
       delete metadata.copyright.fullStatementPlain;
+      delete metadata.copyright.publicDomain;
     }
     if (updateBurrito) {
       logger.debug('updateTranslationSB.js', 'Updating the burrito version');
