@@ -1,13 +1,13 @@
 {
 	"meta": {
-		"version": "0.3.0",
+		"version": "1.0.0-rc1",
 		"category": "source",
 		"generator": {
 			"softwareName": "Autographa",
 			"softwareVersion": "",
 			"userName": ""
 		},
-		"defaultLanguage": "en",
+		"defaultLocale": "en",
 		"dateCreated": "",
 		"normalization": "NFC"
 	},
@@ -47,18 +47,17 @@
 				"audience": "common",
 				"usfmVersion": "3.0.2"
 			},
-			"canonType": [],
-			"canonSpec": {},
 			"currentScope": {}
 		}
 	},
 	"copyright": {
-		"publicDomain": true,
-		"fullStatementPlain": {
-			"en": ""
-		}
+		"licenses": [
+			{
+				"ingredient": ""
+			}
+		]
 	},
-	"names": {
+	"localizedNames": {
 		"GEN": {
 			"short": {
 				"en": "Genesis"
