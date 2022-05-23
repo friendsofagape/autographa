@@ -1,18 +1,46 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useRouter } from 'next/router';
 import ProjectsLayout from '@/layouts/projects/Layout';
 import AdvancedSettingsDropdown from '@/components/ProjectsPage/CreateProject/AdvancedSettingsDropdown';
 import { ProjectContext } from '@/components/context/ProjectContext';
 import TargetLanguagePopover from '@/components/ProjectsPage/CreateProject/TargetLanguagePopover';
 // import PopoverProjectType from '@/layouts/editor/PopoverProjectType';
 import { SnackBar } from '@/components/SnackBar';
+import LayoutIcon from '@/icons/basil/Outline/Interface/Layout.svg';
+import BullhornIcon from '@/icons/basil/Outline/Communication/Bullhorn.svg';
+import ProcessorIcon from '@/icons/basil/Outline/Devices/Processor.svg';
 // import CheckIcon from '@/icons/basil/Outline/Interface/Check.svg';
+import ImageIcon from '@/icons/basil/Outline/Files/Image.svg';
 import useValidator from '@/components/hooks/useValidator';
 import { classNames } from '../../util/classNames';
 import * as logger from '../../logger';
 import ImportPopUp from './ImportPopUp';
 import CustomList from './CustomList';
+import ConfirmationModal from '@/layouts/editor/ConfirmationModal';
+import burrito from '../../lib/BurritoTemplete.json';
+// eslint-disable-next-line no-unused-vars
+const solutions = [
+  {
+    name: 'Translation',
+    href: '##',
+    icon: LayoutIcon,
+  },
+  {
+    name: 'Audio',
+    href: '##',
+    icon: BullhornIcon,
+  },
+  {
+    name: 'MT',
+    href: '##',
+    icon: ProcessorIcon,
+  },
+  {
+    name: 'OBS',
+    href: '##',
+    icon: ImageIcon,
+  },
+];
 
 function TargetLanguageTag(props) {
   const { children } = props;
@@ -58,12 +86,12 @@ export default function NewProject({ call, project, closeEdit }) {
     },
   } = React.useContext(ProjectContext);
   const { action: { validateField, isLengthValidated, isTextValidated } } = useValidator();
-  const router = useRouter();
   const [snackBar, setOpenSnackBar] = React.useState(false);
   const [snackText, setSnackText] = React.useState('');
   const [notify, setNotify] = React.useState();
   const [loading, setLoading] = React.useState(false);
   const [metadata, setMetadata] = React.useState();
+  const [openModal, setOpenModal] = React.useState(false);
   const [error, setError] = React.useState({
     projectName: {},
     abbr: {},
@@ -96,7 +124,20 @@ export default function NewProject({ call, project, closeEdit }) {
       });
     }
   };
-
+  const createTheProject = (update) => {
+    logger.debug('NewProject.js', 'Creating new project.');
+    const value = createProject(call, metadata, update);
+    value.then((status) => {
+      logger.debug('NewProject.js', status[0].value);
+      setLoading(false);
+      setNotify(status[0].type);
+      setSnackText(status[0].value);
+      setOpenSnackBar(true);
+      if (status[0].type === 'success') {
+        closeEdit();
+      }
+    });
+  };
   const validate = async () => {
     logger.debug('NewProject.js', 'Validating the fields.');
     setLoading(true);
@@ -113,6 +154,7 @@ export default function NewProject({ call, project, closeEdit }) {
         logger.warn('NewProject.js', 'Validation failed for Abbreviation.');
         create = false;
       }
+      // eslint-disable-next-line max-len
       const checkDesc = await validateField([isLengthValidated(newProjectFields.description, { minLen: 0, maxLen: 400 })]);
       if (checkDesc[0].isValid === false) {
         logger.warn('NewProject.js', 'Validation failed for Description.');
@@ -129,21 +171,23 @@ export default function NewProject({ call, project, closeEdit }) {
       setOpenSnackBar(true);
     }
     if (create === true) {
-      logger.debug('NewProject.js', 'Creating new project.');
-      const value = createProject(call, metadata);
-      value.then((status) => {
-        logger.debug('NewProject.js', status[0].value);
+      // Checking whether the burrito is of latest version
+      logger.warn('NewProject.js', 'Checking whether the burrito is of latest version.');
+      if (call === 'edit' && burrito?.meta?.version !== metadata?.meta?.version) {
+        setOpenModal(true);
         setLoading(false);
-        setNotify(status[0].type);
-        setSnackText(status[0].value);
-        setOpenSnackBar(true);
-        if (status[0].type === 'success') {
-          router.push('/projects');
-        }
-      });
+      } else {
+        logger.warn('NewProject.js', 'Calling createTheProject function');
+        createTheProject(false);
+      }
     } else {
       setLoading(false);
     }
+  };
+  const updateBurritoVersion = () => {
+    setOpenModal(false);
+    logger.warn('NewProject.js', 'Calling createTheProject function with burrito update');
+    createTheProject(true);
   };
   const [openPopUp, setOpenPopUp] = React.useState(false);
 
@@ -321,6 +365,14 @@ export default function NewProject({ call, project, closeEdit }) {
         setOpenSnackBar={setOpenSnackBar}
         setSnackText={setSnackText}
         error={notify}
+      />
+      <ConfirmationModal
+        openModal={openModal}
+        title="Update Burrito"
+        setOpenModal={setOpenModal}
+        confirmMessage={`Update the the burrito from ${metadata?.meta?.version} to ${burrito?.meta?.version}`}
+        buttonName="Update"
+        closeModal={() => updateBurritoVersion()}
       />
     </ProjectsLayout>
   );

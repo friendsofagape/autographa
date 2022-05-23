@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+/* eslint-disable import/no-unresolved */
 import React, {
   useRef, Fragment,
 } from 'react';
@@ -10,6 +12,8 @@ import updateTranslationSB from '@/core/burrito/updateTranslationSB';
 import { SnackBar } from '@/components/SnackBar';
 import { validate } from '../../util/validate';
 import * as logger from '../../logger';
+import burrito from '../../lib/BurritoTemplete.json';
+import ConfirmationModal from '../editor/ConfirmationModal';
 
 export default function ExportProjectPopUp(props) {
   const {
@@ -23,6 +27,8 @@ export default function ExportProjectPopUp(props) {
   const [snackBar, setOpenSnackBar] = React.useState(false);
   const [snackText, setSnackText] = React.useState('');
   const [notify, setNotify] = React.useState();
+  const [openModal, setOpenModal] = React.useState(false);
+  const [metadata, setMetadata] = React.useState({});
   function close() {
     logger.debug('ExportProjectPopUp.js', 'Closing the Dialog Box');
     closePopUp(false);
@@ -37,22 +43,18 @@ export default function ExportProjectPopUp(props) {
     const chosenFolder = await dialog.showOpenDialog(WIN, options);
     setFolderPath(chosenFolder.filePaths[0]);
   };
-  const exportBible = async () => {
-    const fs = window.require('fs');
-    if (folderPath && fs.existsSync(folderPath)) {
-      setValid(false);
-      logger.debug('ExportProjectPopUp.js', 'Inside exportBible');
-      await localforage.getItem('userProfile').then((value) => {
-        const path = require('path');
-        const fse = window.require('fs-extra');
-        const newpath = localStorage.getItem('userPath');
-        const folder = path.join(newpath, 'autographa', 'users', value.username, 'projects', `${project.name}_${project.id[0]}`);
-        updateTranslationSB(value.username, project)
-        .then((updated) => {
+  const updateBurritoVersion = (username, fs, path, folder) => {
+    const fse = window.require('fs-extra');
+    updateTranslationSB(username, project, openModal)
+        .then(() => {
           logger.debug('ExportProjectPopUp.js', 'Updated Scripture burrito');
-          logger.info('ExportProjectPopUp.js', updated);
-          const data = fs.readFileSync(path.join(folder, 'metadata.json'), 'utf-8');
-          const success = validate('metadata', path.join(folder, 'metadata.json'), data);
+          let data = fs.readFileSync(path.join(folder, 'metadata.json'), 'utf-8');
+          const sb = JSON.parse(data);
+          if (!sb.copyright?.shortStatements && sb.copyright?.licenses) {
+            delete sb.copyright.publicDomain;
+            data = JSON.stringify(sb);
+          }
+          const success = validate('metadata', path.join(folder, 'metadata.json'), data, sb.meta.version);
           if (success) {
             logger.debug('ExportProjectPopUp.js', 'Burrito validated successfully');
             fse.copy(folder, path.join(folderPath, project.name))
@@ -72,6 +74,28 @@ export default function ExportProjectPopUp(props) {
               });
           }
         });
+    setOpenModal(false);
+  };
+  const exportBible = async () => {
+    const fs = window.require('fs');
+    if (folderPath && fs.existsSync(folderPath)) {
+      setValid(false);
+      logger.debug('ExportProjectPopUp.js', 'Inside exportBible');
+      await localforage.getItem('userProfile').then((value) => {
+        const path = require('path');
+        const newpath = localStorage.getItem('userPath');
+        const folder = path.join(newpath, 'autographa', 'users', value.username, 'projects', `${project.name}_${project.id[0]}`);
+        const data = fs.readFileSync(path.join(folder, 'metadata.json'), 'utf-8');
+        const metadata = JSON.parse(data);
+        const { username } = value;
+        setMetadata({
+          metadata, folder, path, fs, username,
+        });
+        if (burrito?.meta?.version !== metadata?.meta?.version) {
+          setOpenModal(true);
+        } else {
+          updateBurritoVersion(username, fs, path, folder);
+        }
       });
     } else {
       logger.warn('ExportProjectPopUp.js', 'Invalid Path');
@@ -172,6 +196,16 @@ export default function ExportProjectPopUp(props) {
         setOpenSnackBar={setOpenSnackBar}
         setSnackText={setSnackText}
         error={notify}
+      />
+      <ConfirmationModal
+        openModal={openModal}
+        title="Update Burrito"
+        setOpenModal={setOpenModal}
+        confirmMessage={`Update the the burrito from ${metadata?.metadata?.meta?.version} to ${burrito?.meta?.version}`}
+        buttonName="Update"
+        closeModal={
+          () => updateBurritoVersion(metadata.username, metadata.fs, metadata.path, metadata.folder)
+        }
       />
     </>
   );
