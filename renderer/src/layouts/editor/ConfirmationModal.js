@@ -1,5 +1,5 @@
-/* eslint-disable react/prop-types */
-import { Fragment, useRef } from 'react';
+import React, { Fragment, useRef } from 'react';
+import PropTypes from 'prop-types';
 import { Dialog, Transition } from '@headlessui/react';
 import { ExclamationIcon } from '@heroicons/react/outline';
 
@@ -89,3 +89,12 @@ export default function ConfirmationModal({
     </Transition.Root>
   );
 }
+
+ConfirmationModal.propTypes = {
+  openModal: PropTypes.bool,
+  setOpenModal: PropTypes.func,
+  title: PropTypes.string,
+  confirmMessage: PropTypes.string,
+  buttonName: PropTypes.string,
+  closeModal: PropTypes.func,
+};

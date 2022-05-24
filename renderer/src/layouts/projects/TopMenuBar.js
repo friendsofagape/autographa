@@ -1,4 +1,3 @@
-/* eslint-disable no-constant-condition */
 import Link from 'next/link';
 import React, { Fragment, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -14,16 +13,14 @@ import {
 } from '@heroicons/react/outline';
 import { AuthenticationContext } from '@/components/Login/AuthenticationContextProvider';
 import Notifications from '@/modules/notifications/Notifications';
-
-// eslint-disable-next-line import/no-unresolved
 import { classNames } from '@/util/classNames';
 
 export default function TopMenuBar() {
   const [openSideBar, setOpenSideBar] = useState(false);
-  // eslint-disable-next-line no-unused-vars
   const { action: { logout } } = React.useContext(AuthenticationContext);
   const { t } = useTranslation();
   const profile = [t('label-your-profile')];
+  const userPic = true;
   // function openSideBars() {
   //   setOpenSideBar(true);
   // }
@@ -79,7 +76,7 @@ export default function TopMenuBar() {
                               <span className="sr-only">Open user menu</span>
 
                               {/* check if user pic available  */}
-                              {true
+                              {userPic
                                 ? (
                                   <div className="h-8 w-8 p-2 bg-primary rounded-full">
                                     <UserIcon className="h-4 w-4 text-white" />

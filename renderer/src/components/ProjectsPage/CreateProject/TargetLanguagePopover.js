@@ -20,8 +20,12 @@ export default function TargetLanguagePopover() {
       setLanguage,
     },
   } = React.useContext(ProjectContext);
+<<<<<<< HEAD
   const { t } = useTranslation();
   // eslint-disable-next-line no-unused-vars
+=======
+
+>>>>>>> 824ed4f5af1d475dd3406ede2f735bd5f66506a6
   const openLanguageNav = (nav) => {
     logger.debug('TargetLanguagePopover.js', 'In openLanguageNav');
     if (nav === 'edit') {
@@ -50,7 +54,6 @@ export default function TargetLanguagePopover() {
     setLanguage({ id: languages.length + 1, title: lang, scriptDirection: direction });
     closeModal();
   };
-  // eslint-disable-next-line no-unused-vars
   const editLanguage = () => {
     logger.debug('TargetLanguagePopover.js', 'Editing the language');
     setLanguage({ id, title: lang, scriptDirection: direction });

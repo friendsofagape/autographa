@@ -1,6 +1,5 @@
-/* eslint-disable no-console */
-/* eslint-disable no-underscore-dangle */
 import Parse from 'parse';
+import * as logger from '../../logger';
 
 const writeToParse = async ({
     username,
@@ -27,9 +26,9 @@ const writeToParse = async ({
                         element.set('data', usfmData);
                         try {
                             const res = await element.save();
-                            console.log('res', res);
+                            logger.info('writeToParse.js', `Saved to DB${res}`);
                         } catch (error) {
-                            console.log('error', error);
+                            logger.info('writeToParse.js', `Unable to save data to DB${error}`);
                         }
                     }
                     resolve(element.get('owner').get('projectName'));

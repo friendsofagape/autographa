@@ -1,5 +1,3 @@
-/* eslint-disable no-nested-ternary */
-/* eslint-disable no-underscore-dangle */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, {
   useContext,
@@ -8,6 +6,7 @@ import React, {
   useState,
   useMemo,
   useCallback,
+  useLayoutEffect,
 } from 'react';
 import * as localforage from 'localforage';
 import {
@@ -34,6 +33,7 @@ import writeToFile from '../../../core/editor/writeToFile';
 const UsfmEditor = () => {
   // const intervalRef = useRef();
   const [usfmInput, setUsfmInput] = useState();
+  const [usfmData, setUsfmData] = useState();
   const [readOnly] = useState(false);
 
   const [displyScreen, setDisplayScreen] = useState(false);
@@ -94,7 +94,6 @@ const UsfmEditor = () => {
   //       username, projectName, usfmData: usfm, scope: _bookId.toUpperCase(), write: true,
   //     });
   //   } catch (err) {
-  //     // eslint-disable-next-line no-console
   //     console.log(err);
   //   }
   // };
@@ -178,6 +177,8 @@ const UsfmEditor = () => {
       //   });
       // });
     } else {
+      setUsfmInput();
+      setUsfmData();
       setDisplayScreen(false);
       setIsLoading(true);
       localforage.getItem('userProfile').then((value) => {
@@ -202,6 +203,7 @@ const UsfmEditor = () => {
                 if (data) {
                   const _data = JSON.parse(data);
                   const _books = [];
+                  let flag = false;
                   Object.entries(_data.ingredients).forEach(
                     ([key, _ingredients]) => {
                       if (_ingredients?.scope) {
@@ -225,6 +227,7 @@ const UsfmEditor = () => {
                                       if (book[0].toUpperCase() !== bookId.toUpperCase()) {
                                         setDisplayScreen(true);
                                       } else {
+                                        flag = true;
                                         handleInputChange(data);
                                       }
                                     });
@@ -238,15 +241,13 @@ const UsfmEditor = () => {
 
                         // console.log(Object.entries(_ingredients.scope));
                       }
-                      if (_ingredients.scope === undefined) {
-                        if (_books.includes(bookId.toUpperCase()) === false) {
-                          setDisplayScreen(true);
-                          setIsLoading(false);
-                        }
-                      }
                       // console.log(key, value),
                     },
                   );
+                  if (_books.includes(bookId.toUpperCase()) === false && flag === false) {
+                    setDisplayScreen(true);
+                    setIsLoading(false);
+                  }
                 }
               });
             });
@@ -375,6 +376,7 @@ const UsfmEditor = () => {
                                       filename: key,
                                       data: usfm,
                                     });
+                                    setUsfmData(usfm);
                                 }, 2000);
                               }
                             }
@@ -401,7 +403,9 @@ const UsfmEditor = () => {
     //   });
     // }
   };
-
+  useLayoutEffect(() => {
+    handleInputChange(usfmData);
+  }, [isLoading]);
   // useEffect(() => {
   //   setGoToVersePropValue({
   //     chapter: parseInt(chapter, 10),
@@ -414,15 +418,9 @@ const UsfmEditor = () => {
     <>
       <Editor>
         <>
-          {usfmInput && (
-          isLoading ? (
-            displyScreen === true ? (
-              <EmptyScreen />
-          ) : (<LoadingScreen />)
-          ) : (
-            displyScreen === true ? (
-              <EmptyScreen />
-          ) : (
+          {((isLoading || !usfmInput) && displyScreen) && <EmptyScreen />}
+          {isLoading && !displyScreen && <LoadingScreen /> }
+          {usfmInput && !displyScreen && !isLoading && (
             <CustomEditor
               ref={myEditorRef}
               usfmString={usfmInput}
@@ -432,14 +430,6 @@ const UsfmEditor = () => {
               readOnly={readOnly}
               goToVerse={goToChapter()}
             />
-            )
-          )
-        )}
-          {usfmInput === undefined && (
-          displyScreen === true ? (
-            <EmptyScreen />
-          )
-          : <LoadingScreen />
           )}
         </>
       </Editor>

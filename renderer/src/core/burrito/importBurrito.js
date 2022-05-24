@@ -1,23 +1,23 @@
 /* eslint-disable max-len */
-/* eslint-disable no-alert */
 import moment from 'moment';
 import { v5 as uuidv5 } from 'uuid';
 import { environment } from '../../../environment';
 import * as logger from '../../logger';
 import { validate } from '../../util/validate';
+import { updateVersion } from './updateTranslationSB';
 
 const md5 = require('md5');
 
 const fs = window.require('fs');
 const path = require('path');
 
-export const checkDuplicate = async (metadata, currentUser) => {
+export const checkDuplicate = async (metadata, currentUser, resource) => {
   logger.debug('importBurrito.js', 'In checkDuplicate');
   const projectName = metadata.identification?.name?.en;
   let existingProject;
   let id;
   const newpath = localStorage.getItem('userPath');
-  const projectDir = path.join(newpath, 'autographa', 'users', currentUser, 'projects');
+  const projectDir = path.join(newpath, 'autographa', 'users', currentUser, resource);
   const folderList = fs.readdirSync(projectDir);
   logger.debug('importBurrito.js', 'Checking for AG key in burrito');
   if (metadata.identification.primary.ag !== undefined) {
@@ -28,7 +28,6 @@ export const checkDuplicate = async (metadata, currentUser) => {
   } else if (metadata.identification.upstream.ag !== undefined) {
     const list = metadata.identification?.upstream?.ag;
     logger.debug('importBurrito.js', 'Fetching the latest key from upstream list.');
-    // eslint-disable-next-line max-len
     const latest = list.reduce((a, b) => (new Date(a.timestamp) > new Date(b.timestamp) ? a : b));
     Object.entries(latest).forEach(([key]) => {
       logger.debug('importBurrito.js', 'Fetching the latest key from upstream.');
@@ -50,32 +49,38 @@ export const checkDuplicate = async (metadata, currentUser) => {
   }
   return existingProject;
 };
-export const viewBurrito = async (filePath, currentUser) => {
+export const viewBurrito = async (filePath, currentUser, resource) => {
   logger.debug('importBurrito.js', 'Inside viewBurrito');
   const result = {};
   if (fs.existsSync(path.join(filePath, 'metadata.json'))) {
     logger.debug('importBurrito.js', 'Project has Burrito file metadata.json.');
     result.fileExist = true;
-    const sb = fs.readFileSync(path.join(filePath, 'metadata.json'));
+    let sb = fs.readFileSync(path.join(filePath, 'metadata.json'));
     const metadata = JSON.parse(sb);
-    const success = await validate('metadata', path.join(filePath, 'metadata.json'), sb);
+    // Fixing the issue of previous version of AG. The dateCreated was left empty and it will fail the validation.
+    if (!metadata?.meta?.dateCreated) {
+      const agId = Object.keys(metadata?.identification?.primary?.ag);
+      metadata.meta.dateCreated = metadata?.identification?.primary?.ag[agId[0]].timestamp;
+      sb = JSON.stringify(metadata);
+    }
+    const success = await validate('metadata', path.join(filePath, 'metadata.json'), sb, metadata.meta.version);
     if (success) {
       result.validate = true;
       logger.debug('importBurrito.js', 'Burrito file validated successfully');
       result.projectName = metadata.identification?.name?.en;
-      // result.language = metadata.languages[0]?.name?.en;
+      result.version = metadata.meta.version;
       result.burritoType = `${metadata.type?.flavorType?.name} / ${metadata.type?.flavorType?.flavor?.name}`;
       result.ingredients = Object.keys(metadata.ingredients).map((key) => key);
       result.primaryKey = metadata.identification.primary;
       result.publicDomain = metadata.copyright?.publicDomain;
       result.language = metadata.languages.map((lang) => lang.name.en);
-      const duplicate = await checkDuplicate(metadata, currentUser);
+      const duplicate = await checkDuplicate(metadata, currentUser, resource);
       result.duplicate = duplicate;
     } else {
       result.validate = false;
-      if (metadata.meta.version !== '0.3.0') {
+      if (metadata.meta.version < '0.3.0') {
         result.version = metadata.meta.version;
-        logger.error('importBurrito.js', `Expected burrito version 0.3.0 instead of ${metadata.meta.version}`);
+        logger.error('importBurrito.js', `Expected burrito version 0.3.0 or more instead of ${metadata.meta.version}`);
       } else {
         logger.error('importBurrito.js', 'Invalid burrito file (metadata.json).');
       }
@@ -86,7 +91,7 @@ export const viewBurrito = async (filePath, currentUser) => {
   }
   return result;
 };
-const importBurrito = async (filePath, currentUser) => {
+const importBurrito = async (filePath, currentUser, updateBurritoVersion) => {
   logger.debug('importBurrito.js', 'Inside importBurrito');
   const fse = window.require('fs-extra');
   const status = [];
@@ -96,9 +101,15 @@ const importBurrito = async (filePath, currentUser) => {
   // Importing the project
   if (fs.existsSync(path.join(filePath, 'metadata.json'))) {
     logger.debug('importBurrito.js', 'Project has Burrito file metadata.json.');
-    const sb = fs.readFileSync(path.join(filePath, 'metadata.json'));
-    const metadata = JSON.parse(sb);
-    const success = validate('metadata', path.join(filePath, 'metadata.json'), sb);
+    let sb = fs.readFileSync(path.join(filePath, 'metadata.json'));
+    let metadata = JSON.parse(sb);
+    // Fixing the issue of previous version of AG. The dateCreated was left empty and it will fail the validation.
+    if (!metadata?.meta?.dateCreated) {
+      const agId = Object.keys(metadata?.identification?.primary?.ag);
+      metadata.meta.dateCreated = metadata?.identification?.primary?.ag[agId[0]].timestamp;
+      sb = JSON.stringify(metadata);
+    }
+    const success = validate('metadata', path.join(filePath, 'metadata.json'), sb, metadata.meta.version);
     if (success) {
       logger.debug('importBurrito.js', 'Burrito file validated successfully');
       let projectName = metadata.identification?.name?.en;
@@ -166,7 +177,9 @@ const importBurrito = async (filePath, currentUser) => {
       }
       if (!projectName) {
         logger.debug('importBurrito.js', 'Taking folder name as Project Name');
-        projectName = path.basename(filePath);
+        // path.basename is not working for windows
+        // projectName = path.basename(filePath);
+        projectName = (filePath.split(/[(\\)?(/)?]/gm)).pop();
       }
 
       fs.mkdirSync(path.join(projectDir, `${projectName}_${id}`, 'ingredients'), { recursive: true });
@@ -231,13 +244,35 @@ const importBurrito = async (filePath, currentUser) => {
           setting.project.textTranslation.starred = settings.project.textTranslation?.starred ? settings.project.textTranslation?.starred : false;
           setting.project.textTranslation.versification = settings.project.textTranslation?.versification ? settings.project.textTranslation?.versification : 'ENG';
           setting.project.textTranslation.description = settings.project.textTranslation?.description ? settings.project.textTranslation?.description : '';
-          setting.project.textTranslation.copyright = settings.project.textTranslation?.copyright ? settings.project.textTranslation?.copyright : 'Custom';
+          setting.project.textTranslation.copyright = settings.project.textTranslation?.copyright ? settings.project.textTranslation?.copyright : { title: 'Custom' };
           setting.project.textTranslation.refResources = settings.project.textTranslation?.refResources ? settings.project.textTranslation?.refResources : [];
           setting.project.textTranslation.bookMarks = settings.project.textTranslation?.bookMarks ? settings.project.textTranslation?.bookMarks : [];
           settings = setting;
         }
         settings.project.textTranslation.lastSeen = moment().format();
         await fs.writeFileSync(path.join(projectDir, `${projectName}_${id}`, 'ingredients', 'ag-settings.json'), JSON.stringify(settings));
+      }
+      if (metadata.copyright.fullStatementPlain) {
+        const newLicence1 = (metadata.copyright.fullStatementPlain.en).replace(/\\n/gm, '\n');
+        const newLicence = newLicence1?.replace(/\\r/gm, '\r');
+        const licence = newLicence?.replace(/'/gm, '"');
+        await fs.writeFileSync(path.join(projectDir, `${projectName}_${id}`, 'ingredients', 'license.md'), licence);
+        const copyrightStats = fs.statSync(path.join(projectDir, `${projectName}_${id}`, 'ingredients', 'license.md'));
+        metadata.copyright.licenses = [{ ingredient: 'license.md' }];
+        metadata.ingredients[path.join('ingredients', 'license.md')] = {
+          checksum: {
+            md5: md5(metadata.copyright.fullStatementPlain.en),
+          },
+          mimeType: 'text/md',
+          size: copyrightStats.size,
+          role: 'x-licence',
+        };
+        delete metadata.copyright.fullStatementPlain;
+        delete metadata.copyright.publicDomain;
+      }
+      if (updateBurritoVersion) {
+        logger.debug('importBurrito.js', 'Updating the burrito version');
+        metadata = updateVersion(metadata);
       }
       await fs.writeFileSync(path.join(projectDir, `${projectName}_${id}`, 'metadata.json'), JSON.stringify(metadata));
       logger.debug('importBurrito.js', 'Creating the metadata.json Burrito file.');

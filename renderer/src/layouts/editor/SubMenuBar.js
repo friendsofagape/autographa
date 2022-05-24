@@ -1,38 +1,14 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable max-len */
-import {
-  Fragment, useState, useEffect, useContext,
-} from 'react';
-
-import {
-  Dialog, Transition,
-} from '@headlessui/react';
-
-import {
-  // PencilIcon,
-  // DuplicateIcon,
-  // ArchiveIcon,
-  // TrashIcon,
-  // ExternalLinkIcon,
-  BellIcon,
-  // InformationCircleIcon,
-  XIcon,
-} from '@heroicons/react/outline';
-
+import { useState, useContext } from 'react';
 import { BookmarkIcon } from '@heroicons/react/solid';
 import { useTranslation } from 'react-i18next';
 import ColumnsIcon from '@/icons/basil/Outline/Interface/Columns.svg';
-import ReplyIcon from '@/icons/basil/Outline/Communication/Reply.svg';
-import ForwardIcon from '@/icons/basil/Outline/Communication/Forward.svg';
 import Font from '@/icons/font.svg';
-import Notifications from '@/modules/notifications/Notifications';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import MenuBar from '@/components/Menubar/MenuBar';
 import CustomUsfmToolbar from '@/components/EditorPage/UsfmEditor/CustomUsfmToolbar';
 import { ProjectContext } from '@/components/context/ProjectContext';
 import CustomNofications from '@/components/Notification/CustomNofications';
 import AboutModal from './AboutModal';
-import StatsModal from './StatsModal';
 import MenuDropdown from '../../components/MenuDropdown/MenuDropdown';
 import menuStyles from './MenuBar.module.css';
 import styles from './SubMenuBar.module.css';
@@ -68,20 +44,16 @@ const EditorTools = [
 
 export default function SubMenuBar() {
   const [open, setOpen] = useState(false);
-  const [openStats, setOpenStats] = useState(false);
   // const [snackBar, setSnackBar] = useState(true);
-  const [openSideNotification, setOpenSideNotification] = useState(false);
   const {
     state: {
       layout,
-      refernceLoading,
       row,
     },
     actions: {
       setOpenResource1,
       setOpenResource3,
       setLayout,
-      setRefernceLoading,
       setRow,
     },
   } = useContext(ReferenceContext);
@@ -90,8 +62,6 @@ export default function SubMenuBar() {
       setOpenSideBar,
     },
   } = useContext(ProjectContext);
-
-  const [notificationsText, setNotification] = useState();
 
   const openBookMarks = () => {
     setOpenSideBar(true);
@@ -144,14 +114,6 @@ export default function SubMenuBar() {
     // if (layout === 2) { setLayout(0); }
   };
 
-  function openSideBars() {
-    setOpenSideNotification(true);
-  }
-
-  function closeNotifications(open) {
-    setOpenSideNotification(open);
-  }
-
   // Third Attempts
   // useEffect(() => {
   //   const timer = counter > 0 && setInterval(() => setCounter(counter - 1), 1000);
@@ -166,16 +128,6 @@ export default function SubMenuBar() {
   // // eslint-disable-next-line react-hooks/exhaustive-deps
   // }, [counter]);
 
-  // eslint-disable-next-line no-unused-vars
-  function closeSnackBar() {
-    setNotification(refernceLoading.text);
-    // setSnackBar(false);
-    setRefernceLoading({
-      status: false,
-      text: '',
-    });
-  }
-
   // function timeOutClose() {
   //   if (counter <= 0) {
   //     setSnackBar(false);
@@ -186,9 +138,12 @@ export default function SubMenuBar() {
     setOpen(isOpen);
   }
 
+<<<<<<< HEAD
   function openStatsModal(isOpen) {
     setOpenStats(isOpen);
   }
+=======
+>>>>>>> 824ed4f5af1d475dd3406ede2f735bd5f66506a6
   return (
     <>
 
@@ -234,7 +189,7 @@ export default function SubMenuBar() {
                   <p>
                     {refernceLoading.text}
                     {counter > 0 ? counter : ''}
-                  </p>
+                  </p>closeSnackBar
                 </div> */}
 
       {/* <div className="relative p-5 mt-5 bg-light rounded-lg text-sm font-semibold text-gray-500">

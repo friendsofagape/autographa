@@ -1,9 +1,7 @@
-/* eslint-disable no-unused-vars */
 import React from 'react';
 import useAutocomplete from '@material-ui/lab/useAutocomplete';
 import NoSsr from '@material-ui/core/NoSsr';
 import CheckIcon from '@material-ui/icons/Check';
-import CloseIcon from '@material-ui/icons/Close';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
@@ -54,48 +52,6 @@ const InputWrapper = styled('div')`
     margin: 0;
     outline: 0;
   }
-`;
-
-const Tag = styled(({ label, onDelete, ...props }) => (
-  <div {...props}>
-    <span>{label}</span>
-    <CloseIcon onClick={onDelete} />
-  </div>
-))`
-  display: flex;
-  align-items: center;
-  height: 24px;
-  margin: 5px;
-  line-height: 22px;
-  background-color: rgba(229, 231, 235);
-  border-radius: 16px;
-  box-sizing: content-box;
-  padding: 0 4px 0 10px;
-  outline: 0;
-  overflow: hidden;
-
-  &:focus {
-    border-color: #40a9ff;
-    background-color: #e6f7ff;
-  }
-
-
-  & span {
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    font-size: 14px;
-    font-weight: 300;
-    line-height: 20px;
-    letter-spacing: 0.25px;
-    color: rgba(0, 0, 0, 0.87);
-  }
-
-  & svg {
-    cursor: pointer;
-    padding: 4px;
-  }
-
 `;
 
 const Listbox = styled('ul')`
@@ -151,11 +107,9 @@ export default function CustomizedHook({
     getRootProps,
     getInputLabelProps,
     getInputProps,
-    getTagProps,
     getListboxProps,
     getOptionProps,
     groupedOptions,
-    value,
     focused,
     setAnchorEl,
   } = useAutocomplete({
@@ -178,9 +132,6 @@ export default function CustomizedHook({
             {label !== 'Region' && <span className="text-error">*</span>}
           </Label>
           <InputWrapper ref={setAnchorEl} className={focused ? 'focused' : ''}>
-            {/* {value.map((option, index) => (
-              <Tag label={option.title} {...getTagProps({ index })} />
-            ))} */}
             <input {...getInputProps()} />
           </InputWrapper>
         </div>

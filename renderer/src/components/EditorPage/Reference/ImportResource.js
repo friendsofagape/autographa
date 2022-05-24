@@ -1,10 +1,10 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable import/no-unresolved */
 import React, {
     useRef, Fragment, useContext,
 } from 'react';
+import PropTypes from 'prop-types';
+
 import { Dialog, Transition } from '@headlessui/react';
-import { FolderOpenIcon } from '@heroicons/react/outline';
+import { FolderOpenIcon, InformationCircleIcon } from '@heroicons/react/outline';
 import * as localforage from 'localforage';
 import { useTranslation } from 'react-i18next';
 import CloseIcon from '@/illustrations/close-button-black.svg';
@@ -12,14 +12,23 @@ import { SnackBar } from '@/components/SnackBar';
 import { isElectron } from '@/core/handleElectron';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import * as logger from '../../../logger';
+import { viewBurrito } from '../../../core/burrito/importBurrito';
+import ConfirmationModal from '@/layouts/editor/ConfirmationModal';
 
-export default function ImportResource({ open, closePopUp, setOpenResourcePopUp }) {
+export default function ImportResource({
+ open, closePopUp, setOpenResourcePopUp, setLoading,
+}) {
     const cancelButtonRef = useRef(null);
     const [valid, setValid] = React.useState(false);
     const [snackBar, setOpenSnackBar] = React.useState(false);
     const [snackText, setSnackText] = React.useState('');
     const [notify, setNotify] = React.useState();
+<<<<<<< HEAD
     const { t } = useTranslation();
+=======
+    const [openModal, setOpenModal] = React.useState(false);
+    const [dataForImport, setDataForImport] = React.useState();
+>>>>>>> 824ed4f5af1d475dd3406ede2f735bd5f66506a6
     const {
       state: {
         folderPath,
@@ -34,11 +43,28 @@ export default function ImportResource({ open, closePopUp, setOpenResourcePopUp 
       closePopUp(false);
       setValid(false);
     }
-
+    const importReference = async (projectsDir, name) => {
+      const fse = window.require('fs-extra');
+      const path = require('path');
+      await fse.copy(folderPath, path.join(projectsDir, name),
+      { overwrite: true }).then(() => {
+        setOpenSnackBar(true);
+        setNotify('success');
+        setSnackText('Resource upload successful! Please check the resource list');
+      }).then(() => {
+        close();
+        setOpenResourcePopUp(false);
+      }).then(() => {
+        setOpenResourcePopUp(true);
+      })
+      .catch((err) => {
+        logger.debug('ImportResource.js', 'error in uploading resource to specified location');
+        setNotify(err);
+      });
+    };
     const uploadRefBible = async () => {
       if (isElectron()) {
         const fs = window.require('fs');
-        const fse = window.require('fs-extra');
         const path = require('path');
         localforage.getItem('userProfile').then(async (user) => {
           const newpath = localStorage.getItem('userPath');
@@ -48,23 +74,37 @@ export default function ImportResource({ open, closePopUp, setOpenResourcePopUp 
           const projectsDir = path.join(
             newpath, 'autographa', 'users', user?.username, 'resources',
           );
-          const name = path.basename(folderPath);
-          await fse.copy(folderPath, path.join(projectsDir, name), { overwrite: true }).then(() => {
+          // Adding 'resources' to check the duplication in the user reference list
+          const result = await viewBurrito(folderPath, user?.username, 'resources');
+          if (result.fileExist === false) {
             setOpenSnackBar(true);
-            setSnackText('Resource upload successful! Please check the resource list');
-          }).then(() => {
-            close();
-            setOpenResourcePopUp(false);
-          }).then(() => {
-            setOpenResourcePopUp(true);
-          })
-          .catch((err) => {
-            logger.debug('ImportResource.js', 'error in uploading resource to specified location');
-            setNotify(err);
-        });
+            setNotify('error');
+            setSnackText('Unable to find burrito file (metadata.json).');
+            logger.warn('ImportResource.js', 'Unable to find burrito file (metadata.json).');
+          } else if (result.validate) {
+            // path.basename is not working for windows
+            // const name = path.basename(folderPath);
+            const name = (folderPath.split(/[(\\)?(/)?]/gm)).pop();
+            setDataForImport({ projectsDir, name });
+            if (result.projectName === name) {
+              logger.warn('ImportResource.js', 'Project already available');
+              setOpenModal(true);
+            } else {
+              setLoading(true);
+              logger.debug('ImportResource.js', 'Its a new project');
+              importReference(projectsDir, name);
+            }
+          } else {
+            setOpenSnackBar(true);
+            setNotify('error');
+            logger.error('ImportResource.js', 'Invalid burrito file (metadata.json).');
+            setSnackText('Invalid burrito file (metadata.json).');
+          }
         }).catch((err) => {
             logger.debug('ImportResource.js', 'error in loading resource');
             setNotify(err);
+        }).finally(() => {
+          setLoading(false);
         });
       }
     };
@@ -114,7 +154,14 @@ export default function ImportResource({ open, closePopUp, setOpenResourcePopUp 
                         <div className="flex gap-5 col-span-2">
                           <div>
                             <h4 className="text-xs font-base mb-2 text-primary  tracking-wide leading-4  font-light">
+<<<<<<< HEAD
                               {t('label-burrito-resource-path')}
+=======
+                              Scripture Burrito Resource filepath
+                              <button title="Select a directory/project that has a Scripture Burrito file i.e. metadata.json file." type="button" disabled>
+                                <InformationCircleIcon className="h-6 w-6 text-primary" />
+                              </button>
+>>>>>>> 824ed4f5af1d475dd3406ede2f735bd5f66506a6
                             </h4>
                             <input
                               type="text"
@@ -162,6 +209,21 @@ export default function ImportResource({ open, closePopUp, setOpenResourcePopUp 
           setSnackText={setSnackText}
           error={notify}
         />
+        <ConfirmationModal
+          openModal={openModal}
+          title="Replace Resource"
+          setOpenModal={setOpenModal}
+          confirmMessage="An existing project with the same name was found. Press 'Replace' if you want to replace it. This would overwrite any existing content in overlapping books. Otherwise, press 'Cancel' to go back."
+          buttonName="Replace"
+          closeModal={() => importReference(dataForImport.projectsDir, dataForImport.name)}
+        />
       </>
     );
   }
+
+ImportResource.propTypes = {
+  open: PropTypes.bool,
+  closePopUp: PropTypes.func,
+  setOpenResourcePopUp: PropTypes.func,
+  setLoading: PropTypes.func,
+};

@@ -1,11 +1,11 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-import { Disclosure, Transition } from '@headlessui/react';
 import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+<<<<<<< HEAD
 // eslint-disable-next-line import/no-unresolved
 import { useTranslation } from 'react-i18next';
+=======
+import { Disclosure, Transition } from '@headlessui/react';
+>>>>>>> 824ed4f5af1d475dd3406ede2f735bd5f66506a6
 import { convertToRange } from '@/util/convertToRange';
 import styles from './SelectReference.module.css';
 
@@ -64,8 +64,7 @@ export default function SelectVerse({
     }
   };
   converMultiverseRange();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [verselectActive]);
+  }, [verselectActive, multiSelectVerse, selectedVerses, setVerseSelectActive, setSelectedVerses]);
 
   return (
     <>
@@ -107,6 +106,7 @@ export default function SelectVerse({
               {chapterList.map((chapter) => (
                 <div
                   key={chapter.key}
+                  role="presentation"
                   onClick={(e) => { onChapterSelect(e, chapter.key); }}
                   className={styles.select}
                 >
@@ -134,13 +134,13 @@ export default function SelectVerse({
             {verseList.map((verse) => (
               <div
                 key={verse.key}
+                role="presentation"
                 style={{ color: controlVerseSelect.includes(parseInt(verse.key, 10)) ? 'seagreen' : '' }}
-                onClick={(e) => {
-                  // eslint-disable-next-line no-unused-expressions
+                onClick={(e) => (
                   multiSelectVerse
                   ? onMultiSelectVerse(e, verse.key)
-                  : onVerseSelect(e, verse.key);
-                  }}
+                  : onVerseSelect(e, verse.key)
+                )}
                 className={styles.select}
               >
                 {verse.name}
@@ -166,4 +166,9 @@ SelectVerse.propTypes = {
   onChangeVerse: PropTypes.func,
   closeBooks: PropTypes.func,
   closeVerses: PropTypes.func,
+  multiSelectVerse: PropTypes.bool,
+  selectedVerses: PropTypes.array,
+  setSelectedVerses: PropTypes.func,
+  verselectActive: PropTypes.bool,
+  setVerseSelectActive: PropTypes.func,
 };

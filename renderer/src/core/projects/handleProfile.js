@@ -17,7 +17,6 @@ const updateJson = async (userdata, languageId) => {
       if (user.username === userdata.username) {
         const keys = Object.keys(user);
         keys.forEach((key) => {
-          // eslint-disable-next-line no-param-reassign
           user[key] = userdata[key];
         });
       }
@@ -49,7 +48,6 @@ const updateOffline = async (data, languageId) => {
   .then(async (userdata) => {
     const keys = Object.keys(data);
     keys.forEach((key) => {
-      // eslint-disable-next-line no-param-reassign
       userdata[key] = data[key];
     });
     logger.debug('handleProfile.js', 'Updating profile data in localForage');

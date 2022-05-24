@@ -15,7 +15,6 @@ export default function SearchTags({
   const { t } = useTranslation();
   const [query, setQuery] = React.useState(defaultQuery);
   const excludeColumns = filterList.splice(filterList.indexOf(), 1);
-  // eslint-disable-next-line consistent-return
   const onQuery = useCallback((_query, content) => {
     let filteredData;
     setQuery(_query);

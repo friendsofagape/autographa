@@ -22,7 +22,7 @@ const CustomLogin = ({
     <form key="login" name="aglogin" onSubmit={(e) => handleSubmit(e)}>
       <Typography color="error">{validation?.msg}</Typography>
       {ui?.autocomplete?.count?.map((v) => (
-        <div className="flex">
+        <div className="flex" key={v.label}>
           <div className="flex flex-col justify-end">
             <PersonOutlineIcon />
           </div>

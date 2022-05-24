@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import moment from 'moment';
 import * as localforage from 'localforage';
 import { v5 as uuidv5 } from 'uuid';
@@ -19,6 +18,7 @@ const saveProjectsMeta = async (
   importedFiles,
   call,
   project,
+  update,
 ) => {
   logger.debug('saveProjectsMeta.js', 'In saveProjectsMeta');
   const newpath = localStorage.getItem('userPath');
@@ -91,15 +91,20 @@ const saveProjectsMeta = async (
         selectedLanguage.scriptDirection,
         id,
         importedFiles,
-        copyright.title,
+        copyright,
+        project,
+        call,
       ).then(async (ingredient) => {
         logger.debug('saveProjectsMeta.js', 'Calling createTranslationSB for creating burrito.');
         const burritoFile = await createTranslationSB(currentUser,
           newProjectFields,
-          canonSpecification.currentScope,
+          scope,
           selectedLanguage.title,
-          copyright.licence,
-          id);
+          copyright,
+          id,
+          project,
+          call,
+          update);
         if (call === 'edit') {
           burritoFile.ingredients = { ...project.ingredients, ...ingredient };
         } else {

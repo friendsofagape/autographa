@@ -1,9 +1,9 @@
 const isElectron = require('is-electron');
 
 let log;
-if (process.env.NODE_ENV === 'test') {
-  // eslint-disable-next-line global-require
-} else if (isElectron()) { log = global.log; }
+if (process.env.NODE_ENV !== 'test' && isElectron()) {
+  log = global.log;
+}
 
 const logger = () => {
   if (isElectron()) {

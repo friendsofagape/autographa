@@ -45,7 +45,9 @@ const ProjectContextProvider = ({ children }) => {
     const createSettingJson = (fs, file) => {
       logger.debug('ProjectContext.js', 'Loading data from AdvanceSetting.json file');
       setCanonList(advanceSettings.canonSpecification);
-      setLicenseList(advanceSettings.copyright);
+      setLicenseList((advanceSettings.copyright).push({
+        id: 'Other', title: 'Custom', licence: '', locked: false,
+      }));
       setLanguages(advanceSettings.languages);
       const json = {
         version: '1.1',
@@ -95,15 +97,26 @@ const ProjectContextProvider = ({ children }) => {
           logger.debug('ProjectContext.js', 'Successfully read the data from file');
           const json = JSON.parse(data);
           if (json.version === '1.1') {
-            // (json.currentSetting).push(currentSetting);
+            // Checking whether any custom copyright id available (as expected else will
+            // create a new one) or not
+            if (json.history?.copyright) {
+              if (json.history?.copyright?.licence) {
+                setLicenseList((advanceSettings.copyright)
+                  .concat(json.history?.copyright));
+              } else {
+                const newObj = (advanceSettings.copyright).filter((item) => item.Id !== 'Other');
+                newObj.push({
+                  id: 'Other', title: 'Custom', licence: '', locked: false,
+                });
+                setLicenseList(newObj);
+              }
+            } else {
+              setLicenseList(advanceSettings.copyright);
+            }
             setCanonList(json.history?.textTranslation.canonSpecification
               ? (advanceSettings.canonSpecification)
               .concat(json.history?.textTranslation.canonSpecification)
               : advanceSettings.canonSpecification);
-            setLicenseList(json.history?.copyright
-              ? (advanceSettings.copyright)
-              .concat(json.history?.copyright)
-              : advanceSettings.copyright);
             setLanguages(json.history?.languages
               ? (advanceSettings.languages)
               .concat(json.history?.languages)
@@ -117,7 +130,6 @@ const ProjectContextProvider = ({ children }) => {
       }
     };
     // Json for storing advance settings
-    // eslint-disable-next-line no-unused-vars
     const updateJson = async (currentSettings) => {
       logger.debug('ProjectContext.js', 'In updateJson');
       const newpath = localStorage.getItem('userPath');
@@ -146,7 +158,6 @@ const ProjectContextProvider = ({ children }) => {
                   if (setting.id === currentSetting.id) {
                     const keys = Object.keys(setting);
                     keys.forEach((key) => {
-                      // eslint-disable-next-line no-param-reassign
                       setting[key] = currentSetting[key];
                     });
                   }
@@ -163,7 +174,7 @@ const ProjectContextProvider = ({ children }) => {
         });
       }
     };
-    const createProject = async (call, project) => {
+    const createProject = async (call, project, update) => {
       logger.debug('ProjectContext.js', 'In createProject');
       // Add / update language into current list.
       if (uniqueId(languages, language.id)) {
@@ -202,6 +213,7 @@ const ProjectContextProvider = ({ children }) => {
         importedFiles,
         call,
         project,
+        update,
       );
       return status;
     };

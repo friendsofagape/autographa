@@ -1,10 +1,9 @@
-/* eslint-disable max-len */
-/* eslint-disable react/prop-types */
-/* eslint-disable import/no-unresolved */
 import { StarIcon } from '@heroicons/react/outline';
 import React, {
   useEffect, useRef, useState, Fragment, useContext,
 } from 'react';
+import PropTypes from 'prop-types';
+
 import * as localforage from 'localforage';
 import { Dialog, Transition } from '@headlessui/react';
 import { XIcon, PlusCircleIcon } from '@heroicons/react/solid';
@@ -20,6 +19,7 @@ import { SnackBar } from '@/components/SnackBar';
 import ResourceOption from './ResourceOption';
 import ImportResource from './ImportResource';
 import * as logger from '../../../logger';
+import LoadingScreen from '@/components/Loading/LoadingScreen';
 
 function createData(name, language, owner) {
   return {
@@ -64,6 +64,7 @@ const ResourcesPopUp = ({
   const [translationNote, setTranslationNote] = useState(translationNotes);
   const [translationQuestion, setTranslationQuestion] = useState(translationQuestions);
   const [translationWord, setTranslationWord] = useState(translationWords);
+  const [loading, setLoading] = useState(false);
   const {
     states: {
       username,
@@ -218,6 +219,95 @@ const ResourcesPopUp = ({
     readCustomResources({ resourceId: 'tn', translationData: translationNote });
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showInput]);
+  const callResource = (resource) => {
+    logger.debug('ResourcesPopUp.js', 'Displaying resource table');
+    const resources = [
+      { id: 'tn', title: 'Translation Notes', resource: translationNote },
+      { id: 'twlm', title: 'Translation Words', resource: translationWord },
+      { id: 'tq', title: 'Translation Questions', resource: translationQuestion }];
+    const reference = resources.find((r) => r.id === resource);
+    return (
+      reference
+      && (
+      <tbody className="bg-white divide-y divide-gray-200 ">
+        {(reference.resource).map((notes) => (
+          <tr className="hover:bg-gray-200" key={notes.name + notes.owner}>
+            <td className="px-5 py-3 hidden">
+              <StarIcon className="h-5 w-5 text-gray-300" aria-hidden="true" />
+            </td>
+            <td className="px-5 py-2.5 text-gray-600">
+              <div
+                className="focus:outline-none"
+                onClick={(e) => handleRowSelect(e, notes.language, `${reference.title} ${notes.name}`, notes.owner)}
+                role="button"
+                tabIndex="0"
+              >
+                {`${notes.name} (${notes.owner})`}
+              </div>
+            </td>
+            <td className="px-5 text-gray-600">
+              <div
+                className="focus:outline-none"
+                onClick={(e) => handleRowSelect(e, notes.language, `${reference.title} ${notes.name}`, notes.owner)}
+                role="button"
+                tabIndex="0"
+              >
+                {notes.language}
+              </div>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+      )
+    );
+  };
+  const importResources = (resource) => {
+    if (showInput) {
+      return (
+        <div className="bg-white grid grid-cols-4 gap-2 p-4 text-sm text-left tracking-wide">
+          <div className="flex gap-5 col-span-2">
+            <div>
+              <input
+                type="text"
+                name="resource name"
+                id=""
+                value={resourceName}
+                placeholder="Enter resource name"
+                onChange={(e) => setResourceName(e.target.value)}
+                className="bg-white w-52 ml-2 lg:w-80 block rounded shadow-sm sm:text-sm focus:border-primary border-gray-300"
+              />
+            </div>
+            <div>
+              <input
+                type="text"
+                name="location"
+                id=""
+                value={inputUrl}
+                placeholder="Enter door43 url"
+                onChange={(e) => setInputUrl(e.target.value)}
+                className="bg-white w-52 ml-2 lg:w-80 block rounded shadow-sm sm:text-sm focus:border-primary border-gray-300"
+              />
+            </div>
+            <div>
+              <button
+                type="button"
+                onClick={() => handleCustomInput(inputUrl, resource, resourceName)}
+                title="load translation noted"
+                className="py-2 m-1 px-6 bg-primary rounded shadow text-white uppercase text-xs tracking-widest font-semibold"
+              >
+                Import
+              </button>
+            </div>
+          </div>
+        </div>
+      );
+    }
+    return (
+      <button type="button" className="flex gap-6 mx-5 absolute bottom-5 right-0 justify-end z-10 outline-none">
+        <PlusCircleIcon title="Upload" className="h-10 w-10 m-5 text-primary" onClick={() => setShowInput(true)} aria-hidden="true" />
+      </button>
+    );
+  };
 
   return (
     <>
@@ -331,6 +421,7 @@ const ResourcesPopUp = ({
                     </div>
                   </div>
                 </div>
+<<<<<<< HEAD
                 <div className="relative flex align-top flex-col flex-wrap w-full max-h-sm scrollbars-width overflow-auto ">
                   <table className="divide-y divide-gray-200 w-full relative">
                     <thead className="bg-white sticky top-0">
@@ -435,13 +526,29 @@ const ResourcesPopUp = ({
                                 {notes.language}
                               </div>
                             </td>
+=======
+                {loading
+                  ? <LoadingScreen />
+                  : (
+                    <div className="relative flex align-top flex-row flex-wrap w-full max-h-sm scrollbars-width overflow-auto ">
+                      <table className="divide-y divide-gray-200 w-full relative">
+                        <thead className="bg-white sticky top-0">
+                          <tr className="text-xs text-left">
+                            <th className="px-5 py-3 font-medium text-gray-300 hidden">
+                              <StarIcon className="h-5 w-5" aria-hidden="true" />
+                            </th>
+                            <th className="px-5 py-3.5 font-bold text-gray-700 uppercase tracking-wider">
+                              Name
+                            </th>
+                            <th className="px-5 font-bold text-gray-700 uppercase tracking-wider">
+                              Language
+                            </th>
+>>>>>>> 824ed4f5af1d475dd3406ede2f735bd5f66506a6
                           </tr>
-                        ))}
-                      </tbody>
-                    )}
-                    {selectResource === 'bible' && (
-                      <tbody className="bg-white divide-y divide-gray-200  mb-44 ">
-                        {(subMenuItems) && (
+                        </thead>
+                        {selectResource === 'bible' ? (
+                          <tbody className="bg-white divide-y divide-gray-200  mb-44 ">
+                            {(subMenuItems) && (
                           subMenuItems.map((ref) => (
                             <tr className="hover:bg-gray-200" key={ref.value.identification.name.en + ref.projectDir}>
                               <td className="px-5 py-3 hidden">
@@ -477,6 +584,7 @@ const ResourcesPopUp = ({
                             </tr>
                           ))
                         )}
+<<<<<<< HEAD
                       </tbody>
                     )}
                   </table>
@@ -636,10 +744,27 @@ const ResourcesPopUp = ({
                         openPopUp={setOpenImportResourcePopUp}
                         setOpenResourcePopUp={setOpenResourcePopUp}
                       />
+=======
+                          </tbody>
+                    ) : callResource(selectResource)}
+                      </table>
+                      {selectResource === 'bible' ? (
+                        <div className="flex gap-6 mx-5 absolute bottom-5 right-0 justify-end z-10">
+                          <button type="button" className="background-transparent outline-none">
+                            <PlusCircleIcon className="h-11 w-11 m-5 text-primary" onClick={() => openResourceDialogBox()} />
+                          </button>
+                          <ImportResource
+                            open={openImportResourcePopUp}
+                            closePopUp={closeImportPopUp}
+                            openPopUp={setOpenImportResourcePopUp}
+                            setOpenResourcePopUp={setOpenResourcePopUp}
+                            setLoading={setLoading}
+                          />
+                        </div>
+                  ) : importResources(selectResource)}
+>>>>>>> 824ed4f5af1d475dd3406ede2f735bd5f66506a6
                     </div>
                   )}
-
-                </div>
               </div>
 
             </div>
@@ -659,3 +784,12 @@ const ResourcesPopUp = ({
 };
 
 export default ResourcesPopUp;
+
+ResourcesPopUp.propTypes = {
+  header: PropTypes.string,
+  openResourcePopUp: PropTypes.bool,
+  setOpenResourcePopUp: PropTypes.func,
+  selectedResource: PropTypes.string,
+  setReferenceResources: PropTypes.func,
+
+};

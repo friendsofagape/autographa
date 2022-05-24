@@ -1,4 +1,3 @@
-/* eslint-disable consistent-return */
 import React, {
  Fragment, useEffect, useState,
 } from 'react';

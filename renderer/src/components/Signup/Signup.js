@@ -13,10 +13,17 @@ export default function Signup() {
   const ui = {
     textfield: {
       count: [
+<<<<<<< HEAD
         { label: t('label-email'), type: 'email', name: 'email' },
         { label: t('label-name'), type: 'text', name: 'identifier' },
         { label: t('label-password'), type: 'password', name: 'password' },
         { label: t('label-confirm-password'), type: 'password', name: 'password' },
+=======
+        { label: 'Email', type: 'email', name: 'email' },
+        { label: 'Name', type: 'text', name: 'identifier' },
+        { label: 'Password', type: 'password', name: 'password' },
+        { label: 'Confirm Password', type: 'password', name: 'confirmpassword' },
+>>>>>>> 824ed4f5af1d475dd3406ede2f735bd5f66506a6
       ],
     },
     viewForgot: false,

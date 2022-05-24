@@ -1,7 +1,6 @@
-/* eslint-disable no-underscore-dangle */
-/* eslint-disable react/prop-types */
-import { useBibleReference } from 'bible-reference-rcl';
 import React, { createContext } from 'react';
+import PropTypes from 'prop-types';
+import { useBibleReference } from 'bible-reference-rcl';
 
 export const CustomNavigationContext = createContext({});
 
@@ -55,3 +54,7 @@ export default function CustomNavigationContextProvider({ children }) {
       </CustomNavigationContext.Provider>
     );
   }
+
+CustomNavigationContextProvider.propTypes = {
+  children: PropTypes.any,
+};

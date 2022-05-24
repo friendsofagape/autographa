@@ -1,16 +1,13 @@
-/* eslint-disable no-nested-ternary */
-/* eslint-disable react/prop-types */
-/* eslint-disable no-underscore-dangle */
 import React, {
  useContext, useEffect, useState, useMemo,
 } from 'react';
+import PropTypes from 'prop-types';
 import {
   createBasicUsfmEditor, withChapterPaging,
  } from 'usfm-editor';
 import * as localforage from 'localforage';
 import moment from 'moment';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
-// eslint-disable-next-line import/no-unresolved
 import { readIngredients } from '@/core/reference/readIngredients';
 import { ProjectContext } from '@/components/context/ProjectContext';
 import { AutographaContext } from '@/components/context/AutographaContext';
@@ -71,6 +68,7 @@ useEffect(() => {
       if (isElectron() && refName) {
         setIsLoading(true);
         setDisplayScreen(false);
+        setUsfmInput();
         const path = require('path');
         const newpath = localStorage.getItem('userPath');
         localforage.getItem('resources')
@@ -155,6 +153,10 @@ useEffect(() => {
                     // console.log(key, value),
                   },
                 );
+            } else {
+              timeout(3000).then(() => {
+                setDisplayScreen(true);
+              });
             }
           });
         }).catch((err) => {
@@ -174,6 +176,8 @@ useEffect(() => {
             setNotifications(temp);
           });
           throw err;
+        }).finally(() => {
+          setIsLoading(false);
         });
       }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -198,8 +202,9 @@ useEffect(() => {
   return (
     <span>
       <>
-        {usfmInput && (
-        isLoading === false ? (
+        {((isLoading || !usfmInput) && displyScreen) && <EmptyScreen />}
+        {isLoading && !displyScreen && <LoadingScreen />}
+        {usfmInput && !displyScreen && !isLoading && (
           <CustomEditor
             usfmString={usfmInput}
             key={usfmInput}
@@ -210,18 +215,7 @@ useEffect(() => {
               key: Date.now(),
           }}
           />
-        ) : (
-          displyScreen === true ? (
-            <EmptyScreen />
-          ) : (<LoadingScreen />)
-        )
       )}
-        {usfmInput === undefined && (
-          displyScreen === true ? (
-            <EmptyScreen />
-          )
-          : <LoadingScreen />
-        )}
         <SnackBar
           openSnackBar={snackBar}
           snackText={snackText}
@@ -235,3 +229,11 @@ useEffect(() => {
 };
 
 export default ReferenceBible;
+
+ReferenceBible.propTypes = {
+  languageId: PropTypes.string,
+  refName: PropTypes.string,
+  chapter: PropTypes.string,
+  verse: PropTypes.string,
+  bookId: PropTypes.string,
+};

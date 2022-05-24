@@ -1,3 +1,4 @@
+import { TrashIcon, MicrophoneIcon, VolumeUpIcon } from '@heroicons/react/outline';
 import AuthenticationContextProvider from '@/components/Login/AuthenticationContextProvider';
 import ProjectContextProvider from '@/components/context/ProjectContext';
 import ReferenceContextProvider from '@/components/context/ReferenceContext';
@@ -9,8 +10,6 @@ import Editor from '@/modules/editor/Editor';
 import PlayIcon from '@/icons/basil/Outline/Media/Play.svg';
 import PauseIcon from '@/icons/basil/Outline/Media/Pause.svg';
 import Waveform from '@/icons/waveform.svg';
-
-import { TrashIcon, MicrophoneIcon, VolumeUpIcon } from '@heroicons/react/outline';
 
 const stories = [
   {

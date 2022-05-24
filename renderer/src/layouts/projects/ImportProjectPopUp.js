@@ -3,16 +3,19 @@ import React, {
   useRef, Fragment,
 } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
-import { FolderOpenIcon, InformationCircleIcon, CheckIcon, XIcon } from '@heroicons/react/outline';
+import {
+ FolderOpenIcon, InformationCircleIcon, CheckIcon, XIcon,
+} from '@heroicons/react/outline';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'react-i18next';
+import localforage from 'localforage';
 import { SnackBar } from '@/components/SnackBar';
 import CloseIcon from '@/illustrations/close-button-black.svg';
-import localforage from 'localforage';
 import importBurrito, { viewBurrito } from '../../core/burrito/importBurrito';
 import * as logger from '../../logger';
 import ConfirmationModal from '../editor/ConfirmationModal';
 import { AutographaContext } from '@/components/context/AutographaContext';
+import burrito from '../../lib/BurritoTemplete.json';
 
 export default function ImportProjectPopUp(props) {
   const {
@@ -28,8 +31,13 @@ export default function ImportProjectPopUp(props) {
   const [notify, setNotify] = React.useState();
   const [show, setShow] = React.useState(false);
   const [sbData, setSbData] = React.useState({});
-  const [openModal, setOpenModal] = React.useState(false);
-  const {action: {FetchProjects}} = React.useContext(AutographaContext);
+  const [model, setModel] = React.useState({
+    openModel: false,
+    title: '',
+    confirmMessage: '',
+    buttonName: '',
+    });
+  const { action: { FetchProjects } } = React.useContext(AutographaContext);
   function close() {
     logger.debug('ImportProjectPopUp.js', 'Closing the Dialog box');
     setValid(false);
@@ -49,7 +57,8 @@ export default function ImportProjectPopUp(props) {
       logger.debug('ImportProjectPopUp.js', 'Selected a directory');
       await localforage.getItem('userProfile').then(async (value) => {
         setShow(true);
-        const result = await viewBurrito(chosenFolder.filePaths[0],value.username);
+        // Adding 'projects' to check the duplication in the user project resources list
+        const result = await viewBurrito(chosenFolder.filePaths[0], value.username, 'projects');
         setSbData(result);
       });
     } else {
@@ -58,30 +67,58 @@ export default function ImportProjectPopUp(props) {
     }
     setFolderPath(chosenFolder.filePaths[0]);
   };
-  const callImport = async() =>{
+  const callImport = async (updateBurriot) => {
+    modelClose();
     logger.debug('ImportProjectPopUp.js', 'Inside callImport');
     await localforage.getItem('userProfile').then(async (value) => {
-      const status = await importBurrito(folderPath, value.username);
+      const status = await importBurrito(folderPath, value.username,updateBurriot);
       setOpenSnackBar(true);
       closePopUp(false);
       setNotify(status[0].type);
       setSnackText(status[0].value);
       if (status[0].type === 'success') {
+        close();
         FetchProjects();
         router.push('/projects');
       }
     });
+  };
+
+  const checkBurritoVersion = () => {
+    logger.debug('ImportProjectPopUp.js', 'Checking the burrito version');
+    if (burrito?.meta?.version !== sbData?.version) {
+      setModel({
+        openModel: true,
+        title: t('modal-title-update-buritto'),
+        confirmMessage: `Update the the burrito from ${sbData?.version} to ${burrito?.meta?.version}`,
+        buttonName: t('btn-update'),
+      });
+    } else {
+      callImport(false);
+    }
+  };
+  const callFunction = () =>{
+    if (model.buttonName==='Replace'){
+      checkBurritoVersion()
+    } else {
+      callImport(true);
+    }
   }
   const importProject = async () => {
     logger.debug('ImportProjectPopUp.js', 'Inside importProject');
     if (folderPath) {
       setValid(false);
-      if (sbData.duplicate===true){
+      if (sbData.duplicate === true) {
         logger.warn('ImportProjectPopUp.js', 'Project already available');
-        setOpenModal(true);
+        setModel({
+          openModel: true,
+          title: t('modal-title-replace-resource'),
+          confirmMessage: "An existing project with the same name was found. Press 'Replace' if you want to replace it. This would overwrite any existing content in overlapping books. Otherwise, press 'Cancel' to go back.",
+          buttonName: t('btn-replace'),
+        });
       } else {
         logger.debug('ImportProjectPopUp.js', 'Its a new project');
-        callImport();
+        checkBurritoVersion();
       }
     } else {
       logger.error('ImportProjectPopUp.js', 'Invalid Path');
@@ -92,6 +129,15 @@ export default function ImportProjectPopUp(props) {
     }
   };
   const { t } = useTranslation();
+  const modelClose = () => {
+    setModel({
+      openModel: false,
+      title: '',
+      confirmMessage: '',
+      buttonName: '',
+    });
+  };
+
   React.useEffect(() => {
     if (open) {
       openFileDialogSettingData();
@@ -138,7 +184,7 @@ export default function ImportProjectPopUp(props) {
                   </button>
                 </div>
                 <div className="relative w-full h-full">
-                  
+
                   <div className="p-8 overflow-auto w-full h-full scrollbars-width flex flex-col justify-between">
 
                     <div className="bg-white text-sm text-left tracking-wide">
@@ -185,8 +231,11 @@ export default function ImportProjectPopUp(props) {
                             type="text" value={sbData.language} disabled />
                           <h4 className="text-sm font-base mb-2 text-primary tracking-wide leading-4 font-light">{t('label-project-type')}</h4>
                           <input
-                          className="w-full mb-4 bg-gray-200 block rounded shadow-sm sm:text-sm focus:border-primary border-gray-300"
-                            type="text" value={sbData.burritoType} disabled />
+                            className="w-full mb-4 bg-gray-200 block rounded shadow-sm sm:text-sm focus:border-primary border-gray-300"
+                            type="text"
+                            value={sbData.burritoType}
+                            disabled
+                          />
                           <label className="inline-flex items-center">
                             {(sbData?.validate)? 
                             <CheckIcon className='w-6 h-6 text-green-500 border' />
@@ -201,7 +250,7 @@ export default function ImportProjectPopUp(props) {
                           </label>
                         </div>
                       )}
-                    
+
                     <div className="flex gap-6 mb-5 justify-end">
 
                       <button
@@ -239,10 +288,10 @@ export default function ImportProjectPopUp(props) {
       />
       <ConfirmationModal
         openModal={openModal}
-        title='Replace Resource'
+        title={model.title}
         setOpenModal={setOpenModal}
-        confirmMessage="An existing project with the same name was found. Press 'Replace' if you want to replace it. This would overwrite any existing content in overlapping books. Otherwise, press 'Cancel' to go back."
-        buttonName={t('btn-replace')}
+        confirmMessage={model.confirmMessage}
+        buttonName={model.buttonName}
         closeModal={()=>callImport()}
       />
     </>

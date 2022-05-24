@@ -1,5 +1,6 @@
-/* eslint-disable react/prop-types */
 import React, { Fragment, useState } from 'react';
+import PropTypes from 'prop-types';
+
 import { Dialog, Transition, Switch } from '@headlessui/react';
 
 import { PencilAltIcon } from '@heroicons/react/outline';
@@ -13,7 +14,6 @@ export default function LicencePopover({ call }) {
   const [content, setContent] = React.useState();
   const [isOpen, setIsOpen] = useState(false);
   const [edit, setEdit] = React.useState(false);
-  // const [lock, setLock] = React.useState(false);
   const [preview, setPreview] = useState(true);
   const { t } = useTranslation();
   function closeModal() {
@@ -30,7 +30,6 @@ export default function LicencePopover({ call }) {
       copyright,
     }, actions: { setCopyRight },
   } = React.useContext(ProjectContext);
-  // eslint-disable-next-line no-unused-vars
   const openlicenceNav = () => {
     setName(copyright.id);
     setEdit(!copyright.locked);
@@ -38,8 +37,12 @@ export default function LicencePopover({ call }) {
       // eslint-disable-next-line import/no-dynamic-require
       const licensefile = require(`../../../lib/license/${copyright.title}.md`);
       setContent(licensefile.default);
-    } else {
+    } else if (copyright.licence) {
       setContent(copyright.licence);
+    } else {
+      // eslint-disable-next-line import/no-dynamic-require
+      const licensefile = require(`../../../lib/license/${copyright.title}.md`);
+      setContent(licensefile.default);
     }
   };
   const callback = (markdown) => {
@@ -206,3 +209,6 @@ export default function LicencePopover({ call }) {
     </>
   );
 }
+LicencePopover.propTypes = {
+  call: PropTypes.string,
+};

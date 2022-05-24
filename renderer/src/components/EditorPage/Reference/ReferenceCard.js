@@ -1,5 +1,6 @@
-/* eslint-disable react/prop-types */
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import {
     CardContent,
   } from 'translation-helps-rcl';
@@ -33,3 +34,16 @@ const ReferenceCard = ({
 );
 
 export default ReferenceCard;
+
+ReferenceCard.propTypes = {
+  items: PropTypes.array,
+  item: PropTypes.object,
+  filters: PropTypes.array,
+  markdownView: PropTypes.bool,
+  markdown: PropTypes.object,
+  languageId: PropTypes.string.isRequired,
+  selectedQuote: PropTypes.string,
+  setQuote: PropTypes.func,
+  viewMode: PropTypes.string,
+  isLoading: PropTypes.bool,
+};
