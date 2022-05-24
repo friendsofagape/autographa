@@ -13,10 +13,9 @@ import {
   InformationCircleIcon,
   DocumentTextIcon,
 } from '@heroicons/react/outline';
+import { useTranslation } from 'react-i18next';
 import LogoIcon from '@/icons/logo.svg';
 import packageInfo from '../../../../package.json';
-import { useTranslation } from 'react-i18next';
-
 
 export default function AboutModal(props) {
   const { openModal, open } = props;

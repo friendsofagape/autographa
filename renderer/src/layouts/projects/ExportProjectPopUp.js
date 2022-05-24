@@ -111,8 +111,11 @@ export default function ExportProjectPopUp(props) {
               <div className="relative h-full rounded shadow overflow-hidden bg-white">
                 <div className="flex justify-between items-center bg-secondary">
                   <div className="uppercase bg-secondary text-white py-2 px-2 text-xs tracking-widest leading-snug rounded-tl text-center">
-                    {t('label-export-project')}:
-                    {` ${project?.name}`}
+                    {t('label-export-project')}
+                    :
+                    {
+                    ` ${project?.name}`
+                    }
                   </div>
                   <button
                     onClick={close}

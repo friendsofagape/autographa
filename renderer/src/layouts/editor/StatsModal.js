@@ -12,8 +12,8 @@ import {
   DocumentTextIcon,
 } from '@heroicons/react/outline';
 
-import LogoIcon from '@/icons/logo.svg';
 import { useTranslation } from 'react-i18next';
+import LogoIcon from '@/icons/logo.svg';
 
 export default function StatsModal(props) {
   const { openModal, open } = props;

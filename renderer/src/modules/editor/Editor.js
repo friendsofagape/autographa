@@ -26,6 +26,7 @@ import * as localforage from 'localforage';
 import {
  Fragment, useContext, useEffect, useState,
 } from 'react';
+import { useTranslation } from 'react-i18next';
 import CustomNavigation from '@/components/EditorPage/Navigation/CustomNavigation';
 import BibleNavigation from '@/modules/biblenavigation/BibleNavigation';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
@@ -34,7 +35,6 @@ import { ProjectContext } from '@/components/context/ProjectContext';
 import { classNames } from '@/util/classNames';
 import FootNotesIcon from '@/icons/footnotes.svg';
 import CrossReferenceIcon from '@/icons/crossreference.svg';
-import { useTranslation } from 'react-i18next';
 // import styles from './Editor.module.css';
 const profile = ['Your Profile'];
 

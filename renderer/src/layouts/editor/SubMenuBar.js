@@ -20,6 +20,7 @@ import {
 } from '@heroicons/react/outline';
 
 import { BookmarkIcon } from '@heroicons/react/solid';
+import { useTranslation } from 'react-i18next';
 import ColumnsIcon from '@/icons/basil/Outline/Interface/Columns.svg';
 import ReplyIcon from '@/icons/basil/Outline/Communication/Reply.svg';
 import ForwardIcon from '@/icons/basil/Outline/Communication/Forward.svg';
@@ -35,7 +36,6 @@ import StatsModal from './StatsModal';
 import MenuDropdown from '../../components/MenuDropdown/MenuDropdown';
 import menuStyles from './MenuBar.module.css';
 import styles from './SubMenuBar.module.css';
-import { useTranslation } from 'react-i18next';
 
 const activate = () => {
   // console.log('rename');
