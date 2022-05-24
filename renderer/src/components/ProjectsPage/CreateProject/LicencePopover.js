@@ -5,8 +5,8 @@ import { Dialog, Transition, Switch } from '@headlessui/react';
 import { PencilAltIcon } from '@heroicons/react/outline';
 
 import { BlockEditable } from 'markdown-translatable/dist/components';
-import { ProjectContext } from '../../context/ProjectContext';
 import { useTranslation } from 'react-i18next';
+import { ProjectContext } from '../../context/ProjectContext';
 
 export default function LicencePopover({ call }) {
   const [name, setName] = React.useState();

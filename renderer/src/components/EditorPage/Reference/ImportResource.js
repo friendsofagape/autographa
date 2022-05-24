@@ -6,13 +6,12 @@ import React, {
 import { Dialog, Transition } from '@headlessui/react';
 import { FolderOpenIcon } from '@heroicons/react/outline';
 import * as localforage from 'localforage';
+import { useTranslation } from 'react-i18next';
 import CloseIcon from '@/illustrations/close-button-black.svg';
 import { SnackBar } from '@/components/SnackBar';
 import { isElectron } from '@/core/handleElectron';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import * as logger from '../../../logger';
-import { useTranslation } from 'react-i18next';
-
 
 export default function ImportResource({ open, closePopUp, setOpenResourcePopUp }) {
     const cancelButtonRef = useRef(null);

@@ -96,7 +96,7 @@ export default function SubMenuBar() {
   const openBookMarks = () => {
     setOpenSideBar(true);
   };
-
+  const { t } = useTranslation();
   const FileMenuItems = [
     // {
     //   itemname: 'Edit',
@@ -109,7 +109,7 @@ export default function SubMenuBar() {
     //   callback: tesfFunc1,
     // },
     {
-      itemname: 'Bookmarks',
+      itemname: t('label-bookmarks'),
       icon: <BookmarkIcon />,
       callback: openBookMarks,
     },
@@ -189,7 +189,6 @@ export default function SubMenuBar() {
   function openStatsModal(isOpen) {
     setOpenStats(isOpen);
   }
-  const { t } = useTranslation();
   return (
     <>
 
@@ -294,7 +293,7 @@ export default function SubMenuBar() {
         </div> */}
         <div className="w-2/5">
           <div className="flex justify-end">
-            <button aria-label="add-panels" title="layout" type="button" onClick={() => handleResource()} className={`group ${menuStyles.btn}`}>
+            <button aria-label="add-panels" title={t('tooltip-editor-layout')} type="button" onClick={() => handleResource()} className={`group ${menuStyles.btn}`}>
               <ColumnsIcon fill="currentColor" className="h-6 w-6" aria-hidden="true" />
               <span
                 aria-label="number-of-panels"

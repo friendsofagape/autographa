@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 // import 'tailwindcss/tailwind.css';
 import { ChevronRightIcon, UserIcon } from '@heroicons/react/solid';
-import { useTranslation } from 'react-i18next';
+// import { useTranslation } from 'react-i18next';
 
 import * as localForage from 'localforage';
 import { useRouter } from 'next/router';
@@ -21,18 +21,18 @@ import i18n from '../../translations/i18n';
 
 export default function Login() {
   const router = useRouter();
-  const { t } = useTranslation();
+  // const { t } = useTranslation();
   const online = {
     textfield: {
       count: [
-        { label: t('label-username'), type: 'text', name: 'identifier' },
-        { label: t('label-password'), type: 'password', name: 'password' },
+        { label: i18n.t('label-username'), type: 'text', name: 'identifier' },
+        { label: i18n.t('label-password'), type: 'password', name: 'password' },
       ],
     },
     viewForgot: true,
   };
   const offline = {
-    autocomplete: { count: [{ label: t('label-username') }] },
+    autocomplete: { count: [{ label: i18n.t('label-username') }] },
     viewForgot: false,
   };
   // eslint-disable-next-line no-unused-vars
@@ -185,7 +185,7 @@ export default function Login() {
                   </a>
                 </div>
               )}
-            <div className="text-3xl font-medium text-secondary text-center">Sign In</div>
+            <div className="text-3xl font-medium text-secondary text-center">{i18n.t('label-sign-in')}</div>
             {users.map((user, index) => {
               if (index < 5) {
                 return (
@@ -218,7 +218,7 @@ export default function Login() {
               login={handleSubmit}
               userlist={users}
               validation={error}
-              buttonname={t('btn-signin')}
+              buttonname={i18n.t('btn-signin')}
             />
             <div />
           </div>

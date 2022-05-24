@@ -164,7 +164,7 @@ export default function Editor({
           </div>
         </div> */}
           <div aria-label="editor-pane" className="h-4 flex flex-1 justify-center text-white text-xxs uppercase tracking-wider font-bold leading-3 truncate">
-            Editor  
+            {t('label-editor-pane')}
           </div>
           <div title={t('tooltip-editor-lock')} className="flex items-center">
             {scrollLock === true ? (

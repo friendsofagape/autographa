@@ -8,6 +8,7 @@ import React, {
 import * as localforage from 'localforage';
 import { Dialog, Transition } from '@headlessui/react';
 import { XIcon, PlusCircleIcon } from '@heroicons/react/solid';
+import { useTranslation } from 'react-i18next';
 import { isElectron } from '@/core/handleElectron';
 import { readRefMeta } from '@/core/reference/readRefMeta';
 import { readRefBurrito } from '@/core/reference/readRefBurrito';
@@ -19,7 +20,6 @@ import { SnackBar } from '@/components/SnackBar';
 import ResourceOption from './ResourceOption';
 import ImportResource from './ImportResource';
 import * as logger from '../../../logger';
-import { useTranslation } from 'react-i18next';
 
 function createData(name, language, owner) {
   return {
@@ -339,7 +339,7 @@ const ResourcesPopUp = ({
                           <StarIcon className="h-5 w-5" aria-hidden="true" />
                         </th>
                         <th className="px-5 py-3.5 font-bold text-gray-700 uppercase tracking-wider">
-                        {t('label-name')}
+                          {t('label-name')}
                         </th>
                         <th className="px-5 font-bold text-gray-700 uppercase tracking-wider">
                           {t('label-language')}

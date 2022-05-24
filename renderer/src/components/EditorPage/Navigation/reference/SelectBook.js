@@ -5,8 +5,8 @@ import { Disclosure, Transition } from '@headlessui/react';
 import React, { useState } from 'react';
 
 import PropTypes from 'prop-types';
-import styles from './SelectReference.module.css';
 import { useTranslation } from 'react-i18next';
+import styles from './SelectReference.module.css';
 
 export default function SelectBook({
   children,
@@ -63,7 +63,7 @@ export default function SelectBook({
       toggle();
     }
   }, [scope]);
-  const { t } = useTranslation()
+  const { t } = useTranslation();
   return (
     <>
       <div className="flex flex-row text-center bg-gray-800 text-white text-sm font-bold tracking-wide uppercase">
@@ -119,7 +119,7 @@ export default function SelectBook({
         {openNT && (
           <>
             <div className="p-2 text-center bg-gray-200 text-gray-700 text-xs font-semibold tracking-wide uppercase cursor-pointer">
-            {t('label-new-testament')}
+              {t('label-new-testament')}
             </div>
             <Transition
               show={openNT}

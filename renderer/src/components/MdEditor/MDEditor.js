@@ -9,9 +9,9 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
+import { useTranslation } from 'react-i18next';
 import * as logger from '../../logger';
 import { ProjectContext } from '../context/ProjectContext';
-import { useTranslation } from 'react-i18next';
 
 function a11yProps(index) {
   return {

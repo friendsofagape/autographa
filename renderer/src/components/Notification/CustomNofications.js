@@ -5,10 +5,10 @@ import {
 import React, { useContext, useEffect, useState } from 'react';
 import localforage from 'localforage';
 import moment from 'moment';
+import { t } from 'i18next';
 import Notifications from '@/modules/notifications/Notifications';
 import menuStyles from '../../layouts/editor/MenuBar.module.css';
 import { AutographaContext } from '../context/AutographaContext';
-import { t } from 'i18next';
 
 const CustomNofications = () => {
     const [notifications, setNotification] = useState();
@@ -69,7 +69,7 @@ const CustomNofications = () => {
           aria-label="notification-button"
           onClick={openSideBars}
           type="button"
-          title={t('label-notification')}
+          title={t('tooltip-editor-notification')}
           className={`group ${menuStyles.btn}`}
         >
           <BellIcon className="h-5 w-5" aria-hidden="true" />

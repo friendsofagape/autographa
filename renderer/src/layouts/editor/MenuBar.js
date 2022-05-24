@@ -173,20 +173,20 @@ export default function TopMenuBar() {
                     onClick={() => { handleFontSize('dec'); }}
                     role="button"
                     tabIndex="0"
-                    title="decrease font size"
+                    title={t('tooltip-editor-font-dec')}
                     className="h6 w-6 hover:text-black font-bold border-r border-gray-200 text-center"
                   >
-                    A
+                    {t('label-editor-font-char')}
                   </div>
                   <div
                     aria-label="increase-font"
                     className="h6 w-6 hover:text-black font-bold text-lg text-center"
                     onClick={() => { handleFontSize('inc'); }}
                     role="button"
-                    title="increase font size"
+                    title={t('tooltip-editor-font-inc')}
                     tabIndex="0"
                   >
-                    A
+                    {t('label-editor-font-char')}
                   </div>
 
                 </button>
