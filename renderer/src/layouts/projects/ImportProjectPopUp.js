@@ -42,6 +42,7 @@ export default function ImportProjectPopUp(props) {
     setValid(false);
     closePopUp(false);
     setShow(false);
+    setSbData({});
   }
 
   const openFileDialogSettingData = async () => {
@@ -67,7 +68,6 @@ export default function ImportProjectPopUp(props) {
   };
   const callImport = async (updateBurriot) => {
     modelClose();
-    setSbData({});
     logger.debug('ImportProjectPopUp.js', 'Inside callImport');
     await localforage.getItem('userProfile').then(async (value) => {
       const status = await importBurrito(folderPath, value.username,updateBurriot);
@@ -84,7 +84,6 @@ export default function ImportProjectPopUp(props) {
   };
 
   const checkBurritoVersion = () => {
-    console.log(sbData)
     logger.debug('ImportProjectPopUp.js', 'Checking the burrito version');
     if (burrito?.meta?.version !== sbData?.version) {
       setModel({
@@ -93,7 +92,6 @@ export default function ImportProjectPopUp(props) {
         confirmMessage: `Update the the burrito from ${sbData?.version} to ${burrito?.meta?.version}`,
         buttonName: 'Update',
       });
-      setSbData({});
     } else {
       callImport(false);
     }

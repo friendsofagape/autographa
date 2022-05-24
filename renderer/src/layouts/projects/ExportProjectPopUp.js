@@ -7,7 +7,6 @@ import PropTypes from 'prop-types';
 import { Dialog, Transition } from '@headlessui/react';
 import { FolderOpenIcon } from '@heroicons/react/outline';
 import * as localforage from 'localforage';
-import PropTypes from 'prop-types';
 import CloseIcon from '@/illustrations/close-button-black.svg';
 import updateTranslationSB from '@/core/burrito/updateTranslationSB';
 import { SnackBar } from '@/components/SnackBar';
