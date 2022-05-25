@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/solid';
 import localforage from 'localforage';
+import { useTranslation } from 'react-i18next';
 import { OT, NT } from '../../../lib/CanonSpecification';
 import CustomList from '@/modules/projects/CustomList';
 import { ProjectContext } from '../../context/ProjectContext';
@@ -53,6 +54,7 @@ export default function AdvancedSettingsDropdown({ call, project }) {
   const [bibleNav, setBibleNav] = React.useState(false);
   const [handleNav, setHandleNav] = React.useState();
   const [currentScope, setCurrentScope] = React.useState();
+  const { t } = useTranslation();
   const handleClick = () => {
     setIsShow(!isShow);
   };
@@ -67,17 +69,17 @@ export default function AdvancedSettingsDropdown({ call, project }) {
     logger.debug('AdvancedSettingsDropdown.js', 'In loadScope for loading a exact scope from burrito');
     const vals = Object.keys(project.type.flavorType.currentScope).map((key) => key);
     if (vals.length === 66) {
-      setcanonSpecification({ title: 'All Books', currentScope: vals });
-      setCurrentScope({ title: 'All Books', currentScope: vals });
+      setcanonSpecification({ title: t('label-all'), currentScope: vals });
+      setCurrentScope({ title: t('label-all'), currentScope: vals });
     } else if (vals.length === 39 && vals.every((val) => OT.includes(val))) {
-      setcanonSpecification({ title: 'Old Testament (OT)', currentScope: vals });
-      setCurrentScope({ title: 'Old Testament (OT)', currentScope: vals });
+      setcanonSpecification({ title: `${t('label-old-testament')} (OT)`, currentScope: vals });
+      setCurrentScope({ title: `${t('label-old-testament')} (OT)`, currentScope: vals });
     } else if (vals.length === 27 && vals.every((val) => NT.includes(val))) {
-      setcanonSpecification({ title: 'New Testament (NT)', currentScope: vals });
-      setCurrentScope({ title: 'New Testament (NT)', currentScope: vals });
+      setcanonSpecification({ title: `${t('label-new-testament')} (NT)`, currentScope: vals });
+      setCurrentScope({ title: `${t('label-new-testament')} (NT)`, currentScope: vals });
     } else {
-      setcanonSpecification({ title: 'Other', currentScope: vals });
-      setCurrentScope({ title: 'Other', currentScope: vals });
+      setcanonSpecification({ title: t('label-other'), currentScope: vals });
+      setCurrentScope({ title: t('label-other'), currentScope: vals });
     }
   };
   // selectNew variable is used to track whether its a new selection or loading from the list
@@ -161,7 +163,7 @@ export default function AdvancedSettingsDropdown({ call, project }) {
           type="button"
           id="open-advancesettings"
         >
-          <h3>Advanced Settings</h3>
+          <h3>{t('btn-advance-settings')}</h3>
           {isShow
             ? (
               <ChevronDownIcon
@@ -182,7 +184,7 @@ export default function AdvancedSettingsDropdown({ call, project }) {
               <div className="mt-8">
                 <div className="flex gap-4">
                   <h4 className="text-xs font-base mb-2 text-primary  tracking-wide leading-4  font-light">
-                    Scope
+                    {t('label-scope')}
                     <span className="text-error">*</span>
                   </h4>
                   <div>
@@ -208,7 +210,7 @@ export default function AdvancedSettingsDropdown({ call, project }) {
                       role="button"
                       tabIndex="0"
                     >
-                      All Books
+                      {t('label-all')}
                     </div>
                     <div
                       className={canonSpecification.title === 'Old Testament (OT)' ? 'bg-primary hover:bg-secondary text-white px-3 py-1 rounded-full cursor-pointer whitespace-nowrap' : 'bg-gray-200 hover:bg-primary hover:text-white px-3 py-1 rounded-full cursor-pointer whitespace-nowrap'}
@@ -216,7 +218,7 @@ export default function AdvancedSettingsDropdown({ call, project }) {
                       role="button"
                       tabIndex="0"
                     >
-                      Old Testament (OT)
+                      {`${t('label-old-testament')} (OT)`}
                     </div>
                     <div
                       className={canonSpecification.title === 'New Testament (NT)' ? 'bg-primary hover:bg-secondary text-white px-3 py-1 rounded-full cursor-pointer whitespace-nowrap' : 'bg-gray-200 hover:bg-primary hover:text-white px-3 py-1 rounded-full cursor-pointer whitespace-nowrap'}
@@ -225,7 +227,7 @@ export default function AdvancedSettingsDropdown({ call, project }) {
                       aria-label="new-testament"
                       tabIndex="0"
                     >
-                      New Testament (NT)
+                      {`${t('label-new-testament')} (NT)`}
                     </div>
                     <div
                       className={canonSpecification.title === 'Other' ? 'bg-primary hover:bg-secondary text-white px-3 py-1 rounded-full cursor-pointer whitespace-nowrap' : 'bg-gray-200 hover:bg-primary hover:text-white px-3 py-1 rounded-full cursor-pointer whitespace-nowrap'}
@@ -233,7 +235,7 @@ export default function AdvancedSettingsDropdown({ call, project }) {
                       role="button"
                       tabIndex="0"
                     >
-                      Custom
+                      {t('label-custom')}
                     </div>
                   </div>
                   {/* <button
@@ -252,7 +254,7 @@ export default function AdvancedSettingsDropdown({ call, project }) {
               </div>
 
               <h4 className="text-xs font-base mt-4 text-primary  tracking-wide leading-4  font-light">
-                Versification Scheme
+                {t('label-versification-scheme')}
                 <span className="text-error">*</span>
               </h4>
               <div className="mt-2">
@@ -260,7 +262,7 @@ export default function AdvancedSettingsDropdown({ call, project }) {
               </div>
 
               <h4 className="text-xs font-base mt-4 text-primary  tracking-wide leading-4  font-light">
-                Licence
+                {t('label-license')}
                 <span className="text-error">*</span>
               </h4>
               <div className="flex gap-3 mt-2">

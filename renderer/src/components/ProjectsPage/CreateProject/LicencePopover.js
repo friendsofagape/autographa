@@ -6,6 +6,7 @@ import { Dialog, Transition, Switch } from '@headlessui/react';
 import { PencilAltIcon } from '@heroicons/react/outline';
 
 import { BlockEditable } from 'markdown-translatable/dist/components';
+import { useTranslation } from 'react-i18next';
 import { ProjectContext } from '../../context/ProjectContext';
 
 export default function LicencePopover({ call }) {
@@ -14,7 +15,7 @@ export default function LicencePopover({ call }) {
   const [isOpen, setIsOpen] = useState(false);
   const [edit, setEdit] = React.useState(false);
   const [preview, setPreview] = useState(true);
-
+  const { t } = useTranslation();
   function closeModal() {
     setIsOpen(false);
     setPreview(true);
@@ -119,7 +120,7 @@ export default function LicencePopover({ call }) {
                 <div className="pb-4">
                   <h2 className="uppercase font-bold leading-5 tracking-widest ">new license</h2>
                   <Switch.Group as="div" className="flex items-center space-x-4">
-                    <Switch.Label>Preview</Switch.Label>
+                    <Switch.Label>{t('label-preview')}</Switch.Label>
                     <Switch
                       checked={preview}
                       onChange={setPreview}
@@ -186,7 +187,7 @@ export default function LicencePopover({ call }) {
                         className="mt-5 bg-success w-28 h-8 border-color-success rounded uppercase text-white text-xs shadow focus:outline-none"
                         onClick={() => { addLicence(); closeModal(); }}
                       >
-                        save
+                        {t('btn-save')}
                       </button>
                     )}
                   <button
@@ -195,7 +196,7 @@ export default function LicencePopover({ call }) {
                     className=" mt-5
                   bg-error w-28 h-8 border-color-error rounded uppercase shadow text-white text-xs tracking-wide leading-4 font-light focus:outline-none"
                   >
-                    cancel
+                    {t('btn-cancel')}
                   </button>
                 </div>
 

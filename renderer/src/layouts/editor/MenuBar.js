@@ -8,7 +8,9 @@ import {
   ArrowLeftIcon,
 } from '@heroicons/react/outline';
 import router from 'next/router';
+import { useTranslation } from 'react-i18next';
 import EditorSideBar from '@/modules/editorsidebar/EditorSideBar';
+// eslint-disable-next-line import/no-unresolved
 import { classNames } from '@/util/classNames';
 import LogoIcon from '@/icons/logo.svg';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
@@ -16,7 +18,28 @@ import { ProjectContext } from '@/components/context/ProjectContext';
 import { AuthenticationContext } from '@/components/Login/AuthenticationContextProvider';
 import styles from './MenuBar.module.css';
 
-const profile = ['Your Profile'];
+// const solutions = [
+//   {
+//     name: 'Translation',
+//     href: '##',
+//     icon: LayoutIcon,
+//   },
+//   {
+//     name: 'Audio',
+//     href: '##',
+//     icon: BullhornIcon,
+//   },
+//   {
+//     name: 'MT',
+//     href: '##',
+//     icon: ProcessorIcon,
+//   },
+//   {
+//     name: 'Check',
+//     href: '##',
+//     icon: CheckIcon,
+//   },
+// ];
 
 export default function TopMenuBar() {
   const {
@@ -38,6 +61,8 @@ export default function TopMenuBar() {
     },
   } = useContext(ReferenceContext);
   const userPic = true;
+  const { t } = useTranslation();
+  const profile = [t('label-your-profile')];
   const _projectnamewithId = selectedProject;
   const projectname = _projectnamewithId?.split('_');
   const { action: { logout } } = React.useContext(AuthenticationContext);
@@ -127,20 +152,20 @@ export default function TopMenuBar() {
                     onClick={() => { handleFontSize('dec'); }}
                     role="button"
                     tabIndex="0"
-                    title="decrease font size"
+                    title={t('tooltip-editor-font-dec')}
                     className="h6 w-6 hover:text-black font-bold border-r border-gray-200 text-center"
                   >
-                    A
+                    {t('label-editor-font-char')}
                   </div>
                   <div
                     aria-label="increase-font"
                     className="h6 w-6 hover:text-black font-bold text-lg text-center"
                     onClick={() => { handleFontSize('inc'); }}
                     role="button"
-                    title="increase font size"
+                    title={t('tooltip-editor-font-inc')}
                     tabIndex="0"
                   >
-                    A
+                    {t('label-editor-font-char')}
                   </div>
 
                 </button>
@@ -227,11 +252,11 @@ export default function TopMenuBar() {
                                 className={classNames(
                                       active ? 'bg-gray-100' : '',
                                       'block px-4 py-2 text-sm text-gray-700',
-                                    )}
-                              >
-                                Sign out
-                              </a>
                                 )}
+                              >
+                                {t('btn-signout')}
+                              </a>
+                            )}
                           </Menu.Item>
                         </Menu.Items>
                       </Transition>

@@ -8,6 +8,7 @@ import * as localforage from 'localforage';
 import {
   useContext, useEffect, useState,
 } from 'react';
+import { useTranslation } from 'react-i18next';
 import BibleNavigation from '@/modules/biblenavigation/BibleNavigation';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import { ProjectContext } from '@/components/context/ProjectContext';
@@ -119,7 +120,7 @@ export default function Editor({
     }
     updateBookMarksDB(bookmarksVerses);
   };
-
+  const { t } = useTranslation();
   return (
     <>
       <div className="flex flex-col bg-white border-b-2 border-secondary rounded-md shadow h-editor scrollbar-width">
@@ -131,9 +132,9 @@ export default function Editor({
           </div>
         </div> */}
           <div aria-label="editor-pane" className="h-4 flex flex-1 justify-center text-white text-xxs uppercase tracking-wider font-bold leading-3 truncate">
-            Editor
+            {t('label-editor-pane')}
           </div>
-          <div title="navigation lock/unlock" className="flex items-center">
+          <div title={t('tooltip-editor-lock')} className="flex items-center">
             {scrollLock === true ? (
               <div>
                 <LockOpenIcon aria-label="open-lock" onClick={() => setScrollLock(!scrollLock)} className="h-5 w-5 text-white" aria-hidden="true" />
@@ -148,7 +149,7 @@ export default function Editor({
               onClick={(event) => handleBookmarks(event)}
               role="button"
               tabIndex="0"
-              title="bookmark"
+              title={t('tooltip-editor-bookmark')}
               className="mx-1 px-2 focus:outline-none border-r-2 border-l-2 border-white border-opacity-10"
             >
               <BookmarkIcon className={`${bookMarked ? 'fill-current' : ''}  h-5 w-5 text-white`} aria-hidden="true" />

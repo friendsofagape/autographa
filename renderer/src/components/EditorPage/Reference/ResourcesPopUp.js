@@ -5,6 +5,7 @@ import React, {
 import PropTypes from 'prop-types';
 
 import * as localforage from 'localforage';
+import { useTranslation } from 'react-i18next';
 import { Dialog, Transition } from '@headlessui/react';
 import { XIcon, PlusCircleIcon } from '@heroicons/react/solid';
 import { isElectron } from '@/core/handleElectron';
@@ -211,7 +212,7 @@ const ResourcesPopUp = ({
       setSnackText('unable to fetch selected resource from the given url');
     }
   }
-
+  const { t } = useTranslation();
   useEffect(() => {
     readCustomResources({ resourceId: 'tq', translationData: translationQuestion });
     readCustomResources({ resourceId: 'twlm', translationData: translationWord });
@@ -221,9 +222,9 @@ const ResourcesPopUp = ({
   const callResource = (resource) => {
     logger.debug('ResourcesPopUp.js', 'Displaying resource table');
     const resources = [
-      { id: 'tn', title: 'Translation Notes', resource: translationNote },
-      { id: 'twlm', title: 'Translation Words', resource: translationWord },
-      { id: 'tq', title: 'Translation Questions', resource: translationQuestion }];
+      { id: 'tn', title: t('label-resource-tn'), resource: translationNote },
+      { id: 'twlm', title: t('label-resource-twlm'), resource: translationWord },
+      { id: 'tq', title: t('label-resource-tq'), resource: translationQuestion }];
     const reference = resources.find((r) => r.id === resource);
     return (
       reference
@@ -268,10 +269,10 @@ const ResourcesPopUp = ({
             <div>
               <input
                 type="text"
-                name="resource name"
+                name={t('label-resource-name')}
                 id=""
                 value={resourceName}
-                placeholder="Enter resource name"
+                placeholder={t('placeholder-resource-name')}
                 onChange={(e) => setResourceName(e.target.value)}
                 className="bg-white w-52 ml-2 lg:w-80 block rounded shadow-sm sm:text-sm focus:border-primary border-gray-300"
               />
@@ -279,10 +280,10 @@ const ResourcesPopUp = ({
             <div>
               <input
                 type="text"
-                name="location"
+                name={t('label-location')}
                 id=""
                 value={inputUrl}
-                placeholder="Enter door43 url"
+                placeholder={t('placeholder-door43-url')}
                 onChange={(e) => setInputUrl(e.target.value)}
                 className="bg-white w-52 ml-2 lg:w-80 block rounded shadow-sm sm:text-sm focus:border-primary border-gray-300"
               />
@@ -291,10 +292,10 @@ const ResourcesPopUp = ({
               <button
                 type="button"
                 onClick={() => handleCustomInput(inputUrl, resource, resourceName)}
-                title="load translation noted"
+                title={t('btn-load-tn')}
                 className="py-2 m-1 px-6 bg-primary rounded shadow text-white uppercase text-xs tracking-widest font-semibold"
               >
-                Import
+                {t('btn-import')}
               </button>
             </div>
           </div>
@@ -303,7 +304,7 @@ const ResourcesPopUp = ({
     }
     return (
       <button type="button" className="flex gap-6 mx-5 absolute bottom-5 right-0 justify-end z-10 outline-none">
-        <PlusCircleIcon title="Upload" className="h-10 w-10 m-5 text-primary" onClick={() => setShowInput(true)} aria-hidden="true" />
+        <PlusCircleIcon title={t('label-upload')} className="h-10 w-10 m-5 text-primary" onClick={() => setShowInput(true)} aria-hidden="true" />
       </button>
     );
   };
@@ -343,7 +344,7 @@ const ResourcesPopUp = ({
                 </button>
                 <div>
                   <div aria-label="resources-title" className="uppercase bg-secondary text-white p-2 text-xs tracking-widest leading-snug rounded-tl text-center">
-                    Resources
+                    {t('label-resource')}
                   </div>
                   <div style={{ width: 'max-content' }} className="relative bg-gray-100 px-3 py-3 h-full overflow-auto scrollbars-width">
                     {/* <input
@@ -358,7 +359,7 @@ const ResourcesPopUp = ({
                       <ResourceOption
                         imageUrl="/illustrations/bible-icon.svg"
                         id="bible"
-                        text="Bible"
+                        text={t('label-resource-bible')}
                         selectResource={selectResource}
                         setSelectResource={setSelectResource}
                         setTitle={setTitle}
@@ -368,7 +369,7 @@ const ResourcesPopUp = ({
                       <ResourceOption
                         imageUrl="/illustrations/dictionary-icon.svg"
                         id="tn"
-                        text="Translation Notes"
+                        text={t('label-resource-tn')}
                         translationData={translationNotes}
                         readCustomResources={readCustomResources}
                         selectResource={selectResource}
@@ -380,7 +381,7 @@ const ResourcesPopUp = ({
                       <ResourceOption
                         imageUrl="/illustrations/image-icon.svg"
                         id="twlm"
-                        text="Translation Words"
+                        text={t('label-resource-twlm')}
                         translationData={translationWords}
                         readCustomResources={readCustomResources}
                         selectResource={selectResource}
@@ -392,7 +393,7 @@ const ResourcesPopUp = ({
                       <ResourceOption
                         imageUrl="/illustrations/dialogue-icon.svg"
                         id="tq"
-                        text="Translation Questions"
+                        text={t('label-resource-tq')}
                         translationData={translationQuestions}
                         readCustomResources={readCustomResources}
                         selectResource={selectResource}
@@ -431,10 +432,10 @@ const ResourcesPopUp = ({
                               <StarIcon className="h-5 w-5" aria-hidden="true" />
                             </th>
                             <th className="px-5 py-3.5 font-bold text-gray-700 uppercase tracking-wider">
-                              Name
+                              {t('label-name')}
                             </th>
                             <th className="px-5 font-bold text-gray-700 uppercase tracking-wider">
-                              Language
+                              {t('label-language')}
                             </th>
                           </tr>
                         </thead>

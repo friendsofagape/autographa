@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import * as localForage from 'localforage';
+import { useTranslation } from 'react-i18next';
 import LogoIcon from '@/icons/logo.svg';
 import ProjectsIcon from '@/icons/projects.svg';
 import NewProjectIcon from '@/icons/new.svg';
@@ -8,6 +9,7 @@ import SyncIcon from '@/icons/sync.svg';
 
 export default function SideBar() {
   const [appMode, setAppMode] = useState();
+  const { t } = useTranslation();
   useEffect(() => {
     localForage.getItem('appMode')
       .then((value) => {
@@ -31,7 +33,7 @@ export default function SideBar() {
                 strokecurrent="none"
                 className="h-7 w-7 text-dark group-hover:text-white"
               />
-              <div className="text-xs mt-3 uppercase">projects</div>
+              <div className="text-xs mt-3 uppercase">{t('projects-page')}</div>
             </a>
           </Link>
         </li>
@@ -43,7 +45,7 @@ export default function SideBar() {
                 strokecurrent="none"
                 className="h-7 w-7 text-dark group-hover:text-white"
               />
-              <div className="text-xs mt-3 uppercase">new</div>
+              <div className="text-xs mt-3 uppercase">{t('btn-new')}</div>
             </a>
           </Link>
         </li>

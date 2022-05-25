@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import { Dialog, Transition } from '@headlessui/react';
 import { FolderOpenIcon } from '@heroicons/react/outline';
 import * as localforage from 'localforage';
+import { useTranslation } from 'react-i18next';
 import CloseIcon from '@/illustrations/close-button-black.svg';
 import updateTranslationSB from '@/core/burrito/updateTranslationSB';
 import { SnackBar } from '@/components/SnackBar';
@@ -105,6 +106,7 @@ export default function ExportProjectPopUp(props) {
       setOpenSnackBar(true);
     }
   };
+  const { t } = useTranslation();
   return (
     <>
       <Transition
@@ -131,8 +133,11 @@ export default function ExportProjectPopUp(props) {
               <div className="relative h-full rounded shadow overflow-hidden bg-white">
                 <div className="flex justify-between items-center bg-secondary">
                   <div className="uppercase bg-secondary text-white py-2 px-2 text-xs tracking-widest leading-snug rounded-tl text-center">
-                    Export Project:
-                    {` ${project?.name}`}
+                    {t('label-export-project')}
+                    :
+                    {
+                    ` ${project?.name}`
+                    }
                   </div>
                   <button
                     onClick={close}
@@ -148,7 +153,7 @@ export default function ExportProjectPopUp(props) {
                 <div className="relative w-full h-5/6">
                   <div className="p-8 overflow-auto w-full h-full no-scrollbars">
                     <div className="bg-white text-sm text-left tracking-wide">
-                      <h4 className="text-xs font-base mb-2 text-primary  tracking-wide leading-4  font-light">Export file path</h4>
+                      <h4 className="text-xs font-base mb-2 text-primary  tracking-wide leading-4  font-light">{t('label-export-file-path')}</h4>
                       <div className="flex items-center mb-4">
                         <input
                           type="text"
@@ -173,13 +178,13 @@ export default function ExportProjectPopUp(props) {
                     </div>
                     <div className="absolute bottom-0 right-0 left-0 bg-white">
                       <div className="flex gap-6 mx-5 justify-end">
-                        <button type="button" className="py-2 px-6 rounded shadow bg-error text-white uppercase text-xs tracking-widest font-semibold" onClick={close}>Cancel</button>
+                        <button type="button" className="py-2 px-6 rounded shadow bg-error text-white uppercase text-xs tracking-widest font-semibold" onClick={close}>{t('btn-cancel')}</button>
                         <button
                           onClick={() => exportBible()}
                           type="button"
                           className="py-2 px-7 rounded shadow bg-success text-white uppercase text-xs tracking-widest font-semibold"
                         >
-                          Export
+                          {t('btn-export')}
                         </button>
                       </div>
                     </div>

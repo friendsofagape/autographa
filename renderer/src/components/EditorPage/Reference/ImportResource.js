@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import { Dialog, Transition } from '@headlessui/react';
 import { FolderOpenIcon, InformationCircleIcon } from '@heroicons/react/outline';
 import * as localforage from 'localforage';
+import { useTranslation } from 'react-i18next';
 import CloseIcon from '@/illustrations/close-button-black.svg';
 import { SnackBar } from '@/components/SnackBar';
 import { isElectron } from '@/core/handleElectron';
@@ -24,6 +25,7 @@ export default function ImportResource({
     const [notify, setNotify] = React.useState();
     const [openModal, setOpenModal] = React.useState(false);
     const [dataForImport, setDataForImport] = React.useState();
+    const { t } = useTranslation();
     const {
       state: {
         folderPath,
@@ -130,7 +132,7 @@ export default function ImportResource({
                 <div className="relative h-full rounded shadow overflow-hidden bg-white">
                   <div className="flex justify-between items-center bg-secondary">
                     <div className="uppercase bg-secondary text-white py-2 px-2 text-xs tracking-widest leading-snug rounded-tl text-center">
-                      Import Resource
+                      {t('label-import-resource')}
                     </div>
                     <button
                       onClick={close}
@@ -149,7 +151,7 @@ export default function ImportResource({
                         <div className="flex gap-5 col-span-2">
                           <div>
                             <h4 className="text-xs font-base mb-2 text-primary  tracking-wide leading-4  font-light">
-                              Scripture Burrito Resource filepath
+                              {t('label-burrito-resource-path')}
                               <button title="Select a directory/project that has a Scripture Burrito file i.e. metadata.json file." type="button" disabled>
                                 <InformationCircleIcon className="h-6 w-6 text-primary" />
                               </button>
@@ -177,13 +179,13 @@ export default function ImportResource({
                         </div>
                       </div>
                       <div className="flex gap-6 mx-5 justify-end">
-                        <button type="button" className="py-2 px-6 rounded shadow bg-error text-white uppercase text-xs tracking-widest font-semibold" onClick={close}>Cancel</button>
+                        <button type="button" className="py-2 px-6 rounded shadow bg-error text-white uppercase text-xs tracking-widest font-semibold" onClick={close}>{t('btn-cancel')}</button>
                         <button
                           onClick={() => uploadRefBible()}
                           type="button"
                           className="py-2 px-7 rounded shadow bg-success text-white uppercase text-xs tracking-widest font-semibold"
                         >
-                          upload
+                          {t('btn-upload')}
                         </button>
                       </div>
                     </div>

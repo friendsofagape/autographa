@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 // import 'tailwindcss/tailwind.css';
 import { ChevronRightIcon, UserIcon } from '@heroicons/react/solid';
+// import { useTranslation } from 'react-i18next';
 
 import * as localForage from 'localforage';
 import { useRouter } from 'next/router';
@@ -16,20 +17,22 @@ import CustomLogin from './CustomLogin';
 import { AuthenticationContext } from './AuthenticationContextProvider';
 
 import { createUser, handleLogin } from '../../core/Login/handleLogin';
+import i18n from '../../translations/i18n';
 
 export default function Login() {
   const router = useRouter();
+  // const { t } = useTranslation();
   const online = {
     textfield: {
       count: [
-        { label: 'Username', type: 'text', name: 'identifier' },
-        { label: 'Password', type: 'password', name: 'password' },
+        { label: i18n.t('label-username'), type: 'text', name: 'identifier' },
+        { label: i18n.t('label-password'), type: 'password', name: 'password' },
       ],
     },
     viewForgot: true,
   };
   const offline = {
-    autocomplete: { count: [{ label: 'Username' }] },
+    autocomplete: { count: [{ label: i18n.t('label-username') }] },
     viewForgot: false,
   };
   const tab = React.useState(!isElectron());
@@ -178,7 +181,7 @@ export default function Login() {
                   </a>
                 </div>
               )}
-            <div className="text-3xl font-medium text-secondary text-center">Sign In</div>
+            <div className="text-3xl font-medium text-secondary text-center">{i18n.t('label-sign-in')}</div>
             {users.map((user, index) => {
               if (index < 5) {
                 return (
@@ -212,7 +215,7 @@ export default function Login() {
               login={handleSubmit}
               userlist={users}
               validation={error}
-              buttonname="SIGN IN"
+              buttonname={i18n.t('btn-signin')}
             />
             <div />
           </div>
