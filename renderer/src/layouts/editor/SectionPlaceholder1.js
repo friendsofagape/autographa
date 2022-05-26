@@ -6,6 +6,7 @@ import EditorSection from '@/layouts/editor/EditorSection';
 import ReferenceBible from '@/components/EditorPage/Reference/ReferenceBible/ReferenceBible';
 import { ProjectContext } from '@/components/context/ProjectContext';
 import CustomNavigation from '@/components/EditorPage/Navigation/CustomNavigation';
+import { saveReferenceResource } from '@/core/projects/updateAgSettings';
 
 const TranslationHelps = dynamic(
   () => import('@/components/EditorPage/Reference/TranslationHelps'),
@@ -143,19 +144,21 @@ const SectionPlaceholder1 = () => {
       }
     }).then(() => {
       if (refsHistory[0]) {
-      setLayout(refsHistory[0].length);
-      if (rows.length > 1) {
-        setLoadResource1(true);
-        setLoadResource2(true);
-        setOpenResource1(false);
-        setOpenResource2(false);
+        let refs = refsHistory[0];
+        refs = refs.filter((x) => x != null);
+        setLayout(refs.length);
+        if (rows.length > 1) {
+          setLoadResource1(true);
+          setLoadResource2(true);
+          setOpenResource1(false);
+          setOpenResource2(false);
+        }
+        if (rows.length === 1) {
+          setLoadResource1(true);
+          setOpenResource1(false);
+        }
+        setSectionNum(rows.length);
       }
-      if (rows.length === 1) {
-        setLoadResource1(true);
-        setOpenResource1(false);
-      }
-      setSectionNum(rows.length);
-    }
     });
   });
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -181,12 +184,11 @@ const SectionPlaceholder1 = () => {
               if (resources.identification.name.en === _projectname[0]) {
                 refsHistory.push(resources.project.textTranslation.refResources);
                 if (sectionNum === 1 || sectionNum === 0) {
-                  if (openResource1
-                    && openResource2) {
+                  if (openResource1 && openResource2) {
                       resources.project.textTranslation.refResources.splice(0, 1);
                     }
                 }
-                if (sectionNum === 1) {
+                if (sectionNum === 1 && layout > 0 && !(openResource1 && openResource2)) {
                   resources.project.textTranslation.refResources[0] = {
                       1: {
                         resouceId: referenceColumnOneData1?.selectedResource,
@@ -196,7 +198,7 @@ const SectionPlaceholder1 = () => {
                       },
                     };
                 }
-                if (sectionNum === 2) {
+                if (sectionNum === 2 && layout > 0) {
                   if (referenceColumnOneData1.refName !== undefined) {
                     resources.project.textTranslation.refResources[0] = {
                     1: {
@@ -214,18 +216,26 @@ const SectionPlaceholder1 = () => {
                   };
                 }
               }
+              // if (layout === 0 && openResource1 && openResource2 && openResource3 && openResource4) {
+              //   console.log('In sec 1', layout, openResource1, openResource2);
+              //   resources.project.textTranslation.refResources = [];
+              // }
               }
             },
           );
         },
       );
-    localforage.setItem('projectmeta', value);
+      if (openResource1 || openResource2) {
+        localforage.setItem('projectmeta', value).then(() => {
+          saveReferenceResource();
+        });
+      }
     });
   });
   }, [openResource1, openResource2, referenceColumnOneData1?.languageId,
     referenceColumnOneData1.refName, referenceColumnOneData1?.selectedResource,
     referenceColumnOneData2?.languageId, referenceColumnOneData2?.refName,
-    referenceColumnOneData2?.selectedResource, sectionNum]);
+    referenceColumnOneData2?.selectedResource, sectionNum, layout]);
 
   const CustomNavigation1 = (
     <CustomNavigation

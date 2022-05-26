@@ -6,7 +6,7 @@ import EditorSection from '@/layouts/editor/EditorSection';
 import ReferenceBible from '@/components/EditorPage/Reference/ReferenceBible/ReferenceBible';
 import { ProjectContext } from '@/components/context/ProjectContext';
 import CustomNavigation from '@/components/EditorPage/Navigation/CustomNavigation';
-import { updateAgSettings } from '@/core/projects/updateAgSettings';
+import { saveReferenceResource } from '@/core/projects/updateAgSettings';
 
 const TranslationHelps = dynamic(
   () => import('@/components/EditorPage/Reference/TranslationHelps'),
@@ -100,7 +100,7 @@ const SectionPlaceholder2 = () => {
         ([, _value]) => {
           Object.entries(_value).forEach(
             ([, resources]) => {
-              if (resources.project?.textTranslation?.projectName === _projectname[0]) {
+              if (resources.identification.name.en === _projectname[0]) {
                 refsHistory.push(resources.project.textTranslation.refResources);
               }
             },
@@ -115,21 +115,23 @@ const SectionPlaceholder2 = () => {
             Object.entries(_value).forEach(
               ([_rownum, _value]) => {
                 rows.push(_rownum);
-                if (_rownum === '1') {
-                    setReferenceColumnTwoData1({
-                      languageId: _value?.language,
-                      selectedResource: _value?.resouceId,
-                      refName: _value?.name,
-                      header: _value?.name,
-                    });
-                }
-                if (_rownum === '2') {
-                    setReferenceColumnTwoData2({
-                      languageId: _value?.language,
-                      selectedResource: _value?.resouceId,
-                      refName: _value?.name,
-                      header: _value?.name,
-                    });
+                if (openResource3 === false || openResource4 === false) {
+                  if (_rownum === '1') {
+                      setReferenceColumnTwoData1({
+                        languageId: _value?.language,
+                        selectedResource: _value?.resouceId,
+                        refName: _value?.name,
+                        header: _value?.name,
+                      });
+                  }
+                  if (_rownum === '2') {
+                      setReferenceColumnTwoData2({
+                        languageId: _value?.language,
+                        selectedResource: _value?.resouceId,
+                        refName: _value?.name,
+                        header: _value?.name,
+                      });
+                  }
                 }
               },
             );
@@ -185,58 +187,53 @@ const SectionPlaceholder2 = () => {
                       resources.project.textTranslation.refResources.splice(1, 1);
                     }
                 }
-                if (sectionNum === 1) {
-                  if (openResource3 === false
-                    || openResource4 === false) {
+                if (sectionNum === 1 && layout > 1 && !(openResource3 && openResource4)) {
                       resources.project.textTranslation.refResources[1] = {
                       1: {
                         resouceId: referenceColumnTwoData1?.selectedResource,
                         language: referenceColumnTwoData1?.languageId,
                         name: referenceColumnTwoData1?.refName,
-                        navigation: { book: '1TI', chapter: '1' },
+                        navigation: { book: '1TI', chapter: '2' },
                       },
-                    };
-                  }
+                  };
                 }
-                if (sectionNum === 2) {
+                if (sectionNum === 2 && layout > 1) {
+                  if (referenceColumnTwoData1.refName !== undefined) {
                   resources.project.textTranslation.refResources[1] = {
                     1: {
                       resouceId: referenceColumnTwoData1?.selectedResource,
                       language: referenceColumnTwoData1?.languageId,
                       name: referenceColumnTwoData1?.refName,
-                      navigation: { book: '1TI', chapter: '1' },
+                      navigation: { book: '1TI', chapter: '2' },
                     },
                     2: {
                       resouceId: referenceColumnTwoData2?.selectedResource,
                       language: referenceColumnTwoData2?.languageId,
                       name: referenceColumnTwoData2?.refName,
-                      navigation: { book: '1TI', chapter: '1' },
+                      navigation: { book: '1TI', chapter: '2' },
                     },
                   };
+                }
+                }
+                if (layout === 0 && openResource1 && openResource2 && openResource3 && openResource4) {
+                  resources.project.textTranslation.refResources = [];
                 }
               }
             },
           );
         },
       );
-    localforage.setItem('projectmeta', value).then(() => {
-      Object.entries(value).forEach(
-        ([, _value]) => {
-          Object.entries(_value).forEach(
-            ([, resources]) => {
-              if (resources.identification.name.en === _projectname[0]) {
-                localforage.getItem('userProfile').then((value) => {
-                  updateAgSettings(value?.username, projectName, resources);
-                });
-              }
-            },
-          );
-          },
-      );
-    });
-    });
+      if (openResource3 || openResource4) {
+        localforage.setItem('projectmeta', value).then(() => {
+          saveReferenceResource();
+        });
+      }
   });
   });
+  }, [openResource1, openResource2, openResource3, openResource4, referenceColumnTwoData1?.languageId,
+    referenceColumnTwoData1.refName, referenceColumnTwoData1?.selectedResource,
+    referenceColumnTwoData2?.languageId, referenceColumnTwoData2?.refName,
+    referenceColumnTwoData2?.selectedResource, sectionNum, layout]);
 
   const CustomNavigation1 = (
     <CustomNavigation
