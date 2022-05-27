@@ -57,6 +57,9 @@ export default function SubMenuBar() {
     },
   } = useContext(ReferenceContext);
   const {
+    states: {
+      editorSave,
+    },
     actions: {
       setOpenSideBar,
     },
@@ -241,6 +244,13 @@ export default function SubMenuBar() {
         </div> */}
         <div className="w-2/5">
           <div className="flex justify-end">
+
+            <div className={`group ${menuStyles.saved}`}>
+              <span>
+                {editorSave}
+              </span>
+            </div>
+
             <button aria-label="add-panels" title="layout" type="button" onClick={() => handleResource()} className={`group ${menuStyles.btn}`}>
               <ColumnsIcon fill="currentColor" className="h-6 w-6" aria-hidden="true" />
               <span
