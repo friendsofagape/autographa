@@ -6,6 +6,7 @@ import EditorSection from '@/layouts/editor/EditorSection';
 import ReferenceBible from '@/components/EditorPage/Reference/ReferenceBible/ReferenceBible';
 import { ProjectContext } from '@/components/context/ProjectContext';
 import CustomNavigation from '@/components/EditorPage/Navigation/CustomNavigation';
+import { saveReferenceResource } from '@/core/projects/updateAgSettings';
 
 const TranslationHelps = dynamic(
   () => import('@/components/EditorPage/Reference/TranslationHelps'),
@@ -54,6 +55,8 @@ const SectionPlaceholder1 = () => {
   } = useContext(ProjectContext);
   const [sectionNum, setSectionNum] = useState(0);
   const [hideAddition, setHideAddition] = useState(true);
+  const [removingSection, setRemovingSection] = useState();
+  const [addingSection, setAddingSection] = useState();
   const [naviagation1, setNavigation1] = useState({
     bookId,
     chapter,
@@ -124,6 +127,7 @@ const SectionPlaceholder1 = () => {
                         selectedResource: _value?.resouceId,
                         refName: _value?.name,
                         header: _value?.name,
+                        owner: _value?.owner,
                       });
                   }
                   if (_rownum === '2') {
@@ -132,6 +136,7 @@ const SectionPlaceholder1 = () => {
                         selectedResource: _value?.resouceId,
                         refName: _value?.name,
                         header: _value?.name,
+                        owner: _value?.owner,
                       });
                   }
                 }
@@ -143,19 +148,21 @@ const SectionPlaceholder1 = () => {
       }
     }).then(() => {
       if (refsHistory[0]) {
-      setLayout(refsHistory[0].length);
-      if (rows.length > 1) {
-        setLoadResource1(true);
-        setLoadResource2(true);
-        setOpenResource1(false);
-        setOpenResource2(false);
+        let refs = refsHistory[0];
+        refs = refs.filter((x) => x != null);
+        setLayout(refs.length);
+        if (rows.length > 1) {
+          setLoadResource1(true);
+          setLoadResource2(true);
+          setOpenResource1(false);
+          setOpenResource2(false);
+        }
+        if (rows.length === 1) {
+          setLoadResource1(true);
+          setOpenResource1(false);
+        }
+        setSectionNum(rows.length);
       }
-      if (rows.length === 1) {
-        setLoadResource1(true);
-        setOpenResource1(false);
-      }
-      setSectionNum(rows.length);
-    }
     });
   });
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -181,34 +188,36 @@ const SectionPlaceholder1 = () => {
               if (resources.identification.name.en === _projectname[0]) {
                 refsHistory.push(resources.project.textTranslation.refResources);
                 if (sectionNum === 1 || sectionNum === 0) {
-                  if (openResource1
-                    && openResource2) {
+                  if (openResource1 && openResource2) {
                       resources.project.textTranslation.refResources.splice(0, 1);
                     }
                 }
-                if (sectionNum === 1) {
+                if (sectionNum === 1 && layout > 0 && !(openResource1 && openResource2)) {
                   resources.project.textTranslation.refResources[0] = {
                       1: {
                         resouceId: referenceColumnOneData1?.selectedResource,
                         language: referenceColumnOneData1?.languageId,
                         name: referenceColumnOneData1?.refName,
+                        owner: referenceColumnOneData1?.owner,
                         navigation: { book: '1TI', chapter: '1' },
                       },
                     };
                 }
-                if (sectionNum === 2) {
+                if (sectionNum === 2 && layout > 0) {
                   if (referenceColumnOneData1.refName !== undefined) {
                     resources.project.textTranslation.refResources[0] = {
                     1: {
                       resouceId: referenceColumnOneData1?.selectedResource,
                       language: referenceColumnOneData1?.languageId,
                       name: referenceColumnOneData1?.refName,
+                      owner: referenceColumnOneData1?.owner,
                       navigation: { book: '1TI', chapter: '1' },
                     },
                     2: {
                       resouceId: referenceColumnOneData2?.selectedResource,
                       language: referenceColumnOneData2?.languageId,
                       name: referenceColumnOneData2?.refName,
+                      owner: referenceColumnOneData2?.owner,
                       navigation: { book: '1TI', chapter: '1' },
                     },
                   };
@@ -219,13 +228,19 @@ const SectionPlaceholder1 = () => {
           );
         },
       );
-    localforage.setItem('projectmeta', value);
+      if (!openResource1 || !openResource2 || addingSection <= 2 || removingSection <= 2) {
+        setRemovingSection();
+        setAddingSection();
+        localforage.setItem('projectmeta', value).then(() => {
+          saveReferenceResource();
+        });
+      }
     });
   });
-  }, [openResource1, openResource2, referenceColumnOneData1?.languageId,
-    referenceColumnOneData1.refName, referenceColumnOneData1?.selectedResource,
-    referenceColumnOneData2?.languageId, referenceColumnOneData2?.refName,
-    referenceColumnOneData2?.selectedResource, sectionNum]);
+  }, [openResource1, openResource2, referenceColumnOneData1?.languageId, referenceColumnOneData1.refName,
+    referenceColumnOneData1?.selectedResource, referenceColumnOneData2?.languageId, referenceColumnOneData2?.refName,
+    referenceColumnOneData2?.selectedResource, sectionNum, layout, referenceColumnOneData1,
+    referenceColumnOneData2?.owner, removingSection, addingSection]);
 
   const CustomNavigation1 = (
     <CustomNavigation
@@ -268,6 +283,8 @@ const SectionPlaceholder1 = () => {
                 openResource={openResource1}
                 setOpenResource1={setOpenResource1}
                 setOpenResource2={setOpenResource2}
+                setRemovingSection={setRemovingSection}
+                setAddingSection={setAddingSection}
               >
                 {
               (loadResource1 === true) && (
@@ -307,6 +324,8 @@ const SectionPlaceholder1 = () => {
                 setOpenResource1={setOpenResource1}
                 setOpenResource2={setOpenResource2}
                 CustomNavigation={CustomNavigation2}
+                setRemovingSection={setRemovingSection}
+                setAddingSection={setAddingSection}
               >
                 {
               (loadResource2 === true) && (

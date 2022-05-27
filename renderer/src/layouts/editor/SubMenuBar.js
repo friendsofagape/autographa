@@ -100,8 +100,14 @@ export default function SubMenuBar() {
     ];
 
   const handleResource = () => {
-    setOpenResource1(false);
-    setOpenResource3(false);
+    if (layout === 0) {
+      setOpenResource1(false);
+    }
+    if (layout === 1) {
+      setOpenResource1(false);
+      setOpenResource3(false);
+    }
+
     if (layout < 3) {
       setLayout(layout + 1);
       setRow(row + 1);
