@@ -19,6 +19,7 @@ import { ReferenceContext } from '@/components/context/ReferenceContext';
 import { ProjectContext } from '@/components/context/ProjectContext';
 import Editor from '@/modules/editor/Editor';
 import LoadingScreen from '@/components/Loading/LoadingScreen';
+import SaveIndicator from '@/components/Loading/SaveIndicator';
 import EmptyScreen from '@/components/Loading/EmptySrceen';
 import { readRefMeta } from '../../../core/reference/readRefMeta';
 import { readRefBurrito } from '../../../core/reference/readRefBurrito';
@@ -46,6 +47,9 @@ const UsfmEditor = () => {
   const {
     states: {
       scrollLock,
+    },
+    actions: {
+      setEditorSave,
     },
   } = useContext(ProjectContext);
 
@@ -332,6 +336,13 @@ const UsfmEditor = () => {
     // }
   // }, []);
 
+  const autoSaveIndication = () => {
+    setEditorSave(<SaveIndicator />);
+    setTimeout(() => {
+      setEditorSave('Saved');
+  }, 1000);
+  };
+
   const handleEditorChange = (usfm) => {
     if (isElectron()) {
       localforage.getItem('userProfile').then((value) => {
@@ -377,6 +388,7 @@ const UsfmEditor = () => {
                                       data: usfm,
                                     });
                                     setUsfmData(usfm);
+                                    autoSaveIndication();
                                 }, 2000);
                               }
                             }
