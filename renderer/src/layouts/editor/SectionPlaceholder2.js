@@ -31,7 +31,8 @@ const SectionPlaceholder2 = () => {
   });
   const [loadResource3, setLoadResource3] = useState(false);
   const [loadResource4, setLoadResource4] = useState(false);
-
+  const [removingSection, setRemovingSection] = useState();
+  const [addingSection, setAddingSection] = useState();
   const {
     state: {
       layout,
@@ -115,13 +116,14 @@ const SectionPlaceholder2 = () => {
             Object.entries(_value).forEach(
               ([_rownum, _value]) => {
                 rows.push(_rownum);
-                if (openResource3 === false || openResource4 === false) {
+                // if (openResource3 === false || openResource4 === false) {
                   if (_rownum === '1') {
                       setReferenceColumnTwoData1({
                         languageId: _value?.language,
                         selectedResource: _value?.resouceId,
                         refName: _value?.name,
                         header: _value?.name,
+                        owner: _value?.owner,
                       });
                   }
                   if (_rownum === '2') {
@@ -130,9 +132,10 @@ const SectionPlaceholder2 = () => {
                         selectedResource: _value?.resouceId,
                         refName: _value?.name,
                         header: _value?.name,
+                        owner: _value?.owner,
                       });
                   }
-                }
+                // }
               },
             );
           }
@@ -193,6 +196,7 @@ const SectionPlaceholder2 = () => {
                         resouceId: referenceColumnTwoData1?.selectedResource,
                         language: referenceColumnTwoData1?.languageId,
                         name: referenceColumnTwoData1?.refName,
+                        owner: referenceColumnTwoData1?.owner,
                         navigation: { book: '1TI', chapter: '2' },
                       },
                   };
@@ -204,12 +208,14 @@ const SectionPlaceholder2 = () => {
                       resouceId: referenceColumnTwoData1?.selectedResource,
                       language: referenceColumnTwoData1?.languageId,
                       name: referenceColumnTwoData1?.refName,
+                      owner: referenceColumnTwoData1?.owner,
                       navigation: { book: '1TI', chapter: '2' },
                     },
                     2: {
                       resouceId: referenceColumnTwoData2?.selectedResource,
                       language: referenceColumnTwoData2?.languageId,
                       name: referenceColumnTwoData2?.refName,
+                      owner: referenceColumnTwoData2?.owner,
                       navigation: { book: '1TI', chapter: '2' },
                     },
                   };
@@ -223,7 +229,9 @@ const SectionPlaceholder2 = () => {
           );
         },
       );
-      if (openResource3 || openResource4) {
+      if (addingSection >= 3 || !openResource3 || !openResource4 || removingSection >= 3) {
+        setRemovingSection();
+        setAddingSection();
         localforage.setItem('projectmeta', value).then(() => {
           saveReferenceResource();
         });
@@ -231,9 +239,9 @@ const SectionPlaceholder2 = () => {
   });
   });
   }, [openResource1, openResource2, openResource3, openResource4, referenceColumnTwoData1?.languageId,
-    referenceColumnTwoData1.refName, referenceColumnTwoData1?.selectedResource,
-    referenceColumnTwoData2?.languageId, referenceColumnTwoData2?.refName,
-    referenceColumnTwoData2?.selectedResource, sectionNum, layout]);
+    referenceColumnTwoData1.refName, referenceColumnTwoData1?.selectedResource, referenceColumnTwoData2?.languageId,
+    referenceColumnTwoData2?.refName, referenceColumnTwoData2?.selectedResource, sectionNum, layout,
+    referenceColumnTwoData1?.owner, referenceColumnTwoData2?.owner, removingSection, addingSection]);
 
   const CustomNavigation1 = (
     <CustomNavigation
@@ -275,6 +283,8 @@ const SectionPlaceholder2 = () => {
             setOpenResource3={setOpenResource3}
             setOpenResource4={setOpenResource4}
             CustomNavigation={CustomNavigation1}
+            setRemovingSection={setRemovingSection}
+            setAddingSection={setAddingSection}
           >
             {
               (loadResource3 === true) && (
@@ -313,6 +323,8 @@ const SectionPlaceholder2 = () => {
             setOpenResource3={setOpenResource3}
             setOpenResource4={setOpenResource4}
             CustomNavigation={CustomNavigation2}
+            setRemovingSection={setRemovingSection}
+            setAddingSection={setAddingSection}
           >
             {
               (loadResource4 === true) && (
