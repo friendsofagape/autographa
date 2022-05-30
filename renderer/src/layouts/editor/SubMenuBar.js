@@ -58,6 +58,9 @@ export default function SubMenuBar() {
     },
   } = useContext(ReferenceContext);
   const {
+    states: {
+      editorSave,
+    },
     actions: {
       setOpenSideBar,
     },
@@ -101,8 +104,14 @@ export default function SubMenuBar() {
     ];
 
   const handleResource = () => {
-    setOpenResource1(false);
-    setOpenResource3(false);
+    if (layout === 0) {
+      setOpenResource1(false);
+    }
+    if (layout === 1) {
+      setOpenResource1(false);
+      setOpenResource3(false);
+    }
+
     if (layout < 3) {
       setLayout(layout + 1);
       setRow(row + 1);
@@ -242,6 +251,13 @@ export default function SubMenuBar() {
         </div> */}
         <div className="w-2/5">
           <div className="flex justify-end">
+            
+            <div className={`group ${menuStyles.saved}`}>
+              <span>
+                {editorSave}
+              </span>
+            </div>
+
             <button aria-label="add-panels" title={t('tooltip-editor-layout')} type="button" onClick={() => handleResource()} className={`group ${menuStyles.btn}`}>
               <ColumnsIcon fill="currentColor" className="h-6 w-6" aria-hidden="true" />
               <span

@@ -17,6 +17,7 @@ import { ReferenceContext } from '@/components/context/ReferenceContext';
 import { ProjectContext } from '@/components/context/ProjectContext';
 import { AuthenticationContext } from '@/components/Login/AuthenticationContextProvider';
 import styles from './MenuBar.module.css';
+import { saveReferenceResource } from '@/core/projects/updateAgSettings';
 
 // const solutions = [
 //   {
@@ -78,7 +79,8 @@ export default function TopMenuBar() {
       setFontsize(fontSize + 0.2);
     }
   };
-  const goToProjectPage = () => {
+  const goToProjectPage = async () => {
+    await saveReferenceResource();
     router.push('/projects');
   };
   return (

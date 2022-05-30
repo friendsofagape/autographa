@@ -11,6 +11,7 @@ const advanceSettings = require('../../lib/AdvanceSettings.json');
 export const ProjectContext = React.createContext();
 
 const ProjectContextProvider = ({ children }) => {
+    const [editorSave, setEditorSave] = React.useState('');
     const [drawer, setDrawer] = React.useState(false);
     const [scrollLock, setScrollLock] = React.useState(false);
     const [sideTabTitle, setSideTabTitle] = React.useState('New');
@@ -260,6 +261,7 @@ const ProjectContextProvider = ({ children }) => {
             scrollLock,
             username,
             openSideBar,
+            editorSave,
         },
         actions: {
             setDrawer,
@@ -278,6 +280,7 @@ const ProjectContextProvider = ({ children }) => {
             setNewProjectFields,
             setImportedFiles,
             setLanguages,
+            setEditorSave,
         },
     };
 

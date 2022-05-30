@@ -29,6 +29,8 @@ export default function EditorSection({
   setSectionNum,
   hideAddition,
   CustomNavigation,
+  setRemovingSection,
+  setAddingSection,
 }) {
   const [openResourcePopUp, setOpenResourcePopUp] = useState(false);
   const [openModal, setOpenModal] = useState(false);
@@ -58,6 +60,7 @@ export default function EditorSection({
   }
 
   const removeSection = () => {
+    setRemovingSection(row);
     switch (row) {
       case '1':
         setOpenResource1(true);
@@ -95,7 +98,9 @@ export default function EditorSection({
       if (layout > 1) { setLayout(1); }
       //  else if (layout === 1) { setLayout(0); }
     }
-
+    if ((openResource1 === false || openResource2 === false) && (openResource3 === false || openResource4 === false)) {
+      setLayout(2);
+    }
     if (openResource1 === true && openResource2 === true
       && openResource3 === true && openResource4 === true) {
       if (layout === 1) {
@@ -116,6 +121,7 @@ export default function EditorSection({
         setSectionNum(sectionNum + 1);
       }
     }
+    setAddingSection(row);
     switch (row) {
       case '1':
         setOpenResource2(false);
@@ -283,4 +289,6 @@ EditorSection.propTypes = {
   setSectionNum: PropTypes.func,
   hideAddition: PropTypes.bool,
   CustomNavigation: PropTypes.object,
+  setRemovingSection: PropTypes.func,
+  setAddingSection: PropTypes.func,
 };
