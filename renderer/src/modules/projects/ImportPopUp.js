@@ -2,6 +2,7 @@ import React, {
   useRef, Fragment, useContext, useEffect,
 } from 'react';
 import PropTypes from 'prop-types';
+import { useTranslation } from 'react-i18next';
 import { Dialog, Transition } from '@headlessui/react';
 import { DocumentTextIcon, FolderOpenIcon } from '@heroicons/react/outline';
 import { SnackBar } from '@/components/SnackBar';
@@ -26,6 +27,7 @@ export default function ImportPopUp(props) {
   const [snackText, setSnackText] = React.useState('');
   const [notify, setNotify] = React.useState();
   const [show, setShow] = React.useState(false);
+  const { t } = useTranslation();
   const {
     actions: {
       setImportedFiles,
@@ -94,7 +96,7 @@ export default function ImportPopUp(props) {
       } else {
         logger.warn('ImportPopUp.js', 'Invalid USFM file.');
         setNotify('failure');
-        setSnackText('Invalid USFM file.');
+        setSnackText(t('dynamic-msg-invalid-usfm-file'));
         setOpenSnackBar(true);
       }
     });
@@ -112,7 +114,7 @@ export default function ImportPopUp(props) {
       logger.debug('ImportPopUp.js', 'Invalid Path');
       setValid(true);
       setNotify('failure');
-      setSnackText('Invalid Path');
+      setSnackText(t('dynamic-msg-invalid-path'));
       setOpenSnackBar(true);
     }
   };
@@ -150,7 +152,7 @@ export default function ImportPopUp(props) {
 
                 <div className="flex justify-between items-center bg-secondary">
                   <div className="uppercase bg-secondary text-white py-2 px-5 text-xs tracking-widest leading-snug rounded-tl text-center">
-                    Import Book
+                    {t('label-import-book')}
                   </div>
                   <button
                     onClick={close}
@@ -210,21 +212,21 @@ export default function ImportPopUp(props) {
                       onClick={close}
                       className="py-2 px-6 rounded shadow bg-error text-white uppercase text-xs tracking-widest font-semibold"
                     >
-                      Cancel
+                      {t('btn-cancel')}
                     </button>
                     <button
                       type="button"
                       onClick={clear}
                       className="py-2 px-6 rounded shadow bg-primary text-white uppercase text-xs tracking-widest font-semibold"
                     >
-                      Clear
+                      {t('btn-clear')}
                     </button>
                     <button
                       type="button"
                       className="py-2 px-7 rounded shadow bg-success text-white uppercase text-xs tracking-widest font-semibold"
                       onClick={() => importProject()}
                     >
-                      Import
+                      {t('btn-import')}
                     </button>
                   </div>
                 </div>

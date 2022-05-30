@@ -15,6 +15,7 @@ import {
   //  withChapterSelection,
 } from 'usfm-editor';
 import moment from 'moment';
+import { useTranslation } from 'react-i18next';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import { ProjectContext } from '@/components/context/ProjectContext';
 import Editor from '@/modules/editor/Editor';
@@ -42,8 +43,8 @@ const UsfmEditor = () => {
   // const [identification, setIdentification] = useState();
   // const [goToVersePropValue, setGoToVersePropValue] = useState({});
   // const projectName = 'Spanish Pro';
-
   const supportedBooks = null; // if empty array or null then all books available
+  const { t } = useTranslation();
   const {
     states: {
       scrollLock,
@@ -339,7 +340,7 @@ const UsfmEditor = () => {
   const autoSaveIndication = () => {
     setEditorSave(<SaveIndicator />);
     setTimeout(() => {
-      setEditorSave('Saved');
+      setEditorSave(t('label-saved'));
   }, 1000);
   };
 

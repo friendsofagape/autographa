@@ -59,7 +59,7 @@ export default function SideBar() {
                   strokecurrent="none"
                   className="h-7 w-7 text-dark group-hover:text-white"
                 />
-                <div className="text-xs mt-3 uppercase">sync</div>
+                <div className="text-xs mt-3 uppercase">{t('label-sync')}</div>
               </a>
             </Link>
           </li>

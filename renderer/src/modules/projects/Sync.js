@@ -1,4 +1,5 @@
 import { useState, Fragment } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Dialog, Transition } from '@headlessui/react';
 
 import ProjectsLayout from '@/layouts/projects/Layout';
@@ -7,6 +8,7 @@ import ProjectFileBrowser from '@/components/Sync/ProjectFileBrowser';
 
 export default function Sync() {
   const [isOpen, setIsOpen] = useState(false);
+  const { t } = useTranslation();
   return (
     <ProjectsLayout
       title="Sync"
@@ -25,7 +27,7 @@ export default function Sync() {
           <div className="ml-3 text-sm">
             {/* eslint jsx-a11y/label-has-associated-control: ["error", { assert: "either" } ] */}
             <label htmlFor="comments" className="font-medium text-gray-700">
-              Show Hidden Files
+              {t('label-show-hidden-file')}
             </label>
           </div>
         </form>
@@ -36,19 +38,19 @@ export default function Sync() {
           <li className="mr-2">
             <a className="bg-secondary text-white inline-block rounded-t py-2 px-6 text-sm uppercase" href="#a">
               <img className="inline mr-2 w-4" src="/brands/door43.png" alt="Door 43 Logo" />
-              Door 43
+              {t('label-door43')}
             </a>
           </li>
           <li className="mr-2">
             <a className="bg-gray-200 inline-block rounded-t py-2 px-6 hover:text-white hover:bg-black text-sm uppercase" href="#b">
               <img className="inline mr-2 w-5" src="/brands/paratext.png" width="18" alt="Paratext Logo" />
-              Paratext
+              {t('label-paratext')}
             </a>
           </li>
           <li className="mr-2">
             <a className="bg-gray-200 inline-block rounded-t py-2 px-6 hover:text-white hover:bg-black text-sm uppercase" href="#c">
               <img className="inline mr-2 w-5" src="/brands/gitea.png" width="18" alt="Gitea Logo" />
-              Gitea
+              {t('label-Gitea')}
             </a>
           </li>
         </ul>
@@ -79,10 +81,9 @@ export default function Sync() {
 
             <div className="bg-white w-5/12 p-10 m-auto z-50 shadow overflow-hidden sm:rounded-lg">
 
-              <Dialog.Title className="text-lg">Deactivate account</Dialog.Title>
+              <Dialog.Title className="text-lg">{t('label-deactivate-account')}</Dialog.Title>
               <Dialog.Description className="text-sm py-4">
-                Are you sure you want to deactivate your account? All of your data will
-                be permanently removed. This action cannot be undone.
+                {t('dynamic-msg-deactivate-account')}
               </Dialog.Description>
 
               <button
@@ -90,14 +91,14 @@ export default function Sync() {
                 className="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-error hover:bg-error-700"
                 onClick={() => setIsOpen(false)}
               >
-                Deactivate
+                {t('btn-deactivate')}
               </button>
               <button
                 type="button"
                 className="inline-flex items-center justify-center px-4 py-2 mx-2 border border-transparent text-sm font-medium rounded-md text-white bg-primary hover:bg-primary-300"
                 onClick={() => setIsOpen(false)}
               >
-                Cancel
+                {t('btn-cancel')}
               </button>
 
             </div>

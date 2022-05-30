@@ -117,7 +117,8 @@ const CustomNofications = () => {
                       </span>
                     </div>
                     <p className="px-4 py-2 border-primary border border-t-0 border-opacity-30 rounded-b">
-                      Uploading Files.
+                      {t('label-uploading-files')}
+                      .
                       <span className="block m-auto bg-black h-2 mt-2 mb-4 mx-10 rounded-full">
                         <span className="block w-2/2 bg-primary h-2 rounded-full">&nbsp;</span>
                       </span>

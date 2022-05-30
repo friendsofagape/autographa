@@ -23,6 +23,7 @@ export default function ImportProjectPopUp(props) {
     closePopUp,
   } = props;
   const router = useRouter();
+  const { t } = useTranslation();
   const cancelButtonRef = useRef(null);
   const [folderPath, setFolderPath] = React.useState();
   const [valid, setValid] = React.useState(false);
@@ -90,7 +91,8 @@ export default function ImportProjectPopUp(props) {
       setModel({
         openModel: true,
         title: t('modal-title-update-burrito'),
-        confirmMessage: `Update the the burrito from ${sbData?.version} to ${burrito?.meta?.version}`,
+        // confirmMessage: `Update the the burrito from ${sbData?.version} to ${burrito?.meta?.version}`,
+        confirmMessage: t('dynamic-msg-update-burrito-version',{version1:sbData?.version, version2:burrito?.meta?.version}),
         buttonName: t('btn-update'),
       });
     } else {
@@ -113,7 +115,7 @@ export default function ImportProjectPopUp(props) {
         setModel({
           openModel: true,
           title: t('modal-title-replace-resource'),
-          confirmMessage: "An existing project with the same name was found. Press 'Replace' if you want to replace it. This would overwrite any existing content in overlapping books. Otherwise, press 'Cancel' to go back.",
+          confirmMessage: t('dynamic-msg-confirm-replace-resource'),
           buttonName: t('btn-replace'),
         });
       } else {
@@ -124,7 +126,7 @@ export default function ImportProjectPopUp(props) {
       logger.error('ImportProjectPopUp.js', 'Invalid Path');
       setValid(true);
       setNotify('failure');
-      setSnackText('Invalid Path');
+      setSnackText(t('dynamic-msg-invalid-path'));
       setOpenSnackBar(true);
     }
   };
@@ -137,7 +139,6 @@ export default function ImportProjectPopUp(props) {
     });
   };
 
-  const { t } = useTranslation();
   React.useEffect(() => {
     if (open) {
       openFileDialogSettingData();
@@ -213,7 +214,7 @@ export default function ImportProjectPopUp(props) {
                       </div>
 
                       <div>
-                        <h4 className="text-red-500">{valid === true ? 'Enter location' : (sbData?.fileExist ? '' : 'Unable to find burrito file (metadata.json)')}</h4>
+                        <h4 className="text-red-500">{valid === true ? 'Enter location' : (sbData?.fileExist ? '' : t('dynamic-msg-unable-find-buritto-snack'))}</h4>
                       </div>
 
                     </div>
@@ -245,7 +246,7 @@ export default function ImportProjectPopUp(props) {
                             {(sbData?.validate)?
                             <span className="ml-2">{t('dynamic-msg-burrito-validate-import-project')}</span>
                             :
-                            <span className="ml-2 text-red-500">{(sbData?.version)? `Expected burrito version 0.3.0 instead of ${sbData.version}` : `Burrito validation Failed`}</span>
+                            <span className="ml-2 text-red-500">{(sbData?.version)? t('dynamic-msg-burrito-validation-expected',{version:sbData.version}) : t('dynamic-msg-burrito-validation-failed')}</span>
                             }
                           </label>
                         </div>

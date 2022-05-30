@@ -3,6 +3,7 @@ import { useState } from 'react';
 import {
   ChevronDownIcon, PlusIcon,
 } from '@heroicons/react/solid';
+import { useTranslation } from 'react-i18next';
 
 import { PencilAltIcon } from '@heroicons/react/outline';
 
@@ -66,11 +67,11 @@ const references = [
 
 export default function CrossReference() {
   const [isEditCrossReferenceOpen, setEditCrossReference] = useState(false);
-
+  const { t } = useTranslation();
   return (
     <>
       <div className="bg-gray-800 uppercase text-white text-xs p-2 tracking-wider">
-        Cross Reference
+        {t('label-cross-ref')}
       </div>
       <div className="overflow-y-auto h-full no-scrollbars">
 

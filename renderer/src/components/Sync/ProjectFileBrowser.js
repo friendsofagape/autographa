@@ -3,6 +3,7 @@
 /* eslint-disable no-alert */
 import React, { useState, useEffect, useContext } from 'react';
 import { ChevronRightIcon } from '@heroicons/react/solid';
+import { useTranslation } from 'react-i18next';
 // import FileIcon from '@/icons/file.svg';
 import Dropzone from './Dropzone/Dropzone';
 import fetchParseFiles from '../../core/projects/fectchParseFiles';
@@ -39,6 +40,7 @@ export default function ProjectFileBrowser() {
     fetchProjects(username);
     // eslint-disable-next-line
   }, []);
+  const { t } = useTranslation();
   return (
     <>
       <div className="flex flex-row mx-5 my-3 border-b-1 border-primary">
@@ -48,7 +50,8 @@ export default function ProjectFileBrowser() {
           onClick={() => setIndex(-1)}
           data-testid="ag-step1"
         >
-          Autographa Project
+          {t('app-name')}
+          {t('label-project')}
         </button>
         {agProjects[index]
           ? (
@@ -72,7 +75,7 @@ export default function ProjectFileBrowser() {
                   className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                   data-testid="th-name"
                 >
-                  Name
+                  {t('label-name')}
                 </th>
                 {/* <th
               scope="col"

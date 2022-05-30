@@ -47,7 +47,7 @@ export default function ImportResource({
       { overwrite: true }).then(() => {
         setOpenSnackBar(true);
         setNotify('success');
-        setSnackText('Resource upload successful! Please check the resource list');
+        setSnackText(t('dynamic-msg-import-resource-snack'));
       }).then(() => {
         close();
         setOpenResourcePopUp(false);
@@ -76,7 +76,7 @@ export default function ImportResource({
           if (result.fileExist === false) {
             setOpenSnackBar(true);
             setNotify('error');
-            setSnackText('Unable to find burrito file (metadata.json).');
+            setSnackText(t('dynamic-msg-unable-find-buritto-snack'));
             logger.warn('ImportResource.js', 'Unable to find burrito file (metadata.json).');
           } else if (result.validate) {
             // path.basename is not working for windows
@@ -95,7 +95,7 @@ export default function ImportResource({
             setOpenSnackBar(true);
             setNotify('error');
             logger.error('ImportResource.js', 'Invalid burrito file (metadata.json).');
-            setSnackText('Invalid burrito file (metadata.json).');
+            setSnackText(t('dynamic-msg-unable-invalid-buritto-snack'));
           }
         }).catch((err) => {
             logger.debug('ImportResource.js', 'error in loading resource');
@@ -152,7 +152,7 @@ export default function ImportResource({
                           <div>
                             <h4 className="text-xs font-base mb-2 text-primary  tracking-wide leading-4  font-light">
                               {t('label-burrito-resource-path')}
-                              <button title="Select a directory/project that has a Scripture Burrito file i.e. metadata.json file." type="button" disabled>
+                              <button title={t('tooltip-import-resource-info-circle')} type="button" disabled>
                                 <InformationCircleIcon className="h-6 w-6 text-primary" />
                               </button>
                             </h4>
@@ -164,12 +164,12 @@ export default function ImportResource({
                               onChange={(e) => setFolderPath(e.target.value)}
                               className="bg-white w-52 lg:w-80 block rounded shadow-sm sm:text-sm focus:border-primary border-gray-300"
                             />
-                            <h4 className="text-red-500">{valid === true ? 'Enter location' : ''}</h4>
+                            <h4 className="text-red-500">{valid === true ? t('label-enter-location') : ''}</h4>
                           </div>
                           <div>
                             <button
                               type="button"
-                              title="open folder location"
+                              title={t('tooltip-import-open-file-location')}
                               className="px-1 py-8"
                               onClick={() => openResourceDialog()}
                             >
@@ -204,10 +204,10 @@ export default function ImportResource({
         />
         <ConfirmationModal
           openModal={openModal}
-          title="Replace Resource"
+          title={t('modal-title-replace-resource')}
           setOpenModal={setOpenModal}
-          confirmMessage="An existing project with the same name was found. Press 'Replace' if you want to replace it. This would overwrite any existing content in overlapping books. Otherwise, press 'Cancel' to go back."
-          buttonName="Replace"
+          confirmMessage={t('dynamic-msg-confirm-replace-resource')}
+          buttonName={t('btn-replace')}
           closeModal={() => importReference(dataForImport.projectsDir, dataForImport.name)}
         />
       </>

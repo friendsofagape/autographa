@@ -4,8 +4,10 @@ import {
   InputBase,
   Toolbar,
 } from '@material-ui/core';
+import { useTranslation } from 'react-i18next';
 import { Search } from '@material-ui/icons';
 import { searchStyles } from './SearchStyles';
+
 // import AwesomeDebouncePromise from 'awesome-debounce-promise';
 
 function SearchForm({
@@ -49,7 +51,7 @@ function SearchForm({
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [query]);
-
+  const { t } = useTranslation();
   return (
     <div className={classes.root}>
       <Toolbar>
@@ -58,9 +60,9 @@ function SearchForm({
             <Search />
           </div>
           <InputBase
-            placeholder="Search…"
+            placeholder={t('placeholder-search')}
             id="search"
-            label="Search"
+            label={t('label-search')}
             type="text"
             variant="outlined"
             fullWidth

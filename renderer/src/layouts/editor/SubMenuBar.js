@@ -251,7 +251,6 @@ export default function SubMenuBar() {
         </div> */}
         <div className="w-2/5">
           <div className="flex justify-end">
-            
             <div className={`group ${menuStyles.saved}`}>
               <span>
                 {editorSave}

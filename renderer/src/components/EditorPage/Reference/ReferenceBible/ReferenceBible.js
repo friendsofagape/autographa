@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import {
   createBasicUsfmEditor, withChapterPaging,
  } from 'usfm-editor';
+ import { useTranslation } from 'react-i18next';
 import * as localforage from 'localforage';
 import moment from 'moment';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
@@ -16,7 +17,6 @@ import LoadingScreen from '@/components/Loading/LoadingScreen';
 import { SnackBar } from '@/components/SnackBar';
 import EmptyScreen from '@/components/Loading/EmptySrceen';
 import { isElectron } from '../../../../core/handleElectron';
-
 // General scroll to element function
 
 const ReferenceBible = ({
@@ -53,6 +53,7 @@ const ReferenceBible = ({
     const [snackText, setSnackText] = React.useState('');
     const [notify, setNotify] = React.useState();
     const [displyScreen, setDisplayScreen] = useState(false);
+    const { t } = useTranslation();
 
     const CustomEditor = useMemo(
       () => (withChapterPaging(createBasicUsfmEditor())),
@@ -96,13 +97,14 @@ useEffect(() => {
                           }).finally(() => {
                             setIsLoading(false);
                             setOpenSnackBar(true);
-                            setSnackText(`successfully loaded ${refName} files`);
+                            // setSnackText(`successfully loaded ${refName} files`);
+                            setSnackText(t('dynamic-msg-load-ref-bible-snack', { refName }));
                             setNotify('success');
                             setDisplayScreen(false);
                           });
                           setRefernceLoading({
                             status: true,
-                            text: 'Reference-burrito loaded succesfully',
+                            text: t('dynamic-msg-load-ref-bible-success'),
                           });
                           setCounter(4);
                         });
@@ -118,13 +120,13 @@ useEffect(() => {
                           }).finally(() => {
                             setIsLoading(false);
                             setOpenSnackBar(true);
-                            setSnackText(`successfully loaded ${refName} files`);
+                            setSnackText(t('dynamic-msg-load-ref-bible-snack', { refName }));
                             setNotify('success');
                             setDisplayScreen(false);
                           });
                           setRefernceLoading({
                             status: true,
-                            text: 'Reference-burrito loaded succesfully',
+                            text: t('dynamic-msg-load-ref-bible-success'),
                           });
                           setCounter(4);
                         });
@@ -163,13 +165,13 @@ useEffect(() => {
         }).catch((err) => {
           // we got an error
             setOpenSnackBar(true);
-            setSnackText(`failed to loaded ${refName} files`);
+            setSnackText(t('dynamic-msg-load-ref-bible-snack-fail', { refName }));
             setNotify('failure');
           localforage.getItem('notification').then((value) => {
             const temp = [...value];
             temp.push({
-                title: 'Resources',
-                text: `failed to loaded ${refName}`,
+                title: t('label-resource'),
+                text: t('dynamic-msg-load-ref-bible-snack-fail', { refName }),
                 type: 'failure',
                 time: moment().format(),
                 hidden: true,

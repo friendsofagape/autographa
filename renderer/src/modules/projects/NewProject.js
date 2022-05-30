@@ -175,7 +175,7 @@ export default function NewProject({ call, project, closeEdit }) {
       create = false;
       logger.warn('NewProject.js', 'Validation Failed - Fill all the required fields.');
       setNotify('warning');
-      setSnackText('Fill all the fields');
+      setSnackText(t('dynamic-msg-fill-all-fields'));
       setOpenSnackBar(true);
     }
     if (create === true) {
@@ -376,10 +376,10 @@ export default function NewProject({ call, project, closeEdit }) {
       />
       <ConfirmationModal
         openModal={openModal}
-        title="Update Burrito"
+        title="modal-title-update-burrito"
         setOpenModal={setOpenModal}
-        confirmMessage={`Update the the burrito from ${metadata?.meta?.version} to ${burrito?.meta?.version}`}
-        buttonName="Update"
+        confirmMessage={t('dynamic-msg-update-burrito-version', { version1: metadata?.meta?.version, version2: burrito?.meta?.version })}
+        buttonName={t('btn-update')}
         closeModal={() => updateBurritoVersion()}
       />
     </ProjectsLayout>

@@ -22,6 +22,7 @@ export default function ExportProjectPopUp(props) {
     closePopUp,
     project,
   } = props;
+  const { t } = useTranslation();
   const cancelButtonRef = useRef(null);
   const [folderPath, setFolderPath] = React.useState();
   const [valid, setValid] = React.useState(false);
@@ -62,14 +63,14 @@ export default function ExportProjectPopUp(props) {
               .then(() => {
                 logger.debug('ExportProjectPopUp.js', 'Exported Successfully');
                 setNotify('success');
-                setSnackText('Exported Successfully');
+                setSnackText(t('dynamic-msg-export-success'));
                 setOpenSnackBar(true);
                 closePopUp(false);
               })
               .catch((err) => {
                 logger.error('ExportProjectPopUp.js', `Failed to export ${err}`);
                 setNotify('failure');
-                setSnackText('Failed to export');
+                setSnackText(t('dynamic-msg-export-fail'));
                 setOpenSnackBar(true);
                 closePopUp(false);
               });
@@ -102,11 +103,11 @@ export default function ExportProjectPopUp(props) {
       logger.warn('ExportProjectPopUp.js', 'Invalid Path');
       setValid(true);
       setNotify('failure');
-      setSnackText('Invalid Path');
+      setSnackText(t('dynamic-msg-invalid-path'));
       setOpenSnackBar(true);
     }
   };
-  const { t } = useTranslation();
+
   return (
     <>
       <Transition
@@ -204,10 +205,11 @@ export default function ExportProjectPopUp(props) {
       />
       <ConfirmationModal
         openModal={openModal}
-        title="Update Burrito"
+        title={t('modal-title-update-burrito')}
         setOpenModal={setOpenModal}
-        confirmMessage={`Update the the burrito from ${metadata?.metadata?.meta?.version} to ${burrito?.meta?.version}`}
-        buttonName="Update"
+        // confirmMessage={`Update the the burrito from ${metadata?.metadata?.meta?.version} to ${burrito?.meta?.version}`}
+        confirmMessage={t('dynamic-msg-update-burrito-version', { version1: metadata?.metadata?.meta?.version, version2: burrito?.meta?.version })}
+        buttonName={t('btn-update')}
         closeModal={
           () => updateBurritoVersion(metadata.username, metadata.fs, metadata.path, metadata.folder)
         }

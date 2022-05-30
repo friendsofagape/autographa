@@ -13,11 +13,12 @@ import * as logger from '../../../logger';
 
 function BookNumberTag(props) {
   const { children } = props;
+  const { t } = useTranslation();
 
-  let numberOfBooks = 'books';
+  let numberOfBooks = t('label-books');
 
   if (children.toString() === '1') {
-    numberOfBooks = 'book';
+    numberOfBooks = t('label-book');
   }
 
   return (

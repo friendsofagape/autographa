@@ -65,6 +65,7 @@ const ResourcesPopUp = ({
   const [translationQuestion, setTranslationQuestion] = useState(translationQuestions);
   const [translationWord, setTranslationWord] = useState(translationWords);
   const [loading, setLoading] = useState(false);
+  const { t } = useTranslation();
   const {
     states: {
       username,
@@ -195,7 +196,7 @@ const ResourcesPopUp = ({
       writeCustomResources({ resourceUrl: { key, url, resourceName } }).then(() => {
         setOpenSnackBar(true);
         setError('success');
-        setSnackText('resource added successfully');
+        setSnackText(t('dynamic-msg-resource-added'));
         setOpenResourcePopUp(true);
         setInputUrl('');
         setResourceName('');
@@ -209,10 +210,10 @@ const ResourcesPopUp = ({
       setResourceName('');
       setError('failure');
       setShowInput(false);
-      setSnackText('unable to fetch selected resource from the given url');
+      setSnackText(t('dynamic-msg-resource-unable-fetch-url'));
     }
   }
-  const { t } = useTranslation();
+
   useEffect(() => {
     readCustomResources({ resourceId: 'tq', translationData: translationQuestion });
     readCustomResources({ resourceId: 'twlm', translationData: translationWord });

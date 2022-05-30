@@ -3,14 +3,16 @@ import { TrashIcon } from '@heroicons/react/outline';
 import {
   XIcon,
 } from '@heroicons/react/solid';
+import { useTranslation } from 'react-i18next';
 import BibleNavigation from '@/modules/biblenavigation/BibleNavigation';
 
 export default function Comments() {
+  const { t } = useTranslation();
   return (
     <>
       <div className="bg-primary h-8 w-full text-white font-semibold flex items-center">
         <BibleNavigation />
-        <div className="flex-1 px-4 text-xs uppercase">Add Reference</div>
+        <div className="flex-1 px-4 text-xs uppercase">{t('label-add-ref')}</div>
         <div className="flex justify-end">
           <button type="button" className="bg-black bg-opacity-20 p-2 rounded-sm">
             <TrashIcon className="w-4 h-4" />
@@ -41,7 +43,7 @@ export default function Comments() {
             type="button"
             className="w-20 h-8 bg-success leading-loose rounded shadow text-xs font-base  text-white tracking-wide  font-light uppercase"
           >
-            Add
+            {t('btn-add')}
           </button>
         </div>
       </div>

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import * as localforage from 'localforage';
 import { isElectron } from '../core/handleElectron';
 import TailwindModal from './TailwindModel/TailwindModal';
@@ -7,7 +8,7 @@ const AutoUpdate = () => {
   const [message, setMessage] = useState(null);
   const [notification, setNotification] = useState(false);
   const [restartButton, setRestartButton] = useState(false);
-
+  const { t } = useTranslation();
   useEffect(() => {
         localforage.setItem('font-family', global.fonts);
         const electron = window.require('electron');
@@ -21,7 +22,7 @@ const AutoUpdate = () => {
 
           ipcRenderer.on('update_available', () => {
             ipcRenderer.removeAllListeners('update_available');
-            setMessage('A new autographa update is available. Downloading now...');
+            setMessage(t('dynamic-msg-auto-update'));
             setNotification(true);
           });
 
@@ -32,7 +33,7 @@ const AutoUpdate = () => {
 
           ipcRenderer.on('update_downloaded', () => {
             ipcRenderer.removeAllListeners('update_downloaded');
-            setMessage('Update Downloaded. It will be installed on restart. Restart now?');
+            setMessage(t('dynamic-msg-auto-update-complete'));
             setRestartButton(true);
             setNotification(true);
           });
@@ -84,7 +85,7 @@ const AutoUpdate = () => {
       <TailwindModal
         isOpen={notification}
         setIsOpen={setNotification}
-        title="Autographa Update!"
+        title={t('modal-title-update-app')}
         message={message}
         actionButtons={actionButtons}
       />
