@@ -19,6 +19,6 @@ import Document, {
            <NextScript />
          </body>
        </Html>
-       );
+     );
    }
  }
