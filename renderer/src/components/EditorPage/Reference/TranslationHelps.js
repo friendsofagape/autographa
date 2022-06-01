@@ -22,7 +22,7 @@ const TranslationHelps = ({
         case 'tn':
           return (
             <TranslationHelpsCard
-              title="Translation Notes"
+              title="Notes"
               verse={verse}
               chapter={chapter}
               projectId={bookId || 'mat'}
@@ -51,7 +51,7 @@ const TranslationHelps = ({
         case 'twlm':
           return (
             <TranslationHelpsCard
-              title="Translation Words"
+              title="Words"
               verse={verse}
               chapter={chapter}
               projectId={bookId || 'mat'}
@@ -66,7 +66,7 @@ const TranslationHelps = ({
         case 'tq':
           return (
             <TranslationHelpsCard
-              title="Translation Questions"
+              title="translationQuestions"
               verse={verse}
               chapter={chapter}
               projectId={bookId || 'mat'}

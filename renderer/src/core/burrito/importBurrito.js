@@ -7,8 +7,6 @@ import { validate } from '../../util/validate';
 import { updateVersion } from './updateTranslationSB';
 
 const md5 = require('md5');
-
-const fs = window.require('fs');
 const path = require('path');
 
 export const checkDuplicate = async (metadata, currentUser, resource) => {
@@ -16,6 +14,7 @@ export const checkDuplicate = async (metadata, currentUser, resource) => {
   const projectName = metadata.identification?.name?.en;
   let existingProject;
   let id;
+  const fs = window.require('fs');
   const newpath = localStorage.getItem('userPath');
   const projectDir = path.join(newpath, 'autographa', 'users', currentUser, resource);
   const folderList = fs.readdirSync(projectDir);
@@ -50,6 +49,7 @@ export const checkDuplicate = async (metadata, currentUser, resource) => {
   return existingProject;
 };
 export const viewBurrito = async (filePath, currentUser, resource) => {
+  const fs = window.require('fs');
   logger.debug('importBurrito.js', 'Inside viewBurrito');
   const result = {};
   if (fs.existsSync(path.join(filePath, 'metadata.json'))) {
@@ -93,6 +93,7 @@ export const viewBurrito = async (filePath, currentUser, resource) => {
 };
 const importBurrito = async (filePath, currentUser, updateBurritoVersion) => {
   logger.debug('importBurrito.js', 'Inside importBurrito');
+  const fs = window.require('fs');
   const fse = window.require('fs-extra');
   const status = [];
   const newpath = localStorage.getItem('userPath');
