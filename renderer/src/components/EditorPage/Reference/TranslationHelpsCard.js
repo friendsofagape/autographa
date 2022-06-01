@@ -25,7 +25,7 @@ export default function TranslationHelpsCard({
     verse,
     chapter,
     projectId,
-    ref: branch,
+    branch,
     languageId,
     resourceId,
     filePath,
