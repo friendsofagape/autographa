@@ -15,10 +15,10 @@ import { ReferenceContext } from '@/components/context/ReferenceContext';
 import { writeCustomResources } from '@/core/reference/writeCustomResources';
 import { readCustomResources } from '@/core/reference/readCustomResources';
 import { SnackBar } from '@/components/SnackBar';
+import LoadingScreen from '@/components/Loading/LoadingScreen';
 import ResourceOption from './ResourceOption';
 import ImportResource from './ImportResource';
 import * as logger from '../../../logger';
-import LoadingScreen from '@/components/Loading/LoadingScreen';
 
 function createData(name, language, owner) {
   return {
