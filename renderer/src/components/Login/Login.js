@@ -16,20 +16,21 @@ import CustomLogin from './CustomLogin';
 import { AuthenticationContext } from './AuthenticationContextProvider';
 
 import { createUser, handleLogin } from '../../core/Login/handleLogin';
+import i18n from '../../translations/i18n';
 
 export default function Login() {
   const router = useRouter();
   const online = {
     textfield: {
       count: [
-        { label: 'Username', type: 'text', name: 'identifier' },
-        { label: 'Password', type: 'password', name: 'password' },
+        { label: i18n.t('label-username'), type: 'text', name: 'identifier' },
+        { label: i18n.t('label-password'), type: 'password', name: 'password' },
       ],
     },
     viewForgot: true,
   };
   const offline = {
-    autocomplete: { count: [{ label: 'Username' }] },
+    autocomplete: { count: [{ label: i18n.t('label-username') }] },
     viewForgot: false,
   };
   const tab = React.useState(!isElectron());
@@ -168,17 +169,18 @@ export default function Login() {
             {tab[0] === false ? null
               : (
                 <div className="text-success pb-12">
-                  Don’t have an account?
+                  {i18n.t('label-dont-have-account')}
                   <a
                     data-testid="signup"
                     href="/signup"
                     className="text-primary ml-2"
                   >
-                    Sign Up!
+                    {i18n.t('label-sign-up')}
+                    !
                   </a>
                 </div>
               )}
-            <div className="text-3xl font-medium text-secondary text-center">Sign In</div>
+            <div className="text-3xl font-medium text-secondary text-center">{i18n.t('label-sign-in')}</div>
             {users.map((user, index) => {
               if (index < 5) {
                 return (
@@ -212,7 +214,7 @@ export default function Login() {
               login={handleSubmit}
               userlist={users}
               validation={error}
-              buttonname="SIGN IN"
+              buttonname={i18n.t('btn-signin')}
             />
             <div />
           </div>
@@ -232,7 +234,7 @@ export default function Login() {
               className="h-5 w-5 text-white group-hover:text-white"
               aria-hidden="true"
             />
-            <div className="text-white uppercase font-bold tracking-wider text-2xl">AUTOGRAPHA</div>
+            <div className="text-white uppercase font-bold tracking-wider text-2xl">{i18n.t('app-name')}</div>
             <div className="text-primary font-bold text-3xl">2.0</div>
           </div>
 
@@ -254,9 +256,7 @@ export default function Login() {
               </div>
 
               <div className="py-10">
-                Autographa 2.0 is a completely new way for editing scripture
-                and related resources with powerful yet elegant features to
-                help you focus on the important things!
+                {i18n.t('text-login-page-desc')}
               </div>
 
               {/* <div className="flex pt-5">

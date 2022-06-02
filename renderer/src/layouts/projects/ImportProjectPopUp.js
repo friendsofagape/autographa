@@ -8,6 +8,7 @@ import {
 } from '@heroicons/react/outline';
 import { useRouter } from 'next/router';
 import localforage from 'localforage';
+import { useTranslation } from 'react-i18next';
 import { SnackBar } from '@/components/SnackBar';
 import CloseIcon from '@/illustrations/close-button-black.svg';
 import importBurrito, { viewBurrito } from '../../core/burrito/importBurrito';
@@ -22,6 +23,7 @@ export default function ImportProjectPopUp(props) {
     closePopUp,
   } = props;
   const router = useRouter();
+  const { t } = useTranslation();
   const cancelButtonRef = useRef(null);
   const [folderPath, setFolderPath] = React.useState();
   const [valid, setValid] = React.useState(false);
@@ -88,9 +90,9 @@ export default function ImportProjectPopUp(props) {
     if (burrito?.meta?.version !== sbData?.version) {
       setModel({
         openModel: true,
-        title: 'Update Burrito',
-        confirmMessage: `Update the the burrito from ${sbData?.version} to ${burrito?.meta?.version}`,
-        buttonName: 'Update',
+        title: t('modal-title-update-burrito'),
+        confirmMessage: t('dynamic-msg-update-burrito-version',{version1:sbData?.version, version2:burrito?.meta?.version}),
+        buttonName: t('btn-update'),
       });
     } else {
       callImport(false);
@@ -111,9 +113,9 @@ export default function ImportProjectPopUp(props) {
         logger.warn('ImportProjectPopUp.js', 'Project already available');
         setModel({
           openModel: true,
-          title: 'Replace Resource',
-          confirmMessage: "An existing project with the same name was found. Press 'Replace' if you want to replace it. This would overwrite any existing content in overlapping books. Otherwise, press 'Cancel' to go back.",
-          buttonName: 'Replace',
+          title: t('modal-title-replace-resource'),
+          confirmMessage: t('dynamic-msg-confirm-replace-resource'),
+          buttonName: t('btn-replace'),
         });
       } else {
         logger.debug('ImportProjectPopUp.js', 'Its a new project');
@@ -123,7 +125,7 @@ export default function ImportProjectPopUp(props) {
       logger.error('ImportProjectPopUp.js', 'Invalid Path');
       setValid(true);
       setNotify('failure');
-      setSnackText('Invalid Path');
+      setSnackText(t('dynamic-msg-invalid-path'));
       setOpenSnackBar(true);
     }
   };
@@ -168,7 +170,7 @@ export default function ImportProjectPopUp(props) {
               <div className="relative h-full rounded shadow overflow-hidden bg-white">
                 <div className="flex justify-between items-center bg-secondary">
                   <div className="uppercase bg-secondary text-white py-2 px-2 text-xs tracking-widest leading-snug rounded-tl text-center">
-                    Import Project
+                    {t('label-import-project')}
                   </div>
                   <button
                     onClick={close}
@@ -187,7 +189,7 @@ export default function ImportProjectPopUp(props) {
 
                     <div className="bg-white text-sm text-left tracking-wide">
                       <div className="flex gap-6">
-                        <h4 className="text-sm font-base mb-2 text-primary  tracking-wide leading-4  font-light">Scripture burrito directory</h4>
+                        <h4 className="text-sm font-base mb-2 text-primary  tracking-wide leading-4  font-light">{t('label-burrito-directory')}</h4>
                         <button title="Select a directory that is a Scripture Burrito for import. It should contain the metadata.json file." type="button" disabled>
                           <InformationCircleIcon className="h-6 w-6 text-primary" />
                         </button>
@@ -211,7 +213,7 @@ export default function ImportProjectPopUp(props) {
                       </div>
 
                       <div>
-                        <h4 className="text-red-500">{valid === true ? 'Enter location' : (sbData?.fileExist ? '' : 'Unable to find burrito file (metadata.json)')}</h4>
+                        <h4 className="text-red-500">{valid === true ? t('label-enter-location') : (sbData?.fileExist ? '' : t('dynamic-msg-unable-find-buritto-snack'))}</h4>
                       </div>
 
                     </div>
@@ -219,21 +221,21 @@ export default function ImportProjectPopUp(props) {
                     {sbData?.fileExist
                       && (
                         <div>
-                          <h4 className="text-sm font-base mb-2 text-primary tracking-wide leading-4 font-light">Project</h4>
+                          <h4 className="text-sm font-base mb-2 text-primary tracking-wide leading-4 font-light">{t('label-project')}</h4>
                           <input
                             className="w-full mb-4 bg-gray-200 block rounded shadow-sm sm:text-sm focus:border-primary border-gray-300"
                             type="text"
                             value={sbData.projectName}
                             disabled
                           />
-                          <h4 className="text-sm font-base mb-2 text-primary tracking-wide leading-4 font-light">Language</h4>
+                          <h4 className="text-sm font-base mb-2 text-primary tracking-wide leading-4 font-light">{t('label-language')}</h4>
                           <input
                             className="w-full mb-4 bg-gray-200 block rounded shadow-sm sm:text-sm focus:border-primary border-gray-300"
                             type="text"
                             value={sbData.language}
                             disabled
                           />
-                          <h4 className="text-sm font-base mb-2 text-primary tracking-wide leading-4 font-light">Type</h4>
+                          <h4 className="text-sm font-base mb-2 text-primary tracking-wide leading-4 font-light">{t('label-project-type')}</h4>
                           <input
                             className="w-full mb-4 bg-gray-200 block rounded shadow-sm sm:text-sm focus:border-primary border-gray-300"
                             type="text"
@@ -245,8 +247,8 @@ export default function ImportProjectPopUp(props) {
                               ? <CheckIcon className="w-6 h-6 text-green-500 border" />
                             : <XIcon className="w-6 h-6 text-red-500 border" />}
                             {(sbData?.validate)
-                              ? <span className="ml-2">Burrito validated Successfully</span>
-                            : <span className="ml-2 text-red-500">{(sbData?.version) ? `Expected burrito version 0.3.0 instead of ${sbData.version}` : 'Burrito validation Failed'}</span>}
+                              ? <span className="ml-2">{t('dynamic-msg-burrito-validate-import-project')}</span>
+                            : <span className="ml-2 text-red-500">{(sbData?.version) ? t('dynamic-msg-burrito-validation-expected',{version:sbData.version}) : t('dynamic-msg-burrito-validation-failed')}</span>}
                           </label>
                         </div>
                       )}
@@ -258,7 +260,7 @@ export default function ImportProjectPopUp(props) {
                         onClick={close}
                         className="py-2 px-6 rounded shadow bg-error text-white uppercase text-xs tracking-widest font-semibold"
                       >
-                        Cancel
+                        {t('btn-cancel')}
                       </button>
                       {sbData?.validate
                         && (
@@ -267,7 +269,7 @@ export default function ImportProjectPopUp(props) {
                             className="py-2 px-7 rounded shadow bg-success text-white uppercase text-xs tracking-widest font-semibold"
                             onClick={() => importProject()}
                           >
-                            Import
+                            {t('btn-import')}
                           </button>
                         )}
                     </div>

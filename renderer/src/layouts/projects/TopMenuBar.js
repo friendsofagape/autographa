@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import React, { Fragment, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Disclosure, Menu, Transition,
 } from '@headlessui/react';
@@ -18,6 +19,7 @@ const profile = ['Your Profile'];
 export default function TopMenuBar() {
   const [openSideBar, setOpenSideBar] = useState(false);
   const { action: { logout } } = React.useContext(AuthenticationContext);
+  const { t } = useTranslation();
   const userPic = true;
   // function openSideBars() {
   //   setOpenSideBar(true);
@@ -39,7 +41,7 @@ export default function TopMenuBar() {
                   <div className="hidden md:block">
                     <div className="-ml-4 flex items-baseline space-x-4">
                       <span className="text-white px-3 py-2 text-lg tracking-wide font-bold uppercase">
-                        Autographa
+                        {t('app-name')}
                         <span className="text-primary font-extrabold"> 2.0</span>
                       </span>
                     </div>
@@ -71,7 +73,7 @@ export default function TopMenuBar() {
                             <Menu.Button className="max-w-xs bg-gray-800 border-4 border-white rounded-full flex items-center text-sm
                                 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-gray-700"
                             >
-                              <span className="sr-only">Open user menu</span>
+                              <span className="sr-only">{t('label-user-menu')}</span>
 
                               {/* check if user pic available  */}
                               {userPic
@@ -131,7 +133,7 @@ export default function TopMenuBar() {
                                       'block px-4 py-2 text-sm text-gray-700',
                                     )}
                                   >
-                                    Sign out
+                                    {t('btn-signout')}
                                   </a>
                                 )}
                               </Menu.Item>
@@ -146,7 +148,7 @@ export default function TopMenuBar() {
                 <div className="-mr-2 flex md:hidden">
                   {/* Mobile menu button */}
                   <Disclosure.Button className="bg-gray-800 inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
-                    <span className="sr-only">Open main menu</span>
+                    <span className="sr-only">{t('label-main-menu')}</span>
                     {open ? (
                       <XIcon className="block h-6 w-6" aria-hidden="true" />
                     ) : (

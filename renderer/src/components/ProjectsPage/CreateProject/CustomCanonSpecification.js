@@ -3,6 +3,7 @@ import { Dialog, Transition } from '@headlessui/react';
 import { XIcon } from '@heroicons/react/solid';
 import { useBibleReference } from 'bible-reference-rcl';
 import PropTypes from 'prop-types';
+import { useTranslation } from 'react-i18next';
 import SelectBook from '@/components/EditorPage/Navigation/reference/SelectBook';
 import { ProjectContext } from '../../context/ProjectContext';
 import * as logger from '../../../logger';
@@ -12,6 +13,7 @@ const CustomCanonSpecification = ({ bibleNav, closeBibleNav, handleNav }) => {
   const initialChapter = '1';
   const initialVerse = '1';
   const [name, setName] = React.useState();
+  const { t } = useTranslation();
   const {
     states: { canonSpecification, canonList },
     actions: { setcanonSpecification },
@@ -98,7 +100,7 @@ const CustomCanonSpecification = ({ bibleNav, closeBibleNav, handleNav }) => {
                   className="w-40 h-10  bg-success leading-loose rounded shadow text-xs font-base  text-white tracking-wide  font-light uppercase"
                   onClick={() => closeBibleNav()}
                 >
-                  Ok
+                  {t('btn-ok')}
                 </button>
                 )
               : (
@@ -108,14 +110,14 @@ const CustomCanonSpecification = ({ bibleNav, closeBibleNav, handleNav }) => {
                     className="w-40 h-10  bg-error leading-loose rounded shadow text-xs font-base  text-white tracking-wide  font-light uppercase"
                     onClick={() => closeBibleNav()}
                   >
-                    Cancel
+                    {t('btn-cancel')}
                   </button>
                   <button
                     type="button"
                     className="w-40 h-10  bg-success leading-loose rounded shadow text-xs font-base  text-white tracking-wide  font-light uppercase"
                     onClick={() => (handleNav === 'edit' ? editCanon() : saveCanon())}
                   >
-                    Save
+                    {t('btn-save')}
                   </button>
                 </>
               )}

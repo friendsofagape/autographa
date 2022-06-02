@@ -1,4 +1,5 @@
 /* eslint-disable no-tabs */
+import { t } from 'i18next';
 import React from 'react';
 
 export default function EmptyScreen() {
@@ -43,7 +44,7 @@ export default function EmptyScreen() {
                   <g />
                 </svg>
               </div>
-              <h2 className="mt-8 uppercase text-xl lg:text-5xl font-black">No content available!</h2>
+              <h2 className="mt-8 uppercase text-xl lg:text-5xl font-black">{t('label-no-content-available')}</h2>
             </div>
           </section>
         </div>

@@ -1,12 +1,14 @@
 import {
   XIcon,
 } from '@heroicons/react/solid';
+import { useTranslation } from 'react-i18next';
 
 export default function Comments() {
+  const { t } = useTranslation();
   return (
     <>
       <div className="bg-primary h-8 w-full text-white font-semibold flex items-center">
-        <div className="flex-1 px-4 text-xs uppercase">Add Comment</div>
+        <div className="flex-1 px-4 text-xs uppercase">{t('label-add-comment')}</div>
         <div className="flex justify-end">
           <button type="button" className="w-8 h-8 bg-black bg-opacity-20 p-2 focus:outline-none">
             <XIcon />
@@ -29,7 +31,7 @@ export default function Comments() {
             type="button"
             className="w-20 h-8 bg-success leading-loose rounded shadow text-xs font-base  text-white tracking-wide  font-light uppercase"
           >
-            Save
+            {t('btn-save')}
           </button>
         </div>
       </div>

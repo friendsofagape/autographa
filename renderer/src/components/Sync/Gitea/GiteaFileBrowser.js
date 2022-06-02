@@ -5,6 +5,7 @@ import {
   RepositoryContext,
   createContent, readContent, get,
 } from 'gitea-react-toolkit';
+import { useTranslation } from 'react-i18next';
 import { ChevronRightIcon } from '@heroicons/react/solid';
 import Dropzone from '../Dropzone/Dropzone';
 import * as logger from '../../../logger';
@@ -77,6 +78,7 @@ const GiteaFileBrowser = ({ changeRepo }) => {
       handleDropToAg({ result: { ...result, from: 'gitea' } });
     });
   };
+  const { t } = useTranslation();
   const handleDrop = (data) => {
     logger.debug('Dropzone.js', 'calling handleDrop event');
     if (data?.result?.from === 'autographa') {
@@ -136,7 +138,7 @@ const GiteaFileBrowser = ({ changeRepo }) => {
     <>
       <div className="flex flex-row mx-5 my-3 border-b-1 border-primary">
         <span className="font-semibold" onClick={cleanRepo}>
-          Gitea Project
+          {t('label-Gitea')} {t('label-project')}
         </span>
         {steps.map((label, index) => (
           (steps.length - 1 === index)
@@ -161,7 +163,7 @@ const GiteaFileBrowser = ({ changeRepo }) => {
               scope="col"
               className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
             >
-              Name
+              {t('label-name')}
             </th>
             {/* <th
                 scope="col"

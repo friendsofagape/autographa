@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useTranslation } from 'react-i18next';
 import { ViewGridAddIcon } from '@heroicons/react/outline';
 import { classNames } from '@/util/classNames';
 
@@ -11,7 +12,7 @@ export default function ColumnOne(props) {
     addRow,
     removeRow,
   } = props;
-
+  const { t } = useTranslation();
   return (
     <>
       <div className={classNames(!ishidden ? 'hidden' : '', 'relative first:mt-0 pb-12 border bg-white border-gray-200 rounded shadow-sm overflow-hidden group')}>
@@ -20,7 +21,7 @@ export default function ColumnOne(props) {
           <div className="bg-gray-200 z-50 rounded-t overflow-hidden">
             <div className="flex items-center">
               <div className="ml-4 h-8 flex justify-center items-center text-xxs uppercase tracking-wider font-bold leading-3 truncate">
-                Bible
+                {t('label-resource-bible')}
               </div>
 
               <div className="flex bg-gray-300 absolute h-full -right-0 rounded-tr invisible group-hover:visible">
@@ -63,7 +64,7 @@ export default function ColumnOne(props) {
           <div className="w-full h-full flex items-center justify-center">
             <div className="text-center">
               <div className="text-xs uppercase pb-4">
-                Load a Module
+                {t('label-editor-load-module')}
                 {rowCount}
               </div>
               <button

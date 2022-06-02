@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import {
   ChevronDownIcon, PencilAltIcon,
@@ -41,11 +42,12 @@ const footnotes = [
 
 export default function FootNotes() {
   const [isEditFootNoteOpen, setEditFootNote] = useState(false);
+  const { t } = useTranslation();
 
   return (
     <>
       <div className="bg-gray-800 uppercase text-white text-xs p-2 tracking-wider">
-        Foot Notes
+        {t('label-footnotes')}
       </div>
       <div className="overflow-y-auto h-full no-scrollbars">
 

@@ -11,6 +11,7 @@ import {
   InformationCircleIcon,
   DocumentTextIcon,
 } from '@heroicons/react/outline';
+import { useTranslation } from 'react-i18next';
 import LogoIcon from '@/icons/logo.svg';
 import packageInfo from '../../../../package.json';
 
@@ -19,7 +20,7 @@ export default function AboutModal(props) {
   const [tabNumber, setTabNumber] = useState(0);
 
   const cancelButtonRef = useRef(null);
-
+  const { t } = useTranslation();
   function modalStatus(isOpen) {
     openModal(isOpen);
   }
@@ -76,7 +77,7 @@ export default function AboutModal(props) {
                           aria-hidden="true"
                         />
                       </div>
-                      Autographa
+                      {t('app-name')}
                       <span className="bg-primary text-white text-xxs px-2 py-0 ml-2 rounded-full">{packageInfo.version}</span>
                     </Dialog.Title>
 
@@ -91,7 +92,7 @@ export default function AboutModal(props) {
                           className="h-5 w-5 mr-2"
                           aria-hidden="true"
                         />
-                        About
+                        {t('modal-title-about')}
                       </div>
                       <div
                         aria-label="license-button"
@@ -104,7 +105,7 @@ export default function AboutModal(props) {
                           className="h-5 w-5 mr-2"
                           aria-hidden="true"
                         />
-                        Licence
+                        {t('modal-title-license')}
                       </div>
                     </div>
                     <div className="mt-5 prose">
@@ -162,7 +163,7 @@ export default function AboutModal(props) {
                   onClick={() => modalStatus(false)}
                   ref={cancelButtonRef}
                 >
-                  Close
+                  {t('btn-close')}
                 </button>
                 <a
                   // type="button"
@@ -171,7 +172,7 @@ export default function AboutModal(props) {
                   className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
                   rel="noreferrer"
                 >
-                  Source Code
+                  {t('btn-source-code')}
                 </a>
 
                 {/* <a

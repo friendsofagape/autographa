@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 import * as logger from '../../../logger';
 
@@ -30,6 +31,7 @@ const DragAndDrop = (props) => {
     // eslint-disable-next-line react/destructuring-assignment
     props.dropped(true);
   };
+  const { t } = useTranslation();
   return (
     <div
       onDrop={(e) => handleDrop(e)}
@@ -38,7 +40,7 @@ const DragAndDrop = (props) => {
       onDragLeave={(e) => handleDragLeave(e)}
       className="flex flex-col h-96 m-5 justify-center items-center border-2 border-dashed rounded"
     >
-      <p className="uppercase text-primary">Drop files here to upload</p>
+      <p className="uppercase text-primary">{t('label-drop-file-upload')}</p>
     </div>
   );
 };

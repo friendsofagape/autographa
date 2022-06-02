@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+import { useTranslation } from 'react-i18next';
 import { ChevronDownIcon } from '@heroicons/react/solid';
 import { ChatAlt2Icon } from '@heroicons/react/outline';
 
@@ -70,11 +71,12 @@ const comments = [
 
 export default function Comments() {
   const [isEditCommentOpen, setEditComment] = useState(false);
+  const { t } = useTranslation();
 
   return (
     <>
       <div className="bg-gray-800 uppercase text-white text-xs p-2 tracking-wider">
-        Comments
+        {t('label-comments')}
       </div>
 
       <div className="overflow-y-auto h-full no-scrollbars">
