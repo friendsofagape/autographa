@@ -9,6 +9,7 @@ import {
 } from '@heroicons/react/outline';
 import localforage from 'localforage';
 
+import { useTranslation } from 'react-i18next';
 import ProjectsLayout from '@/layouts/projects/Layout';
 import EnhancedTableHead from '@/components/ProjectsPage/Projects/EnhancedTableHead';
 import AutographaContextProvider, { AutographaContext } from '@/components/context/AutographaContext';
@@ -22,6 +23,7 @@ import * as logger from '../../logger';
 
 export default function ProjectList() {
   const router = useRouter();
+  const { t } = useTranslation();
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('name');
 
@@ -107,7 +109,7 @@ export default function ProjectList() {
         ? (
           <>
             <ProjectsLayout
-              title="Projects"
+              title={t('projects-page')}
               isImport
               header={(
                 <SearchTags
@@ -237,7 +239,7 @@ export default function ProjectList() {
                                                                 } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
                                                               onClick={() => editproject(project)}
                                                             >
-                                                              Edit
+                                                              {t('btn-edit')}
                                                             </button>
                                                           )}
                                                         </Menu.Item>
@@ -249,7 +251,7 @@ export default function ProjectList() {
                                                                 } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
                                                               onClick={() => openExportPopUp(project)}
                                                             >
-                                                              Export
+                                                              {t('btn-export')}
                                                             </button>
                                                           )}
                                                         </Menu.Item>
@@ -378,7 +380,7 @@ export default function ProjectList() {
                                                                 } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
                                                               onClick={() => editproject(project)}
                                                             >
-                                                              Edit
+                                                              {t('btn-edit')}
                                                             </button>
                                                           )}
                                                         </Menu.Item>
@@ -390,7 +392,7 @@ export default function ProjectList() {
                                                                 } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
                                                               onClick={() => openExportPopUp(project)}
                                                             >
-                                                              Export
+                                                              {t('btn-export')}
                                                             </button>
                                                           )}
                                                         </Menu.Item>

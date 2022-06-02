@@ -1,5 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
+import { useTranslation } from 'react-i18next';
 import {
   InputBase,
   Toolbar,
@@ -17,6 +18,7 @@ function SearchForm({
   onfilerRequest2,
 }) {
   const classes = searchStyles();
+  const { t } = useTranslation();
   const [query, setQuery] = useState(defaultQuery);
   const excludeColumns = filterList.splice(filterList.indexOf(), 1);
   const onQuery = useCallback((_query, content) => {
@@ -58,9 +60,9 @@ function SearchForm({
             <Search />
           </div>
           <InputBase
-            placeholder="Search…"
+            placeholder={t('label-search')}
             id="search"
-            label="Search"
+            label={t('label-search')}
             type="text"
             variant="outlined"
             fullWidth

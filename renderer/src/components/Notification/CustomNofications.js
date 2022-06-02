@@ -4,6 +4,7 @@ import {
 import React, { useContext, useEffect, useState } from 'react';
 import localforage from 'localforage';
 import moment from 'moment';
+import { t } from 'i18next';
 import Notifications from '@/modules/notifications/Notifications';
 import menuStyles from '../../layouts/editor/MenuBar.module.css';
 import { AutographaContext } from '../context/AutographaContext';
@@ -66,7 +67,7 @@ const CustomNofications = () => {
           aria-label="notification-button"
           onClick={openSideBars}
           type="button"
-          title="notification"
+          title={t('tooltip-editor-notification')}
           className={`group ${menuStyles.btn}`}
         >
           <BellIcon className="h-5 w-5" aria-hidden="true" />
@@ -116,7 +117,8 @@ const CustomNofications = () => {
                       </span>
                     </div>
                     <p className="px-4 py-2 border-primary border border-t-0 border-opacity-30 rounded-b">
-                      Uploading Files.
+                      {t('label-uploading-files')}
+                      .
                       <span className="block m-auto bg-black h-2 mt-2 mb-4 mx-10 rounded-full">
                         <span className="block w-2/2 bg-primary h-2 rounded-full">&nbsp;</span>
                       </span>

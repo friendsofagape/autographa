@@ -1,5 +1,6 @@
 import { useState, useContext } from 'react';
 import { BookmarkIcon } from '@heroicons/react/solid';
+import { useTranslation } from 'react-i18next';
 import ColumnsIcon from '@/icons/basil/Outline/Interface/Columns.svg';
 import Font from '@/icons/font.svg';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
@@ -68,7 +69,7 @@ export default function SubMenuBar() {
   const openBookMarks = () => {
     setOpenSideBar(true);
   };
-
+  const { t } = useTranslation();
   const FileMenuItems = [
     // {
     //   itemname: 'Edit',
@@ -81,7 +82,7 @@ export default function SubMenuBar() {
     //   callback: tesfFunc1,
     // },
     {
-      itemname: 'Bookmarks',
+      itemname: t('label-bookmarks'),
       icon: <BookmarkIcon />,
       callback: openBookMarks,
     },
@@ -225,7 +226,7 @@ export default function SubMenuBar() {
 
       <nav className="flex p-2 shadow-sm border-b border-gray-200">
         <div className="w-3/5">
-          <MenuBar header="File" MenuItems={FileMenuItems} />
+          <MenuBar header={t('label-menu-file')} MenuItems={FileMenuItems} />
           {/* <span>
             <MenuBar header="FORMAT" MenuItems={FormatMenuItems} style={{ left: '-60px' }} />
           </span> */}
@@ -233,7 +234,7 @@ export default function SubMenuBar() {
             <span>Insert</span>
           </button> */}
           <span>
-            <MenuBar header="EDIT" MenuItems={EditorTools} style={{ left: '-60px', height: '65px' }} />
+            <MenuBar header={t('label-menu-edit')} MenuItems={EditorTools} style={{ left: '-60px', height: '65px' }} />
           </span>
           <button
             aria-label="about-button"
@@ -242,7 +243,7 @@ export default function SubMenuBar() {
             className={styles.menu}
             aria-expanded="false"
           >
-            <span>About</span>
+            <span>{t('label-menu-about')}</span>
           </button>
         </div>
         {/* <div className="w-2/3">
@@ -257,7 +258,7 @@ export default function SubMenuBar() {
               </span>
             </div>
 
-            <button aria-label="add-panels" title="layout" type="button" onClick={() => handleResource()} className={`group ${menuStyles.btn}`}>
+            <button aria-label="add-panels" title={t('tooltip-editor-layout')} type="button" onClick={() => handleResource()} className={`group ${menuStyles.btn}`}>
               <ColumnsIcon fill="currentColor" className="h-6 w-6" aria-hidden="true" />
               <span
                 aria-label="number-of-panels"

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {
   UploadIcon,
 } from '@heroicons/react/outline';
+import { useTranslation } from 'react-i18next';
 import SideBar from './SideBar';
 import TopMenuBar from './TopMenuBar';
 import ImportProjectPopUp from './ImportProjectPopUp';
@@ -19,7 +20,7 @@ export default function ProjectsLayout(props) {
   } = props;
 
   const [openPopUp, setOpenPopUp] = useState(false);
-
+  const { t } = useTranslation();
   function openImportPopUp() {
     setOpenPopUp(true);
   }
@@ -57,7 +58,7 @@ export default function ProjectsLayout(props) {
                         onClick={openImportPopUp}
                       >
                         <UploadIcon className="h-4 mr-2 text-white" />
-                        import
+                        {t('btn-import')}
                       </button>
                       <ImportProjectPopUp open={openPopUp} closePopUp={closeImportPopUp} />
                     </>

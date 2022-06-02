@@ -1,6 +1,7 @@
 import React, { Fragment, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { PlusIcon, PencilAltIcon } from '@heroicons/react/outline';
+import { useTranslation } from 'react-i18next';
 import * as logger from '../../../logger';
 import { ProjectContext } from '../../context/ProjectContext';
 
@@ -20,6 +21,7 @@ export default function TargetLanguagePopover() {
     },
   } = React.useContext(ProjectContext);
 
+  const { t } = useTranslation();
   const openLanguageNav = (nav) => {
     logger.debug('TargetLanguagePopover.js', 'In openLanguageNav');
     if (nav === 'edit') {
@@ -28,13 +30,13 @@ export default function TargetLanguagePopover() {
       setEdit(true);
       setId(language.id);
       setLang(language.title);
-      setDirection(language.scriptDirection ? language.scriptDirection : 'LTR');
+      setDirection(language.scriptDirection ? language.scriptDirection : t('label-rtr'));
     } else {
       logger.debug('TargetLanguagePopover.js', 'Selected the Pre-defined language which can\'t be edited');
       setLock();
       setEdit(false);
       setLang();
-      setDirection('LTR');
+      setDirection(t('label-ltr'));
     }
   };
   function openModal() {
@@ -114,7 +116,7 @@ export default function TargetLanguagePopover() {
               <div className="  h-80 rounded shadow border border-gray-200 bg-white">
                 <div className="grid grid-rows-2 gap-5 m-8">
                   <div>
-                    <h2 className="uppercase font-bold leading-5 tracking-widest mb-5 ">new langauge</h2>
+                    <h2 className="uppercase font-bold leading-5 tracking-widest mb-5 ">{t('label-new-langauge')}</h2>
                     <div>
                       <input
                         type="text"
@@ -129,29 +131,29 @@ export default function TargetLanguagePopover() {
                     </div>
                   </div>
                   <div>
-                    <h3 className="mb-3 text-xs font-base  text-primary tracking-wide leading-4 font-light">Script Direction</h3>
+                    <h3 className="mb-3 text-xs font-base  text-primary tracking-wide leading-4 font-light">{t('label-script-direction')}</h3>
                     <div>
                       <div className=" mb-3">
                         <input
                           type="radio"
                           className="form-radio h-4 w-4 text-primary"
-                          value="LTR"
-                          checked={direction === 'LTR'}
-                          onChange={() => setDirection('LTR')}
+                          value={t('label-ltr')}
+                          checked={direction === t('label-ltr')}
+                          onChange={() => setDirection(t('label-ltr'))}
                           disabled={lock}
                         />
-                        <span className=" ml-4 text-xs font-bold">LTR</span>
+                        <span className=" ml-4 text-xs font-bold">{t('label-ltr')}</span>
                       </div>
                       <div>
                         <input
                           type="radio"
                           className="form-radio h-4 w-4 text-primary"
-                          value="RTL"
-                          checked={direction === 'RTL'}
-                          onChange={() => setDirection('RTL')}
+                          value={t('label-rtl')}
+                          checked={direction === t('label-rtl')}
+                          onChange={() => setDirection(t('label-rtl'))}
                           disabled={lock}
                         />
-                        <span className=" ml-3 text-xs font-bold">RTL</span>
+                        <span className=" ml-3 text-xs font-bold">{t('label-rtl')}</span>
                       </div>
                     </div>
                   </div>
@@ -162,7 +164,7 @@ export default function TargetLanguagePopover() {
                       className="mr-5 bg-error w-28 h-8 border-color-error rounded
                                   uppercase shadow text-white text-xs tracking-wide leading-4 font-light focus:outline-none"
                     >
-                      cancel
+                      {t('btn-cancel')}
                     </button>
                     {lock ? <div />
                     : (
@@ -171,7 +173,7 @@ export default function TargetLanguagePopover() {
                         className=" bg-success w-28 h-8 border-color-success rounded uppercase text-white text-xs shadow focus:outline-none"
                         onClick={() => (edit === true ? editLanguage() : addLanguage())}
                       >
-                        {edit ? 'save' : 'create'}
+                        {edit ? t('btn-save') : t('btn-create')}
                       </button>
                     )}
                   </div>

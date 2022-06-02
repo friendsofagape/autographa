@@ -3,6 +3,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import {
   ViewGridAddIcon, XIcon, AdjustmentsIcon,
 } from '@heroicons/react/outline';
+import { useTranslation } from 'react-i18next';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import { ProjectContext } from '@/components/context/ProjectContext';
 import ResourcesPopUp from '@/components/EditorPage/Reference/ResourcesPopUp';
@@ -33,6 +34,7 @@ export default function EditorSection({
 }) {
   const [openResourcePopUp, setOpenResourcePopUp] = useState(false);
   const [openModal, setOpenModal] = useState(false);
+  const { t } = useTranslation();
   const {
     state: {
       // selectedFont
@@ -187,7 +189,7 @@ export default function EditorSection({
                 <button
                   aria-label="resources-selector"
                   type="button"
-                  title="resources selector"
+                  title={t('tooltip-editor-resource-selector')}
                   onClick={showResourcesPanel}
                   className="px-2"
                 >
@@ -206,7 +208,7 @@ export default function EditorSection({
               </button> */}
                 <button
                   type="button"
-                  title="remove section"
+                  title={t('tooltip-editor-remove-section')}
                   onClick={removeResource}
                   className="px-2"
                 >
@@ -228,7 +230,7 @@ export default function EditorSection({
               ? (
                 <div className="w-full h-full flex items-center justify-center">
                   <div className="text-center">
-                    <div className="text-xs uppercase pb-4">Load a Module</div>
+                    <div className="text-xs uppercase pb-4">{t('label-editor-load-module')}</div>
                     <button
                       type="button"
                       className="p-4 bg-gray-200 rounded-lg ring-offset-1"
@@ -244,7 +246,7 @@ export default function EditorSection({
           {hideAddition && (
           <button
             type="button"
-            title="add section"
+            title={t('tooltip-editor-add-section')}
             onClick={addRow}
             className="absolute p-2 bg-primary rounded bottom-0 -right-0 invisible group-hover:visible"
           >
@@ -259,10 +261,10 @@ export default function EditorSection({
       </div>
       <ConfirmationModal
         openModal={openModal}
-        title="Remove Resource"
+        title={t('modal-title-remove-resource')}
         setOpenModal={setOpenModal}
         confirmMessage="Are you sure you want to remove this resource?"
-        buttonName="Remove"
+        buttonName={t('btn-remove')}
         closeModal={confirmRemove}
       />
     </>

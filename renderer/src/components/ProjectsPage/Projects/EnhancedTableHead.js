@@ -9,23 +9,26 @@ import {
 import {
   StarIcon,
 } from '@heroicons/react/outline';
+import i18n from '../../../translations/i18n';
+
 // import { Menu, Transition } from '@headlessui/react';
 
 const headCells = [
   {
-    id: 'name', numeric: false, disablePadding: true, label: 'Project Name',
+    // id: 'name', numeric: false, disablePadding: true, label: 'Project Name',
+    id: 'name', numeric: false, disablePadding: true, label: i18n.t('label-project-name'),
   },
   {
-    id: 'language', numeric: false, disablePadding: true, label: 'Language',
+    id: 'language', numeric: false, disablePadding: true, label: i18n.t('label-language'),
   },
   // {
   //   id: 'status', numeric: false, disablePadding: true, label: 'Status',
   // },
   {
-    id: 'date', numeric: true, disablePadding: false, label: 'Created Date',
+    id: 'date', numeric: true, disablePadding: false, label: i18n.t('label-created-date'),
   },
   {
-    id: 'view', numeric: true, disablePadding: false, label: 'Last Viewed',
+    id: 'view', numeric: true, disablePadding: false, label: i18n.t('label-last-viewed'),
   },
   // {
   //   id: 'editors', numeric: false, disablePadding: false, label: 'Editors',

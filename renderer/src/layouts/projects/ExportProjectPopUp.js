@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import { Dialog, Transition } from '@headlessui/react';
 import { FolderOpenIcon } from '@heroicons/react/outline';
 import * as localforage from 'localforage';
+import { useTranslation } from 'react-i18next';
 import CloseIcon from '@/illustrations/close-button-black.svg';
 import updateTranslationSB from '@/core/burrito/updateTranslationSB';
 import { SnackBar } from '@/components/SnackBar';
@@ -21,6 +22,7 @@ export default function ExportProjectPopUp(props) {
     closePopUp,
     project,
   } = props;
+  const { t } = useTranslation();
   const cancelButtonRef = useRef(null);
   const [folderPath, setFolderPath] = React.useState();
   const [valid, setValid] = React.useState(false);
@@ -61,14 +63,14 @@ export default function ExportProjectPopUp(props) {
               .then(() => {
                 logger.debug('ExportProjectPopUp.js', 'Exported Successfully');
                 setNotify('success');
-                setSnackText('Exported Successfully');
+                setSnackText(t('dynamic-msg-export-success'));
                 setOpenSnackBar(true);
                 closePopUp(false);
               })
               .catch((err) => {
                 logger.error('ExportProjectPopUp.js', `Failed to export ${err}`);
                 setNotify('failure');
-                setSnackText('Failed to export');
+                setSnackText(t('dynamic-msg-export-fail'));
                 setOpenSnackBar(true);
                 closePopUp(false);
               });
@@ -101,7 +103,7 @@ export default function ExportProjectPopUp(props) {
       logger.warn('ExportProjectPopUp.js', 'Invalid Path');
       setValid(true);
       setNotify('failure');
-      setSnackText('Invalid Path');
+      setSnackText(t('dynamic-msg-invalid-path'));
       setOpenSnackBar(true);
     }
   };
@@ -131,8 +133,11 @@ export default function ExportProjectPopUp(props) {
               <div className="relative h-full rounded shadow overflow-hidden bg-white">
                 <div className="flex justify-between items-center bg-secondary">
                   <div className="uppercase bg-secondary text-white py-2 px-2 text-xs tracking-widest leading-snug rounded-tl text-center">
-                    Export Project:
-                    {` ${project?.name}`}
+                    {t('label-export-project')}
+                    :
+                    {
+                    `${project?.name}`
+                    }
                   </div>
                   <button
                     onClick={close}
@@ -160,7 +165,7 @@ export default function ExportProjectPopUp(props) {
                         />
                         <button
                           type="button"
-                          title="open folder location"
+                          title={t('tooltip-import-open-file-location')}
                           className="px-5"
                           onClick={() => openFileDialogSettingData()}
                         >
@@ -173,13 +178,13 @@ export default function ExportProjectPopUp(props) {
                     </div>
                     <div className="absolute bottom-0 right-0 left-0 bg-white">
                       <div className="flex gap-6 mx-5 justify-end">
-                        <button type="button" className="py-2 px-6 rounded shadow bg-error text-white uppercase text-xs tracking-widest font-semibold" onClick={close}>Cancel</button>
+                        <button type="button" className="py-2 px-6 rounded shadow bg-error text-white uppercase text-xs tracking-widest font-semibold" onClick={close}>{t('btn-cancel')}</button>
                         <button
                           onClick={() => exportBible()}
                           type="button"
                           className="py-2 px-7 rounded shadow bg-success text-white uppercase text-xs tracking-widest font-semibold"
                         >
-                          Export
+                          {t('btn-export')}
                         </button>
                       </div>
                     </div>
@@ -199,10 +204,10 @@ export default function ExportProjectPopUp(props) {
       />
       <ConfirmationModal
         openModal={openModal}
-        title="Update Burrito"
+        title={t('modal-title-update-burrito')}
         setOpenModal={setOpenModal}
-        confirmMessage={`Update the the burrito from ${metadata?.metadata?.meta?.version} to ${burrito?.meta?.version}`}
-        buttonName="Update"
+        confirmMessage={t('dynamic-msg-update-burrito-version', { version1: metadata?.metadata?.meta?.version, version2: burrito?.meta?.version })}
+        buttonName={t('btn-update')}
         closeModal={
           () => updateBurritoVersion(metadata.username, metadata.fs, metadata.path, metadata.folder)
         }

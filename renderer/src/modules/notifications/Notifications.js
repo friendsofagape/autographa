@@ -3,6 +3,7 @@ import {
    Dialog, Transition,
 } from '@headlessui/react';
 
+import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 import { XIcon } from '@heroicons/react/solid';
 
@@ -18,7 +19,7 @@ export default function Notifications(props) {
   function closeSideBars() {
     closeNotifications(false);
   }
-
+  const { t } = useTranslation();
   return (
     <Transition appear show={isOpen} as={Fragment}>
 
@@ -64,7 +65,7 @@ export default function Notifications(props) {
 
               <div className="flex flex-row w-96 text-center bg-black text-white text-xs font-medium tracking-wider uppercase">
                 <div aria-label="notification-title" className="m-auto">
-                  notifications
+                  {t('label-notification')}
                 </div>
                 <div className="flex justify-end">
                   <button aria-label="close-notification" type="button" ref={cancelButtonRef} className="w-9 h-9 bg-gray-900 p-2 focus:outline-none" onClick={closeSideBars}>

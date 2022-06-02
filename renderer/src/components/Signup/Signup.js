@@ -4,18 +4,20 @@ import { useRouter } from 'next/router';
 import * as logger from '../../logger';
 import useApi from './useApi';
 import CustomLogin from '../Login/CustomLogin'
+import { useTranslation } from 'react-i18next';
 // import configData from '../../config.json';
 
 export default function Signup() {
   const router = useRouter();
+  const { t } = useTranslation();
   const { state: { config }, action: { getFlow } } = useApi();
   const ui = {
     textfield: {
       count: [
-        { label: 'Email', type: 'email', name: 'email' },
-        { label: 'Name', type: 'text', name: 'identifier' },
-        { label: 'Password', type: 'password', name: 'password' },
-        { label: 'Confirm Password', type: 'password', name: 'confirmpassword' },
+        { label: t('label-email'), type: 'email', name: 'email' },
+        { label: t('label-name'), type: 'text', name: 'identifier' },
+        { label: t('label-password'), type: 'password', name: 'password' },
+        { label: t('label-confirm-password'), type: 'password', name: 'password' },
       ],
     },
     viewForgot: false,
@@ -114,13 +116,14 @@ export default function Signup() {
         <div className="inline-block min-h-screen  bg-white w-5/12">
           <div className="ml-10 2xl:ml-40 mt-32">
             <div className="text-green-500 pb-12">
-              Already have an account?
+              {t('label-already-have-account')}
               <a
                 data-testid="signup"
                 href="/login"
                 className="text-blue-600 ml-2"
               >
-                Sign In!
+                {t('label-sign-in')}
+                !
               </a>
             </div>
             <div className="text-3xl font-medium text-black"> Welcome!</div>
@@ -128,7 +131,7 @@ export default function Signup() {
             font-light
             pb-14 text-gray-400"
             >
-              Be part of a great community & have fun with us
+              {t('text-sign-up-quote')}
             </div>
             <CustomLogin
               ui={ui}
@@ -136,7 +139,7 @@ export default function Signup() {
               login={handleSubmit}
               userlist={[]}
               validation={error}
-              buttonname="SIGN UP"
+              buttonname={t('btn-signup')}
             />
             <div />
           </div>
@@ -156,7 +159,7 @@ export default function Signup() {
             <div className="justify-center">
               <div className="flex gap-3 ">
                 <img src="/logo.svg" alt="logo" />
-                <div className="text-white">AUTOGRAPHA</div>
+                <div className="text-white">{t('app-name')}</div>
                 <div className="text-blue-800 font-bold">2.0</div>
               </div>
               <div className="pt-8 pl-72">

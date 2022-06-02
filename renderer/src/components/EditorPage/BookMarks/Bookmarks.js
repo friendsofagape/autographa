@@ -1,4 +1,5 @@
 import { useContext } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import { ProjectContext } from '@/components/context/ProjectContext';
 
@@ -27,7 +28,7 @@ export default function Bookmarks() {
   // const [tempChapter, setTempChapter] = useState(chapter);
 
   const timeout = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-
+  const { t } = useTranslation();
   const gotoChapter = (bookname,
     chapterNum) => {
     setOpenSideBar(false);
@@ -60,7 +61,7 @@ export default function Bookmarks() {
   return (
     <>
       <div className="bg-gray-800 uppercase text-white text-xs p-2 tracking-wider">
-        Bookmarks
+        {t('label-bookmarks')}
       </div>
       <div className="overflow-y-auto h-full no-scrollbars">
         {bookmarksVerses.map((bookmark) => (

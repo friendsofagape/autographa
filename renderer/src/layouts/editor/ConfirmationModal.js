@@ -1,4 +1,5 @@
 import React, { Fragment, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 import { Dialog, Transition } from '@headlessui/react';
 import { ExclamationIcon } from '@heroicons/react/outline';
@@ -12,7 +13,7 @@ export default function ConfirmationModal({
   closeModal,
 }) {
   const cancelButtonRef = useRef(null);
-
+  const { t } = useTranslation();
   const close = () => {
     setOpenModal(false);
     closeModal();
@@ -79,7 +80,7 @@ export default function ConfirmationModal({
                   onClick={() => setOpenModal(false)}
                   ref={cancelButtonRef}
                 >
-                  Cancel
+                  {t('btn-cancel')}
                 </button>
               </div>
             </div>
