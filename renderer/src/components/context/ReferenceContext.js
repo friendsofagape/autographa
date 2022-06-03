@@ -71,8 +71,18 @@ export default function ReferenceContextProvider({ children }) {
                 Object?.entries(_value).forEach(
                   ([, resources]) => {
                     if (resources.identification.name.en === _projectname[0]) {
-                      setBookmarksVerses(resources.project.textTranslation.bookMarks);
-                      setProjectScriptureDir(resources.project.textTranslation.scriptDirection);
+                      switch (resources.type.flavorType.flavor.name) {
+                        case 'textTranslation':
+                          setBookmarksVerses(resources.project.textTranslation.bookMarks);
+                          setProjectScriptureDir(resources.project.textTranslation.scriptDirection);
+                          break;
+                        case 'textStories':
+                          setBookmarksVerses(resources.project.textStories.bookMarks);
+                          setProjectScriptureDir(resources.project.textStories.scriptDirection);
+                          break;
+                        default:
+                          break;
+                      }
                     }
                   },
                 );

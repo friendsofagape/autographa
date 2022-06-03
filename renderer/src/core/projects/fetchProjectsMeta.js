@@ -17,9 +17,22 @@ const fetchProjectsMeta = async ({ currentUser }) => {
       if (stat.isDirectory() && fs.existsSync(path.join(projectsMetaPath, dir, 'metadata.json'))) {
         logger.debug('fetchProjectsMeta.js', 'Found burrito for the project');
         const data = fs.readFileSync(path.join(projectsMetaPath, dir, 'metadata.json'), 'utf8');
+        const parseData = JSON.parse(data);
         let setting;
+        let dirName;
+        switch (parseData.type.flavorType.flavor.name) {
+          case 'textTranslation':
+            dirName = 'ingredients';
+            break;
+          case 'textStories':
+            dirName = 'content';
+            break;
+          default:
+            break;
+        }
+
         try {
-          setting = fs.readFileSync(path.join(projectsMetaPath, dir, 'ingredients', 'ag-settings.json'), 'utf8');
+          setting = fs.readFileSync(path.join(projectsMetaPath, dir, dirName, 'ag-settings.json'), 'utf8');
         } catch (err) {
           logger.error('fetchProjectsMeta.js', 'Unable to find ag-settings for the project');
         }

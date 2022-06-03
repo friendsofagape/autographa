@@ -27,7 +27,7 @@ export default function ProjectList() {
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('name');
 
-  const filterList = ['name', 'language', 'date', 'view'];
+  const filterList = ['name', 'language', 'type', 'date', 'view'];
   const {
     states: {
       starredrow,
@@ -89,7 +89,18 @@ export default function ProjectList() {
       const folder = path.join(newpath, 'autographa', 'users', value.username, 'projects', `${project.name}_${project.id[0]}`);
       const data = fs.readFileSync(path.join(folder, 'metadata.json'), 'utf-8');
       let metadata = JSON.parse(data);
-      const settings = fs.readFileSync(path.join(folder, 'ingredients', 'ag-settings.json'), 'utf-8');
+      let dirName;
+      switch (metadata.type.flavorType.flavor.name) {
+        case 'textTranslation':
+          dirName = 'ingredients';
+          break;
+        case 'textStories':
+          dirName = 'content';
+          break;
+        default:
+          break;
+      }
+      const settings = fs.readFileSync(path.join(folder, dirName, 'ag-settings.json'), 'utf-8');
       const agSetting = JSON.parse(settings);
       metadata = { ...metadata, ...agSetting };
       logger.debug('ProjectList.js', 'Loading current project metadata');
@@ -181,6 +192,7 @@ export default function ProjectList() {
                                             </div>
                                           </td>
                                           <td className="px-6 py-4 text-sm text-gray-900">{project.language}</td>
+                                          <td className="px-6 py-4 text-sm text-gray-900">{project.type}</td>
                                           <td className="px-6 py-4 text-sm text-gray-500">{moment(project.date).format('LL')}</td>
                                           <td className="px-6 py-4 text-sm text-gray-500">{moment(project.view, 'YYYY-MM-DD h:mm:ss').fromNow()}</td>
 
@@ -322,6 +334,9 @@ export default function ProjectList() {
                                           </td>
                                           <td className="px-6 py-4">
                                             <div className="text-sm text-gray-900">{project.language}</div>
+                                          </td>
+                                          <td className="px-6 py-4">
+                                            <div className="text-sm text-gray-900">{project.type}</div>
                                           </td>
                                           <td className="px-6 py-4 text-sm text-gray-500">{moment(project.date).format('LL')}</td>
                                           <td className="px-6 py-4 text-sm text-gray-500">{moment(project.view, 'YYYY-MM-DD h:mm:ss').fromNow()}</td>

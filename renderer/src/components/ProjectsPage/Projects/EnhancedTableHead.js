@@ -21,9 +21,9 @@ const headCells = [
   {
     id: 'language', numeric: false, disablePadding: true, label: i18n.t('label-language'),
   },
-  // {
-  //   id: 'status', numeric: false, disablePadding: true, label: 'Status',
-  // },
+  {
+    id: 'type', numeric: false, disablePadding: true, label: 'Flavor Name',
+  },
   {
     id: 'date', numeric: true, disablePadding: false, label: i18n.t('label-created-date'),
   },
