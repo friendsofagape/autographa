@@ -6,10 +6,21 @@ export const updateAgSettings = async (username, projectName, data) => {
   const newpath = localStorage.getItem('userPath');
   const fs = window.require('fs');
   const path = require('path');
-  const folder = path.join(newpath, 'autographa', 'users', username, 'projects', projectName, 'ingredients');
+  let dirName;
+  switch (data.type.flavorType.flavor.name) {
+    case 'textTranslation':
+      dirName = 'ingredients';
+      break;
+    case 'textStories':
+      dirName = 'content';
+      break;
+    default:
+      break;
+  }
+  const folder = path.join(newpath, 'autographa', 'users', username, 'projects', projectName, dirName);
   const settings = await fs.readFileSync(path.join(folder, 'ag-settings.json'), 'utf8');
   const setting = JSON.parse(settings);
-  setting.project.textTranslation = data.project.textTranslation;
+  setting.project[data.type.flavorType.flavor.name] = data.project[data.type.flavorType.flavor.name];
   logger.debug('updateAgSettings.js', 'Updating the ag-settings.json');
   await fs.writeFileSync(path.join(folder, 'ag-settings.json'), JSON.stringify(setting));
 };

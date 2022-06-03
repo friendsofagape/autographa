@@ -62,10 +62,21 @@ function useProjectsSort() {
       }).then(() => {
         projectArrayTemp[0].projects.forEach((_project) => {
           if (_project.identification.name.en === name) {
-            const status = _project.project.textTranslation.starred;
+            let dirName;
+            switch (_project.type.flavorType.flavor.name) {
+              case 'textTranslation':
+                dirName = 'textTranslation';
+                break;
+              case 'textStories':
+                dirName = 'textStories';
+                break;
+              default:
+                break;
+            }
+            const status = _project.project[dirName].starred;
             const selectedProject = _project;
-            selectedProject.project.textTranslation.starred = !status;
-            selectedProject.project.textTranslation.lastSeen = moment().format();
+            selectedProject.project[dirName].starred = !status;
+            selectedProject.project[dirName].lastSeen = moment().format();
           }
         });
       }).finally(() => {
@@ -171,22 +182,34 @@ function useProjectsSort() {
                     if (value) {
                       value.projects.forEach((_project) => {
                         const created = Object.keys(_project.identification.primary.ag);
-                        if (_project.project?.textTranslation?.starred === true) {
+                        let lastSeen;
+                        let description;
+                        switch (_project.type.flavorType.flavor.name) {
+                          case 'textTranslation':
+                            lastSeen = _project.project?.textTranslation?.lastSeen;
+                            description = _project.project?.textTranslation?.description;
+                            break;
+                          case 'textStories':
+                            lastSeen = _project.project?.textStories?.lastSeen;
+                            description = _project.project?.textStories?.description;
+                            break;
+                          default:
+                            break;
+                        }
+                        if (_project.project?.textTranslation?.starred === true || _project.project?.textStories?.starred === true) {
                           // FetchStarred(projectName,language, createdAt, updatedAt);
                           FetchStarred(
                             _project.identification.name.en,
                             _project.languages[0].name.en,
                             _project.identification.primary.ag[created].timestamp,
-                            _project.project?.textTranslation?.lastSeen,
-                            _project.project?.textTranslation?.description, created,
+                            lastSeen, description, created,
                             );
                         } else {
                           FetchUnstarred(
                             _project.identification.name.en,
                             _project.languages[0].name.en,
                             _project.identification.primary.ag[created].timestamp,
-                            _project.project?.textTranslation?.lastSeen,
-                            _project.project?.textTranslation?.description, created,
+                            lastSeen, description, created,
                             );
                         }
                       });

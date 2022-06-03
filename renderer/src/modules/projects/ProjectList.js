@@ -89,7 +89,18 @@ export default function ProjectList() {
       const folder = path.join(newpath, 'autographa', 'users', value.username, 'projects', `${project.name}_${project.id[0]}`);
       const data = fs.readFileSync(path.join(folder, 'metadata.json'), 'utf-8');
       let metadata = JSON.parse(data);
-      const settings = fs.readFileSync(path.join(folder, 'ingredients', 'ag-settings.json'), 'utf-8');
+      let dirName;
+      switch (metadata.type.flavorType.flavor.name) {
+        case 'textTranslation':
+          dirName = 'ingredients';
+          break;
+        case 'textStories':
+          dirName = 'content';
+          break;
+        default:
+          break;
+      }
+      const settings = fs.readFileSync(path.join(folder, dirName, 'ag-settings.json'), 'utf-8');
       const agSetting = JSON.parse(settings);
       metadata = { ...metadata, ...agSetting };
       logger.debug('ProjectList.js', 'Loading current project metadata');
