@@ -27,7 +27,7 @@ export default function ProjectList() {
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('name');
 
-  const filterList = ['name', 'language', 'date', 'view'];
+  const filterList = ['name', 'language', 'type', 'date', 'view'];
   const {
     states: {
       starredrow,
@@ -192,6 +192,7 @@ export default function ProjectList() {
                                             </div>
                                           </td>
                                           <td className="px-6 py-4 text-sm text-gray-900">{project.language}</td>
+                                          <td className="px-6 py-4 text-sm text-gray-900">{project.type}</td>
                                           <td className="px-6 py-4 text-sm text-gray-500">{moment(project.date).format('LL')}</td>
                                           <td className="px-6 py-4 text-sm text-gray-500">{moment(project.view, 'YYYY-MM-DD h:mm:ss').fromNow()}</td>
 
@@ -333,6 +334,9 @@ export default function ProjectList() {
                                           </td>
                                           <td className="px-6 py-4">
                                             <div className="text-sm text-gray-900">{project.language}</div>
+                                          </td>
+                                          <td className="px-6 py-4">
+                                            <div className="text-sm text-gray-900">{project.type}</div>
                                           </td>
                                           <td className="px-6 py-4 text-sm text-gray-500">{moment(project.date).format('LL')}</td>
                                           <td className="px-6 py-4 text-sm text-gray-500">{moment(project.view, 'YYYY-MM-DD h:mm:ss').fromNow()}</td>

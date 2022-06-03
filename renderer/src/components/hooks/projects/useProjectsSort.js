@@ -139,11 +139,11 @@ function useProjectsSort() {
     // eslint-disable-next-line
       }, [temparray, active]);
 
-    const createData = (name, language, date, view, description, id) => ({
-      name, language, date, view, description, id,
+    const createData = (name, language, date, view, description, id, type) => ({
+      name, language, date, view, description, id, type,
     });
 
-    const FetchStarred = (ProjectName, Language, createdAt, LastView, ProjectDescription, id) => {
+    const FetchStarred = (ProjectName, Language, createdAt, LastView, ProjectDescription, id, type) => {
       starrtedData.push(createData(
         ProjectName,
         Language,
@@ -151,10 +151,11 @@ function useProjectsSort() {
         LastView,
         ProjectDescription,
         id,
+        type,
       ));
     };
 
-    const FetchUnstarred = (ProjectName, Language, createdAt, LastView, ProjectDescription, id) => {
+    const FetchUnstarred = (ProjectName, Language, createdAt, LastView, ProjectDescription, id, type) => {
       unstarrtedData.push(createData(
         ProjectName,
         Language,
@@ -162,6 +163,7 @@ function useProjectsSort() {
         LastView,
         ProjectDescription,
         id,
+        type,
       ));
     };
 
@@ -184,14 +186,17 @@ function useProjectsSort() {
                         const created = Object.keys(_project.identification.primary.ag);
                         let lastSeen;
                         let description;
+                        let flavorType;
                         switch (_project.type.flavorType.flavor.name) {
                           case 'textTranslation':
                             lastSeen = _project.project?.textTranslation?.lastSeen;
                             description = _project.project?.textTranslation?.description;
+                            flavorType = 'Bible Translation';
                             break;
                           case 'textStories':
                             lastSeen = _project.project?.textStories?.lastSeen;
                             description = _project.project?.textStories?.description;
+                            flavorType = 'OBS';
                             break;
                           default:
                             break;
@@ -202,14 +207,14 @@ function useProjectsSort() {
                             _project.identification.name.en,
                             _project.languages[0].name.en,
                             _project.identification.primary.ag[created].timestamp,
-                            lastSeen, description, created,
+                            lastSeen, description, created, flavorType,
                             );
                         } else {
                           FetchUnstarred(
                             _project.identification.name.en,
                             _project.languages[0].name.en,
                             _project.identification.primary.ag[created].timestamp,
-                            lastSeen, description, created,
+                            lastSeen, description, created, flavorType,
                             );
                         }
                       });
