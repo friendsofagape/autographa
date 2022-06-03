@@ -9,16 +9,16 @@ import Document, {
      }
 
    render() {
-     return (
-       <Html>
-         <Head>
-           <link rel="stylesheet" />
-         </Head>
-         <body>
-           <Main />
-           <NextScript />
-         </body>
-       </Html>
-       );
+    return (
+      <Html>
+        <Head>
+          <link rel="stylesheet" />
+        </Head>
+        <body>
+          <Main />
+          <NextScript />
+        </body>
+      </Html>
+    );
    }
  }

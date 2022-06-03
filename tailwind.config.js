@@ -7,7 +7,7 @@ module.exports = {
     './renderer/src/components/**/*.{js,ts,jsx,tsx}',
     './renderer/src/layouts/**/*.{js,ts,jsx,tsx}',
     './renderer/src/modules/**/*.{js,ts,jsx,tsx}'],
-  darkMode: false, // or 'media' or 'class'
+  media: false, // or 'media' or 'class'
   theme: {
     colors: {
       transparent: 'transparent',
@@ -19,7 +19,7 @@ module.exports = {
       validation: '#FFE5E5',
       white: colors.white,
       light: '#E4F1FF',
-      gray: colors.trueGray,
+      gray: colors.neutral,
       dark: '#333333',
       black: colors.black,
       green: colors.green,
