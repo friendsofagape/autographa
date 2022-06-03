@@ -9379,10 +9379,10 @@
   "resolved" "https://registry.npmjs.org/hyphenate-style-name/-/hyphenate-style-name-1.0.4.tgz"
   "version" "1.0.4"
 
-"i18next@>= 19.0.0":
-  "integrity" "sha512-uI5LVG10SBHLVOclr6yY1aCimmrzeZ0dwD73Sio61E8gQEwRmKI7/M8RKM084mNNy7VscKtxzSwELrso8BKv1g=="
-  "resolved" "https://registry.npmjs.org/i18next/-/i18next-21.8.5.tgz"
-  "version" "21.8.5"
+"i18next@^21.6.14", "i18next@>= 19.0.0":
+  "integrity" "sha512-fYbEmaCIMSDrAzXGnisZyBd0h3bcO43jVJa5fulk4ambTIOgs9tqgNsiyr1sy6Xi4iZpYMHp2ZBjU3IcCLGxPA=="
+  "resolved" "https://registry.npmjs.org/i18next/-/i18next-21.8.7.tgz"
+  "version" "21.8.7"
   dependencies:
     "@babel/runtime" "^7.17.2"
 

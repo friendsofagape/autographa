@@ -9,13 +9,17 @@ export default function PopoverProjectType(props) {
   const {
     children,
     items,
+    handleDropDown,
   } = props;
 
   return (
     <Popover className="relative">
       {() => (
         <>
-          <Popover.Button as={Fragment}>
+          {/* <Popover.Button as={Fragment}>
+            {children}
+          </Popover.Button> */}
+          <Popover.Button>
             {children}
           </Popover.Button>
           <Transition
@@ -34,6 +38,7 @@ export default function PopoverProjectType(props) {
                     <a
                       key={item.name}
                       href={item.href}
+                      onClick={() => { handleDropDown(item.name); }}
                       className="flex text-white hover:text-primary items-center justify-center flex-col py-3 transition duration-150 ease-in-out rounded-lg hover:bg-white focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
                     >
 
@@ -63,4 +68,5 @@ export default function PopoverProjectType(props) {
 PopoverProjectType.propTypes = {
   children: PropTypes.any,
   items: PropTypes.array,
+  handleDropDown: PropTypes.func,
 };

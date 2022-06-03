@@ -35,7 +35,7 @@ function BookNumberTag(props) {
     </div>
   );
 }
-export default function AdvancedSettingsDropdown({ call, project }) {
+export default function AdvancedSettingsDropdown({ call, project, projectType }) {
   const {
     states: {
       canonSpecification,
@@ -158,28 +158,31 @@ export default function AdvancedSettingsDropdown({ call, project }) {
   return (
     <>
       <div>
-        <button
-          className="min-w-max flex justify-between items-center pt-3 shadow tracking-wider leading-none h-10 px-4 py-2 w-96 text-sm font-medium text-black bg-gray-100 rounded-sm hover:bg-gray-200 focus:outline-none"
-          onClick={handleClick}
-          type="button"
-          id="open-advancesettings"
-        >
-          <h3>{t('btn-advance-settings')}</h3>
-          {isShow
-            ? (
-              <ChevronDownIcon
-                className="h-5 w-5 text-primary"
-                aria-hidden="true"
-              />
-            )
-            : (
-              <ChevronUpIcon
-                className="h-5 w-5 text-primary"
-                aria-hidden="true"
-              />
-          )}
-        </button>
-        {!isShow
+        { projectType !== 'OBS'
+          && (
+          <button
+            className="min-w-max flex justify-between items-center pt-3 shadow tracking-wider leading-none h-10 px-4 py-2 w-96 text-sm font-medium text-black bg-gray-100 rounded-sm hover:bg-gray-200 focus:outline-none"
+            onClick={handleClick}
+            type="button"
+            id="open-advancesettings"
+          >
+            <h3>{t('btn-advance-settings')}</h3>
+            {isShow
+              ? (
+                <ChevronDownIcon
+                  className="h-5 w-5 text-primary"
+                  aria-hidden="true"
+                />
+              )
+              : (
+                <ChevronUpIcon
+                  className="h-5 w-5 text-primary"
+                  aria-hidden="true"
+                />
+            )}
+          </button>
+        )}
+        {!isShow && projectType !== 'OBS'
           && (
             <div>
               <div className="mt-8">
@@ -279,6 +282,27 @@ export default function AdvancedSettingsDropdown({ call, project }) {
               </div>
             </div>
           )}
+        {
+          projectType === 'OBS' && (
+            <>
+              <h4 className="text-xs font-base mt-4 text-primary  tracking-wide leading-4  font-light">
+                Licence
+                <span className="text-error">*</span>
+              </h4>
+              <div className="flex gap-3 mt-2">
+                <CustomList
+                  selected={copyright}
+                  setSelected={(value) => setALicense(value.title, true)}
+                  options={licenceList}
+                  show
+                />
+                <div className="w-8">
+                  <LicencePopover call={call} />
+                </div>
+              </div>
+            </>
+          )
+        }
       </div>
       {bibleNav && (
         <CustomCanonSpecification
@@ -296,4 +320,5 @@ BookNumberTag.propTypes = {
 AdvancedSettingsDropdown.propTypes = {
   call: PropTypes.string,
   project: PropTypes.object,
+  projectType: PropTypes.string,
 };

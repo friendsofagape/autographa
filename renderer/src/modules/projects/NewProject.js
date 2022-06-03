@@ -2,15 +2,16 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'react-i18next';
+import { ChevronDownIcon } from '@heroicons/react/solid';
 import ProjectsLayout from '@/layouts/projects/Layout';
 import AdvancedSettingsDropdown from '@/components/ProjectsPage/CreateProject/AdvancedSettingsDropdown';
 import { ProjectContext } from '@/components/context/ProjectContext';
 import TargetLanguagePopover from '@/components/ProjectsPage/CreateProject/TargetLanguagePopover';
-// import PopoverProjectType from '@/layouts/editor/PopoverProjectType';
+import PopoverProjectType from '@/layouts/editor/PopoverProjectType';
 import { SnackBar } from '@/components/SnackBar';
 import LayoutIcon from '@/icons/basil/Outline/Interface/Layout.svg';
-import BullhornIcon from '@/icons/basil/Outline/Communication/Bullhorn.svg';
-import ProcessorIcon from '@/icons/basil/Outline/Devices/Processor.svg';
+// import BullhornIcon from '@/icons/basil/Outline/Communication/Bullhorn.svg';
+// import ProcessorIcon from '@/icons/basil/Outline/Devices/Processor.svg';
 // import CheckIcon from '@/icons/basil/Outline/Interface/Check.svg';
 import ImageIcon from '@/icons/basil/Outline/Files/Image.svg';
 import useValidator from '@/components/hooks/useValidator';
@@ -27,16 +28,16 @@ const solutions = [
     href: '##',
     icon: LayoutIcon,
   },
-  {
-    name: 'Audio',
-    href: '##',
-    icon: BullhornIcon,
-  },
-  {
-    name: 'MT',
-    href: '##',
-    icon: ProcessorIcon,
-  },
+  // {
+  //   name: 'Audio',
+  //   href: '##',
+  //   icon: BullhornIcon,
+  // },
+  // {
+  //   name: 'MT',
+  //   href: '##',
+  //   icon: ProcessorIcon,
+  // },
   {
     name: 'OBS',
     href: '##',
@@ -51,23 +52,25 @@ function TargetLanguageTag(props) {
   );
 }
 
-function BibleHeaderTagDropDown() {
+function BibleHeaderTagDropDown(headerDropDown, handleDropDown) {
   return (
     <>
-      <button
-        type="button"
-        className="flex justify-center items-center px-3 py-2 text-white ml-5
-        font-bold text-xs rounded-full leading-3 tracking-wider uppercase bg-primary"
+      <PopoverProjectType
+        items={solutions}
+        handleDropDown={handleDropDown}
       >
-        <div className="">Bible</div>
-        {/* <ChevronDownIcon
-          className="w-5 h-5 ml-2"
-          aria-hidden="true"
-        /> */}
-      </button>
-      {/* <PopoverProjectType items={solutions}> */}
-
-      {/* </PopoverProjectType> */}
+        <button
+          type="button"
+          className="flex justify-center items-center px-3 py-2 text-white ml-5
+        font-bold text-xs rounded-full leading-3 tracking-wider uppercase bg-primary"
+        >
+          <div className="">{headerDropDown}</div>
+          <ChevronDownIcon
+            className="w-5 h-5 ml-2"
+            aria-hidden="true"
+          />
+        </button>
+      </PopoverProjectType>
     </>
 
   );
@@ -101,6 +104,12 @@ export default function NewProject({ call, project, closeEdit }) {
     abbr: {},
     description: {},
   });
+
+  const [headerDropDown, setHeaderDropDown] = React.useState(solutions[0].name);
+  const handleDropDown = (currentSelection) => {
+    setHeaderDropDown(currentSelection);
+  };
+
   function getAbbreviation(text) {
     if (typeof text !== 'string' || !text) {
       return '';
@@ -130,7 +139,7 @@ export default function NewProject({ call, project, closeEdit }) {
   };
   const createTheProject = (update) => {
     logger.debug('NewProject.js', 'Creating new project.');
-    const value = createProject(call, metadata, update);
+    const value = createProject(call, metadata, update, headerDropDown);
     value.then((status) => {
       logger.debug('NewProject.js', status[0].value);
       setLoading(false);
@@ -226,7 +235,7 @@ export default function NewProject({ call, project, closeEdit }) {
   return (
     <ProjectsLayout
       title={call === 'new' ? t('new-project-page') : t('edit-project')}
-      header={BibleHeaderTagDropDown()}
+      header={BibleHeaderTagDropDown(headerDropDown, handleDropDown)}
     >
       {loading === true
         ? (
@@ -329,7 +338,7 @@ export default function NewProject({ call, project, closeEdit }) {
               </div>
 
               <div>
-                <AdvancedSettingsDropdown call={call} project={project} />
+                <AdvancedSettingsDropdown call={call} project={project} projectType={headerDropDown} />
                 {call === 'new'
                   ? (
                     <div>
