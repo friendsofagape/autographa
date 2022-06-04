@@ -3,7 +3,7 @@ import burrito from '../../lib/OBSTemplete.json';
 import languageCode from '../../lib/LanguageCode.json';
 import * as logger from '../../logger';
 import packageInfo from '../../../../package.json';
-// import { updateVersion } from './updateTranslationSB';
+import { updateVersion } from './updateObsSB';
 
 const findCode = (list, id) => {
   logger.debug('createObsSB.js', 'In findCode for getting the language code');
@@ -15,7 +15,7 @@ const findCode = (list, id) => {
   });
   return code;
 };
-const createObsSB = (username, projectFields, selectedScope, language, copyright, id,
+const createObsSB = (username, projectFields, language, copyright, id,
   project, call, update) => {
   logger.debug('createObsSB.js', 'In createObsSB');
   return new Promise((resolve) => {

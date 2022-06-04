@@ -27,7 +27,7 @@
 			"en": ""
 		}
 	},
-	"confidential": false,
+	"confidential": true,
 	"languages": [
 		{
 			"tag": "",

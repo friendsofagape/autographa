@@ -137,7 +137,6 @@ const saveProjectsMeta = async (projectMetaObj) => {
       currentUser,
       projectMetaObj.newProjectFields,
       projectMetaObj.versificationScheme,
-      scope,
       projectMetaObj.language.scriptDirection,
       id,
       projectMetaObj.importedFiles,
@@ -146,15 +145,16 @@ const saveProjectsMeta = async (projectMetaObj) => {
       projectMetaObj.call,
     ).then(async (ingredient) => {
       logger.debug('saveProjectsMeta.js', 'Calling createTranslationSB for creating burrito.');
-      const burritoFile = await createObsSB(currentUser,
+      const burritoFile = await createObsSB(
+        currentUser,
         projectMetaObj.newProjectFields,
-        scope,
         projectMetaObj.language.title,
         projectMetaObj.copyright,
         id,
         projectMetaObj.project,
         projectMetaObj.call,
-        projectMetaObj.update);
+        projectMetaObj.update,
+      );
       if (projectMetaObj.call === 'edit') {
         burritoFile.ingredients = { ...projectMetaObj.project.ingredients, ...ingredient };
       } else {
@@ -177,7 +177,6 @@ const saveProjectsMeta = async (projectMetaObj) => {
 
       case 'OBS':
         await obsBurritoChecksAndCreation();
-        status.push({ type: 'warning', value: 'OBS Project creation/edit code is not implemented' });
         break;
 
       default:

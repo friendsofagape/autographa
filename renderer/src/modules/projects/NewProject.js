@@ -220,7 +220,7 @@ export default function NewProject({ call, project, closeEdit }) {
     setNewProjectFields({
       projectName: project.identification.name.en,
       abbreviation: project.identification.abbreviation.en,
-      description: project.project.textTranslation.description,
+      description: project.project[project.type.flavorType.flavor.name].description,
     });
     setValue({ label: 'Target Language', title: project.languages[0].name.en });
     setMetadata(project);
