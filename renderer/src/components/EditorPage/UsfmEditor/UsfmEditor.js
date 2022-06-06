@@ -429,7 +429,7 @@ const UsfmEditor = () => {
 
   return (
     <>
-      <Editor>
+      <Editor callFrom="textTranslation">
         <>
           {((isLoading || !usfmInput) && displyScreen) && <EmptyScreen />}
           {isLoading && !displyScreen && <LoadingScreen /> }

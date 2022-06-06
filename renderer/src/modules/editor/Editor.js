@@ -9,13 +9,15 @@ import {
   useContext, useEffect, useState,
 } from 'react';
 import { useTranslation } from 'react-i18next';
+// import ObsNavigation from '@/components/EditorPage/ObsEditor/ObsNavigation';
+import NavigationObs from '@/components/EditorPage/ObsEditor/NavigationObs';
 import BibleNavigation from '@/modules/biblenavigation/BibleNavigation';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import { ProjectContext } from '@/components/context/ProjectContext';
 import * as logger from '../../logger';
 
 export default function Editor({
-  children,
+  children, callFrom,
 }) {
   const {
     states: {
@@ -33,9 +35,11 @@ export default function Editor({
       bookName,
       chapter,
       projectScriptureDir,
+      obsNavigation,
     },
     actions: {
       setBookmarksVerses,
+      setObsNavigation,
     },
   } = useContext(ReferenceContext);
   const [bookMarked, setBookMarks] = useState(false);
@@ -121,12 +125,18 @@ export default function Editor({
     updateBookMarksDB(bookmarksVerses);
   };
   const { t } = useTranslation();
-
   return (
     <>
       <div className="flex flex-col bg-white border-b-2 border-secondary rounded-md shadow h-editor scrollbar-width">
         <div className="flex flex-wrap items-center justify-between bg-secondary ">
-          <BibleNavigation />
+          {/* {(callFrom === 'textTranslation' && <BibleNavigation />) || (callFrom === 'obs' && <ObsNavigation value={value} onChange={onChange} />)} */}
+          {(callFrom === 'textTranslation' && <BibleNavigation />) || (callFrom === 'obs'
+          && (
+          <NavigationObs
+            onChangeNumber={(value) => setObsNavigation(value)}
+            number={obsNavigation}
+          />
+))}
           {/* <div className="text-center h-6 rounded-t text-gray-100  text-xs uppercase tracking-widest font-bold leading-3">
           <div className="text-center pt-1">
             Editor
@@ -146,6 +156,8 @@ export default function Editor({
               <LockClosedIcon aria-label="close-lock" onClick={(e) => handleUnlockScroll(e)} className="h-5 w-5 text-white" aria-hidden="true" />
             </div>
           )}
+            {callFrom === 'textTranslation'
+            && (
             <div
               onClick={(event) => handleBookmarks(event)}
               role="button"
@@ -156,6 +168,7 @@ export default function Editor({
               <BookmarkIcon className={`${bookMarked ? 'fill-current' : ''}  h-5 w-5 text-white`} aria-hidden="true" />
 
             </div>
+            )}
             {/* <Menu as="div" className="px-2 py-1 focus:outline-none border-r-1 border-white border-opacity-10">
             {({ open }) => (
               <>
@@ -358,4 +371,5 @@ export default function Editor({
 
 Editor.propTypes = {
   children: PropTypes.any,
+  callFrom: PropTypes.string,
 };

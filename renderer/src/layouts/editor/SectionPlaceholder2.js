@@ -102,7 +102,7 @@ const SectionPlaceholder2 = () => {
           Object.entries(_value).forEach(
             ([, resources]) => {
               if (resources.identification.name.en === _projectname[0]) {
-                refsHistory.push(resources.project.textTranslation.refResources);
+                refsHistory.push(resources.project[resources.type.flavorType.flavor.name].refResources);
               }
             },
           );
@@ -183,15 +183,15 @@ const SectionPlaceholder2 = () => {
           Object.entries(_value).forEach(
             ([, resources]) => {
               if (resources.identification.name.en === _projectname[0]) {
-                refsHistory.push(resources.project.textTranslation);
+                refsHistory.push(resources.project[resources.type.flavorType.flavor.name]);
                 if (sectionNum === 1 || sectionNum === 0) {
                   if (openResource3
                     && openResource4) {
-                      resources.project.textTranslation.refResources.splice(1, 1);
+                      resources.project[resources.type.flavorType.flavor.name].refResources.splice(1, 1);
                     }
                 }
                 if (sectionNum === 1 && layout > 1 && !(openResource3 && openResource4)) {
-                      resources.project.textTranslation.refResources[1] = {
+                      resources.project[resources.type.flavorType.flavor.name].refResources[1] = {
                       1: {
                         resouceId: referenceColumnTwoData1?.selectedResource,
                         language: referenceColumnTwoData1?.languageId,
@@ -203,7 +203,7 @@ const SectionPlaceholder2 = () => {
                 }
                 if (sectionNum === 2 && layout > 1) {
                   if (referenceColumnTwoData1.refName !== undefined) {
-                  resources.project.textTranslation.refResources[1] = {
+                  resources.project[resources.type.flavorType.flavor.name].refResources[1] = {
                     1: {
                       resouceId: referenceColumnTwoData1?.selectedResource,
                       language: referenceColumnTwoData1?.languageId,
@@ -222,7 +222,7 @@ const SectionPlaceholder2 = () => {
                 }
                 }
                 if (layout === 0 && openResource1 && openResource2 && openResource3 && openResource4) {
-                  resources.project.textTranslation.refResources = [];
+                  resources.project[resources.type.flavorType.flavor.name].refResources = [];
                 }
               }
             },
