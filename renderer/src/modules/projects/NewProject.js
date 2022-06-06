@@ -8,17 +8,17 @@ import { ProjectContext } from '@/components/context/ProjectContext';
 import TargetLanguagePopover from '@/components/ProjectsPage/CreateProject/TargetLanguagePopover';
 // import PopoverProjectType from '@/layouts/editor/PopoverProjectType';
 import { SnackBar } from '@/components/SnackBar';
+import useValidator from '@/components/hooks/useValidator';
+import ConfirmationModal from '@/layouts/editor/ConfirmationModal';
 import LayoutIcon from '@/icons/basil/Outline/Interface/Layout.svg';
 import BullhornIcon from '@/icons/basil/Outline/Communication/Bullhorn.svg';
 import ProcessorIcon from '@/icons/basil/Outline/Devices/Processor.svg';
 // import CheckIcon from '@/icons/basil/Outline/Interface/Check.svg';
 import ImageIcon from '@/icons/basil/Outline/Files/Image.svg';
-import useValidator from '@/components/hooks/useValidator';
 import { classNames } from '../../util/classNames';
 import * as logger from '../../logger';
 import ImportPopUp from './ImportPopUp';
 import CustomList from './CustomList';
-import ConfirmationModal from '@/layouts/editor/ConfirmationModal';
 import burrito from '../../lib/BurritoTemplete.json';
 // eslint-disable-next-line no-unused-vars
 const solutions = [

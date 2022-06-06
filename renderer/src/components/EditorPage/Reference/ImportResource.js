@@ -7,13 +7,13 @@ import { Dialog, Transition } from '@headlessui/react';
 import { FolderOpenIcon, InformationCircleIcon } from '@heroicons/react/outline';
 import * as localforage from 'localforage';
 import { useTranslation } from 'react-i18next';
-import CloseIcon from '@/illustrations/close-button-black.svg';
 import { SnackBar } from '@/components/SnackBar';
 import { isElectron } from '@/core/handleElectron';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
+import ConfirmationModal from '@/layouts/editor/ConfirmationModal';
 import * as logger from '../../../logger';
 import { viewBurrito } from '../../../core/burrito/importBurrito';
-import ConfirmationModal from '@/layouts/editor/ConfirmationModal';
+import CloseIcon from '@/illustrations/close-button-black.svg';
 
 export default function ImportResource({
  open, closePopUp, setOpenResourcePopUp, setLoading,

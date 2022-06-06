@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import localforage from 'localforage';
+import ObsEditor from '@/components/EditorPage/ObsEditor/ObsEditor';
 import SectionPlaceholder1 from './SectionPlaceholder1';
 import SectionPlaceholder2 from './SectionPlaceholder2';
-import ObsEditor from '@/components/EditorPage/ObsEditor/ObsEditor';
 
 const UsfmEditor = dynamic(
   () => import('@/components/EditorPage/UsfmEditor/UsfmEditor'),

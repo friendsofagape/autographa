@@ -1,13 +1,13 @@
 import { useState, useContext } from 'react';
 import { BookmarkIcon } from '@heroicons/react/solid';
 import { useTranslation } from 'react-i18next';
-import ColumnsIcon from '@/icons/basil/Outline/Interface/Columns.svg';
-import Font from '@/icons/font.svg';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import MenuBar from '@/components/Menubar/MenuBar';
 import CustomUsfmToolbar from '@/components/EditorPage/UsfmEditor/CustomUsfmToolbar';
 import { ProjectContext } from '@/components/context/ProjectContext';
 import CustomNofications from '@/components/Notification/CustomNofications';
+import Font from '@/icons/font.svg';
+import ColumnsIcon from '@/icons/basil/Outline/Interface/Columns.svg';
 import AboutModal from './AboutModal';
 import MenuDropdown from '../../components/MenuDropdown/MenuDropdown';
 import menuStyles from './MenuBar.module.css';
