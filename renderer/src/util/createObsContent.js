@@ -2,6 +2,8 @@ import moment from 'moment';
 import { environment } from '../../environment';
 import * as logger from '../logger';
 import OBSData from '../lib/OBSData.json';
+import OBSFront from '../lib/OBSfront.md';
+import OBSBack from '../lib/OBSback.md';
 import JsonToMd from '../obsRcl/JsonToMd/JsonToMd';
 
 const path = require('path');
@@ -64,11 +66,32 @@ export const createObsContent = (username, project, direction, id,
         // ingredients[path.join('content', currentFileName)].scope[book] = [];
       }
     });
-
-    // ag setting creation
     if (!fs.existsSync(folder)) {
       fs.mkdirSync(folder, { recursive: true });
     }
+    // OBS front and back files add to content
+    logger.debug('createObsContent.js', 'Creating OBS front and back md file in content');
+    await fs.writeFileSync(path.join(folder, 'front.md'), OBSFront);
+    let obsstat = fs.statSync(path.join(folder, 'front.md'));
+    ingredients[path.join('content', 'front.md')] = {
+      checksum: {
+        md5: md5(OBSFront),
+      },
+      mimeType: 'text/markdown',
+      size: obsstat.size,
+      role: 'pubdata',
+    };
+    await fs.writeFileSync(path.join(folder, 'back.md'), OBSBack);
+    obsstat = fs.statSync(path.join(folder, 'back.md'));
+    ingredients[path.join('content', 'back.md')] = {
+      checksum: {
+        md5: md5(OBSBack),
+      },
+      mimeType: 'text/plain',
+      size: obsstat.size,
+      role: 'title',
+    };
+    // ag setting creation
     const settings = {
       version: environment.AG_SETTING_VERSION,
       project: {
