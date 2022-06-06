@@ -16,7 +16,7 @@ export const createObsContent = (username, project, direction, id,
   importedFiles, copyright) => {
   logger.debug('createObsContent.js', 'In OBS md content creation');
 
-  return new Promise(async (resolve) => {
+  return new Promise((resolve) => {
     const ingredients = {};
     const newpath = localStorage.getItem('userPath');
     const folder = path.join(newpath, 'autographa', 'users', username, 'projects', `${project.projectName}_${id}`, 'content');
@@ -29,7 +29,6 @@ export const createObsContent = (username, project, direction, id,
       const currentFileName = `${storyJson.storyId}.md`;
       if (bookAvailable(importedFiles, currentFileName)) {
         logger.debug('createObsContent.js', `${currentFileName} is been Imported`);
-        console.log("files in imported stories :" + currentFileName);
         const file = importedFiles.filter((obj) => (obj.id === currentFileName));
         const fs = window.require('fs');
         if (!fs.existsSync(folder)) {
@@ -47,7 +46,6 @@ export const createObsContent = (username, project, direction, id,
         };
         // ingredients[path.join('content', currentFileName)].scope[book] = [];
       } else {
-        console.log("else block no files in imported stories:" + currentFileName);
         logger.debug('createObsContent.js', 'Creating the md file using RCL fuvntion JsonToMd');
         const file = JsonToMd(storyJson, '');
         const fs = window.require('fs');
@@ -73,7 +71,7 @@ export const createObsContent = (username, project, direction, id,
     }
     // OBS front and back files add to content
     logger.debug('createObsContent.js', 'Creating OBS front and back md file in content');
-    await fs.writeFileSync(path.join(folder, 'front.md'), OBSFront);
+    fs.writeFileSync(path.join(folder, 'front.md'), OBSFront);
     let obsstat = fs.statSync(path.join(folder, 'front.md'));
     ingredients[path.join('content', 'front.md')] = {
       checksum: {
@@ -83,7 +81,7 @@ export const createObsContent = (username, project, direction, id,
       size: obsstat.size,
       role: 'pubdata',
     };
-    await fs.writeFileSync(path.join(folder, 'back.md'), OBSBack);
+    fs.writeFileSync(path.join(folder, 'back.md'), OBSBack);
     obsstat = fs.statSync(path.join(folder, 'back.md'));
     ingredients[path.join('content', 'back.md')] = {
       checksum: {
@@ -94,7 +92,7 @@ export const createObsContent = (username, project, direction, id,
       role: 'title',
     };
     // OBS License
-    await fs.writeFileSync(path.join(licenseFolder, 'LICENSE.md'), OBSLicense);
+    fs.writeFileSync(path.join(licenseFolder, 'LICENSE.md'), OBSLicense);
     obsstat = fs.statSync(path.join(licenseFolder, 'LICENSE.md'));
     ingredients[path.join('LICENSE.md')] = {
       checksum: {
@@ -119,7 +117,7 @@ export const createObsContent = (username, project, direction, id,
       },
     };
     logger.debug('createObsContent.js', 'Creating ag-settings.json file in content');
-    await fs.writeFileSync(path.join(folder, 'ag-settings.json'), JSON.stringify(settings));
+    fs.writeFileSync(path.join(folder, 'ag-settings.json'), JSON.stringify(settings));
     const stat = fs.statSync(path.join(folder, 'ag-settings.json'));
     ingredients[path.join('content', 'ag-settings.json')] = {
       checksum: {
