@@ -4,6 +4,7 @@ import * as logger from '../logger';
 import OBSData from '../lib/OBSData.json';
 import OBSFront from '../lib/OBSfront.md';
 import OBSBack from '../lib/OBSback.md';
+import OBSLicense from '../lib/OBSLicense.md';
 import JsonToMd from '../obsRcl/JsonToMd/JsonToMd';
 
 const path = require('path');
@@ -19,6 +20,7 @@ export const createObsContent = (username, project, direction, id,
     const ingredients = {};
     const newpath = localStorage.getItem('userPath');
     const folder = path.join(newpath, 'autographa', 'users', username, 'projects', `${project.projectName}_${id}`, 'content');
+    const licenseFolder = path.join(newpath, 'autographa', 'users', username, 'projects', `${project.projectName}_${id}`);
     const fs = window.require('fs');
 
     logger.debug('createObsContent.js', 'Creating the story md files');
@@ -90,6 +92,16 @@ export const createObsContent = (username, project, direction, id,
       mimeType: 'text/plain',
       size: obsstat.size,
       role: 'title',
+    };
+    // OBS License
+    await fs.writeFileSync(path.join(licenseFolder, 'LICENSE.md'), OBSLicense);
+    obsstat = fs.statSync(path.join(licenseFolder, 'LICENSE.md'));
+    ingredients[path.join('LICENSE.md')] = {
+      checksum: {
+        md5: md5(OBSLicense),
+      },
+      mimeType: 'text/markdown',
+      size: obsstat.size,
     };
     // ag setting creation
     const settings = {
