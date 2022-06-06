@@ -33,10 +33,10 @@ const EditorPanel = ({ obsStory, storyUpdate }) => {
     <>
       {obsStory.map((story) => (
         <>
-          {story.title
+          {Object.prototype.hasOwnProperty.call(story, 'title')
           && (
           <div
-            className="flex m-4 p-4 rounded-md min-h-0"
+            className="flex m-4 p-1 rounded-md min-h-0"
             key={story.id}
           >
             <textarea
@@ -48,10 +48,10 @@ const EditorPanel = ({ obsStory, storyUpdate }) => {
             />
           </div>
           )}
-          {story.text
+          {Object.prototype.hasOwnProperty.call(story, 'text')
           && (
           <div
-            className="flex m-4 p-4 rounded-md"
+            className="flex m-4 p-1 rounded-md"
             key={story.id}
           >
             <textarea
@@ -63,10 +63,10 @@ const EditorPanel = ({ obsStory, storyUpdate }) => {
             />
           </div>
           )}
-          {story.end
+          {Object.prototype.hasOwnProperty.call(story, 'end')
           && (
           <div
-            className="flex m-4 p-4 rounded-md min-h-0"
+            className="flex m-4 p-1 rounded-md min-h-0"
             key={story.id}
           >
             <textarea
