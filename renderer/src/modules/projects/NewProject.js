@@ -52,26 +52,40 @@ function TargetLanguageTag(props) {
   );
 }
 
-function BibleHeaderTagDropDown(headerDropDown, handleDropDown) {
+function BibleHeaderTagDropDown(headerDropDown, handleDropDown, call) {
   return (
-    <>
-      <PopoverProjectType
-        items={solutions}
-        handleDropDown={handleDropDown}
-      >
+    call === 'new'
+    ? (
+      <>
+        <PopoverProjectType
+          items={solutions}
+          handleDropDown={handleDropDown}
+        >
+          <button
+            type="button"
+            className="flex justify-center items-center px-3 py-2 text-white ml-5
+          font-bold text-xs rounded-full leading-3 tracking-wider uppercase bg-primary"
+          >
+            <div className="">{headerDropDown}</div>
+            <ChevronDownIcon
+              className="w-5 h-5 ml-2"
+              aria-hidden="true"
+            />
+          </button>
+        </PopoverProjectType>
+      </>
+    )
+    : (
+      <>
         <button
           type="button"
           className="flex justify-center items-center px-3 py-2 text-white ml-5
-        font-bold text-xs rounded-full leading-3 tracking-wider uppercase bg-primary"
+          font-bold text-xs rounded-full leading-3 tracking-wider uppercase bg-primary"
         >
           <div className="">{headerDropDown}</div>
-          <ChevronDownIcon
-            className="w-5 h-5 ml-2"
-            aria-hidden="true"
-          />
         </button>
-      </PopoverProjectType>
-    </>
+      </>
+    )
 
   );
 }
@@ -224,6 +238,19 @@ export default function NewProject({ call, project, closeEdit }) {
     });
     setValue({ label: 'Target Language', title: project.languages[0].name.en });
     setMetadata(project);
+    // set dropdown to the project type
+    switch (project.type.flavorType.flavor.name) {
+      case 'textTranslation':
+        setHeaderDropDown('Translation');
+        break;
+
+      case 'textStories':
+        setHeaderDropDown('OBS');
+        break;
+
+      default:
+        break;
+    }
   };
   useEffect(() => {
     if (call === 'edit') {
@@ -235,7 +262,7 @@ export default function NewProject({ call, project, closeEdit }) {
   return (
     <ProjectsLayout
       title={call === 'new' ? t('new-project-page') : t('edit-project')}
-      header={BibleHeaderTagDropDown(headerDropDown, handleDropDown)}
+      header={BibleHeaderTagDropDown(headerDropDown, handleDropDown, call)}
     >
       {loading === true
         ? (
