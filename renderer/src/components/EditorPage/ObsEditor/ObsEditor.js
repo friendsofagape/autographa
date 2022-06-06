@@ -5,9 +5,9 @@ import { readRefMeta } from '@/core/reference/readRefMeta';
 import { readRefBurrito } from '@/core/reference/readRefBurrito';
 import { readFile } from '@/core/editor/readFile';
 import Editor from '@/modules/editor/Editor';
-import EditorPanel from './EditorPanel';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import writeToFile from '@/core/editor/writeToFile';
+import EditorPanel from './EditorPanel';
 
 const ObsEditor = () => {
   const [mdData, setMdData] = useState();
@@ -34,13 +34,13 @@ const ObsEditor = () => {
     setMdData(story);
     let title; let body = ''; let end;
     story.forEach((s) => {
-      if (s.title) {
+      if (Object.prototype.hasOwnProperty.call(s, 'title')) {
         title = `# ${s.title}\n\n`;
       }
-      if (s.end) {
+      if (Object.prototype.hasOwnProperty.call(s, 'end')) {
         end = `_${s.end}_`;
       }
-      if (s.text) {
+      if (Object.prototype.hasOwnProperty.call(s, 'text')) {
         body += `![OBS Image](${s.img})\n\n${s.text}\n\n`;
       }
     });

@@ -5,11 +5,25 @@ const EditorPanel = ({ obsStory, storyUpdate }) => {
     const index = e.target.getAttribute('data-id');
     const value = e.target.value;
     const story = obsStory[index - 1];
-    const newStory = {
-      id: story.id,
-      img: story.img,
-      text: value,
-    };
+    let newStory = {};
+    if (Object.prototype.hasOwnProperty.call(story, 'title')) {
+      newStory = {
+        id: story.id,
+        title: value,
+      };
+    } else if (Object.prototype.hasOwnProperty.call(story, 'text')) {
+      newStory = {
+        id: story.id,
+        img: story.img,
+        text: value,
+      };
+    } else if (Object.prototype.hasOwnProperty.call(story, 'end')) {
+      newStory = {
+        id: story.id,
+        end: value,
+      };
+    }
+
     const newStories = obsStory.map((story) => (story.id !== newStory.id ? story : newStory));
     let newData = { ...obsStory };
     newData = newStories;
@@ -19,16 +33,46 @@ const EditorPanel = ({ obsStory, storyUpdate }) => {
     <>
       {obsStory.map((story) => (
         <>
+          {story.title
+          && (
+          <div
+            className="flex m-4 p-4 rounded-md min-h-0"
+            key={story.id}
+          >
+            <textarea
+              name={story.title}
+              onChange={handleChange}
+              value={story.title}
+              data-id={story.id}
+              className="flex-grow text-justify ml-2 p-2 text-sm"
+            />
+          </div>
+          )}
           {story.text
           && (
           <div
-            className="flex m-4 p-4 border-solid border-2 border-gray-200 rounded-md h-40"
+            className="flex m-4 p-4 rounded-md"
             key={story.id}
           >
             <textarea
               name={story.text}
               onChange={handleChange}
               value={story.text}
+              data-id={story.id}
+              className="flex-grow text-justify ml-2 p-2 text-sm"
+            />
+          </div>
+          )}
+          {story.end
+          && (
+          <div
+            className="flex m-4 p-4 rounded-md min-h-0"
+            key={story.id}
+          >
+            <textarea
+              name={story.end}
+              onChange={handleChange}
+              value={story.end}
               data-id={story.id}
               className="flex-grow text-justify ml-2 p-2 text-sm"
             />

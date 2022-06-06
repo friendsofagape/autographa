@@ -191,7 +191,7 @@ function useProjectsSort() {
                           case 'textTranslation':
                             lastSeen = _project.project?.textTranslation?.lastSeen;
                             description = _project.project?.textTranslation?.description;
-                            flavorType = 'Bible Translation';
+                            flavorType = 'Text Translation';
                             break;
                           case 'textStories':
                             lastSeen = _project.project?.textStories?.lastSeen;
