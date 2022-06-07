@@ -89,27 +89,39 @@ const ObsEditor = () => {
                           // Reading line by line
                           allLines.forEach((line) => {
                             if (line) {
-                              if (line.match(/^#/gm)) {
+                              if (line.match(/^(\s)*#/gm)) {
                                 const hash = line.match(/# (.*)/);
                                 stories.push({
                                   id, title: hash[1],
                                 });
                                 id += 1;
-                              } else if (line.match(/^_/gm)) {
+                              } else if (line.match(/^(\s)*_/gm)) {
+                                const objIndex = stories.findIndex(((obj) => obj.id === id));
+                                if (objIndex !== -1 && Object.prototype.hasOwnProperty.call(stories[objIndex], 'img')) {
+                                  stories[objIndex].text = '';
+                                  id += 1;
+                                }
                                 const underscore = line.match(/_(.*)_/);
                                 stories.push({
                                   id, end: underscore[1],
                                 });
                                 id += 1;
-                              } else if (line.match(/^!/gm)) {
+                              } else if (line.match(/^(\s)*!/gm)) {
+                                const objIndex = stories.findIndex(((obj) => obj.id === id));
+                                if (objIndex !== -1 && Object.prototype.hasOwnProperty.call(stories[objIndex], 'img')) {
+                                  stories[objIndex].text = '';
+                                  id += 1;
+                                }
                                 const imgUrl = line.match(/\((.*)\)/);
                                 stories.push({
                                   id, img: imgUrl[1],
                                 });
                               } else {
                                 const objIndex = stories.findIndex(((obj) => obj.id === id));
-                                stories[objIndex].text = line;
-                                id += 1;
+                                if (objIndex !== -1) {
+                                  stories[objIndex].text = line;
+                                  id += 1;
+                                }
                               }
                             }
                           });
