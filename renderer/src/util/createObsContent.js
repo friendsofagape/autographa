@@ -42,7 +42,7 @@ export const createObsContent = (username, project, direction, id,
           },
           mimeType: 'text/markdown',
           size: stats.size,
-          scope: {},
+          scope: storyJson.scope,
         };
         // ingredients[path.join('content', currentFileName)].scope[book] = [];
       } else {
@@ -61,7 +61,7 @@ export const createObsContent = (username, project, direction, id,
           },
           mimeType: 'text/markdown',
           size: stats.size,
-          scope: {},
+          scope: storyJson.scope,
         };
         // ingredients[path.join('content', currentFileName)].scope[book] = [];
       }
