@@ -175,8 +175,10 @@ const ProjectContextProvider = ({ children }) => {
         });
       }
     };
-    const createProject = async (call, project, update) => {
-      logger.debug('ProjectContext.js', 'In createProject');
+
+    // common functions for create projects
+    const createProjectCommonUtils = async () => {
+      logger.debug('ProjectContext.js', 'In createProject common utils');
       // Add / update language into current list.
       if (uniqueId(languages, language.id)) {
         languages.forEach((lang) => {
@@ -190,10 +192,6 @@ const ProjectContextProvider = ({ children }) => {
       } else {
         updateJson('languages');
       }
-      // Update Custom canon into current list.
-      if (canonSpecification.title === 'Other') {
-        updateJson('canonSpecification');
-      }
       // Update Custom licence into current list.
       if (copyright.title === 'Custom') {
         updateJson('copyright');
@@ -204,18 +202,41 @@ const ProjectContextProvider = ({ children }) => {
         myLicence.licence = licensefile.default;
         setCopyRight(myLicence);
       }
-      logger.debug('ProjectContext.js', 'Calling saveProjectsMeta with required props');
-      const status = await saveProjectsMeta(
+    };
+
+    // common functions for create projects
+    const createProjectTranslationUtils = async () => {
+      logger.debug('ProjectContext.js', 'In createProject Translation utils');
+      // Update Custom canon into current list.
+      if (canonSpecification.title === 'Other') {
+        updateJson('canonSpecification');
+      }
+    };
+
+    const createProject = async (call, project, update, projectType) => {
+      logger.debug('ProjectContext.js', 'In createProject');
+      createProjectCommonUtils();
+      // common props pass for all project type
+      const projectMetaObj = {
         newProjectFields,
         language,
-        versificationScheme.title,
-        canonSpecification,
         copyright,
         importedFiles,
         call,
         project,
         update,
-      );
+        projectType,
+      };
+      if (projectType === 'Translation') {
+        createProjectTranslationUtils();
+        const temp_obj = {
+          versificationScheme: versificationScheme.title,
+          canonSpecification,
+        };
+        Object.assign(projectMetaObj, temp_obj);
+      }
+      logger.debug('ProjectContext.js', 'Calling saveProjectsMeta with required props');
+      const status = await saveProjectsMeta(projectMetaObj);
       return status;
     };
 
