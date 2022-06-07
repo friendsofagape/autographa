@@ -123,6 +123,13 @@ export default function ImportPopUp(props) {
         case 'OBS': {
           const mdfile = fs.readFileSync(filePath, 'utf8');
           const filename = filePath.split('\\').pop();
+          const regexExp = /^([1-9]).md$/;
+          const matchSingleDigit = regexExp.exec(filename);
+          if(matchSingleDigit){
+            let fileNum = filename.split('.')[0];
+            fileNum = fileNum.toString().padStart(2, 0);
+            filename = `${fileNum}.md`
+          }
           const isMdValid = OBSValidate(filename);
           if (isMdValid) {
             logger.debug('ImportPopUp.js', 'Valid Md file.');
