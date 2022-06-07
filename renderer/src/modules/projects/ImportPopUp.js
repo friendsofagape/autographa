@@ -17,6 +17,7 @@ export default function ImportPopUp(props) {
   const {
     open,
     closePopUp,
+    projectType,
   } = props;
 
   const cancelButtonRef = useRef(null);
@@ -27,6 +28,7 @@ export default function ImportPopUp(props) {
   const [snackText, setSnackText] = React.useState('');
   const [notify, setNotify] = React.useState();
   const [show, setShow] = React.useState(false);
+  const [fileFilter, setfileFilter] = React.useState([{ name: 'usfm files', extensions: ['usfm', 'sfm', 'USFM', 'SFM'] }]);
   const { t } = useTranslation();
   const {
     actions: {
@@ -65,7 +67,7 @@ export default function ImportPopUp(props) {
     logger.debug('ImportPopUp.js', 'Inside openFileDialogSettingData');
     const options = {
       properties: ['openFile', 'multiSelections'],
-      filters: [{ name: 'usfm files', extensions: ['usfm', 'sfm', 'USFM', 'SFM'] }],
+      filters: fileFilter,
     };
     const { remote } = window.require('electron');
     const { dialog } = remote;
@@ -81,23 +83,68 @@ export default function ImportPopUp(props) {
     await getBooks(chosenFolder.filePaths);
     setFolderPath(chosenFolder.filePaths);
   };
+
+  const OBSValidate = (filename) => {
+    let match = false;
+    logger.debug('ImportPopUp.js', 'Inside OBS validate, allow file name with 01-50 only');
+    logger.debug('ImportPopUp.js', filename);
+    if (filename === 'front.md' || filename === 'back.md') {
+      match = true;
+    } else {
+      const regexExp = /^(5[0]|[1-4][0-9]|[0][1-9]).md$/;
+      match = regexExp.exec(filename);
+    }
+    return match;
+  };
+
   const importFiles = (folderPath) => {
     logger.debug('ImportPopUp.js', 'Inside importFiles');
     const fs = window.require('fs');
     const files = [];
     folderPath.forEach((filePath) => {
-      const usfm = fs.readFileSync(filePath, 'utf8');
-      const myUsfmParser = new grammar.USFMParser(usfm);
-      const isJsonValid = myUsfmParser.validate();
-      if (isJsonValid) {
-        logger.debug('ImportPopUp.js', 'Valid USFM file.');
-        const jsonOutput = myUsfmParser.toJSON();
-        files.push({ id: jsonOutput.book.bookCode, content: usfm });
-      } else {
-        logger.warn('ImportPopUp.js', 'Invalid USFM file.');
-        setNotify('failure');
-        setSnackText(t('dynamic-msg-invalid-usfm-file'));
-        setOpenSnackBar(true);
+      switch (projectType) {
+        case 'Translation': {
+          const usfm = fs.readFileSync(filePath, 'utf8');
+          const myUsfmParser = new grammar.USFMParser(usfm);
+          const isJsonValid = myUsfmParser.validate();
+          if (isJsonValid) {
+            logger.debug('ImportPopUp.js', 'Valid USFM file.');
+            const jsonOutput = myUsfmParser.toJSON();
+            files.push({ id: jsonOutput.book.bookCode, content: usfm });
+          } else {
+            logger.warn('ImportPopUp.js', 'Invalid USFM file.');
+            setNotify('failure');
+            setSnackText(t('dynamic-msg-invalid-usfm-file'));
+            setOpenSnackBar(true);
+          }
+          break;
+        }
+
+        case 'OBS': {
+          const mdfile = fs.readFileSync(filePath, 'utf8');
+          let filename = filePath.split('\\').pop();
+          const regexExp = /^([1-9]).md$/;
+          const matchSingleDigit = regexExp.exec(filename);
+          if (matchSingleDigit) {
+            let fileNum = filename.split('.')[0];
+            fileNum = fileNum.toString().padStart(2, 0);
+            filename = `${fileNum}.md`;
+          }
+          const isMdValid = OBSValidate(filename);
+          if (isMdValid) {
+            logger.debug('ImportPopUp.js', 'Valid Md file.');
+            files.push({ id: filename, content: mdfile });
+          } else {
+            logger.warn('ImportPopUp.js', 'Invalid Md file.');
+            setNotify('failure');
+            setSnackText(t('dynamic-msg-invalid-md-file'));
+            setOpenSnackBar(true);
+          }
+          break;
+        }
+
+        default:
+          break;
       }
     });
     setImportedFiles(files);
@@ -118,6 +165,23 @@ export default function ImportPopUp(props) {
       setOpenSnackBar(true);
     }
   };
+  useEffect(() => {
+    logger.debug('ImportPopUp.js', 'Inside useEffect to set filter types of Import');
+    switch (projectType) {
+      case 'Translation':
+        setfileFilter([{ name: 'usfm files', extensions: ['usfm', 'sfm', 'USFM', 'SFM'] }]);
+        break;
+
+      case 'OBS':
+        setfileFilter([{ name: 'markdown files', extensions: ['md', 'markdown', 'MD', 'MARKDOWN'] }]);
+        break;
+
+      default:
+        break;
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [projectType]);
+
   useEffect(() => {
     if (open) {
       openFileDialogSettingData();
@@ -250,4 +314,5 @@ export default function ImportPopUp(props) {
 ImportPopUp.propTypes = {
   open: PropTypes.bool,
   closePopUp: PropTypes.func,
+  projectType: PropTypes.string,
 };

@@ -20,7 +20,10 @@
     ],
     "storyId": 1,
     "title": "1. The Creation",
-    "end": "A Bible story from: Genesis 1-2"
+    "end": "A Bible story from: Genesis 1-2",
+    "scope": {
+      "GEN": ["1-2"]
+    }
   },
   {
     "story": [
@@ -39,7 +42,10 @@
     ],
     "storyId": 2,
     "title": "2. Sin Enters the World",
-    "end": "A Bible story from: Genesis 3"
+    "end": "A Bible story from: Genesis 3",
+    "scope": {
+      "GEN": ["3"]
+    }
   },
   {
     "story": [
@@ -62,7 +68,10 @@
     ],
     "storyId": 3,
     "title": "3. The Flood",
-    "end": "A Bible story from: Genesis 6-8"
+    "end": "A Bible story from: Genesis 6-8",
+    "scope": {
+      "GEN": ["6-8"]
+    }
   },
   {
     "story": [
@@ -78,7 +87,10 @@
     ],
     "storyId": 4,
     "title": "4. God’s Covenant with Abraham",
-    "end": "A Bible story from: Genesis 11-15"
+    "end": "A Bible story from: Genesis 11-15",
+    "scope": {
+      "GEN": ["11-15"]
+    }
   },
   {
     "story": [
@@ -95,7 +107,10 @@
     ],
     "storyId": 5,
     "title": "5. The Son of Promise",
-    "end": "A Bible story from: Genesis 16-22"
+    "end": "A Bible story from: Genesis 16-22",
+    "scope": {
+      "GEN": ["16-22"]
+    }
   },
   {
     "story": [
@@ -109,7 +124,10 @@
     ],
     "storyId": 6,
     "title": "6. God Provides for Isaac",
-    "end": "A Bible story from: Genesis 24:1-25:26"
+    "end": "A Bible story from: Genesis 24:1-25:26",
+    "scope": {
+      "GEN": ["24:1-25:26"]
+    }
   },
   {
     "story": [
@@ -126,7 +144,10 @@
     ],
     "storyId": 7,
     "title": "7. God Blesses Jacob",
-    "end": "A Bible story from: Genesis 25:27-35:29"
+    "end": "A Bible story from: Genesis 25:27-35:29",
+    "scope": {
+      "GEN": ["25:27-35:29"]
+    }
   },
   {
     "story": [
@@ -148,7 +169,10 @@
     ],
     "storyId": 8,
     "title": "8. God Saves Joseph and His Family",
-    "end": "A Bible story from: Genesis 37-50"
+    "end": "A Bible story from: Genesis 37-50",
+    "scope": {
+      "GEN": ["37-50"]
+    }
   },
   {
     "story": [
@@ -170,7 +194,10 @@
     ],
     "storyId": 9,
     "title": "9. God Calls Moses",
-    "end": "A Bible story from: Exodus 1-4"
+    "end": "A Bible story from: Exodus 1-4",
+    "scope": {
+      "EXO": ["1-4"]
+    }
   },
   {
     "story": [
@@ -189,7 +216,10 @@
     ],
     "storyId": 10,
     "title": "10. The Ten Plagues",
-    "end": "A Bible story from: Exodus 5-10"
+    "end": "A Bible story from: Exodus 5-10",
+    "scope": {
+      "EXO": ["5-10"]
+    }
   },
   {
     "story": [
@@ -204,7 +234,10 @@
     ],
     "storyId": 11,
     "title": "11. The Passover",
-    "end": "A Bible story from: Exodus 11:1-12:32"
+    "end": "A Bible story from: Exodus 11:1-12:32",
+    "scope": {
+      "EXO": ["11:1-12:32"]
+    }
   },
   {
     "story": [
@@ -225,7 +258,10 @@
     ],
     "storyId": 12,
     "title": "12. The Exodus",
-    "end": "A Bible story from: Exodus 12:33-15:21"
+    "end": "A Bible story from: Exodus 12:33-15:21",
+    "scope": {
+      "EXO": ["12:33-15:21"]
+    }
   },
   {
     "story": [
@@ -247,7 +283,10 @@
     ],
     "storyId": 13,
     "title": "13. God’s Covenant with Israel",
-    "end": "A Bible story from: Exodus 19-34"
+    "end": "A Bible story from: Exodus 19-34",
+    "scope": {
+      "EXO": ["19-34"]
+    }
   },
   {
     "story": [
@@ -269,7 +308,12 @@
     ],
     "storyId": 14,
     "title": "14. Wandering in the Wilderness",
-    "end": "A Bible story from: Exodus 16-17; Numbers 10-14; 20; 27; Deuteronomy 34"
+    "end": "A Bible story from: Exodus 16-17; Numbers 10-14; 20; 27; Deuteronomy 34",
+    "scope": {
+      "EXO": ["16-17"],
+      "NUM": ["10-14", "20", "27"],
+      "DEU": ["34"]
+    }
   },
   {
     "story": [
@@ -289,7 +333,10 @@
     ],
     "storyId": 15,
     "title": "15. The Promised Land",
-    "end": "A Bible story from: Joshua 1-24"
+    "end": "A Bible story from: Joshua 1-24",
+    "scope": {
+      "JOS": ["1-24"]
+    }
   },
   {
     "story": [
@@ -314,7 +361,11 @@
     ],
     "storyId": 16,
     "title": "16. The Deliverers",
-    "end": "A Bible story from: Judges 1-3; 6-8; 1 Samuel 1-10"
+    "end": "A Bible story from: Judges 1-3; 6-8; 1 Samuel 1-10",
+    "scope": {
+      "JDG": ["1-3", "6-8"],
+      "1SA": ["1-10"]
+    }
   },
   {
     "story": [
@@ -335,7 +386,11 @@
     ],
     "storyId": 17,
     "title": "17. God’s Covenant with David",
-    "end": "A Bible story from: 1 Samuel 10; 15-19; 24; 31; 2 Samuel 5; 7; 11-12"
+    "end": "A Bible story from: 1 Samuel 10; 15-19; 24; 31; 2 Samuel 5; 7; 11-12",
+    "scope": {
+      "1SA": ["10", "15-19", "24", "31"],
+      "2SA": ["5", "7", "11-12"]
+    }
   },
   {
     "story": [
@@ -355,7 +410,10 @@
     ],
     "storyId": 18,
     "title": "18. The Divided Kingdom",
-    "end": "A Bible story from: 1 Kings 1-6; 11-12"
+    "end": "A Bible story from: 1 Kings 1-6; 11-12",
+    "scope": {
+      "1KI": ["1-6", "11-12"]
+    }
   },
   {
     "story": [
@@ -380,7 +438,12 @@
     ],
     "storyId": 19,
     "title": "19. The Prophets",
-    "end": "A Bible story from: 1 Kings 16-18; 2 Kings 5; Jeremiah 38"
+    "end": "A Bible story from: 1 Kings 16-18; 2 Kings 5; Jeremiah 38",
+    "scope": {
+      "1KI": ["16-18"],
+      "2KI": ["5"],
+      "JER": ["38"]
+    }
   },
   {
     "story": [
@@ -400,7 +463,13 @@
     ],
     "storyId": 20,
     "title": "20. The Exile and Return",
-    "end": "A Bible story from: 2 Kings 17; 24-25; 2 Chronicles 36; Ezra 1-10; Nehemiah 1-13"
+    "end": "A Bible story from: 2 Kings 17; 24-25; 2 Chronicles 36; Ezra 1-10; Nehemiah 1-13",
+    "scope": {
+      "2KI": ["17", "24-25"],
+      "2CH": ["36"],
+      "EZR": ["1-10"],
+      "NEH": ["1-13"]
+    }
   },
   {
     "story": [
@@ -422,7 +491,19 @@
     ],
     "storyId": 21,
     "title": "21. God Promises the Messiah",
-    "end": "A Bible story from: Genesis 3; 12; Deuteronomy 18:15; 2 Samuel 7; Psalm 16; 22; 35; 69; 41; Isaiah 7:14; 9:1-7; 61; 53; 50:6; 59:16; Jeremiah 31; Daniel 7; Micah 5:2; Zechariah 11:12-13; Malachi 4:5"
+    "end": "A Bible story from: Genesis 3; 12; Deuteronomy 18:15; 2 Samuel 7; Psalm 16; 22; 35; 69; 41; Isaiah 7:14; 9:1-7; 61; 53; 50:6; 59:16; Jeremiah 31; Daniel 7; Micah 5:2; Zechariah 11:12-13; Malachi 4:5",
+    "scope": {
+      "GEN": ["3:15", "12:1-3"],
+      "DEU": ["18:15"],
+      "2SA": ["7"],
+      "JER": ["31"],
+      "ISA": ["59:16", "7:14", "9:1-7", "35:3-5", "61", "53", "50:6"],
+      "DAN": ["7"],
+      "MAL": ["4:5"],
+      "MIC": ["5:2"],
+      "PSA": ["22:18", "35:19", "69:4", "41:9", "16:10-11"],
+      "ZEC": ["11:12-13"]
+    }
   },
   {
     "story": [
@@ -436,7 +517,10 @@
     ],
     "storyId": 22,
     "title": "22. The Birth of John",
-    "end": "A Bible story from: Luke 1"
+    "end": "A Bible story from: Luke 1",
+    "scope": {
+      "LUK": ["1"]
+    }
   },
   {
     "story": [
@@ -453,7 +537,11 @@
     ],
     "storyId": 23,
     "title": "23. The Birth of Jesus",
-    "end": "A Bible story from: Matthew 1-2; Luke 2"
+    "end": "A Bible story from: Matthew 1-2; Luke 2",
+    "scope": {
+      "MAT": ["1"],
+      "LUK": ["2"]
+    }
   },
   {
     "story": [
@@ -469,7 +557,12 @@
     ],
     "storyId": 24,
     "title": "24. John Baptizes Jesus",
-    "end": "A Bible story from: Matthew 3; Mark 1; Luke 3; John 1:15-37"
+    "end": "A Bible story from: Matthew 3; Mark 1; Luke 3; John 1:15-37",
+    "scope": {
+      "MAT": ["3"],
+      "MRK": ["1:9-11"],
+      "LUK": ["3:1-23"]
+    }
   },
   {
     "story": [
@@ -484,7 +577,12 @@
     ],
     "storyId": 25,
     "title": "25. Satan Tempts Jesus",
-    "end": "A Bible story from: Matthew 4:1-11; Mark 1:12-13; Luke 4:1-13"
+    "end": "A Bible story from: Matthew 4:1-11; Mark 1:12-13; Luke 4:1-13",
+    "scope": {
+      "MAT": ["4:1-11"],
+      "MRK": ["1:12-13"],
+      "LUK": ["4:1-13"]
+    }
   },
   {
     "story": [
@@ -501,7 +599,12 @@
     ],
     "storyId": 26,
     "title": "26. Jesus Starts His Ministry",
-    "end": "A Bible story from: Matthew 4:12-25; Mark 1-3; Luke 4"
+    "end": "A Bible story from: Matthew 4:12-25; Mark 1-3; Luke 4",
+    "scope": {
+      "MAT": ["4:12-25"],
+      "MRK": ["1:14-15", "35-39", "3:13-21"],
+      "LUK": ["4:14-30", "38-44"]
+    }
   },
   {
     "story": [
@@ -519,7 +622,10 @@
     ],
     "storyId": 27,
     "title": "27. The Story of the Good Samaritan",
-    "end": "A Bible story from: Luke 10:25-37"
+    "end": "A Bible story from: Luke 10:25-37",
+    "scope": {
+      "LUK": ["10:25-37"]
+    }
   },
   {
     "story": [
@@ -536,7 +642,12 @@
     ],
     "storyId": 28,
     "title": "28. The Rich Young Ruler",
-    "end": "A Bible story from: Matthew 19:16-30; Mark 10:17-31; Luke 18:18-30"
+    "end": "A Bible story from: Matthew 19:16-30; Mark 10:17-31; Luke 18:18-30",
+    "scope": {
+      "MAT": ["19:16-30"],
+      "MRK": ["10:17-31"],
+      "LUK": ["18:18-30"]
+    }
   },
   {
     "story": [
@@ -552,7 +663,10 @@
     ],
     "storyId": 29,
     "title": "29. The Story of the Unmerciful Servant",
-    "end": "A Bible story from: Matthew 18:21-35"
+    "end": "A Bible story from: Matthew 18:21-35",
+    "scope": {
+      "MAT": ["18:21-35"]
+    }
   },
   {
     "story": [
@@ -568,7 +682,13 @@
     ],
     "storyId": 30,
     "title": "30. Jesus Feeds Thousands of People",
-    "end": "A Bible story from: Matthew 14:13-21; Mark 6:31-44; Luke 9:10-17; John 6:5-15"
+    "end": "A Bible story from: Matthew 14:13-21; Mark 6:31-44; Luke 9:10-17; John 6:5-15",
+    "scope": {
+      "MAT": ["14:13-21"],
+      "MRK": ["6:31-44"],
+      "LUK": ["9:10-17"],
+      "JHN": ["6:5-15"]
+    }
   },
   {
     "story": [
@@ -583,7 +703,12 @@
     ],
     "storyId": 31,
     "title": "31. Jesus Walks on Water",
-    "end": "A Bible story from: Matthew 14:22-33; Mark 6:45-52; John 6:16-21"
+    "end": "A Bible story from: Matthew 14:22-33; Mark 6:45-52; John 6:16-21",
+    "scope": {
+      "MAT": ["14:22-33"],
+      "MRK": ["6:45-52"],
+      "JHN": ["6:16-21"]
+    }
   },
   {
     "story": [
@@ -606,7 +731,12 @@
     ],
     "storyId": 32,
     "title": "32. Jesus Heals a Demon-Possessed Man & a Sick Woman",
-    "end": "A Bible story from: Matthew 8:28-34; 9:20-22; Mark 5; Luke 8:26-48"
+    "end": "A Bible story from: Matthew 8:28-34; 9:20-22; Mark 5; Luke 8:26-48",
+    "scope": {
+      "MAT": ["8:28-34", "9:20-22"],
+      "MRK": ["5:1-20", "5:24-34"],
+      "LUK": ["8:26-39", "8:42-48"]
+    }
   },
   {
     "story": [
@@ -622,7 +752,12 @@
     ],
     "storyId": 33,
     "title": "33. The Story of the Farmer",
-    "end": "A Bible story from: Matthew 13:1-23; Mark 4:1-20; Luke 8:4-15"
+    "end": "A Bible story from: Matthew 13:1-23; Mark 4:1-20; Luke 8:4-15",
+    "scope": {
+      "MAT": ["13:1-8", "18-23"],
+      "MRK": ["4:1-8", "13-20"],
+      "LUK": ["8:4-15"]
+    }
   },
   {
     "story": [
@@ -639,7 +774,12 @@
     ],
     "storyId": 34,
     "title": "34. Jesus Teaches Other Stories",
-    "end": "A Bible story from: Matthew 13:31-46; Mark 4:26-34; Luke 13:18-21; 18:9-14"
+    "end": "A Bible story from: Matthew 13:31-46; Mark 4:26-34; Luke 13:18-21; 18:9-14",
+    "scope": {
+      "MAT": ["13:31-33", "44-46"],
+      "MRK": ["4:30-32"],
+      "LUK": ["13:18-21", "18:9-14"]
+    }
   },
   {
     "story": [
@@ -659,7 +799,10 @@
     ],
     "storyId": 35,
     "title": "35. The Story of the Compassionate Father",
-    "end": "A Bible story from: Luke 15"
+    "end": "A Bible story from: Luke 15",
+    "scope": {
+      "LUK": ["15:11-32"]
+    }
   },
   {
     "story": [
@@ -673,7 +816,12 @@
     ],
     "storyId": 36,
     "title": "36. The Transfiguration",
-    "end": "A Bible story from: Matthew 17:1-9; Mark 9:2-8; Luke 9:28-36"
+    "end": "A Bible story from: Matthew 17:1-9; Mark 9:2-8; Luke 9:28-36",
+    "scope": {
+      "MAT": ["17:1-9"],
+      "MRK": ["9:2-8"],
+      "LUK": ["9:28-36"]
+    }
   },
   {
     "story": [
@@ -691,7 +839,10 @@
     ],
     "storyId": 37,
     "title": "37. Jesus Raises Lazarus from the Dead",
-    "end": "A Bible story from: John 11:1-46"
+    "end": "A Bible story from: John 11:1-46",
+    "scope": {
+      "JHN": ["11:1-46"]
+    }
   },
   {
     "story": [
@@ -713,7 +864,13 @@
     ],
     "storyId": 38,
     "title": "38. Jesus Is Betrayed",
-    "end": "A Bible story from: Matthew 26:14-56; Mark 14:10-50; Luke 22:1-53; John 18:1-11"
+    "end": "A Bible story from: Matthew 26:14-56; Mark 14:10-50; Luke 22:1-53; John 18:1-11",
+    "scope": {
+      "MAT": ["26:14-56"],
+      "MRK": ["14:10-50"],
+      "LUK": ["22:1-53"],
+      "JHN": ["12:6", "18:1-11"]
+    }
   },
   {
     "story": [
@@ -732,7 +889,13 @@
     ],
     "storyId": 39,
     "title": "39. Jesus Is Put on Trial",
-    "end": "A Bible story from: Matthew 26:57-27:26; Mark 14:53-15:15; Luke 22:54-23:25; John 18:12-19:16"
+    "end": "A Bible story from: Matthew 26:57-27:26; Mark 14:53-15:15; Luke 22:54-23:25; John 18:12-19:16",
+    "scope": {
+      "MAT": ["26:57-27:26"],
+      "MRK": ["14:53-15:15"],
+      "LUK": ["22:54-23:25"],
+      "JHN": ["18:12-19:16"]
+    }
   },
   {
     "story": [
@@ -748,7 +911,13 @@
     ],
     "storyId": 40,
     "title": "40. Jesus Is Crucified",
-    "end": "A Bible story from: Matthew 27:27-61; Mark 15:16-47; Luke 23:26-56; John 19:17-42"
+    "end": "A Bible story from: Matthew 27:27-61; Mark 15:16-47; Luke 23:26-56; John 19:17-42",
+    "scope": {
+      "MAT": ["27:27-61"],
+      "MRK": ["15:16-47"],
+      "LUK": ["23:26-56"],
+      "JHN": ["19:17-42"]
+    }
   },
   {
     "story": [
@@ -763,7 +932,13 @@
     ],
     "storyId": 41,
     "title": "41. God Raises Jesus from the Dead",
-    "end": "A Bible story from: Matthew 27:62-28:15; Mark 16:1-11; Luke 24:1-12; John 20:1-18"
+    "end": "A Bible story from: Matthew 27:62-28:15; Mark 16:1-11; Luke 24:1-12; John 20:1-18",
+    "scope": {
+      "MAT": ["27:62-28:15"],
+      "MRK": ["16:1-11"],
+      "LUK": ["24:1-12"],
+      "JHN": ["20:1-18"]
+    }
   },
   {
     "story": [
@@ -781,7 +956,14 @@
     ],
     "storyId": 42,
     "title": "42. Jesus Returns to Heaven",
-    "end": "A Bible story from: Matthew 28:16-20; Mark 16:12-20; Luke 24:13-53; John 20:19-23; Acts 1:1-11"
+    "end": "A Bible story from: Matthew 28:16-20; Mark 16:12-20; Luke 24:13-53; John 20:19-23; Acts 1:1-11",
+    "scope": {
+      "MAT": ["28:16-20"],
+      "MRK": ["16:12-20"],
+      "LUK": ["24:13-53"],
+      "JHN": ["20:19-23"],
+      "ACT": ["1:1-11"]
+    }
   },
   {
     "story": [
@@ -801,7 +983,10 @@
     ],
     "storyId": 43,
     "title": "43. The Church Begins",
-    "end": "A Bible story from: Acts 1:12-14; 2"
+    "end": "A Bible story from: Acts 1:12-14; 2",
+    "scope": {
+      "ACT": ["2"]
+    }
   },
   {
     "story": [
@@ -817,7 +1002,10 @@
     ],
     "storyId": 44,
     "title": "44. Peter and John Heal a Beggar",
-    "end": "A Bible story from: Acts 3-4:22"
+    "end": "A Bible story from: Acts 3-4:22",
+    "scope": {
+      "ACT": ["3:1-4:22"]
+    }
   },
   {
     "story": [
@@ -837,7 +1025,10 @@
     ],
     "storyId": 45,
     "title": "45. Stephen and Philip",
-    "end": "A Bible story from: Acts 6-8"
+    "end": "A Bible story from: Acts 6-8",
+    "scope": {
+      "ACT": ["6:8-8:5", "8:26-40"]
+    }
   },
   {
     "story": [
@@ -854,7 +1045,10 @@
     ],
     "storyId": 46,
     "title": "46. Saul Becomes a Follower of Jesus",
-    "end": "A Bible story from: Acts 8:1-3; 9:1-31; 11:19-26; 13-14"
+    "end": "A Bible story from: Acts 8:1-3; 9:1-31; 11:19-26; 13-14",
+    "scope": {
+      "ACT": ["8:3", "9:1-31", "11:19-26", "13:1-3"]
+    }
   },
   {
     "story": [
@@ -875,7 +1069,10 @@
     ],
     "storyId": 47,
     "title": "47. Paul and Silas in Philippi",
-    "end": "A Bible story from: Acts 16:11-40"
+    "end": "A Bible story from: Acts 16:11-40",
+    "scope": {
+      "ACT": ["16:11-40"]
+    }
   },
   {
     "story": [
@@ -896,7 +1093,14 @@
     ],
     "storyId": 48,
     "title": "48. Jesus Is the Promised Messiah",
-    "end": "A Bible story from: Genesis 1-3, 6, 14, 22; Exodus 12, 20; 2 Samuel 7; Hebrews 3:1-6, 4:14-5:10, 7:1-8:13, 9:11-10:18; Revelation 21"
+    "end": "A Bible story from: Genesis 1-3, 6, 14, 22; Exodus 12, 20; 2 Samuel 7; Hebrews 3:1-6, 4:14-5:10, 7:1-8:13, 9:11-10:18; Revelation 21",
+    "scope": {
+      "GEN": ["1-3", "6", "14", "22"],
+      "EXO": ["12", "20"],
+      "2SA": ["7"],
+      "HEB": ["3:1-6", "4:14-5:10", "7:1-8:13", "9:11-10:18"],
+      "REV": ["21"]
+    }
   },
   {
     "story": [
@@ -921,7 +1125,15 @@
     ],
     "storyId": 49,
     "title": "49. God’s New Covenant",
-    "end": "A Bible story from: Genesis 3; Matthew 13-14; Mark 10:17-31; Luke 2; 10:25-37; 15; John 3:16; Romans 3:21-26, 5:1-11; 2 Corinthians 5:17-21; Colossians 1:13-14; 1 John 1:5-10"
+    "end": "A Bible story from: Genesis 3; Matthew 13-14; Mark 10:17-31; Luke 2; 10:25-37; 15; John 3:16; Romans 3:21-26, 5:1-11; 2 Corinthians 5:17-21; Colossians 1:13-14; 1 John 1:5-10",
+    "scope": {
+      "ROM": ["3:21-26", "5:1-11"],
+      "JHN": ["3:16"],
+      "MRK": ["16:16"],
+      "COL": ["1:13-14"],
+      "2CO": ["5:17-21"],
+      "1JN": ["1:5-10"]
+    }
   },
   {
     "story": [
@@ -945,6 +1157,13 @@
     ],
     "storyId": 50,
     "title": "50. Jesus Returns",
-    "end": "A Bible story from: Matthew 13:24-42; 22:13; 24:14; 28:18; John 4:35; 15:20; 16:33; 1 Thessalonians 4:13-5:11; James 1:12; Revelation 2:10; 20:10; 21-22"
+    "end": "A Bible story from: Matthew 13:24-42; 22:13; 24:14; 28:18; John 4:35; 15:20; 16:33; 1 Thessalonians 4:13-5:11; James 1:12; Revelation 2:10; 20:10; 21-22",
+    "scope": {
+      "MAT": ["24:14", "28:18", "13:24-30", "13:36-42", "22:13"],
+      "JHN": ["15:20", "16:33"],
+      "REV": ["2:10", "20:10", "21:1-22:21"],
+      "1TH": ["4:13-5:11"],
+      "JAS": ["1:12"]
+    }
   }
 ]

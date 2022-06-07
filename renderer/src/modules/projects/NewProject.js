@@ -360,7 +360,7 @@ export default function NewProject({ call, project, closeEdit }) {
                   >
                     {t('btn-import-books')}
                   </button>
-                  <ImportPopUp open={openPopUp} closePopUp={closeImportPopUp} />
+                  <ImportPopUp open={openPopUp} closePopUp={closeImportPopUp} projectType={headerDropDown} />
                 </div>
               </div>
 

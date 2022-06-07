@@ -166,6 +166,7 @@ export const En = {
     'dynamic-msg-export-fail': 'Failed to export',
     'dynamic-msg-invalid-path': 'Invalid Path',
     'dynamic-msg-invalid-usfm-file': 'Invalid USFM file.',
+    'dynamic-msg-invalid-md-file': 'Invalid MD file.',
     'dynamic-msg-fill-all-fields': 'Fill all the fields',
     'dynamic-msg-burrito-validation-expected': 'Expected burrito version 0.3.0 instead of {{version}}',
     'dynamic-msg-burrito-validation-failed': 'Burrito validation Failed',
