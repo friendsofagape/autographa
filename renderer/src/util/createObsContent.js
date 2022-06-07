@@ -46,7 +46,7 @@ export const createObsContent = (username, project, direction, id,
         };
         // ingredients[path.join('content', currentFileName)].scope[book] = [];
       } else {
-        logger.debug('createObsContent.js', 'Creating the md file using RCL fuvntion JsonToMd');
+        logger.debug('createObsContent.js', 'Creating the md file using RCL function JsonToMd');
         const file = JsonToMd(storyJson, '');
         const fs = window.require('fs');
         if (!fs.existsSync(folder)) {
