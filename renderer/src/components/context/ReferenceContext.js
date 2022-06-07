@@ -44,7 +44,7 @@ export default function ReferenceContextProvider({ children }) {
     const [isLoading, setIsLoading] = useState(false);
     const [folderPath, setFolderPath] = React.useState();
     const [openImportResourcePopUp, setOpenImportResourcePopUp] = useState(false);
-
+    const [obsNavigation, setObsNavigation] = useState('1');
     const handleClick = (event) => {
       setAnchorEl(event.currentTarget);
     };
@@ -246,6 +246,7 @@ export default function ReferenceContextProvider({ children }) {
         isLoading,
         folderPath,
         openImportResourcePopUp,
+        obsNavigation,
       },
       actions: {
         setLanguageId,
@@ -281,6 +282,7 @@ export default function ReferenceContextProvider({ children }) {
         setFolderPath,
         setOpenImportResourcePopUp,
         openResourceDialog,
+        setObsNavigation,
       },
     };
 

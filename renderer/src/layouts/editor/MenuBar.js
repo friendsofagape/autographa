@@ -11,12 +11,12 @@ import router from 'next/router';
 import { useTranslation } from 'react-i18next';
 import EditorSideBar from '@/modules/editorsidebar/EditorSideBar';
 import { classNames } from '@/util/classNames';
-import LogoIcon from '@/icons/logo.svg';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import { ProjectContext } from '@/components/context/ProjectContext';
 import { AuthenticationContext } from '@/components/Login/AuthenticationContextProvider';
-import styles from './MenuBar.module.css';
 import { saveReferenceResource } from '@/core/projects/updateAgSettings';
+import styles from './MenuBar.module.css';
+import LogoIcon from '@/icons/logo.svg';
 
 const profile = ['Your Profile'];
 

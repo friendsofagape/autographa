@@ -105,7 +105,7 @@ const SectionPlaceholder1 = () => {
           Object.entries(_value).forEach(
             ([, resources]) => {
               if (resources.identification.name.en === _projectname[0]) {
-                refsHistory.push(resources.project.textTranslation.refResources);
+                refsHistory.push(resources.project[resources.type.flavorType.flavor.name].refResources);
               }
             },
           );
@@ -186,14 +186,14 @@ const SectionPlaceholder1 = () => {
           Object?.entries(_value).forEach(
             ([, resources]) => {
               if (resources.identification.name.en === _projectname[0]) {
-                refsHistory.push(resources.project.textTranslation.refResources);
+                refsHistory.push(resources.project[resources.type.flavorType.flavor.name].refResources);
                 if (sectionNum === 1 || sectionNum === 0) {
                   if (openResource1 && openResource2) {
-                      resources.project.textTranslation.refResources.splice(0, 1);
+                      resources.project[resources.type.flavorType.flavor.name].refResources.splice(0, 1);
                     }
                 }
                 if (sectionNum === 1 && layout > 0 && !(openResource1 && openResource2)) {
-                  resources.project.textTranslation.refResources[0] = {
+                  resources.project[resources.type.flavorType.flavor.name].refResources[0] = {
                       1: {
                         resouceId: referenceColumnOneData1?.selectedResource,
                         language: referenceColumnOneData1?.languageId,
@@ -205,7 +205,7 @@ const SectionPlaceholder1 = () => {
                 }
                 if (sectionNum === 2 && layout > 0) {
                   if (referenceColumnOneData1.refName !== undefined) {
-                    resources.project.textTranslation.refResources[0] = {
+                    resources.project[resources.type.flavorType.flavor.name].refResources[0] = {
                     1: {
                       resouceId: referenceColumnOneData1?.selectedResource,
                       language: referenceColumnOneData1?.languageId,
