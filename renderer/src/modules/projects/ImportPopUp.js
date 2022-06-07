@@ -85,9 +85,15 @@ export default function ImportPopUp(props) {
   };
 
   const OBSValidate = (filename) => {
+    let match = false;
     logger.debug('ImportPopUp.js', 'Inside OBS validate, allow file name with 01-50 only');
-    const regexExp = /^(5[0]|[1-4][0-9]|[0][1-9]).md$/;
-    const match = regexExp.exec(filename);
+    logger.debug('ImportPopUp.js', filename);
+    if (filename === 'front.md' || filename === 'back.md') {
+      match = true;
+    } else {
+      const regexExp = /^(5[0]|[1-4][0-9]|[0][1-9]).md$/;
+      match = regexExp.exec(filename);
+    }
     return match;
   };
 

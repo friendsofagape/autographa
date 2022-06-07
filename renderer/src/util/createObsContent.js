@@ -71,21 +71,45 @@ export const createObsContent = (username, project, direction, id,
     }
     // OBS front and back files add to content
     logger.debug('createObsContent.js', 'Creating OBS front and back md file in content');
-    fs.writeFileSync(path.join(folder, 'front.md'), OBSFront);
-    let obsstat = fs.statSync(path.join(folder, 'front.md'));
-    ingredients[path.join('content', 'front.md')] = {
+    // check front.md file in imported
+    const fileFront = {};
+    const fileBack = {};
+    fileFront.files = importedFiles.filter((obj) => (obj.id === 'front.md'));
+    fileBack.files = importedFiles.filter((obj) => (obj.id === 'back.md'));
+    if (fileFront.files.length > 0) {
+      fileFront.name = fileFront.files[0].id;
+      fileFront.content = fileFront.files[0].content;
+      logger.debug('createObsContent.js', `${fileFront.name} is been Imported`);
+    } else {
+      fileFront.name = 'front.md';
+      fileFront.content = OBSFront;
+      logger.debug('createObsContent.js', `${fileFront.name} default is created`);
+    }
+    fs.writeFileSync(path.join(folder, fileFront.name), fileFront.content);
+    let obsstat = fs.statSync(path.join(folder, fileFront.name));
+    ingredients[path.join('content', fileFront.name)] = {
       checksum: {
-        md5: md5(OBSFront),
+        md5: md5(fileFront.content),
       },
       mimeType: 'text/markdown',
       size: obsstat.size,
       role: 'pubdata',
     };
-    fs.writeFileSync(path.join(folder, 'back.md'), OBSBack);
-    obsstat = fs.statSync(path.join(folder, 'back.md'));
-    ingredients[path.join('content', 'back.md')] = {
+    // back.md
+    if (fileBack.files.length > 0) {
+      fileBack.name = fileBack.files[0].id;
+      fileBack.content = fileBack.files[0].content;
+      logger.debug('createObsContent.js', `${fileBack.name} is been Imported`);
+    } else {
+      fileBack.name = 'back.md';
+      fileBack.content = OBSBack;
+      logger.debug('createObsContent.js', `${fileBack.name} default is created`);
+    }
+    fs.writeFileSync(path.join(folder, fileBack.name), fileBack.content);
+    obsstat = fs.statSync(path.join(folder, fileBack.name));
+    ingredients[path.join('content', fileBack.name)] = {
       checksum: {
-        md5: md5(OBSBack),
+        md5: md5(fileBack.content),
       },
       mimeType: 'text/plain',
       size: obsstat.size,
