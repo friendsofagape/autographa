@@ -26,7 +26,7 @@ export const createObsContent = (username, project, direction, id,
     logger.debug('createObsContent.js', 'Creating the story md files');
     // eslint-disable-next-line import/no-dynamic-require
     OBSData.forEach(async (storyJson) => {
-      const currentFileName = `${storyJson.storyId}.md`;
+      const currentFileName = `${storyJson.storyId.toString().padStart(2, 0)}.md`;
       if (bookAvailable(importedFiles, currentFileName)) {
         logger.debug('createObsContent.js', `${currentFileName} is been Imported`);
         const file = importedFiles.filter((obj) => (obj.id === currentFileName));
