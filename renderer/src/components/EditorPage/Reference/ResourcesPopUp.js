@@ -403,6 +403,16 @@ const ResourcesPopUp = ({
                         setSubMenuItems={setSubMenuItems}
                         setShowInput={setShowInput}
                       />
+                      <ResourceOption
+                        imageUrl="/illustrations/image-icon.svg"
+                        id="obs"
+                        text={t('label-resource-obs')}
+                        selectResource={selectResource}
+                        setSelectResource={setSelectResource}
+                        setTitle={setTitle}
+                        setSubMenuItems={setSubMenuItems}
+                        setShowInput={setShowInput}
+                      />
                       {/* <ResourceOption
                       imageUrl="/illustrations/location-icon.svg"
                       id="map"
@@ -443,7 +453,8 @@ const ResourcesPopUp = ({
                         {selectResource === 'bible' ? (
                           <tbody className="bg-white divide-y divide-gray-200  mb-44 ">
                             {(subMenuItems) && (
-                          subMenuItems.map((ref) => (
+                          subMenuItems.map((ref) => (ref.value.type.flavorType.name === 'scripture'
+                          && (
                             <tr className="hover:bg-gray-200" key={ref.value.identification.name.en + ref.projectDir}>
                               <td className="px-5 py-3 hidden">
                                 <StarIcon className="h-5 w-5 text-gray-300" aria-hidden="true" />
@@ -476,12 +487,56 @@ const ResourcesPopUp = ({
                                 </div>
                               </td>
                             </tr>
+                          )
                           ))
                         )}
                           </tbody>
                     ) : callResource(selectResource)}
+                        {selectResource === 'obs' && (
+                          <tbody className="bg-white divide-y divide-gray-200  mb-44 ">
+                            {(subMenuItems) && (
+                          subMenuItems.map((ref) => (ref.value.type.flavorType.name === 'gloss'
+                          && (
+                          <tr className="hover:bg-gray-200" key={ref.value.identification.name.en + ref.projectDir}>
+                            <td className="px-5 py-3 hidden">
+                              <StarIcon className="h-5 w-5 text-gray-300" aria-hidden="true" />
+                            </td>
+                            <td className="px-5 py-2.5 text-gray-600">
+                              <div
+                                className="focus:outline-none"
+                                onClick={(e) => handleRowSelect(e,
+                                    ref.value.languages[0].name.en, ref.projectDir)}
+                                role="button"
+                                tabIndex="0"
+                              >
+                                {ref.value.identification.name.en}
+                                {' '}
+                                (
+                                {ref.projectDir}
+                                )
+                              </div>
+                            </td>
+                            <td className="px-5 text-gray-600">
+                              <div
+                                className="focus:outline-none"
+                                onClick={(e) => handleRowSelect(e,
+                                    ref.value.languages[0].name.en,
+                                    ref.projectDir)}
+                                role="button"
+                                tabIndex="0"
+                              >
+                                {ref.value.languages[0].name.en}
+                              </div>
+                            </td>
+                          </tr>
+                          )
+                          ))
+                        )}
+                          </tbody>
+                    ) }
                       </table>
-                      {selectResource === 'bible' ? (
+
+                      {selectResource === 'bible' || selectResource === 'obs' ? (
                         <div className="flex gap-6 mx-5 absolute bottom-5 right-0 justify-end z-10">
                           <button type="button" className="background-transparent outline-none">
                             <PlusCircleIcon className="h-11 w-11 m-5 text-primary" onClick={() => openResourceDialogBox()} />
