@@ -131,7 +131,18 @@ export default function AdvancedSettingsDropdown({ call, project, projectType })
   };
   const loadLicence = () => {
     logger.debug('AdvancedSettingsDropdown.js', 'In loadLicence for loading the selected licence');
-    setALicense(project.project?.textTranslation?.copyright, false);
+    switch (project.type.flavorType.flavor.name) {
+      case 'textTranslation':
+        setALicense(project.project?.textTranslation?.copyright, false);
+        break;
+
+      case 'textStories':
+        setALicense(project.project?.textStories?.copyright, false);
+        break;
+
+      default:
+        break;
+    }
   };
   const selectCanon = (val) => {
     const value = val;
@@ -152,6 +163,9 @@ export default function AdvancedSettingsDropdown({ call, project, projectType })
       loadScope(project);
       loadLicence(project);
       setVersificationScheme({ title: project?.project?.textTranslation?.versification ? project?.project?.textTranslation?.versification : 'ENG' });
+    }
+    if (call === 'edit' && project.type.flavorType.flavor.name === 'textStories') {
+      loadLicence(project);
     }
   }, [isShow]);
 

@@ -131,7 +131,7 @@ export const createVersificationUSFM = (username, project, versification, books,
           project: {
             textTranslation: {
               scriptDirection: direction,
-              starred: false,
+              starred: call === 'edit' ? currentBurrito.project.textTranslation.starred : false,
               versification,
               description: project.description,
               copyright: copyright.title,

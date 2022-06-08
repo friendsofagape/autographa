@@ -30,6 +30,7 @@ export default function ImportPopUp(props) {
   const [show, setShow] = React.useState(false);
   const [fileFilter, setfileFilter] = React.useState([{ name: 'usfm files', extensions: ['usfm', 'sfm', 'USFM', 'SFM'] }]);
   const { t } = useTranslation();
+  const [labelImportFiles, setLabelImportFiles] = React.useState('Choose USFM files');
   const {
     actions: {
       setImportedFiles,
@@ -170,11 +171,13 @@ export default function ImportPopUp(props) {
     switch (projectType) {
       case 'Translation':
         setfileFilter([{ name: 'usfm files', extensions: ['usfm', 'sfm', 'USFM', 'SFM'] }]);
+        setLabelImportFiles('Choose USFM files');
         break;
 
       case 'OBS':
         setfileFilter([{ name: 'markdown files', extensions: ['md', 'markdown', 'MD', 'MARKDOWN'] }]);
-        break;
+        setLabelImportFiles('Choose Markdown files');
+      break;
 
       default:
         break;
@@ -233,7 +236,7 @@ export default function ImportPopUp(props) {
                 <div className="relative w-full h-full">
                   <div className="p-8 overflow-auto w-full h-full no-scrollbars">
                     <div className="bg-white text-sm text-left tracking-wide">
-                      <h4 className="text-xs font-base mb-2 text-primary  tracking-wide leading-4  font-light">Choose USFM files</h4>
+                      <h4 className="text-xs font-base mb-2 text-primary  tracking-wide leading-4  font-light">{labelImportFiles}</h4>
                       <div className="flex items-center mb-4">
                         <input
                           type="text"

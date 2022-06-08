@@ -138,8 +138,10 @@ const saveProjectsMeta = async (projectMetaObj) => {
       projectMetaObj.newProjectFields,
       projectMetaObj.language.scriptDirection,
       id,
+      projectMetaObj.project,
       projectMetaObj.importedFiles,
       projectMetaObj.copyright,
+      projectMetaObj.call,
     ).then(async (ingredient) => {
       logger.debug('saveProjectsMeta.js', 'Calling createTranslationSB for creating burrito.');
       const burritoFile = await createObsSB(
