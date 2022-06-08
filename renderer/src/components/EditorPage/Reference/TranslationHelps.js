@@ -92,6 +92,17 @@ const TranslationHelps = ({
               verse={verse}
             />
           );
+          case 'obs':
+            return (
+              <TranslationHelpsCard
+                title={t('label-resource-obs')}
+                languageId={languageId}
+                refName={refName}
+                bookId={bookId}
+                chapter={chapter}
+                verse={verse}
+              />
+            );
         default:
           return null;
       }
