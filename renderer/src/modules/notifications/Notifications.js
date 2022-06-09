@@ -41,7 +41,7 @@ export default function Notifications(props) {
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <Dialog.Overlay className="fixed inset-0 bg-black opacity-30" />
+            <Dialog.Overlay className="fixed inset-0 bg-black opacity-30 pointer-events-none" />
           </Transition.Child>
 
           {/* This element is to trick the browser into centering the modal contents. */}
@@ -63,7 +63,7 @@ export default function Notifications(props) {
 
             <div className="absolute top-16 right-0 h-full shadow overflow-hidden rounded-l-md">
 
-              <div className="flex flex-row w-96 text-center bg-black text-white text-xs font-medium tracking-wider uppercase">
+              <div className="flex flex-row text-center bg-black text-white text-xs font-medium tracking-wider uppercase">
                 <div aria-label="notification-title" className="m-auto">
                   {t('label-notification')}
                 </div>
@@ -73,7 +73,7 @@ export default function Notifications(props) {
                   </button>
                 </div>
               </div>
-              <div className="bg-white h-full p-2">
+              <div className="bg-white h-full p-2 overflow-auto scrollbars-width">
                 {children}
               </div>
             </div>
