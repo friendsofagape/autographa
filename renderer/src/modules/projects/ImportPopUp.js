@@ -123,8 +123,9 @@ export default function ImportPopUp(props) {
 
         case 'OBS': {
           const mdfile = fs.readFileSync(filePath, 'utf8');
-          let filename = filePath.split('\\').pop();
+          let filename = filePath.split(/[(\\)?(/)?]/gm).pop();
           const regexExp = /^([1-9]).md$/;
+
           const matchSingleDigit = regexExp.exec(filename);
           if (matchSingleDigit) {
             let fileNum = filename.split('.')[0];
