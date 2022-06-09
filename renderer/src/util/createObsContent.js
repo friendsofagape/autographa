@@ -24,6 +24,7 @@ export const createObsContent = (username, project, direction, id, currentBurrit
 
     logger.debug('createObsContent.js', 'Creating the story md files');
     // eslint-disable-next-line import/no-dynamic-require
+    if (call === 'New') {
     OBSData.forEach(async (storyJson) => {
       const currentFileName = `${storyJson.storyId.toString().padStart(2, 0)}.md`;
       if (bookAvailable(importedFiles, currentFileName)) {
@@ -124,6 +125,28 @@ export const createObsContent = (username, project, direction, id, currentBurrit
       mimeType: 'text/markdown',
       size: obsstat.size,
     };
+  } else if (call === 'edit') {
+    logger.debug('createObsContent.js', 'in Edit obs content files');
+    importedFiles.forEach((file) => {
+        logger.debug('createObsContent.js', `${file.id} is been Imported`);
+        const currentStory = OBSData.filter((obj) => (
+          (obj.storyId).toString().padStart(2, 0) === (file.id).split('.')[0]));
+        const fs = window.require('fs');
+        // if (!fs.existsSync(folder)) {
+        //   fs.mkdirSync(folder, { recursive: true });
+        // }
+        fs.writeFileSync(path.join(folder, file.id), file.content, 'utf-8');
+        const stats = fs.statSync(path.join(folder, file.id));
+        ingredients[path.join('content', file.id)] = {
+          checksum: {
+            md5: md5(file.content),
+          },
+          mimeType: 'text/markdown',
+          size: stats.size,
+          scope: currentStory[0].scope,
+        };
+    });
+  }
     // ag setting creation
     const settings = {
       version: environment.AG_SETTING_VERSION,
@@ -134,8 +157,8 @@ export const createObsContent = (username, project, direction, id, currentBurrit
           description: project.description,
           copyright: copyright.title,
           lastSeen: moment().format(),
-          refResources: [],
-          bookMarks: [],
+          refResources: call === 'edit' ? currentBurrito.project.textStories.refResources : [],
+          bookMarks: call === 'edit' ? currentBurrito.project.textStories.bookMarks : [],
         },
       },
     };
