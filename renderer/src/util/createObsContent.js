@@ -20,7 +20,6 @@ export const createObsContent = (username, project, direction, id, currentBurrit
     const ingredients = {};
     const newpath = localStorage.getItem('userPath');
     const folder = path.join(newpath, 'autographa', 'users', username, 'projects', `${project.projectName}_${id}`, 'content');
-    const licenseFolder = path.join(newpath, 'autographa', 'users', username, 'projects', `${project.projectName}_${id}`);
     const fs = window.require('fs');
 
     logger.debug('createObsContent.js', 'Creating the story md files');
@@ -116,9 +115,9 @@ export const createObsContent = (username, project, direction, id, currentBurrit
       role: 'title',
     };
     // OBS License
-    fs.writeFileSync(path.join(licenseFolder, 'LICENSE.md'), OBSLicense);
-    obsstat = fs.statSync(path.join(licenseFolder, 'LICENSE.md'));
-    ingredients[path.join('LICENSE.md')] = {
+    fs.writeFileSync(path.join(folder, 'LICENSE.md'), OBSLicense);
+    obsstat = fs.statSync(path.join(folder, 'LICENSE.md'));
+    ingredients[path.join('content', 'LICENSE.md')] = {
       checksum: {
         md5: md5(OBSLicense),
       },
