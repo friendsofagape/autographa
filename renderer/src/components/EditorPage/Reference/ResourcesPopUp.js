@@ -42,6 +42,10 @@ const translationQuestions = [
   createData('English', 'en', 'Door43-catalog'),
   createData('Spanish', 'es-419', 'es-419_gl'),
 ];
+const obsTranslationNotes = [
+  createData('Spanish', 'es-419', 'Door43-catalog'),
+  createData('English', 'en', 'Door43-catalog'),
+];
 
 const ResourcesPopUp = ({
   header,
@@ -218,6 +222,7 @@ const ResourcesPopUp = ({
     readCustomResources({ resourceId: 'tq', translationData: translationQuestion });
     readCustomResources({ resourceId: 'twlm', translationData: translationWord });
     readCustomResources({ resourceId: 'tn', translationData: translationNote });
+    readCustomResources({ resourceId: 'obs-tn', translationData: obsTranslationNotes });
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showInput]);
   const callResource = (resource) => {
@@ -225,7 +230,8 @@ const ResourcesPopUp = ({
     const resources = [
       { id: 'tn', title: t('label-resource-tn'), resource: translationNote },
       { id: 'twlm', title: t('label-resource-twlm'), resource: translationWord },
-      { id: 'tq', title: t('label-resource-tq'), resource: translationQuestion }];
+      { id: 'tq', title: t('label-resource-tq'), resource: translationQuestion },
+      { id: 'obs-tn', title: 'OBS-tn', resource: obsTranslationNotes }];
     const reference = resources.find((r) => r.id === resource);
     return (
       reference
@@ -407,6 +413,18 @@ const ResourcesPopUp = ({
                         imageUrl="/illustrations/image-icon.svg"
                         id="obs"
                         text={t('label-resource-obs')}
+                        selectResource={selectResource}
+                        setSelectResource={setSelectResource}
+                        setTitle={setTitle}
+                        setSubMenuItems={setSubMenuItems}
+                        setShowInput={setShowInput}
+                      />
+                      <ResourceOption
+                        imageUrl="/illustrations/dictionary-icon.svg"
+                        id="obs-tn"
+                        text="OBS-tn"
+                        translationData={obsTranslationNotes}
+                        readCustomResources={readCustomResources}
                         selectResource={selectResource}
                         setSelectResource={setSelectResource}
                         setTitle={setTitle}

@@ -317,7 +317,7 @@ const SectionPlaceholder2 = () => {
             openResource={openResource3}
             setOpenResource3={setOpenResource3}
             setOpenResource4={setOpenResource4}
-            CustomNavigation={referenceColumnTwoData1.selectedResource === 'obs' ? ObsNavigation1 : CustomNavigation1}
+            CustomNavigation={(referenceColumnTwoData1.selectedResource).lastIndexOf('obs', 0) === 0 ? ObsNavigation1 : CustomNavigation1}
             setRemovingSection={setRemovingSection}
             setAddingSection={setAddingSection}
           >
@@ -343,6 +343,7 @@ const SectionPlaceholder2 = () => {
                     bookId={_bookId1}
                     chapter={_chapter1}
                     verse={_verse1}
+                    story={_obsNavigation1}
                   />
                 )
               )
@@ -362,7 +363,7 @@ const SectionPlaceholder2 = () => {
             openResource={openResource4}
             setOpenResource3={setOpenResource3}
             setOpenResource4={setOpenResource4}
-            CustomNavigation={referenceColumnTwoData2.selectedResource === 'obs' ? ObsNavigation2 : CustomNavigation2}
+            CustomNavigation={(referenceColumnTwoData2.selectedResource).lastIndexOf('obs', 0) === 0 ? ObsNavigation2 : CustomNavigation2}
             setRemovingSection={setRemovingSection}
             setAddingSection={setAddingSection}
           >
@@ -388,6 +389,7 @@ const SectionPlaceholder2 = () => {
                     bookId={_bookId2}
                     chapter={_chapter2}
                     verse={_verse2}
+                    story={_obsNavigation2}
                   />
                 )
               )
