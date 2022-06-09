@@ -72,6 +72,7 @@ const ProjectContextProvider = ({ children }) => {
             translationNotes: [],
             translationQuestions: [],
             translationWords: [],
+            obsTranslationNotes: [],
           },
         },
       };

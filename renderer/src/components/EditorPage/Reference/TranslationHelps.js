@@ -3,9 +3,10 @@ import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import TranslationHelpsCard from './TranslationHelpsCard';
+import ObsTnCard from './OBS/ObsTn';
 
 const TranslationHelps = ({
- selectedResource, languageId, refName, bookId, chapter, verse, owner,
+ selectedResource, languageId, refName, bookId, chapter, verse, owner, story,
 }) => {
   const {
     state: {
@@ -103,6 +104,20 @@ const TranslationHelps = ({
                 verse={verse}
               />
             );
+            case 'obs-tn':
+            return (
+              <ObsTnCard
+                title="OBS-Tn"
+                chapter={story}
+                verse="1"
+                branch={branch}
+                viewMode="default"
+                languageId={languageId}
+                resourceId="obs-tn"
+                owner={owner}
+                server="https://git.door43.org"
+              />
+            );
         default:
           return null;
       }
@@ -160,4 +175,5 @@ TranslationHelps.propTypes = {
   chapter: PropTypes.string,
   verse: PropTypes.string,
   owner: PropTypes.string,
+  story: PropTypes.string,
 };
