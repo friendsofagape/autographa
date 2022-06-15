@@ -56,35 +56,31 @@ function BibleHeaderTagDropDown(headerDropDown, handleDropDown, call) {
   return (
     call === 'new'
     ? (
-      <>
-        <PopoverProjectType
-          items={solutions}
-          handleDropDown={handleDropDown}
-        >
-          <button
-            type="button"
-            className="flex justify-center items-center px-3 py-2 text-white ml-5
-          font-bold text-xs rounded-full leading-3 tracking-wider uppercase bg-primary"
-          >
-            <div className="">{headerDropDown}</div>
-            <ChevronDownIcon
-              className="w-5 h-5 ml-2"
-              aria-hidden="true"
-            />
-          </button>
-        </PopoverProjectType>
-      </>
-    )
-    : (
-      <>
+      <PopoverProjectType
+        items={solutions}
+        handleDropDown={handleDropDown}
+      >
         <button
           type="button"
           className="flex justify-center items-center px-3 py-2 text-white ml-5
           font-bold text-xs rounded-full leading-3 tracking-wider uppercase bg-primary"
         >
           <div className="">{headerDropDown}</div>
+          <ChevronDownIcon
+            className="w-5 h-5 ml-2"
+            aria-hidden="true"
+          />
         </button>
-      </>
+      </PopoverProjectType>
+    )
+    : (
+      <button
+        type="button"
+        className="flex justify-center items-center px-3 py-2 text-white ml-5
+          font-bold text-xs rounded-full leading-3 tracking-wider uppercase bg-primary"
+      >
+        <div className="">{headerDropDown}</div>
+      </button>
     )
 
   );

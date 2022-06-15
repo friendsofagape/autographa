@@ -1,6 +1,6 @@
 {
 	"root": true,
-	"parser": "babel-eslint",
+	"parser": "@babel/eslint-parser",
 	"extends": [
 		"eslint:recommended",
 		"plugin:react/recommended",
@@ -65,6 +65,7 @@
 	},
 	"parserOptions": {
 		"ecmaVersion": 2018,
+		"requireConfigFile": false,
 		"sourceType": "module",
 		"ecmaFeatures": {
 			"jsx": true
