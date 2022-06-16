@@ -16,7 +16,7 @@ jobs:
             - name: set @bitregistry translation-help
               run: npm config set '@bit:registry' https://node.bit.dev
 
-            - name: npm install --legacy-peer-deps
+            - name: npm install
               run: npm ci
 
             - name: run tests
