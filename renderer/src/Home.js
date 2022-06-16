@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-useless-fragment */
 import React from 'react';
 import * as localForage from 'localforage';
 import Login from './components/Login/Login';
@@ -33,7 +34,7 @@ const Home = () => {
     }
   }, [setToken, action, states.accessToken]);
   return (
-    <div>
+    <>
       {token
         ? (
           <AuthenticationContextProvider>
@@ -47,7 +48,7 @@ const Home = () => {
           </AuthenticationContextProvider>
         )
         : <Login />}
-    </div>
+    </>
   );
 };
 export default Home;

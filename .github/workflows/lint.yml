@@ -1,5 +1,5 @@
 name: Lint Check
-on: [push,  pull_request_target]
+on: [push, pull_request_target]
 jobs:
     build:
         name: Lint Run
@@ -16,7 +16,7 @@ jobs:
             - name: set @bitregistry translation-help
               run: npm config set '@bit:registry' https://node.bit.dev
 
-            - name: npm install
+            - name: npm install --legacy-peer-deps
               run: npm ci
 
             - name: run lint

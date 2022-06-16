@@ -70,6 +70,7 @@ export const En = {
     'label-import-resource': 'Import Resource',
     'label-resource': 'Resources',
     'label-resource-bible': 'Bible',
+    'label-resource-obs-tn': 'OBS Translation Notes',
     'label-resource-obs': 'Open Bible Stories',
     'label-resource-tn': 'Translation Notes',
     'label-resource-twlm': 'Translation Words',

@@ -414,7 +414,7 @@ const ResourcesPopUp = ({
                       <ResourceOption
                         imageUrl="/illustrations/dictionary-icon.svg"
                         id="obs-tn"
-                        text="OBS-tn"
+                        text={t('label-resource-obs-tn')}
                         translationData={obsTranslationNotes}
                         readCustomResources={readCustomResources}
                         selectResource={selectResource}
@@ -473,10 +473,10 @@ const ResourcesPopUp = ({
                                 <div
                                   className="focus:outline-none"
                                   onClick={(e) => handleRowSelect(
-e,
+                                    e,
                                     ref.value.languages[0].name.en,
-ref.projectDir,
-)}
+                                    ref.projectDir,
+                                    )}
                                   role="button"
                                   tabIndex="0"
                                 >
@@ -491,10 +491,10 @@ ref.projectDir,
                                 <div
                                   className="focus:outline-none"
                                   onClick={(e) => handleRowSelect(
-e,
+                                    e,
                                     ref.value.languages[0].name.en,
                                     ref.projectDir,
-)}
+                                  )}
                                   role="button"
                                   tabIndex="0"
                                 >
@@ -520,10 +520,10 @@ e,
                               <div
                                 className="focus:outline-none"
                                 onClick={(e) => handleRowSelect(
-e,
+                                    e,
                                     ref.value.languages[0].name.en,
-ref.projectDir,
-)}
+                                    ref.projectDir,
+                                    )}
                                 role="button"
                                 tabIndex="0"
                               >
@@ -538,10 +538,10 @@ ref.projectDir,
                               <div
                                 className="focus:outline-none"
                                 onClick={(e) => handleRowSelect(
-e,
+                                    e,
                                     ref.value.languages[0].name.en,
                                     ref.projectDir,
-)}
+                                    )}
                                 role="button"
                                 tabIndex="0"
                               >

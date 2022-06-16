@@ -208,9 +208,9 @@ function useProjectsSort() {
                             _project.languages[0].name.en,
                             _project.identification.primary.ag[created].timestamp,
                             lastSeen,
-description,
-created,
-flavorType,
+                            description,
+                            created,
+                            flavorType,
                             );
                         } else {
                           FetchUnstarred(
@@ -218,9 +218,9 @@ flavorType,
                             _project.languages[0].name.en,
                             _project.identification.primary.ag[created].timestamp,
                             lastSeen,
-description,
-created,
-flavorType,
+                            description,
+                            created,
+                            flavorType,
                             );
                         }
                       });

@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-useless-fragment */
 import React, { Fragment, useState } from 'react';
 import { useRouter } from 'next/router';
 import moment from 'moment';
@@ -115,10 +116,10 @@ export default function ProjectList() {
   };
 
   return (
-    <div>
+    <>
       {callEditProject === false
         ? (
-          <div>
+          <>
             <ProjectsLayout
               title={t('projects-page')}
               isImport
@@ -440,9 +441,9 @@ export default function ProjectList() {
               </div>
             </ProjectsLayout>
             <ExportProjectPopUp open={openPopUp} closePopUp={closeExportPopUp} project={currentProject} />
-          </div>
+          </>
         )
         : <ProjectContextProvider><AutographaContextProvider><NewProject call="edit" project={currentProject} closeEdit={() => closeEditProject()} /></AutographaContextProvider></ProjectContextProvider>}
-    </div>
+    </>
   );
 }

@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-useless-fragment */
 import React, { useEffect } from 'react';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import { IntlProvider } from 'react-intl';
@@ -113,7 +114,7 @@ const Main = () => {
   }, []);
 
   return (
-    <div>
+    <>
       {Object.keys(message).length !== 0 ? (
         <ThemeProvider theme={theme}>
           <AutographaContextProvider>
@@ -132,7 +133,7 @@ const Main = () => {
       ) : (
         <div />
       )}
-    </div>
+    </>
   );
 };
 

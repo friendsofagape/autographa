@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-useless-fragment */
 import dynamic from 'next/dynamic';
 import { useContext, useEffect, useState } from 'react';
 import localforage from 'localforage';
@@ -296,9 +297,9 @@ const SectionPlaceholder1 = () => {
     }
   }, [_obsNavigation1, _obsNavigation2, referenceColumnOneData1, referenceColumnOneData2]);
   return (
-    <div>
+    <>
       {(layout > 0 && layout <= 2) && (
-        <div>
+        <>
           {(openResource1 === false || openResource2 === false) && (
             <div className="bg-white rounded-md grid gap-2 h-editor overflow-x-auto">
               <EditorSection
@@ -396,9 +397,9 @@ const SectionPlaceholder1 = () => {
               </EditorSection>
             </div>
         )}
-        </div>
+        </>
       )}
-    </div>
+    </>
   );
 };
 export default SectionPlaceholder1;

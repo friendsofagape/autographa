@@ -111,25 +111,16 @@ export default function Login() {
       // The below code is commented for UI dev purpose.
       if (handleValidation(values)) {
         const fs = window.require('fs');
-        logger.debug(
-'Login.js',
-          'Triggers handleLogin to check whether the user is existing or not',
-);
+        logger.debug('Login.js', 'Triggers handleLogin to check whether the user is existing or not');
         const user = handleLogin(users, values);
         if (user) {
-          logger.debug(
-'Login.js',
-            'Triggers generateToken to generate a Token for the user',
-);
+          logger.debug('Login.js', 'Triggers generateToken to generate a Token for the user');
           generateToken(user);
         } else {
           logger.debug('Login.js', 'Triggers createUser for creating a new user');
           createUser(values, fs)
             .then((val) => {
-              logger.debug(
-'Login.js',
-                'Triggers generateToken to generate a Token for the user',
-);
+              logger.debug('Login.js', 'Triggers generateToken to generate a Token for the user');
               generateToken(val);
             });
         }
