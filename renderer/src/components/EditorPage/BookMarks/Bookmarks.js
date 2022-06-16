@@ -27,10 +27,13 @@ export default function Bookmarks() {
 
   // const [tempChapter, setTempChapter] = useState(chapter);
 
+  // eslint-disable-next-line no-promise-executor-return
   const timeout = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
   const { t } = useTranslation();
-  const gotoChapter = (bookname,
-    chapterNum) => {
+  const gotoChapter = (
+    bookname,
+    chapterNum,
+  ) => {
     setOpenSideBar(false);
     setIsLoading(true);
     timeout(2000).then(async () => {

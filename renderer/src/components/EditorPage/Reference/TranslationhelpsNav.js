@@ -39,7 +39,7 @@ const TranslationhelpsNav = ({
       };
 
   return (
-    <>
+    <div>
       {items && (
       <FlexSpacedDiv>
         <ChevronLeftIcon
@@ -55,7 +55,7 @@ const TranslationhelpsNav = ({
         />
       </FlexSpacedDiv>
         )}
-    </>
+    </div>
     );
   };
 

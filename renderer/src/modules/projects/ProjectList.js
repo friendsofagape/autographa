@@ -115,10 +115,10 @@ export default function ProjectList() {
   };
 
   return (
-    <>
+    <div>
       {callEditProject === false
         ? (
-          <>
+          <div>
             <ProjectsLayout
               title={t('projects-page')}
               isImport
@@ -147,10 +147,12 @@ export default function ProjectList() {
                               onRequestSort={handleRequestSort}
                             />
                             <tbody className="bg-white divide-y divide-gray-200">
-                              {starredrow && (stableSort(starredrow,
+                              {starredrow && (stableSort(
+                                starredrow,
                                 getComparator(order, orderBy),
                                 orderBy,
-                                order).map((project) => (
+                                order,
+                                ).map((project) => (
                                   <Disclosure key={project.name}>
                                     {({ open }) => (
                                       <>
@@ -283,10 +285,12 @@ export default function ProjectList() {
                               )}
                             </tbody>
                             <tbody className="bg-white divide-y divide-gray-200">
-                              {unstarredrow && (stableSort(unstarredrow,
+                              {unstarredrow && (stableSort(
+                                unstarredrow,
                                 getComparator(order, orderBy),
                                 orderBy,
-                                order).map((project) => (
+                                order,
+                                ).map((project) => (
                                   <Disclosure key={project.name}>
                                     {({ open }) => (
                                       <>
@@ -436,9 +440,9 @@ export default function ProjectList() {
               </div>
             </ProjectsLayout>
             <ExportProjectPopUp open={openPopUp} closePopUp={closeExportPopUp} project={currentProject} />
-          </>
+          </div>
         )
         : <ProjectContextProvider><AutographaContextProvider><NewProject call="edit" project={currentProject} closeEdit={() => closeEditProject()} /></AutographaContextProvider></ProjectContextProvider>}
-    </>
+    </div>
   );
 }

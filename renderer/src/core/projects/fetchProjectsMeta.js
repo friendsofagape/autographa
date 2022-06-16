@@ -5,9 +5,7 @@ const fetchProjectsMeta = async ({ currentUser }) => {
   const newpath = localStorage.getItem('userPath');
   const fs = window.require('fs');
   const path = require('path');
-  const projectsMetaPath = path.join(
-    newpath, 'autographa', 'users', currentUser, 'projects',
-  );
+  const projectsMetaPath = path.join(newpath, 'autographa', 'users', currentUser, 'projects');
   fs.mkdirSync(projectsMetaPath, { recursive: true });
   const arrayItems = fs.readdirSync(projectsMetaPath);
   const burritos = [];

@@ -1,36 +1,32 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import {
-    CardContent,
-  } from 'translation-helps-rcl';
+import { CardContent } from 'translation-helps-rcl';
 
 const ReferenceCard = ({
-    items,
-    item,
-    filters,
-    markdownView,
-    markdown,
-    languageId,
-    selectedQuote,
-    setQuote,
-    viewMode,
-    isLoading,
+  items,
+  item,
+  filters,
+  markdownView,
+  markdown,
+  languageId,
+  selectedQuote,
+  setQuote,
+  viewMode,
+  isLoading,
 }) => (
-  <>
-    <CardContent
-      item={item}
-      items={items}
-      filters={filters}
-      markdown={markdown}
-      languageId={languageId}
-      markdownView={markdownView}
-      isLoading={isLoading}
-      selectedQuote={selectedQuote}
-      setQuote={setQuote}
-      viewMode={viewMode}
-    />
-  </>
+  <CardContent
+    item={item}
+    items={items}
+    filters={filters}
+    markdown={markdown}
+    languageId={languageId}
+    markdownView={markdownView}
+    isLoading={isLoading}
+    selectedQuote={selectedQuote}
+    setQuote={setQuote}
+    viewMode={viewMode}
+  />
 );
 
 export default ReferenceCard;

@@ -39,22 +39,20 @@ function ObsTnCard({
     fetchData();
   }, [chapter, languageId, owner, resourceId]);
   return (
-    <>
-      <ObsResourceCard
-        {...props}
-        chapter={chapter}
-        verse={frame}
-        items={items}
-        selectedQuote={selectedQuote}
-        setQuote={setQuote}
-        markdown={markdown}
-        languageId={languageId}
-        classes={classes}
-        shouldSetQuoteOnClick
-        index={index}
-        setIndex={(v) => setIndex(v)}
-      />
-    </>
+    <ObsResourceCard
+      {...props}
+      chapter={chapter}
+      verse={frame}
+      items={items}
+      selectedQuote={selectedQuote}
+      setQuote={setQuote}
+      markdown={markdown}
+      languageId={languageId}
+      classes={classes}
+      shouldSetQuoteOnClick
+      index={index}
+      setIndex={(v) => setIndex(v)}
+    />
   );
 }
 

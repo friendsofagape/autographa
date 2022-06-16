@@ -207,14 +207,20 @@ function useProjectsSort() {
                             _project.identification.name.en,
                             _project.languages[0].name.en,
                             _project.identification.primary.ag[created].timestamp,
-                            lastSeen, description, created, flavorType,
+                            lastSeen,
+description,
+created,
+flavorType,
                             );
                         } else {
                           FetchUnstarred(
                             _project.identification.name.en,
                             _project.languages[0].name.en,
                             _project.identification.primary.ag[created].timestamp,
-                            lastSeen, description, created, flavorType,
+                            lastSeen,
+description,
+created,
+flavorType,
                             );
                         }
                       });

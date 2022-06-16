@@ -297,10 +297,10 @@ const SectionPlaceholder2 = () => {
     }
   }, [_obsNavigation1, _obsNavigation2, referenceColumnTwoData1, referenceColumnTwoData2]);
   return (
-    <>
+    <div>
       {((openResource1 === true && openResource2 === true)
       ? (layout >= 1 && layout <= 2) : (layout > 1 && layout <= 2)) && (
-      <>
+      <div>
         {(openResource3 === false || openResource4 === false) && (
         <div className="bg-white rounded-md grid gap-2 h-editor overflow-x-auto">
           <EditorSection
@@ -397,9 +397,9 @@ const SectionPlaceholder2 = () => {
           </EditorSection>
         </div>
       )}
-      </>
+      </div>
       )}
-    </>
+    </div>
   );
 };
 export default SectionPlaceholder2;

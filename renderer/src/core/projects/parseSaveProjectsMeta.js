@@ -1,3 +1,4 @@
+/* eslint-disable no-unreachable-loop */
 import Parse from 'parse';
 import moment from 'moment';
 import parseFileSave from './parseFileSave';

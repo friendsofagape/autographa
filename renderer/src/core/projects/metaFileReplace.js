@@ -4,18 +4,16 @@ const metaFileReplace = ({ userData }) => {
     const fs = window.require('fs');
     const path = require('path');
     const json = JSON.stringify(userData);
-    const projectsMetaPath = path.join(
-        newpath, 'autographa', 'users', 'username', 'projects', 'projects.json',
-    );
-if (fs.existsSync(projectsMetaPath)) {
-    fs.writeFileSync(path.join(
-        newpath,
-        'autographa',
-        'users',
-        'username',
-        'projects',
-        'projects.json',
-    ), json);
+    const projectsMetaPath = path.join(newpath, 'autographa', 'users', 'username', 'projects', 'projects.json');
+    if (fs.existsSync(projectsMetaPath)) {
+        fs.writeFileSync(path.join(
+            newpath,
+            'autographa',
+            'users',
+            'username',
+            'projects',
+            'projects.json',
+        ), json);
     }
     return (status.push({ type: 'success', value: 'new project created' }));
 };

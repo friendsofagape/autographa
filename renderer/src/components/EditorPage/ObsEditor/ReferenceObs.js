@@ -23,7 +23,7 @@ const ReferenceObs = ({ stories }) => {
     }
   }, [stories]);
   return (
-    <>
+    <div>
       { isLoading === false ? (
         <>
           {
@@ -58,8 +58,7 @@ const ReferenceObs = ({ stories }) => {
         ) : (
           <LoadingScreen />
         )}
-
-    </>
+    </div>
 );
 };
 export default ReferenceObs;

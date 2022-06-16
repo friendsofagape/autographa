@@ -33,23 +33,22 @@ export default function TopMenuBar() {
     <>
       <Disclosure as="nav" className="bg-secondary">
         {({ open }) => (
-          <>
-            <div className="mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="flex items-center justify-between h-16">
-                <div className="flex items-center">
+          <div className="mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex items-center justify-between h-16">
+              <div className="flex items-center">
 
-                  <div className="hidden md:block">
-                    <div className="-ml-4 flex items-baseline space-x-4">
-                      <span className="text-white px-3 py-2 text-lg tracking-wide font-bold uppercase">
-                        {t('app-name')}
-                        <span className="text-primary font-extrabold"> 2.0</span>
-                      </span>
-                    </div>
+                <div className="hidden md:block">
+                  <div className="-ml-4 flex items-baseline space-x-4">
+                    <span className="text-white px-3 py-2 text-lg tracking-wide font-bold uppercase">
+                      {t('app-name')}
+                      <span className="text-primary font-extrabold"> 2.0</span>
+                    </span>
                   </div>
                 </div>
-                <div className="hidden md:block">
-                  <div className="ml-4 flex items-center md:ml-6">
-                    {/* <button
+              </div>
+              <div className="hidden md:block">
+                <div className="ml-4 flex items-center md:ml-6">
+                  {/* <button
                       onClick={openSideBars}
                       type="button"
                       className="inline-flex items-center
@@ -65,18 +64,18 @@ export default function TopMenuBar() {
                       text-xs leading-5 font-semibold rounded-full bg-success text-white">21</span>
                     </button> */}
 
-                    {/* Profile dropdown */}
-                    <Menu as="div" className="ml-3 relative">
-                      {({ open }) => (
-                        <>
-                          <div>
-                            <Menu.Button className="max-w-xs bg-gray-800 border-4 border-white rounded-full flex items-center text-sm
+                  {/* Profile dropdown */}
+                  <Menu as="div" className="ml-3 relative">
+                    {({ open }) => (
+                      <>
+                        <div>
+                          <Menu.Button className="max-w-xs bg-gray-800 border-4 border-white rounded-full flex items-center text-sm
                                 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-gray-700"
-                            >
-                              <span className="sr-only">{t('label-user-menu')}</span>
+                          >
+                            <span className="sr-only">{t('label-user-menu')}</span>
 
-                              {/* check if user pic available  */}
-                              {userPic
+                            {/* check if user pic available  */}
+                            {userPic
                                 ? (
                                   <div className="h-8 w-8 p-2 bg-primary rounded-full">
                                     <UserIcon className="h-4 w-4 text-white" />
@@ -90,75 +89,74 @@ export default function TopMenuBar() {
                                   />
                                 )}
 
-                            </Menu.Button>
-                          </div>
-                          <Transition
-                            show={open}
-                            as={Fragment}
-                            enter="transition ease-out duration-100"
-                            enterFrom="transform opacity-0 scale-95"
-                            enterTo="transform opacity-100 scale-100"
-                            leave="transition ease-in duration-75"
-                            leaveFrom="transform opacity-100 scale-100"
-                            leaveTo="transform opacity-0 scale-95"
+                          </Menu.Button>
+                        </div>
+                        <Transition
+                          show={open}
+                          as={Fragment}
+                          enter="transition ease-out duration-100"
+                          enterFrom="transform opacity-0 scale-95"
+                          enterTo="transform opacity-100 scale-100"
+                          leave="transition ease-in duration-75"
+                          leaveFrom="transform opacity-100 scale-100"
+                          leaveTo="transform opacity-0 scale-95"
+                        >
+                          <Menu.Items
+                            static
+                            className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
                           >
-                            <Menu.Items
-                              static
-                              className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
-                            >
-                              {profile.map((item) => (
-                                <Menu.Item key={item}>
-                                  {({ active }) => (
-                                    <Link href="/profile">
-                                      <a
-                                        href="#profile"
-                                        className={classNames(
+                            {profile.map((item) => (
+                              <Menu.Item key={item}>
+                                {({ active }) => (
+                                  <Link href="/profile">
+                                    <a
+                                      href="#profile"
+                                      className={classNames(
                                           active ? 'bg-gray-100' : '',
                                           'block px-4 py-2 text-sm text-gray-700',
                                         )}
-                                      >
-                                        {item}
-                                      </a>
-                                    </Link>
+                                    >
+                                      {item}
+                                    </a>
+                                  </Link>
                                   )}
-                                </Menu.Item>
+                              </Menu.Item>
                               ))}
-                              <Menu.Item key="Sign out">
-                                {({ active }) => (
-                                  <a
-                                    href="#profile"
-                                    onClick={() => logout()}
-                                    className={classNames(
+                            <Menu.Item key="Sign out">
+                              {({ active }) => (
+                                <a
+                                  href="#profile"
+                                  onClick={() => logout()}
+                                  className={classNames(
                                       active ? 'bg-gray-100' : '',
                                       'block px-4 py-2 text-sm text-gray-700',
                                     )}
-                                  >
-                                    {t('btn-signout')}
-                                  </a>
+                                >
+                                  {t('btn-signout')}
+                                </a>
                                 )}
-                              </Menu.Item>
-                            </Menu.Items>
-                          </Transition>
-                        </>
+                            </Menu.Item>
+                          </Menu.Items>
+                        </Transition>
+                      </>
                       )}
-                    </Menu>
+                  </Menu>
 
-                  </div>
                 </div>
-                <div className="-mr-2 flex md:hidden">
-                  {/* Mobile menu button */}
-                  <Disclosure.Button className="bg-gray-800 inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
-                    <span className="sr-only">{t('label-main-menu')}</span>
-                    {open ? (
-                      <XIcon className="block h-6 w-6" aria-hidden="true" />
+              </div>
+              <div className="-mr-2 flex md:hidden">
+                {/* Mobile menu button */}
+                <Disclosure.Button className="bg-gray-800 inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
+                  <span className="sr-only">{t('label-main-menu')}</span>
+                  {open ? (
+                    <XIcon className="block h-6 w-6" aria-hidden="true" />
                     ) : (
                       <MenuIcon className="block h-6 w-6" aria-hidden="true" />
                     )}
-                  </Disclosure.Button>
-                </div>
+                </Disclosure.Button>
               </div>
             </div>
-          </>
+          </div>
         )}
       </Disclosure>
 

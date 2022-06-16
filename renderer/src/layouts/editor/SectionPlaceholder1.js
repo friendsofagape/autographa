@@ -296,13 +296,11 @@ const SectionPlaceholder1 = () => {
     }
   }, [_obsNavigation1, _obsNavigation2, referenceColumnOneData1, referenceColumnOneData2]);
   return (
-    <>
-
+    <div>
       {(layout > 0 && layout <= 2) && (
-        <>
+        <div>
           {(openResource1 === false || openResource2 === false) && (
             <div className="bg-white rounded-md grid gap-2 h-editor overflow-x-auto">
-
               <EditorSection
                 row="1"
                 CustomNavigation={(referenceColumnOneData1.selectedResource).lastIndexOf('obs', 0) === 0 ? ObsNavigation1 : CustomNavigation1}
@@ -398,9 +396,9 @@ const SectionPlaceholder1 = () => {
               </EditorSection>
             </div>
         )}
-        </>
+        </div>
       )}
-    </>
+    </div>
   );
 };
 export default SectionPlaceholder1;

@@ -18,9 +18,7 @@ const SectionContainer = () => {
         const path = require('path');
         const fs = window.require('fs');
         const newpath = localStorage.getItem('userPath');
-        const metaPath = path.join(
-          newpath, 'autographa', 'users', username, 'projects', projectName, 'metadata.json',
-        );
+        const metaPath = path.join(newpath, 'autographa', 'users', username, 'projects', projectName, 'metadata.json');
         const data = fs.readFileSync(metaPath, 'utf-8');
         const metadata = JSON.parse(data);
         setEditor(metadata.type.flavorType.flavor.name);

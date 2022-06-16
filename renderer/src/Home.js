@@ -33,7 +33,7 @@ const Home = () => {
     }
   }, [setToken, action, states.accessToken]);
   return (
-    <>
+    <div>
       {token
         ? (
           <AuthenticationContextProvider>
@@ -47,7 +47,7 @@ const Home = () => {
           </AuthenticationContextProvider>
         )
         : <Login />}
-    </>
+    </div>
   );
 };
 export default Home;

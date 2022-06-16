@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-constructed-context-values */
 import { useBibleReference } from 'bible-reference-rcl';
 import React, {
  useState, createContext, useRef, useEffect,

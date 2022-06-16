@@ -111,19 +111,25 @@ export default function Login() {
       // The below code is commented for UI dev purpose.
       if (handleValidation(values)) {
         const fs = window.require('fs');
-        logger.debug('Login.js',
-          'Triggers handleLogin to check whether the user is existing or not');
+        logger.debug(
+'Login.js',
+          'Triggers handleLogin to check whether the user is existing or not',
+);
         const user = handleLogin(users, values);
         if (user) {
-          logger.debug('Login.js',
-            'Triggers generateToken to generate a Token for the user');
+          logger.debug(
+'Login.js',
+            'Triggers generateToken to generate a Token for the user',
+);
           generateToken(user);
         } else {
           logger.debug('Login.js', 'Triggers createUser for creating a new user');
           createUser(values, fs)
             .then((val) => {
-              logger.debug('Login.js',
-                'Triggers generateToken to generate a Token for the user');
+              logger.debug(
+'Login.js',
+                'Triggers generateToken to generate a Token for the user',
+);
               generateToken(val);
             });
         }
@@ -160,13 +166,12 @@ export default function Login() {
     }
   };
   return (
-    <>
-      <div className="grid grid-cols-7 h-screen">
+    <div className="grid grid-cols-7 h-screen">
 
-        <div className="col-span-3 flex justify-center items-center h-full relative">
+      <div className="col-span-3 flex justify-center items-center h-full relative">
 
-          <div className="flex flex-col justify-center w-3/4 max-w-md">
-            {tab[0] === false ? null
+        <div className="flex flex-col justify-center w-3/4 max-w-md">
+          {tab[0] === false ? null
               : (
                 <div className="text-success pb-12">
                   {i18n.t('label-dont-have-account')}
@@ -180,8 +185,8 @@ export default function Login() {
                   </a>
                 </div>
               )}
-            <div className="text-3xl font-medium text-secondary text-center">{i18n.t('label-sign-in')}</div>
-            {users.map((user, index) => {
+          <div className="text-3xl font-medium text-secondary text-center">{i18n.t('label-sign-in')}</div>
+          {users.map((user, index) => {
               if (index < 5) {
                 return (
                   <div
@@ -208,107 +213,105 @@ export default function Login() {
               }
               return '';
             })}
-            <CustomLogin
-              ui={ui}
-              error={valid}
-              login={handleSubmit}
-              userlist={users}
-              validation={error}
-              buttonname={i18n.t('btn-signin')}
-            />
-            <div />
-          </div>
-
-          <div className="absolute bottom-4 left-0 right-0 flex items-center justify-center gap-5 bg-white text-black font-bold hidden">
-            <a href="/" onClick={(event) => event.preventDefault()}>EN(US)</a>
-            <a href="/" onClick={(event) => event.preventDefault()}>ABOUT</a>
-            <a href="/" onClick={(event) => event.preventDefault()}>PRIVACY</a>
-            <a href="/" onClick={(event) => event.preventDefault()}>TERMS</a>
-          </div>
+          <CustomLogin
+            ui={ui}
+            error={valid}
+            login={handleSubmit}
+            userlist={users}
+            validation={error}
+            buttonname={i18n.t('btn-signin')}
+          />
+          <div />
         </div>
 
-        <div className="col-span-4 bg-secondary relative flex flex-col justify-between">
+        <div className="absolute bottom-4 left-0 right-0 flex items-center justify-center gap-5 bg-white text-black font-bold hidden">
+          <a href="/" onClick={(event) => event.preventDefault()}>EN(US)</a>
+          <a href="/" onClick={(event) => event.preventDefault()}>ABOUT</a>
+          <a href="/" onClick={(event) => event.preventDefault()}>PRIVACY</a>
+          <a href="/" onClick={(event) => event.preventDefault()}>TERMS</a>
+        </div>
+      </div>
 
-          <div className="my-5 mt-10 flex gap-3 justify-center items-center">
-            <LogoIcon
-              className="h-5 w-5 text-white group-hover:text-white"
-              aria-hidden="true"
+      <div className="col-span-4 bg-secondary relative flex flex-col justify-between">
+
+        <div className="my-5 mt-10 flex gap-3 justify-center items-center">
+          <LogoIcon
+            className="h-5 w-5 text-white group-hover:text-white"
+            aria-hidden="true"
+          />
+          <div className="text-white uppercase font-bold tracking-wider text-2xl">{i18n.t('app-name')}</div>
+          <div className="text-primary font-bold text-3xl">2.0</div>
+        </div>
+
+        <div className="flex flex-col justify-center items-center relative">
+
+          <div className="">
+            {/* <img width="61" height="56" src="/illustrations/group.svg" alt="" /> */}
+            <GroupIcon
+              fill="#FF4A4A"
+              width={61}
+              height={56}
             />
-            <div className="text-white uppercase font-bold tracking-wider text-2xl">{i18n.t('app-name')}</div>
-            <div className="text-primary font-bold text-3xl">2.0</div>
           </div>
 
-          <div className="flex flex-col justify-center items-center relative">
-
-            <div className="">
-              {/* <img width="61" height="56" src="/illustrations/group.svg" alt="" /> */}
-              <GroupIcon
-                fill="#FF4A4A"
-                width={61}
-                height={56}
-              />
+          <div className="mx-10 md:mx-20 lg:mx-32 text-xl text-white leading-9 relative">
+            <div className="absolute top-0 left-0">
+              <Quote height={26} fill="#0068E2" />
+              {/* <img height="26" src="/illustrations/quote.svg" alt="" /> */}
             </div>
 
-            <div className="mx-10 md:mx-20 lg:mx-32 text-xl text-white leading-9 relative">
-              <div className="absolute top-0 left-0">
-                <Quote height={26} fill="#0068E2" />
-                {/* <img height="26" src="/illustrations/quote.svg" alt="" /> */}
-              </div>
+            <div className="py-10">
+              {i18n.t('text-login-page-desc')}
+            </div>
 
-              <div className="py-10">
-                {i18n.t('text-login-page-desc')}
-              </div>
-
-              {/* <div className="flex pt-5">
+            {/* <div className="flex pt-5">
                 <div className="pr-4">FEATURE</div>
                 <img className="" src="/illustrations/green-check.svg" alt="logo" />
               </div> */}
-            </div>
+          </div>
 
-            <div className="flex ">
-              <div className="">
-                <img src="/illustrations/sitting.png" alt="" />
-                {/* <SittingIcon
+          <div className="flex ">
+            <div className="">
+              <img src="/illustrations/sitting.png" alt="" />
+              {/* <SittingIcon
                   width={236}
                   height={338}
                 /> */}
-                {/* <img
+              {/* <img
                   srcSet="/illustrations/sitting.svg 1200w"
                   src="/illustrations/sitting.svg"
                   alt=""
                 /> */}
 
-              </div>
-              <div>
-                <VectorOne
-                  width={34}
-                  height={33}
-                  fill="#FF4A4A"
-                />
-                {/* <img
+            </div>
+            <div>
+              <VectorOne
+                width={34}
+                height={33}
+                fill="#FF4A4A"
+              />
+              {/* <img
                   width="34"
                   height="33"
                   src="/illustrations/vector-one.svg"
                   alt=""
                 /> */}
-              </div>
             </div>
-
-          </div>
-
-          <div className="">
-            <HalfMoon width={124} height={70} />
-            {/* <img
-              srcSet="/illustrations/half-moon.svg 1200w"
-              src="/illustrations/half-moon.svg"
-              alt=""
-            /> */}
           </div>
 
         </div>
 
+        <div className="">
+          <HalfMoon width={124} height={70} />
+          {/* <img
+              srcSet="/illustrations/half-moon.svg 1200w"
+              src="/illustrations/half-moon.svg"
+              alt=""
+            /> */}
+        </div>
+
       </div>
 
-    </>
+    </div>
   );
 }

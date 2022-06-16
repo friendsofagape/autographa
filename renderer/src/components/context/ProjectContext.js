@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-constructed-context-values */
 import React from 'react';
 import PropTypes from 'prop-types';
 import * as localforage from 'localforage';
@@ -153,7 +154,7 @@ const ProjectContextProvider = ({ children }) => {
             const currentSetting = (currentSettings === 'copyright' ? copyright
             : (currentSettings === 'languages' ? language : canonSpecification));
             if (currentSettings === 'canonSpecification') {
-              (json.history?.textTranslation[currentSettings]).push(currentSetting);
+              (json.history?.textTranslation[currentSettings])?.push(currentSetting);
             } else if (json.history[currentSettings]
                 && uniqueId(json.history[currentSettings], currentSetting.id)) {
                 (json.history[currentSettings]).forEach((setting) => {

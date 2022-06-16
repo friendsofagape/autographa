@@ -148,7 +148,7 @@ const importBurrito = async (filePath, currentUser, updateBurritoVersion) => {
         if (list.length > 1) {
           (metadata.identification.upstream.ag).forEach((e, i) => {
             if (e === latest) {
-              (metadata.identification?.upstream?.ag).splice(i, 1);
+              (metadata.identification?.upstream?.ag)?.splice(i, 1);
             }
           });
         } else {

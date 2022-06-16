@@ -16,7 +16,7 @@ export async function readCustomResources({ resourceId }) {
                 const agSettingsJson = JSON.parse(data);
                     switch (resourceId) {
                         case 'tn':
-                            (agSettingsJson?.resources.door43.translationNotes).forEach(async (url) => {
+                            (agSettingsJson?.resources.door43.translationNotes)?.forEach(async (url) => {
                                     const url2 = url.split('/')[3];
                                     const owner = [];
                                     const url1 = path.join(url, '/raw/branch/master/', 'manifest.yaml');
@@ -26,10 +26,10 @@ export async function readCustomResources({ resourceId }) {
                                         owner.push(data, url2);
                                         resolve(owner);
                                     }
-                            });
+                                  });
                           break;
                         case 'tq':
-                            (agSettingsJson?.resources.door43.translationQuestions).forEach(async (url) => {
+                            (agSettingsJson?.resources.door43.translationQuestions)?.forEach(async (url) => {
                                     const url1 = path.join(url, '/raw/branch/master/', 'manifest.yaml');
                                     const url2 = url.split('/')[3];
                                     const owner = [];
@@ -42,7 +42,7 @@ export async function readCustomResources({ resourceId }) {
                             });
                           break;
                         case 'twlm':
-                            (agSettingsJson?.resources.door43.translationWords).forEach(async (url) => {
+                            (agSettingsJson?.resources.door43.translationWords)?.forEach(async (url) => {
                                     const url1 = path.join(url, '/raw/branch/master/', 'manifest.yaml');
                                     const url2 = url.split('/')[3];
                                     const owner = [];

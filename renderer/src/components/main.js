@@ -113,7 +113,7 @@ const Main = () => {
   }, []);
 
   return (
-    <>
+    <div>
       {Object.keys(message).length !== 0 ? (
         <ThemeProvider theme={theme}>
           <AutographaContextProvider>
@@ -132,7 +132,7 @@ const Main = () => {
       ) : (
         <div />
       )}
-    </>
+    </div>
   );
 };
 

@@ -18,12 +18,8 @@ const ObsEditor = () => {
       localforage.getItem('currentProject').then((projectName) => {
         const path = require('path');
         const newpath = localStorage.getItem('userPath');
-        const projectsDir = path.join(
-            newpath, 'autographa', 'users', username, 'projects', projectName,
-        );
-        const metaPath = path.join(
-          newpath, 'autographa', 'users', username, 'projects', projectName, 'metadata.json',
-        );
+        const projectsDir = path.join(newpath, 'autographa', 'users', username, 'projects', projectName);
+        const metaPath = path.join(newpath, 'autographa', 'users', username, 'projects', projectName, 'metadata.json');
         resolve({
           projectName, username, projectsDir, metaPath, path,
         });
