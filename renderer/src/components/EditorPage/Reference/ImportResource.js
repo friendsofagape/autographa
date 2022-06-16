@@ -43,8 +43,11 @@ export default function ImportResource({
     const importReference = async (projectsDir, name) => {
       const fse = window.require('fs-extra');
       const path = require('path');
-      await fse.copy(folderPath, path.join(projectsDir, name),
-      { overwrite: true }).then(() => {
+      await fse.copy(
+folderPath,
+path.join(projectsDir, name),
+{ overwrite: true },
+).then(() => {
         setOpenSnackBar(true);
         setNotify('success');
         setSnackText(t('dynamic-msg-import-resource-snack'));
@@ -68,9 +71,7 @@ export default function ImportResource({
           fs.mkdirSync(path.join(newpath, 'autographa', 'users', user?.username, 'resources'), {
             recursive: true,
           });
-          const projectsDir = path.join(
-            newpath, 'autographa', 'users', user?.username, 'resources',
-          );
+          const projectsDir = path.join(newpath, 'autographa', 'users', user?.username, 'resources');
           // Adding 'resources' to check the duplication in the user reference list
           const result = await viewBurrito(folderPath, user?.username, 'resources');
           if (result.fileExist === false) {

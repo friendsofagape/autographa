@@ -1,8 +1,7 @@
 const nodeExternals = require('webpack-node-externals');
-const withTM = require('next-transpile-modules')(['usfm-editor']);
 const path = require('path');
 
-module.exports = withTM({
+module.exports = {
   webpack: (config, { isServer }) => {
     // Fixes npm packages that depend on `fs` module
     if (!isServer) {
@@ -21,7 +20,7 @@ module.exports = withTM({
       use: 'null-loader',
     });
     config.module.rules.push({
-      test: /\.svg$/,
+      test: /\.svg$/i,
       use: [{
         loader: '@svgr/webpack',
         options: {
@@ -58,4 +57,4 @@ module.exports = withTM({
   },
   webpack5: true,
   externals: [nodeExternals()],
-});
+};

@@ -9,9 +9,7 @@ const writeToFile = ({
     const fs = window.require('fs');
     const path = require('path');
     const newpath = localStorage.getItem('userPath');
-    const projectsPath = path.join(
-        newpath, 'autographa', 'users', username, 'projects', projectname, filename,
-    );
+    const projectsPath = path.join(newpath, 'autographa', 'users', username, 'projects', projectname, filename);
     if (fs.existsSync(projectsPath)) {
         // appending to an existing file
         logger.debug('writeToFile.js', 'Appending to the existing file');

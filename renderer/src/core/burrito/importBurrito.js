@@ -7,12 +7,11 @@ import { validate } from '../../util/validate';
 import { updateVersion } from './updateTranslationSB';
 
 const md5 = require('md5');
-
-const fs = window.require('fs');
 const path = require('path');
 
 export const checkDuplicate = async (metadata, currentUser, resource) => {
   logger.debug('importBurrito.js', 'In checkDuplicate');
+  const fs = window.require('fs');
   const projectName = metadata.identification?.name?.en;
   let existingProject;
   let id;
@@ -51,6 +50,7 @@ export const checkDuplicate = async (metadata, currentUser, resource) => {
 };
 export const viewBurrito = async (filePath, currentUser, resource) => {
   logger.debug('importBurrito.js', 'Inside viewBurrito');
+  const fs = window.require('fs');
   const result = {};
   if (fs.existsSync(path.join(filePath, 'metadata.json'))) {
     logger.debug('importBurrito.js', 'Project has Burrito file metadata.json.');
@@ -93,6 +93,7 @@ export const viewBurrito = async (filePath, currentUser, resource) => {
 };
 const importBurrito = async (filePath, currentUser, updateBurritoVersion) => {
   logger.debug('importBurrito.js', 'Inside importBurrito');
+  const fs = window.require('fs');
   const fse = window.require('fs-extra');
   const status = [];
   const newpath = localStorage.getItem('userPath');
@@ -147,7 +148,7 @@ const importBurrito = async (filePath, currentUser, updateBurritoVersion) => {
         if (list.length > 1) {
           (metadata.identification.upstream.ag).forEach((e, i) => {
             if (e === latest) {
-              (metadata.identification?.upstream?.ag).splice(i, 1);
+              (metadata.identification?.upstream?.ag)?.splice(i, 1);
             }
           });
         } else {

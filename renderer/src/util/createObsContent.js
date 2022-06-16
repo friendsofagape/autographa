@@ -12,8 +12,16 @@ const md5 = require('md5');
 
 const bookAvailable = (list, id) => list.some((obj) => obj.id === id);
 
-export const createObsContent = (username, project, direction, id, currentBurrito,
-  importedFiles, copyright, call) => {
+export const createObsContent = (
+  username,
+  project,
+  direction,
+  id,
+  currentBurrito,
+  importedFiles,
+  copyright,
+  call,
+) => {
   logger.debug('createObsContent.js', 'In OBS md content creation');
 
   return new Promise((resolve) => {

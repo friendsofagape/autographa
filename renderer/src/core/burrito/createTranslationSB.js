@@ -15,8 +15,17 @@ const findCode = (list, id) => {
   });
   return code;
 };
-const createTranslationSB = (username, projectFields, selectedScope, language, copyright, id,
-  project, call, update) => {
+const createTranslationSB = (
+username,
+projectFields,
+selectedScope,
+language,
+copyright,
+id,
+project,
+call,
+update,
+) => {
   logger.debug('createTranslationSB.js', 'In createTranslationSB');
   const localizedNames = {};
   return new Promise((resolve) => {

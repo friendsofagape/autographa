@@ -17,7 +17,7 @@ export async function readCustomResources({ resourceId, translationData }) {
                 // const owner = [];
                     switch (resourceId) {
                         case 'tn':
-                            (agSettingsJson?.resources.door43.translationNotes).forEach(async (url) => {
+                            (agSettingsJson?.resources.door43.translationNotes)?.forEach(async (url) => {
                               const language = url.url?.split('/');
                               let resourceExists = false;
                               translationData.forEach((val) => {
@@ -39,7 +39,7 @@ export async function readCustomResources({ resourceId, translationData }) {
                           break;
                         case 'tq':
 
-                            (agSettingsJson?.resources.door43.translationQuestions).forEach(async (url) => {
+                            (agSettingsJson?.resources.door43.translationQuestions)?.forEach(async (url) => {
                               const language = url.url?.split('/');
                               let resourceExists = false;
                               translationData.forEach((val) => {
@@ -59,7 +59,7 @@ export async function readCustomResources({ resourceId, translationData }) {
                             });
                           break;
                         case 'twlm':
-                            (agSettingsJson?.resources.door43.translationWords).forEach(async (url) => {
+                            (agSettingsJson?.resources.door43.translationWords)?.forEach(async (url) => {
                               const language = url.url?.split('/');
                               let resourceExists = false;
                               translationData.forEach((val) => {
@@ -82,7 +82,7 @@ export async function readCustomResources({ resourceId, translationData }) {
                             if (!(agSettingsJson?.resources.door43.obsTranslationNotes)) {
                               agSettingsJson.resources.door43.obsTranslationNotes = [];
                             }
-                            (agSettingsJson?.resources.door43.obsTranslationNotes).forEach(async (url) => {
+                            (agSettingsJson?.resources.door43.obsTranslationNotes)?.forEach(async (url) => {
                               const language = url.url?.split('/');
                               let resourceExists = false;
                               translationData.forEach((val) => {

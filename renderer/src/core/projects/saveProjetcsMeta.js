@@ -22,9 +22,7 @@ const saveProjectsMeta = async (projectMetaObj) => {
     logger.debug('saveProjectsMeta.js', 'Fetching the current username');
     currentUser = value?.username;
   });
-  fs.mkdirSync(path.join(
-    newpath, 'autographa', 'users', currentUser, 'projects',
-  ), {
+  fs.mkdirSync(path.join(newpath, 'autographa', 'users', currentUser, 'projects'), {
     recursive: true,
   });
   const projectDir = path.join(newpath, 'autographa', 'users', currentUser, 'projects');
@@ -93,7 +91,8 @@ const saveProjectsMeta = async (projectMetaObj) => {
         projectMetaObj.call,
       ).then(async (ingredient) => {
         logger.debug('saveProjectsMeta.js', 'Calling createTranslationSB for creating burrito.');
-        const burritoFile = await createTranslationSB(currentUser,
+        const burritoFile = await createTranslationSB(
+          currentUser,
           projectMetaObj.newProjectFields,
           scope,
           projectMetaObj.language.title,
@@ -101,15 +100,19 @@ const saveProjectsMeta = async (projectMetaObj) => {
           id,
           projectMetaObj.project,
           projectMetaObj.call,
-          projectMetaObj.update);
+          projectMetaObj.update,
+        );
         if (projectMetaObj.call === 'edit') {
           burritoFile.ingredients = { ...projectMetaObj.project.ingredients, ...ingredient };
         } else {
-        burritoFile.ingredients = ingredient;
+          burritoFile.ingredients = ingredient;
         }
         logger.debug('saveProjectsMeta.js', 'Creating a burrito file.');
-        await fs.writeFileSync(path.join(projectDir, `${projectMetaObj.newProjectFields.projectName}_${id}`,
-          'metadata.json'), JSON.stringify(burritoFile));
+        await fs.writeFileSync(path.join(
+          projectDir,
+          `${projectMetaObj.newProjectFields.projectName}_${id}`,
+          'metadata.json',
+        ), JSON.stringify(burritoFile));
       }).finally(() => {
         logger.debug('saveProjectsMeta.js', projectMetaObj.call === 'new' ? 'New project created successfully.' : 'Updated the Changes.');
         status.push({ type: 'success', value: (projectMetaObj.call === 'new' ? 'New project created' : 'Updated the changes') });
@@ -160,8 +163,11 @@ const saveProjectsMeta = async (projectMetaObj) => {
       burritoFile.ingredients = ingredient;
       }
       logger.debug('saveProjectsMeta.js', 'Creating a burrito file.');
-      await fs.writeFileSync(path.join(projectDir, `${projectMetaObj.newProjectFields.projectName}_${id}`,
-        'metadata.json'), JSON.stringify(burritoFile));
+      await fs.writeFileSync(path.join(
+        projectDir,
+        `${projectMetaObj.newProjectFields.projectName}_${id}`,
+        'metadata.json',
+      ), JSON.stringify(burritoFile));
     }).finally(() => {
       logger.debug('saveProjectsMeta.js', projectMetaObj.call === 'new' ? 'New project created successfully.' : 'Updated the Changes.');
       status.push({ type: 'success', value: (projectMetaObj.call === 'new' ? 'New project created' : 'Updated the changes') });

@@ -82,6 +82,7 @@ const UsfmEditor = () => {
 
   const timeout = (ms) => {
     setIsLoading(true);
+    // eslint-disable-next-line no-promise-executor-return
     return new Promise((resolve) => setTimeout(resolve, ms));
   };
 
@@ -130,14 +131,12 @@ const UsfmEditor = () => {
 
   // reference tabs navigation
 
-  const handleVersChange = useCallback(
-    (val) => {
+  const handleVersChange = useCallback((val) => {
       if (val && scrollLock === false) {
         // onChangeChapter(val.chapter.toString());
         onChangeVerse(val.verseStart.toString());
       }
-    }, [onChangeChapter, onChangeVerse],
-  );
+    }, [onChangeChapter, onChangeVerse]);
 
   // const onIdentificationChange = useCallback(
   //   (id) => {
@@ -191,12 +190,8 @@ const UsfmEditor = () => {
         localforage.getItem('currentProject').then((projectName) => {
           const path = require('path');
           const newpath = localStorage.getItem('userPath');
-          const projectsDir = path.join(
-              newpath, 'autographa', 'users', username, 'projects', projectName,
-          );
-          const metaPath = path.join(
-            newpath, 'autographa', 'users', username, 'projects', projectName, 'metadata.json',
-          );
+          const projectsDir = path.join(newpath, 'autographa', 'users', username, 'projects', projectName);
+          const metaPath = path.join(newpath, 'autographa', 'users', username, 'projects', projectName, 'metadata.json');
           readRefMeta({
             projectsDir,
           }).then((refs) => {
@@ -352,12 +347,8 @@ const UsfmEditor = () => {
           const path = require('path');
           const fs = window.require('fs');
           const newpath = localStorage.getItem('userPath');
-          const projectsDir = path.join(
-              newpath, 'autographa', 'users', username, 'projects', projectName,
-          );
-          const metaPath = path.join(
-            newpath, 'autographa', 'users', username, 'projects', projectName, 'metadata.json',
-          );
+          const projectsDir = path.join(newpath, 'autographa', 'users', username, 'projects', projectName);
+          const metaPath = path.join(newpath, 'autographa', 'users', username, 'projects', projectName, 'metadata.json');
           readRefMeta({
             projectsDir,
           }).then((refs) => {
@@ -428,25 +419,23 @@ const UsfmEditor = () => {
   // }, []);
 
   return (
-    <>
-      <Editor callFrom="textTranslation">
-        <>
-          {((isLoading || !usfmInput) && displyScreen) && <EmptyScreen />}
-          {isLoading && !displyScreen && <LoadingScreen /> }
-          {usfmInput && !displyScreen && !isLoading && (
-            <CustomEditor
-              ref={myEditorRef}
-              usfmString={usfmInput}
-              key={usfmInput}
-              onChange={handleEditorChange}
-              onVerseChange={handleVersChange}
-              readOnly={readOnly}
-              goToVerse={goToChapter()}
-            />
+    <Editor callFrom="textTranslation">
+      <>
+        {((isLoading || !usfmInput) && displyScreen) && <EmptyScreen />}
+        {isLoading && !displyScreen && <LoadingScreen /> }
+        {usfmInput && !displyScreen && !isLoading && (
+        <CustomEditor
+          ref={myEditorRef}
+          usfmString={usfmInput}
+          key={usfmInput}
+          onChange={handleEditorChange}
+          onVerseChange={handleVersChange}
+          readOnly={readOnly}
+          goToVerse={goToChapter()}
+        />
           )}
-        </>
-      </Editor>
-    </>
+      </>
+    </Editor>
   );
 };
 

@@ -1,6 +1,4 @@
-import React, {
-  Fragment,
-} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import {
   TableSortLabel,
@@ -47,25 +45,24 @@ function EnhancedTableHead(props) {
   };
 
   return (
-    <>
-      <thead className="bg-gray-50">
-        <tr>
-          <th
-            scope="col"
+    <thead className="bg-gray-50">
+      <tr>
+        <th
+          scope="col"
             // colSpan="2"
-            className="px-4 py-3 text-left text-xs font-medium text-gray-400"
-          >
-            <StarIcon className="h-5 w-5" aria-hidden="true" />
-          </th>
+          className="px-4 py-3 text-left text-xs font-medium text-gray-400"
+        >
+          <StarIcon className="h-5 w-5" aria-hidden="true" />
+        </th>
 
-          {headCells.map((headCell) => (
-            <TableCell
-              key={headCell.id}
-              className="bg-gray-50"
-              sortDirection={orderBy === headCell.id ? order : false}
-            >
-              <div className="flex content-center">
-                {/* <Menu as="div" className="relative inline-block mr-2 mt-2">
+        {headCells.map((headCell) => (
+          <TableCell
+            key={headCell.id}
+            className="bg-gray-50"
+            sortDirection={orderBy === headCell.id ? order : false}
+          >
+            <div className="flex content-center">
+              {/* <Menu as="div" className="relative inline-block mr-2 mt-2">
                   <Menu.Button className="focus:outline-none">
                     <FilterIcon
                       className="w-4 h-4 text-gray-400 hover:text-gray-600"
@@ -147,37 +144,36 @@ function EnhancedTableHead(props) {
                   </Transition>
                 </Menu> */}
 
-                <TableSortLabel
-                  scope="col"
-                  id="sorthead"
-                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                  style={{ fontWeight: 'bold', color: 'grey' }}
-                  active={orderBy === headCell.id}
-                  direction={orderBy === headCell.id ? order : 'asc'}
-                  onClick={createSortHandler(headCell.id)}
-                >
-                  {headCell.label}
-                  {orderBy === headCell.id ? (
-                    <span hidden>
-                      {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-                    </span>
+              <TableSortLabel
+                scope="col"
+                id="sorthead"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                style={{ fontWeight: 'bold', color: 'grey' }}
+                active={orderBy === headCell.id}
+                direction={orderBy === headCell.id ? order : 'asc'}
+                onClick={createSortHandler(headCell.id)}
+              >
+                {headCell.label}
+                {orderBy === headCell.id ? (
+                  <span hidden>
+                    {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+                  </span>
                   ) : null}
 
-                </TableSortLabel>
+              </TableSortLabel>
 
-              </div>
-            </TableCell>
+            </div>
+          </TableCell>
           ))}
 
-          <th
-            scope="col"
-            className="px-4 py-3 text-left text-xs font-medium text-gray-400"
-          >
-            {/* <ExternalLinkIcon className="h-5 w-5" aria-hidden="true" /> */}
-          </th>
-        </tr>
-      </thead>
-    </>
+        <th
+          scope="col"
+          className="px-4 py-3 text-left text-xs font-medium text-gray-400"
+        >
+          {/* <ExternalLinkIcon className="h-5 w-5" aria-hidden="true" /> */}
+        </th>
+      </tr>
+    </thead>
   );
 }
 

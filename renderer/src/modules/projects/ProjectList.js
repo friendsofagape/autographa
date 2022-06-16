@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-useless-fragment */
 import React, { Fragment, useState } from 'react';
 import { useRouter } from 'next/router';
 import moment from 'moment';
@@ -147,10 +148,12 @@ export default function ProjectList() {
                               onRequestSort={handleRequestSort}
                             />
                             <tbody className="bg-white divide-y divide-gray-200">
-                              {starredrow && (stableSort(starredrow,
+                              {starredrow && (stableSort(
+                                starredrow,
                                 getComparator(order, orderBy),
                                 orderBy,
-                                order).map((project) => (
+                                order,
+                                ).map((project) => (
                                   <Disclosure key={project.name}>
                                     {({ open }) => (
                                       <>
@@ -283,10 +286,12 @@ export default function ProjectList() {
                               )}
                             </tbody>
                             <tbody className="bg-white divide-y divide-gray-200">
-                              {unstarredrow && (stableSort(unstarredrow,
+                              {unstarredrow && (stableSort(
+                                unstarredrow,
                                 getComparator(order, orderBy),
                                 orderBy,
-                                order).map((project) => (
+                                order,
+                                ).map((project) => (
                                   <Disclosure key={project.name}>
                                     {({ open }) => (
                                       <>

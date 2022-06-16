@@ -48,143 +48,140 @@ const ReferenceBible = ({
     },
   } = useContext(AutographaContext);
   // const regExp = /\(([^)]+)\)/;
-    const [usfmInput, setUsfmInput] = useState();
-    const [isLoading, setIsLoading] = useState(false);
-    const [snackBar, setOpenSnackBar] = React.useState(false);
-    const [snackText, setSnackText] = React.useState('');
-    const [notify, setNotify] = React.useState();
-    const [displyScreen, setDisplayScreen] = useState(false);
-    const { t } = useTranslation();
+  const [usfmInput, setUsfmInput] = useState();
+  const [isLoading, setIsLoading] = useState(false);
+  const [snackBar, setOpenSnackBar] = React.useState(false);
+  const [snackText, setSnackText] = React.useState('');
+  const [notify, setNotify] = React.useState();
+  const [displyScreen, setDisplayScreen] = useState(false);
+  const { t } = useTranslation();
 
-    const CustomEditor = useMemo(
-      () => (withChapterPaging(createBasicUsfmEditor())),
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      [usfmInput],
-    );
-
-    const timeout = (ms) => {
-      setIsLoading(true);
-     return new Promise((resolve) => setTimeout(resolve, ms));
-    };
-
-useEffect(() => {
-      if (isElectron() && refName) {
-        setIsLoading(true);
-        setDisplayScreen(false);
-        setUsfmInput();
-        const path = require('path');
-        const newpath = localStorage.getItem('userPath');
-        localforage.getItem('resources')
-        .then((refs) => {
-          refs.forEach((ref) => {
-            setIsLoading(true);
-            const _books = [];
-            setDisplayScreen(false);
-            if (ref.value.languages[0].name.en === languageId) {
-                Object.entries(ref.value.ingredients).forEach(
-                  ([key, _ingredients]) => {
-                    if (_ingredients.scope) {
-                      const _bookID = Object.entries(_ingredients.scope)[0][0];
-                      _books.push(_bookID);
-                      if (_bookID.split('-').pop() === bookId.toUpperCase() && refName !== null) {
-                        const filePath = path.join(
-                          newpath, 'autographa', 'users', username, 'resources', refName, key,
-                        );
-                        readIngredients({
-                          filePath,
-                        }).then((res) => {
-                          timeout(2000).then(() => {
-                            setUsfmInput(res);
-                          }).finally(() => {
-                            setIsLoading(false);
-                            setOpenSnackBar(true);
-                            setSnackText(t('dynamic-msg-load-ref-bible-snack', { refName }));
-                            setNotify('success');
-                            setDisplayScreen(false);
-                          });
-                          setRefernceLoading({
-                            status: true,
-                            text: t('dynamic-msg-load-ref-bible-success'),
-                          });
-                          setCounter(4);
-                        });
-
-                        const commonResourcePath = path.join(
-                          newpath, 'autographa', 'common', 'resources', refName, key,
-                        );
-                        readIngredients({
-                          filePath: commonResourcePath,
-                        }).then((res) => {
-                          timeout(2000).then(() => {
-                            setUsfmInput(res);
-                          }).finally(() => {
-                            setIsLoading(false);
-                            setOpenSnackBar(true);
-                            setSnackText(t('dynamic-msg-load-ref-bible-snack', { refName }));
-                            setNotify('success');
-                            setDisplayScreen(false);
-                          });
-                          setRefernceLoading({
-                            status: true,
-                            text: t('dynamic-msg-load-ref-bible-success'),
-                          });
-                          setCounter(4);
-                        });
-                        // .then(() => {
-                        //     localforage.getItem('notification').then((value) => {
-                        //         const temp = [...value];
-                        //         if (temp.length !== 0) {
-                        //           temp.push({
-                        //             title: 'Resources',
-                        //             text: `successfully loaded ${refName} files`,
-                        //             type: 'success',
-                        //             time: moment().format(),
-                        //             hidden: true,
-                        //         });
-                        //           setNotifications(temp);
-                        //           setActiveNotificationCount(activeNotificationCount + 1);
-                        //         }
-                        //       });
-                        // });
-                      }
-                    }
-                    if (_ingredients.scope === undefined) {
-                      if (_books.includes(bookId.toUpperCase()) === false) {
-                        setDisplayScreen(true);
-                      }
-                    }
-                    // console.log(key, value),
-                  },
-                );
-            } else {
-              timeout(3000).then(() => {
-                setDisplayScreen(true);
-              });
-            }
-          });
-        }).catch((err) => {
-          // we got an error
-            setOpenSnackBar(true);
-            setSnackText(t('dynamic-msg-load-ref-bible-snack-fail', { refName }));
-            setNotify('failure');
-          localforage.getItem('notification').then((value) => {
-            const temp = [...value];
-            temp.push({
-                title: t('label-resource'),
-                text: t('dynamic-msg-load-ref-bible-snack-fail', { refName }),
-                type: 'failure',
-                time: moment().format(),
-                hidden: true,
-            });
-            setNotifications(temp);
-          });
-          throw err;
-        }).finally(() => {
-          setIsLoading(false);
-        });
-      }
+  const CustomEditor = useMemo(
+    () => (withChapterPaging(createBasicUsfmEditor())),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [bookId, languageId, refName]);
+    [usfmInput],
+  );
+
+  const timeout = (ms) => {
+    setIsLoading(true);
+    // eslint-disable-next-line no-promise-executor-return
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  };
+
+  useEffect(() => {
+    if (isElectron() && refName) {
+      setIsLoading(true);
+      setDisplayScreen(false);
+      setUsfmInput();
+      const path = require('path');
+      const newpath = localStorage.getItem('userPath');
+      localforage.getItem('resources')
+      .then((refs) => {
+        refs.forEach((ref) => {
+          setIsLoading(true);
+          const _books = [];
+          setDisplayScreen(false);
+          if (ref.value.languages[0].name.en === languageId) {
+            Object.entries(ref.value.ingredients).forEach(
+              ([key, _ingredients]) => {
+                if (_ingredients.scope) {
+                  const _bookID = Object.entries(_ingredients.scope)[0][0];
+                  _books.push(_bookID);
+                  if (_bookID.split('-').pop() === bookId.toUpperCase() && refName !== null) {
+                    const filePath = path.join(newpath, 'autographa', 'users', username, 'resources', refName, key);
+                    readIngredients({
+                      filePath,
+                    }).then((res) => {
+                      timeout(2000).then(() => {
+                        setUsfmInput(res);
+                      }).finally(() => {
+                        setIsLoading(false);
+                        setOpenSnackBar(true);
+                        setSnackText(t('dynamic-msg-load-ref-bible-snack', { refName }));
+                        setNotify('success');
+                        setDisplayScreen(false);
+                      });
+                      setRefernceLoading({
+                        status: true,
+                        text: t('dynamic-msg-load-ref-bible-success'),
+                      });
+                      setCounter(4);
+                    });
+
+                    const commonResourcePath = path.join(newpath, 'autographa', 'common', 'resources', refName, key);
+                    readIngredients({
+                      filePath: commonResourcePath,
+                    }).then((res) => {
+                      timeout(2000).then(() => {
+                        setUsfmInput(res);
+                      }).finally(() => {
+                        setIsLoading(false);
+                        setOpenSnackBar(true);
+                        setSnackText(t('dynamic-msg-load-ref-bible-snack', { refName }));
+                        setNotify('success');
+                        setDisplayScreen(false);
+                      });
+                      setRefernceLoading({
+                        status: true,
+                        text: t('dynamic-msg-load-ref-bible-success'),
+                      });
+                      setCounter(4);
+                    });
+                    // .then(() => {
+                    //     localforage.getItem('notification').then((value) => {
+                    //         const temp = [...value];
+                    //         if (temp.length !== 0) {
+                    //           temp.push({
+                    //             title: 'Resources',
+                    //             text: `successfully loaded ${refName} files`,
+                    //             type: 'success',
+                    //             time: moment().format(),
+                    //             hidden: true,
+                    //         });
+                    //           setNotifications(temp);
+                    //           setActiveNotificationCount(activeNotificationCount + 1);
+                    //         }
+                    //       });
+                    // });
+                  }
+                }
+                if (_ingredients.scope === undefined) {
+                  if (_books.includes(bookId.toUpperCase()) === false) {
+                    setDisplayScreen(true);
+                  }
+                }
+                // console.log(key, value),
+              },
+            );
+          } else {
+            timeout(3000).then(() => {
+              setDisplayScreen(true);
+            });
+          }
+        });
+      }).catch((err) => {
+        // we got an error
+          setOpenSnackBar(true);
+          setSnackText(t('dynamic-msg-load-ref-bible-snack-fail', { refName }));
+          setNotify('failure');
+        localforage.getItem('notification').then((value) => {
+          const temp = [...value];
+          temp.push({
+              title: t('label-resource'),
+              text: t('dynamic-msg-load-ref-bible-snack-fail', { refName }),
+              type: 'failure',
+              time: moment().format(),
+              hidden: true,
+          });
+          setNotifications(temp);
+        });
+        throw err;
+      }).finally(() => {
+        setIsLoading(false);
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [bookId, languageId, refName]);
 
     // seting book scope for navigation
     // localforage.getItem('refBibleBurrito')
@@ -204,39 +201,37 @@ useEffect(() => {
 
   return (
     <span>
-      <>
-        {usfmInput && (
-        isLoading === false ? (
-          <CustomEditor
-            usfmString={usfmInput}
-            key={usfmInput}
-            readOnly
-            goToVerse={{
-              chapter: parseInt(chapter, 10),
-              verse: parseInt(verse, 10),
-              key: Date.now(),
-          }}
-          />
-        ) : (
-          displyScreen === true ? (
-            <EmptyScreen />
-          ) : (<LoadingScreen />)
-        )
-      )}
-        {usfmInput === undefined && (
+      {usfmInput && (
+          isLoading === false ? (
+            <CustomEditor
+              usfmString={usfmInput}
+              key={usfmInput}
+              readOnly
+              goToVerse={{
+                chapter: parseInt(chapter, 10),
+                verse: parseInt(verse, 10),
+                key: Date.now(),
+            }}
+            />
+          ) : (
+            displyScreen === true ? (
+              <EmptyScreen />
+            ) : (<LoadingScreen />)
+          )
+        )}
+      {usfmInput === undefined && (
           displyScreen === true ? (
             <EmptyScreen />
           )
           : <LoadingScreen />
         )}
-        <SnackBar
-          openSnackBar={snackBar}
-          snackText={snackText}
-          setOpenSnackBar={setOpenSnackBar}
-          setSnackText={setSnackText}
-          error={notify}
-        />
-      </>
+      <SnackBar
+        openSnackBar={snackBar}
+        snackText={snackText}
+        setOpenSnackBar={setOpenSnackBar}
+        setSnackText={setSnackText}
+        error={notify}
+      />
     </span>
   );
 };

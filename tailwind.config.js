@@ -19,7 +19,7 @@ module.exports = {
       validation: '#FFE5E5',
       white: colors.white,
       light: '#E4F1FF',
-      gray: colors.trueGray,
+      gray: colors.neutral,
       dark: '#333333',
       black: colors.black,
       green: colors.green,

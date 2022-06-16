@@ -6,9 +6,7 @@ export const readFile = async ({
     const fs = window.require('fs');
     const path = require('path');
     const newpath = localStorage.getItem('userPath');
-    const projectsPath = path.join(
-        newpath, 'autographa', 'users', username, 'projects', projectname, filename,
-    );
+    const projectsPath = path.join(newpath, 'autographa', 'users', username, 'projects', projectname, filename);
     return new Promise((resolve) => {
         if (fs.existsSync(projectsPath)) {
            const fileContent = fs.readFileSync(

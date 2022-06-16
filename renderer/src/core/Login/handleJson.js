@@ -57,9 +57,7 @@ export const handleJson = async (values, fs) => {
             try {
               fs.writeFileSync(file, JSON.stringify(json));
               logger.debug('handleJson.js', 'Successfully added new user to the existing list in file');
-              fs.mkdirSync(path.join(
-                newpath, 'autographa', 'users', values.username, 'projects',
-              ), {
+              fs.mkdirSync(path.join(newpath, 'autographa', 'users', values.username, 'projects'), {
                 recursive: true,
               });
               logger.debug('handleJson.js', 'Successfully created directories for new user');

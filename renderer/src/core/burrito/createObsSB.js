@@ -15,8 +15,16 @@ const findCode = (list, id) => {
   });
   return code;
 };
-const createObsSB = (username, projectFields, language, copyright, id,
-  project, call, update) => {
+const createObsSB = (
+username,
+projectFields,
+language,
+copyright,
+id,
+project,
+call,
+update,
+) => {
   logger.debug('createObsSB.js', 'In createObsSB');
   return new Promise((resolve) => {
     let json = {};

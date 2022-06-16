@@ -94,17 +94,13 @@ const ResourcesPopUp = ({
       fs.mkdirSync(path.join(newpath, 'autographa', 'users', username, 'resources'), {
         recursive: true,
       });
-      const projectsDir = path.join(
-        newpath, 'autographa', 'users', username, 'resources',
-      );
+      const projectsDir = path.join(newpath, 'autographa', 'users', username, 'resources');
       const parseData = [];
       readRefMeta({
         projectsDir,
       }).then((refs) => {
         refs.forEach((ref) => {
-          const metaPath = path.join(
-            newpath, 'autographa', 'users', username, 'resources', ref, 'metadata.json',
-          );
+          const metaPath = path.join(newpath, 'autographa', 'users', username, 'resources', ref, 'metadata.json');
           readRefBurrito({
             metaPath,
           }).then((data) => {
@@ -129,17 +125,13 @@ const ResourcesPopUp = ({
       fs.mkdirSync(path.join(newpath, 'autographa', 'common', 'resources'), {
         recursive: true,
       });
-      const commonResourceDir = path.join(
-        newpath, 'autographa', 'common', 'resources',
-      );
+      const commonResourceDir = path.join(newpath, 'autographa', 'common', 'resources');
 
       readRefMeta({
         projectsDir: commonResourceDir,
       }).then((refs) => {
         refs.forEach((ref) => {
-          const metaPath = path.join(
-            newpath, 'autographa', 'common', 'resources', ref, 'metadata.json',
-          );
+          const metaPath = path.join(newpath, 'autographa', 'common', 'resources', ref, 'metadata.json');
           readRefBurrito({
             metaPath,
           }).then((data) => {
@@ -422,7 +414,7 @@ const ResourcesPopUp = ({
                       <ResourceOption
                         imageUrl="/illustrations/dictionary-icon.svg"
                         id="obs-tn"
-                        text="OBS-tn"
+                        text={t('label-resource-obs-tn')}
                         translationData={obsTranslationNotes}
                         readCustomResources={readCustomResources}
                         selectResource={selectResource}
@@ -480,8 +472,11 @@ const ResourcesPopUp = ({
                               <td className="px-5 py-2.5 text-gray-600">
                                 <div
                                   className="focus:outline-none"
-                                  onClick={(e) => handleRowSelect(e,
-                                    ref.value.languages[0].name.en, ref.projectDir)}
+                                  onClick={(e) => handleRowSelect(
+                                    e,
+                                    ref.value.languages[0].name.en,
+                                    ref.projectDir,
+                                    )}
                                   role="button"
                                   tabIndex="0"
                                 >
@@ -495,9 +490,11 @@ const ResourcesPopUp = ({
                               <td className="px-5 text-gray-600">
                                 <div
                                   className="focus:outline-none"
-                                  onClick={(e) => handleRowSelect(e,
+                                  onClick={(e) => handleRowSelect(
+                                    e,
                                     ref.value.languages[0].name.en,
-                                    ref.projectDir)}
+                                    ref.projectDir,
+                                  )}
                                   role="button"
                                   tabIndex="0"
                                 >
@@ -522,8 +519,11 @@ const ResourcesPopUp = ({
                             <td className="px-5 py-2.5 text-gray-600">
                               <div
                                 className="focus:outline-none"
-                                onClick={(e) => handleRowSelect(e,
-                                    ref.value.languages[0].name.en, ref.projectDir)}
+                                onClick={(e) => handleRowSelect(
+                                    e,
+                                    ref.value.languages[0].name.en,
+                                    ref.projectDir,
+                                    )}
                                 role="button"
                                 tabIndex="0"
                               >
@@ -537,9 +537,11 @@ const ResourcesPopUp = ({
                             <td className="px-5 text-gray-600">
                               <div
                                 className="focus:outline-none"
-                                onClick={(e) => handleRowSelect(e,
+                                onClick={(e) => handleRowSelect(
+                                    e,
                                     ref.value.languages[0].name.en,
-                                    ref.projectDir)}
+                                    ref.projectDir,
+                                    )}
                                 role="button"
                                 tabIndex="0"
                               >

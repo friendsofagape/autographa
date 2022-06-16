@@ -1,6 +1,6 @@
 {
 	"root": true,
-	"parser": "babel-eslint",
+	"parser": "@babel/eslint-parser",
 	"extends": [
 		"eslint:recommended",
 		"plugin:react/recommended",
@@ -20,6 +20,17 @@
 		"no-param-reassign": [2, { "props": false }],
 		"camelcase": "off",
 		"consistent-return": "off",
+		"react/function-component-definition": [
+			2,
+			{
+				"namedComponents": [
+					"function-declaration",
+					"function-expression",
+					"arrow-function"
+				],
+				"unnamedComponents": ["function-expression", "arrow-function"]
+			}
+		],
 		"react/jsx-filename-extension": [
 			1,
 			{
@@ -65,6 +76,7 @@
 	},
 	"parserOptions": {
 		"ecmaVersion": 2018,
+		"requireConfigFile": false,
 		"sourceType": "module",
 		"ecmaFeatures": {
 			"jsx": true

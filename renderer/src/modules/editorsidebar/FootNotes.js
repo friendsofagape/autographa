@@ -75,9 +75,7 @@ export default function FootNotes() {
             </div>
             <div className="mt-3 tracking-wider text-xs">
               {section.list.map((list) => (
-                <>
-                  <p className="leading-5 mx-5 py-1 pb-4">{list.footnote}</p>
-                </>
+                <p className="leading-5 mx-5 py-1 pb-4">{list.footnote}</p>
               ))}
               {isEditFootNoteOpen && <EditFootnote />}
             </div>
