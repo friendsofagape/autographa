@@ -39,10 +39,8 @@ export default function ExportProjectPopUp(props) {
   const openFileDialogSettingData = async () => {
     logger.debug('ExportProjectPopUp.js', 'Inside openFileDialogSettingData');
     const options = { properties: ['openDirectory'] };
-    const { remote } = window.require('electron');
-    const { dialog } = remote;
-    const WIN = remote.getCurrentWindow();
-    const chosenFolder = await dialog.showOpenDialog(WIN, options);
+    const { dialog } = window.require('@electron/remote');
+    const chosenFolder = await dialog.showOpenDialog(options);
     setFolderPath(chosenFolder.filePaths[0]);
   };
   const updateBurritoVersion = (username, fs, path, folder) => {
