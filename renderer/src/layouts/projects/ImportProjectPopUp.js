@@ -50,10 +50,8 @@ export default function ImportProjectPopUp(props) {
   const openFileDialogSettingData = async () => {
     logger.debug('ImportProjectPopUp.js', 'Inside openFileDialogSettingData');
     const options = { properties: ['openDirectory'] };
-    const { remote } = window.require('electron');
-    const { dialog } = remote;
-    const WIN = remote.getCurrentWindow();
-    const chosenFolder = await dialog.showOpenDialog(WIN, options);
+    const { dialog } = window.require('@electron/remote');
+    const chosenFolder = await dialog.showOpenDialog(options);
     if ((chosenFolder.filePaths).length > 0) {
       logger.debug('ImportProjectPopUp.js', 'Selected a directory');
       await localforage.getItem('userProfile').then(async (value) => {

@@ -55,10 +55,8 @@ export default function ReferenceContextProvider({ children }) {
       if (isElectron()) {
         logger.debug('ImportResource.js', 'Inside openResourceDialog');
         const options = { properties: ['openDirectory'] };
-        const { remote } = window.require('electron');
-        const { dialog } = remote;
-        const WIN = remote.getCurrentWindow();
-        const chosenFolder = await dialog.showOpenDialog(WIN, options);
+        const { dialog } = window.require('@electron/remote');
+        const chosenFolder = await dialog.showOpenDialog(options);
         setFolderPath(chosenFolder.filePaths[0]);
       }
   };
