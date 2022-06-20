@@ -223,18 +223,18 @@ const ResourcesPopUp = ({
       { id: 'tn', title: t('label-resource-tn'), resource: translationNote },
       { id: 'twlm', title: t('label-resource-twlm'), resource: translationWord },
       { id: 'tq', title: t('label-resource-tq'), resource: translationQuestion },
-      { id: 'obs-tn', title: 'OBS-tn', resource: obsTranslationNotes }];
+      { id: 'obs-tn', title: t('label-resource-obs-tn'), resource: obsTranslationNotes }];
     const reference = resources.find((r) => r.id === resource);
     return (
       reference
       && (
-      <tbody className="bg-white divide-y divide-gray-200 ">
+      <tbody className="bg-white ">
         {(reference.resource).map((notes) => (
           <tr className="hover:bg-gray-200" key={notes.name + notes.owner}>
             <td className="px-5 py-3 hidden">
               <StarIcon className="h-5 w-5 text-gray-300" aria-hidden="true" />
             </td>
-            <td className="px-5 py-2.5 text-gray-600">
+            <td className="p-4 text-sm text-gray-600">
               <div
                 className="focus:outline-none"
                 onClick={(e) => handleRowSelect(e, notes.language, `${reference.title} ${notes.name}`, notes.owner)}
@@ -244,7 +244,7 @@ const ResourcesPopUp = ({
                 {`${notes.name} (${notes.owner})`}
               </div>
             </td>
-            <td className="px-5 text-gray-600">
+            <td className="p-4 text-sm text-gray-600">
               <div
                 className="focus:outline-none"
                 onClick={(e) => handleRowSelect(e, notes.language, `${reference.title} ${notes.name}`, notes.owner)}
@@ -445,23 +445,23 @@ const ResourcesPopUp = ({
                 {loading
                   ? <LoadingScreen />
                   : (
-                    <div className="relative flex align-top flex-row flex-wrap w-full max-h-sm scrollbars-width overflow-auto ">
-                      <table className="divide-y divide-gray-200 w-full relative">
-                        <thead className="bg-white sticky top-0">
-                          <tr className="text-xs text-left">
+                    <div className="relative w-full max-h-sm scrollbars-width overflow-auto ">
+                      <table className="border-separate border-spacing-0 w-full">
+                        <thead className="bg-white">
+                          <tr className="text-sm text-left">
                             <th className="px-5 py-3 font-medium text-gray-300 hidden">
                               <StarIcon className="h-5 w-5" aria-hidden="true" />
                             </th>
-                            <th className="px-5 py-3.5 font-bold text-gray-700 uppercase tracking-wider">
+                            <th className="px-5 py-3.5 font-bold w-9/12 text-gray-700 uppercase tracking-wider">
                               {t('label-name')}
                             </th>
-                            <th className="px-5 font-bold text-gray-700 uppercase tracking-wider">
+                            <th className="px-5 py-3.5 font-bold w-3/12 text-gray-700 uppercase tracking-wider">
                               {t('label-language')}
                             </th>
                           </tr>
                         </thead>
                         {selectResource === 'bible' ? (
-                          <tbody className="bg-white divide-y divide-gray-200  mb-44 ">
+                          <tbody className="bg-white">
                             {(subMenuItems) && (
                           subMenuItems.map((ref) => (ref.value.type.flavorType.name === 'scripture'
                           && (
@@ -469,7 +469,7 @@ const ResourcesPopUp = ({
                               <td className="px-5 py-3 hidden">
                                 <StarIcon className="h-5 w-5 text-gray-300" aria-hidden="true" />
                               </td>
-                              <td className="px-5 py-2.5 text-gray-600">
+                              <td className="p-4 text-sm text-gray-600">
                                 <div
                                   className="focus:outline-none"
                                   onClick={(e) => handleRowSelect(
@@ -487,7 +487,7 @@ const ResourcesPopUp = ({
                                   )
                                 </div>
                               </td>
-                              <td className="px-5 text-gray-600">
+                              <td className="p-4 text-sm text-gray-600">
                                 <div
                                   className="focus:outline-none"
                                   onClick={(e) => handleRowSelect(
@@ -508,7 +508,7 @@ const ResourcesPopUp = ({
                           </tbody>
                     ) : callResource(selectResource)}
                         {selectResource === 'obs' && (
-                          <tbody className="bg-white divide-y divide-gray-200  mb-44 ">
+                          <tbody className="bg-white">
                             {(subMenuItems) && (
                           subMenuItems.map((ref) => (ref.value.type.flavorType.name === 'gloss'
                           && (
@@ -516,7 +516,7 @@ const ResourcesPopUp = ({
                             <td className="px-5 py-3 hidden">
                               <StarIcon className="h-5 w-5 text-gray-300" aria-hidden="true" />
                             </td>
-                            <td className="px-5 py-2.5 text-gray-600">
+                            <td className="p-4 text-sm text-gray-600">
                               <div
                                 className="focus:outline-none"
                                 onClick={(e) => handleRowSelect(
@@ -534,7 +534,7 @@ const ResourcesPopUp = ({
                                 )
                               </div>
                             </td>
-                            <td className="px-5 text-gray-600">
+                            <td className="p-4 text-sm text-gray-600">
                               <div
                                 className="focus:outline-none"
                                 onClick={(e) => handleRowSelect(
@@ -557,10 +557,8 @@ const ResourcesPopUp = ({
                       </table>
 
                       {selectResource === 'bible' || selectResource === 'obs' ? (
-                        <div className="flex gap-6 mx-5 absolute bottom-5 right-0 justify-end z-10">
-                          <button type="button" className="background-transparent outline-none">
-                            <PlusCircleIcon className="h-11 w-11 m-5 text-primary" onClick={() => openResourceDialogBox()} />
-                          </button>
+                        <button type="button" className="flex gap-6 mx-5 absolute bottom-5 right-0 justify-end z-10 outline-none">
+                          <PlusCircleIcon className="h-10 w-10 m-5 text-primary" onClick={() => openResourceDialogBox()} />
                           <ImportResource
                             open={openImportResourcePopUp}
                             closePopUp={closeImportPopUp}
@@ -568,7 +566,7 @@ const ResourcesPopUp = ({
                             setOpenResourcePopUp={setOpenResourcePopUp}
                             setLoading={setLoading}
                           />
-                        </div>
+                        </button>
                   ) : importResources(selectResource)}
                     </div>
                   )}

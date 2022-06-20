@@ -13,10 +13,10 @@ const TranslationHelps = ({
         branch,
     },
   } = useContext(ReferenceContext);
+  const { t } = useTranslation();
 
   const translationQuestionsPath = `${(chapter < 10) ? (`0${ chapter}`)
   : chapter}/${(verse < 10) ? (`0${ verse}`) : verse}.md`;
-  const { t } = useTranslation();
 
   return (
     <>
@@ -107,7 +107,7 @@ const TranslationHelps = ({
             case 'obs-tn':
             return (
               <ObsTnCard
-                title="OBS-Tn"
+                title={t('label-resource-obs-tn')}
                 chapter={story}
                 verse="1"
                 branch={branch}
