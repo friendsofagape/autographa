@@ -70,10 +70,8 @@ export default function ImportPopUp(props) {
       properties: ['openFile', 'multiSelections'],
       filters: fileFilter,
     };
-    const { remote } = window.require('electron');
-    const { dialog } = remote;
-    const WIN = remote.getCurrentWindow();
-    const chosenFolder = await dialog.showOpenDialog(WIN, options);
+    const { dialog } = window.require('@electron/remote');
+    const chosenFolder = await dialog.showOpenDialog(options);
     if ((chosenFolder.filePaths).length > 0) {
       logger.debug('ImportPopUp.js', 'Selected the files');
       setShow(true);

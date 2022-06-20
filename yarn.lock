@@ -1052,6 +1052,11 @@
     "global-agent" "^3.0.0"
     "global-tunnel-ng" "^2.7.1"
 
+"@electron/remote@^2.0.8":
+  "integrity" "sha512-P10v3+iFCIvEPeYzTWWGwwHmqWnjoh8RYnbtZAb3RlQefy4guagzIwcWtfftABIfm6JJTNQf4WPSKWZOpLmHXw=="
+  "resolved" "https://registry.npmjs.org/@electron/remote/-/remote-2.0.8.tgz"
+  "version" "2.0.8"
+
 "@electron/universal@1.2.0":
   "integrity" "sha512-eu20BwNsrMPKoe2bZ3/l9c78LclDvxg3PlVXrQf3L50NaUuW5M59gbPytI+V4z7/QMrohUHetQaU0ou+p1UG9Q=="
   "resolved" "https://registry.npmjs.org/@electron/universal/-/universal-1.2.0.tgz"
@@ -5830,10 +5835,10 @@
     "lodash.isequal" "^4.5.0"
     "semver" "^7.3.5"
 
-"electron@19.0.4":
-  "integrity" "sha512-roRYr1VNAWIhjD9n8qZdmhROtrzsFpuZEXrjWAw+GqPbZlrUInmvFCviRDC2Lt+VBsTNRpTfPpfzXSlLL4reEw=="
-  "resolved" "https://registry.npmjs.org/electron/-/electron-19.0.4.tgz"
-  "version" "19.0.4"
+"electron@>= 13.0.0", "electron@19.0.0":
+  "integrity" "sha512-VXwqLQxuIUr0SI8vOYDj5OLPwtKa/trn5DVKd/BFGT/U/IerfVoSZuydGLOjSL5yJlckfmKQpiq+8PW4gI8hXA=="
+  "resolved" "https://registry.npmjs.org/electron/-/electron-19.0.0.tgz"
+  "version" "19.0.0"
   dependencies:
     "@electron/get" "^1.14.1"
     "@types/node" "^16.11.26"

@@ -1,4 +1,5 @@
 // Native
+require('@electron/remote/main').initialize();
 const { join } = require('path');
 const { format } = require('url');
 
@@ -23,7 +24,7 @@ function createWindow() {
       preload: join(__dirname, 'preload.js'),
     },
   });
-
+  require('@electron/remote/main').enable(mainWindow.webContents);
   const url = isDev
     ? 'http://localhost:8000'
     : format({
@@ -60,12 +61,14 @@ app.on('activate', async () => {
 // })
 
 ipcMain.on('app_version', (event) => {
-  event.sender.send('app_version',
+  event.sender.send(
+    'app_version',
     {
- version: app.getVersion(),
+      version: app.getVersion(),
       appPath: process.env.APPDATA
       ? process.env.APPDATA : `${process.env.HOME}/.config`,
-    });
+    },
+);
 });
 
 autoUpdater.on('update-available', () => {
