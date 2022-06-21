@@ -217,6 +217,7 @@ export default function NewProject({ call, project, closeEdit }) {
     createTheProject(true);
   };
   const [openPopUp, setOpenPopUp] = React.useState(false);
+  const [replaceWarning, setReplaceWarning] = React.useState(false);
 
   function openImportPopUp() {
     setOpenPopUp(true);
@@ -224,6 +225,9 @@ export default function NewProject({ call, project, closeEdit }) {
 
   function closeImportPopUp() {
     setOpenPopUp(false);
+    if (call === 'edit') {
+      setReplaceWarning(true);
+    }
   }
   const loadData = async (project) => {
     logger.debug('NewProject.js', 'In loadData for loading current project details in Edit page');
@@ -413,6 +417,14 @@ export default function NewProject({ call, project, closeEdit }) {
         confirmMessage={t('dynamic-msg-update-burrito-version', { version1: metadata?.meta?.version, version2: burrito?.meta?.version })}
         buttonName={t('btn-update')}
         closeModal={() => updateBurritoVersion()}
+      />
+      <ConfirmationModal
+        openModal={replaceWarning}
+        title="Do Not Replace Existing Content"
+        setOpenModal={setReplaceWarning}
+        confirmMessage="This action will replace the existing contents, Press OK to Avoid or CANCEL to continue edit with replace"
+        buttonName={t('btn-ok')}
+        closeModal={closeEdit}
       />
     </ProjectsLayout>
   );
