@@ -29,14 +29,14 @@ export default function SelectVerse({
 
   const onChapterSelect = (e, chapterNum) => {
     e.preventDefault();
-    onChangeChapter(chapterNum);
+    onChangeChapter(chapterNum, chapter);
     setOpenChapter(false);
     setOpenVerse(true);
   };
 
   const onVerseSelect = (e, verseNum) => {
     e.preventDefault();
-    onChangeVerse(verseNum);
+    onChangeVerse(verseNum, verse);
     closeBooks();
     if (multiSelectVerse === false) { closeVerses(); }
   };
