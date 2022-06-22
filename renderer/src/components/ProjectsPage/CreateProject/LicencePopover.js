@@ -84,6 +84,7 @@ export default function LicencePopover({ call }) {
       <Transition appear show={isOpen} as={Fragment}>
         <Dialog
           as="div"
+          open={isOpen}
           className="fixed inset-0 z-10 overflow-y-auto"
           onClose={() => closeModal}
         >
