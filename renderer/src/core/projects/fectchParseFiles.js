@@ -1,41 +1,43 @@
-import Parse from 'parse';
-import * as logger from '../../logger';
+// The below code is of web content
 
-const fetchParseFiles = async (username, projectname) => {
-    const ProjectMeta = Parse.Object.extend('ProjectMeta');
-    const Files = Parse.Object.extend('Files');
+// import Parse from 'parse';
+// import * as logger from '../../logger';
 
-    const findFiles = async () => {
-        const newUserQuery = new Parse.Query(ProjectMeta);
-        const filesQuery = new Parse.Query(Files);
-        filesQuery.include('owner');
-        newUserQuery.include('owner');
-        await newUserQuery.find();
-        const filesResult = await filesQuery.find();
-        const files = [];
-            filesResult.forEach((element) => {
-                if (element.get('owner').get('owner').get('name') === username) {
-                    if (element.get('owner').get('projectName') === projectname) {
-                            files.push({
-                                filename: (element).get('scope'),
-                                data: (element).get('data'),
-                                filenameAlias: (element).get('filenameAlias'),
-                            });
-                    }
-                }
-            });
-            return files;
-        };
+// const fetchParseFiles = async (username, projectname) => {
+//     const ProjectMeta = Parse.Object.extend('ProjectMeta');
+//     const Files = Parse.Object.extend('Files');
 
-    try {
-       const files = await findFiles();
-        return files;
-      } catch (e) {
-        logger.error('fetchParseFiles.js', e);
-      }
-};
+//     const findFiles = async () => {
+//         const newUserQuery = new Parse.Query(ProjectMeta);
+//         const filesQuery = new Parse.Query(Files);
+//         filesQuery.include('owner');
+//         newUserQuery.include('owner');
+//         await newUserQuery.find();
+//         const filesResult = await filesQuery.find();
+//         const files = [];
+//             filesResult.forEach((element) => {
+//                 if (element.get('owner').get('owner').get('name') === username) {
+//                     if (element.get('owner').get('projectName') === projectname) {
+//                             files.push({
+//                                 filename: (element).get('scope'),
+//                                 data: (element).get('data'),
+//                                 filenameAlias: (element).get('filenameAlias'),
+//                             });
+//                     }
+//                 }
+//             });
+//             return files;
+//         };
 
-export default fetchParseFiles;
+//     try {
+//        const files = await findFiles();
+//         return files;
+//       } catch (e) {
+//         logger.error('fetchParseFiles.js', e);
+//       }
+// };
+
+// export default fetchParseFiles;
 
 // export const fetchFileData = async (fileURL) => {
 //     const res = await fetch(fileURL);
