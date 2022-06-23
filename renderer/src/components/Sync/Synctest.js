@@ -3,7 +3,6 @@
 // // import { act } from 'react-dom/test-utils';
 // import ProjectFileBrowser from './ProjectFileBrowser';
 // import SyncContextProvider from './SyncContextProvider'
-// // import intl from "./helper";
 
 // describe('Sync component tests', () => {
 //   const agProjects = ['Project Malayalam','Project Arabic']
