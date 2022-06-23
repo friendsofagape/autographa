@@ -5,7 +5,6 @@ import CustomLogin from '../CustomLogin'
 import { isElectron } from '../../../core/handleElectron';
 import AuthenticationContextProvider from '../AuthenticationContextProvider';
 // import { act } from 'react-dom/test-utils';
-// import intl from "./helper";
 
 describe('Login component tests', () => {
 	test('Should render Login component without error', () => {
