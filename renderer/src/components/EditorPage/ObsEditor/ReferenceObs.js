@@ -27,7 +27,7 @@ const ReferenceObs = ({ stories }) => {
       { isLoading === false ? (
         <>
           {
-            stories.map((story) => (
+            stories.map((story, index) => (
               <div key={story.id} className={`flex gap-5 mb-5 items-center justify-center ${story.id === selectedStory && 'bg-light'}`}>
                 {
                   Object.prototype.hasOwnProperty.call(story, 'title') && (
@@ -38,6 +38,9 @@ const ReferenceObs = ({ stories }) => {
                 }
                 {Object.prototype.hasOwnProperty.call(story, 'text') && (
                 <>
+                  <span className="w-5 h-5 bg-gray-800 rounded-full flex justify-center text-sm text-white items-center p-3 ">
+                    {index}
+                  </span>
                   <img className="w-1/4 rounded-lg" src={story.img} alt="" />
                   <p className="text-sm text-gray-600">
                     {story.text}
