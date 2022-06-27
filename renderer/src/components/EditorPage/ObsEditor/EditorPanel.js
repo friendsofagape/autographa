@@ -36,7 +36,7 @@ const EditorPanel = ({ obsStory, storyUpdate }) => {
   };
   return (
     <>
-      {obsStory.map((story) => (
+      {obsStory.map((story, index) => (
         <>
           {Object.prototype.hasOwnProperty.call(story, 'title')
           && (
@@ -60,6 +60,9 @@ const EditorPanel = ({ obsStory, storyUpdate }) => {
             className="flex m-4 p-1 rounded-md"
             key={story.id}
           >
+            <span className="w-5 h-5 bg-gray-800 rounded-full flex justify-center text-sm text-white items-center p-3 ">
+              {index}
+            </span>
             <textarea
               name={story.text}
               onChange={handleChange}
