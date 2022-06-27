@@ -99,7 +99,7 @@ export default function SelectBook({
                           multiSelectBook
                           ? selectMultipleBooks(e, book.key, book.name)
                           : bookSelect(e, book.key, book.name))}
-                          className={`${styles.select} ${selectedBooks.includes((book.key).toUpperCase()) ? styles.active : ''}`}
+                          className={`${styles.bookSelect} ${selectedBooks.includes((book.key).toUpperCase()) ? styles.active : ''}`}
                         >
                           {book.name}
                         </div>
@@ -136,7 +136,7 @@ export default function SelectBook({
                     onClick={(e) => (multiSelectBook
                     ? selectMultipleBooks(e, book.key, book.name)
                     : bookSelect(e, book.key, book.name))}
-                    className={`${styles.select} ${selectedBooks.includes((book.key).toUpperCase()) ? styles.active : ''}`}
+                    className={`${styles.bookSelect} ${selectedBooks.includes((book.key).toUpperCase()) ? styles.active : ''}`}
                   >
                     {book.name}
                   </div>
