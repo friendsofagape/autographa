@@ -49,6 +49,10 @@ const obsTranslationNotes = [
   createData('Spanish', 'es-419', 'Door43-catalog'),
   createData('English', 'en', 'Door43-catalog'),
 ];
+const obsTranslationQuestions = [
+  createData('Spanish', 'es-419', 'Door43-catalog'),
+  createData('English', 'en', 'Door43-catalog'),
+];
 
 const ResourcesPopUp = ({
   header,
@@ -221,6 +225,7 @@ const ResourcesPopUp = ({
     readCustomResources({ resourceId: 'tn', translationData: translationNote });
     readCustomResources({ resourceId: 'ta', translationData: translationAcademy });
     readCustomResources({ resourceId: 'obs-tn', translationData: obsTranslationNotes });
+    readCustomResources({ resourceId: 'obs-tq', translationData: obsTranslationQuestions });
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showInput]);
   const callResource = (resource) => {
@@ -230,7 +235,8 @@ const ResourcesPopUp = ({
       { id: 'twlm', title: t('label-resource-twlm'), resource: translationWord },
       { id: 'tq', title: t('label-resource-tq'), resource: translationQuestion },
       { id: 'ta', title: t('label-resource-ta'), resource: translationAcademy },
-      { id: 'obs-tn', title: t('label-resource-obs-tn'), resource: obsTranslationNotes }];
+      { id: 'obs-tn', title: t('label-resource-obs-tn'), resource: obsTranslationNotes },
+      { id: 'obs-tq', title: t('label-resource-obs-tq'), resource: obsTranslationQuestions }];
     const reference = resources.find((r) => r.id === resource);
     return (
       reference
@@ -435,6 +441,18 @@ const ResourcesPopUp = ({
                         id="obs-tn"
                         text={t('label-resource-obs-tn')}
                         translationData={obsTranslationNotes}
+                        readCustomResources={readCustomResources}
+                        selectResource={selectResource}
+                        setSelectResource={setSelectResource}
+                        setTitle={setTitle}
+                        setSubMenuItems={setSubMenuItems}
+                        setShowInput={setShowInput}
+                      />
+                      <ResourceOption
+                        imageUrl="/illustrations/dialogue-icon.svg"
+                        id="obs-tq"
+                        text={t('label-resource-obs-tq')}
+                        translationData={obsTranslationQuestions}
                         readCustomResources={readCustomResources}
                         selectResource={selectResource}
                         setSelectResource={setSelectResource}

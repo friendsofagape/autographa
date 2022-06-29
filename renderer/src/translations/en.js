@@ -71,6 +71,7 @@ export const En = {
     'label-resource': 'Resources',
     'label-resource-bible': 'Bible',
     'label-resource-obs-tn': 'OBS Translation Notes',
+    'label-resource-obs-tq': 'OBS Translation Questions',
     'label-resource-obs': 'Open Bible Stories',
     'label-resource-tn': 'Translation Notes',
     'label-resource-twlm': 'Translation Words',
