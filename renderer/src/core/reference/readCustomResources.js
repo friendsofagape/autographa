@@ -78,6 +78,30 @@ export async function readCustomResources({ resourceId, translationData }) {
                               }
                             });
                           break;
+                          case 'ta':
+                            if (!(agSettingsJson?.resources.door43.translationAcademys)) {
+                              agSettingsJson.resources.door43.translationAcademys = [];
+                            }
+                            (agSettingsJson?.resources.door43.translationAcademys)?.forEach(async (url) => {
+                              const language = url.url?.split('/');
+                              let resourceExists = false;
+                              translationData.forEach((val) => {
+                                // console.log(val.name, url.url?.split('/')[3]);
+                                if (val.name === url.name) {
+                                  if (val.language === (language[language.length - 1]?.split('_')[0])) {
+                                    resourceExists = true;
+                                  }
+                                }
+                              });
+                              if (resourceExists === false && url) {
+                                translationData.push({
+                                  name: url.name,
+                                  language: (language[language.length - 1]?.split('_')[0]),
+                                  owner: url.url?.split('/')[3],
+                                });
+                              }
+                            });
+                          break;
                           case 'obs-tn':
                             if (!(agSettingsJson?.resources.door43.obsTranslationNotes)) {
                               agSettingsJson.resources.door43.obsTranslationNotes = [];

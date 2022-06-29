@@ -82,6 +82,22 @@ const TranslationHelps = ({
               server="https://git.door43.org"
             />
           );
+        case 'ta':
+          console.log("lang id :",  languageId)
+          console.log("branch id :",  branch)
+          console.log("owner id :",  owner)
+          return (
+            <TranslationHelpsCard
+              title={t('label-resource-ta')}
+              branch={branch}
+              projectId="translate"
+              languageId={languageId}
+              resourceId="ta"
+              owner={owner}
+              filePath="figs-123person/01.md"
+              server="https://git.door43.org"
+            />
+            );
         case 'bible':
           return (
             <TranslationHelpsCard
