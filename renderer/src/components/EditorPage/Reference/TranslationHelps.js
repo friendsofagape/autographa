@@ -93,31 +93,45 @@ const TranslationHelps = ({
               verse={verse}
             />
           );
-          case 'obs':
-            return (
-              <TranslationHelpsCard
-                title={t('label-resource-obs')}
-                languageId={languageId}
-                refName={refName}
-                bookId={bookId}
-                chapter={chapter}
-                verse={verse}
-              />
-            );
-            case 'obs-tn':
-            return (
-              <ObsTnCard
-                title={t('label-resource-obs-tn')}
-                chapter={story}
-                verse="1"
-                branch={branch}
-                viewMode="default"
-                languageId={languageId}
-                resourceId="obs-tn"
-                owner={owner}
-                server="https://git.door43.org"
-              />
-            );
+        case 'obs':
+          return (
+            <TranslationHelpsCard
+              title={t('label-resource-obs')}
+              languageId={languageId}
+              refName={refName}
+              bookId={bookId}
+              chapter={chapter}
+              verse={verse}
+            />
+          );
+        case 'obs-tn':
+          return (
+            <ObsTnCard
+              title={t('label-resource-obs-tn')}
+              chapter={story}
+              verse="1"
+              branch={branch}
+              viewMode="default"
+              languageId={languageId}
+              resourceId="obs-tn"
+              owner={owner}
+              server="https://git.door43.org"
+            />
+          );
+        case 'obs-tq':
+          return (
+            <ObsTnCard
+              title={t('label-resource-obs-tq')}
+              chapter={story}
+              verse="1"
+              branch={branch}
+              viewMode="default"
+              languageId={languageId}
+              resourceId="obs-tq"
+              owner={owner}
+              server="https://git.door43.org"
+            />
+          );
         default:
           return null;
       }

@@ -1,9 +1,9 @@
-// Get OBS TN usign the APIs
+// Get OBS TN and TQ usign the APIs
 import * as logger from '../../../../logger';
 
 export const getObsTn = async (owner, repo, path) => {
   logger.debug('getObsTn.js', 'Fetch Tn content of OBS');
-  const BaseUrl = 'https://bg.door43.org/api/v1/repos/';
+  const BaseUrl = 'https://git.door43.org/api/v1/repos/';
   const error = {};
   return new Promise((resolve) => {
     fetch(`${BaseUrl}${owner}/${repo}/contents`)
