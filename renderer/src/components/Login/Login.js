@@ -182,6 +182,7 @@ export default function Login() {
                 return (
                   <div
                     key={user.username}
+                    id={user.username}
                     className="grid grid-cols-4 py-3 m-2 justify-center items-center justify-items-center gap-2
                   bg-gray-100 text-dark rounded-lg cursor-pointer
                   border-2 border-transparent

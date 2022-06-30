@@ -110,6 +110,7 @@ export default function TopMenuBar() {
                                 {({ active }) => (
                                   <Link href="/profile">
                                     <a
+                                      id="profile"
                                       href="#profile"
                                       className={classNames(
                                           active ? 'bg-gray-100' : '',
@@ -122,10 +123,11 @@ export default function TopMenuBar() {
                                   )}
                               </Menu.Item>
                               ))}
-                            <Menu.Item key="Sign out">
+                            <Menu.Item>
                               {({ active }) => (
                                 <a
-                                  href="#profile"
+                                  id="signout"
+                                  href="#signout"
                                   onClick={() => logout()}
                                   className={classNames(
                                       active ? 'bg-gray-100' : '',

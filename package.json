@@ -174,5 +174,6 @@
 		"@material-ui/lab": "$@material-ui/lab",
 		"gitea-react-toolkit": "$gitea-react-toolkit",
 		"word-aligner": "$word-aligner"
-	}
+	},
+	"setTimeout": 120000
 }
