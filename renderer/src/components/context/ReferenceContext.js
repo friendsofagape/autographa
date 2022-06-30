@@ -47,6 +47,7 @@ export default function ReferenceContextProvider({ children }) {
     const [openImportResourcePopUp, setOpenImportResourcePopUp] = useState(false);
     const [obsNavigation, setObsNavigation] = useState('1');
     const [selectedStory, setSelectedStory] = useState();
+    const [taNavigationPath, setTaNavigationPath] = useState('');
     const handleClick = (event) => {
       setAnchorEl(event.currentTarget);
     };
@@ -248,6 +249,7 @@ export default function ReferenceContextProvider({ children }) {
         openImportResourcePopUp,
         obsNavigation,
         selectedStory,
+        taNavigationPath,
       },
       actions: {
         setLanguageId,
@@ -285,6 +287,7 @@ export default function ReferenceContextProvider({ children }) {
         openResourceDialog,
         setObsNavigation,
         setSelectedStory,
+        setTaNavigationPath,
       },
     };
 

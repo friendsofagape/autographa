@@ -11,12 +11,15 @@ const TranslationHelps = ({
   const {
     state: {
         branch,
+        taNavigationPath,
     },
   } = useContext(ReferenceContext);
   const { t } = useTranslation();
 
   const translationQuestionsPath = `${(chapter < 10) ? (`0${ chapter}`)
   : chapter}/${(verse < 10) ? (`0${ verse}`) : verse}.md`;
+
+  const filePathTa = `${taNavigationPath}/01.md`;
 
   return (
     <>
@@ -83,9 +86,6 @@ const TranslationHelps = ({
             />
           );
         case 'ta':
-          console.log("lang id :",  languageId)
-          console.log("branch id :",  branch)
-          console.log("owner id :",  owner)
           return (
             <TranslationHelpsCard
               title={t('label-resource-ta')}
@@ -94,7 +94,7 @@ const TranslationHelps = ({
               languageId={languageId}
               resourceId="ta"
               owner={owner}
-              filePath="figs-123person/01.md"
+              filePath={filePathTa}
               server="https://git.door43.org"
             />
             );
