@@ -77,6 +77,7 @@ export const En = {
     'label-resource-twlm': 'Translation Words',
     'label-resource-twl': 'Translation Words List',
     'label-resource-tq': 'Translation Questions',
+    'label-resource-ta': 'Translation Academy',
     'label-resource-name': 'resource name',
     'label-footnotes': 'Foot Notes',
     'label-location': 'location',

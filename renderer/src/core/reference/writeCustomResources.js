@@ -30,6 +30,14 @@ export async function writeCustomResources({ resourceUrl }) {
                         agSettingsJson?.resources.door43.translationWords.push({ name: resourceUrl.resourceName, url: resourceUrl.url });
                     }
                       break;
+                    case 'ta':
+                      if (!(agSettingsJson?.resources.door43.translationAcademys)) {
+                        agSettingsJson.resources.door43.translationAcademys = [];
+                      }
+                      if (agSettingsJson?.resources.door43.translationAcademys.includes(resourceUrl.url) === false) {
+                          agSettingsJson?.resources.door43.translationAcademys.push({ name: resourceUrl.resourceName, url: resourceUrl.url });
+                      }
+                        break;
                     case 'obs-tn':
                       if (!(agSettingsJson?.resources.door43.obsTranslationNotes)) {
                         agSettingsJson.resources.door43.obsTranslationNotes = [];
