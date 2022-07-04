@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import {
-  UploadIcon,
+  DownloadIcon,
 } from '@heroicons/react/outline';
 import { useTranslation } from 'react-i18next';
 import SideBar from './SideBar';
@@ -57,7 +57,7 @@ export default function ProjectsLayout(props) {
                                     leading-3 tracking-wider uppercase bg-primary items-center"
                         onClick={openImportPopUp}
                       >
-                        <UploadIcon className="h-4 mr-2 text-white" />
+                        <DownloadIcon className="h-4 mr-2 text-white" />
                         {t('btn-import')}
                       </button>
                       <ImportProjectPopUp open={openPopUp} closePopUp={closeImportPopUp} />
