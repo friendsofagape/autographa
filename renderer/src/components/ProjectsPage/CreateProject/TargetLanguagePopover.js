@@ -28,9 +28,14 @@ export default function TargetLanguagePopover() {
       logger.debug('TargetLanguagePopover.js', 'Selected a language which can be edited');
       setLock(language.locked);
       setEdit(true);
-      setId(language.id);
+      languages.map((item) => {
+        if (item.id !== undefined) {
+         setId(item.id);
+        }
+      });
+
       setLang(language.title);
-      setDirection(language.scriptDirection ? language.scriptDirection : t('label-rtr'));
+      setDirection(language.scriptDirection ? language.scriptDirection : t('label-rtl'));
     } else {
       logger.debug('TargetLanguagePopover.js', 'Selected the Pre-defined language which can\'t be edited');
       setLock();
@@ -116,7 +121,7 @@ export default function TargetLanguagePopover() {
               <div className="  h-80 rounded shadow border border-gray-200 bg-white">
                 <div className="grid grid-rows-2 gap-5 m-8">
                   <div>
-                    <h2 className="uppercase font-bold leading-5 tracking-widest mb-5 ">{edit ? t('label-edit-langauge') : t('label-new-langauge')}</h2>
+                    <h2 className="uppercase font-bold leading-5 tracking-widest mb-5 ">{edit === true ? t('label-edit-langauge') : t('label-new-langauge')}</h2>
                     <div>
                       <input
                         type="text"
