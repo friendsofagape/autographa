@@ -84,7 +84,7 @@ path.join(projectsDir, name),
             // const name = path.basename(folderPath);
             const name = (folderPath.split(/[(\\)?(/)?]/gm)).pop();
             setDataForImport({ projectsDir, name });
-            if (result.projectName === name) {
+            if (fs.existsSync(path.join(projectsDir, result.projectName))) {
               logger.warn('ImportResource.js', 'Project already available');
               setOpenModal(true);
             } else {
