@@ -28,7 +28,7 @@ export default function TargetLanguagePopover() {
       logger.debug('TargetLanguagePopover.js', 'Selected a language which can be edited');
       setLock(language.locked);
       setEdit(true);
-      languages.map((item) => {
+      languages.forEach((item) => {
         if (item.id !== undefined) {
          setId(item.id);
         }
