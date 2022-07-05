@@ -58,7 +58,7 @@ const UsfmEditor = () => {
     state: {
       bookId,
       chapter,
-      // verse,
+      verse,
       myEditorRef,
       isLoading,
     }, actions: {
@@ -134,7 +134,7 @@ const UsfmEditor = () => {
   const handleVersChange = useCallback((val) => {
       if (val && scrollLock === false) {
         // onChangeChapter(val.chapter.toString());
-        onChangeVerse(val.verseStart.toString());
+        onChangeVerse(val.verseStart.toString(), verse);
       }
     }, [onChangeChapter, onChangeVerse]);
 
