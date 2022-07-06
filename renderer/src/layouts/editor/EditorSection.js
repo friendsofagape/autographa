@@ -168,17 +168,17 @@ export default function EditorSection({
               </div>
             )}
 
-          <div className="bg-gray-200 z-50 rounded-t overflow-hidden">
-            <div className="flex items-center">
+          <div className="bg-gray-200 rounded-t overflow-hidden">
+            <div className="flex">
               {selectedResource === 'ta' ? (
-                <>
+                <div className="h-12 flex">
                   <TaNavigation
                     languageId={languageId}
                   />
-                  <div className="ml-4 h-4 flex justify-center items-center text-xxs uppercase tracking-wider font-bold leading-3 truncate">
+                  <div className="relative left-72 top-4 text-xxs uppercase tracking-wider font-bold leading-3 truncate">
                     {title}
                   </div>
-                </>
+                </div>
               ) : (
                 <>
                   {scrollLock ? (
