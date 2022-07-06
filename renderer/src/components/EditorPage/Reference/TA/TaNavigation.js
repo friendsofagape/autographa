@@ -48,10 +48,10 @@ export default function TaNavigation({ languageId }) {
         setTaNavigationPath(selected);
         }, [selected, setTaNavigationPath]);
   return (
-    <div className="flex ">
+    <div className="flex fixed">
       <div className="bg-grey text-danger py-0 uppercase tracking-wider text-xs font-semibold">
-        <span aria-label="resource-bookname" className="px-3">
-          <div className="w-70 px-1">
+        <div aria-label="resource-bookname" className="px-3">
+          <div className="sm:w-8/12 lg:w-10/12">
             <Combobox value={selected} onChange={setSelected}>
               <div className="relative mt-1">
                 <div className="relative w-full cursor-default overflow-hidden rounded-lg bg-white text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 sm:text-sm">
@@ -74,8 +74,7 @@ export default function TaNavigation({ languageId }) {
                   leaveTo="opacity-0"
                   afterLeave={() => setQuery('')}
                 >
-                  {/* <Combobox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"> */}
-                  <Combobox.Options className=" mt-1 max-h-40 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                  <Combobox.Options className="absolute z-40 mt-1 max-h-48 scrollbars-width overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
                     {filteredData.length === 0 && query !== '' ? (
                       <div className="relative cursor-default select-none py-2 px-4 text-gray-700">
                         Nothing found.
@@ -92,7 +91,7 @@ export default function TaNavigation({ languageId }) {
                       {({ selected, active }) => (
                         <>
                           <span
-                            className={`block truncate ${
+                            className={`block truncate text-left ml-2 ${
                               selected ? 'font-medium' : 'font-normal'
                               }`}
                           >
@@ -117,7 +116,7 @@ export default function TaNavigation({ languageId }) {
               </div>
             </Combobox>
           </div>
-        </span>
+        </div>
 
       </div>
     </div>
