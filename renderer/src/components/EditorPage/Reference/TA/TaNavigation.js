@@ -10,9 +10,18 @@ import * as logger from '../../../../logger';
 
 export default function TaNavigation({ languageId }) {
   const [selected, setSelected] = useState('');
+  const [hovered, setHovered] = useState(null);
   const [query, setQuery] = useState('');
   const [taList, setTaList] = useState([]);
   const BaseUrl = 'https://git.door43.org/api/v1/repos/';
+
+  const setHover = (index) => {
+    setHovered(index);
+  };
+
+  const unsetHover = () => {
+    setHovered(null);
+  };
 
   const {
     state: {
@@ -104,11 +113,11 @@ export default function TaNavigation({ languageId }) {
                         Nothing found.
                       </div>
                   ) : (
-                  filteredData.map((taData) => (
+                  filteredData.map((taData, index) => (
                     <Combobox.Option
                       key={`${taData.folder}}`}
                       className={({ active }) => `relative cursor-default select-none py-2 pl-10 pr-4 ${
-                          active ? 'text-red-900' : 'text-gray-900'
+                          active ? 'text-primary' : 'text-gray-900'
                           }`}
                       value={taData}
                     >
@@ -118,8 +127,11 @@ export default function TaNavigation({ languageId }) {
                             className={`block truncate text-left ml-2 ${
                               selected ? 'font-medium' : 'font-normal'
                               }`}
+                            onMouseEnter={() => setHover(index)}
+                            onMouseLeave={() => unsetHover()}
                           >
-                            {taData.title}
+                            {/* {taData.title} */}
+                            {hovered === index ? taData.subTitle : taData.title}
                           </span>
                           {selected ? (
                             <span
