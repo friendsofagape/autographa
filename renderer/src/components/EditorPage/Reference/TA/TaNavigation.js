@@ -26,17 +26,40 @@ export default function TaNavigation({ languageId }) {
 
   const filteredData = query === ''
       ? taList
-      : taList.filter((taData) => taData.name
+      : taList.filter((taData) => taData.title
             .toLowerCase()
             .replace(/\s+/g, '')
             .includes(query.toLowerCase().replace(/\s+/g, '')));
 
     useEffect(() => {
+      const taArray = [];
       fetch(`${BaseUrl}${owner}/${languageId}_ta/contents/translate/`)
       .then((response) => response.json())
       .then((actualData) => {
-        setTaList(actualData);
-        setSelected(actualData[0].name);
+
+        const fetchData = async (actualData) => {
+          actualData.forEach(element => {
+            const tempObj = {};
+            tempObj.folder = element.name;
+            fetch(
+              `${BaseUrl}${owner}/${languageId}_ta/raw/translate/${element.name}/title.md`
+              ).then(response => response.text().then(data => tempObj.title = data));
+            fetch(
+                `${BaseUrl}${owner}/${languageId}_ta/raw/translate/${element.name}/sub-title.md`
+                ).then(response => response.text().then(data => tempObj.subTitle = data));
+            taArray.push(tempObj);
+            console.log("array : ", taArray);
+          });
+        };
+
+        const getData = async () => {
+          await fetchData(actualData);
+          setTaList(taArray);
+          // console.log(" talist : ",taList);
+          setSelected(taArray[0]);
+        };
+
+        getData();
       })
       .catch((err) => {
         // console.log("error fetch TA : ", err.message);
@@ -45,19 +68,19 @@ export default function TaNavigation({ languageId }) {
      }, [languageId, owner]);
 
     useEffect(() => {
-        setTaNavigationPath(selected);
+        setTaNavigationPath(selected.folder);
         }, [selected, setTaNavigationPath]);
   return (
     <div className="flex fixed">
       <div className="bg-grey text-danger py-0 uppercase tracking-wider text-xs font-semibold">
         <div aria-label="resource-bookname" className="px-3">
           <div className="sm:w-8/12 lg:w-10/12">
-            <Combobox value={selected} onChange={setSelected}>
+            <Combobox value={selected.title} onChange={setSelected}>
               <div className="relative mt-1">
                 <div className="relative w-full cursor-default overflow-hidden rounded-lg bg-white text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 sm:text-sm">
                   <Combobox.Input
                     className="w-full border-none py-2 pl-3 pr-10 text-sm leading-5 text-gray-900 focus:ring-0"
-                    displayValue={taNavigationPath}
+                    displayValue={selected.title}
                     onChange={(event) => setQuery(event.target.value)}
                   />
                   <Combobox.Button className="absolute z-99 inset-y-0 right-0 flex items-center pr-2">
@@ -82,11 +105,11 @@ export default function TaNavigation({ languageId }) {
                   ) : (
                   filteredData.map((taData) => (
                     <Combobox.Option
-                      key={`${taData.name}}`}
+                      key={`${taData.folder}}`}
                       className={({ active }) => `relative cursor-default select-none py-2 pl-10 pr-4 ${
                           active ? 'text-red-900' : 'text-gray-900'
                           }`}
-                      value={taData.name}
+                      value={taData}
                     >
                       {({ selected, active }) => (
                         <>
@@ -95,7 +118,7 @@ export default function TaNavigation({ languageId }) {
                               selected ? 'font-medium' : 'font-normal'
                               }`}
                           >
-                            {taData.name}
+                            {taData.title}
                           </span>
                           {selected ? (
                             <span
