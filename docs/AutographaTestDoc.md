@@ -1,6 +1,6 @@
 # <ins>Test Cases</ins>
 
-## Page 1
+## Autographa 2.0.0
 
 > ### Login Component
 > Autographa has 3 types of Login, we are using a single component for these 3 logins with different props. 
