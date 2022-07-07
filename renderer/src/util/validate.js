@@ -3,6 +3,7 @@ import * as logger from '../logger';
 const Ajv = require('ajv');
 const schemaIndex030 = require('../../vendor/scripture-burrito/v0.3.0/schema');
 const schemaIndex031 = require('../../vendor/scripture-burrito/v0.3.1/schema');
+const schemaIndex100rc1 = require('../../vendor/scripture-burrito/v1.0.0-rc1/schema');
 const schemaIndex100 = require('../../vendor/scripture-burrito/v1.0.0/schema');
 
 export const validate = (schemaName, fn, data, version) => {
@@ -14,7 +15,10 @@ export const validate = (schemaName, fn, data, version) => {
     case '0.3.1':
       schemaIndex = schemaIndex031;
       break;
-      case '1.0.0-rc1':
+    case '1.0.0-rc1':
+      schemaIndex = schemaIndex100rc1;
+      break;
+    case '1.0.0-rc2':
       schemaIndex = schemaIndex100;
       break;
     default:

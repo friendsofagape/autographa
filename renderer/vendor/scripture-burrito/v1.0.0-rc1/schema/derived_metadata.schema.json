@@ -1,17 +1,13 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema",
-    "$id": "https://burrito.bible/schema/template_metadata.schema.json",
-    "$$target": "template_metadata.schema.json",
-    "title": "Metadata (Template)",
+    "$id": "https://burrito.bible/schema/derived_metadata.schema.json",
+    "$$target": "derived_metadata.schema.json",
+    "title": "Metadata (Derived)",
     "type": "object",
-    "description": "Scripture Burrito Template root.",
+    "description": "Scripture Burrito derived variant root.",
     "properties": {
-        "format": {
-            "type": "string",
-            "enum": ["scripture burrito"]
-        },
         "meta": {
-            "$ref": "template_meta.schema.json"
+            "$ref": "derived_meta.schema.json"
         },
         "idAuthorities": {
             "$ref": "id_authorities.schema.json"
@@ -40,18 +36,34 @@
         "copyright": {
             "$ref": "copyright.schema.json"
         },
+        "promotion": {
+            "$ref": "promotion.schema.json"
+        },
         "ingredients": {
             "$ref": "ingredients.schema.json"
         },
         "localizedNames": {
             "$ref": "localized_names.schema.json"
+        },
+        "recipe": {
+            "$ref": "recipe.schema.json"
         }
     },
-    "required": ["format", "meta", "copyright"],
+    "required": ["meta", "idAuthorities", "identification", "confidential", "copyright", "type", "recipe"],
     "additionalProperties": false,
-    "allOf": [
-        {
-            "$ref": "copyright_constraints.schema.json"
+    "if": {
+        "properties": {
+            "type": {
+                "type": "object",
+                "properties": {
+                    "flavorType": {
+                        "enum": ["scripture", "gloss"]
+                    }
+                }
+            }
         }
-    ]
+    },
+    "then": {
+        "required": ["languages"]
+    }
 }
