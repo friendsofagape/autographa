@@ -24,13 +24,22 @@ test('Check for autographa app render', async () => {
 // });
 
 test('Click user and Navigate projects', async () => {
-	await window.click('#newUser');
+	await window.click('#bobby');
 	const title = await window.textContent('[aria-label=projects]');
 	expect(title).toBe('Projects');
 	// await electronApp.close();
 });
 
-// test('Fill and test new project page', async () => {
+test('Import the project', async () => {
+	await window.click('[aria-label=import]');
+
+	const [fileChooser] = await Promise.all([
+		await window.waitForEvent('filechooser'),
+	]);
+	console.log(fileChooser);
+});
+
+// test('Click New and Fill project page details to creating a new project', async () => {
 // 	await window.click('#newUser');
 // 	await window.click('[aria-label=new]');
 // 	await window.fill('#project_name', 'latest project');
@@ -100,12 +109,12 @@ test('Click user and Navigate projects', async () => {
 // 	expect(title).toBe('Sign In');
 // });
 
-test('Click on project to open editor page', async () => {
-	await window.click('[aria-label=unstar-project-name]');
-	const editorpane = await window.innerText('[aria-label=editor-pane]');
-	console.log(editorpane);
-	expect(editorpane).toBe('EDITOR');
-});
+// test('Click on project to open editor page', async () => {
+// 	await window.click('id=translation testing');
+// 	const editorpane = await window.innerText('[aria-label=editor-pane]');
+// 	console.log(editorpane);
+// 	// expect(editorpane).toBe('EDITOR');
+// });
 
 // // test('Check project name', async () => {
 // //     const projectname = await window.innerText('[aria-label=editor-project-name]');

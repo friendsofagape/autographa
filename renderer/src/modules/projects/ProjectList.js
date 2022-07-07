@@ -187,6 +187,7 @@ export default function ProjectList() {
                                                 (event) => handleSelectProject(event, project.name, project.id[0])
                                               }
                                               role="button"
+                                              id={project.name}
                                               aria-label="project-name"
                                               tabIndex="0"
                                               className="focus:outline-none text-sm font-medium text-gray-900"
