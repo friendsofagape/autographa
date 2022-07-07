@@ -85,7 +85,7 @@ export default function TaNavigation({ languageId }) {
   return (
     <div className="flex fixed">
       <div className="bg-grey text-danger py-0 uppercase tracking-wider text-xs font-semibold">
-        <div aria-label="resource-bookname" className="px-3">
+        <div aria-label="resource-bookname" className="px-1">
           <div className="sm:w-8/12 lg:w-10/12">
             <Combobox value={selected.title} onChange={setSelected}>
               <div className="relative mt-1">
@@ -118,15 +118,15 @@ export default function TaNavigation({ languageId }) {
                   filteredData.map((taData) => (
                     <Combobox.Option
                       key={`${taData.folder}}`}
-                      className={({ active }) => `relative cursor-default select-none py-2 pl-10 pr-4 ${
-                          active ? 'text-primary' : 'text-gray-900'
+                      className={({ active }) => `relative cursor-default w-4/5 lg:w-96 select-none py-1.5 px-4 ${
+                          active ? 'text-primary bg-gray-200' : 'text-gray-900'
                           }`}
                       value={taData}
                     >
                       {({ selected, active }) => (
                         <>
                           <span
-                            className={`block truncate text-left ml-2 ${
+                            className={`block truncate whitespace-normal text-left text-sm ml-2 ${
                               selected ? 'font-medium' : 'font-normal'
                               }`}
                             // onMouseEnter={() => setHover(index)}

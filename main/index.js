@@ -13,7 +13,7 @@ let mainWindow;
 // Prepare the renderer once the app is ready
 function createWindow() {
  mainWindow = new BrowserWindow({
-    width: 800,
+    width: 900,
     height: 600,
     autoHideMenuBar: true,
     webPreferences: {
