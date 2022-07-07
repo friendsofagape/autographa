@@ -175,7 +175,7 @@ export default function EditorSection({
                   <TaNavigation
                     languageId={languageId}
                   />
-                  <div className="relative left-72 top-4 text-xxs uppercase tracking-wider font-bold leading-3 truncate">
+                  <div className="relative lg:left-72 sm:left-48 sm:ml-2.5 top-4 text-xxs uppercase tracking-wider font-bold leading-3 truncate">
                     {title}
                   </div>
                 </div>
