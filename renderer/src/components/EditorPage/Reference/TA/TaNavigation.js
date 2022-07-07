@@ -17,7 +17,7 @@ export default function TaNavigation({ languageId }) {
   const {
     state: {
         owner,
-        taNavigationPath,
+        // taNavigationPath,
     },
     actions: {
         setTaNavigationPath,
@@ -36,33 +36,34 @@ export default function TaNavigation({ languageId }) {
       fetch(`${BaseUrl}${owner}/${languageId}_ta/contents/translate/`)
       .then((response) => response.json())
       .then((actualData) => {
-
         const fetchData = async (actualData) => {
-          actualData.forEach(element => {
+          actualData.forEach((element) => {
             const tempObj = {};
             tempObj.folder = element.name;
-            fetch(
-              `${BaseUrl}${owner}/${languageId}_ta/raw/translate/${element.name}/title.md`
-              ).then(response => response.text().then(data => tempObj.title = data));
-            fetch(
-                `${BaseUrl}${owner}/${languageId}_ta/raw/translate/${element.name}/sub-title.md`
-                ).then(response => response.text().then(data => tempObj.subTitle = data));
+            fetch(`${BaseUrl}${owner}/${languageId}_ta/raw/translate/${element.name}/title.md`)
+              .then((response) => response.text()
+              .then((data) => {
+                tempObj.title = data;
+              }));
+            fetch(`${BaseUrl}${owner}/${languageId}_ta/raw/translate/${element.name}/sub-title.md`)
+                .then((response) => response.text()
+                .then((data) => {
+                  tempObj.subTitle = data;
+                }));
             taArray.push(tempObj);
-            console.log("array : ", taArray);
+            // console.log("array : ", taArray);
           });
         };
 
         const getData = async () => {
           await fetchData(actualData);
           setTaList(taArray);
-          // console.log(" talist : ",taList);
           setSelected(taArray[0]);
         };
 
         getData();
       })
       .catch((err) => {
-        // console.log("error fetch TA : ", err.message);
         logger.debug('In Fetch TA Content.js', `Error in Fetch : ${err.message}`);
        });
      }, [languageId, owner]);
