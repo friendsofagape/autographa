@@ -236,7 +236,7 @@ export default function NewProject({ call, project, closeEdit }) {
       abbreviation: project.identification.abbreviation.en,
       description: project.project[project.type.flavorType.flavor.name].description,
     });
-    setValue({ title: project.languages[0].name.en, scriptDirection: project.project.textTranslation.scriptDirection });
+    setValue({ title: project.languages[0].name.en, scriptDirection: project.project[project.type.flavorType.flavor.name].scriptDirection });
     setMetadata(project);
     // set dropdown to the project type
     switch (project.type.flavorType.flavor.name) {
