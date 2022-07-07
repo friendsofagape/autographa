@@ -6,7 +6,6 @@ import { Combobox, Transition } from '@headlessui/react';
 import { CheckIcon, SelectorIcon } from '@heroicons/react/solid';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import * as logger from '../../../../logger';
-// import { getTa } from './getTa';
 
 export default function TaNavigation({ languageId }) {
   const [selected, setSelected] = useState('');
@@ -47,20 +46,23 @@ export default function TaNavigation({ languageId }) {
       .then((actualData) => {
         const fetchData = async (actualData) => {
           actualData.forEach((element) => {
-            const tempObj = {};
+            let pattern = /^.*\.(yml|yaml)/gm
+            if (! pattern.test(element.name.toLowerCase())) {
+              const tempObj = {};
             tempObj.folder = element.name;
             fetch(`${BaseUrl}${owner}/${languageId}_ta/raw/translate/${element.name}/title.md`)
-              .then((response) => response.text()
+              .then((response) => response.text())
               .then((data) => {
                 tempObj.title = data;
-              }));
+              });
             fetch(`${BaseUrl}${owner}/${languageId}_ta/raw/translate/${element.name}/sub-title.md`)
-                .then((response) => response.text()
+                .then((response) => response.text())
                 .then((data) => {
                   tempObj.subTitle = data;
-                }));
-            taArray.push(tempObj);
-            // console.log("array : ", taArray);
+                });
+                taArray.push(tempObj);
+                // console.log("array : ", taArray);
+            }
           });
         };
 
