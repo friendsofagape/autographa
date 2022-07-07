@@ -182,8 +182,10 @@ const importBurrito = async (filePath, currentUser, updateBurritoVersion) => {
         // projectName = path.basename(filePath);
         projectName = (filePath.split(/[(\\)?(/)?]/gm)).pop();
       }
-
-      fs.mkdirSync(path.join(projectDir, `${projectName}_${id}`, 'ingredients'), { recursive: true });
+      const firstKey = Object.keys(metadata.ingredients)[0];
+      const folderName = firstKey.split(/[(\\)?(/)?]/gm).slice(0);
+      const dirName = folderName[0];
+      fs.mkdirSync(path.join(projectDir, `${projectName}_${id}`, dirName), { recursive: true });
       logger.debug('importBurrito.js', 'Creating a directory if not exists.');
       await fse.copy(filePath, path.join(projectDir, `${projectName}_${id}`))
       .then(() => {
@@ -205,12 +207,12 @@ const importBurrito = async (filePath, currentUser, updateBurritoVersion) => {
       .catch((err) => logger.error('importBurrito.js', `${err}`));
 
       metadata.meta.generator.userName = currentUser;
-      if (!fs.existsSync(path.join(filePath, 'ingredients', 'ag-settings.json'))) {
+      if (!fs.existsSync(path.join(filePath, dirName, 'ag-settings.json'))) {
         logger.debug('importBurrito.js', 'Creating ag-settings.json file');
         const settings = {
           version: environment.AG_SETTING_VERSION,
           project: {
-            textTranslation: {
+            [metadata.type.flavorType.flavor.name]: {
               scriptDirection: 'LTR',
               starred: false,
               versification: '',
@@ -223,9 +225,9 @@ const importBurrito = async (filePath, currentUser, updateBurritoVersion) => {
           },
         };
         logger.debug('importBurrito.js', 'Creating the ag-settings.json file.');
-        await fs.writeFileSync(path.join(projectDir, `${projectName}_${id}`, 'ingredients', 'ag-settings.json'), JSON.stringify(settings));
-        const stat = fs.statSync(path.join(projectDir, `${projectName}_${id}`, 'ingredients', 'ag-settings.json'));
-        metadata.ingredients[path.join('ingredients', 'ag-settings.json')] = {
+        await fs.writeFileSync(path.join(projectDir, `${projectName}_${id}`, dirName, 'ag-settings.json'), JSON.stringify(settings));
+        const stat = fs.statSync(path.join(projectDir, `${projectName}_${id}`, dirName, 'ag-settings.json'));
+        metadata.ingredients[path.join(dirName, 'ag-settings.json')] = {
           checksum: {
             md5: md5(settings),
           },
@@ -235,32 +237,32 @@ const importBurrito = async (filePath, currentUser, updateBurritoVersion) => {
         };
       } else {
         logger.debug('importBurrito.js', 'Updating ag-settings.json file');
-        const ag = fs.readFileSync(path.join(projectDir, `${projectName}_${id}`, 'ingredients', 'ag-settings.json'));
+        const ag = fs.readFileSync(path.join(projectDir, `${projectName}_${id}`, dirName, 'ag-settings.json'));
         let settings = JSON.parse(ag);
         if (settings.version !== environment.AG_SETTING_VERSION) {
           // eslint-disable-next-line prefer-const
           let setting = settings;
           setting.version = environment.AG_SETTING_VERSION;
-          setting.project.textTranslation.scriptDirection = settings.project.textTranslation?.scriptDirection ? settings.project.textTranslation?.scriptDirection : '';
-          setting.project.textTranslation.starred = settings.project.textTranslation?.starred ? settings.project.textTranslation?.starred : false;
-          setting.project.textTranslation.versification = settings.project.textTranslation?.versification ? settings.project.textTranslation?.versification : 'ENG';
-          setting.project.textTranslation.description = settings.project.textTranslation?.description ? settings.project.textTranslation?.description : '';
-          setting.project.textTranslation.copyright = settings.project.textTranslation?.copyright ? settings.project.textTranslation?.copyright : { title: 'Custom' };
-          setting.project.textTranslation.refResources = settings.project.textTranslation?.refResources ? settings.project.textTranslation?.refResources : [];
-          setting.project.textTranslation.bookMarks = settings.project.textTranslation?.bookMarks ? settings.project.textTranslation?.bookMarks : [];
+          setting.project[metadata.type.flavorType.flavor.name].scriptDirection = settings.project[metadata.type.flavorType.flavor.name]?.scriptDirection ? settings.project[metadata.type.flavorType.flavor.name]?.scriptDirection : '';
+          setting.project[metadata.type.flavorType.flavor.name].starred = settings.project[metadata.type.flavorType.flavor.name]?.starred ? settings.project[metadata.type.flavorType.flavor.name]?.starred : false;
+          setting.project[metadata.type.flavorType.flavor.name].versification = settings.project[metadata.type.flavorType.flavor.name]?.versification ? settings.project[metadata.type.flavorType.flavor.name]?.versification : 'ENG';
+          setting.project[metadata.type.flavorType.flavor.name].description = settings.project[metadata.type.flavorType.flavor.name]?.description ? settings.project[metadata.type.flavorType.flavor.name]?.description : '';
+          setting.project[metadata.type.flavorType.flavor.name].copyright = settings.project[metadata.type.flavorType.flavor.name]?.copyright ? settings.project[metadata.type.flavorType.flavor.name]?.copyright : { title: 'Custom' };
+          setting.project[metadata.type.flavorType.flavor.name].refResources = settings.project[metadata.type.flavorType.flavor.name]?.refResources ? settings.project[metadata.type.flavorType.flavor.name]?.refResources : [];
+          setting.project[metadata.type.flavorType.flavor.name].bookMarks = settings.project[metadata.type.flavorType.flavor.name]?.bookMarks ? settings.project[metadata.type.flavorType.flavor.name]?.bookMarks : [];
           settings = setting;
         }
-        settings.project.textTranslation.lastSeen = moment().format();
-        await fs.writeFileSync(path.join(projectDir, `${projectName}_${id}`, 'ingredients', 'ag-settings.json'), JSON.stringify(settings));
+        settings.project[metadata.type.flavorType.flavor.name].lastSeen = moment().format();
+        await fs.writeFileSync(path.join(projectDir, `${projectName}_${id}`, dirName, 'ag-settings.json'), JSON.stringify(settings));
       }
       if (metadata.copyright.fullStatementPlain) {
         const newLicence1 = (metadata.copyright.fullStatementPlain.en).replace(/\\n/gm, '\n');
         const newLicence = newLicence1?.replace(/\\r/gm, '\r');
         const licence = newLicence?.replace(/'/gm, '"');
-        await fs.writeFileSync(path.join(projectDir, `${projectName}_${id}`, 'ingredients', 'license.md'), licence);
-        const copyrightStats = fs.statSync(path.join(projectDir, `${projectName}_${id}`, 'ingredients', 'license.md'));
+        await fs.writeFileSync(path.join(projectDir, `${projectName}_${id}`, dirName, 'license.md'), licence);
+        const copyrightStats = fs.statSync(path.join(projectDir, `${projectName}_${id}`, dirName, 'license.md'));
         metadata.copyright.licenses = [{ ingredient: 'license.md' }];
-        metadata.ingredients[path.join('ingredients', 'license.md')] = {
+        metadata.ingredients[path.join(dirName, 'license.md')] = {
           checksum: {
             md5: md5(metadata.copyright.fullStatementPlain.en),
           },

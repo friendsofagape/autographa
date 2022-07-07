@@ -1,17 +1,13 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema",
-    "$id": "https://burrito.bible/schema/template_metadata.schema.json",
-    "$$target": "template_metadata.schema.json",
-    "title": "Metadata (Template)",
+    "$id": "https://burrito.bible/schema/source_metadata.schema.json",
+    "$$target": "source_metadata.schema.json",
+    "title": "Metadata (Default)",
     "type": "object",
-    "description": "Scripture Burrito Template root.",
+    "description": "Scripture Burrito source kinda-variant root.",
     "properties": {
-        "format": {
-            "type": "string",
-            "enum": ["scripture burrito"]
-        },
         "meta": {
-            "$ref": "template_meta.schema.json"
+            "$ref": "source_meta.schema.json"
         },
         "idAuthorities": {
             "$ref": "id_authorities.schema.json"
@@ -45,11 +41,31 @@
         },
         "localizedNames": {
             "$ref": "localized_names.schema.json"
+        },
+        "progress": {
+            "$ref": "progress.schema.json"
         }
     },
-    "required": ["format", "meta", "copyright"],
+    "required": ["meta", "idAuthorities", "identification", "confidential", "type", "copyright", "ingredients"],
     "additionalProperties": false,
     "allOf": [
+        {
+            "if": {
+                "properties": {
+                    "type": {
+                        "type": "object",
+                        "properties": {
+                            "flavorType": {
+                                "enum": ["scripture", "gloss"]
+                            }
+                        }
+                    }
+                }
+            },
+            "then": {
+                "required": ["languages"]
+            }
+        },
         {
             "$ref": "copyright_constraints.schema.json"
         }
