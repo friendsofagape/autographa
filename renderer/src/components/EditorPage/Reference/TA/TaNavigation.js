@@ -9,18 +9,18 @@ import * as logger from '../../../../logger';
 
 export default function TaNavigation({ languageId }) {
   const [selected, setSelected] = useState('');
-  const [hovered, setHovered] = useState(null);
+  // const [hovered, setHovered] = useState(null);
   const [query, setQuery] = useState('');
   const [taList, setTaList] = useState([]);
   const BaseUrl = 'https://git.door43.org/api/v1/repos/';
 
-  const setHover = (index) => {
-    setHovered(index);
-  };
+  // const setHover = (index) => {
+  //   setHovered(index);
+  // };
 
-  const unsetHover = () => {
-    setHovered(null);
-  };
+  // const unsetHover = () => {
+  //   setHovered(null);
+  // };
 
   const {
     state: {
@@ -115,7 +115,7 @@ export default function TaNavigation({ languageId }) {
                         Nothing found.
                       </div>
                   ) : (
-                  filteredData.map((taData, index) => (
+                  filteredData.map((taData) => (
                     <Combobox.Option
                       key={`${taData.folder}}`}
                       className={({ active }) => `relative cursor-default select-none py-2 pl-10 pr-4 ${
@@ -129,11 +129,12 @@ export default function TaNavigation({ languageId }) {
                             className={`block truncate text-left ml-2 ${
                               selected ? 'font-medium' : 'font-normal'
                               }`}
-                            onMouseEnter={() => setHover(index)}
-                            onMouseLeave={() => unsetHover()}
+                            // onMouseEnter={() => setHover(index)}
+                            // onMouseLeave={() => unsetHover()}
+                            title={taData.subTitle}
                           >
-                            {/* {taData.title} */}
-                            {hovered === index ? taData.subTitle : taData.title}
+                            {taData.title}
+                            {/* {hovered === index ? taData.subTitle : taData.title} */}
                           </span>
                           {selected ? (
                             <span
