@@ -46,8 +46,8 @@ export default function TaNavigation({ languageId }) {
       .then((actualData) => {
         const fetchData = async (actualData) => {
           actualData.forEach((element) => {
-            let pattern = /^.*\.(yml|yaml)/gm
-            if (! pattern.test(element.name.toLowerCase())) {
+            const pattern = /^.*\.(yml|yaml)/gm;
+            if (!pattern.test(element.name.toLowerCase())) {
               const tempObj = {};
             tempObj.folder = element.name;
             fetch(`${BaseUrl}${owner}/${languageId}_ta/raw/translate/${element.name}/title.md`)
