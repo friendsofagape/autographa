@@ -11,6 +11,7 @@ import EditorPanel from './EditorPanel';
 
 const ObsEditor = () => {
   const [mdData, setMdData] = useState();
+  const [directoryName, setDirectoryName] = useState();
   const { state: { obsNavigation } } = useContext(ReferenceContext);
   const getDetails = () => new Promise((resolve) => {
     localforage.getItem('userProfile').then((value) => {
@@ -46,7 +47,7 @@ const ObsEditor = () => {
       writeToFile({
         username: value.username,
         projectname: value.projectName,
-        filename: (value.path).join('content', `${bookID}.md`),
+        filename: (value.path).join(directoryName, `${bookID}.md`),
         data: storyStr,
       });
     });
@@ -69,8 +70,11 @@ const ObsEditor = () => {
                 const _data = JSON.parse(data);
                 Object.entries(_data.ingredients).forEach(
                   ([key]) => {
+                    const folderName = key.split(/[(\\)?(/)?]/gm).slice(0);
+                    const dirName = folderName[0];
+                    setDirectoryName(dirName);
                     const bookID = obsNavigation.toString().padStart(2, 0);
-                    if (key === path.join('content', `${bookID}.md`)) {
+                    if (key === path.join(dirName, `${bookID}.md`)) {
                       readFile({
                         projectname: projectName,
                         filename: key,

@@ -27,7 +27,7 @@ export const createObsContent = (
   return new Promise((resolve) => {
     const ingredients = {};
     const newpath = localStorage.getItem('userPath');
-    const folder = path.join(newpath, 'autographa', 'users', username, 'projects', `${project.projectName}_${id}`, 'content');
+    const folder = path.join(newpath, 'autographa', 'users', username, 'projects', `${project.projectName}_${id}`, 'ingredients');
     const fs = window.require('fs');
 
     logger.debug('createObsContent.js', 'Creating the story md files');
@@ -44,7 +44,7 @@ export const createObsContent = (
         }
         fs.writeFileSync(path.join(folder, currentFileName), file[0].content, 'utf-8');
         const stats = fs.statSync(path.join(folder, currentFileName));
-        ingredients[path.join('content', currentFileName)] = {
+        ingredients[path.join('ingredients', currentFileName)] = {
           checksum: {
             md5: md5(file[0].content),
           },
@@ -63,7 +63,7 @@ export const createObsContent = (
         logger.debug('createObsContent.js', 'Writing File to the Content Directory');
         fs.writeFileSync(path.join(folder, currentFileName), file);
         const stats = fs.statSync(path.join(folder, currentFileName));
-        ingredients[path.join('content', currentFileName)] = {
+        ingredients[path.join('ingredients', currentFileName)] = {
           checksum: {
             md5: md5(file),
           },
@@ -95,7 +95,7 @@ export const createObsContent = (
     }
     fs.writeFileSync(path.join(folder, fileFront.name), fileFront.content);
     let obsstat = fs.statSync(path.join(folder, fileFront.name));
-    ingredients[path.join('content', fileFront.name)] = {
+    ingredients[path.join('ingredients', fileFront.name)] = {
       checksum: {
         md5: md5(fileFront.content),
       },
@@ -115,7 +115,7 @@ export const createObsContent = (
     }
     fs.writeFileSync(path.join(folder, fileBack.name), fileBack.content);
     obsstat = fs.statSync(path.join(folder, fileBack.name));
-    ingredients[path.join('content', fileBack.name)] = {
+    ingredients[path.join('ingredients', fileBack.name)] = {
       checksum: {
         md5: md5(fileBack.content),
       },
@@ -126,7 +126,7 @@ export const createObsContent = (
     // OBS License
     fs.writeFileSync(path.join(folder, 'LICENSE.md'), OBSLicense);
     obsstat = fs.statSync(path.join(folder, 'LICENSE.md'));
-    ingredients[path.join('content', 'LICENSE.md')] = {
+    ingredients[path.join('ingredients', 'LICENSE.md')] = {
       checksum: {
         md5: md5(OBSLicense),
       },
@@ -146,7 +146,7 @@ export const createObsContent = (
         // }
         fs.writeFileSync(path.join(folder, file.id), file.content, 'utf-8');
         const stats = fs.statSync(path.join(folder, file.id));
-        ingredients[path.join('content', file.id)] = {
+        ingredients[path.join('ingredients', file.id)] = {
           checksum: {
             md5: md5(file.content),
           },
@@ -159,7 +159,7 @@ export const createObsContent = (
         const role = file.id === 'front.md' ? 'title' : 'pubdata';
         fs.writeFileSync(path.join(folder, file.id), file.content);
         const obsstat = fs.statSync(path.join(folder, file.id));
-        ingredients[path.join('content', file.id)] = {
+        ingredients[path.join('ingredients', file.id)] = {
           checksum: {
             md5: md5(file.content),
           },
@@ -191,7 +191,7 @@ export const createObsContent = (
     }
     fs.writeFileSync(path.join(folder, 'ag-settings.json'), JSON.stringify(settings));
     const stat = fs.statSync(path.join(folder, 'ag-settings.json'));
-    ingredients[path.join('content', 'ag-settings.json')] = {
+    ingredients[path.join('ingredients', 'ag-settings.json')] = {
       checksum: {
         md5: md5(settings),
       },

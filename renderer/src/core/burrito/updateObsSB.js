@@ -64,10 +64,13 @@ const updateObsSB = async (username, project, updateBurrito) => new Promise((res
       const newLicence1 = (metadata.copyright.fullStatementPlain.en).replace(/\\n/gm, '\n');
       const newLicence = newLicence1?.replace(/\\r/gm, '\r');
       const licence = newLicence?.replace(/'/gm, '"');
-      fs.writeFileSync(path.join(folder, 'content', 'license.md'), licence);
-      const copyrightStats = fs.statSync(path.join(folder, 'content', 'license.md'));
+      const firstKey = Object.keys(metadata.ingredients)[0];
+      const folderName = firstKey.split(/[(\\)?(/)?]/gm).slice(0);
+      const dirName = folderName[0];
+      fs.writeFileSync(path.join(folder, dirName, 'license.md'), licence);
+      const copyrightStats = fs.statSync(path.join(folder, dirName, 'license.md'));
       metadata.copyright.licenses = [{ ingredient: 'license.md' }];
-      metadata.ingredients[path.join('content', 'license.md')] = {
+      metadata.ingredients[path.join(dirName, 'license.md')] = {
         checksum: {
           md5: md5(metadata.copyright.fullStatementPlain.en),
         },
