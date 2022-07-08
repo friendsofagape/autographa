@@ -1,9 +1,21 @@
+import { readRefBurrito } from '@/core/reference/readRefBurrito';
+
 const loadData = (fs, file, projectName, username) => {
   const newpath = localStorage.getItem('userPath');
   const path = require('path');
-  const filePath = path.join(newpath, 'autographa', 'users', username, 'resources', projectName, 'content');
-  const content = fs.readFileSync(path.join(filePath, `${file}.md`), 'utf8');
-  return content;
+  const filePath = path.join(newpath, 'autographa', 'users', username, 'resources', projectName);
+  readRefBurrito(
+    filePath,
+  ).then((data) => {
+    if (data) {
+      const _data = JSON.parse(data);
+      const firstKey = Object.keys(_data.ingredients)[0];
+      const folderName = firstKey.split(/[(\\)?(/)?]/gm).slice(0);
+      const dirName = folderName[0];
+      const content = fs.readFileSync(path.join(filePath, dirName, `${file}.md`), 'utf8');
+      return content;
+    }
+  });
 };
 const core = (fs, num, projectName, username) => {
   const stories = [];
