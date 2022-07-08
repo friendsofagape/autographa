@@ -2,6 +2,7 @@ import React, { Fragment, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { PlusIcon, PencilAltIcon } from '@heroicons/react/outline';
 import { useTranslation } from 'react-i18next';
+import { SnackBar } from '@/components/SnackBar';
 import * as logger from '../../../logger';
 import { ProjectContext } from '../../context/ProjectContext';
 
@@ -11,6 +12,9 @@ export default function TargetLanguagePopover() {
   const [direction, setDirection] = React.useState();
   const [edit, setEdit] = React.useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [snackBar, setOpenSnackBar] = React.useState(false);
+  const [snackText, setSnackText] = React.useState('');
+  const [notify, setNotify] = React.useState();
   const [lock, setLock] = useState();
   const {
     states: {
@@ -52,8 +56,15 @@ export default function TargetLanguagePopover() {
   }
   const addLanguage = () => {
     logger.debug('TargetLanguagePopover.js', 'Adding a new language');
-    setLanguage({ id: languages.length + 1, title: lang, scriptDirection: direction });
-    closeModal();
+    const result = languages.filter((l) => l.title.toLowerCase() === lang.toLowerCase() && l.scriptDirection.toLowerCase() === direction.toLowerCase());
+    if (result.length === 0) {
+      setLanguage({ id: languages.length + 1, title: lang, scriptDirection: direction });
+      closeModal();
+    } else {
+      setNotify('warning');
+      setSnackText('Language trying to add is already present');
+      setOpenSnackBar(true);
+    }
   };
   const editLanguage = () => {
     logger.debug('TargetLanguagePopover.js', 'Editing the language');
@@ -188,6 +199,15 @@ export default function TargetLanguagePopover() {
           </Transition.Child>
         </Dialog>
       </Transition>
+
+      <SnackBar
+        openSnackBar={snackBar}
+        snackText={snackText}
+        setOpenSnackBar={setOpenSnackBar}
+        setSnackText={setSnackText}
+        error={notify}
+      />
+
     </>
   );
 }

@@ -342,7 +342,8 @@ export default function NewProject({ call, project, closeEdit }) {
                     <CustomList
                       selected={language}
                       setSelected={setLanguage}
-                      options={languages}
+                      // options={languages}
+                      options={languages.filter((v, i, a) => a.findIndex((v2) => ['title', 'scriptDirection'].every((k) => v2[k] === v[k])) === i)}
                       show
                     />
                   </div>
