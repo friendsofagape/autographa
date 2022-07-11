@@ -90,17 +90,9 @@ export default function ProjectList() {
       const folder = path.join(newpath, 'autographa', 'users', value.username, 'projects', `${project.name}_${project.id[0]}`);
       const data = fs.readFileSync(path.join(folder, 'metadata.json'), 'utf-8');
       let metadata = JSON.parse(data);
-      let dirName;
-      switch (metadata.type.flavorType.flavor.name) {
-        case 'textTranslation':
-          dirName = 'ingredients';
-          break;
-        case 'textStories':
-          dirName = 'content';
-          break;
-        default:
-          break;
-      }
+      const firstKey = Object.keys(metadata.ingredients)[0];
+      const folderName = firstKey.split(/[(\\)?(/)?]/gm).slice(0);
+      const dirName = folderName[0];
       const settings = fs.readFileSync(path.join(folder, dirName, 'ag-settings.json'), 'utf-8');
       const agSetting = JSON.parse(settings);
       metadata = { ...metadata, ...agSetting };

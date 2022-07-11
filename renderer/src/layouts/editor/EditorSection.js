@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-useless-fragment */
 import PropTypes from 'prop-types';
 import React, { useContext, useEffect, useState } from 'react';
 import {
@@ -8,6 +9,7 @@ import { ReferenceContext } from '@/components/context/ReferenceContext';
 import { ProjectContext } from '@/components/context/ProjectContext';
 import ResourcesPopUp from '@/components/EditorPage/Reference/ResourcesPopUp';
 import { classNames } from '@/util/classNames';
+import TaNavigation from '@/components/EditorPage/Reference/TA/TaNavigation';
 import ConfirmationModal from './ConfirmationModal';
 // import MinimizeIcon from '@/illustrations/minimize.svg';
 
@@ -166,15 +168,26 @@ export default function EditorSection({
               </div>
             )}
 
-          <div className="bg-gray-200 z-50 rounded-t overflow-hidden">
-            <div className="flex items-center">
-              {scrollLock ? (
-                <>
-                  {CustomNavigation}
-                  <div className="ml-4 h-4 flex justify-center items-center text-xxs uppercase tracking-wider font-bold leading-3 truncate">
+          <div className="bg-gray-200 rounded-t overflow-hidden">
+            <div className="flex">
+              {selectedResource === 'ta' ? (
+                <div className="h-12 flex">
+                  <TaNavigation
+                    languageId={languageId}
+                  />
+                  <div className="relative lg:left-72 sm:left-48 sm:ml-2.5 top-4 text-xxs uppercase tracking-wider font-bold leading-3 truncate">
                     {title}
                   </div>
-                </>
+                </div>
+              ) : (
+                <>
+                  {scrollLock ? (
+                    <>
+                      {CustomNavigation}
+                      <div className="ml-4 h-4 flex justify-center items-center text-xxs uppercase tracking-wider font-bold leading-3 truncate">
+                        {title}
+                      </div>
+                    </>
               )
                 : (
                   <div className="flex">
@@ -184,7 +197,9 @@ export default function EditorSection({
                       </div>
                     </div>
                   </div>
-                )}
+                  )}
+                </>
+              )}
               <div className="flex bg-gray-300 absolute h-full -right-0 rounded-tr invisible group-hover:visible ">
                 <button
                   aria-label="resources-selector"

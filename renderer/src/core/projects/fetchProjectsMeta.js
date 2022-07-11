@@ -17,17 +17,9 @@ const fetchProjectsMeta = async ({ currentUser }) => {
         const data = fs.readFileSync(path.join(projectsMetaPath, dir, 'metadata.json'), 'utf8');
         const parseData = JSON.parse(data);
         let setting;
-        let dirName;
-        switch (parseData.type.flavorType.flavor.name) {
-          case 'textTranslation':
-            dirName = 'ingredients';
-            break;
-          case 'textStories':
-            dirName = 'content';
-            break;
-          default:
-            break;
-        }
+        const firstKey = Object.keys(parseData.ingredients)[0];
+        const folderName = firstKey.split(/[(\\)?(/)?]/gm).slice(0);
+        const dirName = folderName[0];
 
         try {
           setting = fs.readFileSync(path.join(projectsMetaPath, dir, dirName, 'ag-settings.json'), 'utf8');

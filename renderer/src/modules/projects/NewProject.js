@@ -138,7 +138,7 @@ export default function NewProject({ call, project, closeEdit }) {
   };
 
   const setValue = async (value) => {
-    if (value.label === 'Target Language') {
+    if (value.title) {
       setLanguage(value);
       languages.forEach((l) => {
         if (l.title !== value.title) {
@@ -236,7 +236,7 @@ export default function NewProject({ call, project, closeEdit }) {
       abbreviation: project.identification.abbreviation.en,
       description: project.project[project.type.flavorType.flavor.name].description,
     });
-    setValue({ label: 'Target Language', title: project.languages[0].name.en });
+    setValue({ title: project.languages[0].name.en, scriptDirection: project.project[project.type.flavorType.flavor.name].scriptDirection });
     setMetadata(project);
     // set dropdown to the project type
     switch (project.type.flavorType.flavor.name) {
@@ -342,7 +342,8 @@ export default function NewProject({ call, project, closeEdit }) {
                     <CustomList
                       selected={language}
                       setSelected={setLanguage}
-                      options={languages}
+                      // options={languages}
+                      options={languages.filter((v, i, a) => a.findIndex((v2) => ['title', 'scriptDirection'].every((k) => v2[k] === v[k])) === i)}
                       show
                     />
                   </div>

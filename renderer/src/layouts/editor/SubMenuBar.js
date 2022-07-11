@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { BookmarkIcon } from '@heroicons/react/solid';
 import { useTranslation } from 'react-i18next';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
@@ -6,6 +6,7 @@ import MenuBar from '@/components/Menubar/MenuBar';
 import CustomUsfmToolbar from '@/components/EditorPage/UsfmEditor/CustomUsfmToolbar';
 import { ProjectContext } from '@/components/context/ProjectContext';
 import CustomNofications from '@/components/Notification/CustomNofications';
+import localforage from 'localforage';
 import Font from '@/icons/font.svg';
 import ColumnsIcon from '@/icons/basil/Outline/Interface/Columns.svg';
 import AboutModal from './AboutModal';
@@ -16,25 +17,6 @@ import styles from './SubMenuBar.module.css';
 const activate = () => {
   // console.log('rename');
 };
-
-// const FormatMenuItems = [
-//   {
-//     itemname: 'Open',
-//     icon: <ExternalLinkIcon />,
-//     callback: tesfFunc1,
-//   },
-//   {
-//     itemname: 'About',
-//     icon: <InformationCircleIcon />,
-//     callback: tesfFunc1,
-//   },
-//   {
-//     itemname: 'Font',
-//     icon: <Font />,
-//     renderElement: <MenuDropdown />,
-//     callback: activate,
-//   },
-// ];
 
 const EditorTools = [
   {
@@ -71,16 +53,6 @@ export default function SubMenuBar() {
   };
   const { t } = useTranslation();
   const FileMenuItems = [
-    // {
-    //   itemname: 'Edit',
-    //   icon: <PencilIcon />,
-    //   callback: tesfFunc,
-    // },
-    // {
-    //   itemname: 'Duplicate',
-    //   icon: <DuplicateIcon />,
-    //   callback: tesfFunc1,
-    // },
     {
       itemname: t('label-bookmarks'),
       icon: <BookmarkIcon />,
@@ -92,15 +64,6 @@ export default function SubMenuBar() {
       renderElement: <MenuDropdown />,
       callback: activate,
     },
-    // {
-    //   itemname: 'Delete',
-    //   icon: <TrashIcon />,
-    //   callback: tesfFunc1,
-    // },
-    // {
-    //   itemname: 'Rename',
-    //   callback: tesfFunc1,
-    // },
     ];
 
   const handleResource = () => {
@@ -146,6 +109,22 @@ export default function SubMenuBar() {
   function openModal(isOpen) {
     setOpen(isOpen);
   }
+  // This below code is for identifying the type of resource to remove Bookmarks from OBS
+  const [resourceType, setResourceType] = useState();
+  useEffect(() => {
+    localforage.getItem('userProfile').then((value) => {
+      const username = value?.username;
+      localforage.getItem('currentProject').then((projectName) => {
+        const path = require('path');
+        const fs = window.require('fs');
+        const newpath = localStorage.getItem('userPath');
+        const metaPath = path.join(newpath, 'autographa', 'users', username, 'projects', projectName, 'metadata.json');
+        const data = fs.readFileSync(metaPath, 'utf-8');
+        const metadata = JSON.parse(data);
+        setResourceType(metadata.type.flavorType.flavor.name);
+      });
+    });
+  });
 
   return (
     <>
@@ -226,7 +205,7 @@ export default function SubMenuBar() {
 
       <nav className="flex p-2 shadow-sm border-b border-gray-200">
         <div className="w-3/5">
-          <MenuBar header={t('label-menu-file')} MenuItems={FileMenuItems} />
+          <MenuBar header={t('label-menu-file')} MenuItems={resourceType === 'textStories' ? FileMenuItems.slice(1) : FileMenuItems} />
           {/* <span>
             <MenuBar header="FORMAT" MenuItems={FormatMenuItems} style={{ left: '-60px' }} />
           </span> */}
