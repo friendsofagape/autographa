@@ -1,35 +1,52 @@
-# <ins>Test Cases</ins>
+# Autographa Test Case
+## Create user
+* Check for autographa app render
+* Create a new user and Navigate project
 
-## Page 1
+## Translation project
+ **Here user can create and edit the translation project**
+> ### Create Translation Project
+> * Click New and Fill Translation project page details to creating a new project
 
-> ### Login Component
-> Autographa has 3 types of Login, we are using a single component for these 3 logins with different props. 
-Electron has 2 logins (offline and online) and another is Web login.
-> - #### <ins>UI test</ins>
-> Check whether every UI element is loaded/rendered properly in:
-><ol>
-><li>Custom Login (CustomLogin.js)</li>
-><li>Login component (Login.js)</li>
-></ol>
->
-> - #### <ins>Unit test</ins>
-> Check whether the functions are returning exact values/datas:
-><ol>
-><li>Login component (Login.js)</li>
-><li>Authentication hook (useAuthentication.js)</li>
-><li>Core functions (core/Login/..)</li>
-> - [x] Test the token hashing function.
-></ol>
+> ### Edit the Translation Project
+> * Test for edit project with updated description
 
-> ### Signup Component
-> - #### <ins>UI test</ins>
-> Check whether every UI element is loaded/rendered properly in:
-><ol>
-><li>Signup component (Signup.js)</li>
-></ol>
->
-> - #### <ins>Unit test</ins>
-> Check whether the functions are returning exact values/datas:
-><ol>
-><li>Api connection (useApi.js)</li>
-></ol>
+> ### Star/Unstar and Search the Project
+> * Star the project
+> * Unstar the project
+> * Search and test for resulting project
+
+## OBS Project
+ **Here user can create and edit the translation project**
+> ### Create obs project
+> * Click New and Fill OBS project page details to creating a new project
+
+> ### Edit the obs project
+> * Test for edit project with updated description
+
+> ### star/unstar and search
+> * Star the project
+> * Unstar the project
+> * Search and test for resulting project
+
+## Create/Edit new language
+> * Create/Edit New Language to the project
+
+## Update the User Profile
+> * Update User profile and Navigate projects
+
+## Log out
+> * Sign out and return to Autographa app
+
+
+## Translation Editor
+** Here user can use translation Editor
+> ### open Editor
+> * Click on project to open editor page
+> * Check project name
+
+> ### Testing About 
+> * Testing Notificaton
+
+> ### Checking Resources
+> * Checking resources in added panel
