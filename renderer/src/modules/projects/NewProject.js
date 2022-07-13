@@ -62,6 +62,7 @@ function BibleHeaderTagDropDown(headerDropDown, handleDropDown, call) {
       >
         <button
           type="button"
+          aria-label="open-popover"
           className="flex justify-center items-center px-3 py-2 text-white ml-5
           font-bold text-xs rounded-full leading-3 tracking-wider uppercase bg-primary"
         >

@@ -316,6 +316,7 @@ export default function ProjectList() {
                                             <div className="flex items-center">
                                               <div className="ml-0">
                                                 <div
+                                                  id={project.name}
                                                   onClick={
                                                     (event) => handleSelectProject(event, project.name, project.id[0])
                                                   }

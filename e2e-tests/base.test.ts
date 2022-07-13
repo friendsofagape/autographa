@@ -30,16 +30,8 @@ test('Click user and Navigate projects', async () => {
 	// await electronApp.close();
 });
 
-test('Import the project', async () => {
-	await window.click('[aria-label=import]');
-
-	const [fileChooser] = await Promise.all([
-		await window.waitForEvent('filechooser'),
-	]);
-	console.log(fileChooser);
-});
-
-// test('Click New and Fill project page details to creating a new project', async () => {
+/* Translation Project    */
+// test('Click New and Fill translation project page details to creating a new project', async () => {
 // 	await window.click('#newUser');
 // 	await window.click('[aria-label=new]');
 // 	await window.fill('#project_name', 'latest project');
@@ -77,6 +69,14 @@ test('Import the project', async () => {
 // 	expect(projectname).toBe('latest project');
 // });
 
+// test('Create/Edit New Language to the project', async () => {
+// 	await window.click('[aria-label=new]');
+// 	await window.click('[aria-label=add-language]');
+// 	await window.fill('#search_box', 'urdu');
+// 	await window.click('[value=RTL]');
+// 	await window.click('[aria-label=create-language]');
+// });
+
 // test('Update User profile and Navigate projects', async () => {
 // 	await window.click('text=Open user menu');
 // 	await window.click('id=profile');
@@ -88,20 +88,6 @@ test('Import the project', async () => {
 // 	expect(projectname).toBe('aatest project');
 // });
 
-// test('Test for edit project with updated description', async () => {
-// 	await window.click('[aria-label=star-expand-project]');
-// 	await window.click('[aria-label=star-menu-project]');
-// 	await window.click('[aria-label=edit-project]');
-// 	await window.fill('#project_description', 'test version edit');
-// 	await window.click('[aria-label=save-edit-project]');
-// 	await window.click('[aria-label=cancel-edit-project]');
-// 	await window.click('[aria-label=expand-project]');
-// 	const description = await window.textContent(
-// 		'[aria-label=project-description-display]',
-// 	);
-// 	expect(description).toBe('test version edit');
-// });
-
 // test('Sign out and return to Autographa app', async () => {
 // 	await window.click('text=Open user menu');
 // 	await window.click('text=Sign out');
@@ -109,63 +95,69 @@ test('Import the project', async () => {
 // 	expect(title).toBe('Sign In');
 // });
 
-// test('Click on project to open editor page', async () => {
-// 	await window.click('id=translation testing');
-// 	const editorpane = await window.innerText('[aria-label=editor-pane]');
-// 	console.log(editorpane);
-// 	// expect(editorpane).toBe('EDITOR');
+/* Translation Editor */
+test('Click on project to open editor page', async () => {
+	await window.click('id=translation testing');
+	const editorpane = await window.innerText('[aria-label=editor-pane]');
+	expect(editorpane).toBe('EDITOR');
+});
+
+test('Check project name', async () => {
+	const projectname = await window.innerText(
+		'[aria-label=editor-project-name]',
+	);
+	expect(projectname).toBe('TRANSLATION TESTING');
+});
+
+// test('Testing About', async () => {
+// 	await window.click('[aria-label=about-button]');
+// 	const developedby = await window.innerText('[aria-label=developed-by]');
+// 	expect(developedby).toBe('Developed by Bridge Connectivity Solutions');
+// 	await window.click('[aria-label=license-button]');
+// 	await window.click('[aria-label=close-about]');
 // });
 
-// // test('Check project name', async () => {
-// //     const projectname = await window.innerText('[aria-label=editor-project-name]');
-// //     expect(projectname).toBe('AATEST PROJECT');
-// // });
+// test('Testing Notificaton', async () => {
+// 	await window.click('[aria-label=notification-button]');
+// 	const title = await window.innerText('[aria-label=notification-title]');
+// 	expect(title).toBe('NOTIFICATIONS');
+// 	await window.click('[aria-label=close-notification]');
+// });
 
-// // test('Testing about', async () => {
-// //     await window.click('[aria-label=about-button]');
-// //     const developedby = await window.innerText('[aria-label=developed-by]');
-// //     expect(developedby).toBe('Developed by Bridge Connectivity Solutions');
-// //     await window.click('[aria-label=license-button]');
-// //     await window.click('[aria-label=close-about]');
-// // });
+// test('Checking resources in added panel', async () => {
+// 	await window.click('[aria-label=add-panels]');
+// 	let title = await window.innerText('[aria-label=number-of-panels]');
+// 	console.log(title);
+// 	expect(title).toBe('2');
+// 	await window.hover('[aria-label=resources-panel]');
+// 	await window.click('[aria-label=resources-selector]');
+// 	title = await window.innerText('[aria-label=resources-title]');
+// 	expect(title).toBe('RESOURCES');
+// 	await window.click('[aria-label=close-resources]');
+// });
 
-// // test('Testing notificaton', async () => {
-// //     await window.click('[aria-label=notification-button]');
-// //     const title = await window.innerText('[aria-label=notification-title]');
-// //     expect(title).toBe('NOTIFICATIONS');
-// //     await window.click('[aria-label=close-notification]');
-// // });
+// test('Testing by adding the panels', async () => {
+// 	await window.click('[aria-label=add-panels]');
+// 	let title = await window.innerText('[aria-label=number-of-panels]');
+// 	expect(title).toBe('3');
+// 	await window.click('[aria-label=add-panels]');
+// 	title = await window.innerText('[aria-label=number-of-panels]');
+// 	expect(title).toBe('1');
+// });
 
-// // test('Checking resources', async () => {
-// //     await window.click('[aria-label=add-panels]');
-// //     let title = await window.innerText('[aria-label=number-of-panels]');
-// //     expect(title).toBe('2');
-// //     await window.hover('[aria-label=resources-panel]');
-// //     await window.click('[aria-label=resources-selector]');
-// //     title = await window.innerText('[aria-label=resources-title]');
-// //     expect(title).toBe('RESOURCES');
-// //     await window.click('[aria-label=close-resources]');
-// // });
+// test('Increase font size', async () => {
+// 	await window.click('[aria-label=increase-font]');
+// });
 
-// // test('Testing by adding the panels', async () => {
-// //     await window.click('[aria-label=add-panels]');
-// //     let title = await window.innerText('[aria-label=number-of-panels]');
-// //     expect(title).toBe('3');
-// //     await window.click('[aria-label=add-panels]');
-// //     title = await window.innerText('[aria-label=number-of-panels]');
-// //     expect(title).toBe('1');
-// // });
+// test('Decrease font size', async () => {
+// 	await window.click('[aria-label=decrease-font]');
+// });
 
-// // test('Testing font size changer', async () => {
-// //     await window.click('[aria-label=decrease-font]');
-// //     await window.click('[aria-label=increase-font]');
-// // });
-
-// // test('Testing bookmarks window', async () => {
-// //     await window.click('[aria-label=select-menu-file]');
-// //     await window.click('[aria-label=select-bookmarks]');
-// //     await window.click('[aria-label=close-button]');
-// // });
+test('Testing bookmarks window', async () => {
+	await window.click('[aria-label=select-menu-file]');
+	await window.click('[aria-label=select-bookmarks]');
+	await window.click('[aria-label=close-button]');
+});
 
 // // test('Checking scroll lock', async () => {
 // //     await window.click('[aria-label=add-panels]');
