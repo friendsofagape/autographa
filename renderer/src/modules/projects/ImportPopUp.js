@@ -212,7 +212,7 @@ export default function ImportPopUp(props) {
         >
           <Dialog.Overlay className="fixed inset-0 bg-black opacity-30" />
           <div className="flex items-center justify-center h-screen">
-            <div className="w-5/12 h-3/6 items-center justify-center m-auto z-50 shadow overflow-hidden rounded">
+            <div className="lg:w-5/12 h-3/6 items-center justify-center m-auto z-50 shadow overflow-hidden rounded">
 
               <div className="relative h-full rounded shadow overflow-hidden bg-white">
 
