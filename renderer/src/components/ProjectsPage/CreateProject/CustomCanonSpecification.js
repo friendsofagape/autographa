@@ -64,7 +64,7 @@ const CustomCanonSpecification = ({ bibleNav, closeBibleNav, handleNav }) => {
       >
         <Dialog.Overlay className="fixed inset-0 bg-black opacity-30" />
         <div className="flex items-center justify-center h-screen ">
-          <div className="w-5/12 m-auto z-50 bg-white shadow overflow-hidden sm:rounded-lg">
+          <div className="w-9/12 m-auto z-50 bg-white shadow overflow-hidden sm:rounded-lg">
             {/* <div className="p-3">
               <input
                 type="text"
