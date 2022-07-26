@@ -1,52 +1,108 @@
 # Autographa Test Case
-## Create user
-* Check for autographa app render
-* Create a new user and Navigate project
+## Create user and Project list page
+ - Create user (Add and Create User)
+ - Display project list page
 
-## Translation project
- **Here user can create and edit the translation project**
-> ### Create Translation Project
-> * Click New and Fill Translation project page details to creating a new project
 
-> ### Edit the Translation Project
-> * Test for edit project with updated description
+## Star/Unstar and Search the Project
+ - Star the project(obs/textTranslation)
+ - Unstar the project(obs/textTranslation)
+ - Search the project by (name/type/language)
 
-> ### Star/Unstar and Search the Project
-> * Star the project
-> * Unstar the project
-> * Search and test for resulting project
+## Text Translation 
+### Create New Text Translation Project
+- Sets:
+  - Project name
+  - Description
+  - Abbreviation
+  - New Target Language
+  - Books
+  - Versification Scheme
+  - License
+  - Imported USFM
 
-## OBS Project
- **Here user can create and edit the translation project**
-> ### Create obs project
-> * Click New and Fill OBS project page details to creating a new project
+### Edit existing Text Translation Project
+  - Checks for correct:
+   - Target language
+   - Books
+   - Versification Scheme
+   - License
+   
+  - Edits:
+   - Target language
+   - Books
+   - License
+   - Description
+   - Abbreviation
+  
 
-> ### Edit the obs project
-> * Test for edit project with updated description
+## OBS Strories
+### Create New Text Stories Project
+- Sets:
+  - Project name
+  - Description
+  - Abbreviation
+  - New Target Language
+  - Books
+  - License
+  - Imported MD
 
-> ### star/unstar and search
-> * Star the project
-> * Unstar the project
-> * Search and test for resulting project
-
-## Create/Edit new language
-> * Create/Edit New Language to the project
-
-## Update the User Profile
-> * Update User profile and Navigate projects
-
-## Log out
-> * Sign out and return to Autographa app
-
+### Edit existing Text Stories Project
+  - Checks for correct:
+   - Target language
+   - Books
+   - License
+   
+  - Edits:
+   - Target language
+   - Books
+   - License
+   - Description
+   - Abbreviation
 
 ## Translation Editor
 ** Here user can use translation Editor
 > ### open Editor
-> * Click on project to open editor page
-> * Check project name
+- Click on text-translation project to open editor page
+- Check project name
+- Sets:
+  - Project name
+  - Add Panels(max panel = 3 and default = 1)
+  - Notification
+  - File
+    - Bookmarks(Saved bookmarks)
+    - Font-family
+  - Edit
+    - Section Header
+  - About
+  - Increase/Decrease Font-text
+  - Navigation lock//unlock
+  - Bookmark
+  
 
-> ### Testing About 
-> * Testing Notificaton
+## Obs Editor
+** Here user can use Obs Editor
+> ### open Editor
+- Click on obs project to open editor page
+- Check project name
+- Sets:
+  - Project name
+  - Add Panels(max panel = 3 and default = 1)
+  - Notification
+  - File
+    - Font-family
+  - Edit
+    - Section Header
+  - About
+  - Increase/Decrease Font-text
+  - Navigation lock//unlock
 
-> ### Checking Resources
-> * Checking resources in added panel
+
+## Create/Edit new language
+- Create/Edit New Language to the project(while creating and editng the project)
+
+## Update the User Profile
+ - Update User profile
+
+## Log out
+ - Sign out and return to Autographa app
