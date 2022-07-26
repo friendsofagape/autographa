@@ -3,6 +3,7 @@ import { initReactI18next } from 'react-i18next';
 // import the translation files
 import { En } from './en';
 import { Hi } from './hi';
+import { Ru } from './ru';
 
 i18n
   .use(initReactI18next)
@@ -13,6 +14,9 @@ i18n
       },
       hi: {
         translation: Hi,
+      },
+      ru: {
+        translation: Ru,
       },
     },
 });
