@@ -9,17 +9,16 @@ import { classNames } from '@/util/classNames';
 import ProjectsLayout from '@/layouts/projects/Layout';
 
 import { SnackBar } from '@/components/SnackBar';
+import i18n from '../../translations/i18n';
 import { isElectron } from '../../core/handleElectron';
 import { saveProfile } from '../../core/projects/handleProfile';
 import CustomList from './CustomList';
 import * as logger from '../../logger';
 
-import i18n from 'src/translations/i18n';
-
 const languages = [
-  { title: 'English', code:'en' },
-  { title: 'Hindi', code:'hi' },
-  { title: 'Russian', code:'ru' },
+  { title: 'English', code: 'en' },
+  { title: 'Hindi', code: 'hi' },
+  { title: 'Russian', code: 'ru' },
 ];
 
 function ProgressCircle({ isFilled, count, text }) {
@@ -101,12 +100,12 @@ export default function UserProfile() {
     }
   }, [username, values, appMode]);
 
-  React.useEffect(()=>{
+  React.useEffect(() => {
     const currentLang = languages.filter(
-      (lang) => lang.code === i18n.language
+      (lang) => lang.code === i18n.language,
     );
     setAppLang(currentLang[0]);
-  },[])
+  }, []);
 
   const handleSave = async (e) => {
     logger.debug('Profile.js', 'In handleSave for Saving profile');
