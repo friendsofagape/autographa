@@ -22,5 +22,5 @@ i18n
     },
 });
 
-i18n.changeLanguage('en');
+// i18n.changeLanguage('en');
 export default i18n;

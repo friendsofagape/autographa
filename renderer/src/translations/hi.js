@@ -27,6 +27,7 @@ export const Hi = {
     'projects-page': 'प्रोजेक्ट्स/प्रोजेक्टएँ ',
     'label-search': 'खोजें',
     'label-project': 'प्रोजेक्ट',
+    'label-flavour': 'स्वाद',
     'label-project-type': 'प्रकार',
     'label-project-name': 'प्रोजेक्ट का नाम',
     'label-language': 'भाषा',
