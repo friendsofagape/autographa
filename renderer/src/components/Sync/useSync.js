@@ -1,31 +1,51 @@
 /* eslint-disable no-alert */
 import React from 'react';
-import parseFetchProjects from '../../core/projects/parseFetchProjects';
+// import parseFetchProjects from '../../core/projects/parseFetchProjects';
+import * as localForage from 'localforage';
 import parseFileUpdate from '../../core/projects/parseFileUpdate';
 import * as logger from '../../logger';
 import { isUSFM, getId } from '../../core/Sync/handleSync';
+import fetchProjectsMeta from '../../core/projects/fetchProjectsMeta';
 
 function useSync() {
   const projectList = [];
   const [agProjects, setAgProjects] = React.useState([]);
+  const [agProjectsMeta, setAgProjectsMeta] = React.useState([]);
   const [dragFromAg, setDragFromAg] = React.useState();
   const [dropToAg, setDropToAg] = React.useState();
-  const fetchProjects = async (username) => {
+
+  const fetchProjects = async () => {
     logger.debug('Dropzone.js', 'calling fetchProjects event');
-    await parseFetchProjects(username)
-    .then((res) => {
-      res.forEach((project) => {
-        // eslint-disable-next-line prefer-const
-        let file = [];
-        project.get('canoncontent').forEach((val, i) => {
-          file.push({ filename: val, meta: project.get(`file${i + 1}`) });
-        });
-        projectList.push(project.get('projectName'));
+    localForage.getItem('userProfile').then(async (user) => {
+      await fetchProjectsMeta({ currentUser: user?.username })
+      .then((value) => {
+      // console.log("value :  " ,value.projects);
+      setAgProjectsMeta(value.projects);
+      value.projects.forEach((project) => {
+        projectList.push(project.identification.name.en);
+        // console.log("project name :  " ,project.identification.name.en);
       });
     }).finally(() => {
       logger.debug('Dropzone.js', 'Updating project List');
       setAgProjects(projectList);
+      // console.log("value agproject :  " ,agProjects);
     });
+    });
+
+    // await parseFetchProjects(username)
+    // .then((res) => {
+    //   res.forEach((project) => {
+    //     // eslint-disable-next-line prefer-const
+    //     let file = [];
+    //     project.get('canoncontent').forEach((val, i) => {
+    //       file.push({ filename: val, meta: project.get(`file${i + 1}`) });
+    //     });
+    //     projectList.push(project.get('projectName'));
+    //   });
+    // }).finally(() => {
+    //   logger.debug('Dropzone.js', 'Updating project List');
+    //   setAgProjects(projectList);
+    // });
   };
   const onDragEnd = async (result) => {
     logger.debug('Dropzone.js', 'calling onDragEnd event');
@@ -73,6 +93,7 @@ function useSync() {
   const response = {
     state: {
       agProjects,
+      agProjectsMeta,
       dragFromAg,
       dropToAg,
     },

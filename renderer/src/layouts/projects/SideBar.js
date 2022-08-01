@@ -8,6 +8,7 @@ import NewProjectIcon from '@/icons/new.svg';
 import SyncIcon from '@/icons/sync.svg';
 
 export default function SideBar() {
+  // eslint-disable-next-line no-unused-vars
   const [appMode, setAppMode] = useState();
   const { t } = useTranslation();
   useEffect(() => {
@@ -49,7 +50,19 @@ export default function SideBar() {
             </a>
           </Link>
         </li>
-        {(appMode === 'online')
+        <li className="text-gray-900 font-medium hover:text-white hover:bg-primary cursor-pointer py-5">
+          <Link href="/sync">
+            <a className="flex flex-col items-center" href="#sync">
+              <SyncIcon
+                fill="none"
+                strokecurrent="none"
+                className="h-7 w-7 text-dark group-hover:text-white"
+              />
+              <div className="text-xs mt-3 uppercase">{t('label-sync')}</div>
+            </a>
+          </Link>
+        </li>
+        {/* {(appMode === 'online')
           && (
           <li className="text-gray-900 font-medium hover:text-white hover:bg-primary cursor-pointer py-5">
             <Link href="/sync">
@@ -63,7 +76,7 @@ export default function SideBar() {
               </a>
             </Link>
           </li>
-          )}
+          )} */}
       </ul>
     </div>
 

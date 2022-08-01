@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { ChevronRightIcon } from '@heroicons/react/solid';
 // import FileIcon from '@/icons/file.svg';
 import Dropzone from './Dropzone/Dropzone';
-import fetchParseFiles from '../../core/projects/fectchParseFiles';
+// import fetchParseFiles from '../../core/projects/fectchParseFiles';
 import * as logger from '../../logger';
 import { SyncContext } from './SyncContextProvider';
 
@@ -16,19 +16,31 @@ export default function ProjectFileBrowser() {
   const username = 'Michael';
   const [index, setIndex] = useState(-1);
   const {
-    states: { agProjects },
+    states: { agProjects, agProjectsMeta },
     action: { fetchProjects, onDragEnd, handleDrop },
   } = useContext(SyncContext);
 
   const [files, setFiles] = useState([]);
+  // const [projectMeta, setProjectmeta] = useState([]);
   const [loading, setLoading] = useState(false);
+  const { t } = useTranslation();
 
   const handleProjects = async (projectName, indexValue) => {
     logger.debug('Dropzone.js', 'calling handleProjects event');
     setLoading(true);
-    const res = await fetchParseFiles(username, projectName);
+    // const res = await fetchParseFiles(username, projectName);
+
+    const selectedProject = agProjectsMeta.filter((project) => project.identification.name.en === projectName);
+    // const selectedFiles = [];
+    // for (let key in selectedProject[0].ingredients) {
+    //   selectedFiles.push(key.split('/').pop());
+    // }
+    setFiles(selectedProject[0]);
+    // console.log("selected : == :",selectedProject[0].identification.name.en);
+    // console.log("selected files : == :", selectedFiles);
+
     setIndex(indexValue);
-    setFiles(res);
+    // setFiles(res);
     setLoading(false);
 
     // .then((res) => {
@@ -36,11 +48,15 @@ export default function ProjectFileBrowser() {
     //   setFiles(res);
     // });
   };
+
   useEffect(() => {
-    fetchProjects(username);
+    const getProjects = async () => {
+      await fetchProjects();
+    };
+    getProjects();
     // eslint-disable-next-line
   }, []);
-  const { t } = useTranslation();
+
   return (
     <>
       <div className="flex flex-row mx-5 my-3 border-b-1 border-primary">
@@ -50,7 +66,7 @@ export default function ProjectFileBrowser() {
           onClick={() => setIndex(-1)}
           data-testid="ag-step1"
         >
-          {t('app-name')}
+          {`${t('app-name') } `}
           {t('label-project')}
         </button>
         {agProjects[index]
@@ -94,10 +110,10 @@ export default function ProjectFileBrowser() {
 
             {index !== -1 && agProjects[index] !== undefined ? (
               <tbody className="bg-white divide-y divide-gray-200">
-
-                {files.map((file) => (
-                  <tr key={file.filename} draggable onDragStart={() => onDragEnd(file)} className="cursor-pointer">
-
+                {/* {files.map((file) => ( */}
+                {Object.keys(files.ingredients).map((file) => (
+                  // <tr key={file.filename} draggable onDragStart={() => onDragEnd(file)} className="cursor-pointer">
+                  <tr key={file}>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
                         <svg viewBox="0 0 14 16" fill="none" className="mr-2 h-5 w-5 text-gray-500" xmlns="http://www.w3.org/2000/svg">
@@ -108,19 +124,20 @@ export default function ProjectFileBrowser() {
                         </svg>
 
                         <span className="text-sm text-gray-900">
-                          {file.filename}
-                          (
+                          {/* {file.filename} */}
+                          {file.split('/').pop()}
+                          {/* (
                           {file.filenameAlias}
-                          )
+                          ) */}
                         </span>
 
                       </div>
                     </td>
                     {/* <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{file.created}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{file.updated}</td> */}
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{file.updated}</td> */}
                   </tr>
               ))}
-                <Dropzone dropped={() => handleDrop({ index, username })} />
+                {/* <Dropzone dropped={() => handleDrop({ index, username })} /> */}
               </tbody>
           )
             : (
@@ -128,6 +145,8 @@ export default function ProjectFileBrowser() {
                 {agProjects.map((project, i) => (
                   <tr
                     key={project}
+                    draggable
+                    onDragStart={() => onDragEnd(project)}
                     onClick={() => handleProjects(project, i)}
                     data-testid="project-id"
                     className="cursor-pointer"
@@ -144,10 +163,12 @@ export default function ProjectFileBrowser() {
                         <span className="text-sm text-gray-900">{project}</span>
                       </div>
                     </td>
+
                     {/* <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{file.created}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{file.updated}</td> */}
                   </tr>
                 ))}
+                <Dropzone dropped={() => handleDrop({ index, username })} />
               </tbody>
             )}
           </table>
