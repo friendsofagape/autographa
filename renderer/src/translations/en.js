@@ -27,6 +27,7 @@ export const En = {
     'projects-page': 'Projects',
     'label-search': 'Search',
     'label-project': 'Project',
+    'label-flavour': 'Flavour',
     'label-project-type': 'Type',
     'label-project-name': 'Project Name',
     'label-language': 'Language',

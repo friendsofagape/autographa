@@ -18,8 +18,6 @@ import { saveReferenceResource } from '@/core/projects/updateAgSettings';
 import styles from './MenuBar.module.css';
 import LogoIcon from '@/icons/logo.svg';
 
-const profile = ['Your Profile'];
-
 export default function TopMenuBar() {
   const {
     states: {
@@ -44,6 +42,8 @@ export default function TopMenuBar() {
   const _projectnamewithId = selectedProject;
   const projectname = _projectnamewithId?.split('_');
   const { action: { logout } } = React.useContext(AuthenticationContext);
+
+  const profile = [t('label-your-profile')];
 
   function closeSideBar(open) {
     setOpenSideBar(open);

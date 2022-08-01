@@ -14,12 +14,11 @@ import { AuthenticationContext } from '@/components/Login/AuthenticationContextP
 import Notifications from '@/modules/notifications/Notifications';
 import { classNames } from '@/util/classNames';
 
-const profile = ['Your Profile'];
-
 export default function TopMenuBar() {
   const [openSideBar, setOpenSideBar] = useState(false);
   const { action: { logout } } = React.useContext(AuthenticationContext);
   const { t } = useTranslation();
+  const profile = [t('label-your-profile')];
   const userPic = true;
   // function openSideBars() {
   //   setOpenSideBar(true);
