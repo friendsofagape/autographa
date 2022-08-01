@@ -198,6 +198,11 @@ function useProjectsSort() {
                             description = _project.project?.textStories?.description;
                             flavorType = 'OBS';
                             break;
+                          case 'audioTranslation':
+                            lastSeen = _project.project?.audioTranslation?.lastSeen;
+                            description = _project.project?.audioTranslation?.description;
+                            flavorType = 'Audio';
+                            break;
                           default:
                             break;
                         }

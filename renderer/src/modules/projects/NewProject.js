@@ -12,7 +12,7 @@ import { SnackBar } from '@/components/SnackBar';
 import useValidator from '@/components/hooks/useValidator';
 import ConfirmationModal from '@/layouts/editor/ConfirmationModal';
 import LayoutIcon from '@/icons/basil/Outline/Interface/Layout.svg';
-// import BullhornIcon from '@/icons/basil/Outline/Communication/Bullhorn.svg';
+import BullhornIcon from '@/icons/basil/Outline/Communication/Bullhorn.svg';
 // import ProcessorIcon from '@/icons/basil/Outline/Devices/Processor.svg';
 // import CheckIcon from '@/icons/basil/Outline/Interface/Check.svg';
 import ImageIcon from '@/icons/basil/Outline/Files/Image.svg';
@@ -28,11 +28,11 @@ const solutions = [
     href: '##',
     icon: LayoutIcon,
   },
-  // {
-  //   name: 'Audio',
-  //   href: '##',
-  //   icon: BullhornIcon,
-  // },
+  {
+    name: 'Audio',
+    href: '##',
+    icon: BullhornIcon,
+  },
   // {
   //   name: 'MT',
   //   href: '##',
@@ -248,6 +248,10 @@ export default function NewProject({ call, project, closeEdit }) {
         setHeaderDropDown('OBS');
         break;
 
+      case 'audioTranslation':
+        setHeaderDropDown('Audio');
+        break;
+
       default:
         break;
     }
@@ -351,7 +355,8 @@ export default function NewProject({ call, project, closeEdit }) {
                     <TargetLanguagePopover />
                   </div>
                 </div>
-
+                {headerDropDown !== 'Audio'
+                && (
                 <div className="mt-5">
                   <button
                     type="button"
@@ -363,6 +368,7 @@ export default function NewProject({ call, project, closeEdit }) {
                   </button>
                   <ImportPopUp open={openPopUp} closePopUp={closeImportPopUp} projectType={headerDropDown} />
                 </div>
+                )}
               </div>
 
               <div>
