@@ -179,7 +179,7 @@ export default function ProjectList() {
                                                 (event) => handleSelectProject(event, project.name, project.id[0])
                                               }
                                               role="button"
-                                              id={project.name}
+                                              id={`${project.name}`}
                                               aria-label="project-name"
                                               tabIndex="0"
                                               className="focus:outline-none text-sm font-medium text-gray-900"
@@ -293,8 +293,8 @@ export default function ProjectList() {
                                             className="px-4 py-4"
                                           >
                                             <button
-                                              aria-label="unstar-project"
                                               title="unstar project"
+                                              aria-label="unstar-project"
                                               onClick={(event) => handleClickStarred(event, project.name, 'unstarred')}
                                               type="button"
                                             >
@@ -316,7 +316,7 @@ export default function ProjectList() {
                                             <div className="flex items-center">
                                               <div className="ml-0">
                                                 <div
-                                                  id={project.name}
+                                                  id={`${project.name}`}
                                                   onClick={
                                                     (event) => handleSelectProject(event, project.name, project.id[0])
                                                   }

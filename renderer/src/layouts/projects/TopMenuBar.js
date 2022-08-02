@@ -125,17 +125,20 @@ export default function TopMenuBar() {
                               ))}
                             <Menu.Item>
                               {({ active }) => (
-                                <a
-                                  id="signout"
-                                  href="#signout"
-                                  onClick={() => logout()}
-                                  className={classNames(
+                                <Link href="/">
+                                  <a
+                                    id="signout"
+                                    href="#signout"
+                                    onClick={() => logout()}
+                                    className={classNames(
                                       active ? 'bg-gray-100' : '',
                                       'block px-4 py-2 text-sm text-gray-700',
                                     )}
-                                >
-                                  {t('btn-signout')}
-                                </a>
+                                  >
+                                    {t('btn-signout')}
+                                  </a>
+                                </Link>
+
                                 )}
                             </Menu.Item>
                           </Menu.Items>

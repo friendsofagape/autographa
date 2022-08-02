@@ -5,6 +5,7 @@ const config: PlaywrightTestConfig = {
 	maxFailures: 2,
 	timeout: 60000,
 	globalTimeout: 60 * 60 * 1000,
+	retries: 3,
 };
 
 export default config;

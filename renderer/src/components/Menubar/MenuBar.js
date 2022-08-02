@@ -12,7 +12,7 @@ const MenuBar = ({
 }) => (
   <Menu as="div" className="relative inline-block text-left">
     <div>
-      <Menu.Button aria-label={header === 'File' ? 'select-menu-file' : ''} className={styles.dd}>
+      <Menu.Button aria-label={header === 'File' ? 'select-menu-file' : 'select-menu-edit'} className={styles.dd}>
         {header}
       </Menu.Button>
     </div>
@@ -27,7 +27,7 @@ const MenuBar = ({
     >
       <Menu.Items style={style} className="flex absolute z-50 left-0 w-screen mt-2 -ml-2 origin-top-left bg-white divide-y divide-gray-100 shadow ring-1 ring-black ring-opacity-5 focus:outline-none">
         {MenuItems.map((item) => (
-          <div key={item.itemname} className="flex px-1 py-1">
+          <div key={item.itemname} aria-label={header !== 'File' ? 'section-header' : ''} className="flex px-1 py-1">
             <Menu.Item>
               {({ active }) => (
                   item.renderElement ? (

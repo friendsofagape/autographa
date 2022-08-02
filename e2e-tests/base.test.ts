@@ -17,7 +17,7 @@ test('Check for autographa app render', async () => {
 });
 
 // test('Create a new user and Navigate project', async () => {
-// 	await window.fill('#username', 'newUser');
+// 	await window.fill('#username', 'bobby');
 // 	await window.click('[data-testid=login-button]');
 // 	const title = await window.textContent('[aria-label=projects]');
 // 	expect(title).toBe('Projects');
@@ -27,14 +27,13 @@ test('Click user and Navigate projects', async () => {
 	await window.click('#bobby');
 	const title = await window.textContent('[aria-label=projects]');
 	expect(title).toBe('Projects');
-	// await electronApp.close();
 });
 
 /* Translation Project    */
 // test('Click New and Fill translation project page details to creating a new project', async () => {
-// 	await window.click('#newUser');
+// 	// await window.click('#bobby');
 // 	await window.click('[aria-label=new]');
-// 	await window.fill('#project_name', 'latest project');
+// 	await window.fill('#project_name', 'translation testing');
 // 	await window.fill('#project_description', 'test version');
 // 	await window.fill('#version_abbreviated', 'test');
 // 	await window.click('#open-advancesettings');
@@ -43,129 +42,72 @@ test('Click user and Navigate projects', async () => {
 // 	await window.click('[aria-label=create]');
 // 	const projectname = await window.innerText('[aria-label=project-name]');
 // 	console.log(projectname);
-// 	expect(projectname).toBe('latest project');
+// 	expect(projectname).toBe('translation testing');
 // });
 
 // test('Star the project', async () => {
-// 	await window.click('#newUser');
 // 	await window.click('[aria-label=unstar-project]');
-// 	const projectname = await window.innerText('[aria-label=project-name]');
-// 	expect(projectname).toBe('latest project');
+// 	const projectname = await window.innerText(
+// 		'[aria-label=unstar-project-name]',
+// 	);
+// 	console.log(projectname, 'hello');
+// 	expect(projectname).toBe('translation testing');
 // });
 
-// test('Unstar the project', async () => {
+// test('Untar the project', async () => {
 // 	await window.click('[aria-label=star-project]');
 // 	const projectname = await window.innerText(
-// 		'[aria-label=unstar-project-name]',
+// 		'[aria-label=star-project-name]',
 // 	);
-// 	expect(projectname).toBe('latest project');
+// 	console.log(projectname, 'hi');
+// 	expect(projectname).toBe('translation testing');
 // });
 
-// test('Search and test for resulting project', async () => {
-// 	await window.fill('#search_box', 'latest');
+// test('Search and test translation for resulting project', async () => {
+// 	await window.fill('#search_box', 'translation');
 // 	const projectname = await window.innerText(
 // 		'[aria-label=unstar-project-name]',
 // 	);
-// 	expect(projectname).toBe('latest project');
+// 	expect(projectname).toBe('translation testing');
 // });
 
-// test('Create/Edit New Language to the project', async () => {
+//OBS
+// test('Click New and Fill OBS project page details to creating a new project', async () => {
+// 	// await window.click('#bobby');
 // 	await window.click('[aria-label=new]');
-// 	await window.click('[aria-label=add-language]');
-// 	await window.fill('#search_box', 'urdu');
-// 	await window.click('[value=RTL]');
-// 	await window.click('[aria-label=create-language]');
+// 	await window.click('#headlessui-popover-button-13');
+// 	await window.click('[data-id=OBS]');
+// 	await window.fill('#project_name', 'obs testing');
+// 	await window.fill('#project_description', 'obs version');
+// 	await window.fill('#version_abbreviated', 'ot');
+// 	await window.click('[aria-label=create]');
+// });
+
+// test('Search and OBS for resulting project', async () => {
+// 	await window.fill('#search_box', 'obs');
+// 	const projectname = await window.innerText(
+// 		'[aria-label=unstar-project-name]',
+// 	);
+// 	expect(projectname).toBe('obs testing');
 // });
 
 // test('Update User profile and Navigate projects', async () => {
 // 	await window.click('text=Open user menu');
 // 	await window.click('id=profile');
-// 	await window.fill('#organisation', 'The vidya foundations');
+// 	await window.fill('#organisation', 'The vidya');
 // 	await window.click('button:text("Save")');
 // 	await window.click('[aria-label=projectList]');
-// 	const projectname = await window.innerText('[aria-label=star-project]');
-// 	console.log(projectname);
-// 	expect(projectname).toBe('aatest project');
 // });
 
 // test('Sign out and return to Autographa app', async () => {
 // 	await window.click('text=Open user menu');
-// 	await window.click('text=Sign out');
+// 	await window.click('id=signout');
 // 	const title = await window.textContent('text=Sign In');
 // 	expect(title).toBe('Sign In');
 // });
 
-/* Translation Editor */
-test('Click on project to open editor page', async () => {
-	await window.click('id=translation testing');
-	const editorpane = await window.innerText('[aria-label=editor-pane]');
-	expect(editorpane).toBe('EDITOR');
-});
+// test.afterAll(async () => {
+// 	await window.context().close();
 
-test('Check project name', async () => {
-	const projectname = await window.innerText(
-		'[aria-label=editor-project-name]',
-	);
-	expect(projectname).toBe('TRANSLATION TESTING');
-});
-
-// test('Testing About', async () => {
-// 	await window.click('[aria-label=about-button]');
-// 	const developedby = await window.innerText('[aria-label=developed-by]');
-// 	expect(developedby).toBe('Developed by Bridge Connectivity Solutions');
-// 	await window.click('[aria-label=license-button]');
-// 	await window.click('[aria-label=close-about]');
+// 	await window.close();
 // });
-
-// test('Testing Notificaton', async () => {
-// 	await window.click('[aria-label=notification-button]');
-// 	const title = await window.innerText('[aria-label=notification-title]');
-// 	expect(title).toBe('NOTIFICATIONS');
-// 	await window.click('[aria-label=close-notification]');
-// });
-
-// test('Checking resources in added panel', async () => {
-// 	await window.click('[aria-label=add-panels]');
-// 	let title = await window.innerText('[aria-label=number-of-panels]');
-// 	console.log(title);
-// 	expect(title).toBe('2');
-// 	await window.hover('[aria-label=resources-panel]');
-// 	await window.click('[aria-label=resources-selector]');
-// 	title = await window.innerText('[aria-label=resources-title]');
-// 	expect(title).toBe('RESOURCES');
-// 	await window.click('[aria-label=close-resources]');
-// });
-
-// test('Testing by adding the panels', async () => {
-// 	await window.click('[aria-label=add-panels]');
-// 	let title = await window.innerText('[aria-label=number-of-panels]');
-// 	expect(title).toBe('3');
-// 	await window.click('[aria-label=add-panels]');
-// 	title = await window.innerText('[aria-label=number-of-panels]');
-// 	expect(title).toBe('1');
-// });
-
-// test('Increase font size', async () => {
-// 	await window.click('[aria-label=increase-font]');
-// });
-
-// test('Decrease font size', async () => {
-// 	await window.click('[aria-label=decrease-font]');
-// });
-
-test('Testing bookmarks window', async () => {
-	await window.click('[aria-label=select-menu-file]');
-	await window.click('[aria-label=select-bookmarks]');
-	await window.click('[aria-label=close-button]');
-});
-
-// // test('Checking scroll lock', async () => {
-// //     await window.click('[aria-label=add-panels]');
-// //     const editoreBookname = await window.innerText('[aria-label=editor-bookname]');
-// //     const panel = await window.innerText('[aria-label=number-of-panels]');
-// //     expect(panel).toBe('2');
-// //     await window.click('[aria-label=close-lock]');
-// //     const resourceBookname = await window.innerText('[aria-label=resource-bookname]');
-// //     expect(resourceBookname).toBe(editoreBookname);
-// //     await window.click('[aria-label=open-lock]');
-// // });

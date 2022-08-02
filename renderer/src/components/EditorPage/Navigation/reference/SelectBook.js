@@ -95,6 +95,7 @@ export default function SelectBook({
                         <div
                           role="presentation"
                           key={book.name}
+                          aria-label={`ot-${book.name}`}
                           onClick={(e) => (
                           multiSelectBook
                           ? selectMultipleBooks(e, book.key, book.name)
@@ -133,6 +134,7 @@ export default function SelectBook({
                   <div
                     key={book.name}
                     role="presentation"
+                    aria-label={`nt-${book.name}`}
                     onClick={(e) => (multiSelectBook
                     ? selectMultipleBooks(e, book.key, book.name)
                     : bookSelect(e, book.key, book.name))}

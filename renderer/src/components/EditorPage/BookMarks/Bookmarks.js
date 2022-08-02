@@ -72,6 +72,7 @@ export default function Bookmarks() {
             role="button"
             tabIndex="0"
             onClick={() => { gotoChapter(bookmark.bookname, bookmark.chapter); }}
+            aria-label={`${bookmark.bookname}-${bookmark.chapter}`}
             key={bookmark.bookname + bookmark.chapter}
             className="flex justify-between items-center hover:bg-gray-400 bg-gray-200 p-2 pr-5 text-sm font-semibold tracking-wider border-b border-gray-300 shadow-sm"
           >
