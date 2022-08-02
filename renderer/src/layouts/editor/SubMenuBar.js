@@ -1,4 +1,22 @@
-import { useState, useContext, useEffect } from 'react';
+/* eslint-disable no-unused-vars */
+/* eslint-disable max-len */
+import { Fragment, useState, useEffect, useContext } from 'react';
+
+import { Dialog, Transition } from '@headlessui/react';
+
+import {
+	// PencilIcon,
+	// DuplicateIcon,
+	// ArchiveIcon,
+	// TrashIcon,
+	// ExternalLinkIcon,
+	BellIcon,
+	// InformationCircleIcon,
+	XIcon,
+	ViewGridIcon,
+	TableIcon,
+} from '@heroicons/react/outline';
+
 import { BookmarkIcon } from '@heroicons/react/solid';
 import { useTranslation } from 'react-i18next';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
@@ -15,140 +33,135 @@ import menuStyles from './MenuBar.module.css';
 import styles from './SubMenuBar.module.css';
 
 const activate = () => {
-  // console.log('rename');
+	// console.log('rename');
 };
 
 const EditorTools = [
-  {
-    renderElement: <CustomUsfmToolbar />,
-  },
+	{
+		renderElement: <CustomUsfmToolbar />,
+	},
 ];
 
 export default function SubMenuBar() {
-  const [open, setOpen] = useState(false);
-  // const [snackBar, setSnackBar] = useState(true);
-  const {
-    state: {
-      layout,
-      row,
-    },
-    actions: {
-      setOpenResource1,
-      setOpenResource3,
-      setLayout,
-      setRow,
-    },
-  } = useContext(ReferenceContext);
-  const {
-    states: {
-      editorSave,
-    },
-    actions: {
-      setOpenSideBar,
-    },
-  } = useContext(ProjectContext);
+	const [open, setOpen] = useState(false);
+	// const [snackBar, setSnackBar] = useState(true);
+	const {
+		state: { layout, row },
+		actions: { setOpenResource1, setOpenResource3, setLayout, setRow },
+	} = useContext(ReferenceContext);
+	const {
+		states: { editorSave },
+		actions: { setOpenSideBar },
+	} = useContext(ProjectContext);
 
-  const openBookMarks = () => {
-    setOpenSideBar(true);
-  };
-  const { t } = useTranslation();
-  const FileMenuItems = [
-    {
-      itemname: t('label-bookmarks'),
-      icon: <BookmarkIcon />,
-      callback: openBookMarks,
-    },
-    {
-      itemname: 'Font',
-      icon: <Font />,
-      renderElement: <MenuDropdown />,
-      callback: activate,
-    },
-    ];
+	const openBookMarks = () => {
+		setOpenSideBar(true);
+	};
+	const { t } = useTranslation();
+	const FileMenuItems = [
+		{
+			itemname: t('label-bookmarks'),
+			icon: <BookmarkIcon />,
+			callback: openBookMarks,
+		},
+		{
+			itemname: 'Font',
+			icon: <Font />,
+			renderElement: <MenuDropdown />,
+			callback: activate,
+		},
+	];
 
-  const handleResource = () => {
-    if (layout === 0) {
-      setOpenResource1(false);
-    }
-    if (layout === 1) {
-      setOpenResource1(false);
-      setOpenResource3(false);
-    }
+	const handleResource = () => {
+		if (layout === 0) {
+			setOpenResource1(false);
+		}
+		if (layout === 1) {
+			setOpenResource1(false);
+			setOpenResource3(false);
+		}
 
-    if (layout < 3) {
-      setLayout(layout + 1);
-      setRow(row + 1);
-    }
-    if (layout >= 2) {
-      setLayout(0);
-      setRow(row + 1);
-    }
-    // if (layout === 2) { setLayout(0); }
-  };
+		if (layout < 3) {
+			setLayout(layout + 1);
+			setRow(row + 1);
+		}
+		if (layout >= 2) {
+			setLayout(0);
+			setRow(row + 1);
+		}
+		// if (layout === 2) { setLayout(0); }
+	};
 
-  // Third Attempts
-  // useEffect(() => {
-  //   const timer = counter > 0 && setInterval(() => setCounter(counter - 1), 1000);
-  //   if (counter <= 0) {
-  //     // setNotification(refernceLoading.text);
-  //     setRefernceLoading({
-  //       status: false,
-  //       text: '',
-  //     });
-  //   }
-  //   return () => clearInterval(timer);
-  // // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [counter]);
+	// Third Attempts
+	// useEffect(() => {
+	//   const timer = counter > 0 && setInterval(() => setCounter(counter - 1), 1000);
+	//   if (counter <= 0) {
+	//     // setNotification(refernceLoading.text);
+	//     setRefernceLoading({
+	//       status: false,
+	//       text: '',
+	//     });
+	//   }
+	//   return () => clearInterval(timer);
+	// // eslint-disable-next-line react-hooks/exhaustive-deps
+	// }, [counter]);
 
-  // function timeOutClose() {
-  //   if (counter <= 0) {
-  //     setSnackBar(false);
-  //   }
-  // }
+	// function timeOutClose() {
+	//   if (counter <= 0) {
+	//     setSnackBar(false);
+	//   }
+	// }
 
-  function openModal(isOpen) {
-    setOpen(isOpen);
-  }
-  // This below code is for identifying the type of resource to remove Bookmarks from OBS
-  const [resourceType, setResourceType] = useState();
-  useEffect(() => {
-    localforage.getItem('userProfile').then((value) => {
-      const username = value?.username;
-      localforage.getItem('currentProject').then((projectName) => {
-        const path = require('path');
-        const fs = window.require('fs');
-        const newpath = localStorage.getItem('userPath');
-        const metaPath = path.join(newpath, 'autographa', 'users', username, 'projects', projectName, 'metadata.json');
-        const data = fs.readFileSync(metaPath, 'utf-8');
-        const metadata = JSON.parse(data);
-        setResourceType(metadata.type.flavorType.flavor.name);
-      });
-    });
-  });
+	function openModal(isOpen) {
+		setOpen(isOpen);
+	}
+	// This below code is for identifying the type of resource to remove Bookmarks from OBS
+	const [resourceType, setResourceType] = useState();
+	useEffect(() => {
+		localforage.getItem('userProfile').then((value) => {
+			const username = value?.username;
+			localforage.getItem('currentProject').then((projectName) => {
+				const path = require('path');
+				const fs = window.require('fs');
+				const newpath = localStorage.getItem('userPath');
+				const metaPath = path.join(
+					newpath,
+					'autographa',
+					'users',
+					username,
+					'projects',
+					projectName,
+					'metadata.json',
+				);
+				const data = fs.readFileSync(metaPath, 'utf-8');
+				const metadata = JSON.parse(data);
+				setResourceType(metadata.type.flavorType.flavor.name);
+			});
+		});
+	});
 
-  return (
-    <>
+	return (
+		<>
+			<AboutModal openModal={openModal} open={open} />
 
-      <AboutModal openModal={openModal} open={open} />
+			{/* <StatsModal openModal={openStatsModal} open={openStats} /> */}
 
-      {/* <StatsModal openModal={openStatsModal} open={openStats} /> */}
-
-      {/* <Transition appear show={refernceLoading.status} as={Fragment}>
+			{/* <Transition appear show={refernceLoading.status} as={Fragment}>
         <Dialog
           as={Fragment}
           // className="fixed inset-0 z-10 overflow-y-auto"
           onClose={() => { }}
         > */}
-      {/* <1div className="static"> */}
+			{/* <1div className="static"> */}
 
-      {/* This element is to trick the browser into centering the modal contents. */}
-      {/* <span
+			{/* This element is to trick the browser into centering the modal contents. */}
+			{/* <span
               // className="inline-block h-screen align-bottom"
               aria-hidden="true"
             >
               &#8203;
             </span> */}
-      {/* <Transition.Child
+			{/* <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"
               enterFrom="opacity-0 scale-95"
@@ -158,7 +171,7 @@ export default function SubMenuBar() {
               leaveTo="opacity-0 scale-95"
             > */}
 
-      {/* <div className="inline-block absolute bottom-0 left-0 align-top transform transition-all w-2/5 p-4">
+			{/* <div className="inline-block absolute bottom-0 left-0 align-top transform transition-all w-2/5 p-4">
 
                 <div className="relative p-5 mt-5 bg-validation rounded-lg text-sm font-semibold text-gray-500">
                   <button
@@ -174,7 +187,7 @@ export default function SubMenuBar() {
                   </p>closeSnackBar
                 </div> */}
 
-      {/* <div className="relative p-5 mt-5 bg-light rounded-lg text-sm font-semibold text-gray-500">
+			{/* <div className="relative p-5 mt-5 bg-light rounded-lg text-sm font-semibold text-gray-500">
                   <button
                     type="button"
                     className="bg-black absolute top-0 right-0 h-6 w-6 rounded-full text-center text-white p-1 -mt-2 -mr-2 focus:outline-none"
@@ -196,61 +209,68 @@ export default function SubMenuBar() {
                   <p>This is a Notifiction.</p>
                 </div> */}
 
-      {/* </div>
+			{/* </div>
 
             </Transition.Child>
           </div>
         </Dialog>
       </Transition> */}
 
-      <nav className="flex p-2 shadow-sm border-b border-gray-200">
-        <div className="w-3/5">
-          <MenuBar header={t('label-menu-file')} MenuItems={resourceType === 'textStories' ? FileMenuItems.slice(1) : FileMenuItems} />
-          {/* <span>
+			<nav className='flex p-2 shadow-sm border-b border-gray-200'>
+				<div className='w-3/5'>
+					<MenuBar
+						header={t('label-menu-file')}
+						MenuItems={
+							resourceType === 'textStories'
+								? FileMenuItems.slice(1)
+								: FileMenuItems
+						}
+					/>
+					{/* <span>
             <MenuBar header="FORMAT" MenuItems={FormatMenuItems} style={{ left: '-60px' }} />
           </span> */}
-          {/* <button type="button" className={styles.menu} aria-expanded="false">
+					{/* <button type="button" className={styles.menu} aria-expanded="false">
             <span>Insert</span>
           </button> */}
-          <span>
-            <MenuBar header={t('label-menu-edit')} MenuItems={EditorTools} style={{ left: '-60px', height: '65px' }} />
-          </span>
-          <button
-            aria-label="about-button"
-            type="button"
-            onClick={() => setOpen(true)}
-            className={styles.menu}
-            aria-expanded="false"
-          >
-            <span>{t('label-menu-about')}</span>
-          </button>
-        </div>
-        {/* <div className="w-2/3">
+					<span>
+						<MenuBar
+							header={t('label-menu-edit')}
+							MenuItems={EditorTools}
+							style={{ left: '-60px', height: '65px' }}
+						/>
+					</span>
+					<button
+						aria-label='about-button'
+						type='button'
+						onClick={() => setOpen(true)}
+						className={styles.menu}
+						aria-expanded='false'>
+						<span>{t('label-menu-about')}</span>
+					</button>
+				</div>
+				{/* <div className="w-2/3">
           <div className="flex-1 items-center text-center place-self-center" />
         </div> */}
-        <div className="w-2/5">
-          <div className="flex justify-end">
-
-            <div className={`group ${menuStyles.saved}`}>
-              <span>
-                {editorSave}
-              </span>
-            </div>
-
-            <button aria-label="add-panels" title={t('tooltip-editor-layout')} type="button" onClick={() => handleResource()} className={`group ${menuStyles.btn}`}>
-              <ColumnsIcon fill="currentColor" className="h-6 w-6" aria-hidden="true" />
-              <span
-                aria-label="number-of-panels"
-                className="px-2 ml-1 bg-primary
+				<div className='w-2/5'>
+					<div className='flex justify-end'>
+						<button
+							aria-label='add-panels'
+							title='layout'
+							type='button'
+							onClick={() => handleResource()}
+							className={`group ${menuStyles.btn}`}>
+							<TableIcon className='h-6 w-6' aria-hidden='true' />
+							<span
+								aria-label='number-of-panels'
+								className='px-2 ml-1 bg-primary
               text-white  group-hover:bg-white
               group-hover:text-primary inline-flex
-              text-xxs leading-5 font-semibold rounded-full"
-              >
-                {layout + 1}
-              </span>
-            </button>
-            <CustomNofications />
-            {/* <button type="button" className={`group ${menuStyles.btn}`}>
+              text-xxs leading-5 font-semibold rounded-full'>
+								{layout + 1}
+							</span>
+						</button>
+						<CustomNofications />
+						{/* <button type="button" className={`group ${menuStyles.btn}`}>
               <ReplyIcon fill="currentColor" className="h-6 w-6" aria-hidden="true" />
             </button>
             <button type="button" className={`group ${menuStyles.btn} mx-0`}>
@@ -271,19 +291,16 @@ export default function SubMenuBar() {
               </span>
             </div> */}
 
-            {/* <button
+						{/* <button
               type="button"
               onClick={() => setOpen(true)}
               className={menuStyles.btn}
             >
               <InformationCircleIcon className="h-6 w-6" aria-hidden="true" />
             </button> */}
-
-          </div>
-        </div>
-      </nav>
-
-    </>
-
-  );
+					</div>
+				</div>
+			</nav>
+		</>
+	);
 }

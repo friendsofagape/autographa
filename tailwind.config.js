@@ -19,7 +19,7 @@ module.exports = {
       validation: '#FFE5E5',
       white: colors.white,
       light: '#E4F1FF',
-      gray: colors.slate,
+      gray: colors.neutral,
       dark: '#333333',
       black: colors.black,
       green: colors.emerald,
@@ -32,9 +32,20 @@ module.exports = {
       },
       height: {
         editor: 'calc(-9rem + 100vh)',
+        'audio-editor': 'calc(-6.5rem + 100vh)',
       },
     },
   },
+  // variants: {
+  //   extend: {
+  //     display: ['group-hover'],
+  //   },
+  //   width: ['first', 'last'],
+  //   fontFamily: {
+  //     sans: ['Graphik', 'sans-serif'],
+  //     serif: ['Merriweather', 'serif'],
+  //   },
+  // },
   plugins: [
     require('@tailwindcss/forms'),
     require('@tailwindcss/typography'),
