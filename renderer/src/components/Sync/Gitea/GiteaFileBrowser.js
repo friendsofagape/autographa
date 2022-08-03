@@ -79,6 +79,7 @@ const GiteaFileBrowser = ({ changeRepo }) => {
     });
   };
   const { t } = useTranslation();
+
   const handleDrop = (data) => {
     logger.debug('Dropzone.js', 'calling handleDrop event');
     if (data?.result?.from === 'autographa') {

@@ -56,6 +56,13 @@ function useSync() {
       setDragFromAg({ result: { ...result, content: usfmValue, from: 'autographa' } });
     });
   };
+
+  const onDragEndFolder = async (projectMeta) => {
+    logger.debug('Dropzone.js', 'calling onDragEndFolder event');
+    // console.log("dropped project name : ", projectMeta);
+    setDragFromAg({ result: { projectMeta, from: 'autographa' } });
+  };
+
   const handleDropToAg = (data) => {
     setDropToAg(data);
   };
@@ -100,6 +107,7 @@ function useSync() {
     actions: {
       fetchProjects,
       onDragEnd,
+      onDragEndFolder,
       setDragFromAg,
       handleDropToAg,
       handleDrop,

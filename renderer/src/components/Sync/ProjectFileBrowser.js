@@ -17,7 +17,9 @@ export default function ProjectFileBrowser() {
   const [index, setIndex] = useState(-1);
   const {
     states: { agProjects, agProjectsMeta },
-    action: { fetchProjects, onDragEnd, handleDrop },
+    action: {
+      fetchProjects, onDragEndFolder, handleDrop,
+    },
   } = useContext(SyncContext);
 
   const [files, setFiles] = useState([]);
@@ -29,7 +31,6 @@ export default function ProjectFileBrowser() {
     logger.debug('Dropzone.js', 'calling handleProjects event');
     setLoading(true);
     // const res = await fetchParseFiles(username, projectName);
-
     const selectedProject = agProjectsMeta.filter((project) => project.identification.name.en === projectName);
     // const selectedFiles = [];
     // for (let key in selectedProject[0].ingredients) {
@@ -146,7 +147,7 @@ export default function ProjectFileBrowser() {
                   <tr
                     key={project}
                     draggable
-                    onDragStart={() => onDragEnd(project)}
+                    onDragStart={() => onDragEndFolder(agProjectsMeta.filter((projectData) => projectData.identification.name.en === project))}
                     onClick={() => handleProjects(project, i)}
                     data-testid="project-id"
                     className="cursor-pointer"
