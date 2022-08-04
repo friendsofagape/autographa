@@ -1,9 +1,9 @@
-/* eslint-disable */
+/* eslint-disable */ 
 import React, { useContext } from 'react';
 import {
   AuthenticationContext,
   RepositoryContext,
-  createContent, readContent, get,
+  createContent, readContent, get, createRepository,
 } from 'gitea-react-toolkit';
 import { useTranslation } from 'react-i18next';
 import { ChevronRightIcon } from '@heroicons/react/solid';
@@ -12,6 +12,7 @@ import Dropzone from '../Dropzone/Dropzone';
 import * as logger from '../../../logger';
 import { SyncContext } from '../SyncContextProvider';
 
+// eslint-disable-next-line react/prop-types
 const GiteaFileBrowser = ({ changeRepo }) => {
   const {
     states: { dragFromAg }, action: { setDragFromAg, handleDropToAg },
@@ -87,7 +88,8 @@ const GiteaFileBrowser = ({ changeRepo }) => {
     await createContent({
       config: auth.config,
       owner: auth.user.login,
-      repo: repo.name,
+      // repo: repo.name,
+      repo: repoName,
       branch: `${username}/${created}.1`,
       filepath: filePath,
       content: fileContent,
@@ -103,6 +105,31 @@ const GiteaFileBrowser = ({ changeRepo }) => {
     .catch((err) => {
       logger.debug('Dropzone.js', `failed to upload file to Gitea ${filePath} ${err}`);
       // console.log(filePath, ' : error : ', err);
+    });
+  };
+
+  const handleCreateRepo = async (repoName, description) => {
+    const settings = {
+      name: repoName,
+      description: description || `Repo Created For ${repoName}`,
+      private: false,
+    };
+    return new Promise(async (resolve, reject) => {
+      await createRepository(
+        {
+          config: auth.config,
+          repo: settings?.name,
+          settings,
+        },
+      ).then((result) => {
+        logger.debug('Dropzone.js', 'call to create repo from Gitea');
+        // console.log("create repo : ", result);
+        resolve(result);
+      }).catch((err) => {
+        logger.debug('Dropzone.js', 'call to create repo from Gitea Error : ', err);
+        // console.log("create repo : ", result);
+        reject(err);
+      });
     });
   };
 
@@ -123,38 +150,54 @@ const GiteaFileBrowser = ({ changeRepo }) => {
         const path = require('path');
         const projectsMetaPath = path.join(newpath, 'autographa', 'users', user?.username, 'projects', `${projectName}_${projectId}`);
 
-        // console.log("start uploading");
-        logger.debug('Dropzone.js', 'calling handleDropFolder event - syncing started');
-        // read metadata
-        const Metadata = fs.readFileSync(path.join(projectsMetaPath, 'metadata.json'), 'utf8');
-        await createFiletoServer(Metadata, 'metadata.json', user.username, projectCreated, repoName.toLowerCase());
-        // Read ingredients
-        for (const key in ingredientsObj) {
-          const Metadata1 = fs.readFileSync(path.join(projectsMetaPath, key), 'utf8');
-          await createContent({
-            config: auth.config,
-            owner: auth.user.login,
-            repo: repo.name,
-            branch: `${user?.username}/${projectCreated}.1`,
-            filepath: key,
-            content: Metadata1,
-            message: `commit ${key}`,
-            author: {
-              email: auth.user.email,
-              username: auth.user.username,
-            },
-          }).then((res) => {
-            logger.debug('Dropzone.js', `file uploaded to Gitea ${key}`);
-            console.log('RESPONSE :', res);
-          })
-          .catch((err) => {
-            logger.debug('Dropzone.js', `failed to upload file to Gitea ${key}`);
-            console.log(key, ' : error : ', err);
-          });
-        }
-        setDragFromAg();
-        logger.debug('Dropzone.js', 'calling handleDropFolder event - syncing Finished');
-        // console.log("Finish uploading");
+        // Create A REPO for the project
+        // const repoResponse = await handleCreateRepo(repoName.toLowerCase()).then((res) => {
+        await handleCreateRepo(repoName.toLowerCase()).then(
+          async (result) => {
+          if (result.id) {
+            // Successfully created , upload new files to repo
+            // console.log("inside success creation", result.name);
+            console.log("start uploading");
+            logger.debug('Dropzone.js', 'calling handleDropFolder event - Repo created : syncing started');
+            // read metadata
+            const Metadata = fs.readFileSync(path.join(projectsMetaPath, 'metadata.json'), 'utf8');
+            await createFiletoServer(Metadata, 'metadata.json', user.username, projectCreated, result.name);
+            // Read ingredients
+            for (const key in ingredientsObj) {
+              const Metadata1 = fs.readFileSync(path.join(projectsMetaPath, key), 'utf8');
+              await createContent({
+                config: auth.config,
+                owner: auth.user.login,
+                // repo: repo.name,
+                repo: result.name,
+                branch: `${user?.username}/${projectCreated}.1`,
+                filepath: key,
+                content: Metadata1,
+                message: `commit ${key}`,
+                author: {
+                  email: auth.user.email,
+                  username: auth.user.username,
+                },
+              }).then((res) => {
+                logger.debug('Dropzone.js', `file uploaded to Gitea ${key}`);
+                // console.log('RESPONSE :', res);
+              })
+              .catch((err) => {
+                logger.debug('Dropzone.js', `failed to upload file to Gitea ${key}`);
+                // console.log(key, ' : error : ', err);
+              });
+            }
+            setDragFromAg();
+            logger.debug('Dropzone.js', 'calling handleDropFolder event - syncing Finished');
+            console.log("Finish uploading");
+            }
+          },
+          (error) => {
+            // error creation , conflict already exist 409, update content if there.
+            logger.debug('Dropzone.js', 'calling handleDropFolder event - Repo already exist : ', err);
+            // console.log('inside error : ', error);
+          },
+        );
       });
     }
   };
@@ -183,7 +226,7 @@ const GiteaFileBrowser = ({ changeRepo }) => {
   }, [repo?.tree_url]);
 
   const testingFileUpload = async () => {
-    await handleDropFolder();
+    console.log('clicked');
   };
 
   return (
@@ -271,7 +314,7 @@ const GiteaFileBrowser = ({ changeRepo }) => {
         </tbody>
       </table>
       <Dropzone dropped={() => handleDropFolder(dragFromAg)} />
-      <button type="button" onClick={() => handleDropFolder(dragFromAg)}>CLICK ME</button>
+      <button type="button" onClick={() => testingFileUpload()}>CLICK ME</button>
     </>
     )
   );
