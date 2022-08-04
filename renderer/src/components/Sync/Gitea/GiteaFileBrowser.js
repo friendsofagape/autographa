@@ -7,15 +7,18 @@ import {
 } from 'gitea-react-toolkit';
 import { useTranslation } from 'react-i18next';
 import { ChevronRightIcon } from '@heroicons/react/solid';
+import * as localForage from 'localforage';
 import Dropzone from '../Dropzone/Dropzone';
 import * as logger from '../../../logger';
-import {SyncContext} from '../SyncContextProvider';
+import { SyncContext } from '../SyncContextProvider';
+
 const GiteaFileBrowser = ({ changeRepo }) => {
   const {
-    states: { dragFromAg }, action: {setDragFromAg,handleDropToAg}
+    states: { dragFromAg }, action: { setDragFromAg, handleDropToAg },
   } = React.useContext(SyncContext);
   const [projects, setProjects] = React.useState([]);
   const [files, setFiles] = React.useState([]);
+  // eslint-disable-next-line no-unused-vars
   const [activeStep, setActiveStep] = React.useState();
   const [steps, setSteps] = React.useState([]);
   const { state: auth, component: authComponent } = useContext(
@@ -37,7 +40,7 @@ const GiteaFileBrowser = ({ changeRepo }) => {
     const tree = [];
     const blob = [];
     const response = await get({ url, config: auth.config });
-    response.tree.forEach((list) => {
+    response.tree?.forEach((list) => {
       if (list.type === 'blob') {
         blob.push(list);
       }
@@ -80,36 +83,82 @@ const GiteaFileBrowser = ({ changeRepo }) => {
   };
   const { t } = useTranslation();
 
-  const handleDrop = (data) => {
-    logger.debug('Dropzone.js', 'calling handleDrop event');
+  const createFiletoServer = async (fileContent, filePath, username, created, repoName) => {
+    await createContent({
+      config: auth.config,
+      owner: auth.user.login,
+      repo: repo.name,
+      branch: `${username}/${created}.1`,
+      filepath: filePath,
+      content: fileContent,
+      message: `commit ${filePath}`,
+      author: {
+        email: auth.user.email,
+        username: auth.user.username,
+      },
+    }).then(() => {
+      logger.debug('Dropzone.js', `file uploaded to Gitea ${filePath}`);
+      // console.log('RESPONSE :', res);
+    })
+    .catch((err) => {
+      logger.debug('Dropzone.js', `failed to upload file to Gitea ${filePath} ${err}`);
+      // console.log(filePath, ' : error : ', err);
+    });
+  };
+
+  const handleDropFolder = async (data) => {
+    logger.debug('Dropzone.js', 'calling handleDropFolder event');
     if (data?.result?.from === 'autographa') {
-      logger.debug('Dropzone.js', 'fata send from Autographa');
-      const filePath = getPath(data.result.filename);
-      const result = createContent({
-        config: auth.config,
-        owner: auth.user.login,
-        repo: repo.name,
-        branch: 'master',
-        filepath: filePath+`.usfm`,
-        content: data.result.data,
-        message: 'Testing createContent via AG using Gitea-React-Toolkit',
-        author: {
-          email: auth.user.email,
-          username: auth.user.username,
-        },
-      });
-      result.then(() => {
-        logger.debug('Dropzone.js', 'file uploaded to Gitea');
-        setDragFromAg()
-        alert('success');
-      })
-      .catch((err) => {
-        logger.debug('Dropzone.js', 'failed to upload file to Gitea');
-        setDragFromAg()
-        alert(err);
+      logger.debug('Dropzone.js', 'data send from Autographa');
+      const projectData = data.result.projectMeta[0];
+      const projectId = Object.keys(projectData.identification.primary.ag)[0];
+      const projectName = projectData.identification.name.en;
+      const ingredientsObj = projectData.ingredients;
+      const projectCreated = projectData.meta.dateCreated.split('T')[0];
+      const repoName = `ag-${projectData.languages[0].tag}-${projectData.type.flavorType.flavor.name}-${projectName.replace(/\s+/g, '_')}`;
+
+      localForage.getItem('userProfile').then(async (user) => {
+        const newpath = localStorage.getItem('userPath');
+        const fs = window.require('fs');
+        const path = require('path');
+        const projectsMetaPath = path.join(newpath, 'autographa', 'users', user?.username, 'projects', `${projectName}_${projectId}`);
+
+        // console.log("start uploading");
+        logger.debug('Dropzone.js', 'calling handleDropFolder event - syncing started');
+        // read metadata
+        const Metadata = fs.readFileSync(path.join(projectsMetaPath, 'metadata.json'), 'utf8');
+        await createFiletoServer(Metadata, 'metadata.json', user.username, projectCreated, repoName.toLowerCase());
+        // Read ingredients
+        for (const key in ingredientsObj) {
+          const Metadata1 = fs.readFileSync(path.join(projectsMetaPath, key), 'utf8');
+          await createContent({
+            config: auth.config,
+            owner: auth.user.login,
+            repo: repo.name,
+            branch: `${user?.username}/${projectCreated}.1`,
+            filepath: key,
+            content: Metadata1,
+            message: `commit ${key}`,
+            author: {
+              email: auth.user.email,
+              username: auth.user.username,
+            },
+          }).then((res) => {
+            logger.debug('Dropzone.js', `file uploaded to Gitea ${key}`);
+            console.log('RESPONSE :', res);
+          })
+          .catch((err) => {
+            logger.debug('Dropzone.js', `failed to upload file to Gitea ${key}`);
+            console.log(key, ' : error : ', err);
+          });
+        }
+        setDragFromAg();
+        logger.debug('Dropzone.js', 'calling handleDropFolder event - syncing Finished');
+        // console.log("Finish uploading");
       });
     }
   };
+
   const handleStep = (step) => () => {
     logger.debug('Dropzone.js', 'calling handleStep event');
     steps.splice(step + 1, steps.length);
@@ -132,31 +181,38 @@ const GiteaFileBrowser = ({ changeRepo }) => {
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [repo?.tree_url]);
+
+  const testingFileUpload = async () => {
+    await handleDropFolder();
+  };
+
   return (
     (!auth && authComponent)
     || (!repo && repoComponent)
     || (
     <>
       <div className="flex flex-row mx-5 my-3 border-b-1 border-primary">
-        <span className="font-semibold" onClick={cleanRepo}>
-          {t('label-Gitea')} {t('label-project')}
+        <span className="font-semibold" onClick={cleanRepo} role="button" tabIndex={-1}>
+          {t('label-Gitea')}
+          {' '}
+          {t('label-project')}
         </span>
         {steps.map((label, index) => (
           (steps.length - 1 === index)
             ? (
-              <span className="font-semibold tracking-wide text-primary " onClick={handleStep(index)}>
+              <span className="font-semibold tracking-wide text-primary " onClick={handleStep(index)} role="button" tabIndex={-1}>
                 <ChevronRightIcon className="h-4 w-4 mx-2 inline-block fill-current text-gray-800" aria-hidden="true" />
                 {label.name}
               </span>
             ) : (
-              <span className="font-semibold" onClick={handleStep(index)} role="button">
+              <span className="font-semibold" onClick={handleStep(index)} role="button" tabIndex={-1}>
                 <ChevronRightIcon className="h-4 w-4 mx-2 inline-block fill-current text-gray-800" aria-hidden="true" />
                 {label.name}
               </span>
             )
         ))}
       </div>
-      
+
       <table className="min-w-full divide-y divide-gray-200">
         <thead className="bg-gray-50">
           <tr>
@@ -214,7 +270,8 @@ const GiteaFileBrowser = ({ changeRepo }) => {
                   ))}
         </tbody>
       </table>
-      <Dropzone dropped={()=>handleDrop(dragFromAg)} />
+      <Dropzone dropped={() => handleDropFolder(dragFromAg)} />
+      <button type="button" onClick={() => handleDropFolder(dragFromAg)}>CLICK ME</button>
     </>
     )
   );
