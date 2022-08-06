@@ -102,7 +102,7 @@ export const importServerProject = async (updateBurrito, repo, sbData, auth, use
 
     // fetch and add ingredients
     for (const key in sbDataObject.ingredients) {
-        console.log(sbDataObject);
+        // console.log(key);
         await readContent(
             {
               config: auth.config,
@@ -113,19 +113,23 @@ export const importServerProject = async (updateBurrito, repo, sbData, auth, use
             },
           ).then(async (result) => {
             logger.debug('giteaUtils import.js', 'sending the data from Gitea with content');
-            console.log('file from server : ', result.name);
-            await fetch(result.download_url)
-                .then((resposne) => resposne.text())
-                .then(async (ingredient) => {
-                try {
-                    await fs.writeFileSync(path.join(projectDir, `${projectName}_${id}`, key), ingredient);
-                    logger.debug('giteaUtils import.js', `Write File success ${key}`);
-                  } catch (err) {
-                    logger.debug('dropzone giteaUtils import.js', `Error write file ${key} : `, err);
-                    console.error(err);
-                  }
-            });
-          });
+            // console.log('file from server : ', result.name);
+            if (result !== null) {
+              await fetch(result.download_url)
+                  .then((resposne) => resposne.text())
+                  .then(async (ingredient) => {
+                  try {
+                      await fs.writeFileSync(path.join(projectDir, `${projectName}_${id}`, key), ingredient);
+                      logger.debug('giteaUtils import.js', `Write File success ${key}`);
+                    } catch (err) {
+                      logger.debug('dropzone giteaUtils import.js', `Error write file ${key} : `, err);
+                      console.error(err);
+                    }
+              });
+            } else {
+              logger.debug('dropzone giteaUtils import.js', `Error in read ${key} from Server `);
+            }
+          })
       }
     // check md5 values
     Object.entries(sbDataObject.ingredients).forEach(([key, value]) => {
@@ -217,6 +221,6 @@ export const importServerProject = async (updateBurrito, repo, sbData, auth, use
     }
     await fs.writeFileSync(path.join(projectDir, `${projectName}_${id}`, 'metadata.json'), JSON.stringify(sbDataObject));
     logger.debug('importBurrito.js', 'Creating the metadata.json Burrito file.');
-    // console.log('finished import project');
+    console.log('finished import project');
     });
 };
