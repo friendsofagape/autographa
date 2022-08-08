@@ -3,7 +3,8 @@ import React, { useContext } from 'react';
 import {
   AuthenticationContext,
   RepositoryContext,
-  createContent, readContent, get, createRepository,
+  createContent, readContent, updateContent,
+  get, createRepository,
 } from 'gitea-react-toolkit';
 import { useTranslation } from 'react-i18next';
 import { ChevronRightIcon } from '@heroicons/react/solid';
@@ -17,7 +18,7 @@ import { checkDuplicate } from '@/core/burrito/importBurrito';
 import ConfirmationModal from '@/layouts/editor/ConfirmationModal';
 import burrito from '../../../lib/BurritoTemplete.json';
 import { importServerProject } from './GiteaUtils';
-import path from 'path';
+// import path from 'path';
 
 // eslint-disable-next-line react/prop-types
 const GiteaFileBrowser = ({ changeRepo }) => {
@@ -158,7 +159,7 @@ const GiteaFileBrowser = ({ changeRepo }) => {
 
   // Read gitea folder structure and data after drag
   const readGiteaFolderData = async (repo) => {
-    logger.debug('Dropzone.js', 'calling read Gitea Folder Data event');
+    logger.debug('Dropzone.js', 'calling read Gitea Folder Data event');  
     // console.log("read folder data : ", repo);
     // get all branch details
     console.log("fetching branches");
@@ -286,6 +287,42 @@ const GiteaFileBrowser = ({ changeRepo }) => {
     });
   };
 
+  const updateFiletoServer = async (fileContent, filePath, username, created, repoName) => {
+    await readContent(
+      {
+        config: auth.config,
+        owner: auth.user.login,
+        repo: repoName.toLowerCase(),
+        ref: `${username}/${created}.1`,
+        filepath: filePath,
+      },
+    ).then( async (result) => {
+      logger.debug('Dropzone.js', 'sending the data from Gitea with content');
+      await updateContent({
+        config: auth.config,
+        owner: auth.user.login,
+        repo: repoName.toLowerCase(),
+        branch: `${username}/${created}.1`,
+        filepath: result.path,
+        content: fileContent,
+        message: `updated ${filePath}`,
+        author: {
+          email: auth.user.email,
+          username: auth.user.username,
+        },
+        sha: result.sha,
+      }).then((res) => {
+        logger.debug('Dropzone.js', `file uploaded to Gitea 'metadata.json'`);
+        // console.log('RESPONSE :', res);
+      })
+      .catch((err) => {
+        logger.debug('Dropzone.js', `failed to upload file to Gitea 'metadata.json'`, err);
+        console.log(filePath, ' : error : ', err);
+      });
+
+    });
+  };
+
   const handleCreateRepo = async (repoName, description) => {
     const settings = {
       name: repoName,
@@ -329,7 +366,6 @@ const GiteaFileBrowser = ({ changeRepo }) => {
         const projectsMetaPath = path.join(newpath, 'autographa', 'users', user?.username, 'projects', `${projectName}_${projectId}`);
 
         // Create A REPO for the project
-        // const repoResponse = await handleCreateRepo(repoName.toLowerCase()).then((res) => {
         await handleCreateRepo(repoName.toLowerCase()).then(
           async (result) => {
           if (result.id) {
@@ -347,7 +383,6 @@ const GiteaFileBrowser = ({ changeRepo }) => {
               await createContent({
                 config: auth.config,
                 owner: auth.user.login,
-                // repo: repo.name,
                 repo: result.name,
                 branch: `${user?.username}/${projectCreated}.1`,
                 filepath: key,
@@ -371,10 +406,26 @@ const GiteaFileBrowser = ({ changeRepo }) => {
             console.log("Finish uploading");
             }
           },
-          (error) => {
+
+          async (error) => {
             // error creation , conflict already exist 409, update content if there.
-            logger.debug('Dropzone.js', 'calling handleDropFolder event - Repo already exist : ', error);
-            // console.log('inside error : ', error);
+            logger.debug('Dropzone.js', 'calling handleDropFolder event - Repo already exist : ', error.message);
+            logger.debug('Dropzone.js', 'calling handleDropFolder event - started update project : ');
+            if (error.message.includes('409')) {
+              console.log("started update project ");
+              const metadataContent = fs.readFileSync(path.join(projectsMetaPath, 'metadata.json'));
+              await updateFiletoServer(JSON.stringify(metadataContent), 'metadata.json', user.username, projectCreated, repoName);
+              // Read ingredients and update
+              for (const key in ingredientsObj) {
+                const metadata1 = fs.readFileSync(path.join(projectsMetaPath, key), 'utf8');
+                await updateFiletoServer(metadata1, key, user.username, projectCreated, repoName);
+              }
+              setDragFromAg();
+              logger.debug('Dropzone.js', 'calling handleDropFolder event - update syncing Finished');
+              console.log("Finish updating project");
+            } else {
+              logger.debug('Dropzone.js', 'calling handleDropFolder event - Repo Updation Error : ', error.message);
+            }
           },
         );
       });
