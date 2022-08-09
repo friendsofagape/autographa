@@ -1,4 +1,3 @@
-/* eslint-disable */ 
 import React, { useContext } from 'react';
 import {
   AuthenticationContext,
@@ -9,32 +8,34 @@ import {
 import { useTranslation } from 'react-i18next';
 import { ChevronRightIcon } from '@heroicons/react/solid';
 import * as localForage from 'localforage';
-import Dropzone from '../Dropzone/Dropzone';
 import { SnackBar } from '@/components/SnackBar';
-import * as logger from '../../../logger';
-import { SyncContext } from '../SyncContextProvider';
 import { validate } from '@/util/validate';
 import { checkDuplicate } from '@/core/burrito/importBurrito';
 import ConfirmationModal from '@/layouts/editor/ConfirmationModal';
+import { SyncContext } from '../SyncContextProvider';
+import * as logger from '../../../logger';
+import Dropzone from '../Dropzone/Dropzone';
 import burrito from '../../../lib/BurritoTemplete.json';
 import { importServerProject } from './GiteaUtils';
-// import path from 'path';
-import ProgressBar from '../ProgressBar'
+import ProgressBar from '../ProgressBar';
 
+/* eslint-disable no-console */
 // eslint-disable-next-line react/prop-types
 const GiteaFileBrowser = ({ changeRepo }) => {
   const {
-    states: { dragFromAg}, 
-    action: { 
+    states: { dragFromAg },
+    action: {
       setDragFromAg, handleDropToAg, setTotalUploadedAg, settotalFilesAg, setUploadstartAg,
     },
   } = React.useContext(SyncContext);
 
+  const { t } = useTranslation();
   const [totalUploaded, setTotalUploaded] = React.useState(0);
   const [uploadStart, setUploadstart] = React.useState(false);
   // const [uploadDone, setUploadDone] = React.useState(false);
   const [totalFiles, settotalFiles] = React.useState(0);
 
+  // eslint-disable-next-line no-unused-vars
   const [advacnedOption, setAdvacnedOption] = React.useState(false);
   const [projects, setProjects] = React.useState([]);
   const [files, setFiles] = React.useState([]);
@@ -113,49 +114,8 @@ const GiteaFileBrowser = ({ changeRepo }) => {
     });
   };
 
-  const callImport = async (updateBurrito) => {
-    modelClose();
-    logger.debug('Dropzone.js', 'Inside callImport');
-    console.log("inside IMport function , all validation success : ");
-    await importServerProject(updateBurrito, repo, sbData, auth, userBranch, 
-        {
-          setUploadstart,
-          setTotalUploaded,
-        }).finally(()=>{
-          setUploadstart(false);
-          setTotalUploaded(0);
-          settotalFiles(0);
-          handleDropToAg(null);
-        })
-  };
-
-  const checkBurritoVersion = () => {
-    logger.debug('Dropzone.js', 'Checking the burrito version');
-    // console.log("inside burrito version check :", burrito?.meta?.version, " : ", sbData?.meta?.version);
-    if (burrito?.meta?.version !== sbData?.meta?.version) {
-      setModel({
-        openModel: true,
-        title: t('modal-title-update-burrito'),
-        confirmMessage: t('dynamic-msg-update-burrito-version',{version1:sbData?.meta?.version, version2:burrito?.meta?.version}),
-        buttonName: t('btn-update'),
-      });
-    } else {
-      callImport(false);
-    }
-  };
-
-  const callFunction = () =>{
-    if (model.buttonName==='Replace'){
-      // console.log("replcae clicked");
-      checkBurritoVersion();
-    } else {
-      // call with update true for burrito
-      callImport(true);
-    }
-  }
-
   const modelClose = () => {
-    if(!model.buttonName==='Replace') {
+    if (!model.buttonName === 'Replace') {
       settotalFiles(0);
       handleDropToAg(null);
     }
@@ -167,19 +127,66 @@ const GiteaFileBrowser = ({ changeRepo }) => {
     });
   };
 
+  const callImport = async (updateBurrito) => {
+    modelClose();
+    logger.debug('Dropzone.js', 'Inside callImport');
+    // console.log('inside IMport function , all validation success : ');
+    await importServerProject(
+      updateBurrito,
+      repo,
+      sbData,
+      auth,
+      userBranch,
+        {
+          setUploadstart,
+          setTotalUploaded,
+        },
+    ).finally(() => {
+          setUploadstart(false);
+          setTotalUploaded(0);
+          settotalFiles(0);
+          handleDropToAg(null);
+        });
+    };
+
+  const checkBurritoVersion = () => {
+    logger.debug('Dropzone.js', 'Checking the burrito version');
+    // console.log("inside burrito version check :", burrito?.meta?.version, " : ", sbData?.meta?.version);
+    if (burrito?.meta?.version !== sbData?.meta?.version) {
+      setModel({
+        openModel: true,
+        title: t('modal-title-update-burrito'),
+        confirmMessage: t('dynamic-msg-update-burrito-version', { version1: sbData?.meta?.version, version2: burrito?.meta?.version }),
+        buttonName: t('btn-update'),
+      });
+    } else {
+      callImport(false);
+    }
+  };
+
+  const callFunction = () => {
+    if (model.buttonName === 'Replace') {
+      // console.log("replcae clicked");
+      checkBurritoVersion();
+    } else {
+      // call with update true for burrito
+      callImport(true);
+    }
+  };
+
   // Read gitea folder structure and data after drag
   const readGiteaFolderData = async (repo, from) => {
-    logger.debug('Dropzone.js', 'calling read Gitea Folder Data event');  
+    logger.debug('Dropzone.js', 'calling read Gitea Folder Data event');
     // console.log("read folder data : ", from);
     // get all branch details
     if (from === 'gitea') {
-      console.log("fetching branches", from);
+      console.log('fetching branches', from);
       await fetch(`https://git.door43.org/api/v1/repos/${repo.owner.username}/${repo.name}/branches`)
         .then((resposne) => resposne.json())
         .then((branchData) => {
           localForage.getItem('userProfile').then(async (user) => {
-            const regex = new RegExp(user.username + "\/\\d{4}-\\d{2}-\\d{2}.1");
-            const userProjectBranch = branchData.find(value => regex.test(value.name));
+            const regex = new RegExp(`${user.username }/\\d{4}-\\d{2}-\\d{2}.1`);
+            const userProjectBranch = branchData.find((value) => regex.test(value.name));
             // const userBranch = 'mater';
             if (userProjectBranch) {
               setUserBranch(userProjectBranch);
@@ -191,12 +198,12 @@ const GiteaFileBrowser = ({ changeRepo }) => {
                   ref: userProjectBranch?.name,
                   filepath: 'metadata.json',
                 },
-              ).then(async(result) => {
+              ).then(async (result) => {
                 logger.debug('Dropzone.js', 'sending the data from Gitea with content');
                 await fetch(result.download_url)
                   .then((resposne) => resposne.json())
-                  .then( async(metaContent) => {
-                  console.log("gitea meta : ", metaContent);
+                  .then(async (metaContent) => {
+                  // console.log('gitea meta : ', metaContent);
                   // Validate Burrito (check for metadata.json)
                   const sb = Buffer.from(metaContent.data);
                   const metaDataSb = JSON.parse(sb);
@@ -217,15 +224,15 @@ const GiteaFileBrowser = ({ changeRepo }) => {
                     // console.log("sb type : ", typeof sb);
                     // const success = await validate('metadata', 'gitea/metadata.json', sb, metaContent.meta.version);
 
-                    //////////////////////////////////////////////////////////////////////////
+                    /// ///////////////////////////////////////////////////////////////////////
 
-                  console.log("success : ", success);
-                  if(success) {
+                  console.log('success : ', success);
+                  if (success) {
                     // get total file count to fetch
                     settotalFiles(Object.keys(metaDataSb?.ingredients).length);
                     // check project exist
                     const duplicate = await checkDuplicate(metaDataSb, user.username, 'projects');
-                    console.log("duplicate : ", duplicate);
+                    console.log('duplicate : ', duplicate);
                     if (duplicate) {
                       logger.warn('ImportProjectPopUp.js', 'Project already available');
                       setModel({
@@ -239,29 +246,28 @@ const GiteaFileBrowser = ({ changeRepo }) => {
                     }
                   } else {
                     logger.debug('Dropzone.js', 'Burrito Validation Failed');
-                    console.log("Burrito Validation Failed");
+                    console.log('Burrito Validation Failed');
                     setNotify('failure');
-                    setSnackText("Burrito Validation Failed");
+                    setSnackText('Burrito Validation Failed');
                     setOpenSnackBar(true);
                   }
                   });
-              }).catch((err)=>{
+              }).catch((err) => {
                 logger.debug('Dropzone.js', 'Invalid Project , Burrito not found', err);
                 // console.log(" Error burrito not found", err);
                 setNotify('failure');
-                setSnackText("Invalid Project , Burrito not found");
+                setSnackText('Invalid Project , Burrito not found');
                 setOpenSnackBar(true);
               });
           } else {
             logger.debug('Dropzone.js', 'Invalid Project , No Valid Branch');
             // console.log("Invalid Project directory no valid Branch Found");
             setNotify('failure');
-            setSnackText("Invalid Project directory no valid Branch Found");
+            setSnackText('Invalid Project directory no valid Branch Found');
             setOpenSnackBar(true);
           }
-
-          })
-        })
+          });
+        });
       // Validate Burrito (check for metadata.json)
       // handleDropToAg({ result: { ...result, from: 'gitea' } });
 
@@ -283,8 +289,6 @@ const GiteaFileBrowser = ({ changeRepo }) => {
       setDragFromAg(null);
     }
   };
-
-  const { t } = useTranslation();
 
   const createFiletoServer = async (fileContent, filePath, username, created, repoName) => {
     await createContent({
@@ -319,7 +323,7 @@ const GiteaFileBrowser = ({ changeRepo }) => {
         ref: `${username}/${created}.1`,
         filepath: filePath,
       },
-    ).then( async (result) => {
+    ).then(async (result) => {
       logger.debug('Dropzone.js', 'sending the data from Gitea with content');
       await updateContent({
         config: auth.config,
@@ -334,15 +338,15 @@ const GiteaFileBrowser = ({ changeRepo }) => {
           username: auth.user.username,
         },
         sha: result.sha,
+      // eslint-disable-next-line no-unused-vars
       }).then((res) => {
-        logger.debug('Dropzone.js', `file uploaded to Gitea 'metadata.json'`);
+        logger.debug('Dropzone.js', 'file uploaded to Gitea \'metadata.json\'');
         // console.log('RESPONSE :', res);
       })
       .catch((err) => {
-        logger.debug('Dropzone.js', `failed to upload file to Gitea 'metadata.json'`, err);
+        logger.debug('Dropzone.js', 'failed to upload file to Gitea \'metadata.json\'', err);
         console.log(filePath, ' : error : ', err);
       });
-
     });
   };
 
@@ -352,6 +356,7 @@ const GiteaFileBrowser = ({ changeRepo }) => {
       description: description || `${repoName}`,
       private: false,
     };
+    // eslint-disable-next-line no-async-promise-executor
     return new Promise(async (resolve, reject) => {
       await createRepository(
         {
@@ -395,45 +400,51 @@ const GiteaFileBrowser = ({ changeRepo }) => {
             setUploadstartAg(true);
             // Successfully created , upload new files to repo
             // console.log("inside success creation", result.name);
-            console.log("start uploading");
+            console.log('start uploading');
             logger.debug('Dropzone.js', 'calling handleDropFolder event - Repo created : syncing started');
             // read metadata
             // const Metadata = fs.readFileSync(path.join(projectsMetaPath, 'metadata.json'), 'utf8');
             const Metadata = fs.readFileSync(path.join(projectsMetaPath, 'metadata.json'));
             await createFiletoServer(JSON.stringify(Metadata), 'metadata.json', user.username, projectCreated, result.name);
             // Read ingredients
+            /* eslint-disable no-await-in-loop */
+            /* eslint-disable no-restricted-syntax */
             for (const key in ingredientsObj) {
-              setTotalUploadedAg((prev) => prev + 1);
-              const Metadata1 = fs.readFileSync(path.join(projectsMetaPath, key), 'utf8');
-              await createContent({
-                config: auth.config,
-                owner: auth.user.login,
-                repo: result.name,
-                branch: `${user?.username}/${projectCreated}.1`,
-                filepath: key,
-                content: Metadata1,
-                message: `commit ${key}`,
-                author: {
-                  email: auth.user.email,
-                  username: auth.user.username,
-                },
-              }).then((res) => {
-                logger.debug('Dropzone.js', `file uploaded to Gitea ${key}`);
-                // console.log('RESPONSE :', res);
-              })
-              .catch((err) => {
-                logger.debug('Dropzone.js', `failed to upload file to Gitea ${key}`);
-                setUploadstartAg(false);
-                // console.log(key, ' : error : ', err);
-              });
+              if (Object.prototype.hasOwnProperty.call(ingredientsObj, key)) {
+                setTotalUploadedAg((prev) => prev + 1);
+                const Metadata1 = fs.readFileSync(path.join(projectsMetaPath, key), 'utf8');
+                await createContent({
+                  config: auth.config,
+                  owner: auth.user.login,
+                  repo: result.name,
+                  branch: `${user?.username}/${projectCreated}.1`,
+                  filepath: key,
+                  content: Metadata1,
+                  message: `commit ${key}`,
+                  author: {
+                    email: auth.user.email,
+                    username: auth.user.username,
+                  },
+                // eslint-disable-next-line no-unused-vars
+                }).then((res) => {
+                  logger.debug('Dropzone.js', `file uploaded to Gitea ${key}`);
+                  // console.log('RESPONSE :', res);
+                })
+                // eslint-disable-next-line no-unused-vars
+                .catch((err) => {
+                  logger.debug('Dropzone.js', `failed to upload file to Gitea ${key}`);
+                  setUploadstartAg(false);
+                  // console.log(key, ' : error : ', err);
+                });
             }
+          }
             setDragFromAg(null);
             setUploadstartAg(false);
             settotalFilesAg(0);
             setTotalUploadedAg(0);
             handleDropToAg(null);
             logger.debug('Dropzone.js', 'calling handleDropFolder event - syncing Finished');
-            console.log("Finish uploading");
+            console.log('Finish uploading');
             }
           },
 
@@ -442,22 +453,24 @@ const GiteaFileBrowser = ({ changeRepo }) => {
             logger.debug('Dropzone.js', 'calling handleDropFolder event - Repo already exist : ', error.message);
             logger.debug('Dropzone.js', 'calling handleDropFolder event - started update project : ');
             if (error.message.includes('409')) {
-              console.log("started update project ");
+              console.log('started update project ');
               setUploadstartAg(true);
               const metadataContent = fs.readFileSync(path.join(projectsMetaPath, 'metadata.json'));
               await updateFiletoServer(JSON.stringify(metadataContent), 'metadata.json', user.username, projectCreated, repoName);
               // Read ingredients and update
               for (const key in ingredientsObj) {
-                const metadata1 = fs.readFileSync(path.join(projectsMetaPath, key), 'utf8');
-                setTotalUploadedAg((prev) => prev + 1);
-                await updateFiletoServer(metadata1, key, user.username, projectCreated, repoName);
+                if (Object.prototype.hasOwnProperty.call(ingredientsObj, key)) {
+                  const metadata1 = fs.readFileSync(path.join(projectsMetaPath, key), 'utf8');
+                  setTotalUploadedAg((prev) => prev + 1);
+                  await updateFiletoServer(metadata1, key, user.username, projectCreated, repoName);
               }
+            }
               setDragFromAg(null);
               setUploadstartAg(false);
               settotalFilesAg(0);
               setTotalUploadedAg(0);
               logger.debug('Dropzone.js', 'calling handleDropFolder event - update syncing Finished');
-              console.log("Finish updating project");
+              console.log('Finish updating project');
             } else {
               logger.debug('Dropzone.js', 'calling handleDropFolder event - Repo Updation Error : ', error.message);
               setUploadstartAg(false);
@@ -513,60 +526,59 @@ const GiteaFileBrowser = ({ changeRepo }) => {
         {steps.map((label, index) => (
           (steps.length - 1 === index)
             ? (
-              <span key={index} className="font-semibold tracking-wide text-primary " onClick={handleStep(index)} role="button" tabIndex={-1}>
+              <span key={label} className="font-semibold tracking-wide text-primary " onClick={handleStep(label)} role="button" tabIndex={-1}>
                 <ChevronRightIcon className="h-4 w-4 mx-2 inline-block fill-current text-gray-800" aria-hidden="true" />
                 {label.name}
               </span>
             ) : (
-              <span key={index} className="font-semibold" onClick={handleStep(index)} role="button" tabIndex={-1}>
+              <span key={label} className="font-semibold" onClick={handleStep(index)} role="button" tabIndex={-1}>
                 <ChevronRightIcon className="h-4 w-4 mx-2 inline-block fill-current text-gray-800" aria-hidden="true" />
                 {label.name}
               </span>
             )
         ))}
       </div>
-      {uploadStart && 
-        <ProgressBar currentValue={totalUploaded} totalValue={totalFiles}/> 
-      }
+      {uploadStart
+        && <ProgressBar currentValue={totalUploaded} totalValue={totalFiles} />}
 
-      {!advacnedOption && 
-        <>
-         <table className="min-w-full divide-y divide-gray-200" data-testid="table">
-            <thead className="bg-gray-50">
-              <tr>
-                <th
-                  scope="col"
-                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                  data-testid="th-name"
-                >
-                  {t('label-name')}
-                </th>
-              </tr>
-            </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                  {/* <tr key={repo.name} draggable onDragStart={() => readGiteaFolderData(repo)}> */}
-                  <tr key={repo.name} draggable onDragStart={() => handleDropToAg({ result: { repo, from: 'gitea', readGiteaFolderData } })}>
-                    <td className="px-6 py-4 whitespace-nowrap cursor-pointer">
-                      <div className="flex items-center">
-                        <svg viewBox="0 0 14 16" fill="none" className="mr-2 h-5 w-5 text-gray-500" xmlns="http://www.w3.org/2000/svg">
-                          <path fillRule="evenodd" clipRule="evenodd" d="M9.09182 1.00903H3.95833C2.3696 1.00903 1 2.29684 1 3.88635V12.1526C1 13.8316 2.28009 15.1703 3.95833 15.1703H10.1227C11.7122 15.1703 13 13.7428 13 12.1526V5.08002L9.09182 1.00903Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                          <path d="M8.88916 1V3.2446C8.88916 4.34028 9.77573 5.22917 10.8706 5.23148C11.8868 5.2338 12.9262 5.23457 12.9964 5.22994" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                          <path opacity="0.4" d="M8.74248 10.8824H4.57812" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                          <path opacity="0.4" d="M7.16739 7.06128H4.57788" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                        </svg>
+      {!advacnedOption
+        && (
+        <table className="min-w-full divide-y divide-gray-200" data-testid="table">
+          <thead className="bg-gray-50">
+            <tr>
+              <th
+                scope="col"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                data-testid="th-name"
+              >
+                {t('label-name')}
+              </th>
+            </tr>
+          </thead>
+          <tbody className="bg-white divide-y divide-gray-200">
+            {/* <tr key={repo.name} draggable onDragStart={() => readGiteaFolderData(repo)}> */}
+            <tr key={repo.name} draggable onDragStart={() => handleDropToAg({ result: { repo, from: 'gitea', readGiteaFolderData } })}>
+              <td className="px-6 py-4 whitespace-nowrap cursor-pointer">
+                <div className="flex items-center">
+                  <svg viewBox="0 0 14 16" fill="none" className="mr-2 h-5 w-5 text-gray-500" xmlns="http://www.w3.org/2000/svg">
+                    <path fillRule="evenodd" clipRule="evenodd" d="M9.09182 1.00903H3.95833C2.3696 1.00903 1 2.29684 1 3.88635V12.1526C1 13.8316 2.28009 15.1703 3.95833 15.1703H10.1227C11.7122 15.1703 13 13.7428 13 12.1526V5.08002L9.09182 1.00903Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    <path d="M8.88916 1V3.2446C8.88916 4.34028 9.77573 5.22917 10.8706 5.23148C11.8868 5.2338 12.9262 5.23457 12.9964 5.22994" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    <path opacity="0.4" d="M8.74248 10.8824H4.57812" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    <path opacity="0.4" d="M7.16739 7.06128H4.57788" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
 
-                        <span className="text-sm text-gray-900">
-                         {repo?.name}
-                        </span>
-                      </div>
-                    </td>
-                  </tr>
-              </tbody>
-          </table>
-        </>
-      }
-      
-      {advacnedOption && 
+                  <span className="text-sm text-gray-900">
+                    {repo?.name}
+                  </span>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+)}
+
+      {advacnedOption
+      && (
       <table className="min-w-full divide-y divide-gray-200">
         <thead className="bg-gray-50">
           <tr>
@@ -593,7 +605,7 @@ const GiteaFileBrowser = ({ changeRepo }) => {
         <tbody className="bg-white divide-y divide-gray-200">
           {projects.map((project) => (
             <tr key={project.name} onClick={() => fetchTree(project.url, project.path)}>
-            {/* <tr key={project.name}> */}
+              {/* <tr key={project.name}> */}
               {/* {console.log("project : ", projects)} */}
               <td
                 className="px-6 py-4 whitespace-nowrap"
@@ -625,8 +637,8 @@ const GiteaFileBrowser = ({ changeRepo }) => {
             </tr>
                   ))}
         </tbody>
-      </table> 
-      }
+      </table>
+)}
       <Dropzone dropped={() => handleDropFolder(dragFromAg)} />
       <SnackBar
         openSnackBar={snackBar}
@@ -641,7 +653,7 @@ const GiteaFileBrowser = ({ changeRepo }) => {
         setOpenModal={() => modelClose()}
         confirmMessage={model.confirmMessage}
         buttonName={model.buttonName}
-        closeModal={()=>callFunction()}
+        closeModal={() => callFunction()}
       />
     </>
     )

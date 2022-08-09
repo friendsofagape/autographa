@@ -1,4 +1,3 @@
-/* eslint-disable no-alert */
 import React from 'react';
 // import parseFetchProjects from '../../core/projects/parseFetchProjects';
 import * as localForage from 'localforage';
@@ -99,15 +98,16 @@ function useSync() {
             data: usfmValue,
             filenameAlias: data.result.name,
           })
+          // eslint-disable-next-line no-unused-vars
           .then((response) => {
             handleDropToAg();
-            alert(response);
+            // alert(response);
           });
         });
       } else {
         logger.debug('Dropzone.js', 'Not a USFM file.');
         handleDropToAg();
-        alert('Not a USFM file.');
+        // alert('Not a USFM file.');
       }
     }
   };
