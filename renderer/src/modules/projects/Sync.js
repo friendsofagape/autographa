@@ -16,19 +16,19 @@ export default function Sync() {
       colOne={(
         <form action="#" className="flex flex-row mx-5">
           <div className="flex items-center h-5">
-            <input
+            {/* <input
               id="comments"
               name="comments"
               type="checkbox"
               onClick={() => setIsOpen(true)}
               className="focus:ring-indigo-500 h-4 w-4 text-primary border-gray-300 rounded"
-            />
+            /> */}
           </div>
           <div className="ml-3 text-sm">
             {/* eslint jsx-a11y/label-has-associated-control: ["error", { assert: "either" } ] */}
-            <label htmlFor="comments" className="font-medium text-gray-700">
+            {/* <label htmlFor="comments" className="font-medium text-gray-700">
               {t('label-show-hidden-file')}
-            </label>
+            </label> */}
           </div>
         </form>
 

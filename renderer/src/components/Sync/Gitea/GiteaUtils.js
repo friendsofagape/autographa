@@ -12,10 +12,9 @@ import { environment } from '../../../../environment';
 const md5 = require('md5');
 const path = require('path');
 
-export const importServerProject = async (updateBurrito, repo, sbData, auth, userBranch) => {
+export const importServerProject = async (updateBurrito, repo, sbData, auth, userBranch, action) => {
     logger.debug('GiteaUtils.js', 'Inside Import Project');
     // console.log('inside server project import');
-
     await localForage.getItem('userProfile').then(async (user) => {
     const currentUser = user.username;
     const fs = window.require('fs');
@@ -101,7 +100,9 @@ export const importServerProject = async (updateBurrito, repo, sbData, auth, use
     logger.debug('dropzone giteaUtils import.js', 'Creating a directory if not exists.');
 
     // fetch and add ingredients
+    action.setUploadstart(true);
     for (const key in sbDataObject.ingredients) {
+        action.setTotalUploaded((prev) => prev + 1);
         // console.log(key);
         await readContent(
             {
@@ -221,6 +222,7 @@ export const importServerProject = async (updateBurrito, repo, sbData, auth, use
     }
     await fs.writeFileSync(path.join(projectDir, `${projectName}_${id}`, 'metadata.json'), JSON.stringify(sbDataObject));
     logger.debug('importBurrito.js', 'Creating the metadata.json Burrito file.');
+    action.setUploadstart(false);
     console.log('finished import project');
     });
 };

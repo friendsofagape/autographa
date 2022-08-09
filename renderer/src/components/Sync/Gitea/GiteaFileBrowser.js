@@ -19,12 +19,20 @@ import ConfirmationModal from '@/layouts/editor/ConfirmationModal';
 import burrito from '../../../lib/BurritoTemplete.json';
 import { importServerProject } from './GiteaUtils';
 // import path from 'path';
+import ProgressBar from '../ProgressBar'
 
 // eslint-disable-next-line react/prop-types
 const GiteaFileBrowser = ({ changeRepo }) => {
   const {
-    states: { dragFromAg }, action: { setDragFromAg, handleDropToAg },
+    states: { dragFromAg, uploadStartAg, totalFilesAg, totalUploadedAg }, 
+    action: { setDragFromAg, handleDropToAg, setTotalUploadedAg, settotalFilesAg, setUploadstartAg },
   } = React.useContext(SyncContext);
+
+  const [totalUploaded, setTotalUploaded] = React.useState(0);
+  const [uploadStart, setUploadstart] = React.useState(false);
+  // const [uploadDone, setUploadDone] = React.useState(false);
+  const [totalFiles, settotalFiles] = React.useState(0);
+
   const [advacnedOption, setAdvacnedOption] = React.useState(false);
   const [projects, setProjects] = React.useState([]);
   const [files, setFiles] = React.useState([]);
@@ -107,20 +115,15 @@ const GiteaFileBrowser = ({ changeRepo }) => {
     modelClose();
     logger.debug('Dropzone.js', 'Inside callImport');
     console.log("inside IMport function , all validation success : ");
-    await importServerProject(updateBurrito, repo, sbData, auth, userBranch);
-
-    // await localForage.getItem('userProfile').then(async (value) => {
-    //   const status = await importBurrito(folderPath, value.username,updateBurriot);
-    //   setOpenSnackBar(true);
-    //   closePopUp(false);
-    //   setNotify(status[0].type);
-    //   setSnackText(status[0].value);
-    //   if (status[0].type === 'success') {
-    //     close();
-    //     FetchProjects();
-    //     router.push('/projects');
-    //   }
-    // });
+    await importServerProject(updateBurrito, repo, sbData, auth, userBranch, 
+        {
+          setUploadstart,
+          setTotalUploaded,
+        }).finally(()=>{
+          setUploadstart(false);
+          setTotalUploaded(0);
+          settotalFiles(0);
+        })
   };
 
   const checkBurritoVersion = () => {
@@ -149,6 +152,9 @@ const GiteaFileBrowser = ({ changeRepo }) => {
   }
 
   const modelClose = () => {
+    if(!model.buttonName==='Replace') {
+      settotalFiles(0);
+    }
     setModel({
       openModel: false,
       title: '',
@@ -210,6 +216,8 @@ const GiteaFileBrowser = ({ changeRepo }) => {
 
                 console.log("success : ", success);
                 if(success) {
+                  // get total file count to fetch
+                  settotalFiles(Object.keys(metaDataSb?.ingredients).length);
                   // check project exist
                   const duplicate = await checkDuplicate(metaDataSb, user.username, 'projects');
                   console.log("duplicate : ", duplicate);
@@ -364,11 +372,12 @@ const GiteaFileBrowser = ({ changeRepo }) => {
         const fs = window.require('fs');
         const path = require('path');
         const projectsMetaPath = path.join(newpath, 'autographa', 'users', user?.username, 'projects', `${projectName}_${projectId}`);
-
+        settotalFilesAg(Object.keys(ingredientsObj).length);
         // Create A REPO for the project
         await handleCreateRepo(repoName.toLowerCase()).then(
           async (result) => {
           if (result.id) {
+            setUploadstartAg(true);
             // Successfully created , upload new files to repo
             // console.log("inside success creation", result.name);
             console.log("start uploading");
@@ -379,6 +388,7 @@ const GiteaFileBrowser = ({ changeRepo }) => {
             await createFiletoServer(JSON.stringify(Metadata), 'metadata.json', user.username, projectCreated, result.name);
             // Read ingredients
             for (const key in ingredientsObj) {
+              setTotalUploadedAg((prev) => prev + 1);
               const Metadata1 = fs.readFileSync(path.join(projectsMetaPath, key), 'utf8');
               await createContent({
                 config: auth.config,
@@ -398,10 +408,14 @@ const GiteaFileBrowser = ({ changeRepo }) => {
               })
               .catch((err) => {
                 logger.debug('Dropzone.js', `failed to upload file to Gitea ${key}`);
+                setUploadstartAg(false);
                 // console.log(key, ' : error : ', err);
               });
             }
             setDragFromAg();
+            setUploadstartAg(false);
+            settotalFilesAg(0);
+            setTotalUploadedAg(0);
             logger.debug('Dropzone.js', 'calling handleDropFolder event - syncing Finished');
             console.log("Finish uploading");
             }
@@ -413,21 +427,28 @@ const GiteaFileBrowser = ({ changeRepo }) => {
             logger.debug('Dropzone.js', 'calling handleDropFolder event - started update project : ');
             if (error.message.includes('409')) {
               console.log("started update project ");
+              setUploadstartAg(true);
               const metadataContent = fs.readFileSync(path.join(projectsMetaPath, 'metadata.json'));
               await updateFiletoServer(JSON.stringify(metadataContent), 'metadata.json', user.username, projectCreated, repoName);
               // Read ingredients and update
               for (const key in ingredientsObj) {
                 const metadata1 = fs.readFileSync(path.join(projectsMetaPath, key), 'utf8');
+                setTotalUploadedAg((prev) => prev + 1);
                 await updateFiletoServer(metadata1, key, user.username, projectCreated, repoName);
               }
               setDragFromAg();
+              setUploadstartAg(false);
+              settotalFilesAg(0);
+              setTotalUploadedAg(0);
               logger.debug('Dropzone.js', 'calling handleDropFolder event - update syncing Finished');
               console.log("Finish updating project");
             } else {
               logger.debug('Dropzone.js', 'calling handleDropFolder event - Repo Updation Error : ', error.message);
+              setUploadstartAg(false);
             }
           },
-        );
+          );
+          setUploadstartAg(false);
       });
     }
   };
@@ -455,9 +476,9 @@ const GiteaFileBrowser = ({ changeRepo }) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [repo?.tree_url]);
 
-  const testingFileUpload = async () => {
-    console.log('clicked');
-  };
+  // const testingFileUpload = async () => {
+  //   console.log('clicked');
+  // };
 
   return (
     (!auth && authComponent)
@@ -485,6 +506,9 @@ const GiteaFileBrowser = ({ changeRepo }) => {
             )
         ))}
       </div>
+      {uploadStart && 
+        <ProgressBar currentValue={totalUploaded} totalValue={totalFiles}/> 
+      }
 
       {!advacnedOption && 
         <>

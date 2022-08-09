@@ -9,14 +9,16 @@ import Dropzone from './Dropzone/Dropzone';
 // import fetchParseFiles from '../../core/projects/fectchParseFiles';
 // import * as logger from '../../logger';
 import { SyncContext } from './SyncContextProvider';
-
+import ProgressBar from './ProgressBar';
 import LoadingSpinner from './LoadingSpinner';
 
 export default function ProjectFileBrowser() {
   const username = 'Michael';
   const [index, setIndex] = useState(-1);
   const {
-    states: { agProjects, agProjectsMeta },
+    states: {
+ agProjects, agProjectsMeta, uploadStartAg, totalFilesAg, totalUploadedAg,
+},
     action: {
       fetchProjects, onDragEndFolder, handleDrop,
     },
@@ -80,6 +82,9 @@ export default function ProjectFileBrowser() {
             </span>
           ) : <span />}
       </div>
+
+      {uploadStartAg
+        && <ProgressBar currentValue={totalUploadedAg} totalValue={totalFilesAg} />}
 
       {loading
         ? (

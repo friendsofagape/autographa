@@ -14,6 +14,10 @@ function useSync() {
   const [dragFromAg, setDragFromAg] = React.useState();
   const [dropToAg, setDropToAg] = React.useState();
 
+  const [totalUploadedAg, setTotalUploadedAg] = React.useState(0);
+  const [uploadStartAg, setUploadstartAg] = React.useState(false);
+  const [totalFilesAg, settotalFilesAg] = React.useState(0);
+
   const fetchProjects = async () => {
     logger.debug('Dropzone.js', 'calling fetchProjects event');
     localForage.getItem('userProfile').then(async (user) => {
@@ -103,6 +107,9 @@ function useSync() {
       agProjectsMeta,
       dragFromAg,
       dropToAg,
+      totalFilesAg,
+      totalUploadedAg,
+      uploadStartAg,
     },
     actions: {
       fetchProjects,
@@ -111,6 +118,9 @@ function useSync() {
       setDragFromAg,
       handleDropToAg,
       handleDrop,
+      setTotalUploadedAg,
+      setUploadstartAg,
+      settotalFilesAg,
     },
   };
   return response;
