@@ -69,6 +69,16 @@ function useSync() {
 
   const handleDropToAg = (data) => {
     setDropToAg(data);
+    setDragFromAg(null);
+    // console.log('drop start --> ', data);
+  };
+
+  const handleDropFolderAg = () => {
+    // console.log('drop end --> ', dropToAg);
+    if (dropToAg !== null) {
+      dropToAg?.result?.readGiteaFolderData(dropToAg.result.repo, dropToAg.result.from);
+    }
+    setDragFromAg(null);
   };
 
   const handleDrop = async ({ index, username }) => {
@@ -121,6 +131,7 @@ function useSync() {
       setTotalUploadedAg,
       setUploadstartAg,
       settotalFilesAg,
+      handleDropFolderAg,
     },
   };
   return response;

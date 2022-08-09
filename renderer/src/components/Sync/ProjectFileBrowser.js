@@ -13,14 +13,14 @@ import ProgressBar from './ProgressBar';
 import LoadingSpinner from './LoadingSpinner';
 
 export default function ProjectFileBrowser() {
-  const username = 'Michael';
+  // const username = 'Michael';
   const [index, setIndex] = useState(-1);
   const {
     states: {
  agProjects, agProjectsMeta, uploadStartAg, totalFilesAg, totalUploadedAg,
 },
     action: {
-      fetchProjects, onDragEndFolder, handleDrop,
+      fetchProjects, onDragEndFolder, handleDropFolderAg,
     },
   } = useContext(SyncContext);
 
@@ -167,7 +167,8 @@ export default function ProjectFileBrowser() {
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{file.updated}</td> */}
                 </tr>
                 ))}
-              <Dropzone dropped={() => handleDrop({ index, username })} />
+              <Dropzone dropped={() => handleDropFolderAg()} />
+              {/* <Dropzone dropped={() => handleDrop({ index, username })} /> */}
             </tbody>
             {/* } */}
           </table>
