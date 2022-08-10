@@ -514,7 +514,14 @@ const GiteaFileBrowser = ({ changeRepo }) => {
 
   return (
     (!auth && authComponent)
-    || (!repo && repoComponent)
+    || (!repo && (
+      <div className="grid grid-rows-2">
+        <div>{repoComponent}</div>
+        <div className="row-span-6">
+          <Dropzone dropped={() => handleDropFolder(dragFromAg)} />
+        </div>
+      </div>
+))
     || (
     <>
       <div className="flex flex-row mx-5 my-3 border-b-1 border-primary">
@@ -639,7 +646,7 @@ const GiteaFileBrowser = ({ changeRepo }) => {
         </tbody>
       </table>
 )}
-      <Dropzone dropped={() => handleDropFolder(dragFromAg)} />
+      {/* <Dropzone dropped={() => handleDropFolder(dragFromAg)} /> */}
       <SnackBar
         openSnackBar={snackBar}
         snackText={snackText}
