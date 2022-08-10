@@ -9,16 +9,17 @@ import { classNames } from '@/util/classNames';
 import ProjectsLayout from '@/layouts/projects/Layout';
 
 import { SnackBar } from '@/components/SnackBar';
+import i18n from '../../translations/i18n';
 import { isElectron } from '../../core/handleElectron';
 import { saveProfile } from '../../core/projects/handleProfile';
-// import CustomList from './CustomList';
+import CustomList from './CustomList';
 import * as logger from '../../logger';
 
-// const languages = [
-//   { title: 'English' },
-//   { title: 'Hindi' },
-//   { title: 'Spanish' },
-// ];
+const languages = [
+  { title: 'English', code: 'en' },
+  { title: 'Hindi', code: 'hi' },
+  { title: 'Russian', code: 'ru' },
+];
 
 function ProgressCircle({ isFilled, count, text }) {
   return (
@@ -75,7 +76,7 @@ export default function UserProfile() {
     selectedregion: '',
     organization: '',
   });
-  // const [appLang, setAppLang] = React.useState(languages[0]);
+  const [appLang, setAppLang] = React.useState(languages[0]);
   const [snackBar, setOpenSnackBar] = React.useState(false);
   const [snackText, setSnackText] = React.useState('');
   const [notify, setNotify] = React.useState();
@@ -98,14 +99,26 @@ export default function UserProfile() {
         });
     }
   }, [username, values, appMode]);
+
+  React.useEffect(() => {
+    const currentLang = languages.filter(
+      (lang) => lang.code === i18n.language,
+    );
+    setAppLang(currentLang[0]);
+  }, []);
+
   const handleSave = async (e) => {
     logger.debug('Profile.js', 'In handleSave for Saving profile');
     e.preventDefault();
+    if (i18n.language !== appLang.code) {
+      i18n.changeLanguage(appLang.code);
+    }
     const status = await saveProfile(values);
     setNotify(status[0].type);
     setSnackText(status[0].value);
     setOpenSnackBar(true);
   };
+
   return (
     <>
       <ProjectsLayout title={t('profile-page')}>
@@ -250,8 +263,8 @@ export default function UserProfile() {
                   {t('label-app-language')}
                   <span className="text-error">*</span>
                 </h4>
-                {/* <CustomList selected={appLang} setSelected={setAppLang} options={languages} show /> */}
-                <input type="text" value="English" disabled className="bg-gray-100 w-96 block rounded shadow-sm sm:text-sm border-gray-200 h-10 font-light" />
+                <CustomList selected={appLang} setSelected={setAppLang} options={languages} show />
+                {/* <input type="text" value="English" disabled className="bg-gray-100 w-96 block rounded shadow-sm sm:text-sm border-gray-200 h-10 font-light" /> */}
               </div>
 
               <button

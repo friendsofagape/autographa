@@ -3,10 +3,12 @@ import { initReactI18next } from 'react-i18next';
 // import the translation files
 import { En } from './en';
 import { Hi } from './hi';
+import { Ru } from './ru';
 
 i18n
   .use(initReactI18next)
   .init({
+    fallbackLng: 'en',
     resources: {
       en: {
         translation: En,
@@ -14,8 +16,11 @@ i18n
       hi: {
         translation: Hi,
       },
+      ru: {
+        translation: Ru,
+      },
     },
 });
 
-i18n.changeLanguage('en');
+// i18n.changeLanguage('en');
 export default i18n;
