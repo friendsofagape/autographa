@@ -41,7 +41,7 @@ export default function Sync() {
               {t('label-door43')}
             </a>
           </li>
-          <li className="mr-2">
+          {/* <li className="mr-2">
             <a className="bg-gray-200 inline-block rounded-t py-2 px-6 hover:text-white hover:bg-black text-sm uppercase" href="#b">
               <img className="inline mr-2 w-5" src="/brands/paratext.png" width="18" alt="Paratext Logo" />
               {t('label-paratext')}
@@ -52,7 +52,7 @@ export default function Sync() {
               <img className="inline mr-2 w-5" src="/brands/gitea.png" width="18" alt="Gitea Logo" />
               {t('label-Gitea')}
             </a>
-          </li>
+          </li> */}
         </ul>
       )}
     >
