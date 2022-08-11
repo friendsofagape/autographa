@@ -41,6 +41,7 @@ const ResourceOption = ({
     <button
       onClick={(e) => handleSelectResource(e, id, text)}
       type="button"
+      id={selectResource}
       className={`flex items-center text-xs uppercase 
       font-semibold tracking-wider py-2 px-4 
       ${id === selectResource ? 'bg-primary outline-none rounded shadow  text-white' : ''}`}

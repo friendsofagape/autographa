@@ -52,12 +52,6 @@ test('Check project name', async () => {
 // 	await window.click('[aria-label=save-bookmark]');
 // });
 
-test('Testing Resource Select', async () => {
-	await window.click('[aria-label=resources-selector]');
-	const title = await window.textContent('[aria-label=resources-title]');
-	console.log(title);
-});
-
 // test('Testing Navigation', async () => {
 // 	await window.click('[aria-label=open-book]');
 // 	const title = await window.innerText('text=NEW');
@@ -96,17 +90,6 @@ test('Testing Resource Select', async () => {
 // 	await window.click('[aria-label=close-notification]');
 // });
 
-// test('Checking resources in added panel', async () => {
-// 	// await window.click('[aria-label=add-panels]');
-// 	let title = await window.innerText('[aria-label=number-of-panels]');
-// 	// expect(title).toBe('2');
-// 	await window.hover('[aria-label=resources-panel]');
-// 	await window.click('[aria-label=resources-selector]');
-// 	title = await window.innerText('[aria-label=resources-title]');
-// 	expect(title).toBe('RESOURCES');
-// 	await window.click('[aria-label=close-resources]');
-// });
-
 // test('Testing by adding the panels', async () => {
 // 	await window.click('[aria-label=add-panels]');
 // 	let title = await window.innerText('[aria-label=number-of-panels]');
@@ -118,6 +101,27 @@ test('Testing Resource Select', async () => {
 // 	title = await window.innerText('[aria-label=number-of-panels]');
 // 	expect(title).toBe('1');
 // });
+
+// test('Checking resources in added panel', async () => {
+// 	await window.click('[aria-label=add-panels]');
+// 	let title = await window.innerText('[aria-label=number-of-panels]');
+// 	console.log(title);
+// 	expect(title).toBe('1');
+// 	await window.hover('[aria-label=resources-panel]');
+// 	await window.click('[aria-label=resources-selector]');
+// 	title = await window.innerText('[aria-label=resources-title]');
+// 	expect(title).toBe('RESOURCES');
+// 	await window.click('[aria-label=close-resources]');
+// });
+
+test('Testing Resource Select', async () => {
+	await window.click('[aria-label=resources-selector]');
+	const title = await window.textContent('[aria-label=resources-title]');
+	expect(title).toBe('Resources');
+	await window.click('#tn');
+	// await window.click('#English');
+	console.log(title);
+});
 
 // test('Checking scroll lock/unlock', async () => {
 // 	await window.click('[aria-label=close-lock]');
