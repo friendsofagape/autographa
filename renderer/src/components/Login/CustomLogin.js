@@ -33,7 +33,8 @@ const CustomLogin = ({
             data-testid="autocomplete"
             className="text-xs h-12 appearance-none w-full py-2 pl-4"
             options={userlist}
-            getOptionLabel={(option) => option.username}
+            getOptionLabel={(option) => option.username || ''}
+            onChange={handleChange(values)}
             getOptionSelected={(option, value) => option.username === value.username}
             onInputChange={(event, newInputValue) => {
                     setValue({ ...values, username: newInputValue });
