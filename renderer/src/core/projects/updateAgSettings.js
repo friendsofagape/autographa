@@ -7,8 +7,11 @@ export const updateAgSettings = async (username, projectName, data) => {
   const fs = window.require('fs');
   const path = require('path');
   const firstKey = Object.keys(data.ingredients)[0];
-  const folderName = firstKey.split(/[(\\)?(/)?]/gm).slice(0);
-  const dirName = folderName[0];
+  const folderName = firstKey.split(/[(\\)?(/)?]/gm).slice(0, -1);
+  let dirName = '';
+  folderName.forEach((folder) => {
+    dirName = path.join(dirName, folder);
+  });
   const folder = path.join(newpath, 'autographa', 'users', username, 'projects', projectName, dirName);
   const settings = await fs.readFileSync(path.join(folder, 'ag-settings.json'), 'utf8');
   const setting = JSON.parse(settings);

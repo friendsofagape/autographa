@@ -18,9 +18,11 @@ const fetchProjectsMeta = async ({ currentUser }) => {
         const parseData = JSON.parse(data);
         let setting;
         const firstKey = Object.keys(parseData.ingredients)[0];
-        const folderName = firstKey.split(/[(\\)?(/)?]/gm).slice(0);
-        const dirName = folderName[0];
-
+        const folderName = firstKey.split(/[(\\)?(/)?]/gm).slice(0, -1);
+        let dirName = '';
+        folderName.forEach((folder) => {
+          dirName = path.join(dirName, folder);
+        });
         try {
           setting = fs.readFileSync(path.join(projectsMetaPath, dir, dirName, 'ag-settings.json'), 'utf8');
         } catch (err) {

@@ -3,10 +3,11 @@ import { Dialog, Transition } from '@headlessui/react';
 import { PlusIcon, PencilAltIcon } from '@heroicons/react/outline';
 import { useTranslation } from 'react-i18next';
 import { SnackBar } from '@/components/SnackBar';
+import PropTypes from 'prop-types';
 import * as logger from '../../../logger';
 import { ProjectContext } from '../../context/ProjectContext';
 
-export default function TargetLanguagePopover() {
+export default function TargetLanguagePopover({ projectType }) {
   const [id, setId] = React.useState();
   const [lang, setLang] = React.useState();
   const [direction, setDirection] = React.useState();
@@ -146,33 +147,36 @@ export default function TargetLanguagePopover() {
                       />
                     </div>
                   </div>
-                  <div>
-                    <h3 className="mb-3 text-xs font-base  text-primary tracking-wide leading-4 font-light">{t('label-script-direction')}</h3>
+                  {projectType !== 'Audio'
+                  && (
                     <div>
-                      <div className=" mb-3">
-                        <input
-                          type="radio"
-                          className="form-radio h-4 w-4 text-primary"
-                          value={t('label-ltr')}
-                          checked={direction === t('label-ltr')}
-                          onChange={() => setDirection(t('label-ltr'))}
-                          disabled={lock}
-                        />
-                        <span className=" ml-4 text-xs font-bold">{t('label-ltr')}</span>
-                      </div>
+                      <h3 className="mb-3 text-xs font-base  text-primary tracking-wide leading-4 font-light">{t('label-script-direction')}</h3>
                       <div>
-                        <input
-                          type="radio"
-                          className="form-radio h-4 w-4 text-primary"
-                          value={t('label-rtl')}
-                          checked={direction === t('label-rtl')}
-                          onChange={() => setDirection(t('label-rtl'))}
-                          disabled={lock}
-                        />
-                        <span className=" ml-3 text-xs font-bold">{t('label-rtl')}</span>
+                        <div className=" mb-3">
+                          <input
+                            type="radio"
+                            className="form-radio h-4 w-4 text-primary"
+                            value={t('label-ltr')}
+                            checked={direction === t('label-ltr')}
+                            onChange={() => setDirection(t('label-ltr'))}
+                            disabled={lock}
+                          />
+                          <span className=" ml-4 text-xs font-bold">{t('label-ltr')}</span>
+                        </div>
+                        <div>
+                          <input
+                            type="radio"
+                            className="form-radio h-4 w-4 text-primary"
+                            value={t('label-rtl')}
+                            checked={direction === t('label-rtl')}
+                            onChange={() => setDirection(t('label-rtl'))}
+                            disabled={lock}
+                          />
+                          <span className=" ml-3 text-xs font-bold">{t('label-rtl')}</span>
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  )}
                   <div className="flex items-center justify-center">
                     <button
                       type="button"
@@ -211,3 +215,6 @@ export default function TargetLanguagePopover() {
     </>
   );
 }
+TargetLanguagePopover.propTypes = {
+  projectType: PropTypes.string,
+};

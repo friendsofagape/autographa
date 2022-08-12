@@ -334,11 +334,14 @@ export default function NewProject({ call, project, closeEdit }) {
                 </div>
                 <div className="flex gap-5 mt-5 items-center">
                   <div>
-                    <div className="absolute">
-                      <TargetLanguageTag>
-                        {language.scriptDirection ? language.scriptDirection : 'LTR'}
-                      </TargetLanguageTag>
-                    </div>
+                    {headerDropDown !== 'Audio'
+                      && (
+                      <div className="absolute">
+                        <TargetLanguageTag>
+                          {language.scriptDirection ? language.scriptDirection : 'LTR'}
+                        </TargetLanguageTag>
+                      </div>
+                    )}
                     <h4 className="text-xs font-base mb-2 text-primary  tracking-wide leading-4  font-light">
                       {t('label-target-language')}
                       <span className="text-error">*</span>
@@ -352,7 +355,7 @@ export default function NewProject({ call, project, closeEdit }) {
                     />
                   </div>
                   <div className="mt-5">
-                    <TargetLanguagePopover />
+                    <TargetLanguagePopover projectType={headerDropDown} />
                   </div>
                 </div>
                 {headerDropDown !== 'Audio'

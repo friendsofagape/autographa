@@ -9,7 +9,6 @@ export const createAudioVersification = (
   username,
   project,
   versification,
-  direction,
   id,
   copyright,
   currentBurrito,
@@ -17,7 +16,7 @@ export const createAudioVersification = (
 ) => {
   logger.debug('createAudioVersification.js', 'In createAudioVersification');
   const newpath = localStorage.getItem('userPath');
-  const folder = path.join(newpath, 'autographa', 'users', username, 'projects', `${project.projectName}_${id}`, 'ingredients');
+  const folder = path.join(newpath, 'autographa', 'users', username, 'projects', `${project.projectName}_${id}`, 'audio', 'ingredients');
   const schemes = [
     { name: 'eng', file: 'eng.json' },
     { name: 'lxx', file: 'lxx.json' },
@@ -40,7 +39,7 @@ export const createAudioVersification = (
         logger.debug('createAudioVersification.js', 'Creating versification.json file in ingredients');
         await fs.writeFileSync(path.join(folder, 'versification.json'), JSON.stringify(file));
         const stats = fs.statSync(path.join(folder, 'versification.json'));
-        ingredients[path.join('ingredients', 'versification.json')] = {
+        ingredients[path.join('audio', 'ingredients', 'versification.json')] = {
           checksum: {
             md5: md5(file),
           },
@@ -54,7 +53,7 @@ export const createAudioVersification = (
           logger.debug('createAudioVersification.js', 'Creating license.md file in ingredients');
           await fs.writeFileSync(path.join(folder, 'license.md'), copyright.licence);
           const copyrightStats = fs.statSync(path.join(folder, 'license.md'));
-          ingredients[path.join('ingredients', 'license.md')] = {
+          ingredients[path.join('audio', 'ingredients', 'license.md')] = {
             checksum: {
               md5: md5(file),
             },
@@ -67,7 +66,7 @@ export const createAudioVersification = (
           version: environment.AG_SETTING_VERSION,
           project: {
             audioTranslation: {
-              scriptDirection: direction,
+              // scriptDirection: direction,
               starred: call === 'edit' ? currentBurrito.project.audioTranslation.starred : false,
               versification,
               description: project.description,
@@ -81,7 +80,7 @@ export const createAudioVersification = (
         logger.debug('createAudioVersification.js', 'Creating ag-settings.json file in ingredients');
         await fs.writeFileSync(path.join(folder, 'ag-settings.json'), JSON.stringify(settings));
         const stat = fs.statSync(path.join(folder, 'ag-settings.json'));
-        ingredients[path.join('ingredients', 'ag-settings.json')] = {
+        ingredients[path.join('audio', 'ingredients', 'ag-settings.json')] = {
           checksum: {
             md5: md5(settings),
           },
