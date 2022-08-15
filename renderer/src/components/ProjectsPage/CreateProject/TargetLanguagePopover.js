@@ -77,6 +77,7 @@ export default function TargetLanguagePopover() {
       <div className="flex gap-3">
         <button
           type="button"
+          aria-label="add-language"
           className="focus:outline-none bg-primary h-8 w-8 flex items-center justify-center rounded-full"
           onClick={() => { openLanguageNav('add'); openModal(); }}
         >
@@ -176,6 +177,7 @@ export default function TargetLanguagePopover() {
                   <div className="flex items-center justify-center">
                     <button
                       type="button"
+                      aria-label="create-language"
                       onClick={closeModal}
                       className="mr-5 bg-error w-28 h-8 border-color-error rounded
                                   uppercase shadow text-white text-xs tracking-wide leading-4 font-light focus:outline-none"
@@ -186,6 +188,7 @@ export default function TargetLanguagePopover() {
                     : (
                       <button
                         type="button"
+                        aria-label="edit-language"
                         className=" bg-success w-28 h-8 border-color-success rounded uppercase text-white text-xs shadow focus:outline-none"
                         onClick={() => (edit === true ? editLanguage() : addLanguage())}
                       >

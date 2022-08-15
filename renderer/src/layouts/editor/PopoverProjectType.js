@@ -38,6 +38,7 @@ export default function PopoverProjectType(props) {
                     <a
                       key={item.name}
                       href={item.href}
+                      data-id={item.name}
                       onClick={() => { handleDropDown(item.name); }}
                       className="flex text-white hover:text-primary items-center justify-center flex-col py-3 transition duration-150 ease-in-out rounded-lg hover:bg-white focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
                     >
