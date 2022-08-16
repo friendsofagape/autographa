@@ -243,7 +243,7 @@ const ResourcesPopUp = ({
       && (
       <tbody className="bg-white ">
         {(reference.resource).map((notes) => (
-          <tr className="hover:bg-gray-200" key={notes.name + notes.owner}>
+          <tr className="hover:bg-gray-200" id={notes.name} key={notes.name + notes.owner}>
             <td className="px-5 py-3 hidden">
               <StarIcon className="h-5 w-5 text-gray-300" aria-hidden="true" />
             </td>

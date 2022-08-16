@@ -154,8 +154,8 @@ export default function ProjectList() {
                                         >
                                           <td className="px-4 py-4">
                                             <button
-                                              title="star/unstar project"
-                                              aria-label="unstar-project"
+                                              title="star project"
+                                              aria-label="star-project"
                                               onClick={(event) => handleClickStarred(event, project.name, 'starred')}
                                               type="button"
                                             >
@@ -179,6 +179,7 @@ export default function ProjectList() {
                                                 (event) => handleSelectProject(event, project.name, project.id[0])
                                               }
                                               role="button"
+                                              id={`${project.name}`}
                                               aria-label="project-name"
                                               tabIndex="0"
                                               className="focus:outline-none text-sm font-medium text-gray-900"
@@ -195,7 +196,7 @@ export default function ProjectList() {
                                             <Disclosure.Button className="flex justify-between w-full px-4 py-2 text-sm font-medium text-left text-purple-900 bg-purple-100 rounded-lg hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75">
                                               {open
                                                 ? <ChevronUpIcon className="w-5 h-5 text-purple-500" />
-                                              : <ChevronDownIcon className="w-5 h-5 text-purple-500" />}
+                                              : <ChevronDownIcon aria-label="star-expand-project" className="w-5 h-5 text-purple-500" />}
                                             </Disclosure.Button>
                                           </td>
                                         </tr>
@@ -224,7 +225,7 @@ export default function ProjectList() {
                                                 <Menu as="div">
                                                   <div>
                                                     <Menu.Button className="px-5">
-                                                      <DotsVerticalIcon className="h-5 w-5 text-primary" aria-hidden="true" />
+                                                      <DotsVerticalIcon aria-label="star-menu-project" className="h-5 w-5 text-primary" aria-hidden="true" />
                                                     </Menu.Button>
                                                   </div>
                                                   <Transition
@@ -287,13 +288,13 @@ export default function ProjectList() {
                                   <Disclosure key={project.name}>
                                     {({ open }) => (
                                       <>
-                                        <tr>
+                                        <tr className="hover:bg-gray-100 focus:outline-none cursor-pointer">
                                           <td
-                                            className="px-4 py-3 text-left text-xs font-medium text-gray-400"
+                                            className="px-4 py-4"
                                           >
                                             <button
-                                              aria-label="star-project"
-                                              title="star/unstar project"
+                                              title="unstar project"
+                                              aria-label="unstar-project"
                                               onClick={(event) => handleClickStarred(event, project.name, 'unstarred')}
                                               type="button"
                                             >
@@ -315,11 +316,12 @@ export default function ProjectList() {
                                             <div className="flex items-center">
                                               <div className="ml-0">
                                                 <div
+                                                  id={`${project.name}`}
                                                   onClick={
                                                     (event) => handleSelectProject(event, project.name, project.id[0])
                                                   }
                                                   role="button"
-                                                  aria-label="unstar-projectname"
+                                                  aria-label="unstar-project-name"
                                                   tabIndex="0"
                                                   className="text-sm font-medium text-gray-900"
                                                 >
@@ -341,7 +343,7 @@ export default function ProjectList() {
                                             <Disclosure.Button className="flex justify-between w-full px-4 py-2 text-sm font-medium text-left text-purple-900 bg-purple-100 rounded-lg hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75">
                                               {open
                                                 ? <ChevronUpIcon className="w-5 h-5 text-purple-500" />
-                                              : <ChevronDownIcon aria-label="expand-project" className="w-5 h-5 text-purple-500" />}
+                                              : <ChevronDownIcon aria-label="unstar-expand-project" className="w-5 h-5 text-purple-500" />}
                                             </Disclosure.Button>
                                           </td>
                                         </tr>
@@ -369,7 +371,7 @@ export default function ProjectList() {
                                                 <Menu as="div">
                                                   <div>
                                                     <Menu.Button className="px-5">
-                                                      <DotsVerticalIcon className="h-5 w-5 text-primary" aria-label="menu-project" aria-hidden="true" />
+                                                      <DotsVerticalIcon className="h-5 w-5 text-primary" aria-label="unstar-menu-project" aria-hidden="true" />
                                                     </Menu.Button>
                                                   </div>
                                                   <Transition
