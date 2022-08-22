@@ -1,4 +1,4 @@
-/* eslint-disable */ 
+/* eslint-disable */
 import moment from 'moment';
 import { v5 as uuidv5 } from 'uuid';
 import { updateVersion } from '@/core/burrito/updateTranslationSB';
@@ -12,6 +12,7 @@ import { environment } from '../../../../environment';
 const md5 = require('md5');
 const path = require('path');
 
+// import gitea project to local
 export const importServerProject = async (updateBurrito, repo, sbData, auth, userBranch, action) => {
     logger.debug('GiteaUtils.js', 'Inside Import Project');
     // console.log('inside server project import');
@@ -130,7 +131,7 @@ export const importServerProject = async (updateBurrito, repo, sbData, auth, use
             } else {
               logger.debug('dropzone giteaUtils import.js', `Error in read ${key} from Server `);
             }
-          })
+          });
       }
     // check md5 values
     Object.entries(sbDataObject.ingredients).forEach(([key, value]) => {
@@ -225,4 +226,76 @@ export const importServerProject = async (updateBurrito, repo, sbData, auth, use
     action.setUploadstart(false);
     console.log('finished import project');
     });
+};
+
+// sync profile updation
+export const createSyncProfile = async (auth) => {
+  // console.log("use Effect called auth changes : ", auth);
+  const fs = window.require('fs');
+  const path = require('path');
+  await localForage.getItem('userProfile').then((user) => {
+    const currentUser = user?.username;
+    const newpath = localStorage.getItem('userPath');
+    const file = path.join(newpath, 'autographa', 'users', currentUser, 'ag-user-settings.json');
+    if (fs.existsSync(file)) {
+      fs.readFile(file, (err, data) => {
+        if (err) {
+          logger.error('GiteaFileBrowser.js', 'Failed to read the data from file');
+        } else {
+        logger.debug('GiteaFileBrowser.js', 'Successfully read the data from file');
+        const json = JSON.parse(data);
+        // console.log("user json : ",json);
+        if (!json.sync && !json.sync?.services) {
+          // first time sync
+          json.sync = {
+            services: {
+              door43: [
+                {
+                  token: '',
+                  expired: false,
+                  default: false,
+                  username: auth?.user?.username,
+                  dateCreated: moment().format(),
+                  dateModified: null,
+                },
+              ],
+            },
+          };
+        } else if (!json.sync?.services?.door43?.some((element) => element.username === auth?.user?.username)) {
+            // user not in list create new entry
+            json.sync?.services?.door43?.push(
+              {
+                token: '',
+                expired: false,
+                default: false,
+                username: auth?.user?.username,
+                dateCreated: moment().format(),
+                dateModified: null,
+              },
+            );
+          }
+        // add token to file on login
+        // eslint-disable-next-line array-callback-return
+        json.sync?.services?.door43?.filter((element) => {
+            if (element.username === auth?.user?.username) {
+              element.expired = false;
+              element.dateModified = moment().format();
+              element.token = {
+                config: auth.config,
+                token: auth.token,
+                user: {
+                  email: auth.user.email,
+                  username: auth.user.username,
+                  login: auth.user.login,
+                  id: auth.user.id,
+                },
+              };
+            }
+          });
+        logger.debug('GiteaFileBrowser.js', 'Upadting the settings in existing file');
+        fs.writeFileSync(file, JSON.stringify(json));
+      }
+      });
+    }
+  });
 };

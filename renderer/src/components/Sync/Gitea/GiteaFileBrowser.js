@@ -16,7 +16,7 @@ import { SyncContext } from '../SyncContextProvider';
 import * as logger from '../../../logger';
 import Dropzone from '../Dropzone/Dropzone';
 import burrito from '../../../lib/BurritoTemplete.json';
-import { importServerProject } from './GiteaUtils';
+import { importServerProject, createSyncProfile } from './GiteaUtils';
 import ProgressBar from '../ProgressBar';
 
 /* eslint-disable no-console */
@@ -422,8 +422,8 @@ const GiteaFileBrowser = ({ changeRepo }) => {
                   content: Metadata1,
                   message: `commit ${key}`,
                   author: {
-                    email: auth.user.email,
-                    username: auth.user.username,
+                    email: auth?.user?.email,
+                    username: auth?.user?.username,
                   },
                 // eslint-disable-next-line no-unused-vars
                 }).then((res) => {
@@ -508,9 +508,18 @@ const GiteaFileBrowser = ({ changeRepo }) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [repo?.tree_url]);
 
-  // const testingFileUpload = async () => {
+  // const testingButtonClick = async () => {
   //   console.log('clicked');
   // };
+
+  React.useEffect(() => {
+    (async () => {
+      if (auth !== undefined) {
+        await createSyncProfile(auth);
+      }
+    })();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [auth]);
 
   return (
     (!auth && authComponent)
