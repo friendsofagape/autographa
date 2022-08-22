@@ -23,6 +23,9 @@
       "@/illustrations/*": [
         "public/illustrations/*"
       ],
+      "@/hooks/*":[
+        "src/components/hooks/*"
+      ]
     }
   }
 }

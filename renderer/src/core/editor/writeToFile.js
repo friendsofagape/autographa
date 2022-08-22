@@ -1,6 +1,6 @@
 import * as logger from '../../logger';
 
-const writeToFile = ({
+const writeToFile = async ({
     username,
     projectname,
     filename,

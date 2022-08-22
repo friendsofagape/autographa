@@ -316,7 +316,7 @@ const SectionPlaceholder1 = ({ editor }) => {
             <div className={`bg-white rounded-md grid gap-2 ${editor === 'audioTranslation' ? 'md:max-h-[64vh] lg:max-h-[70vh]' : 'h-editor'} overflow-x-auto`}>
               <EditorSection
                 row="1"
-                CustomNavigation={(referenceColumnOneData1.selectedResource).lastIndexOf('obs', 0) === 0 ? ObsNavigation1 : CustomNavigation1}
+                // CustomNavigation={(referenceColumnOneData1.selectedResource).lastIndexOf('obs', 0) === 0 ? ObsNavigation1 : CustomNavigation1}
                 hideAddition={hideAddition}
                 sectionNum={sectionNum}
                 setSectionNum={setSectionNum}
@@ -396,7 +396,7 @@ const SectionPlaceholder1 = ({ editor }) => {
                 openResource={openResource2}
                 setOpenResource1={setOpenResource1}
                 setOpenResource2={setOpenResource2}
-                CustomNavigation={(referenceColumnOneData2.selectedResource).lastIndexOf('obs', 0) === 0 ? ObsNavigation2 : CustomNavigation2}
+                // CustomNavigation={(referenceColumnOneData2.selectedResource).lastIndexOf('obs', 0) === 0 ? ObsNavigation2 : CustomNavigation2}
                 setRemovingSection={setRemovingSection}
                 setAddingSection={setAddingSection}
               >

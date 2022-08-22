@@ -32,6 +32,7 @@ export default function SelectVerse({
     onChangeChapter(chapterNum, chapter);
     setOpenChapter(false);
     setOpenVerse(true);
+    window.location.href = `#ch-${chapterNum}`;
   };
 
   const onVerseSelect = (e, verseNum) => {
@@ -39,6 +40,7 @@ export default function SelectVerse({
     onChangeVerse(verseNum, verse);
     closeBooks();
     if (multiSelectVerse === false) { closeVerses(); }
+    window.location.href = `#ch${chapter}v${verseNum}`;    
   };
 
   const onMultiSelectVerse = async (e, verses) => {

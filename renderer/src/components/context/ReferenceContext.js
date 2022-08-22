@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-no-constructed-context-values */
 import { useBibleReference } from 'bible-reference-rcl';
 import React, {
- useState, createContext, useRef, useEffect,
+  useState, createContext, useRef, useEffect,
 } from 'react';
 import PropTypes from 'prop-types';
 
@@ -59,261 +59,186 @@ export default function ReferenceContextProvider({ children }) {
       setAnchorEl(event.currentTarget);
     };
 
-    const openResourceDialog = async () => {
-      if (isElectron()) {
-        logger.debug('ImportResource.js', 'Inside openResourceDialog');
-        const options = { properties: ['openDirectory'] };
-        const { dialog } = window.require('@electron/remote');
-        const chosenFolder = await dialog.showOpenDialog(options);
-        setFolderPath(chosenFolder.filePaths[0]);
-      }
+  const openResourceDialog = async () => {
+    if (isElectron()) {
+      logger.debug('ImportResource.js', 'Inside openResourceDialog');
+      const options = { properties: ['openDirectory'] };
+      const { dialog } = window.require('@electron/remote');
+      const chosenFolder = await dialog.showOpenDialog(options);
+      setFolderPath(chosenFolder.filePaths[0]);
+    }
   };
 
-    useEffect(() => {
-      localforage.getItem('currentProject').then((projectName) => {
-        if (projectName) {
-          const _projectname = projectName?.split('_');
-          localforage.getItem('projectmeta').then((val) => {
-            Object?.entries(val).forEach(
-              ([, _value]) => {
-                Object?.entries(_value).forEach(
-                  ([, resources]) => {
-                    if (resources.identification.name.en === _projectname[0]) {
-                      switch (resources.type.flavorType.flavor.name) {
-                        case 'textTranslation':
-                          setBookmarksVerses(resources.project?.textTranslation.bookMarks);
-                          setProjectScriptureDir(resources.project?.textTranslation.scriptDirection);
-                          break;
-                        case 'textStories':
-                          setBookmarksVerses(resources.project?.textStories.bookMarks);
-                          setProjectScriptureDir(resources.project?.textStories.scriptDirection);
-                          break;
-                        case 'audioTranslation':
-                          setBookmarksVerses(resources.project?.audioTranslation.bookMarks);
-                          setProjectScriptureDir(resources.project?.audioTranslation.scriptDirection);
-                          break;
-                        default:
-                          break;
-                      }
+  useEffect(() => {
+    localforage.getItem('currentProject').then((projectName) => {
+      if (projectName) {
+        const _projectname = projectName?.split('_');
+        localforage.getItem('projectmeta').then((val) => {
+          Object?.entries(val).forEach(
+            ([, _value]) => {
+              Object?.entries(_value).forEach(
+                ([, resources]) => {
+                  if (resources.identification.name.en === _projectname[0]) {
+                    switch (resources.type.flavorType.flavor.name) {
+                      case 'textTranslation':
+                        setBookmarksVerses(resources.project?.textTranslation.bookMarks);
+                        setProjectScriptureDir(resources.project?.textTranslation.scriptDirection);
+                        break;
+                      case 'textStories':
+                        setBookmarksVerses(resources.project?.textStories.bookMarks);
+                        setProjectScriptureDir(resources.project?.textStories.scriptDirection);
+                        break;
+                      case 'audioTranslation':
+                        setBookmarksVerses(resources.project?.audioTranslation.bookMarks);
+                        setProjectScriptureDir(resources.project?.audioTranslation.scriptDirection);
+                        break;
+                      default:
+                        break;
                     }
-                  },
-                );
-              },
-            );
-          });
-        }
-      });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-    const {
-      state: {
-         chapter,
-         verse,
-         bookList,
-         chapterList,
-         verseList,
-         bookName,
-         bookId,
-      }, actions: {
-         onChangeBook,
-         onChangeChapter,
-         onChangeVerse,
-         applyBooksFilter,
-       },
-     } = useBibleReference(
-        {
-          initialBook,
-          initialChapter,
-          initialVerse,
-        },
-      );
-
-    useEffect(() => {
-      localforage.getItem('navigationHistory').then((book) => {
-        if (book) {
-        onChangeBook(book[0]);
-        onChangeChapter(book[1]);
-        }
-      });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-    // const readBibleData = (bookId, chapter) => {
-    //   setDisplayScreen(false);
-    //   setIsLoading(true);
-    //   localforage.getItem('userProfile').then((value) => {
-    //     const username = value?.username;
-    //     localforage.getItem('currentProject').then((projectName) => {
-    //       const path = require('path');
-    //       const newpath = localStorage.getItem('userPath');
-    //       const projectsDir = path.join(
-    //           newpath, 'autographa', 'users', username, 'projects', projectName,
-    //       );
-    //       const metaPath = path.join(
-    //         newpath, 'autographa', 'users', username, 'projects', projectName, 'metadata.json',
-    //       );
-    //       readRefMeta({
-    //         projectsDir,
-    //       }).then((refs) => {
-    //         setIsLoading(true);
-    //         refs.forEach(() => {
-    //           readRefBurrito({
-    //             metaPath,
-    //           }).then((data) => {
-    //             if (data) {
-    //               const _data = JSON.parse(data);
-    //               const _books = [];
-    //               Object.entries(_data.ingredients).forEach(
-    //                 ([key, _ingredients]) => {
-    //                   if (_ingredients?.scope) {
-    //                     const _bookID = Object.entries(_ingredients.scope)[0][0];
-    //                     _books.push(_bookID);
-    //                     if (_bookID === bookId.toUpperCase()) {
-    //                       readFile({
-    //                         projectname: projectName,
-    //                         filename: key,
-    //                         username,
-    //                       }).then((data) => {
-    //                         if (data) {
-    //                             timeout(2000).then(() => {
-    //                               localforage.getItem('navigationHistory').then((book) => {
-    //                                 if (book) {
-    //                                   onChangeBook(book[0]);
-    //                                   onChangeChapter(book[1]);
-    //                                     if (book[0].toUpperCase() !== bookId.toUpperCase()) {
-    //                                       setDisplayScreen(true);
-    //                                     } else {
-    //                                       handleInputChange(data);
-    //                                     }
-    //                                 }
-    //                                 });
-    //                             }).finally(() => {
-    //                               setIsLoading(false);
-    //                               setDisplayScreen(false);
-    //                             });
-    //                         }
-    //                       });
-    //                     }
-
-    //                     // console.log(Object.entries(_ingredients.scope));
-    //                   }
-    //                   if (_ingredients.scope === undefined) {
-    //                     if (_books.includes(bookId.toUpperCase()) === false) {
-    //                       setDisplayScreen(true);
-    //                       setIsLoading(false);
-    //                     }
-    //                   }
-    //                   // console.log(key, value),
-    //                 },
-    //               );
-    //             }
-    //           });
-    //         });
-    //       });
-    //     });
-    //   });
-    // };
-
-    const goToChapter = (chapternum, versenum) => (
-      {
-        chapter: parseInt(chapternum || chapter, 10),
-        verse: parseInt(versenum || verse, 10),
+                  }
+                },
+              );
+            },
+          );
+        });
       }
-    );
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-    const value = {
-      state: {
-        chapter,
-        verse,
-        bookList,
-        chapterList,
-        verseList,
-        bookName,
-        bookId,
-        languageId,
-        server,
-        branch,
-        owner,
-        markdown,
-        selectedResource,
-        anchorEl,
-        refName,
-        currentScope,
-        openResource1,
-        openResource2,
-        openResource3,
-        openResource4,
-        openResourcePopUp,
-        selectedFont,
-        fontSize,
-        layout,
-        row,
-        refernceLoading,
-        counter,
-        bookmarksVerses,
-        myEditorRef,
-        closeNavigation,
-        projectScriptureDir,
-        isLoading,
-        folderPath,
-        openImportResourcePopUp,
-        obsNavigation,
-        selectedStory,
-        taNavigationPath,
-        audioContent,
-        audioCurrentChapter,
-        audioPath,
-      },
-      actions: {
-        setLanguageId,
-        setBranch,
-        setServer,
-        setOwner,
-        setMarkdown,
-        SetSelectedResource,
-        onChangeBook,
-        onChangeChapter,
-        onChangeVerse,
-        applyBooksFilter,
-        setAnchorEl,
-        handleClick,
-        setRefName,
-        setCurrentScope,
-        setOpenResource1,
-        setOpenResource2,
-        setOpenResource3,
-        setOpenResource4,
-        setOpenResourcePopUp,
-        setSelectedFont,
-        setFontsize,
-        setLayout,
-        setRow,
-        setRefernceLoading,
-        setCounter,
-        setBookmarksVerses,
-        setCloseNavigation,
-        setProjectScriptureDir,
-        setIsLoading,
-        goToChapter,
-        setFolderPath,
-        setOpenImportResourcePopUp,
-        openResourceDialog,
-        setObsNavigation,
-        setSelectedStory,
-        setTaNavigationPath,
-        setAudioContent,
-        setAudioCurrentChapter,
-        setAudioPath,
-      },
+  const {
+    state: {
+      chapter,
+      verse,
+      bookList,
+      chapterList,
+      verseList,
+      bookName,
+      bookId,
+    }, actions: {
+      onChangeBook,
+      onChangeChapter,
+      onChangeVerse,
+      applyBooksFilter,
+    },
+  } = useBibleReference(
+    {
+      initialBook,
+      initialChapter,
+      initialVerse,
+    },
+  );
+  useEffect(() => {
+    const getNavigationHistory = async () => {
+      const navHistory = await localforage.getItem('navigationHistory');
+      if(navHistory){
+        onChangeBook(navHistory[0],bookId);
+        onChangeChapter(navHistory[1],chapter);
+      }
     };
+    getNavigationHistory();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-    return (
-      <ReferenceContext.Provider value={value}>
-        {children}
-      </ReferenceContext.Provider>
-    );
-  }
-  ReferenceContextProvider.propTypes = {
-    children: PropTypes.any,
+  const value = {
+    state: {
+      chapter,
+      verse,
+      bookList,
+      chapterList,
+      verseList,
+      bookName,
+      bookId,
+      languageId,
+      server,
+      branch,
+      owner,
+      markdown,
+      selectedResource,
+      anchorEl,
+      refName,
+      currentScope,
+      openResource1,
+      openResource2,
+      openResource3,
+      openResource4,
+      openResourcePopUp,
+      selectedFont,
+      fontSize,
+      layout,
+      row,
+      refernceLoading,
+      counter,
+      bookmarksVerses,
+      myEditorRef,
+      closeNavigation,
+      projectScriptureDir,
+      isLoading,
+      folderPath,
+      openImportResourcePopUp,
+      obsNavigation,
+      selectedStory,
+      taNavigationPath,
+      audioContent,
+      audioCurrentChapter,
+      audioPath,
+    },
+    actions: {
+      setLanguageId,
+      setBranch,
+      setServer,
+      setOwner,
+      setMarkdown,
+      SetSelectedResource,
+      onChangeBook,
+      onChangeChapter,
+      onChangeVerse,
+      applyBooksFilter,
+      setAnchorEl,
+      handleClick,
+      setRefName,
+      setCurrentScope,
+      setOpenResource1,
+      setOpenResource2,
+      setOpenResource3,
+      setOpenResource4,
+      setOpenResourcePopUp,
+      setSelectedFont,
+      setFontsize,
+      setLayout,
+      setRow,
+      setRefernceLoading,
+      setCounter,
+      setBookmarksVerses,
+      setCloseNavigation,
+      setProjectScriptureDir,
+      setIsLoading,
+      // goToChapter,
+      setFolderPath,
+      setOpenImportResourcePopUp,
+      openResourceDialog,
+      setObsNavigation,
+      setSelectedStory,
+      setTaNavigationPath,
+      setAudioContent,
+      setAudioCurrentChapter,
+      setAudioPath,
+    },
   };
+
+  // const goToChapter = (chapternum, versenum) => (
+  //   {
+  //     chapter: parseInt(chapternum || chapter, 10),
+  //     verse: parseInt(versenum || verse, 10),
+  //   }
+  // );
+
+  return (
+    <ReferenceContext.Provider value={value}>
+      {children}
+    </ReferenceContext.Provider>
+  );
+}
+ReferenceContextProvider.propTypes = {
+  children: PropTypes.any,
+};

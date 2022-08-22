@@ -11,3 +11,211 @@
 	-ms-overflow-style: none; /* IE and Edge */
 	scrollbar-width: none; /* Firefox */
 }
+
+#content {
+	@apply rounded-sm overflow-hidden;
+}
+/* .section {
+  @apply border-2 border-black text-sm rounded-sm overflow-hidden;
+} */
+
+/* .section > .section-heading {
+  @apply hidden;
+} */
+
+.perf .title .section,
+.perf .heading .section,
+.sectionBody .paragraph {
+	@apply mx-3;
+}
+
+.editor {
+	@apply my-2;
+}
+
+.sectionHeading {
+	@apply uppercase tracking-wider text-xs;
+}
+
+.title .mt,
+.heading .ms {
+	@apply uppercase text-lg tracking-wider text-primary;
+}
+
+.editor *[contenteditable='true']:focus {
+	@apply bg-primary-50 outline-none rounded-sm;
+}
+
+p.paragraph {
+	@apply py-1;
+}
+
+.mark.chapter {
+	@apply text-xl font-bold mr-2 mt-10 break-before-column before:block;
+}
+
+.mark.verse {
+	@apply text-xs mr-1 text-primary font-semibold;
+}
+
+.major-title,
+.major-secondary-heading {
+	@apply text-primary;
+}
+
+.graft {
+	@apply text-primary text-sm align-super;
+}
+
+.perf .graft:before {
+	@apply cursor-pointer font-semibold;
+	content: ' ‡';
+}
+
+/* html {
+  background-color: lightgray;
+}
+
+.App {
+  font-family: sans-serif;
+}
+
+#offset {
+  min-height: 4em;
+}
+
+.sectionHeading {
+  text-align: center;
+  width: 100%;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+.MuiAccordionSummary-root.Mui-expanded {
+  border-bottom: 1px solid darkgray;
+}
+
+.perf div.graft:before {
+  content: "Click to Edit";
+  visibility: hidden;
+  opacity: 0;
+  font-size: 0.9rem;
+  font-weight: normal;
+  width: max-content;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  text-align: center;
+  border-radius: 5px;
+  padding: 0.2em 0.5em;
+  transition: opacity 0.2s ease-in-out;
+  position: absolute;
+  z-index: 1;
+  left: 50%;
+  transform: translate(-50%, 0);
+}
+
+.perf div.graft:hover:before {
+  opacity: 1;
+  visibility: visible;
+}
+
+.perf div.graft:after {
+  content: " " attr(data-previewText);
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  text-decoration: underline wavy lightgray;
+  padding-bottom: 0.1em;
+}
+
+.perf .preview {
+  counter-reset: graft;
+}
+
+.perf .preview span.graft:after {
+  counter-increment: graft;
+  content: " " counter(graft, lower-alpha);
+  text-decoration: underline wavy darkgray;
+}
+
+.perf span.graft:after {
+  content: " " attr(data-previewtext);
+  text-decoration: underline wavy lightgray;
+}
+
+.perf .preview span.graft:before,
+.perf span.graft:before {
+  content: "Click to edit ~> " attr(data-previewtext);
+  visibility: hidden;
+  opacity: 0;
+  font-size: 0.9rem;
+  font-weight: normal;
+  width: max-content;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  text-align: center;
+  border-radius: 5px;
+  padding: 0.2em 0.5em;
+  transition: opacity 0.2s ease-in-out;
+  position: absolute;
+  z-index: 1;
+  transform: translate(-50%, 0);
+}
+
+.perf .preview span.graft:hover:before,
+.perf span.graft:hover:before {
+  opacity: 1;
+  visibility: visible;
+}
+
+.perf .introduction,
+.perf div[sequencetype="introduction"] .block {
+  font-size: 1.1rem;
+  margin: 0.5em 0em;
+  text-align: unset;
+}
+
+.perf .heading,
+.perf div[sequencetype="heading"] .block {
+  font-size: 1.2rem;
+  font-weight: 700;
+  text-align: center;
+  padding: 0.5em 0.2em 0.25em;
+}
+
+.perf .title,
+.perf div[sequencetype="title"] .block {
+  font-weight: 700;
+  font-size: 1.5rem;
+  text-align: center;
+  margin: 0.5em 0;
+}
+
+.perf .title .title .heading {
+  font-size: 3rem;
+}
+
+.perf .heading.s {
+  font-size: 1.2rem;
+}
+
+.perf .heading.r {
+  font-size: 1.1rem;
+  font-weight: 600;
+  padding: 0.25em 0.2em;
+}
+
+.perf #sequence .heading#sequence,
+.perf #sequence .heading#sequence .block {
+  padding: 0;
+}
+
+.perf .sectionBody .sectionBody {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.perf .PerfEditorWrapper {
+  margin: 0.1em;
+} */

@@ -9,6 +9,7 @@ import ReferenceContextProvider from './components/context/ReferenceContext';
 import * as logger from './logger';
 import ProjectList from './modules/projects/ProjectList';
 import AutographaContextProvider from './components/context/AutographaContext';
+import ScribexContextProvider from './components/context/ScribexContext';
 
 const Home = () => {
   const { states, action } = React.useContext(AuthenticationContext);
@@ -50,7 +51,9 @@ const Home = () => {
             <ProjectContextProvider>
               <ReferenceContextProvider>
                 <AutographaContextProvider>
-                  <ProjectList />
+                  <ScribexContextProvider>
+                    <ProjectList />
+                  </ScribexContextProvider>
                 </AutographaContextProvider>
               </ReferenceContextProvider>
             </ProjectContextProvider>

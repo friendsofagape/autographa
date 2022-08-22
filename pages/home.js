@@ -7,9 +7,10 @@ import CustomNavigationContextProvider from '@/components/context/CustomNavigati
 import SectionPlaceholder from '@/layouts/editor/SectionPlaceholder1';
 
 import AutographaContextProvider from '@/components/context/AutographaContext';
+import ScribexContextProvider from '@/components/context/ScribexContext';
 
-const UsfmEditor = dynamic(
-  () => import('@/components/EditorPage/UsfmEditor/UsfmEditor'),
+const Scribex = dynamic(
+  () => import('@/components/EditorPage/Scribex/Scribex'),
   { ssr: false },
 );
 
@@ -19,16 +20,18 @@ const home = () => (
       <AutographaContextProvider>
         <ProjectContextProvider>
           <ReferenceContextProvider>
-            <CustomNavigationContextProvider>
-              <EditorLayout>
-                <div className="grid grid-flow-col auto-cols-fr m-3 h-editor gap-2">
-                  <SectionPlaceholder />
-                  <div className="bg-white m-3 ml-0 border-b-2 border-secondary rounded-md shadow overflow-hidden">
-                    <UsfmEditor />
+            <ScribexContextProvider>
+              <CustomNavigationContextProvider>
+                <EditorLayout>
+                  <div className="grid grid-flow-col auto-cols-fr m-3 h-editor gap-2">
+                    <SectionPlaceholder />
+                    <div className="bg-white m-3 ml-0 border-b-2 border-secondary rounded-md shadow overflow-hidden">
+                      <Scribex />
+                    </div>
                   </div>
-                </div>
-              </EditorLayout>
-            </CustomNavigationContextProvider>
+                </EditorLayout>
+              </CustomNavigationContextProvider>
+            </ScribexContextProvider>
           </ReferenceContextProvider>
         </ProjectContextProvider>
       </AutographaContextProvider>

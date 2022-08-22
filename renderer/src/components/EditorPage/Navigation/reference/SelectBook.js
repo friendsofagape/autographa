@@ -13,7 +13,7 @@ export default function SelectBook({
   selectedBooks,
   setSelectedBooks,
   scope,
- }) {
+}) {
   const [openNT, setOpenNT] = useState(true);
   const [openOT, setOpenOT] = useState(true);
 
@@ -32,7 +32,8 @@ export default function SelectBook({
     setOpenOT(true);
   }
 
-  function bookSelect(e, bookId) {
+  function bookSelect(e, bookId, bookName) {
+    // console.log({e,bookId,bookName})
     e.preventDefault();
     onChangeBook(bookId, selectedBooks[0]);
     if (multiSelectBook === false) { selectBook(); }
