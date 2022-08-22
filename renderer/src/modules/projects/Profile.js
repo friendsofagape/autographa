@@ -2,6 +2,7 @@ import { PropTypes } from 'prop-types';
 import React from 'react';
 import * as localForage from 'localforage';
 
+import { Switch } from '@headlessui/react';
 import { XIcon } from '@heroicons/react/solid';
 import { PencilIcon, CheckIcon } from '@heroicons/react/outline';
 import { useTranslation } from 'react-i18next';
@@ -75,12 +76,14 @@ export default function UserProfile() {
     email: '',
     selectedregion: '',
     organization: '',
+    autosync: false,
   });
   const [appLang, setAppLang] = React.useState(languages[0]);
   const [snackBar, setOpenSnackBar] = React.useState(false);
   const [snackText, setSnackText] = React.useState('');
   const [notify, setNotify] = React.useState();
   const { t } = useTranslation();
+  const [enabled, setEnabled] = React.useState(false);
 
   React.useEffect(() => {
     if (!username && isElectron()) {
@@ -144,6 +147,11 @@ export default function UserProfile() {
               <div className="grid grid-cols-2">
                 <ProgressCircle isFilled={false} count="5" text={t('label-region')} />
               </div>
+
+              <div className="grid grid-cols-2">
+                <ProgressCircle isFilled={false} count="6" text={t('label-sync')} />
+              </div>
+
             </div>
           </div>
           <div className="w-full h-auto bg-white m-2 rounded-lg border">
@@ -258,6 +266,30 @@ export default function UserProfile() {
                   className="w-96 block rounded shadow-sm sm:text-sm focus:ring-gray-500 focus:border-primary border-gray-200 h-10 font-light"
                 />
               </div>
+
+              <div>
+                <h4 className="text-xs font-base mb-2 ml-2 text-primary  tracking-wide leading-4  font-light">
+                  Auto
+                  {' '}
+                  {t('label-sync')}
+                </h4>
+                <Switch
+                  checked={enabled}
+                  name="autosync"
+                  id="autosync"
+                  onChange={() => { setEnabled(!enabled); setValues({ ...values, autosync: !enabled }); }}
+                  className={`${
+                  enabled ? 'bg-success' : 'bg-gray-200'
+                } relative inline-flex h-6 w-12 items-center rounded-full`}
+                >
+                  <span
+                    className={`${
+                    enabled ? 'translate-x-7' : 'translate-x-1'
+                  } inline-block h-4 w-4 transform rounded-full bg-gray-400`}
+                  />
+                </Switch>
+              </div>
+
               <div className="relative">
                 <h4 className="text-xs font-base mb-2 ml-2 text-primary  tracking-wide leading-4  font-light">
                   {t('label-app-language')}
