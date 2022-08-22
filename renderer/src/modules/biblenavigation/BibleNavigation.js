@@ -27,23 +27,23 @@ export default function BibleNavigation(props) {
 
   const {
     state: {
-       bookId,
-       bookList,
-       bookName,
-       chapter,
-       verse,
-       chapterList,
-       verseList,
-       languageId,
+      bookId,
+      bookList,
+      bookName,
+      chapter,
+      verse,
+      chapterList,
+      verseList,
+      languageId,
       //  closeNavigation,
     }, actions: {
-       onChangeBook,
-       onChangeChapter,
-       onChangeVerse,
-       applyBooksFilter,
-       setCloseNavigation,
-     },
-   } = useContext(ReferenceContext);
+      onChangeBook,
+      onChangeChapter,
+      onChangeVerse,
+      applyBooksFilter,
+      setCloseNavigation,
+    },
+  } = useContext(ReferenceContext);
 
   useEffect(() => {
     applyBooksFilter(supportedBooks);
@@ -85,19 +85,19 @@ export default function BibleNavigation(props) {
         .then((refs) => {
           refs?.forEach((ref) => {
             if (languageId !== null) {
-            if (ref.value.languages[0].tag === languageId) {
-              const supportedBooks = [];
-              Object.entries((ref.value.type.flavorType.currentScope)).forEach(
+              if (ref.value.languages[0].tag === languageId) {
+                const supportedBooks = [];
+                Object.entries((ref.value.type.flavorType.currentScope)).forEach(
                   ([key]) => {
                     supportedBooks.push(key.toLowerCase());
                   },
-                  );
-                  applyBooksFilter(supportedBooks);
-                }
+                );
+                applyBooksFilter(supportedBooks);
               }
+            }
           });
-      });
-  }
+        });
+    }
   }, [languageId, applyBooksFilter]);
 
   useEffect(() => {
@@ -105,12 +105,12 @@ export default function BibleNavigation(props) {
   }, [bookId, chapter]);
 
   useEffect(() => {
-      if (openBook === false && openVerse === false) {
-        setCloseNavigation(true);
-      }
-      if (openBook || openVerse) {
-        setCloseNavigation(false);
-      }
+    if (openBook === false && openVerse === false) {
+      setCloseNavigation(true);
+    }
+    if (openBook || openVerse) {
+      setCloseNavigation(false);
+    }
   }, [openVerse, openBook, setCloseNavigation]);
 
   return (
