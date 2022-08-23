@@ -4,7 +4,7 @@ import { v5 as uuidv5 } from 'uuid';
 import { updateVersion } from '@/core/burrito/updateTranslationSB';
 import * as localForage from 'localforage';
 import {
-    readContent,
+    readContent, createRepository,createContent, updateContent,
   } from 'gitea-react-toolkit';
 import * as logger from '../../../logger';
 import { environment } from '../../../../environment';
@@ -297,5 +297,94 @@ export const createSyncProfile = async (auth) => {
       }
       });
     }
+  });
+};
+
+// create repo for new project sync
+export const handleCreateRepo = async (repoName, auth, description) => {
+  const settings = {
+    name: repoName,
+    description: description || `${repoName}`,
+    private: false,
+  };
+  // eslint-disable-next-line no-async-promise-executor
+  return new Promise(async (resolve, reject) => {
+    await createRepository(
+      {
+        config: auth.config,
+        repo: settings?.name,
+        settings,
+      },
+    ).then((result) => {
+      logger.debug('Dropzone.js', 'call to create repo from Gitea');
+      // console.log("create repo : ", result);
+      resolve(result);
+    }).catch((err) => {
+      logger.debug('Dropzone.js', 'call to create repo from Gitea Error : ', err);
+      // console.log("create repo : ", result);
+      reject(err);
+    });
+  });
+};
+
+// upload file to gitea
+export const createFiletoServer = async (fileContent, filePath, username, created, repoName, auth) => {
+  await createContent({
+    config: auth.config,
+    owner: auth.user.login,
+    // repo: repo.name,
+    repo: repoName,
+    branch: `${username}/${created}.1`,
+    filepath: filePath,
+    content: fileContent,
+    message: `commit ${filePath}`,
+    author: {
+      email: auth.user.email,
+      username: auth.user.username,
+    },
+  }).then(() => {
+    logger.debug('Dropzone.js', `file uploaded to Gitea ${filePath}`);
+    // console.log('RESPONSE :', res);
+  })
+  .catch((err) => {
+    logger.debug('Dropzone.js', `failed to upload file to Gitea ${filePath} ${err}`);
+    console.log(filePath, ' : error : ', err);
+  });
+};
+
+// update file in gitea
+export const updateFiletoServer = async (fileContent, filePath, username, created, repoName, auth) => {
+  await readContent(
+    {
+      config: auth.config,
+      owner: auth.user.login,
+      repo: repoName.toLowerCase(),
+      ref: `${username}/${created}.1`,
+      filepath: filePath,
+    },
+  ).then(async (result) => {
+    logger.debug('Dropzone.js', 'sending the data from Gitea with content');
+    await updateContent({
+      config: auth.config,
+      owner: auth.user.login,
+      repo: repoName.toLowerCase(),
+      branch: `${username}/${created}.1`,
+      filepath: result.path,
+      content: fileContent,
+      message: `updated ${filePath}`,
+      author: {
+        email: auth.user.email,
+        username: auth.user.username,
+      },
+      sha: result.sha,
+    // eslint-disable-next-line no-unused-vars
+    }).then((res) => {
+      logger.debug('Dropzone.js', 'file uploaded to Gitea \'metadata.json\'');
+      // console.log('RESPONSE :', res);
+    })
+    .catch((err) => {
+      logger.debug('Dropzone.js', 'failed to upload file to Gitea \'metadata.json\'', err);
+      console.log(filePath, ' : error : ', err);
+    });
   });
 };
