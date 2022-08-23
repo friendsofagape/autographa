@@ -5,9 +5,11 @@ import { Dialog, Transition, Listbox } from '@headlessui/react';
 import { useTranslation } from 'react-i18next';
 import { CheckIcon, SelectorIcon } from '@heroicons/react/solid';
 import Link from 'next/link';
+import { SnackBar } from '@/components/SnackBar';
 import * as logger from '../../../logger';
 import fetchProjectsMeta from '../../../core/projects/fetchProjectsMeta';
 import { handleCreateRepo, createFiletoServer, updateFiletoServer } from './GiteaUtils';
+import CloudUploadIcon from '@/icons/basil/Outline/Files/Cloud-upload.svg';
 
 const path = require('path');
 
@@ -16,6 +18,9 @@ function AutoSync({ selectedProject }) {
     const [selectedUsername, setselectedUsername] = React.useState(null);
     const [isOpen, setIsOpen] = React.useState(false);
     const { t } = useTranslation();
+    const [snackBar, setOpenSnackBar] = React.useState(false);
+    const [snackText, setSnackText] = React.useState('');
+    const [notify, setNotify] = React.useState();
 
     // eslint-disable-next-line no-async-promise-executor
     const getGiteaUsersList = async () => new Promise(async (resolve, reject) => {
@@ -55,7 +60,6 @@ function AutoSync({ selectedProject }) {
             const json = JSON.parse(data);
             // setting default username for testing
             const auth = json?.sync?.services?.door43.filter((item) => item.username === selectedUsername.username);
-            // sync function rebuild
             const authObj = auth[0].token;
             const projectData = currentProject[0];
             // const projectId = Object.keys(projectData.identification.primary.ag)[0];
@@ -102,6 +106,12 @@ function AutoSync({ selectedProject }) {
                         logger.debug('EditorAutoSync.js', 'Auto Sync existing project - update finished');
                         console.log('Finish updating project');
                     } else {
+                        // token expiry or auth error
+                        if (error.message.includes('401')) {
+                            setNotify('failure');
+                            setSnackText('Token Expired , Please login again in SYNC menu');
+                            setOpenSnackBar(true);
+                        }
                         logger.debug('EditorAutoSync.js', 'calling autosync event - Repo Updation Error : ', error.message);
                         }
                     },
@@ -117,9 +127,14 @@ function AutoSync({ selectedProject }) {
 
     const callFunction = () => {
         setIsOpen(false);
-        console.log('called ok button to upload / update project : ', selectedUsername);
-        handleAutoSync(selectedProject);
-        };
+        if (selectedUsername) {
+            handleAutoSync(selectedProject);
+        } else {
+            setNotify('failure');
+            setSnackText('Please select a valid account to sync..');
+            setOpenSnackBar(true);
+        }
+    };
 
     const autoSyncOperations = async () => {
         setIsOpen(true);
@@ -132,7 +147,9 @@ function AutoSync({ selectedProject }) {
     return (
       <>
         {/* <button type="button" onClick={() => handleAutoSync(selectedProject)}>SYNV</button> */}
-        <button type="button" onClick={() => autoSyncOperations()}>SYNV</button>
+        <button type="button" onClick={() => autoSyncOperations()}>
+          <CloudUploadIcon fill="currentColor" className="h-6 w-6" aria-hidden="true" />
+        </button>
 
         <Transition appear show={isOpen} as={React.Fragment}>
           <Dialog as="div" className="relative z-10" onClose={callFunction}>
@@ -257,6 +274,14 @@ function AutoSync({ selectedProject }) {
             </div>
           </Dialog>
         </Transition>
+
+        <SnackBar
+          openSnackBar={snackBar}
+          snackText={snackText}
+          setOpenSnackBar={setOpenSnackBar}
+          setSnackText={setSnackText}
+          error={notify}
+        />
 
       </>
     );
