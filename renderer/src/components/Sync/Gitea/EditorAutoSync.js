@@ -1,3 +1,5 @@
+import React from 'react';
+import PropTypes from 'prop-types';
 import * as localForage from 'localforage';
 import * as logger from '../../../logger';
 import fetchProjectsMeta from '../../../core/projects/fetchProjectsMeta';
@@ -5,7 +7,8 @@ import { handleCreateRepo, createFiletoServer, updateFiletoServer } from './Gite
 
 const path = require('path');
 
-export const handleAutoSync = (selectedProject) => {
+function AutoSync({ selectedProject }) {
+    const handleAutoSync = (selectedProject) => {
     logger.debug('EditorAutoSync.js', 'Inside auto sync Project : ', selectedProject);
     const projectName = (selectedProject.slice(0, selectedProject.lastIndexOf('_'))).toLowerCase();
     // console.log('project: ', projectName);
@@ -77,7 +80,15 @@ export const handleAutoSync = (selectedProject) => {
             });
         }
     });
-    // return (
-    //   <h1>hello</h1>
-    // );
+    };
+
+    return (
+      <button type="button" onClick={() => handleAutoSync(selectedProject)}>SYNV</button>
+    );
+}
+
+AutoSync.propTypes = {
+    selectedProject: PropTypes.string,
   };
+
+export default AutoSync;

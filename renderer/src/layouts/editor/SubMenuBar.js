@@ -6,7 +6,8 @@ import MenuBar from '@/components/Menubar/MenuBar';
 import CustomUsfmToolbar from '@/components/EditorPage/UsfmEditor/CustomUsfmToolbar';
 import { ProjectContext } from '@/components/context/ProjectContext';
 import CustomNofications from '@/components/Notification/CustomNofications';
-import { handleAutoSync } from '@/components/Sync/Gitea/EditorAutoSync';
+// import { handleAutoSync } from '@/components/Sync/Gitea/EditorAutoSync';
+import AutoSync from '@/components/Sync/Gitea/EditorAutoSync';
 import localforage from 'localforage';
 import Font from '@/icons/font.svg';
 import ColumnsIcon from '@/icons/basil/Outline/Interface/Columns.svg';
@@ -241,7 +242,20 @@ export default function SubMenuBar() {
             </div>
 
             {/* Auto sync button */}
-            <button aria-label="add-panels" title="Sync Project" type="button" onClick={() => handleAutoSync(selectedProject)} className={`group ${menuStyles.btn}`}>
+            {/* <button aria-label="add-panels" title="Sync Project" type="button" onClick={() => handleAutoSync(selectedProject)} className={`group ${menuStyles.btn}`}>
+              <span
+              aria-label="number-of-panels"
+              className="px-2 ml-1 bg-primary
+              text-white  group-hover:bg-white
+              group-hover:text-primary inline-flex
+              text-xxs leading-5 font-semibold rounded-full"
+              >
+              SYNC
+              </span>
+            </button> */}
+
+            {/* Auto sync button */}
+            <div aria-label="add-panels" title="Sync Project" type="div" className={`group ${menuStyles.btn}`}>
               <span
                 aria-label="number-of-panels"
                 className="px-2 ml-1 bg-primary
@@ -249,9 +263,9 @@ export default function SubMenuBar() {
               group-hover:text-primary inline-flex
               text-xxs leading-5 font-semibold rounded-full"
               >
-                sync
+                <AutoSync selectedProject={selectedProject} />
               </span>
-            </button>
+            </div>
 
             <button aria-label="add-panels" title={t('tooltip-editor-layout')} type="button" onClick={() => handleResource()} className={`group ${menuStyles.btn}`}>
               <ColumnsIcon fill="currentColor" className="h-6 w-6" aria-hidden="true" />

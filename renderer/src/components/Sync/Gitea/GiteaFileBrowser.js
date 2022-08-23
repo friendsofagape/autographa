@@ -20,8 +20,6 @@ import {
 } from './GiteaUtils';
 import ProgressBar from '../ProgressBar';
 
-// util functions
-
 /* eslint-disable no-console */
 // eslint-disable-next-line react/prop-types
 const GiteaFileBrowser = ({ changeRepo }) => {
