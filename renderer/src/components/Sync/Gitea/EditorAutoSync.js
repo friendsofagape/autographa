@@ -281,9 +281,12 @@ function AutoSync({ selectedProject }) {
                           >
                             Sync
                           </Dialog.Title>
-                          <p className="text-sm pt-1 text-gray-900">
-                            Select door43 username
-                          </p>
+                          { usersList.length !== 0
+                            && (
+                            <p className="text-sm pt-1 text-gray-900">
+                              Select door43 username
+                            </p>
+                          )}
                         </div>
                         <div className="">
                           {/* <ul className="list-none p-0 flex">
@@ -302,78 +305,104 @@ function AutoSync({ selectedProject }) {
                       </div>
 
                       <div className="mt-3">
-
-                        <Listbox value={selectedUsername} onChange={setselectedUsername}>
-                          <div className="relative mt-1">
-                            <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
-                              <span className="block truncate">{selectedUsername?.username ? selectedUsername?.username : 'choose..'}</span>
-                              <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-                                <SelectorIcon
-                                  className="h-5 w-5 text-gray-400"
-                                  aria-hidden="true"
-                                />
-                              </span>
-                            </Listbox.Button>
-                            <Transition
-                              as={React.Fragment}
-                              leave="transition ease-in duration-100"
-                              leaveFrom="opacity-100"
-                              leaveTo="opacity-0"
-                            >
-                              <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                                {usersList.map((user, userIdx) => (
-                                  <Listbox.Option
+                        { usersList.length !== 0
+                            && (
+                            <Listbox value={selectedUsername} onChange={setselectedUsername}>
+                              <div className="relative mt-1 ">
+                                <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
+                                  <span className="block truncate">{selectedUsername?.username ? selectedUsername?.username : 'choose..'}</span>
+                                  <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                                    <SelectorIcon
+                                      className="h-5 w-5 text-gray-400"
+                                      aria-hidden="true"
+                                    />
+                                  </span>
+                                </Listbox.Button>
+                                <Transition
+                                  as={React.Fragment}
+                                  leave="transition ease-in duration-100"
+                                  leaveFrom="opacity-100"
+                                  leaveTo="opacity-0"
+                                >
+                                  <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                                    {usersList.map((user, userIdx) => (
+                                      <Listbox.Option
                                     // eslint-disable-next-line react/no-array-index-key
-                                    key={userIdx}
-                                    className={({ active }) => `relative cursor-default select-none py-2 pl-10 pr-4 ${
+                                        key={userIdx}
+                                        className={({ active }) => `relative cursor-default select-none py-2 pl-10 pr-4 ${
                                     active ? 'bg-amber-100 text-amber-900' : 'text-gray-900'}`}
-                                    value={user}
-                                  >
-                                    {({ selected }) => (
-                                      <>
-                                        <span
-                                          className={`block truncate ${selected ? 'font-medium' : 'font-normal'}`}
-                                        >
-                                          {user.username}
-                                        </span>
-                                        {selected ? (
-                                          <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600">
-                                            <CheckIcon className="h-5 w-5" aria-hidden="true" />
-                                          </span>
+                                        value={user}
+                                      >
+                                        {({ selected }) => (
+                                          <>
+                                            <span
+                                              className={`block truncate ${selected ? 'font-medium' : 'font-normal'}`}
+                                            >
+                                              {user.username}
+                                            </span>
+                                            {selected ? (
+                                              <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600">
+                                                <CheckIcon className="h-5 w-5" aria-hidden="true" />
+                                              </span>
                                     ) : null}
-                                      </>
+                                          </>
                                 )}
-                                  </Listbox.Option>
+                                      </Listbox.Option>
                             ))}
-                              </Listbox.Options>
-                            </Transition>
-                          </div>
-                        </Listbox>
+                                  </Listbox.Options>
+                                </Transition>
+                              </div>
+                            </Listbox>
+                        )}
 
-                        <div className="mt-3">
-                          <p className="px-2 text-sm">
-                            Please select an account where you want to sync project.
-                            <p>
-                              don&apos;t find username, please login on
-                              {' '}
-                              <b className="text-primary underline">
-                                <Link href="/sync">sync</Link>
-                              </b>
-                            </p>
-                          </p>
-                        </div>
+                        { usersList.length !== 0
+                            ? (
+                              <div className="mt-3">
+                                <p className="px-2 text-sm">
+                                  Please select an account where you want to sync project.
+                                  <p>
+                                    don&apos;t find username, please login on
+                                    {' '}
+                                    <b className="text-primary underline">
+                                      <Link href="/sync">sync</Link>
+                                    </b>
+                                  </p>
+                                </p>
+                              </div>
+                            ) : (
+                              <div className="mt-3">
+                                <p className="px-2 text-sm">
+                                  Sorry, No account found for you..
+                                  <p>
+                                    please login to start syncing project
+                                  </p>
+                                </p>
+                              </div>
+                            )}
 
                       </div>
                       <div className="mt-4 ">
                         <div className="bg-gray-200 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                          <button
-                            aria-label="confirm-sync"
-                            type="button"
-                            className="w-20 h-10 bg-success leading-loose rounded shadow text-xs font-base  text-white tracking-wide  font-light uppercase"
-                            onClick={callFunction}
-                          >
-                            {t('label-sync')}
-                          </button>
+                          {usersList.length !== 0
+                          ? (
+                            <button
+                              aria-label="confirm-sync"
+                              type="button"
+                              className="w-20 h-10 bg-success leading-loose rounded shadow text-xs font-base  text-white tracking-wide  font-light uppercase"
+                              onClick={callFunction}
+                            >
+                              {t('label-sync')}
+                            </button>
+                          )
+                          : (
+                            <button
+                              href="/sync"
+                              type="button"
+                              className="w-20 h-10 bg-success leading-loose rounded shadow text-xs font-base  text-white tracking-wide  font-light uppercase"
+                            >
+                              <Link href="/sync">Login</Link>
+                            </button>
+                        )}
 
                           <button
                             aria-label="close-sync"
