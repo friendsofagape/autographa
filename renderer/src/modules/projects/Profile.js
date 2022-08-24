@@ -6,7 +6,6 @@ import { PencilIcon, CheckIcon } from '@heroicons/react/outline';
 import { useTranslation } from 'react-i18next';
 import { classNames } from '@/util/classNames';
 import ProjectsLayout from '@/layouts/projects/Layout';
-
 import { SnackBar } from '@/components/SnackBar';
 import i18n from '../../translations/i18n';
 import { isElectron } from '../../core/handleElectron';
