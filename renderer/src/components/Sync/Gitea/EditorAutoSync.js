@@ -11,6 +11,7 @@ import * as logger from '../../../logger';
 import fetchProjectsMeta from '../../../core/projects/fetchProjectsMeta';
 import { handleCreateRepo, createFiletoServer, updateFiletoServer } from './GiteaUtils';
 import CloudUploadIcon from '@/icons/basil/Outline/Files/Cloud-upload.svg';
+import CloudCheckIcon from '@/icons/basil/Solid/Files/Cloud-check.svg';
 import ProgressCircle from '../ProgressCircle';
 
 const path = require('path');
@@ -25,7 +26,7 @@ function AutoSync({ selectedProject }) {
     const [notify, setNotify] = React.useState();
     const [totalUploaded, setTotalUploaded] = React.useState(0);
     const [uploadStart, setUploadstart] = React.useState(false);
-    // const [uploadDone, setUploadDone] = React.useState(false);
+    const [uploadDone, setUploadDone] = React.useState(false);
     const [totalFiles, settotalFiles] = React.useState(0);
 
     // eslint-disable-next-line no-async-promise-executor
@@ -111,6 +112,7 @@ function AutoSync({ selectedProject }) {
                         logger.debug('EditorAutoSync.js', 'Auto Sync finished create project and upload');
                         console.log('finished create project and upload');
                         setUploadstart(false);
+                        setUploadDone(true);
                         setTotalUploaded(0);
                         settotalFiles(0);
                         // setNotify('success');
@@ -153,6 +155,7 @@ function AutoSync({ selectedProject }) {
                         logger.debug('EditorAutoSync.js', 'Auto Sync existing project - update finished');
                         console.log('Finish updating project');
                         setUploadstart(false);
+                        setUploadDone(true);
                         setTotalUploaded(0);
                         settotalFiles(0);
                         // setNotify('success');
@@ -200,15 +203,47 @@ function AutoSync({ selectedProject }) {
         });
     };
 
+    React.useEffect(() => {
+      if (uploadDone) {
+        setTimeout(() => {
+          setUploadDone(false);
+        }, 3000);
+      }
+    }, [uploadDone]);
+
     return (
       <>
         {uploadStart ? <ProgressCircle currentValue={totalUploaded} totalValue={totalFiles} />
         : (
-          <div aria-label="add-panels" title="Sync Project" type="div" className={`group ${menuStyles.btn}`}>
-            <button type="button" onClick={() => autoSyncOperations()}>
-              <CloudUploadIcon fill="currentColor" className="h-6 w-6" aria-hidden="true" />
-            </button>
-          </div>
+          // eslint-disable-next-line react/jsx-no-useless-fragment
+          <>
+            {uploadDone ? (
+              <CloudCheckIcon
+                fill="green"
+                className="h-9 w-9 mx-1"
+                aria-hidden="true"
+              />
+            )
+            : (
+              <div
+                aria-label="add-panels"
+                title="Sync Project"
+                type="div"
+              // className={`group ${menuStyles.btn} `}
+                className={`group ${menuStyles.btn}
+              transition-all duration-[${uploadDone ? '0ms' : '2000ms' }]${
+                uploadDone ? 'opacity-0' : 'opacity-100'}`}
+              >
+                <button type="button" onClick={() => autoSyncOperations()}>
+                  <CloudUploadIcon
+                    fill="currentColor"
+                    className="h-6 w-6"
+                    aria-hidden="true"
+                  />
+                </button>
+              </div>
+            )}
+          </>
         )}
 
         <Transition appear show={isOpen} as={React.Fragment}>
