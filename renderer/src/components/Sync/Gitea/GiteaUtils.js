@@ -364,6 +364,9 @@ export const updateFiletoServer = async (fileContent, filePath, username, create
     },
   ).then(async (result) => {
     logger.debug('Dropzone.js', 'sending the data from Gitea with content');
+    if (result === null){
+      throw 'can not read repo'
+    }
     await updateContent({
       config: auth.config,
       owner: auth.user.login,

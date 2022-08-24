@@ -242,9 +242,7 @@ export default function SubMenuBar() {
             </div>
 
             {/* Auto sync button */}
-            <div aria-label="add-panels" title="Sync Project" type="div" className={`group ${menuStyles.btn}`}>
-              <AutoSync selectedProject={selectedProject} />
-            </div>
+            <AutoSync selectedProject={selectedProject} />
 
             <button aria-label="add-panels" title={t('tooltip-editor-layout')} type="button" onClick={() => handleResource()} className={`group ${menuStyles.btn}`}>
               <ColumnsIcon fill="currentColor" className="h-6 w-6" aria-hidden="true" />

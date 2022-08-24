@@ -6,10 +6,12 @@ import { useTranslation } from 'react-i18next';
 import { CheckIcon, SelectorIcon } from '@heroicons/react/solid';
 import Link from 'next/link';
 import { SnackBar } from '@/components/SnackBar';
+import menuStyles from '@/layouts/editor/MenuBar.module.css';
 import * as logger from '../../../logger';
 import fetchProjectsMeta from '../../../core/projects/fetchProjectsMeta';
 import { handleCreateRepo, createFiletoServer, updateFiletoServer } from './GiteaUtils';
 import CloudUploadIcon from '@/icons/basil/Outline/Files/Cloud-upload.svg';
+import ProgressCircle from '../ProgressCircle';
 
 const path = require('path');
 
@@ -21,6 +23,10 @@ function AutoSync({ selectedProject }) {
     const [snackBar, setOpenSnackBar] = React.useState(false);
     const [snackText, setSnackText] = React.useState('');
     const [notify, setNotify] = React.useState();
+    const [totalUploaded, setTotalUploaded] = React.useState(0);
+    const [uploadStart, setUploadstart] = React.useState(false);
+    // const [uploadDone, setUploadDone] = React.useState(false);
+    const [totalFiles, settotalFiles] = React.useState(0);
 
     // eslint-disable-next-line no-async-promise-executor
     const getGiteaUsersList = async () => new Promise(async (resolve, reject) => {
@@ -68,45 +74,95 @@ function AutoSync({ selectedProject }) {
             const projectCreated = projectData.meta.dateCreated.split('T')[0];
             const repoName = `ag-${projectData.languages[0].tag}-${projectData.type.flavorType.flavor.name}-${projectName.replace(/[\s+ -]/g, '_')}`;
             const projectsMetaPath = path.join(newpath, 'autographa', 'users', user?.username, 'projects', selectedProject);
+            settotalFiles((Object.keys(ingredientsObj).length) + 1);
 
             await handleCreateRepo(repoName.toLowerCase(), authObj).then(
                 async (result) => {
                     if (result.id) {
                         console.log('sync auto -- create repo + upload started');
                         logger.debug('EditorAutoSync.js', 'Auto Sync New project - repo + upload started');
+                        setUploadstart(true);
                         const Metadata = fs.readFileSync(path.join(projectsMetaPath, 'metadata.json'));
-                        await createFiletoServer(JSON.stringify(Metadata), 'metadata.json', user?.username, projectCreated, result.name, authObj);
+                        await createFiletoServer(JSON.stringify(Metadata), 'metadata.json', user?.username, projectCreated, result.name, authObj)
+                        .catch((err) => {
+                            // console.log('error : ', err);
+                            logger.debug('EditorAutoSync.js', 'Auto Sync  New project - repo + upload - error', err);
+                            setUploadstart(false);
+                            setTotalUploaded(0);
+                            settotalFiles(0);
+                        });
+                        setTotalUploaded((prev) => prev + 1);
                         // eslint-disable-next-line no-restricted-syntax
                         for (const key in ingredientsObj) {
                             if (Object.prototype.hasOwnProperty.call(ingredientsObj, key)) {
+                                setTotalUploaded((prev) => prev + 1);
                                 const Metadata1 = fs.readFileSync(path.join(projectsMetaPath, key), 'utf8');
                                 // eslint-disable-next-line no-await-in-loop
-                                await createFiletoServer(Metadata1, key, user?.username, projectCreated, result.name, authObj);
+                                await createFiletoServer(Metadata1, key, user?.username, projectCreated, result.name, authObj)
+                                .catch((err) => {
+                                    // console.log('error : ', err);
+                                    logger.debug('EditorAutoSync.js', 'Auto Sync  New project - repo + upload - error', err);
+                                    setUploadstart(false);
+                                    setTotalUploaded(0);
+                                    settotalFiles(0);
+                                });
                             }
                         }
                         logger.debug('EditorAutoSync.js', 'Auto Sync finished create project and upload');
                         console.log('finished create project and upload');
+                        setUploadstart(false);
+                        setTotalUploaded(0);
+                        settotalFiles(0);
+                        // setNotify('success');
+                        // setSnackText('Sync completed successfully !!');
+                        // setOpenSnackBar(true);
                     }
                 },
                 async (error) => {
                     if (error.message.includes('409')) {
                         console.log('started update project ');
                         logger.debug('EditorAutoSync.js', 'Auto Sync existing project - update started');
+                        setUploadstart(true);
                         const metadataContent = fs.readFileSync(path.join(projectsMetaPath, 'metadata.json'));
-                        await updateFiletoServer(JSON.stringify(metadataContent), 'metadata.json', user.username, projectCreated, repoName, authObj);
+                        await updateFiletoServer(JSON.stringify(metadataContent), 'metadata.json', user.username, projectCreated, repoName, authObj)
+                        .catch((err) => {
+                            // console.log('error : ', err);
+                            logger.debug('EditorAutoSync.js', 'Auto Sync existing project - error', err);
+                            setUploadstart(false);
+                            setTotalUploaded(0);
+                            settotalFiles(0);
+                        });
+                        setTotalUploaded((prev) => prev + 1);
                         // Read ingredients and update
                         // eslint-disable-next-line no-restricted-syntax
                         for (const key in ingredientsObj) {
                             if (Object.prototype.hasOwnProperty.call(ingredientsObj, key)) {
-                            const metadata1 = fs.readFileSync(path.join(projectsMetaPath, key), 'utf8');
-                            // eslint-disable-next-line no-await-in-loop
-                            await updateFiletoServer(metadata1, key, user.username, projectCreated, repoName, authObj);
+                                setTotalUploaded((prev) => prev + 1);
+                                const metadata1 = fs.readFileSync(path.join(projectsMetaPath, key), 'utf8');
+                                // eslint-disable-next-line no-await-in-loop
+                                await updateFiletoServer(metadata1, key, user.username, projectCreated, repoName, authObj)
+                                .catch((err) => {
+                                    // console.log('error : ', err);
+                                    logger.debug('EditorAutoSync.js', 'Auto Sync existing project - error', err);
+                                    setUploadstart(false);
+                                    setTotalUploaded(0);
+                                    settotalFiles(0);
+                                });
                             }
                         }
                         logger.debug('EditorAutoSync.js', 'Auto Sync existing project - update finished');
                         console.log('Finish updating project');
+                        setUploadstart(false);
+                        setTotalUploaded(0);
+                        settotalFiles(0);
+                        // setNotify('success');
+                        // setSnackText('Sync completed successfully !!');
+                        // setOpenSnackBar(true);
                     } else {
                         // token expiry or auth error
+                        setUploadstart(false);
+                        setTotalUploaded(0);
+                        settotalFiles(0);
                         if (error.message.includes('401')) {
                             setNotify('failure');
                             setSnackText('Token Expired , Please login again in SYNC menu');
@@ -123,7 +179,7 @@ function AutoSync({ selectedProject }) {
 
     const modalClose = () => {
         setIsOpen(false);
-        };
+      };
 
     const callFunction = () => {
         setIsOpen(false);
@@ -146,13 +202,17 @@ function AutoSync({ selectedProject }) {
 
     return (
       <>
-        {/* <button type="button" onClick={() => handleAutoSync(selectedProject)}>SYNV</button> */}
-        <button type="button" onClick={() => autoSyncOperations()}>
-          <CloudUploadIcon fill="currentColor" className="h-6 w-6" aria-hidden="true" />
-        </button>
+        {uploadStart ? <ProgressCircle currentValue={totalUploaded} totalValue={totalFiles} />
+        : (
+          <div aria-label="add-panels" title="Sync Project" type="div" className={`group ${menuStyles.btn}`}>
+            <button type="button" onClick={() => autoSyncOperations()}>
+              <CloudUploadIcon fill="currentColor" className="h-6 w-6" aria-hidden="true" />
+            </button>
+          </div>
+        )}
 
         <Transition appear show={isOpen} as={React.Fragment}>
-          <Dialog as="div" className="relative z-10" onClose={callFunction}>
+          <Dialog as="div" className="relative z-10" onClose={modalClose}>
             <div className="min-h-screen px-4 text-center">
               <Transition.Child
                 as={React.Fragment}
