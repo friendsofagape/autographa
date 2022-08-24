@@ -10,7 +10,6 @@ export const createUser = (values, fs) => {
     email: '',
     organization: '',
     selectedregion: '',
-    autosync: false,
   };
   return handleJson(obj, fs).then(() => obj);
 };

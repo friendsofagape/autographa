@@ -1,8 +1,6 @@
 import { PropTypes } from 'prop-types';
 import React from 'react';
 import * as localForage from 'localforage';
-
-import { Switch } from '@headlessui/react';
 import { XIcon } from '@heroicons/react/solid';
 import { PencilIcon, CheckIcon } from '@heroicons/react/outline';
 import { useTranslation } from 'react-i18next';
@@ -76,14 +74,13 @@ export default function UserProfile() {
     email: '',
     selectedregion: '',
     organization: '',
-    autosync: false,
   });
   const [appLang, setAppLang] = React.useState(languages[0]);
   const [snackBar, setOpenSnackBar] = React.useState(false);
   const [snackText, setSnackText] = React.useState('');
   const [notify, setNotify] = React.useState();
   const { t } = useTranslation();
-  const [enabled, setEnabled] = React.useState(false);
+  // const [enabled, setEnabled] = React.useState(false);
 
   React.useEffect(() => {
     if (!username && isElectron()) {
@@ -148,9 +145,9 @@ export default function UserProfile() {
                 <ProgressCircle isFilled={false} count="5" text={t('label-region')} />
               </div>
 
-              <div className="grid grid-cols-2">
+              {/* <div className="grid grid-cols-2">
                 <ProgressCircle isFilled={false} count="6" text={t('label-sync')} />
-              </div>
+              </div> */}
 
             </div>
           </div>
@@ -267,7 +264,7 @@ export default function UserProfile() {
                 />
               </div>
 
-              <div>
+              {/* <div>
                 <h4 className="text-xs font-base mb-2 ml-2 text-primary  tracking-wide leading-4  font-light">
                   Auto
                   {' '}
@@ -288,7 +285,7 @@ export default function UserProfile() {
                   } inline-block h-4 w-4 transform rounded-full bg-gray-400`}
                   />
                 </Switch>
-              </div>
+              </div> */}
 
               <div className="relative">
                 <h4 className="text-xs font-base mb-2 ml-2 text-primary  tracking-wide leading-4  font-light">
