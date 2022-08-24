@@ -7,6 +7,7 @@ import { CheckIcon, SelectorIcon } from '@heroicons/react/solid';
 import Link from 'next/link';
 import { SnackBar } from '@/components/SnackBar';
 import menuStyles from '@/layouts/editor/MenuBar.module.css';
+import moment from 'moment';
 import * as logger from '../../../logger';
 import fetchProjectsMeta from '../../../core/projects/fetchProjectsMeta';
 import { handleCreateRepo, createFiletoServer, updateFiletoServer } from './GiteaUtils';
@@ -50,10 +51,47 @@ function AutoSync({ selectedProject }) {
             });
           });
 
+    const agSettingsSyncAction = async (action, projectname, currentUser, syncUsername) => {
+      if (action) {
+        const fs = window.require('fs');
+        const path = require('path');
+        const newpath = localStorage.getItem('userPath');
+        const settingsPath = path.join(newpath, 'autographa', 'users', currentUser, 'projects', projectname, 'ingredients/ag-settings.json');
+        let settings = fs.readFileSync(settingsPath);
+        settings = JSON.parse(settings);
+        if (action === 'get') {
+          console.log('settings : ', settings);
+        } else if (action === 'put') {
+          console.log('settings  put section : ');
+          if (!settings.sync && !settings.sync?.services) {
+            // first time sync
+            settings.sync = {
+              services: {
+                door43: [
+                  {
+                    username: syncUsername,
+                    dateCreated: moment().format(),
+                    lastSynced: moment().format(),
+                  },
+                ],
+              },
+            };
+          }
+          // eslint-disable-next-line array-callback-return
+          settings.sync?.services?.door43?.filter((element) => {
+            element.username = syncUsername;
+            element.lastSynced = moment().format();
+          });
+          logger.debug('GiteaFileBrowser.js', 'Upadting the settings in existing file');
+          fs.writeFileSync(settingsPath, JSON.stringify(settings));
+          }
+        }
+      };
+
     const handleAutoSync = (selectedProject) => {
     logger.debug('EditorAutoSync.js', 'Inside auto sync Project : ', selectedProject);
     const projectName = (selectedProject.slice(0, selectedProject.lastIndexOf('_'))).toLowerCase();
-    // console.log('project: ', projectName);
+    console.log('project: ', projectName);
     localForage.getItem('userProfile').then(async (user) => {
         const userProjects = await fetchProjectsMeta({ currentUser: user?.username });
         const currentProject = userProjects.projects.filter((project) => project.identification.name.en.toLowerCase() === projectName);
@@ -158,6 +196,7 @@ function AutoSync({ selectedProject }) {
                         setUploadDone(true);
                         setTotalUploaded(0);
                         settotalFiles(0);
+                        await agSettingsSyncAction('put', selectedProject, user?.username, authObj?.user?.username);
                         // setNotify('success');
                         // setSnackText('Sync completed successfully !!');
                         // setOpenSnackBar(true);
