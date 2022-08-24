@@ -20,6 +20,7 @@ const path = require('path');
 function AutoSync({ selectedProject }) {
     const [usersList, setUsersList] = React.useState([]);
     const [selectedUsername, setselectedUsername] = React.useState(null);
+    const [lastSyncedUser, setlastSyncedUser] = React.useState(null);
     const [isOpen, setIsOpen] = React.useState(false);
     const { t } = useTranslation();
     const [snackBar, setOpenSnackBar] = React.useState(false);
@@ -51,40 +52,42 @@ function AutoSync({ selectedProject }) {
             });
           });
 
-    const agSettingsSyncAction = async (action, projectname, currentUser, syncUsername) => {
+    const agSettingsSyncAction = async (action, projectname, syncUsername) => {
       if (action) {
         const fs = window.require('fs');
         const path = require('path');
         const newpath = localStorage.getItem('userPath');
-        const settingsPath = path.join(newpath, 'autographa', 'users', currentUser, 'projects', projectname, 'ingredients/ag-settings.json');
-        let settings = fs.readFileSync(settingsPath);
-        settings = JSON.parse(settings);
-        if (action === 'get') {
-          console.log('settings : ', settings);
-        } else if (action === 'put') {
-          console.log('settings  put section : ');
-          if (!settings.sync && !settings.sync?.services) {
-            // first time sync
-            settings.sync = {
-              services: {
-                door43: [
-                  {
-                    username: syncUsername,
-                    dateCreated: moment().format(),
-                    lastSynced: moment().format(),
-                  },
-                ],
-              },
-            };
+        localForage.getItem('userProfile').then(async (user) => {
+          const currentUser = user?.username;
+          const settingsPath = path.join(newpath, 'autographa', 'users', currentUser, 'projects', projectname, 'ingredients/ag-settings.json');
+          let settings = fs.readFileSync(settingsPath);
+          settings = JSON.parse(settings);
+          if (action === 'get') {
+            setlastSyncedUser(settings.sync?.services?.door43[0].username);
+          } if (action === 'put') {
+            if (!settings.sync && !settings.sync?.services) {
+              // first time sync
+              settings.sync = {
+                services: {
+                  door43: [
+                    {
+                      username: syncUsername,
+                      dateCreated: moment().format(),
+                      lastSynced: moment().format(),
+                    },
+                  ],
+                },
+              };
+            }
+            // eslint-disable-next-line array-callback-return
+            settings.sync?.services?.door43?.filter((element) => {
+              element.username = syncUsername;
+              element.lastSynced = moment().format();
+            });
+            logger.debug('EditorAutoSync.js', 'Upadting the ag settings with sync data');
+            fs.writeFileSync(settingsPath, JSON.stringify(settings));
           }
-          // eslint-disable-next-line array-callback-return
-          settings.sync?.services?.door43?.filter((element) => {
-            element.username = syncUsername;
-            element.lastSynced = moment().format();
-          });
-          logger.debug('GiteaFileBrowser.js', 'Upadting the settings in existing file');
-          fs.writeFileSync(settingsPath, JSON.stringify(settings));
-          }
+        });
         }
       };
 
@@ -153,6 +156,7 @@ function AutoSync({ selectedProject }) {
                         setUploadDone(true);
                         setTotalUploaded(0);
                         settotalFiles(0);
+                        await agSettingsSyncAction('put', selectedProject, authObj?.user?.username);
                         // setNotify('success');
                         // setSnackText('Sync completed successfully !!');
                         // setOpenSnackBar(true);
@@ -196,7 +200,7 @@ function AutoSync({ selectedProject }) {
                         setUploadDone(true);
                         setTotalUploaded(0);
                         settotalFiles(0);
-                        await agSettingsSyncAction('put', selectedProject, user?.username, authObj?.user?.username);
+                        await agSettingsSyncAction('put', selectedProject, authObj?.user?.username);
                         // setNotify('success');
                         // setSnackText('Sync completed successfully !!');
                         // setOpenSnackBar(true);
@@ -236,10 +240,12 @@ function AutoSync({ selectedProject }) {
 
     const autoSyncOperations = async () => {
         setIsOpen(true);
-        await getGiteaUsersList()
-        .then((val) => {
+        if (selectedUsername === null) {
+          await getGiteaUsersList()
+          .then((val) => {
             setUsersList(val);
-        });
+          });
+        }
     };
 
     React.useEffect(() => {
@@ -249,6 +255,24 @@ function AutoSync({ selectedProject }) {
         }, 3000);
       }
     }, [uploadDone]);
+
+    React.useEffect(() => {
+      (async () => {
+        await getGiteaUsersList()
+          .then(async (val) => {
+            const usersArr = val;
+            setUsersList(val);
+            if (selectedProject) {
+              await agSettingsSyncAction('get', selectedProject)
+              .then(() => {
+                const currentUserObj = usersArr.filter((element) => element.username === lastSyncedUser);
+                // console.log('current user obj : ', currentUserObj);
+                setselectedUsername(currentUserObj[0]);
+              });
+            }
+          });
+      })();
+    }, [selectedProject, lastSyncedUser]);
 
     return (
       <>
