@@ -1,13 +1,9 @@
 /* eslint-disable react/no-array-index-key */
-import {
- Fragment, useContext, useEffect, useState,
-} from 'react';
+import { Fragment, useContext } from 'react';
 import { Listbox, Transition } from '@headlessui/react';
 import { CheckIcon, SelectorIcon } from '@heroicons/react/solid';
-import localforage from 'localforage';
 import { useDetectFonts, fontList as fontsArray } from 'font-detect-rhl';
 import { ReferenceContext } from '../context/ReferenceContext';
-import * as logger from '../../logger';
 
 export default function MenuDropdown() {
   const {
@@ -18,20 +14,6 @@ export default function MenuDropdown() {
       setSelectedFont,
     },
   } = useContext(ReferenceContext);
-
-  const [fonts, setFonts] = useState();
-
-  function getFonts() {
-    logger.debug('MenuDropdown.js', 'In getFonts for fetching the list of font-family');
-    localforage.getItem('font-family').then((value) => {
-      setFonts(value);
-    });
-  }
-
-  useEffect(() => {
-    getFonts();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   // Detect fonts with font-detect-rhl:
   const detectedFonts = useDetectFonts({ fonts: fontsArray });
@@ -67,7 +49,7 @@ export default function MenuDropdown() {
         </>
     )}
     </Listbox.Option>
-  ));  
+  ));
 
   return (
     <div style={{ width: '150%' }} className="w-100">
