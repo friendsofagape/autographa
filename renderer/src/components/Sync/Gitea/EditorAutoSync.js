@@ -94,7 +94,6 @@ function AutoSync({ selectedProject }) {
     const handleAutoSync = (selectedProject) => {
     logger.debug('EditorAutoSync.js', 'Inside auto sync Project : ', selectedProject);
     const projectName = (selectedProject.slice(0, selectedProject.lastIndexOf('_'))).toLowerCase();
-    console.log('project: ', projectName);
     localForage.getItem('userProfile').then(async (user) => {
         const userProjects = await fetchProjectsMeta({ currentUser: user?.username });
         const currentProject = userProjects.projects.filter((project) => project.identification.name.en.toLowerCase() === projectName);
@@ -121,18 +120,19 @@ function AutoSync({ selectedProject }) {
             await handleCreateRepo(repoName.toLowerCase(), authObj).then(
                 async (result) => {
                     if (result.id) {
+                      try {
                         console.log('sync auto -- create repo + upload started');
                         logger.debug('EditorAutoSync.js', 'Auto Sync New project - repo + upload started');
                         setUploadstart(true);
                         const Metadata = fs.readFileSync(path.join(projectsMetaPath, 'metadata.json'));
-                        await createFiletoServer(JSON.stringify(Metadata), 'metadata.json', user?.username, projectCreated, result.name, authObj)
-                        .catch((err) => {
-                            // console.log('error : ', err);
-                            logger.debug('EditorAutoSync.js', 'Auto Sync  New project - repo + upload - error', err);
-                            setUploadstart(false);
-                            setTotalUploaded(0);
-                            settotalFiles(0);
-                        });
+                        await createFiletoServer(JSON.stringify(Metadata), 'metadata.json', user?.username, projectCreated, result.name, authObj);
+                        // .catch((err) => {
+                        //     // console.log('error : ', err);
+                        //     logger.debug('EditorAutoSync.js', 'Auto Sync  New project - repo + upload - error', err);
+                        //     setUploadstart(false);
+                        //     setTotalUploaded(0);
+                        //     settotalFiles(0);
+                        // });
                         setTotalUploaded((prev) => prev + 1);
                         // eslint-disable-next-line no-restricted-syntax
                         for (const key in ingredientsObj) {
@@ -140,14 +140,7 @@ function AutoSync({ selectedProject }) {
                                 setTotalUploaded((prev) => prev + 1);
                                 const Metadata1 = fs.readFileSync(path.join(projectsMetaPath, key), 'utf8');
                                 // eslint-disable-next-line no-await-in-loop
-                                await createFiletoServer(Metadata1, key, user?.username, projectCreated, result.name, authObj)
-                                .catch((err) => {
-                                    // console.log('error : ', err);
-                                    logger.debug('EditorAutoSync.js', 'Auto Sync  New project - repo + upload - error', err);
-                                    setUploadstart(false);
-                                    setTotalUploaded(0);
-                                    settotalFiles(0);
-                                });
+                                await createFiletoServer(Metadata1, key, user?.username, projectCreated, result.name, authObj);
                             }
                         }
                         logger.debug('EditorAutoSync.js', 'Auto Sync finished create project and upload');
@@ -157,25 +150,29 @@ function AutoSync({ selectedProject }) {
                         setTotalUploaded(0);
                         settotalFiles(0);
                         await agSettingsSyncAction('put', selectedProject, authObj?.user?.username);
-                        // setNotify('success');
-                        // setSnackText('Sync completed successfully !!');
-                        // setOpenSnackBar(true);
+                        setNotify('success');
+                        setSnackText('Sync completed successfully !!');
+                        setOpenSnackBar(true);
+                      } catch (err) {
+                        // console.log('error in catch : ---------- ', err);
+                        logger.debug('EditorAutoSync.js', 'Auto Sync create + upload project - error', err);
+                        setUploadstart(false);
+                        setTotalUploaded(0);
+                        settotalFiles(0);
+                        setNotify('error');
+                        setSnackText(`sync failed - ${err}`);
+                        setOpenSnackBar(true);
+                      }
                     }
                 },
                 async (error) => {
                     if (error.message.includes('409')) {
+                      try {
                         console.log('started update project ');
                         logger.debug('EditorAutoSync.js', 'Auto Sync existing project - update started');
                         setUploadstart(true);
                         const metadataContent = fs.readFileSync(path.join(projectsMetaPath, 'metadata.json'));
-                        await updateFiletoServer(JSON.stringify(metadataContent), 'metadata.json', user.username, projectCreated, repoName, authObj)
-                        .catch((err) => {
-                            // console.log('error : ', err);
-                            logger.debug('EditorAutoSync.js', 'Auto Sync existing project - error', err);
-                            setUploadstart(false);
-                            setTotalUploaded(0);
-                            settotalFiles(0);
-                        });
+                        await updateFiletoServer(JSON.stringify(metadataContent), 'metadata.json', user.username, projectCreated, repoName, authObj);
                         setTotalUploaded((prev) => prev + 1);
                         // Read ingredients and update
                         // eslint-disable-next-line no-restricted-syntax
@@ -184,14 +181,7 @@ function AutoSync({ selectedProject }) {
                                 setTotalUploaded((prev) => prev + 1);
                                 const metadata1 = fs.readFileSync(path.join(projectsMetaPath, key), 'utf8');
                                 // eslint-disable-next-line no-await-in-loop
-                                await updateFiletoServer(metadata1, key, user.username, projectCreated, repoName, authObj)
-                                .catch((err) => {
-                                    // console.log('error : ', err);
-                                    logger.debug('EditorAutoSync.js', 'Auto Sync existing project - error', err);
-                                    setUploadstart(false);
-                                    setTotalUploaded(0);
-                                    settotalFiles(0);
-                                });
+                                await updateFiletoServer(metadata1, key, user.username, projectCreated, repoName, authObj);
                             }
                         }
                         logger.debug('EditorAutoSync.js', 'Auto Sync existing project - update finished');
@@ -201,9 +191,19 @@ function AutoSync({ selectedProject }) {
                         setTotalUploaded(0);
                         settotalFiles(0);
                         await agSettingsSyncAction('put', selectedProject, authObj?.user?.username);
-                        // setNotify('success');
-                        // setSnackText('Sync completed successfully !!');
-                        // setOpenSnackBar(true);
+                        setNotify('success');
+                        setSnackText('Sync completed successfully !!');
+                        setOpenSnackBar(true);
+                    } catch (err) {
+                      console.log('error in catch : ---------- ', err);
+                      logger.debug('EditorAutoSync.js', 'Auto Sync existing project - error', err);
+                      setUploadstart(false);
+                      setTotalUploaded(0);
+                      settotalFiles(0);
+                      setNotify('error');
+                      setSnackText(`sync failed - ${err}`);
+                      setOpenSnackBar(true);
+                    }
                     } else {
                         // token expiry or auth error
                         setUploadstart(false);
@@ -352,14 +352,6 @@ function AutoSync({ selectedProject }) {
                           )}
                         </div>
                         <div className="">
-                          {/* <ul className="list-none p-0 flex">
-                            <li className="mr-2">
-                              <a className="bg-secondary text-white inline-block rounded-t py-2 px-6 text-sm uppercase" href="#a">
-                                <img className="inline mr-2 w-4" src="/brands/door43.png" alt="Door 43 Logo" />
-                                {t('label-door43')}
-                              </a>
-                            </li>
-                          </ul> */}
                           <a className="bg-secondary text-white inline-block rounded-t py-2 px-4 text-sm uppercase" href="#a">
                             <img className="inline mr-2 w-6" src="/brands/door43.png" alt="Door 43 Logo" />
                             {t('label-door43')}
@@ -422,14 +414,11 @@ function AutoSync({ selectedProject }) {
                             ? (
                               <div className="mt-3">
                                 <p className="px-2 text-sm">
-                                  Please select an account where you want to sync project.
-                                  <p>
-                                    don&apos;t find username, please login on
-                                    {' '}
-                                    <b className="text-primary underline">
-                                      <Link href="/sync">sync</Link>
-                                    </b>
-                                  </p>
+                                  don&apos;t find username, please login on
+                                  {' '}
+                                  <b className="text-primary underline">
+                                    <Link href="/sync">sync</Link>
+                                  </b>
                                 </p>
                               </div>
                             ) : (
