@@ -17,6 +17,7 @@ import Dropzone from '../Dropzone/Dropzone';
 import burrito from '../../../lib/BurritoTemplete.json';
 import {
   importServerProject, createSyncProfile, handleCreateRepo, createFiletoServer, updateFiletoServer,
+  uploadProjectToBranchRepoExist,
 } from './GiteaUtils';
 import ProgressBar from '../ProgressBar';
 
@@ -213,18 +214,15 @@ const GiteaFileBrowser = ({ changeRepo }) => {
                   console.log('success : ', success);
                   if (success) {
                     // get total file count to fetch
+                    logger.debug('GiteaFileBrowser.js', 'import project from remote , validate burrito success');
                     settotalFiles(Object.keys(metaDataSb?.ingredients).length);
                     // check project exist
                     const duplicate = await checkDuplicate(metaDataSb, user.username, 'projects');
                     console.log('duplicate : ', duplicate);
                     if (duplicate) {
                       logger.warn('ImportProjectPopUp.js', 'Project already available');
-                      setModel({
-                        openModel: true,
-                        title: t('modal-title-replace-resource'),
-                        confirmMessage: t('dynamic-msg-confirm-replace-resource'),
-                        buttonName: t('btn-replace'),
-                      });
+                      // upload exisitng ptoject to temp branch
+                      await uploadProjectToBranchRepoExist();
                     } else {
                       callImport(false);
                     }

@@ -391,3 +391,10 @@ export const updateFiletoServer = async (fileContent, filePath, username, create
     });
   });
 };
+
+// upload project to a branch on exsting repo
+export const uploadProjectToBranchRepoExist = async () => {
+  console.log('in replace existing upload func----');
+  logger.debug('giteaUitils.js', 'Upload project to tempory branch for merge');
+  
+}
