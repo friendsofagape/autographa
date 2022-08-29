@@ -125,7 +125,7 @@ function AutoSync({ selectedProject }) {
                         logger.debug('EditorAutoSync.js', 'Auto Sync New project - repo + upload started');
                         setUploadstart(true);
                         const Metadata = fs.readFileSync(path.join(projectsMetaPath, 'metadata.json'));
-                        await createFiletoServer(JSON.stringify(Metadata), 'metadata.json', user?.username, projectCreated, result.name, authObj);
+                        await createFiletoServer(JSON.stringify(Metadata), 'metadata.json', `${user?.username}/${projectCreated}.1`, result.name, authObj);
                         // .catch((err) => {
                         //     // console.log('error : ', err);
                         //     logger.debug('EditorAutoSync.js', 'Auto Sync  New project - repo + upload - error', err);
@@ -140,7 +140,7 @@ function AutoSync({ selectedProject }) {
                                 setTotalUploaded((prev) => prev + 1);
                                 const Metadata1 = fs.readFileSync(path.join(projectsMetaPath, key), 'utf8');
                                 // eslint-disable-next-line no-await-in-loop
-                                await createFiletoServer(Metadata1, key, user?.username, projectCreated, result.name, authObj);
+                                await createFiletoServer(Metadata1, key, `${user?.username}/${projectCreated}.1`, result.name, authObj);
                             }
                         }
                         logger.debug('EditorAutoSync.js', 'Auto Sync finished create project and upload');
@@ -172,7 +172,7 @@ function AutoSync({ selectedProject }) {
                         logger.debug('EditorAutoSync.js', 'Auto Sync existing project - update started');
                         setUploadstart(true);
                         const metadataContent = fs.readFileSync(path.join(projectsMetaPath, 'metadata.json'));
-                        await updateFiletoServer(JSON.stringify(metadataContent), 'metadata.json', user.username, projectCreated, repoName, authObj);
+                        await updateFiletoServer(JSON.stringify(metadataContent), 'metadata.json', `${user?.username}/${projectCreated}.1`, repoName, authObj);
                         setTotalUploaded((prev) => prev + 1);
                         // Read ingredients and update
                         // eslint-disable-next-line no-restricted-syntax
@@ -181,7 +181,7 @@ function AutoSync({ selectedProject }) {
                                 setTotalUploaded((prev) => prev + 1);
                                 const metadata1 = fs.readFileSync(path.join(projectsMetaPath, key), 'utf8');
                                 // eslint-disable-next-line no-await-in-loop
-                                await updateFiletoServer(metadata1, key, user.username, projectCreated, repoName, authObj);
+                                await updateFiletoServer(metadata1, key, `${user?.username}/${projectCreated}.1`, repoName, authObj);
                             }
                         }
                         logger.debug('EditorAutoSync.js', 'Auto Sync existing project - update finished');

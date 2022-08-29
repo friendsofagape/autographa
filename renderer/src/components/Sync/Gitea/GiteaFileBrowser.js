@@ -17,7 +17,7 @@ import Dropzone from '../Dropzone/Dropzone';
 import burrito from '../../../lib/BurritoTemplete.json';
 import {
   importServerProject, createSyncProfile, handleCreateRepo, createFiletoServer, updateFiletoServer,
-  uploadProjectToBranchRepoExist,
+
 } from './GiteaUtils';
 import ProgressBar from '../ProgressBar';
 
@@ -220,14 +220,17 @@ const GiteaFileBrowser = ({ changeRepo }) => {
                     const duplicate = await checkDuplicate(metaDataSb, user.username, 'projects');
                     console.log('duplicate : ', duplicate);
                     if (duplicate) {
-                      logger.warn('ImportProjectPopUp.js', 'Project already available');
+                      logger.warn('GiteaFileBrowser.js', 'Project already available');
                       // upload exisitng ptoject to temp branch
-                      await uploadProjectToBranchRepoExist();
+                        // await uploadProjectToBranchRepoExist(repo, userProjectBranch, metaDataSb, user.username, auth)
+                        // .then(async () => {
+
+                        // });
                     } else {
                       callImport(false);
                     }
                   } else {
-                    logger.debug('Dropzone.js', 'Burrito Validation Failed');
+                    logger.debug('GiteaFileBrowser.js', 'Burrito Validation Failed');
                     console.log('Burrito Validation Failed');
                     setNotify('failure');
                     setSnackText('Burrito Validation Failed');
@@ -235,7 +238,7 @@ const GiteaFileBrowser = ({ changeRepo }) => {
                   }
                   });
               }).catch((err) => {
-                logger.debug('Dropzone.js', 'Invalid Project , Burrito not found', err);
+                logger.debug('GiteaFileBrowser.js', 'Invalid Project , Burrito not found', err);
                 // console.log(" Error burrito not found", err);
                 setNotify('failure');
                 setSnackText('Invalid Project , Burrito not found');
@@ -285,7 +288,7 @@ const GiteaFileBrowser = ({ changeRepo }) => {
             // read metadata
             // const Metadata = fs.readFileSync(path.join(projectsMetaPath, 'metadata.json'), 'utf8');
             const Metadata = fs.readFileSync(path.join(projectsMetaPath, 'metadata.json'));
-            await createFiletoServer(JSON.stringify(Metadata), 'metadata.json', user.username, projectCreated, result.name, auth);
+            await createFiletoServer(JSON.stringify(Metadata), 'metadata.json', `${user?.username}/${projectCreated}.1`, result.name, auth);
             // Read ingredients
             /* eslint-disable no-await-in-loop */
             /* eslint-disable no-restricted-syntax */
@@ -336,13 +339,13 @@ const GiteaFileBrowser = ({ changeRepo }) => {
               console.log('started update project ');
               setUploadstartAg(true);
               const metadataContent = fs.readFileSync(path.join(projectsMetaPath, 'metadata.json'));
-              await updateFiletoServer(JSON.stringify(metadataContent), 'metadata.json', user.username, projectCreated, repoName, auth);
+              await updateFiletoServer(JSON.stringify(metadataContent), 'metadata.json', `${user?.username}/${projectCreated}.1`, repoName, auth);
               // Read ingredients and update
               for (const key in ingredientsObj) {
                 if (Object.prototype.hasOwnProperty.call(ingredientsObj, key)) {
                   const metadata1 = fs.readFileSync(path.join(projectsMetaPath, key), 'utf8');
                   setTotalUploadedAg((prev) => prev + 1);
-                  await updateFiletoServer(metadata1, key, user.username, projectCreated, repoName, auth);
+                  await updateFiletoServer(metadata1, key, `${user?.username}/${projectCreated}.1`, repoName, auth);
               }
             }
               setDragFromAg(null);

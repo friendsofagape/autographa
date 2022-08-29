@@ -328,13 +328,13 @@ export const handleCreateRepo = async (repoName, auth, description) => {
 };
 
 // upload file to gitea
-export const createFiletoServer = async (fileContent, filePath, username, created, repoName, auth) => {
+export const createFiletoServer = async (fileContent, filePath, branch, repoName, auth) => {
   await createContent({
     config: auth.config,
     owner: auth.user.login,
     // repo: repo.name,
     repo: repoName,
-    branch: `${username}/${created}.1`,
+    branch: branch,
     filepath: filePath,
     content: fileContent,
     message: `commit ${filePath}`,
@@ -353,13 +353,14 @@ export const createFiletoServer = async (fileContent, filePath, username, create
 };
 
 // update file in gitea
-export const updateFiletoServer = async (fileContent, filePath, username, created, repoName, auth) => {
+export const updateFiletoServer = async (fileContent, filePath, branch, repoName, auth) => {
   await readContent(
     {
       config: auth.config,
       owner: auth.user.login,
       repo: repoName.toLowerCase(),
-      ref: `${username}/${created}.1`,
+      // ref: `${username}/${created}.1`,
+      ref: branch,
       filepath: filePath,
     },
   ).then(async (result) => {
@@ -371,7 +372,7 @@ export const updateFiletoServer = async (fileContent, filePath, username, create
       config: auth.config,
       owner: auth.user.login,
       repo: repoName.toLowerCase(),
-      branch: `${username}/${created}.1`,
+      branch: branch,
       filepath: result.path,
       content: fileContent,
       message: `updated ${filePath}`,
@@ -393,8 +394,25 @@ export const updateFiletoServer = async (fileContent, filePath, username, create
 };
 
 // upload project to a branch on exsting repo
-export const uploadProjectToBranchRepoExist = async () => {
-  console.log('in replace existing upload func----');
+export const uploadProjectToBranchRepoExist = async (repo, userProjectBranch, metaDataSbRemote, agUsername, auth) => {
+  // console.log('in replace existing upload func----', repo, userProjectBranch, metaDataSbRemote, agUsername, auth);
   logger.debug('giteaUitils.js', 'Upload project to tempory branch for merge');
-  
+  const newpath = localStorage.getItem('userPath');
+  const fs = window.require('fs');
+  const path = require('path');
+  const projectId = Object.keys(metaDataSbRemote.identification.primary.ag)[0];
+  const projectName = metaDataSbRemote.identification.name.en;
+  // const projectCreated = metaDataSbRemote.meta.dateCreated.split('T')[0];
+  const projectsMetaPath = path.join(newpath, 'autographa', 'users', agUsername, 'projects', `${projectName}_${projectId}`);
+  const MetadataLocal = fs.readFileSync(path.join(projectsMetaPath, 'metadata.json'));
+  const localSB = JSON.parse(MetadataLocal);
+  await createFiletoServer(JSON.stringify(MetadataLocal), 'metadata.json', `${userProjectBranch.name}-merge`, repo.name, auth);
+  const ingredientsObj = localSB.ingredients;
+  for (const key in ingredientsObj) {
+    if (Object.prototype.hasOwnProperty.call(ingredientsObj, key)) {
+      const metadata1 = fs.readFileSync(path.join(projectsMetaPath, key), 'utf8');
+      await createFiletoServer(metadata1, key, `${userProjectBranch.name}-merge`, repo.name, auth);
+    }
+  }
+  logger.debug('giteaUitils.js', 'Upload project to tempory branch for merge finished');
 }
