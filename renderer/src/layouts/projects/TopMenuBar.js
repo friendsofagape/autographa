@@ -1,25 +1,18 @@
-import Link from 'next/link';
-import React, { Fragment, useState } from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  Disclosure, Menu, Transition,
+  Disclosure,
 } from '@headlessui/react';
 import {
-  // BellIcon,
-  UserIcon,
   MenuIcon,
   XIcon,
 } from '@heroicons/react/outline';
-import { AuthenticationContext } from '@/components/Login/AuthenticationContextProvider';
 import Notifications from '@/modules/notifications/Notifications';
-import { classNames } from '@/util/classNames';
+import UserProfile from '@/components/Profile/UserProfile';
 
 export default function TopMenuBar() {
   const [openSideBar, setOpenSideBar] = useState(false);
-  const { action: { logout } } = React.useContext(AuthenticationContext);
   const { t } = useTranslation();
-  const profile = [t('label-your-profile')];
-  const userPic = true;
   // function openSideBars() {
   //   setOpenSideBar(true);
   // }
@@ -27,7 +20,6 @@ export default function TopMenuBar() {
   function closeNotifications(open) {
     setOpenSideBar(open);
   }
-
   return (
     <>
       <Disclosure as="nav" className="bg-secondary">
@@ -35,7 +27,6 @@ export default function TopMenuBar() {
           <div className="mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between h-16">
               <div className="flex items-center">
-
                 <div className="hidden md:block">
                   <div className="-ml-4 flex items-baseline space-x-4">
                     <span className="text-white px-3 py-2 text-lg tracking-wide font-bold uppercase">
@@ -64,88 +55,7 @@ export default function TopMenuBar() {
                     </button> */}
 
                   {/* Profile dropdown */}
-                  <Menu as="div" className="ml-3 relative">
-                    {({ open }) => (
-                      <>
-                        <div>
-                          <Menu.Button className="max-w-xs bg-gray-800 border-4 border-white rounded-full flex items-center text-sm
-                                focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-gray-700"
-                          >
-                            <span className="sr-only">{t('label-user-menu')}</span>
-
-                            {/* check if user pic available  */}
-                            {userPic
-                                ? (
-                                  <div className="h-8 w-8 p-2 bg-primary rounded-full">
-                                    <UserIcon className="h-4 w-4 text-white" />
-                                  </div>
-                                )
-                                : (
-                                  <img
-                                    className="h-8 w-8 rounded-full"
-                                    src="https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                    alt=""
-                                  />
-                                )}
-
-                          </Menu.Button>
-                        </div>
-                        <Transition
-                          show={open}
-                          as={Fragment}
-                          enter="transition ease-out duration-100"
-                          enterFrom="transform opacity-0 scale-95"
-                          enterTo="transform opacity-100 scale-100"
-                          leave="transition ease-in duration-75"
-                          leaveFrom="transform opacity-100 scale-100"
-                          leaveTo="transform opacity-0 scale-95"
-                        >
-                          <Menu.Items
-                            static
-                            className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
-                          >
-                            {profile.map((item) => (
-                              <Menu.Item key={item}>
-                                {({ active }) => (
-                                  <Link href="/profile">
-                                    <a
-                                      id="profile"
-                                      href="#profile"
-                                      className={classNames(
-                                          active ? 'bg-gray-100' : '',
-                                          'block px-4 py-2 text-sm text-gray-700',
-                                        )}
-                                    >
-                                      {item}
-                                    </a>
-                                  </Link>
-                                  )}
-                              </Menu.Item>
-                              ))}
-                            <Menu.Item>
-                              {({ active }) => (
-                                <Link href="/">
-                                  <a
-                                    id="signout"
-                                    href="#signout"
-                                    onClick={() => logout()}
-                                    className={classNames(
-                                      active ? 'bg-gray-100' : '',
-                                      'block px-4 py-2 text-sm text-gray-700',
-                                    )}
-                                  >
-                                    {t('btn-signout')}
-                                  </a>
-                                </Link>
-
-                                )}
-                            </Menu.Item>
-                          </Menu.Items>
-                        </Transition>
-                      </>
-                      )}
-                  </Menu>
-
+                  <UserProfile />
                 </div>
               </div>
               <div className="-mr-2 flex md:hidden">
@@ -163,12 +73,9 @@ export default function TopMenuBar() {
           </div>
         )}
       </Disclosure>
-
       <Notifications isOpen={openSideBar} closeNotifications={closeNotifications}>
         notification
       </Notifications>
-
     </>
-
   );
 }
