@@ -13,7 +13,7 @@ const md5 = require('md5');
 const path = require('path');
 
 // import gitea project to local
-export const importServerProject = async (updateBurrito, repo, sbData, auth, userBranch, action) => {
+export const importServerProject = async (updateBurrito, repo, sbData, auth, userBranch, action, ignoreFilesPaths=[]) => {
     logger.debug('GiteaUtils.js', 'Inside Import Project');
     // console.log('inside server project import');
     await localForage.getItem('userProfile').then(async (user) => {
@@ -101,10 +101,11 @@ export const importServerProject = async (updateBurrito, repo, sbData, auth, use
     logger.debug('dropzone giteaUtils import.js', 'Creating a directory if not exists.');
 
     // fetch and add ingredients
-    action.setUploadstart(true);
+    action?.setUploadstart(true);
     for (const key in sbDataObject.ingredients) {
-        action.setTotalUploaded((prev) => prev + 1);
+        action?.setTotalUploaded((prev) => prev + 1);
         // console.log(key);
+        if (!ignoreFilesPaths.includes(key)) {
         await readContent(
             {
               config: auth.config,
@@ -132,6 +133,7 @@ export const importServerProject = async (updateBurrito, repo, sbData, auth, use
               logger.debug('dropzone giteaUtils import.js', `Error in read ${key} from Server `);
             }
           });
+        }
       }
     // check md5 values
     Object.entries(sbDataObject.ingredients).forEach(([key, value]) => {
@@ -223,7 +225,7 @@ export const importServerProject = async (updateBurrito, repo, sbData, auth, use
     }
     await fs.writeFileSync(path.join(projectDir, `${projectName}_${id}`, 'metadata.json'), JSON.stringify(sbDataObject));
     logger.debug('importBurrito.js', 'Creating the metadata.json Burrito file.');
-    action.setUploadstart(false);
+    action?.setUploadstart(false);
     console.log('finished import project');
     });
 };
@@ -349,6 +351,7 @@ export const createFiletoServer = async (fileContent, filePath, branch, repoName
   .catch((err) => {
     logger.debug('Dropzone.js', `failed to upload file to Gitea ${filePath} ${err}`);
     console.log(filePath, ' : error : ', err);
+    throw {error : err};
   });
 };
 
@@ -394,25 +397,35 @@ export const updateFiletoServer = async (fileContent, filePath, branch, repoName
 };
 
 // upload project to a branch on exsting repo
-export const uploadProjectToBranchRepoExist = async (repo, userProjectBranch, metaDataSbRemote, agUsername, auth) => {
+export const uploadProjectToBranchRepoExist = async ({repo, userProjectBranch, metaDataSbRemote, agUsername, auth, ignoreFilesPaths=[]}) => {
   // console.log('in replace existing upload func----', repo, userProjectBranch, metaDataSbRemote, agUsername, auth);
   logger.debug('giteaUitils.js', 'Upload project to tempory branch for merge');
-  const newpath = localStorage.getItem('userPath');
-  const fs = window.require('fs');
-  const path = require('path');
-  const projectId = Object.keys(metaDataSbRemote.identification.primary.ag)[0];
-  const projectName = metaDataSbRemote.identification.name.en;
-  // const projectCreated = metaDataSbRemote.meta.dateCreated.split('T')[0];
-  const projectsMetaPath = path.join(newpath, 'autographa', 'users', agUsername, 'projects', `${projectName}_${projectId}`);
-  const MetadataLocal = fs.readFileSync(path.join(projectsMetaPath, 'metadata.json'));
-  const localSB = JSON.parse(MetadataLocal);
-  await createFiletoServer(JSON.stringify(MetadataLocal), 'metadata.json', `${userProjectBranch.name}-merge`, repo.name, auth);
-  const ingredientsObj = localSB.ingredients;
-  for (const key in ingredientsObj) {
-    if (Object.prototype.hasOwnProperty.call(ingredientsObj, key)) {
-      const metadata1 = fs.readFileSync(path.join(projectsMetaPath, key), 'utf8');
-      await createFiletoServer(metadata1, key, `${userProjectBranch.name}-merge`, repo.name, auth);
+  try {
+    const newpath = localStorage.getItem('userPath');
+    const fs = window.require('fs');
+    const path = require('path');
+    const projectId = Object.keys(metaDataSbRemote.identification.primary.ag)[0];
+    const projectName = metaDataSbRemote.identification.name.en;
+    // const projectCreated = metaDataSbRemote.meta.dateCreated.split('T')[0];
+    const projectsMetaPath = path.join(newpath, 'autographa', 'users', agUsername, 'projects', `${projectName}_${projectId}`);
+    const MetadataLocal = fs.readFileSync(path.join(projectsMetaPath, 'metadata.json'));
+    const localSB = JSON.parse(MetadataLocal);
+    if (!ignoreFilesPaths.includes('metadata.json')) {
+      await createFiletoServer(JSON.stringify(MetadataLocal), 'metadata.json', `${userProjectBranch.name}-merge`, repo.name, auth)
     }
+    const ingredientsObj = localSB.ingredients;
+    for (const key in ingredientsObj) {
+      if (Object.prototype.hasOwnProperty.call(ingredientsObj, key)) {
+        if (!ignoreFilesPaths.includes(key)){
+          const metadata1 = fs.readFileSync(path.join(projectsMetaPath, key), 'utf8');
+          await createFiletoServer(metadata1, key, `${userProjectBranch.name}-merge`, repo.name, auth);
+        }
+      }
+    }
+    logger.debug('giteaUitils.js', 'Upload project to tempory branch for merge finished');
   }
-  logger.debug('giteaUitils.js', 'Upload project to tempory branch for merge finished');
+  catch(data){
+    logger.debug('giteaUitils.js', 'Upload project to tempory branch for merge Error' , err);
+    throw data;
+  };
 }

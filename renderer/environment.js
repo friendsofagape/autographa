@@ -7,4 +7,5 @@ export const environment = {
     GITEA_SERVER: 'https://git.door43.org',
     GITEA_TOKEN: 'Gitea AG Testing',
     uuidToken: '6223f833-3e59-429c-bec9-16910442b599',
+    SYNC_BACKUP_COUNT: 5,
 };

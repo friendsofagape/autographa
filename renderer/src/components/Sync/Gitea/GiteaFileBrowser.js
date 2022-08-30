@@ -10,16 +10,14 @@ import * as localForage from 'localforage';
 import { SnackBar } from '@/components/SnackBar';
 import { validate } from '@/util/validate';
 import { checkDuplicate } from '@/core/burrito/importBurrito';
-import ConfirmationModal from '@/layouts/editor/ConfirmationModal';
 import { SyncContext } from '../SyncContextProvider';
 import * as logger from '../../../logger';
 import Dropzone from '../Dropzone/Dropzone';
-import burrito from '../../../lib/BurritoTemplete.json';
 import {
   importServerProject, createSyncProfile, handleCreateRepo, createFiletoServer, updateFiletoServer,
-
 } from './GiteaUtils';
 import ProgressBar from '../ProgressBar';
+import ProjectMergePop from './ProjectMergePop';
 
 /* eslint-disable no-console */
 // eslint-disable-next-line react/prop-types
@@ -36,6 +34,7 @@ const GiteaFileBrowser = ({ changeRepo }) => {
   const [uploadStart, setUploadstart] = React.useState(false);
   // const [uploadDone, setUploadDone] = React.useState(false);
   const [totalFiles, settotalFiles] = React.useState(0);
+  const [merge, setMerge] = React.useState(false);
 
   // eslint-disable-next-line no-unused-vars
   const [advacnedOption, setAdvacnedOption] = React.useState(false);
@@ -43,6 +42,8 @@ const GiteaFileBrowser = ({ changeRepo }) => {
   const [files, setFiles] = React.useState([]);
   // eslint-disable-next-line no-unused-vars
   const [activeStep, setActiveStep] = React.useState();
+
+  const [projectObj, setProjectObj] = React.useState({});
   const [sbData, setSbData] = React.useState({});
   const [userBranch, setUserBranch] = React.useState({});
   const [steps, setSteps] = React.useState([]);
@@ -151,31 +152,6 @@ const GiteaFileBrowser = ({ changeRepo }) => {
         });
     };
 
-  const checkBurritoVersion = () => {
-    logger.debug('Dropzone.js', 'Checking the burrito version');
-    // console.log("inside burrito version check :", burrito?.meta?.version, " : ", sbData?.meta?.version);
-    if (burrito?.meta?.version !== sbData?.meta?.version) {
-      setModel({
-        openModel: true,
-        title: t('modal-title-update-burrito'),
-        confirmMessage: t('dynamic-msg-update-burrito-version', { version1: sbData?.meta?.version, version2: burrito?.meta?.version }),
-        buttonName: t('btn-update'),
-      });
-    } else {
-      callImport(false);
-    }
-  };
-
-  const callFunction = () => {
-    if (model.buttonName === 'Replace') {
-      // console.log("replcae clicked");
-      checkBurritoVersion();
-    } else {
-      // call with update true for burrito
-      callImport(true);
-    }
-  };
-
   // Read gitea folder structure and data after drag
   const readGiteaFolderData = async (repo, from) => {
     logger.debug('Dropzone.js', 'calling read Gitea Folder Data event');
@@ -221,11 +197,14 @@ const GiteaFileBrowser = ({ changeRepo }) => {
                     console.log('duplicate : ', duplicate);
                     if (duplicate) {
                       logger.warn('GiteaFileBrowser.js', 'Project already available');
-                      // upload exisitng ptoject to temp branch
-                        // await uploadProjectToBranchRepoExist(repo, userProjectBranch, metaDataSb, user.username, auth)
-                        // .then(async () => {
-
-                        // });
+                      setProjectObj({
+                        repo,
+                        userProjectBranch,
+                        metaDataSbRemote: metaDataSb,
+                        agUsername: user?.username,
+                        auth,
+                      });
+                      duplicate && setMerge(true);
                     } else {
                       callImport(false);
                     }
@@ -252,6 +231,11 @@ const GiteaFileBrowser = ({ changeRepo }) => {
             setOpenSnackBar(true);
           }
           });
+        }).catch((error) => {
+            setNotify('failure');
+            setSnackText('Something Went Wrong .. check internet', error);
+            setOpenSnackBar(true);
+            logger.debug('GiteaFileBrowser.js', 'Something Went Wrong .. check internet', error);
         });
     } else {
       handleDropToAg(null);
@@ -440,6 +424,14 @@ const GiteaFileBrowser = ({ changeRepo }) => {
       {uploadStart
         && <ProgressBar currentValue={totalUploaded} totalValue={totalFiles} />}
 
+      {merge
+        && (
+        <ProjectMergePop
+          setMerge={setMerge}
+          projectObj={projectObj}
+        />
+)}
+
       {!advacnedOption
         && (
         <table className="min-w-full divide-y divide-gray-200" data-testid="table">
@@ -559,14 +551,6 @@ const GiteaFileBrowser = ({ changeRepo }) => {
         setOpenSnackBar={setOpenSnackBar}
         setSnackText={setSnackText}
         error={notify}
-      />
-      <ConfirmationModal
-        openModal={model.openModel}
-        title={model.title}
-        setOpenModal={() => modelClose()}
-        confirmMessage={model.confirmMessage}
-        buttonName={model.buttonName}
-        closeModal={() => callFunction()}
       />
     </>
     )
