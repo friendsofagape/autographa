@@ -7,6 +7,7 @@ import { importServerProject, uploadProjectToBranchRepoExist } from './GiteaUtil
 import * as logger from '../../../logger';
 import burrito from '../../../lib/BurritoTemplete.json';
 import { environment } from '../../../../environment';
+import { VerticalLinearStepper } from '../VerticalStepperProgress';
 
 function ProjectMergePop({ setMerge, projectObj }) {
     const [isOpen, setIsOpen] = React.useState(false);
@@ -27,6 +28,38 @@ function ProjectMergePop({ setMerge, projectObj }) {
             buttonName: '',
           });
         };
+
+    const [stepCount, setStepCount] = React.useState(0);
+    const [mergeStarted, setMergeStarted] = React.useState(false);
+    const [mergeError, setMergeError] = React.useState(false);
+    const [mergeDone, setMergeDone] = React.useState(false);
+
+    const mergeProgressSteps = [
+      {
+        label: 'Setting up project',
+        description: '',
+      },
+      {
+        label: 'Processing and Validating Project and Upstream',
+        description: '',
+      },
+      {
+        label: 'Check for Merging',
+        description: '',
+      },
+      {
+        label: 'Backing Up Project',
+        description: '',
+      },
+      {
+        label: 'Updating Ag Project',
+        description: '',
+      },
+      {
+        label: 'Finishing Up Merge',
+        description: '',
+      },
+    ];
 
     const ignoreFilesPaths = ['ingredients/ag-settings.json', 'metadata.json'];
 
@@ -171,14 +204,13 @@ function ProjectMergePop({ setMerge, projectObj }) {
                             } else if (mergeResult.status === 405) {
                                 logger.debug('projectMergePop.js', 'Can not merge - nothing to merge or error ', mergeResult.statusText);
                                 console.log('merge PR error 405 : NOTHING TO MERGE SAME ^^^^ ', mergeResult.statusText);
-                                // throw mergeResult.resposne.statusText;
+                                throw mergeResult.resposne.statusText;
                             }
                         });
                     } else {
                         // conflict section
                         logger.debug('projectMergePop.js', 'PR success - Can not Merge - Conflict Exist');
                         console.log('can not perform merge : conflict exist xxxxxxxxxxx');
-                        // delete created branch
                     }
                 } else {
                     throw result.resposne.statusText;
@@ -193,6 +225,8 @@ function ProjectMergePop({ setMerge, projectObj }) {
 
     React.useEffect(() => {
         setIsOpen(true);
+        setMergeStarted(true);
+        setStepCount(0);
         MergeStart().finally(async () => {
             console.log('finally in react useeffect');
             const myHeaders = new Headers();
@@ -232,7 +266,7 @@ function ProjectMergePop({ setMerge, projectObj }) {
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <div className="fixed inset-0 bg-black bg-opacity-25" />
+            <div className="fixed inset-0 bg-black bg-opacity-25 pointer-events-none" />
           </Transition.Child>
 
           <div className="fixed inset-0 overflow-y-auto">
@@ -253,11 +287,9 @@ function ProjectMergePop({ setMerge, projectObj }) {
                   >
                     Project Merging
                   </Dialog.Title>
-                  <div className="mt-2">
-                    <p className="text-sm text-gray-500">
-                      Your payment has been successfully submitted. We’ve sent
-                      you an email with all of the details of your order.
-                    </p>
+
+                  <div className="mt-2 ">
+                    <VerticalLinearStepper steps={mergeProgressSteps} stepCount={stepCount} />
                   </div>
 
                   <div className="mt-4">
@@ -266,7 +298,7 @@ function ProjectMergePop({ setMerge, projectObj }) {
                       className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                       onClick={modalClose}
                     >
-                      Got it, thanks!
+                      Ok
                     </button>
                   </div>
                 </Dialog.Panel>

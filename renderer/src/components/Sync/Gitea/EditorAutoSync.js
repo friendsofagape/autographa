@@ -340,7 +340,7 @@ function AutoSync({ selectedProject }) {
                         <div className="">
                           <Dialog.Title
                             as="h3"
-                            className="text-lg font-bold leading-6 text-black "
+                            className="text-lg font-bold leading-6 text-gray-900"
                           >
                             Sync
                           </Dialog.Title>
