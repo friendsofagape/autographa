@@ -1,10 +1,11 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
+import { CheckIcon } from '@heroicons/react/outline';
 import {
     Box, Paper, Step, StepContent, StepLabel, Stepper, Typography,
 } from '@material-ui/core';
 
-export function VerticalLinearStepper({ stepCount, steps }) {
+export function VerticalLinearStepper({ stepCount, steps, successMsg }) {
     const [activeStep, setActiveStep] = React.useState(0);
 
     React.useEffect(() => {
@@ -14,6 +15,10 @@ export function VerticalLinearStepper({ stepCount, steps }) {
     const handleReset = () => {
         setActiveStep(0);
       };
+
+    // const handleNext = () => {
+    //     setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    // };
 
     React.useEffect(() => {
         handleReset();
@@ -35,34 +40,24 @@ export function VerticalLinearStepper({ stepCount, steps }) {
             </StepLabel>
             <StepContent>
               <Typography>{step.description}</Typography>
-              <Box sx={{ mb: 2 }}>
-                {/* <div>
-                  <Button
-                    variant="contained"
-                    onClick={handleNext}
-                    sx={{ mt: 1, mr: 1 }}
-                  >
-                    {index === steps.length - 1 ? 'Finish' : 'Continue'}
-                  </Button>
-                  <Button
-                    disabled={index === 0}
-                    onClick={handleBack}
-                    sx={{ mt: 1, mr: 1 }}
-                  >
-                    Back
-                  </Button>
-                </div> */}
-              </Box>
             </StepContent>
           </Step>
         ))}
       </Stepper>
+      {/* <button className="bg-primary" onClick={handleNext}>Next</button> */}
       {activeStep === steps.length && (
         <Paper square elevation={0} sx={{ p: 3 }}>
-          <Typography>Process completed - you&apos;re finished</Typography>
-          {/* <Button onClick={handleReset} sx={{ mt: 1, mr: 1 }}>
-            Reset
-          </Button> */}
+          <div className="bg-gray-100 flex justify-center items-center">
+            <div className="tracking-wider p-3 text-black flex ">
+              <Typography className="font-medium">{successMsg}</Typography>
+            </div>
+            <div
+              className="bg-success w-7 h-7  text-white text-sm rounded-full flex justify-center items-center"
+              aria-hidden="true"
+            >
+              <CheckIcon className="w-4" />
+            </div>
+          </div>
         </Paper>
       )}
     </Box>
@@ -72,6 +67,7 @@ export function VerticalLinearStepper({ stepCount, steps }) {
 VerticalLinearStepper.propTypes = {
     steps: PropTypes.array.isRequired,
     stepCount: PropTypes.number,
+    successMsg: PropTypes.string,
 };
 
 // export default function VerticalStepperProgress() {

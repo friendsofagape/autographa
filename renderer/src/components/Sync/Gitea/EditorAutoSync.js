@@ -454,7 +454,7 @@ function AutoSync({ selectedProject }) {
                             >
                               <Link href="/sync">Login</Link>
                             </button>
-                        )}
+                          )}
 
                           <button
                             aria-label="close-sync"

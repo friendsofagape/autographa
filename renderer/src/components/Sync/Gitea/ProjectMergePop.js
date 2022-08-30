@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import ConfirmationModal from '@/layouts/editor/ConfirmationModal';
+import { SnackBar } from '@/components/SnackBar';
 import { importServerProject, uploadProjectToBranchRepoExist } from './GiteaUtils';
 import * as logger from '../../../logger';
 import burrito from '../../../lib/BurritoTemplete.json';
@@ -12,27 +13,38 @@ import { VerticalLinearStepper } from '../VerticalStepperProgress';
 function ProjectMergePop({ setMerge, projectObj }) {
     const [isOpen, setIsOpen] = React.useState(false);
     const { t } = useTranslation();
+    const [stepCount, setStepCount] = React.useState(0);
+    // eslint-disable-next-line no-unused-vars
+    const [mergeStarted, setMergeStarted] = React.useState(false);
+    const [mergeError, setMergeError] = React.useState(false);
+    const [mergeErrorTxt, setMergeErrorTxt] = React.useState('');
+    const [mergeConflict, setMergeConflict] = React.useState(false);
+    const [mergeDone, setMergeDone] = React.useState(false);
+    const [snackBar, setOpenSnackBar] = React.useState(false);
+    const [snackText, setSnackText] = React.useState('');
+    const [notify, setNotify] = React.useState();
+
     const [model, setModel] = React.useState({
         openModel: false,
         title: '',
         confirmMessage: '',
         buttonName: '',
         });
+
     const modalClose = () => {
+      if (mergeDone || mergeError) {
         setIsOpen(false);
         setMerge(false);
         setModel({
-            openModel: false,
-            title: '',
-            confirmMessage: '',
-            buttonName: '',
-          });
-        };
+          openModel: false,
+          title: '',
+          confirmMessage: '',
+          buttonName: '',
+        });
+      }
+      };
 
-    const [stepCount, setStepCount] = React.useState(0);
-    const [mergeStarted, setMergeStarted] = React.useState(false);
-    const [mergeError, setMergeError] = React.useState(false);
-    const [mergeDone, setMergeDone] = React.useState(false);
+    const mergeSuccessMsg = 'Merge Successfull';
 
     const mergeProgressSteps = [
       {
@@ -90,6 +102,7 @@ function ProjectMergePop({ setMerge, projectObj }) {
     };
 
     const backupProjectLocal = async () => {
+      setStepCount((prevStepCount) => prevStepCount + 1);
       const projectId = Object.keys(projectObj?.metaDataSbRemote?.identification.primary.ag)[0];
       const projectName = projectObj?.metaDataSbRemote?.identification.name.en;
       logger.debug('projectMergePop.js', 'Stated Backing up the project', projectName);
@@ -122,6 +135,7 @@ function ProjectMergePop({ setMerge, projectObj }) {
         await backupProjectLocal()
         .then(async () => {
             // import merged project
+            setStepCount((prevStepCount) => prevStepCount + 1);
             await importServerProject(
                 updateBurrito,
                 projectObj?.repo,
@@ -130,10 +144,12 @@ function ProjectMergePop({ setMerge, projectObj }) {
                 projectObj?.userProjectBranch,
                 null,
                 ignoreFilesPaths,
-                ).catch(() => {
+                ).catch((err) => {
                     // delete current the backedup project
+                    setMergeErrorTxt(err);
                 })
                 .finally(() => {
+                    setStepCount((prevStepCount) => prevStepCount + 1);
                     console.log('import project successfull');
                 });
         });
@@ -157,12 +173,15 @@ function ProjectMergePop({ setMerge, projectObj }) {
         // upload exisitng ptoject to temp branch
         logger.debug('projectMergePop.js', 'Merge Project started');
         try {
+            console.log('upload local project to temp :', stepCount);
             logger.debug('projectMergePop.js', 'Merge Project ignored files ', ignoreFilesPaths);
             projectObj.ignoreFilesPaths = ignoreFilesPaths;
             await uploadProjectToBranchRepoExist(projectObj)
         .then(async () => {
             // send PR
             logger.debug('projectMergePop.js', 'sending PR');
+            setStepCount((prevStepCount) => prevStepCount + 1);
+            console.log('sending PR and merge req : ', stepCount);
             const urlPr = `https://git.door43.org/api/v1/repos/${projectObj?.repo?.owner?.username}/${projectObj?.repo?.name}/pulls`;
             const myHeaders = new Headers();
             myHeaders.append('Authorization', `Bearer ${projectObj.auth.token.sha1}`);
@@ -185,8 +204,9 @@ function ProjectMergePop({ setMerge, projectObj }) {
                     if (result.body.mergeable) {
                         // mergeable
                         logger.debug('projectMergePop.js', 'PR success - continue Merge operations');
-                        console.log('continue merge is possible ----------');
+                        console.log('continue merge is possible ---------- : ', stepCount);
                         // Do Merge
+                        setStepCount((prevStepCount) => prevStepCount + 1);
                         const mergePayload = JSON.stringify({
                             Do: 'merge',
                             delete_branch_after_merge: false,
@@ -204,12 +224,18 @@ function ProjectMergePop({ setMerge, projectObj }) {
                             } else if (mergeResult.status === 405) {
                                 logger.debug('projectMergePop.js', 'Can not merge - nothing to merge or error ', mergeResult.statusText);
                                 console.log('merge PR error 405 : NOTHING TO MERGE SAME ^^^^ ', mergeResult.statusText);
+                                setMergeError(true);
+                                setMergeDone(false);
+                                setMergeStarted(false);
                                 throw mergeResult.resposne.statusText;
                             }
                         });
                     } else {
                         // conflict section
                         logger.debug('projectMergePop.js', 'PR success - Can not Merge - Conflict Exist');
+                        setNotify('Warning');
+                        setSnackText('Can not perform Merge - Conflict Exist');
+                        setOpenSnackBar(true);
                         console.log('can not perform merge : conflict exist xxxxxxxxxxx');
                     }
                 } else {
@@ -220,6 +246,13 @@ function ProjectMergePop({ setMerge, projectObj }) {
         } catch (err) {
             logger.debug('projectMergePop.js', 'Project Merge Error - ', err);
             console.log('ERROR MERGE -------------> : ', err);
+            setMergeErrorTxt(err);
+            setNotify('error');
+            setSnackText(`Merge Failed - ${mergeErrorTxt}`);
+            setOpenSnackBar(true);
+            setMergeError(true);
+            setMergeDone(false);
+            setMergeStarted(false);
         }
     };
 
@@ -229,6 +262,7 @@ function ProjectMergePop({ setMerge, projectObj }) {
         setStepCount(0);
         MergeStart().finally(async () => {
             console.log('finally in react useeffect');
+            // setStepCount((prevStepCount) => prevStepCount + 1);
             const myHeaders = new Headers();
             myHeaders.append('Authorization', `Bearer ${projectObj.auth.token.sha1}`);
             myHeaders.append('Content-Type', 'application/json');
@@ -242,16 +276,28 @@ function ProjectMergePop({ setMerge, projectObj }) {
             await fetch(urlDeleteBranch, requestOptions)
             .then((response) => response)
             .then((result) => {
-                if (result.resposne.ok) {
-                    logger.debug('projectMergePop.js', 'Deleted Temp Branch Successfully');
+                if (result.ok) {
+                  setMergeDone(true);
+                  setMergeStarted(false);
+                  setMergeError(false);
+                  setMergeConflict(false);
+                  setMergeErrorTxt('');
+                  setStepCount((prevStepCount) => prevStepCount + 1);
+                  console.log('deleted temp branch---------------------');
+                  logger.debug('projectMergePop.js', 'Deleted Temp Branch Successfully');
                 } else {
-                    throw result.statusText;
+                  setMergeError(result.statusText);
+                  throw result.statusText;
                 }
             })
             .catch((error) => logger.debug('projectMergePop.js', 'Project Temporary branch deletion Error - ', error));
         });
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    // React.useEffect(() => {
+    //   console.log('current step count useEffect : ', stepCount);
+    // }, [stepCount]);
 
   return (
     <>
@@ -288,18 +334,31 @@ function ProjectMergePop({ setMerge, projectObj }) {
                     Project Merging
                   </Dialog.Title>
 
-                  <div className="mt-2 ">
-                    <VerticalLinearStepper steps={mergeProgressSteps} stepCount={stepCount} />
-                  </div>
-
+                  {mergeError ? (
+                    <div className="mt-2 ">
+                      <p>Error on Merge Process</p>
+                    </div>
+                  ) : (
+                    <div className="mt-2 ">
+                      <VerticalLinearStepper
+                        steps={mergeProgressSteps}
+                        stepCount={stepCount}
+                        successMsg={mergeSuccessMsg}
+                      />
+                    </div>
+                  )}
                   <div className="mt-4">
-                    <button
-                      type="button"
-                      className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                      onClick={modalClose}
-                    >
-                      Ok
-                    </button>
+                    <div className="px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                      <button
+                        aria-label="merge=ok"
+                        disabled={!((mergeDone || mergeError))}
+                        type="button"
+                        className={`w-20 h-10 ${!((mergeDone || mergeError)) ? 'bg-gray-500' : 'bg-success'} leading-loose rounded shadow text-xs font-base  text-white tracking-wide  font-light uppercase`}
+                        onClick={modalClose}
+                      >
+                        {t('btn-ok')}
+                      </button>
+                    </div>
                   </div>
                 </Dialog.Panel>
               </Transition.Child>
@@ -315,6 +374,13 @@ function ProjectMergePop({ setMerge, projectObj }) {
         confirmMessage={model.confirmMessage}
         buttonName={model.buttonName}
         closeModal={() => callFunction()}
+      />
+      <SnackBar
+        openSnackBar={snackBar}
+        snackText={snackText}
+        setOpenSnackBar={setOpenSnackBar}
+        setSnackText={setSnackText}
+        error={notify}
       />
     </>
   );
