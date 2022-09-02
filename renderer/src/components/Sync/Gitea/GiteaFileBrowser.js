@@ -6,10 +6,12 @@ import {
 } from 'gitea-react-toolkit';
 import { useTranslation } from 'react-i18next';
 import { ChevronRightIcon } from '@heroicons/react/solid';
-import * as localForage from 'localforage';
+import localforage, * as localForage from 'localforage';
 import { SnackBar } from '@/components/SnackBar';
 import { validate } from '@/util/validate';
 import { checkDuplicate } from '@/core/burrito/importBurrito';
+import moment from 'moment';
+import { AutographaContext } from '@/components/context/AutographaContext';
 import { SyncContext } from '../SyncContextProvider';
 import * as logger from '../../../logger';
 import Dropzone from '../Dropzone/Dropzone';
@@ -28,6 +30,13 @@ const GiteaFileBrowser = ({ changeRepo }) => {
       setDragFromAg, handleDropToAg, setTotalUploadedAg, settotalFilesAg, setUploadstartAg,
     },
   } = React.useContext(SyncContext);
+
+  const {
+    action: {
+      setNotifications,
+      // setActiveNotificationCount,
+    },
+  } = useContext(AutographaContext);
 
   const { t } = useTranslation();
   const [totalUploaded, setTotalUploaded] = React.useState(0);
@@ -62,6 +71,21 @@ const GiteaFileBrowser = ({ changeRepo }) => {
   const { state: repo, component: repoComponent } = useContext(
     RepositoryContext,
   );
+
+  const addNewNotification = async (title, text, type) => {
+    localforage.getItem('notification').then((value) => {
+      const temp = [...value];
+      temp.push({
+          title,
+          text,
+          type,
+          time: moment().format(),
+          hidden: true,
+      });
+      setNotifications(temp);
+    });
+  };
+
   const fetchTree = async (treeUrl, projectName) => {
     logger.debug('Dropzone.js', 'calling fetchTree event');
     const step = steps;
@@ -144,11 +168,16 @@ const GiteaFileBrowser = ({ changeRepo }) => {
           setUploadstart,
           setTotalUploaded,
         },
-    ).finally(() => {
+    ).finally(async () => {
           setUploadstart(false);
           setTotalUploaded(0);
           settotalFiles(0);
           handleDropToAg(null);
+          await addNewNotification(
+            'Sync',
+            'Project Sync to Ag successfull',
+            'success',
+          );
         });
     };
 
@@ -214,14 +243,24 @@ const GiteaFileBrowser = ({ changeRepo }) => {
                     setNotify('failure');
                     setSnackText('Burrito Validation Failed');
                     setOpenSnackBar(true);
+                    await addNewNotification(
+                      'Sync',
+                      'Project Sync to Ag Failed - Burrito Validation Failed',
+                      'failure',
+                    );
                   }
                   });
-              }).catch((err) => {
+              }).catch(async (err) => {
                 logger.debug('GiteaFileBrowser.js', 'Invalid Project , Burrito not found', err);
                 // console.log(" Error burrito not found", err);
                 setNotify('failure');
                 setSnackText('Invalid Project , Burrito not found');
                 setOpenSnackBar(true);
+                await addNewNotification(
+                  'Sync',
+                  'Project Sync to Ag Failed - Invalid Project , Burrito not found',
+                  'failure',
+                );
               });
           } else {
             logger.debug('Dropzone.js', 'Invalid Project , No Valid Branch');
@@ -229,12 +268,22 @@ const GiteaFileBrowser = ({ changeRepo }) => {
             setNotify('failure');
             setSnackText('Invalid Project directory no valid Branch Found');
             setOpenSnackBar(true);
+            await addNewNotification(
+              'Sync',
+              'Project Sync to Ag Failed - Invalid Project directory no valid Branch Found',
+              'failure',
+            );
           }
           });
-        }).catch((error) => {
+        }).catch(async (error) => {
             setNotify('failure');
             setSnackText('Something Went Wrong .. check internet', error);
             setOpenSnackBar(true);
+            await addNewNotification(
+              'Sync',
+              `Project Sync to Ag Failed - Something Went Wrong .. check internet'- ${error}`,
+              'failure',
+            );
             logger.debug('GiteaFileBrowser.js', 'Something Went Wrong .. check internet', error);
         });
     } else {
@@ -312,6 +361,11 @@ const GiteaFileBrowser = ({ changeRepo }) => {
             handleDropToAg(null);
             logger.debug('Dropzone.js', 'calling handleDropFolder event - syncing Finished');
             console.log('Finish uploading');
+            await addNewNotification(
+              'Sync',
+              'Project Sync to Gitea Success',
+              'success',
+            );
             }
           },
 
@@ -338,9 +392,19 @@ const GiteaFileBrowser = ({ changeRepo }) => {
               setTotalUploadedAg(0);
               logger.debug('Dropzone.js', 'calling handleDropFolder event - update syncing Finished');
               console.log('Finish updating project');
+              await addNewNotification(
+                'Sync',
+                'Project Sync to Gitea Success',
+                'success',
+              );
             } else {
               logger.debug('Dropzone.js', 'calling handleDropFolder event - Repo Updation Error : ', error.message);
               setUploadstartAg(false);
+              await addNewNotification(
+                'Sync',
+                `Project Sync to Gitea falied - ${error.message}`,
+                'failure',
+              );
             }
           },
           );
@@ -429,6 +493,7 @@ const GiteaFileBrowser = ({ changeRepo }) => {
         <ProjectMergePop
           setMerge={setMerge}
           projectObj={projectObj}
+          addNewNotification={addNewNotification}
         />
 )}
 

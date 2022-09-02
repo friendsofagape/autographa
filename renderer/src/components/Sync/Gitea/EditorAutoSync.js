@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
-import * as localForage from 'localforage';
+import localforage, * as localForage from 'localforage';
 import { Dialog, Transition, Listbox } from '@headlessui/react';
 import { useTranslation } from 'react-i18next';
 import { CheckIcon, SelectorIcon } from '@heroicons/react/solid';
@@ -8,6 +8,7 @@ import Link from 'next/link';
 import { SnackBar } from '@/components/SnackBar';
 import menuStyles from '@/layouts/editor/MenuBar.module.css';
 import moment from 'moment';
+import { AutographaContext } from '@/components/context/AutographaContext';
 import * as logger from '../../../logger';
 import fetchProjectsMeta from '../../../core/projects/fetchProjectsMeta';
 import { handleCreateRepo, createFiletoServer, updateFiletoServer } from './GiteaUtils';
@@ -30,6 +31,27 @@ function AutoSync({ selectedProject }) {
     const [uploadStart, setUploadstart] = React.useState(false);
     const [uploadDone, setUploadDone] = React.useState(false);
     const [totalFiles, settotalFiles] = React.useState(0);
+
+    const {
+      action: {
+        setNotifications,
+        // setActiveNotificationCount,
+      },
+    } = useContext(AutographaContext);
+
+    const addNewNotification = async (title, text, type) => {
+      localforage.getItem('notification').then((value) => {
+        const temp = [...value];
+        temp.push({
+            title,
+            text,
+            type,
+            time: moment().format(),
+            hidden: true,
+        });
+        setNotifications(temp);
+      });
+    };
 
     // eslint-disable-next-line no-async-promise-executor
     const getGiteaUsersList = async () => new Promise(async (resolve, reject) => {
@@ -152,6 +174,11 @@ function AutoSync({ selectedProject }) {
                         await agSettingsSyncAction('put', selectedProject, authObj?.user?.username);
                         setNotify('success');
                         setSnackText('Sync completed successfully !!');
+                        await addNewNotification(
+                          'Sync',
+                          'Project Sync to Gitea successfull',
+                          'success',
+                        );
                         setOpenSnackBar(true);
                       } catch (err) {
                         // console.log('error in catch : ---------- ', err);
@@ -161,6 +188,11 @@ function AutoSync({ selectedProject }) {
                         settotalFiles(0);
                         setNotify('error');
                         setSnackText(`sync failed - ${err}`);
+                        await addNewNotification(
+                          'Sync',
+                          `Project Sync to Ag failed - ${err}`,
+                          'failure',
+                        );
                         setOpenSnackBar(true);
                       }
                     }
@@ -193,6 +225,11 @@ function AutoSync({ selectedProject }) {
                         await agSettingsSyncAction('put', selectedProject, authObj?.user?.username);
                         setNotify('success');
                         setSnackText('Sync completed successfully !!');
+                        await addNewNotification(
+                          'Sync',
+                          'Project Sync to Gitea successfull',
+                          'success',
+                        );
                         setOpenSnackBar(true);
                     } catch (err) {
                       console.log('error in catch : ---------- ', err);
@@ -202,6 +239,11 @@ function AutoSync({ selectedProject }) {
                       settotalFiles(0);
                       setNotify('error');
                       setSnackText(`sync failed - ${err}`);
+                      await addNewNotification(
+                        'Sync',
+                        `Project Sync to Ag failed - ${err}`,
+                        'failure',
+                      );
                       setOpenSnackBar(true);
                     }
                     } else {
@@ -214,6 +256,11 @@ function AutoSync({ selectedProject }) {
                             setSnackText('Token Expired , Please login again in SYNC menu');
                             setOpenSnackBar(true);
                         }
+                        await addNewNotification(
+                          'Sync',
+                          'Project Sync to Ag failed - Token Expired , Please login again in SYNC menu',
+                          'failure',
+                        );
                         logger.debug('EditorAutoSync.js', 'calling autosync event - Repo Updation Error : ', error.message);
                         }
                     },

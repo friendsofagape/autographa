@@ -13,7 +13,7 @@ import { environment } from '../../../../environment';
 import { VerticalLinearStepper } from '../VerticalStepperProgress';
 import LoadingSpinner from '../LoadingSpinner';
 
-function ProjectMergePop({ setMerge, projectObj }) {
+function ProjectMergePop({ setMerge, projectObj, addNewNotification }) {
     const [isOpen, setIsOpen] = React.useState(false);
     const { t } = useTranslation();
     const [stepCount, setStepCount] = React.useState(0);
@@ -152,7 +152,7 @@ function ProjectMergePop({ setMerge, projectObj }) {
                     // delete current the backedup project
                     setMergeErrorTxt(err);
                 })
-                .finally(() => {
+                .finally(async () => {
                     setStepCount((prevStepCount) => prevStepCount + 1);
                     setMergeDone(true);
                     setMergeStarted(false);
@@ -160,6 +160,11 @@ function ProjectMergePop({ setMerge, projectObj }) {
                     setMergeConflict(false);
                     setMergeErrorTxt('');
                     console.log('import project successfull');
+                    await addNewNotification(
+                      'Sync',
+                      'Project Sync to Ag (merge) successfull',
+                      'success',
+                    );
                 });
         });
         };
@@ -260,6 +265,11 @@ function ProjectMergePop({ setMerge, projectObj }) {
                           setConflictHtml(htmlPart[0].innerHTML);
                           // console.log('can not perform merge : conflict exist xxxxxxxxxxx', resultDiff);
                         });
+                        await addNewNotification(
+                          'Sync',
+                          'Project Sync to Ag Failed (merge) - Conflict Exist',
+                          'failure',
+                        );
                         console.log('can not perform merge : conflict exist xxxxxxxxxxx', result);
                     }
                 } else {
@@ -278,6 +288,11 @@ function ProjectMergePop({ setMerge, projectObj }) {
             setStepCount(0);
             setMergeDone(false);
             setMergeStarted(false);
+            await addNewNotification(
+              'Sync',
+              `Project Sync to Ag Failed (merge) - ${mergeErrorTxt}`,
+              'failure',
+            );
         }
     };
 
@@ -428,5 +443,6 @@ function ProjectMergePop({ setMerge, projectObj }) {
 ProjectMergePop.propTypes = {
     setMerge: PropTypes.func,
     projectObj: PropTypes.object,
+    addNewNotification: PropTypes.func,
   };
 export default ProjectMergePop;
