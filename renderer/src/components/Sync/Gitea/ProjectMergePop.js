@@ -11,6 +11,7 @@ import * as logger from '../../../logger';
 import burrito from '../../../lib/BurritoTemplete.json';
 import { environment } from '../../../../environment';
 import { VerticalLinearStepper } from '../VerticalStepperProgress';
+import LoadingSpinner from '../LoadingSpinner';
 
 function ProjectMergePop({ setMerge, projectObj }) {
     const [isOpen, setIsOpen] = React.useState(false);
@@ -374,7 +375,7 @@ function ProjectMergePop({ setMerge, projectObj }) {
                   )}
                   <div className="mt-4">
                     <div className="px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                      <button
+                      {/* <button
                         aria-label="merge=ok"
                         disabled={!((mergeDone || mergeError || mergeConflict))}
                         type="button"
@@ -382,7 +383,21 @@ function ProjectMergePop({ setMerge, projectObj }) {
                         onClick={modalClose}
                       >
                         {t('btn-ok')}
-                      </button>
+                      </button> */}
+                      {mergeDone || mergeError || mergeConflict ? (
+                        <button
+                          aria-label="merge=ok"
+                          type="button"
+                          className={`w-20 h-10 ${!((mergeDone || mergeError || mergeConflict)) ? 'bg-gray-500' : 'bg-success'} leading-loose rounded shadow text-xs font-base  text-white tracking-wide  font-light uppercase`}
+                          onClick={modalClose}
+                        >
+                          {t('btn-ok')}
+                        </button>
+                      ) : (
+                        <div>
+                          <LoadingSpinner />
+                        </div>
+                      )}
                     </div>
                   </div>
                 </Dialog.Panel>
