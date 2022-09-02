@@ -17,6 +17,8 @@ function ProjectMergePop({ setMerge, projectObj, addNewNotification }) {
     const [isOpen, setIsOpen] = React.useState(false);
     const { t } = useTranslation();
     const [stepCount, setStepCount] = React.useState(0);
+    const [counter, setCounter] = React.useState(15);
+
     // eslint-disable-next-line no-unused-vars
     const [mergeStarted, setMergeStarted] = React.useState(false);
     const [mergeError, setMergeError] = React.useState(false);
@@ -34,19 +36,6 @@ function ProjectMergePop({ setMerge, projectObj, addNewNotification }) {
         confirmMessage: '',
         buttonName: '',
         });
-
-    const modalClose = () => {
-      if (mergeDone || mergeError || mergeConflict) {
-        setIsOpen(false);
-        setMerge(false);
-        setModel({
-          openModel: false,
-          title: '',
-          confirmMessage: '',
-          buttonName: '',
-        });
-      }
-      };
 
     const mergeSuccessMsg = 'Merge Successfull';
 
@@ -79,7 +68,7 @@ function ProjectMergePop({ setMerge, projectObj, addNewNotification }) {
 
     const ignoreFilesPaths = ['ingredients/ag-settings.json', 'metadata.json'];
 
-    const undoMergeOrDeleteOldBackup = async () => {
+    const undoMergeOrDeleteOldBackup = async (undo = false) => {
       logger.debug('projectMergePop.js', 'in undo merge or delete old backup');
       const newpath = localStorage.getItem('userPath');
       const fs = window.require('fs');
@@ -93,16 +82,55 @@ function ProjectMergePop({ setMerge, projectObj, addNewNotification }) {
           const bStat = fs.statSync(`${projectBackupPath}/${b}`);
           return new Date(bStat.birthtime).getTime() - new Date(aStat.birthtime).getTime();
       });
-      // prune older backup
-      if (backupFileListSorted.length > environment.SYNC_BACKUP_COUNT) {
-        await fs.rmdir(path.join(projectBackupPath, backupFileListSorted.pop()), { recursive: true }, (err) => {
+
+      if (undo) {
+        // delete the backup created
+        await fs.rmdir(path.join(projectBackupPath, backupFileListSorted[0]), { recursive: true }, (err) => {
           if (err) {
             throw err;
           } else {
-            console.log('deleted!');
+            console.log('backup undo!');
           }
         });
+      } else if (!undo) {
+        // prune older backup / undo
+        if (backupFileListSorted.length > environment.SYNC_BACKUP_COUNT) {
+          await fs.rmdir(path.join(projectBackupPath, backupFileListSorted.pop()), { recursive: true }, (err) => {
+            if (err) {
+              throw err;
+            } else {
+              console.log('deleted!');
+            }
+          });
+        }
       }
+    };
+
+    const modalClose = async () => {
+      if (mergeDone || mergeError || mergeConflict) {
+        setIsOpen(false);
+        setMerge(false);
+        setModel({
+          openModel: false,
+          title: '',
+          confirmMessage: '',
+          buttonName: '',
+        });
+        if (mergeDone) {
+          console.log('call undoMerge Func - prune backup');
+          await undoMergeOrDeleteOldBackup(false);
+          setMergeDone(false);
+          setCounter(0);
+        }
+      }
+      };
+
+    const handleClickUndo = async () => {
+      console.log('call undoMerge Func - undo project merge');
+      await undoMergeOrDeleteOldBackup(true);
+      setMergeDone(false);
+      setIsOpen(false);
+      setCounter(0);
     };
 
     const backupProjectLocal = async () => {
@@ -121,10 +149,7 @@ function ProjectMergePop({ setMerge, projectObj, addNewNotification }) {
       const backupProjectName = `${projectName}_${projectId}_${new Date().getTime()}`;
       await fse.copy(projectsMetaPath, path.join(projectBackupPath, backupProjectName));
       logger.debug('projectMergePop.js', 'Finished Backing up the project', projectName);
-      // test delete old
-      console.log('delete old backups started');
-      await undoMergeOrDeleteOldBackup();
-      console.log('delete old backups finished');
+      console.log('finished backups creation');
     };
 
     const callFunction = async () => {
@@ -330,9 +355,20 @@ function ProjectMergePop({ setMerge, projectObj, addNewNotification }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    // React.useEffect(() => {
-    //   console.log('current step count useEffect : ', stepCount);
-    // }, [stepCount]);
+    // if (counter === 0) {
+    //   console.log('call undoMerge Func - prune old backup project merge');
+    //   await undoMergeOrDeleteOldBackup(false);
+    //   setMergeDone(false);
+    //   setCounter(0);
+    // }
+
+    React.useEffect(() => {
+      if (mergeDone) {
+        const timer = counter > 0 && setInterval(() => setCounter(counter - 1), 1000);
+        return () => clearInterval(timer);
+      }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [counter, mergeDone]);
 
   return (
     <>
@@ -369,6 +405,13 @@ function ProjectMergePop({ setMerge, projectObj, addNewNotification }) {
                     Project Merging
                   </Dialog.Title>
 
+                  {!mergeConflict && !mergeError
+                  && (
+                  <div className="mt-2 text-sm">
+                    This may take a while ...
+                  </div>
+                  )}
+
                   {mergeConflict
                     && (
                     <div>
@@ -388,32 +431,59 @@ function ProjectMergePop({ setMerge, projectObj, addNewNotification }) {
                       />
                     </div>
                   )}
-                  <div className="mt-4">
-                    <div className="px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                      {/* <button
-                        aria-label="merge=ok"
-                        disabled={!((mergeDone || mergeError || mergeConflict))}
-                        type="button"
-                        className={`w-20 h-10 ${!((mergeDone || mergeError || mergeConflict)) ? 'bg-gray-500' : 'bg-success'} leading-loose rounded shadow text-xs font-base  text-white tracking-wide  font-light uppercase`}
-                        onClick={modalClose}
-                      >
-                        {t('btn-ok')}
-                      </button> */}
-                      {mergeDone || mergeError || mergeConflict ? (
+
+                  {/* {mergeDone && !mergeConflict && !mergeError
+                    && (
+                    <div>
+                      <div className="mt-3">
+                        <p>Undo Merge</p>
+                      </div>
+                    </div>
+                  )} */}
+
+                  <div className="mt-4 px-4 py-3 flex justify-between">
+                    {/* <div className="px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse"> */}
+                    <div className="">
+                      {(mergeDone || mergeError || mergeConflict) && (
                         <button
-                          aria-label="merge=ok"
+                          aria-label="merge-ok"
                           type="button"
                           className={`w-20 h-10 ${!((mergeDone || mergeError || mergeConflict)) ? 'bg-gray-500' : 'bg-success'} leading-loose rounded shadow text-xs font-base  text-white tracking-wide  font-light uppercase`}
                           onClick={modalClose}
                         >
                           {t('btn-ok')}
                         </button>
-                      ) : (
-                        <div>
-                          <LoadingSpinner />
-                        </div>
+                      )}
+                      {(!mergeDone && counter > 0) && (
+                      <div>
+                        <LoadingSpinner />
+                      </div>
                       )}
                     </div>
+
+                    {(mergeDone && counter > 0) && (
+                    <>
+                      <div className="">
+                        <button
+                          aria-label="merge-undo"
+                          type="button"
+                          className="w-20 h-10  bg-red-700 leading-loose rounded shadow text-xs font-base  text-white tracking-wide  font-light uppercase"
+                          onClick={handleClickUndo}
+                        >
+                          {/* {t('undo')} */}
+                          Undo
+                        </button>
+                      </div>
+                      {/* <div className="text-lg font-medium">
+                        {counter}
+                      </div> */}
+                      <div className="text-2xl font-medium box-border items-center justify-center">
+                        <div className="animate-ping">
+                          {counter}
+                        </div>
+                      </div>
+                    </>
+                      )}
                   </div>
                 </Dialog.Panel>
               </Transition.Child>
