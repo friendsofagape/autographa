@@ -1,9 +1,11 @@
+/* eslint-disable react/no-danger */
+/* eslint-disable no-console */
 import { Dialog, Transition } from '@headlessui/react';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import ConfirmationModal from '@/layouts/editor/ConfirmationModal';
 import { SnackBar } from '@/components/SnackBar';
+import PropTypes from 'prop-types';
 import { importServerProject, uploadProjectToBranchRepoExist } from './GiteaUtils';
 import * as logger from '../../../logger';
 import burrito from '../../../lib/BurritoTemplete.json';
@@ -23,6 +25,7 @@ function ProjectMergePop({ setMerge, projectObj }) {
     const [snackBar, setOpenSnackBar] = React.useState(false);
     const [snackText, setSnackText] = React.useState('');
     const [notify, setNotify] = React.useState();
+    const [conflictHtml, setConflictHtml] = React.useState('<div></div>');
 
     const [model, setModel] = React.useState({
         openModel: false,
@@ -32,7 +35,7 @@ function ProjectMergePop({ setMerge, projectObj }) {
         });
 
     const modalClose = () => {
-      if (mergeDone || mergeError) {
+      if (mergeDone || mergeError || mergeConflict) {
         setIsOpen(false);
         setMerge(false);
         setModel({
@@ -80,7 +83,7 @@ function ProjectMergePop({ setMerge, projectObj }) {
       const newpath = localStorage.getItem('userPath');
       const fs = window.require('fs');
       const path = require('path');
-      const projectBackupPath = path.join(newpath, 'autographa', 'users', projectObj?.agUsername, 'sync-projects-backups');
+      const projectBackupPath = path.join(newpath, 'autographa', 'users', projectObj?.agUsername, 'projects-backups');
       // Sorted files in directory on creation date
       const backupFileList = await fs.readdirSync(projectBackupPath);
       const files = backupFileList.filter((filename) => fs.statSync(`${projectBackupPath}/${filename}`).isDirectory());
@@ -111,7 +114,7 @@ function ProjectMergePop({ setMerge, projectObj }) {
       const fs = window.require('fs');
       const path = require('path');
       const projectsMetaPath = path.join(newpath, 'autographa', 'users', projectObj?.agUsername, 'projects', `${projectName}_${projectId}`);
-      const projectBackupPath = path.join(newpath, 'autographa', 'users', projectObj?.agUsername, 'sync-projects-backups');
+      const projectBackupPath = path.join(newpath, 'autographa', 'users', projectObj?.agUsername, 'projects-backups');
       fs.mkdirSync(path.join(projectBackupPath), { recursive: true });
       logger.debug('ProjectMergePop.js', 'Creating backup directory if not exists.');
       const backupProjectName = `${projectName}_${projectId}_${new Date().getTime()}`;
@@ -150,6 +153,11 @@ function ProjectMergePop({ setMerge, projectObj }) {
                 })
                 .finally(() => {
                     setStepCount((prevStepCount) => prevStepCount + 1);
+                    setMergeDone(true);
+                    setMergeStarted(false);
+                    setMergeError(false);
+                    setMergeConflict(false);
+                    setMergeErrorTxt('');
                     console.log('import project successfull');
                 });
         });
@@ -233,10 +241,25 @@ function ProjectMergePop({ setMerge, projectObj }) {
                     } else {
                         // conflict section
                         logger.debug('projectMergePop.js', 'PR success - Can not Merge - Conflict Exist');
-                        setNotify('Warning');
+                        setMergeStarted(false);
+                        setMergeConflict(true);
+                        setNotify('warning');
                         setSnackText('Can not perform Merge - Conflict Exist');
                         setOpenSnackBar(true);
-                        console.log('can not perform merge : conflict exist xxxxxxxxxxx');
+                        setStepCount(0);
+
+                        // try to display conflict
+                        await fetch(result.body.html_url)
+                        .then((response) => response.text())
+                        .then(async (resultDiff) => {
+                          const parser = new DOMParser();
+                          const doc = parser.parseFromString(resultDiff, 'text/html');
+                          const htmlPart = doc.getElementsByClassName('merge-section');
+                          // console.log('type html part  ----', htmlPart[0]);
+                          setConflictHtml(htmlPart[0].innerHTML);
+                          // console.log('can not perform merge : conflict exist xxxxxxxxxxx', resultDiff);
+                        });
+                        console.log('can not perform merge : conflict exist xxxxxxxxxxx', result);
                     }
                 } else {
                     throw result.resposne.statusText;
@@ -251,6 +274,7 @@ function ProjectMergePop({ setMerge, projectObj }) {
             setSnackText(`Merge Failed - ${mergeErrorTxt}`);
             setOpenSnackBar(true);
             setMergeError(true);
+            setStepCount(0);
             setMergeDone(false);
             setMergeStarted(false);
         }
@@ -277,11 +301,6 @@ function ProjectMergePop({ setMerge, projectObj }) {
             .then((response) => response)
             .then((result) => {
                 if (result.ok) {
-                  setMergeDone(true);
-                  setMergeStarted(false);
-                  setMergeError(false);
-                  setMergeConflict(false);
-                  setMergeErrorTxt('');
                   setStepCount((prevStepCount) => prevStepCount + 1);
                   console.log('deleted temp branch---------------------');
                   logger.debug('projectMergePop.js', 'Deleted Temp Branch Successfully');
@@ -334,11 +353,17 @@ function ProjectMergePop({ setMerge, projectObj }) {
                     Project Merging
                   </Dialog.Title>
 
-                  {mergeError ? (
-                    <div className="mt-2 ">
-                      <p>Error on Merge Process</p>
+                  {mergeConflict
+                    && (
+                    <div>
+                      <div className="mt-3">
+                        <p className="text-sm">Can not perform merge - Conflict Exist</p>
+                        <div className="my-2 text-sm text-red-700 leading-6" dangerouslySetInnerHTML={{ __html: conflictHtml }} />
+                      </div>
                     </div>
-                  ) : (
+                  )}
+                  {!mergeError && !mergeConflict
+                    && (
                     <div className="mt-2 ">
                       <VerticalLinearStepper
                         steps={mergeProgressSteps}
@@ -351,9 +376,9 @@ function ProjectMergePop({ setMerge, projectObj }) {
                     <div className="px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
                       <button
                         aria-label="merge=ok"
-                        disabled={!((mergeDone || mergeError))}
+                        disabled={!((mergeDone || mergeError || mergeConflict))}
                         type="button"
-                        className={`w-20 h-10 ${!((mergeDone || mergeError)) ? 'bg-gray-500' : 'bg-success'} leading-loose rounded shadow text-xs font-base  text-white tracking-wide  font-light uppercase`}
+                        className={`w-20 h-10 ${!((mergeDone || mergeError || mergeConflict)) ? 'bg-gray-500' : 'bg-success'} leading-loose rounded shadow text-xs font-base  text-white tracking-wide  font-light uppercase`}
                         onClick={modalClose}
                       >
                         {t('btn-ok')}
