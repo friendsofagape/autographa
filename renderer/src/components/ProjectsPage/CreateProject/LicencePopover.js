@@ -127,7 +127,7 @@ export default function LicencePopover({ call }) {
                       checked={preview}
                       onChange={setPreview}
                       className={`${preview ? 'bg-primary' : 'bg-dark'}
-                                  relative inline-flex flex-shrink-0 h-5 w-10 border-2 border-transparent rounded-full cursor-pointer
+                                  relative inline-flex shrink-0 h-5 w-10 border-2 border-transparent rounded-full cursor-pointer
                                   transition-colors ease-in-out duration-200 focus:outline-none focus-visible:ring-2
                                 focus-visible:ring-white focus-visible:ring-opacity-75`}
                     >
