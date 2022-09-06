@@ -48,6 +48,7 @@ export default function ReferenceContextProvider({ children }) {
     const [obsNavigation, setObsNavigation] = useState('1');
     const [selectedStory, setSelectedStory] = useState();
     const [taNavigationPath, setTaNavigationPath] = useState('');
+    const [audioContent, setAudioContent] = useState({});
     const handleClick = (event) => {
       setAnchorEl(event.currentTarget);
     };
@@ -80,6 +81,10 @@ export default function ReferenceContextProvider({ children }) {
                         case 'textStories':
                           setBookmarksVerses(resources.project.textStories.bookMarks);
                           setProjectScriptureDir(resources.project.textStories.scriptDirection);
+                          break;
+                        case 'audioTranslation':
+                          setBookmarksVerses(resources.project.audioTranslation.bookMarks);
+                          setProjectScriptureDir(resources.project.audioTranslation.scriptDirection);
                           break;
                         default:
                           break;
@@ -250,6 +255,7 @@ export default function ReferenceContextProvider({ children }) {
         obsNavigation,
         selectedStory,
         taNavigationPath,
+        audioContent,
       },
       actions: {
         setLanguageId,
@@ -288,6 +294,7 @@ export default function ReferenceContextProvider({ children }) {
         setObsNavigation,
         setSelectedStory,
         setTaNavigationPath,
+        setAudioContent,
       },
     };
 

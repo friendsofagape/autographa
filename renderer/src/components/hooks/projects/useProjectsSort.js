@@ -70,6 +70,9 @@ function useProjectsSort() {
               case 'textStories':
                 dirName = 'textStories';
                 break;
+              case 'audioTranslation':
+                dirName = 'audioTranslation';
+                break;
               default:
                 break;
             }
