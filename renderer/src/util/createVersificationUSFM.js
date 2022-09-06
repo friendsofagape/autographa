@@ -142,6 +142,7 @@ export const createVersificationUSFM = (
             textTranslation: {
               scriptDirection: direction,
               starred: call === 'edit' ? currentBurrito.project.textTranslation.starred : false,
+              isArchived: call === 'edit' ? currentBurrito.project.textTranslation.isArchived : false,
               versification,
               description: project.description,
               copyright: copyright.title,

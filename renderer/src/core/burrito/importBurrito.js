@@ -247,6 +247,7 @@ const importBurrito = async (filePath, currentUser, updateBurritoVersion) => {
             [metadata.type.flavorType.flavor.name]: {
               scriptDirection: 'LTR',
               starred: false,
+              isArchived: false,
               versification: '',
               description: '',
               copyright: '',
