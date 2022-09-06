@@ -125,6 +125,62 @@ function useProjectsSort() {
     handleRequestSortUnstarred('asc', 'view');
   };
 
+  const archiveProject = async (project, name) => {
+    const projectList = await localForage.getItem('projectmeta');
+    // eslint-disable-next-line array-callback-return
+    projectList.projects.map((proj) => {
+      if (proj.identification.name.en === project.name) {
+        project.isArchived = !project.isArchived;
+      }
+    });
+
+    const projectArrayTemp = [];
+    if (isElectron()) {
+      let currentUser;
+      await localForage.getItem('userProfile').then((value) => {
+        currentUser = value?.username;
+      });
+      const projects = localForage.getItem('projectmeta');
+      projects.then((value) => {
+        if (value) {
+          projectArrayTemp.push(value);
+        }
+      }).then(() => {
+        projectArrayTemp[0].projects.forEach((_project) => {
+          if (_project.identification.name.en === name) {
+            let dirName;
+            switch (_project.type.flavorType.flavor.name) {
+              case 'textTranslation':
+                dirName = 'textTranslation';
+                break;
+              case 'textStories':
+                dirName = 'textStories';
+                break;
+              default:
+                break;
+            }
+            const status = _project.project[dirName].isArchived;
+            const selectedProject = _project;
+            selectedProject.project[dirName].isArchived = !status;
+            selectedProject.project[dirName].lastSeen = moment().format();
+          }
+        });
+      }).finally(() => {
+        localForage.setItem('projectmeta', projectArrayTemp[0])
+          .then(() => {
+            projectArrayTemp[0].projects.forEach((_project) => {
+              if (_project.identification.name.en === name) {
+                const id = Object.keys(_project.identification.primary.ag);
+                const projectName = `${name}_${id}`;
+                logger.debug('useProjectsSort.js', `Updating archive/restore in AG settings for ${name}`);
+                updateAgSettings(currentUser, projectName, _project);
+              }
+            });
+          });
+      });
+    }
+  };
+
   // eslint-disable-next-line
     useEffect(() => {
     if (temparray) {
@@ -139,11 +195,11 @@ function useProjectsSort() {
     // eslint-disable-next-line
       }, [temparray, active]);
 
-    const createData = (name, language, date, view, description, id, type) => ({
-      name, language, date, view, description, id, type,
+    const createData = (name, language, date, view, description, id, type, isArchived) => ({
+      name, language, date, view, description, id, type, isArchived,
     });
 
-    const FetchStarred = (ProjectName, Language, createdAt, LastView, ProjectDescription, id, type) => {
+    const FetchStarred = (ProjectName, Language, createdAt, LastView, ProjectDescription, id, type, isArchived) => {
       starrtedData.push(createData(
         ProjectName,
         Language,
@@ -152,10 +208,11 @@ function useProjectsSort() {
         ProjectDescription,
         id,
         type,
+        isArchived,
       ));
     };
 
-    const FetchUnstarred = (ProjectName, Language, createdAt, LastView, ProjectDescription, id, type) => {
+    const FetchUnstarred = (ProjectName, Language, createdAt, LastView, ProjectDescription, id, type, isArchived) => {
       unstarrtedData.push(createData(
         ProjectName,
         Language,
@@ -164,6 +221,7 @@ function useProjectsSort() {
         ProjectDescription,
         id,
         type,
+        isArchived,
       ));
     };
 
@@ -187,15 +245,18 @@ function useProjectsSort() {
                         let lastSeen;
                         let description;
                         let flavorType;
+                        let isArchived;
                         switch (_project.type.flavorType.flavor.name) {
                           case 'textTranslation':
                             lastSeen = _project.project?.textTranslation?.lastSeen;
                             description = _project.project?.textTranslation?.description;
+                            isArchived = _project.project.textTranslation.isArchived;
                             flavorType = 'Text Translation';
                             break;
                           case 'textStories':
                             lastSeen = _project.project?.textStories?.lastSeen;
                             description = _project.project?.textStories?.description;
+                            isArchived = _project.project?.textStories?.isArchived;
                             flavorType = 'OBS';
                             break;
                           default:
@@ -211,6 +272,7 @@ function useProjectsSort() {
                             description,
                             created,
                             flavorType,
+                            isArchived,
                             );
                         } else {
                           FetchUnstarred(
@@ -221,6 +283,7 @@ function useProjectsSort() {
                             description,
                             created,
                             flavorType,
+                            isArchived,
                             );
                         }
                       });
@@ -251,6 +314,7 @@ function useProjectsSort() {
                 projects.get('language'),
                 projects.get('date'),
                 projects.get('lastview'),
+                projects.get('isArchived'),
                 );
               } else {
                   FetchUnstarred(
@@ -258,6 +322,7 @@ function useProjectsSort() {
                     projects.get('language'),
                     projects.get('date'),
                     projects.get('lastview'),
+                    projects.get('isArchived'),
                 );
               }
           });
@@ -291,6 +356,7 @@ function useProjectsSort() {
         handleClickStarred,
         handleDelete,
         handleRequestSortUnstarred,
+        archiveProject,
         setStarredRow,
         setUnStarredRow,
         settemparray,

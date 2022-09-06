@@ -7,8 +7,8 @@ const projects = () => (
   <AuthenticationContextProvider>
     <AutographaContextProvider>
       <ReferenceContextProvider>
-          <ProjectList />
-        </ReferenceContextProvider>
+        <ProjectList />
+      </ReferenceContextProvider>
     </AutographaContextProvider>
   </AuthenticationContextProvider>
 );
