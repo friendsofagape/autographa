@@ -223,6 +223,7 @@ const importBurrito = async (filePath, currentUser, updateBurritoVersion) => {
               bookMarks: [],
             },
           },
+          sync: { services: { door43: [] } },
         };
         logger.debug('importBurrito.js', 'Creating the ag-settings.json file.');
         await fs.writeFileSync(path.join(projectDir, `${projectName}_${id}`, dirName, 'ag-settings.json'), JSON.stringify(settings));
@@ -250,6 +251,7 @@ const importBurrito = async (filePath, currentUser, updateBurritoVersion) => {
           setting.project[metadata.type.flavorType.flavor.name].copyright = settings.project[metadata.type.flavorType.flavor.name]?.copyright ? settings.project[metadata.type.flavorType.flavor.name]?.copyright : { title: 'Custom' };
           setting.project[metadata.type.flavorType.flavor.name].refResources = settings.project[metadata.type.flavorType.flavor.name]?.refResources ? settings.project[metadata.type.flavorType.flavor.name]?.refResources : [];
           setting.project[metadata.type.flavorType.flavor.name].bookMarks = settings.project[metadata.type.flavorType.flavor.name]?.bookMarks ? settings.project[metadata.type.flavorType.flavor.name]?.bookMarks : [];
+          setting.sync.services.door43 = setting?.sync?.services?.door43 ? setting?.sync?.services?.door43 : [];
           settings = setting;
         }
         settings.project[metadata.type.flavorType.flavor.name].lastSeen = moment().format();

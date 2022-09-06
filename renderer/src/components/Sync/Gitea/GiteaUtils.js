@@ -21,6 +21,7 @@ export const importServerProject = async (updateBurrito, repo, sbData, auth, use
     const fs = window.require('fs');
     const newpath = localStorage.getItem('userPath');
     let sbDataObject = sbData;
+    console.log("sbdataObje : ", sbDataObject);
     const projectDir = path.join(newpath, 'autographa', 'users', currentUser, 'projects');
     fs.mkdirSync(projectDir, { recursive: true });
     if (!sbData?.meta?.dateCreated) {
@@ -168,6 +169,7 @@ export const importServerProject = async (updateBurrito, repo, sbData, auth, use
               bookMarks: [],
             },
           },
+          sync : { services: { door43 : [] } },
         };
         logger.debug('dropzone giteaUtils import.js', 'Creating the ag-settings.json file.');
         await fs.writeFileSync(path.join(projectDir, `${projectName}_${id}`, dirName, 'ag-settings.json'), JSON.stringify(settings));
@@ -195,6 +197,7 @@ export const importServerProject = async (updateBurrito, repo, sbData, auth, use
           setting.project[sbDataObject.type.flavorType.flavor.name].copyright = settings.project[sbDataObject.type.flavorType.flavor.name]?.copyright ? settings.project[sbDataObject.type.flavorType.flavor.name]?.copyright : { title: 'Custom' };
           setting.project[sbDataObject.type.flavorType.flavor.name].refResources = settings.project[sbDataObject.type.flavorType.flavor.name]?.refResources ? settings.project[sbDataObject.type.flavorType.flavor.name]?.refResources : [];
           setting.project[sbDataObject.type.flavorType.flavor.name].bookMarks = settings.project[sbDataObject.type.flavorType.flavor.name]?.bookMarks ? settings.project[sbDataObject.type.flavorType.flavor.name]?.bookMarks : [];
+          setting.sync.services.door43 = setting?.sync?.services?.door43 ? setting?.sync?.services?.door43 : [];
           settings = setting;
         }
         settings.project[sbDataObject.type.flavorType.flavor.name].lastSeen = moment().format();

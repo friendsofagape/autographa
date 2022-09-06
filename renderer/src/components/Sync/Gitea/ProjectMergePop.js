@@ -29,6 +29,7 @@ function ProjectMergePop({ setMerge, projectObj, addNewNotification }) {
     const [snackText, setSnackText] = React.useState('');
     const [notify, setNotify] = React.useState();
     const [conflictHtml, setConflictHtml] = React.useState('<div></div>');
+    const [backupName, setBackupName] = React.useState('');
 
     const [model, setModel] = React.useState({
         openModel: false,
@@ -84,6 +85,14 @@ function ProjectMergePop({ setMerge, projectObj, addNewNotification }) {
       });
 
       if (undo) {
+        // replace backup with merged in project
+        const fse = window.require('fs-extra');
+        const projectId = Object.keys(projectObj?.metaDataSbRemote?.identification.primary.ag)[0];
+        const projectName = projectObj?.metaDataSbRemote?.identification.name.en;
+        const projectsMetaPath = path.join(newpath, 'autographa', 'users', projectObj?.agUsername, 'projects');
+        fs.mkdirSync(path.join(projectsMetaPath, `${projectName}_${projectId}`), { recursive: true });
+        logger.debug('ProjectMergePop.js', 'Creating undo directory if not exists.');
+        await fse.copy(path.join(projectBackupPath, backupName), path.join(projectsMetaPath, `${projectName}_${projectId}`));
         // delete the backup created
         await fs.rmdir(path.join(projectBackupPath, backupFileListSorted[0]), { recursive: true }, (err) => {
           if (err) {
@@ -147,6 +156,7 @@ function ProjectMergePop({ setMerge, projectObj, addNewNotification }) {
       fs.mkdirSync(path.join(projectBackupPath), { recursive: true });
       logger.debug('ProjectMergePop.js', 'Creating backup directory if not exists.');
       const backupProjectName = `${projectName}_${projectId}_${new Date().getTime()}`;
+      setBackupName(backupProjectName);
       await fse.copy(projectsMetaPath, path.join(projectBackupPath, backupProjectName));
       logger.debug('projectMergePop.js', 'Finished Backing up the project', projectName);
       console.log('finished backups creation');
@@ -454,7 +464,7 @@ function ProjectMergePop({ setMerge, projectObj, addNewNotification }) {
                           {t('btn-ok')}
                         </button>
                       )}
-                      {(!mergeDone && counter > 0) && (
+                      {(!mergeDone && !mergeConflict && counter > 0) && (
                       <div>
                         <LoadingSpinner />
                       </div>

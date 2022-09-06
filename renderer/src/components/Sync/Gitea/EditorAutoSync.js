@@ -85,7 +85,7 @@ function AutoSync({ selectedProject }) {
           let settings = fs.readFileSync(settingsPath);
           settings = JSON.parse(settings);
           if (action === 'get') {
-            setlastSyncedUser(settings.sync?.services?.door43[0].username);
+            setlastSyncedUser(settings.sync?.services?.door43[0]?.username);
           } if (action === 'put') {
             if (!settings.sync && !settings.sync?.services) {
               // first time sync
