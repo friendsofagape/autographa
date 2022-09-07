@@ -10,7 +10,6 @@ const AutoUpdate = () => {
   const [restartButton, setRestartButton] = useState(false);
   const { t } = useTranslation();
   useEffect(() => {
-        localforage.setItem('font-family', global.fonts);
         const electron = window.require('electron');
         const { ipcRenderer } = electron;
           ipcRenderer.send('app_version');
