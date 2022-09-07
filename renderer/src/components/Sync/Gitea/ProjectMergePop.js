@@ -17,7 +17,7 @@ function ProjectMergePop({ setMerge, projectObj, addNewNotification }) {
     const [isOpen, setIsOpen] = React.useState(false);
     const { t } = useTranslation();
     const [stepCount, setStepCount] = React.useState(0);
-    const [counter, setCounter] = React.useState(15);
+    const [counter, setCounter] = React.useState(10);
 
     // eslint-disable-next-line no-unused-vars
     const [mergeStarted, setMergeStarted] = React.useState(false);
