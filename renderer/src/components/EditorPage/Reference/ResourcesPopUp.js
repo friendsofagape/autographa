@@ -20,6 +20,7 @@ import LoadingScreen from '@/components/Loading/LoadingScreen';
 import ResourceOption from './ResourceOption';
 import ImportResource from './ImportResource';
 import * as logger from '../../../logger';
+import DownloadResourcePopUp from './ResourceUtils/DownloadResourcePopUp';
 
 function createData(name, language, owner) {
   return {
@@ -184,9 +185,17 @@ const ResourcesPopUp = ({
     removeSection();
   };
 
+  const [isOpenDonwloadPopUp, setIsOpenDonwloadPopUp] = useState(false);
+
   const openResourceDialogBox = () => {
-    setOpenImportResourcePopUp(true);
-    openResourceDialog();
+    if (selectResource === 'bible') {
+      console.log('bible resource add');
+      setIsOpenDonwloadPopUp(true);
+      // DownloadResourcePopUp(selectResource);
+    } else {
+      setOpenImportResourcePopUp(true);
+      openResourceDialog();
+    }
   };
 
   function closeImportPopUp() {
@@ -366,7 +375,7 @@ const ResourcesPopUp = ({
                     type="search"
                     id="gsearch"
                     name="gsearch"
-                  /> */}
+                    /> */}
                     <div className="grid grid-rows-5 py-5 gap-4">
                       <ResourceOption
                         imageUrl="/illustrations/bible-icon.svg"
@@ -596,6 +605,8 @@ const ResourcesPopUp = ({
                       {selectResource === 'bible' || selectResource === 'obs' ? (
                         <button type="button" className="flex gap-6 mx-5 absolute bottom-5 right-0 justify-end z-10 outline-none">
                           <PlusCircleIcon className="h-10 w-10 m-5 text-primary" onClick={() => openResourceDialogBox()} />
+                          { selectResource === 'obs'
+                          && (
                           <ImportResource
                             open={openImportResourcePopUp}
                             closePopUp={closeImportPopUp}
@@ -603,8 +614,18 @@ const ResourcesPopUp = ({
                             setOpenResourcePopUp={setOpenResourcePopUp}
                             setLoading={setLoading}
                           />
+                          ) }
                         </button>
                   ) : importResources(selectResource)}
+
+                      {isOpenDonwloadPopUp
+                  && (
+                  <DownloadResourcePopUp
+                    selectResource={selectResource}
+                    isOpenDonwloadPopUp={isOpenDonwloadPopUp}
+                    setIsOpenDonwloadPopUp={setIsOpenDonwloadPopUp}
+                  />
+                  )}
                     </div>
                   )}
               </div>
@@ -614,6 +635,7 @@ const ResourcesPopUp = ({
           </div>
         </Dialog>
       </Transition>
+
       <SnackBar
         openSnackBar={openSnackBar}
         setOpenSnackBar={setOpenSnackBar}
