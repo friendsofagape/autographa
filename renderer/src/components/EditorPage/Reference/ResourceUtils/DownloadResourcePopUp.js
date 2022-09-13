@@ -11,6 +11,25 @@ import { ExpandMore } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 import LoadingScreen from '@/components/Loading/LoadingScreen';
 import DownloadSvg from '@/icons/basil/Outline/Files/Download.svg';
+import CustomMultiComboBox from './CustomMultiComboBox';
+
+// dummy language values for resource filter
+const languageArray = [
+  { id: 1, name: 'English', code: 'en' },
+  { id: 2, name: 'Hindi', code: 'hi' },
+  { id: 3, name: 'Malayalam', code: 'ml' },
+  { id: 4, name: 'Tamil', code: 'ta' },
+  { id: 5, name: 'telugu', code: 'te' },
+  { id: 6, name: 'kannada', code: 'kn' },
+  { id: 7, name: 'urdu', code: 'ur' },
+  { id: 8, name: 'Hebrew, Modern', code: 'he' },
+];
+const subjectTypeArray = [
+  { id: 1, name: 'Aligned Bible' },
+  { id: 2, name: 'Bible' },
+  { id: 3, name: 'Hebrew Old Testament' },
+  { id: 4, name: 'Greek New Testament' },
+];
 
  // mui styles for accordion
 const useStyles = makeStyles((theme) => ({
@@ -43,6 +62,8 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
     const [notify, setNotify] = React.useState();
 
     const [resourceData, setresourceData] = React.useState([]);
+    const [selectedLangFilter, setSelectedLangFilter] = React.useState([]);
+    const [selectedTypeFilter, setSelectedTypeFilter] = React.useState([]);
 
     const modalClose = () => {
         setIsOpenDonwloadPopUp(false);
@@ -96,6 +117,11 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
         console.log('clicked filter : ', loadFilterDiv);
         setLoadFilterDiv(!loadFilterDiv);
       }
+    };
+
+    const handleClearFilter = () => {
+      setSelectedLangFilter([]);
+      setSelectedTypeFilter([]);
     };
 
     React.useEffect(() => {
@@ -154,6 +180,35 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
                     </div>
                   </div>
                   <hr />
+                  {/* filter / status section show on conditions */}
+                  {!loadFilterDiv && (
+                    <div className="flex-col border-2 m-2 border-gray-300 bg-gray-200">
+                      <div className="w-full flex justify-center text-sm py-1">Filter Options</div>
+
+                      <div className=" flex-col text-sm p-2 ">
+                        <div className="flex justify-between items-center">
+                          <label htmlFor="filter-lang">Language</label>
+                          <CustomMultiComboBox
+                            selectedList={selectedLangFilter}
+                            setSelectedList={setSelectedLangFilter}
+                            customData={languageArray}
+                          />
+                        </div>
+                        <div className="flex justify-between  items-center mt-2">
+                          <label htmlFor="filter-type">Type</label>
+                          <CustomMultiComboBox
+                            selectedList={selectedTypeFilter}
+                            setSelectedList={setSelectedTypeFilter}
+                            customData={subjectTypeArray}
+                          />
+                        </div>
+                        <div className="flex justify-end mt-5 gap-5 px-5">
+                          <button type="button" onClick={handleClearFilter}>Clear</button>
+                          <button type="button">Save</button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 <div className="w-full bg-white my-3 ">
