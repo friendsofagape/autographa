@@ -15,17 +15,6 @@ import DownloadSvg from '@/icons/basil/Outline/Files/Download.svg';
 import CustomMultiComboBox from './CustomMultiComboBox';
 import langJson from '../../../../lib/lang/langNames.json';
 
-// dummy language values for resource filter
-// const languageArray = [
-//   { id: 1, name: 'English', code: 'en' },
-//   { id: 2, name: 'Hindi', code: 'hi' },
-//   { id: 3, name: 'Malayalam', code: 'ml' },
-//   { id: 4, name: 'Tamil', code: 'ta' },
-//   { id: 5, name: 'telugu', code: 'te' },
-//   { id: 6, name: 'kannada', code: 'kn' },
-//   { id: 7, name: 'urdu', code: 'ur' },
-//   { id: 8, name: 'Hebrew, Modern', code: 'he' },
-// ];
 const subjectTypeArray = [
   { id: 2, name: 'Bible' },
   // { id: 1, name: 'Aligned Bible' },
@@ -67,8 +56,6 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
     const [resourceData, setresourceData] = React.useState([]);
     const [selectedLangFilter, setSelectedLangFilter] = React.useState([]);
     const [selectedTypeFilter, setSelectedTypeFilter] = React.useState([]);
-
-    const [languageArray, setLanguageArray] = React.useState([]);
 
     const modalClose = () => {
         setIsOpenDonwloadPopUp(false);
@@ -174,13 +161,6 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
     };
 
     React.useEffect(() => {
-        const temp_lang_arr = [];
-        langJson.forEach(((data) => {
-          temp_lang_arr.push(
-            { id: data.pk, name: data.ang, code: data.lc },
-          );
-        }));
-        setLanguageArray(temp_lang_arr);
         fetchResource(false);
     }, []);
 
@@ -208,7 +188,7 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
             <Dialog.Overlay className="fixed inset-0 bg-black opacity-30" />
 
             <div className="flex items-center justify-center h-screen ">
-              <div className="flex-col w-2/5 max-h-[32rem] items-center justify-center  z-50 shadow rounded bg-white ">
+              <div className="flex-col max-w-xl max-h-[32rem] items-center justify-center  z-50 shadow rounded bg-white ">
 
                 <div className="w-full flex bg-secondary justify-between text-white p-1 rounded-t ">
                   <div aria-label="resources-download-title" className="z-50  flex uppercase  p-2 text-xs tracking-widest leading-snug">
@@ -250,7 +230,6 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
                           <CustomMultiComboBox
                             selectedList={selectedLangFilter}
                             setSelectedList={setSelectedLangFilter}
-                            // customData={languageArray}
                             customData={langJson}
                             filterParams="ang"
                           />
@@ -307,21 +286,25 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
                               <AccordionDetails>
 
                                 <div className="w-full">
-                                  <div className="grid grid-cols-8 gap-2 text-center">
+                                  <div className="grid md:grid-cols-9 grid-cols-10 gap-2 text-center">
                                     <div className="col-span-1" />
                                     <div className="col-span-1 font-medium">Resource</div>
-                                    <div className="col-span-3 font-medium">Type</div>
+                                    <div className="md:col-span-2 col-span-3 font-medium">Type</div>
                                     <div className="col-span-3 font-medium">Organization</div>
+                                    <div className="col-span-2 font-medium" />
                                   </div>
                                   <hr />
                                   {resourceData[element].map((row) => (
-                                    <div className="grid grid-cols-8 gap-2 text-center p-1.5 text-sm">
+                                    <div className="grid md:grid-cols-9 grid-cols-10 gap-2 text-center p-1.5 text-sm">
                                       <div>
                                         <input className="col-span-1" type="CheckBox" checked={row.isChecked} onChange={(e) => handleCheckbox(e, { selection: 'single', id: row.id, parent: element })} />
                                       </div>
                                       <div className="col-span-1">{row.name}</div>
-                                      <div className="col-span-3">{row.subject}</div>
+                                      <div className="md:col-span-2 col-span-3">{row.subject}</div>
                                       <div className="col-span-3">{row.owner}</div>
+                                      <div className="col-span-2 text-xs">
+                                        {`${(row.released).split('T')[0]} (${row.release.tag_name})`}
+                                      </div>
                                     </div>
                                 ))}
                                 </div>
