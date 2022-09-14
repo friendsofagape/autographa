@@ -10,6 +10,7 @@ import {
 import { ExpandMore } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 import LoadingScreen from '@/components/Loading/LoadingScreen';
+import { XIcon } from '@heroicons/react/solid';
 import DownloadSvg from '@/icons/basil/Outline/Files/Download.svg';
 import CustomMultiComboBox from './CustomMultiComboBox';
 
@@ -196,11 +197,14 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
             <div className="flex items-center justify-center h-screen ">
               <div className="flex-col w-2/5 max-h-[32rem] items-center justify-center  z-50 shadow rounded bg-white ">
 
-                <div className="w-full bg-secondary text-center text-white p-1 rounded-t ">
-                  <div aria-label="resources-download-title" className="z-50  flex uppercase justify-center p-2 text-xs tracking-widest leading-snug">
+                <div className="w-full flex bg-secondary justify-between text-white p-1 rounded-t ">
+                  <div aria-label="resources-download-title" className="z-50  flex uppercase  p-2 text-xs tracking-widest leading-snug">
                     {selectResource}
                     {' '}
                     Resource Collection
+                  </div>
+                  <div className="flex items-center px-2">
+                    <XIcon className="h-5 w-5 text-white cursor-pointer" onClick={modalClose} />
                   </div>
                 </div>
 
