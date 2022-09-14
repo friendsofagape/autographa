@@ -3,11 +3,16 @@ import { Combobox, Transition } from '@headlessui/react';
 import { SelectorIcon } from '@heroicons/react/outline';
 import PropTypes from 'prop-types';
 
-function CustomMultiComboBox({ selectedList, setSelectedList, customData }) {
+function CustomMultiComboBox({
+ selectedList, setSelectedList, customData, filterParams = 'name',
+}) {
     const [query, setQuery] = useState('');
-    const filteredData = query === ''
-        ? customData
-        : customData.filter((data) => data.name.toLowerCase().includes(query.toLowerCase()));
+    // eslint-disable-next-line no-nested-ternary
+    const filteredData = (query === '')
+        ? customData.slice(0, 100).concat(selectedList.filter((item) => customData.slice(0, 100).indexOf(item) === -1))
+        : (query.length >= 3)
+        ? customData.filter((data) => data[filterParams].toLowerCase().includes(query.toLowerCase()))
+        : [];
             return (
               <>
                 {/* {selectedList.length > 0 && (
@@ -45,7 +50,7 @@ function CustomMultiComboBox({ selectedList, setSelectedList, customData }) {
                       <Combobox.Options className="absolute w-full z-40 mt-1 max-h-48 scrollbars-width overflow-auto rounded-md bg-white py-1 px-2 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm cursor-pointer">
                         {filteredData.map((data) => (
                           <Combobox.Option className={selectedList.includes(data) ? 'bg-gray-400' : ''} key={data.id} value={data}>
-                            {data.name}
+                            {data[filterParams]}
                           </Combobox.Option>
                         ))}
                       </Combobox.Options>
@@ -59,6 +64,7 @@ function CustomMultiComboBox({ selectedList, setSelectedList, customData }) {
 CustomMultiComboBox.propTypes = {
     selectedList: PropTypes.array,
     customData: PropTypes.array,
+    filterParams: PropTypes.string,
     setSelectedList: PropTypes.func,
   };
 

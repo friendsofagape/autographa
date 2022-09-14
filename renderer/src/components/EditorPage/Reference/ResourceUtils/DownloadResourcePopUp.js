@@ -13,23 +13,24 @@ import LoadingScreen from '@/components/Loading/LoadingScreen';
 import { XIcon } from '@heroicons/react/solid';
 import DownloadSvg from '@/icons/basil/Outline/Files/Download.svg';
 import CustomMultiComboBox from './CustomMultiComboBox';
+import langJson from '../../../../lib/lang/langNames.json';
 
 // dummy language values for resource filter
-const languageArray = [
-  { id: 1, name: 'English', code: 'en' },
-  { id: 2, name: 'Hindi', code: 'hi' },
-  { id: 3, name: 'Malayalam', code: 'ml' },
-  { id: 4, name: 'Tamil', code: 'ta' },
-  { id: 5, name: 'telugu', code: 'te' },
-  { id: 6, name: 'kannada', code: 'kn' },
-  { id: 7, name: 'urdu', code: 'ur' },
-  { id: 8, name: 'Hebrew, Modern', code: 'he' },
-];
+// const languageArray = [
+//   { id: 1, name: 'English', code: 'en' },
+//   { id: 2, name: 'Hindi', code: 'hi' },
+//   { id: 3, name: 'Malayalam', code: 'ml' },
+//   { id: 4, name: 'Tamil', code: 'ta' },
+//   { id: 5, name: 'telugu', code: 'te' },
+//   { id: 6, name: 'kannada', code: 'kn' },
+//   { id: 7, name: 'urdu', code: 'ur' },
+//   { id: 8, name: 'Hebrew, Modern', code: 'he' },
+// ];
 const subjectTypeArray = [
-  { id: 1, name: 'Aligned Bible' },
   { id: 2, name: 'Bible' },
-  { id: 3, name: 'Hebrew Old Testament' },
-  { id: 4, name: 'Greek New Testament' },
+  // { id: 1, name: 'Aligned Bible' },
+  // { id: 3, name: 'Hebrew Old Testament' },
+  // { id: 4, name: 'Greek New Testament' },
 ];
 
  // mui styles for accordion
@@ -67,6 +68,8 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
     const [selectedLangFilter, setSelectedLangFilter] = React.useState([]);
     const [selectedTypeFilter, setSelectedTypeFilter] = React.useState([]);
 
+    const [languageArray, setLanguageArray] = React.useState([]);
+
     const modalClose = () => {
         setIsOpenDonwloadPopUp(false);
       };
@@ -81,9 +84,9 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
         if (selectedLangFilter.length > 0) {
           selectedLangFilter.forEach((row) => {
             if (url.slice(-1) === '?') {
-              url += `lang=${row.code}`;
+              url += `lang=${row?.lc ? row?.lc : row?.code}`;
             } else {
-              url += `&lang=${row.code}`;
+              url += `&lang=${row?.lc ? row?.lc : row?.code}`;
             }
           });
         }
@@ -95,6 +98,9 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
               url += `&subject=${row.name}`;
             }
         });
+      } else {
+        // nothing selected default will be bible
+        url += '&subject=Bible';
       }
       } else {
         url = `${baseUrl}?subject=Bible&lang=en`;
@@ -168,6 +174,13 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
     };
 
     React.useEffect(() => {
+        const temp_lang_arr = [];
+        langJson.forEach(((data) => {
+          temp_lang_arr.push(
+            { id: data.pk, name: data.ang, code: data.lc },
+          );
+        }));
+        setLanguageArray(temp_lang_arr);
         fetchResource(false);
     }, []);
 
@@ -237,7 +250,9 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
                           <CustomMultiComboBox
                             selectedList={selectedLangFilter}
                             setSelectedList={setSelectedLangFilter}
-                            customData={languageArray}
+                            // customData={languageArray}
+                            customData={langJson}
+                            filterParams="ang"
                           />
                         </div>
                         <div className="flex justify-between  items-center mt-2">
