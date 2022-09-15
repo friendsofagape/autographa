@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 /* eslint-disable react/prop-types */
 /* eslint-disable react-hooks/exhaustive-deps */
 import {
@@ -7,8 +6,9 @@ import {
 import PropTypes from 'prop-types';
 import WaveSurfer from 'wavesurfer.js';
 import { PlayIcon, PauseIcon } from '@heroicons/react/solid';
+// eslint-disable-next-line import/extensions
 import MicrophonePlugin from 'wavesurfer.js/dist/plugin/wavesurfer.microphone.js';
-// import ReactAudioPlayer from 'react-audio-player';
+
 // eslint-disable-next-line prefer-const
 let microphone = MicrophonePlugin.create();
 const AudioWaveForm = (props) => {
@@ -20,6 +20,10 @@ const AudioWaveForm = (props) => {
     show,
     startRecording,
     stopRecording,
+    pauseRecording,
+    resumeRecording,
+    volume,
+    speed,
     btnColor,
     barGap,
     barWidth,
@@ -52,24 +56,24 @@ const AudioWaveForm = (props) => {
   });
 
   const createForm = async () => {
-    // const WaveSurfer = (await import('wavesurfer.js')).default;
-    console.log('create');
     const options = formWaveSurferOptions(waveformRef.current);
     wavesurfer.current = WaveSurfer.create(options);
 
-    wavesurfer.current.load(url || 'temp.mp3');
-
-    wavesurfer.current.microphone.on('deviceReady', (stream) => {
+    wavesurfer.current?.load(url || 'temp.mp3');
+    wavesurfer.current?.setVolume(volume);
+    wavesurfer.current?.setPlaybackRate(speed);
+    wavesurfer.current?.microphone.on('deviceReady', (stream) => {
+      // eslint-disable-next-line no-console
       console.log('Device ready!', stream);
     });
-    wavesurfer.current.microphone.on('deviceError', (code) => {
+    wavesurfer.current?.microphone.on('deviceError', (code) => {
+      // eslint-disable-next-line no-console
       console.warn(`Device error: ${ code}`);
     });
   };
 
   useEffect(() => {
-    console.log(url, call);
-    if (url || call === 'record') {
+    if (url) {
       createForm();
 
       return () => {
@@ -79,84 +83,77 @@ const AudioWaveForm = (props) => {
         }
       };
     }
-  }, [url, call]);
+  }, [url]);
+  useEffect(() => {
+    if (call === 'record') {
+      createForm();
+
+      return () => {
+        if (wavesurfer.current) {
+          wavesurfer.current.destroy();
+          wavesurfer.current.microphone.destroy();
+        }
+      };
+    }
+  }, [call]);
+  useEffect(() => {
+    if (volume && wavesurfer.current) {
+      wavesurfer.current?.setVolume(volume);
+    }
+    if (speed && wavesurfer.current) {
+      wavesurfer.current?.setPlaybackRate(speed);
+    }
+  }, [volume, speed]);
 
   const handlePlayPause = () => {
-    console.log('handleplaypause');
     setPlaying(!playing);
-    wavesurfer.current.playPause();
+    wavesurfer.current?.playPause();
   };
   const handleRewind = () => {
-    console.log('stop()');
-    wavesurfer.current.stop();
+    wavesurfer.current?.stop();
   };
   const handlePlay = () => {
-    console.log('handleplay');
     setPlaying(!playing);
-    wavesurfer.current.play();
+    wavesurfer.current?.play();
   };
   const handlePause = () => {
-    console.log('handlepause');
     setPlaying(!playing);
-    wavesurfer.current.pause();
+    wavesurfer.current?.pause();
   };
   const handleStart = () => {
-    console.log('Starting..............');
-    // microphone.current.microphone.on('deviceReady', (stream) => {
-    //   console.log('Device ready!', stream);
-    // });
-    // microphone.current.microphone.on('deviceError', (code) => {
-    //   console.warn(`Device error: ${ code}`);
-    // });
     startRecording();
-    // setRecordingStatus('start');
-    wavesurfer.current.microphone.start();
+    wavesurfer.current?.microphone.start();
   };
   const handleStop = () => {
-    console.log('Stop..............');
-
     stopRecording();
-    wavesurfer.current.microphone.stop();
+    wavesurfer.current?.microphone.stop();
   };
 
   useEffect(() => {
-    console.log('wave', call, call === 'record', url);
-    if (url) {
-      switch (call) {
-        case 'play':
-          handlePlay();
-          break;
-        case 'pause':
-          handlePause();
-          break;
-        case 'rewind':
-          handleRewind();
-          break;
-        case 'record':
-          console.log('yooo');
-          handleStart();
-          break;
-        default:
-          break;
-      }
-    } else {
-      switch (call) {
-        case 'play':
-          handlePlay();
-          break;
-        case 'pause':
-          handleStop();
-          break;
-        case 'rewind':
-          handleRewind();
-          break;
-        case 'record':
-          console.log('yooo');
-          handleStart();
-          break;
-        default:
-          break;
-      }
+    switch (call) {
+      case 'play':
+        handlePlay();
+        break;
+      case 'pause':
+        handlePause();
+        break;
+      case 'rewind':
+        handleRewind();
+        break;
+      case 'record':
+        handleStart();
+        break;
+      case 'recPause':
+        pauseRecording();
+        break;
+      case 'recResume':
+        resumeRecording();
+        break;
+      case 'recStop':
+        handleStop();
+        break;
+      default:
+        break;
     }
   }, [call]);
   return (
@@ -170,7 +167,7 @@ const AudioWaveForm = (props) => {
           <>
             <div className="w-full">
               <div id="waveform" ref={waveformRef} />
-              <p>yoooo</p>
+              <p>Audio available</p>
             </div>
             {show
             && (
@@ -207,4 +204,6 @@ AudioWaveForm.propTypes = {
   barRadius: PropTypes.number,
   url: PropTypes.string,
   show: PropTypes.bool,
+  volume: PropTypes.any,
+  speed: PropTypes.any,
 };

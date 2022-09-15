@@ -153,6 +153,7 @@
 		"react": "^17.0.2",
 		"react-dom": "^17.0.2",
 		"react-i18next": "^11.17.1",
+		"react-media-recorder": "^1.6.6",
 		"tc-ui-toolkit": "^5.3.3",
 		"translation-helps-rcl": "^3.3.0",
 		"usfm-editor": "0.8.7",

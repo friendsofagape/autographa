@@ -253,11 +253,11 @@ languageId,
               data={bookData}
               versepath={mp3Path}
               verse={verse}
-              goToVerse={{
-                chapter: parseInt(chapter, 10),
-                verse: parseInt(verse, 10),
-                key: Date.now(),
-            }}
+            //   goToVerse={{
+            //     chapter: parseInt(chapter, 10),
+            //     verse: parseInt(verse, 10),
+            //     key: Date.now(),
+            // }}
             />
           ) : (
             displyScreen === true ? (

@@ -3,13 +3,8 @@ import PropTypes from 'prop-types';
 
 const AudioWaveform = dynamic(() => import('./WaveForm'), { ssr: false });
 
-export default function ReferenceSelector({ data, versepath }) {
-  // eslint-disable-next-line no-console
-  console.log('data', data);
-  const path = require('path');
+export default function ReferenceSelector({ data, versepath, verse }) {
   return (
-
-    // <div className="grid grid-cols-7 h-audio-editor">
     <div className="bg-white col-span-3 m-3 rounded-md shadow overflow-hidden">
       <div className="px-3 py-2 rounded-md shadow overflow-y-auto h-full no-scrollbars">
         {data?.map((story) => (
@@ -17,7 +12,7 @@ export default function ReferenceSelector({ data, versepath }) {
           && (
           <div
             key={story.verseNumber}
-            className="mb-2 p-2 px-3 bg-gray-100 border border-gray-200 justify-center items-start rounded-md"
+            className={`mb-2 p-2 px-3 ${story.verseNumber === verse ? 'bg-light' : 'bg-gray-100'} border border-gray-200 justify-center items-start rounded-md`}
           >
             <div className="flex gap-2">
               <div>
@@ -33,7 +28,8 @@ export default function ReferenceSelector({ data, versepath }) {
               <AudioWaveform
                 height={24}
                 waveColor="#333333"
-                url={story.audio ? path.join(versepath, story.audio) : ''}
+                url={story.audio}
+                // url={story.audio ? path.join(versepath, story.audio) : ''}
                 show
               />
             </div>
@@ -47,6 +43,7 @@ export default function ReferenceSelector({ data, versepath }) {
 ReferenceSelector.propTypes = {
   data: PropTypes.array,
   versepath: PropTypes.string,
+  verse: PropTypes.number,
 };
 // Expected the structure of data should be -
 // [
