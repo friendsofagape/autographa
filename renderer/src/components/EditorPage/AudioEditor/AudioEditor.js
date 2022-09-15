@@ -3,11 +3,7 @@
 import {
   useState, useEffect, useContext, useRef, useCallback,
  } from 'react';
- import {
-  TrashIcon, MicrophoneIcon, VolumeUpIcon, StopIcon,
- } from '@heroicons/react/outline';
 import Editor from '@/modules/editor/Editor';
-import { AudioEditorPane } from '@/components/AudioRecorder/components/AudioEditorPane';
 import { isElectron } from '@/core/handleElectron';
 import { readRefMeta } from '@/core/reference/readRefMeta';
 import { readRefBurrito } from '@/core/reference/readRefBurrito';
@@ -142,20 +138,21 @@ const AudioEditor = () => {
                                       Object.entries(bookContent[key].contents).forEach(
                                         ([v]) => {
                                           if (bookContent[key].contents[v].verseNumber === verseNum[1]) {
-                                            const url = 'https://www.mfiles.co.uk/mp3-downloads/brahms-st-anthony-chorale-theme-two-pianos.mp3';
+                                            // const url = 'https://www.mfiles.co.uk/mp3-downloads/brahms-st-anthony-chorale-theme-two-pianos.mp3';
                                             if (verseNum[2]) {
                                               const take = `take${verseNum[2]}`;
-                                              bookContent[key].contents[v][take] = url;
+                                              // Replacing url with verse, url is used for development purpose
+                                              bookContent[key].contents[v][take] = verse;
                                               if (verseNum[3] === 'default') {
                                                 bookContent[key].contents[v].default = take;
                                               }
                                             } else {
+                                              // If found only one audio for the verse then making that audio as default one.
                                               // replace url with `${chapter}_${verseNum[1]}_1_default.mp3`
-                                              bookContent[key].contents[v].take1 = url;
+                                              bookContent[key].contents[v].take1 = `${chapter}_${verseNum[1]}_1_default.mp3`;
                                               bookContent[key].contents[v].default = 'take1';
                                               fs.renameSync(path.join(filePath, chapterNum, verse), path.join(filePath, chapterNum, `${chapter}_${verseNum[1]}_1_default.mp3`));
                                             }
-                                            // bookContent[key].contents[v].audio = verse;
                                           }
                                         },
                                       );

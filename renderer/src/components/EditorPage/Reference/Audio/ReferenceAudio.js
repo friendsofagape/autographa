@@ -1,5 +1,4 @@
 /* eslint-disable no-unused-vars */
-/* eslint-disable no-console */
 /* eslint-disable no-nested-ternary */
 import React, {
   useContext, useEffect, useState,
@@ -18,23 +17,14 @@ import ReferenceSelector from '@/components/AudioRecorder/components/ReferenceSe
 import { isElectron } from '../../../../core/handleElectron';
 
 const grammar = require('usfm-grammar');
-// General scroll to element function
 
 const ReferenceAudio = ({
-languageId,
-refName,
-chapter,
-verse,
-bookId,
+  languageId,
+  refName,
+  chapter,
+  verse,
+  bookId,
 }) => {
-  console.log(
-    'filePath',
-languageId,
-    refName,
-    chapter,
-    verse,
-    bookId,
-);
   const {
     actions: {
       setRefernceLoading,
@@ -55,7 +45,7 @@ languageId,
       // setActiveNotificationCount,
     },
   } = useContext(AutographaContext);
-  // const regExp = /\(([^)]+)\)/;
+
   const [bookData, setBookData] = useState();
   const [mp3Path, setMp3Path] = useState();
   const [isLoading, setIsLoading] = useState(false);
@@ -76,7 +66,6 @@ languageId,
       setIsLoading(true);
       setDisplayScreen(false);
       setBookData();
-      console.log(bookId, refName);
       const fs = window.require('fs');
       const path = require('path');
       const newpath = localStorage.getItem('userPath');
@@ -87,19 +76,14 @@ languageId,
           setIsLoading(true);
           const _books = [];
           setDisplayScreen(false);
-          console.log(ref.value.identification.name.en === refName, ref.value.identification.name.en, '===', refName);
           // Fetching the selected reference project
           if (ref.value.identification.name.en === refName) {
-            console.log('In');
             Object.entries(ref.value.type.flavorType.currentScope).forEach(
               ([_bookID, _ingredients]) => {
-              console.log(_bookID, _ingredients);
               _books.push(_bookID);
               // Selected book is available in Project or not
               if (_bookID === bookId.toUpperCase() && refName !== null) {
-                // const folderPath = path.join(newpath, 'autographa', 'users', username, 'resources', refName, 'audio', 'ingredients');
                 const folderPath = path.join(newpath, 'autographa', 'users', username, 'resources', refName);
-                console.log('filePath', folderPath);
                 let bookContent = [];
                 const exist = fs.existsSync(path.join(folderPath, 'text-1', 'ingredients', `${bookId.toUpperCase()}.usfm`));
                 // The project has any textTranslation data or not
@@ -109,24 +93,19 @@ languageId,
                   const isJsonValid = myUsfmParser.validate();
                   if (isJsonValid) {
                     const jsonOutput = myUsfmParser.toJSON();
-                    console.log('jsonOutput', jsonOutput.chapters);
                     // Storing the chapters data in a array
                     bookContent = jsonOutput.chapters;
-                    // files.push({ id: jsonOutput.book.bookCode, content: usfm });
                   } else {
                     setNotify('failure');
                     setSnackText(t('dynamic-msg-invalid-usfm-file'));
                     setOpenSnackBar(true);
                   }
                 } else {
-                  console.log('versi1', bookId);
                   // Since this project doesn't have text data, we will create a JSON using the versification scheme
                   const value = fs.readFileSync(path.join(folderPath, 'audio', 'ingredients', 'versification.json'), 'utf8');
-                  console.log(value);
                   if (value) {
                     const file = JSON.parse(value);
                     const list = file.maxVerses;
-                    console.log(list, bookId.toUpperCase());
                     if (list[bookId.toUpperCase()]) {
                       (list[bookId.toUpperCase()]).forEach((verse, c) => {
                         let contents = [];
@@ -149,24 +128,17 @@ languageId,
                 }
                 // Getting the list of folders
                 const folders = fs.readdirSync(path.join(folderPath, 'audio', 'ingredients'));
-                console.log(folders);
                 folders.forEach((folder) => {
-                  console.log(folder);
                   // Checking whether the audio is available for the selected book
                   const re = new RegExp(bookId, 'gi');
                   const arr = folder.match(re);
                   if (arr) {
-                    console.log('mat', arr);
                     const filePath = path.join(folderPath, 'audio', 'ingredients', arr[0]);
                     const folderName = fs.readdirSync(filePath);
-                    console.log(folderName, chapter);
                     folderName.forEach((chapterNum) => {
-                      console.log(chapterNum === chapter);
                       if (chapterNum === chapter) {
                         const chapters = fs.readdirSync(path.join(filePath, chapterNum));
-                        console.log(chapters);
                         chapters.forEach((verse) => {
-                          console.log(verse, chapter);
                           // const regex = new RegExp(`${chapter}_(d+)(.*)`, 'g');
                           const url = path.parse(verse).name;
                           const verseNum = url.split('_');
@@ -176,9 +148,10 @@ languageId,
                                 Object.entries(bookContent[key].contents).forEach(
                                   ([v]) => {
                                     if (bookContent[key].contents[v].verseNumber === verseNum[1]) {
-                                      const url = 'https://www.mfiles.co.uk/mp3-downloads/brahms-st-anthony-chorale-theme-two-pianos.mp3';
-                                      bookContent[key].contents[v].audio = url;
-                                      // bookContent[key].contents[v].audio = verse;
+                                      // Below 2 lines are for development purpose
+                                      // const url = 'https://www.mfiles.co.uk/mp3-downloads/brahms-st-anthony-chorale-theme-two-pianos.mp3';
+                                      // bookContent[key].contents[v].audio = url;
+                                      bookContent[key].contents[v].audio = verse;
                                     }
                                   },
                                 );

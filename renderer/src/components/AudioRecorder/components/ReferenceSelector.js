@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 const AudioWaveform = dynamic(() => import('./WaveForm'), { ssr: false });
 
 export default function ReferenceSelector({ data, versepath, verse }) {
+  const path = require('path');
   return (
     <div className="bg-white col-span-3 m-3 rounded-md shadow overflow-hidden">
       <div className="px-3 py-2 rounded-md shadow overflow-y-auto h-full no-scrollbars">
@@ -28,8 +29,8 @@ export default function ReferenceSelector({ data, versepath, verse }) {
               <AudioWaveform
                 height={24}
                 waveColor="#333333"
-                url={story.audio}
-                // url={story.audio ? path.join(versepath, story.audio) : ''}
+                // url={story.audio} for development
+                url={story.audio ? path.join(versepath, story.audio) : ''}
                 show
               />
             </div>
