@@ -49,6 +49,7 @@ export default function ReferenceContextProvider({ children }) {
     const [selectedStory, setSelectedStory] = useState();
     const [taNavigationPath, setTaNavigationPath] = useState('');
     const [audioContent, setAudioContent] = useState();
+    const [audioPath, setAudioPath] = useState();
     // Trigger the function after every recording and default change
     const [audioCurrentChapter, setAudioCurrentChapter] = useState();
     const handleClick = (event) => {
@@ -259,6 +260,7 @@ export default function ReferenceContextProvider({ children }) {
         taNavigationPath,
         audioContent,
         audioCurrentChapter,
+        audioPath,
       },
       actions: {
         setLanguageId,
@@ -299,6 +301,7 @@ export default function ReferenceContextProvider({ children }) {
         setTaNavigationPath,
         setAudioContent,
         setAudioCurrentChapter,
+        setAudioPath,
       },
     };
 

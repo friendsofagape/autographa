@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react-hooks/exhaustive-deps */
 import {
- useEffect, forwardRef, useRef, useState,
+  useEffect, forwardRef, useRef, useState,
 } from 'react';
 import PropTypes from 'prop-types';
 import WaveSurfer from 'wavesurfer.js';
@@ -60,7 +60,7 @@ const AudioWaveForm = (props) => {
     wavesurfer.current = WaveSurfer.create(options);
 
     wavesurfer.current?.load(url || 'temp.mp3');
-    wavesurfer.current?.setVolume(volume);
+    // wavesurfer.current?.setVolume(volume);
     wavesurfer.current?.setPlaybackRate(speed);
     wavesurfer.current?.microphone.on('deviceReady', (stream) => {
       // eslint-disable-next-line no-console
@@ -97,10 +97,10 @@ const AudioWaveForm = (props) => {
     }
   }, [call]);
   useEffect(() => {
-    if (volume && wavesurfer.current) {
+    if (volume && wavesurfer.current && url) {
       wavesurfer.current?.setVolume(volume);
     }
-    if (speed && wavesurfer.current) {
+    if (speed && wavesurfer.current && url) {
       wavesurfer.current?.setPlaybackRate(speed);
     }
   }, [volume, speed]);
@@ -110,15 +110,19 @@ const AudioWaveForm = (props) => {
     wavesurfer.current?.playPause();
   };
   const handleRewind = () => {
-    wavesurfer.current?.stop();
+    if (url) {
+      wavesurfer.current?.stop();
+    }
   };
   const handlePlay = () => {
-    setPlaying(!playing);
-    wavesurfer.current?.play();
+    if (url) {
+      wavesurfer.current?.play();
+    }
   };
   const handlePause = () => {
-    setPlaying(!playing);
-    wavesurfer.current?.pause();
+    if (url) {
+      wavesurfer.current?.pause();
+    }
   };
   const handleStart = () => {
     startRecording();

@@ -21,7 +21,6 @@ const AudioEditor = () => {
   const [snackText, setSnackText] = useState('');
   const [notify, setNotify] = useState();
   const [displyScreen, setDisplayScreen] = useState(false);
-  const [mp3Path, setMp3Path] = useState();
   const { t } = useTranslation();
   const {
     state: {
@@ -31,6 +30,7 @@ const AudioEditor = () => {
       myEditorRef,
       isLoading,
       audioContent,
+      audioPath,
     }, actions: {
       onChangeBook,
       onChangeChapter,
@@ -40,6 +40,7 @@ const AudioEditor = () => {
       goToChapter,
       setAudioContent,
       setAudioCurrentChapter,
+      setAudioPath,
     },
   } = useContext(ReferenceContext);
 
@@ -48,6 +49,7 @@ const AudioEditor = () => {
       setIsLoading(true);
       setDisplayScreen(false);
       setAudioCurrentChapter();
+      setAudioPath();
       getDetails()
       .then(({
         projectName, username, projectsDir, metaPath,
@@ -115,6 +117,9 @@ const AudioEditor = () => {
                         });
                       }
 
+                      if (!fs.existsSync(path.join(projectsDir, 'audio', 'ingredients', bookId.toUpperCase()))) {
+                        fs.mkdirSync(path.join(projectsDir, 'audio', 'ingredients', bookId.toUpperCase()));
+                      }
                       // Getting the list of folders
                       const folders = fs.readdirSync(path.join(projectsDir, 'audio', 'ingredients'));
                       folders.forEach((folder) => {
@@ -123,6 +128,9 @@ const AudioEditor = () => {
                         const arr = folder.match(re);
                         if (arr) {
                           const filePath = path.join(projectsDir, 'audio', 'ingredients', arr[0]);
+                          if (!fs.existsSync(path.join(filePath, chapter))) {
+                            fs.mkdirSync(path.join(filePath, chapter));
+                          }
                           const folderName = fs.readdirSync(filePath);
                           folderName.forEach((chapterNum) => {
                             if (chapterNum === chapter) {
@@ -160,7 +168,7 @@ const AudioEditor = () => {
                                   },
                                 );
                               });
-                              setMp3Path(path.join(filePath, chapterNum));
+                              setAudioPath(path.join(filePath, chapterNum));
                             }
                           });
                         }
@@ -195,7 +203,7 @@ const AudioEditor = () => {
   return (
     <Editor callFrom="textTranslation">
       {audioContent
-      && <EditorPage content={audioContent} onChangeVerse={onChangeVerse} verse={verse} location={mp3Path} />}
+      && <EditorPage content={audioContent} onChangeVerse={onChangeVerse} verse={verse} location={audioPath} />}
       <SnackBar
         openSnackBar={snackBar}
         snackText={snackText}

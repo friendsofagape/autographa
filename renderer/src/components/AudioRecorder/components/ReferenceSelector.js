@@ -44,7 +44,7 @@ export default function ReferenceSelector({ data, versepath, verse }) {
 ReferenceSelector.propTypes = {
   data: PropTypes.array,
   versepath: PropTypes.string,
-  verse: PropTypes.number,
+  verse: PropTypes.string,
 };
 // Expected the structure of data should be -
 // [

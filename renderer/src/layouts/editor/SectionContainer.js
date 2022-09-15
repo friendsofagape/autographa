@@ -3,12 +3,15 @@ import dynamic from 'next/dynamic';
 import localforage from 'localforage';
 import ObsEditor from '@/components/EditorPage/ObsEditor/ObsEditor';
 import AudioEditor from '@/components/EditorPage/AudioEditor/AudioEditor';
-import MainPlayer from '@/components/EditorPage/AudioEditor/MainPlayer';
 import SectionPlaceholder1 from './SectionPlaceholder1';
 import SectionPlaceholder2 from './SectionPlaceholder2';
 
 const UsfmEditor = dynamic(
   () => import('@/components/EditorPage/UsfmEditor/UsfmEditor'),
+  { ssr: false },
+);
+const MainPlayer = dynamic(
+  () => import('@/components/EditorPage/AudioEditor/MainPlayer'),
   { ssr: false },
 );
 const SectionContainer = () => {

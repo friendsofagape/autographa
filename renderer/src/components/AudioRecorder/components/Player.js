@@ -45,10 +45,12 @@ const Player = ({
   setOpenModal,
   trigger,
   setTrigger,
+  location,
 }) => {
   const [volume, setVolume] = useState(0.5);
   const [currentSpeed, setCurrentSpeed] = useState(1);
   const speed = [0.5, 1, 1.5, 2];
+  const path = require('path');
   const handleRecord = () => {
     // check whether its a first record or re-recording
     if (url[take]) {
@@ -74,6 +76,10 @@ const Player = ({
       });
       setTrigger('delete');
     }
+  };
+  const changeTake = (value) => {
+    setTake(value);
+    setTrigger();
   };
   return (
     <div className="col-span-7 lg:h-52 bg-black text-white">
@@ -294,13 +300,13 @@ const Player = ({
             Takes
           </div>
           <div className="flex gap-2">
-            <button className={`${take === 'take1' ? 'border-2 border-yellow-400' : ''} w-6 h-6 flex items-center justify-center ${url?.take1 ? (url?.default === 'take1' ? 'bg-primary' : 'bg-success') : 'bg-white'} text-xs font-bold ${url?.take1 ? 'text-white' : 'text-black'} uppercase tracking-wider rounded-full`} onClick={() => setTake('take1')} onDoubleClick={() => changeDefault(1)}>
+            <button className={`${take === 'take1' ? 'border-2 border-yellow-400' : ''} w-6 h-6 flex items-center justify-center ${url?.take1 ? (url?.default === 'take1' ? 'bg-primary' : 'bg-success') : 'bg-white'} text-xs font-bold ${url?.take1 ? 'text-white' : 'text-black'} uppercase tracking-wider rounded-full`} onClick={() => changeTake('take1')} onDoubleClick={() => changeDefault(1)}>
               a
             </button>
-            <button className={`${take === 'take2' ? 'border-2 border-yellow-400' : ''} w-6 h-6 flex items-center justify-center ${url?.take2 ? (url?.default === 'take2' ? 'bg-primary' : 'bg-success') : 'bg-white'} text-xs font-bold ${url?.take2 ? 'text-white' : 'text-black'} uppercase tracking-wider rounded-full`} onClick={() => setTake('take2')} onDoubleClick={() => changeDefault(2)}>
+            <button className={`${take === 'take2' ? 'border-2 border-yellow-400' : ''} w-6 h-6 flex items-center justify-center ${url?.take2 ? (url?.default === 'take2' ? 'bg-primary' : 'bg-success') : 'bg-white'} text-xs font-bold ${url?.take2 ? 'text-white' : 'text-black'} uppercase tracking-wider rounded-full`} onClick={() => changeTake('take2')} onDoubleClick={() => changeDefault(2)}>
               b
             </button>
-            <button className={`${take === 'take3' ? 'border-2 border-yellow-400' : ''} w-6 h-6 flex items-center justify-center ${url?.take3 ? (url?.default === 'take3' ? 'bg-primary' : 'bg-success') : 'bg-white'} text-xs font-bold ${url?.take3 ? 'text-white' : 'text-black'} uppercase tracking-wider rounded-full`} onClick={() => setTake('take3')} onDoubleClick={() => changeDefault(3)}>
+            <button className={`${take === 'take3' ? 'border-2 border-yellow-400' : ''} w-6 h-6 flex items-center justify-center ${url?.take3 ? (url?.default === 'take3' ? 'bg-primary' : 'bg-success') : 'bg-white'} text-xs font-bold ${url?.take3 ? 'text-white' : 'text-black'} uppercase tracking-wider rounded-full`} onClick={() => changeTake('take3')} onDoubleClick={() => changeDefault(3)}>
               c
             </button>
           </div>
@@ -331,7 +337,7 @@ const Player = ({
           barWidth="2"
           waveColor="#ffffff"
           btnColor="text-white"
-          url={take ? url[take] : url[url?.default]}
+          url={(location && Object.keys(url).length !== 0) && (take ? (url[take] ? path.join(location, url[take]) : '') : path.join(location, url[url?.default]))}
           call={trigger}
           startRecording={startRecording}
           stopRecording={stopRecording}
@@ -358,4 +364,5 @@ Player.propTypes = {
   setOpenModal: PropTypes.func,
   trigger: PropTypes.string,
   setTrigger: PropTypes.any,
+  location: PropTypes.any,
 };

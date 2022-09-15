@@ -7,7 +7,7 @@ import {
 import { useReactMediaRecorder } from 'react-media-recorder';
 import ConfirmationModal from '@/layouts/editor/ConfirmationModal';
 import { getDetails } from '../ObsEditor/ObsEditor';
-// import MicrophonePlugin from 'wavesurfer.js/dist/plugin/wavesurfer.microphone.js';
+
 const MainPlayer = () => {
   const {
     state: {
@@ -16,6 +16,7 @@ const MainPlayer = () => {
       verse,
       audioContent,
       audioCurrentChapter,
+      audioPath,
     }, actions: {
       setAudioContent,
     },
@@ -65,11 +66,11 @@ const MainPlayer = () => {
               Object.entries(audioCurrentChapter.bookContent[key].contents).forEach(
                 ([v]) => {
                   if (audioCurrentChapter.bookContent[key].contents[v].verseNumber === verseNum[1]) {
-                    const url = 'https://www.mfiles.co.uk/mp3-downloads/brahms-st-anthony-chorale-theme-two-pianos.mp3';
+                    // const url = 'https://www.mfiles.co.uk/mp3-downloads/brahms-st-anthony-chorale-theme-two-pianos.mp3';
                     if (verseNum[2]) {
                       const take = `take${verseNum[2]}`;
                       // replace url with verse
-                      audioCurrentChapter.bookContent[key].contents[v][take] = url;
+                      audioCurrentChapter.bookContent[key].contents[v][take] = verse;
                       if (verseNum[3] === 'default') {
                         audioCurrentChapter.bookContent[key].contents[v].default = take;
                       }
@@ -163,7 +164,7 @@ const MainPlayer = () => {
   };
   const playRecordingFeedback = useCallback(
     async (blobUrl, blob) => {
-      setCurrentUrl(blobUrl);
+      // setCurrentUrl(blobUrl);
       setAudioBlob(blob);
     },
     [],
@@ -226,6 +227,7 @@ const MainPlayer = () => {
   useEffect(() => {
     if (audioContent?.length > 0) {
       fetchUrl();
+      setTrigger();
     }
   }, [audioContent, bookId, verse, chapter]);
 
@@ -243,6 +245,7 @@ const MainPlayer = () => {
         trigger={trigger}
         setTrigger={(v) => setTrigger(v)}
         setOpenModal={(v) => setModel(v)}
+        location={audioPath || ''}
       />
       <ConfirmationModal
         openModal={model.openModel}
