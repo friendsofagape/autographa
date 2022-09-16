@@ -12,6 +12,8 @@ import { readFile } from '@/core/editor/readFile';
 import EditorPage from '@/components/AudioRecorder/components/EditorPage';
 import { SnackBar } from '@/components/SnackBar';
 import { useTranslation } from 'react-i18next';
+import EmptyScreen from '@/components/Loading/EmptySrceen';
+import LoadingScreen from '@/components/Loading/LoadingScreen';
 import { getDetails } from '../ObsEditor/ObsEditor';
 
 const grammar = require('usfm-grammar');
@@ -64,9 +66,11 @@ const AudioEditor = () => {
             }).then((data) => {
               if (data) {
                 const _data = JSON.parse(data);
+                const _books = [];
                 Object.entries(_data.type.flavorType.currentScope).forEach(
                   async ([key]) => {
                     if (key === bookId.toUpperCase()) {
+                      _books.push(bookId.toUpperCase());
                       const fs = window.require('fs');
                       const path = require('path');
                       let bookContent = [];
@@ -187,11 +191,17 @@ const AudioEditor = () => {
                           setSnackText(t('dynamic-msg-load-ref-bible-snack', { projectName }));
                           setNotify('success');
                           setDisplayScreen(false);
+                        } else {
+                          setDisplayScreen(true);
                         }
                       });
                     }
                   },
                 );
+                if (_books.includes(bookId.toUpperCase()) === false) {
+                  setAudioContent();
+                  setDisplayScreen(true);
+                }
               }
             });
           });
@@ -202,7 +212,9 @@ const AudioEditor = () => {
   }, [bookId, chapter]);
   return (
     <Editor callFrom="textTranslation">
-      {audioContent
+      {((isLoading || !audioContent) && displyScreen) && <EmptyScreen />}
+      {isLoading && !displyScreen && <LoadingScreen /> }
+      {audioContent && isLoading === false
       && <EditorPage content={audioContent} onChangeVerse={onChangeVerse} verse={verse} location={audioPath} />}
       <SnackBar
         openSnackBar={snackBar}

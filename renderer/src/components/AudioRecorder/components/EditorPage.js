@@ -65,7 +65,7 @@ const EditorPage = ({
                 height={24}
                 waveColor="#333333"
                 // url={mainChunk[mainChunk.default]} for development
-                url={mainChunk[mainChunk.default] ? path.join(location, mainChunk[mainChunk.default]) : ''}
+                url={location && (mainChunk[mainChunk.default] ? path.join(location, mainChunk[mainChunk.default]) : '')}
                 show={false}
               />
             </div>
