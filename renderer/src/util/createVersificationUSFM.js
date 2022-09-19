@@ -150,6 +150,7 @@ export const createVersificationUSFM = (
               bookMarks: [],
             },
           },
+          sync: { services: { door43: [] } },
         };
         logger.debug('createVersificationUSFM.js', 'Creating ag-settings.json file in ingredients');
         await fs.writeFileSync(path.join(folder, 'ag-settings.json'), JSON.stringify(settings));

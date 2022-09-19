@@ -184,6 +184,7 @@ export const createObsContent = (
           bookMarks: call === 'edit' ? currentBurrito.project.textStories.bookMarks : [],
         },
       },
+      sync: { services: { door43: [] } },
     };
     logger.debug('createObsContent.js', 'Creating ag-settings.json file in content');
     if (!fs.existsSync(folder)) {

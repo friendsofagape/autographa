@@ -5,6 +5,7 @@ import * as localforage from 'localforage';
 import { isElectron } from '../../core/handleElectron';
 import * as logger from '../../logger';
 import saveProjectsMeta from '../../core/projects/saveProjetcsMeta';
+import { environment } from '../../../environment';
 
 const path = require('path');
 const advanceSettings = require('../../lib/AdvanceSettings.json');
@@ -52,7 +53,7 @@ const ProjectContextProvider = ({ children }) => {
       }));
       setLanguages(advanceSettings.languages);
       const json = {
-        version: '1.1',
+        version: environment.AG_USER_SETTING_VERSION,
         history: {
           copyright: [{
             id: 'Other', title: 'Custom', licence: '', locked: false,
@@ -76,6 +77,7 @@ const ProjectContextProvider = ({ children }) => {
             obsTranslationNotes: [],
           },
         },
+        sync: { services: { door43: [] } },
       };
       logger.debug('ProjectContext.js', 'Creating a ag-user-settings.json file');
       fs.writeFileSync(file, JSON.stringify(json));
@@ -99,7 +101,7 @@ const ProjectContextProvider = ({ children }) => {
         fs.readFile(file, (err, data) => {
           logger.debug('ProjectContext.js', 'Successfully read the data from file');
           const json = JSON.parse(data);
-          if (json.version === '1.1') {
+          if (json.version === environment.AG_USER_SETTING_VERSION) {
             // Checking whether any custom copyright id available (as expected else will
             // create a new one) or not
             if (json.history?.copyright) {
@@ -169,6 +171,8 @@ const ProjectContextProvider = ({ children }) => {
                 // updating the canon
                 (json.history[currentSettings]).push(currentSetting);
               }
+            json.version = environment.AG_USER_SETTING_VERSION;
+            json.sync.services.door43 = json?.sync?.services?.door43 ? json?.sync?.services?.door43 : [];
             logger.debug('ProjectContext.js', 'Upadting the settings in existing file');
             fs.writeFileSync(file, JSON.stringify(json));
             logger.debug('ProjectContext.js', 'Loading new settings from file');
