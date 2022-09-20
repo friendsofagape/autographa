@@ -1,5 +1,6 @@
 import localforage from 'localforage';
 import * as logger from '../../logger';
+import { environment } from '../../../environment';
 
 export const updateAgSettings = async (username, projectName, data) => {
   logger.debug('updateAgSettings.js', 'In updateAgSettings');
@@ -12,6 +13,14 @@ export const updateAgSettings = async (username, projectName, data) => {
   const folder = path.join(newpath, 'autographa', 'users', username, 'projects', projectName, dirName);
   const settings = await fs.readFileSync(path.join(folder, 'ag-settings.json'), 'utf8');
   const setting = JSON.parse(settings);
+  if (settings.version !== environment.AG_SETTING_VERSION) {
+    setting.version = environment.AG_SETTING_VERSION;
+    if (!setting.sync && !setting.sync?.services) {
+      setting.sync = { services: { door43: [] } };
+    } else {
+    setting.sync.services.door43 = setting?.sync?.services?.door43 ? setting?.sync?.services?.door43 : [];
+  }
+}
   setting.project[data.type.flavorType.flavor.name] = data.project[data.type.flavorType.flavor.name];
   logger.debug('updateAgSettings.js', 'Updating the ag-settings.json');
   await fs.writeFileSync(path.join(folder, 'ag-settings.json'), JSON.stringify(setting));

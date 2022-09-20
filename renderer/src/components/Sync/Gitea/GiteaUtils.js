@@ -1,10 +1,10 @@
-/* eslint-disable */ 
+/* eslint-disable */
 import moment from 'moment';
 import { v5 as uuidv5 } from 'uuid';
 import { updateVersion } from '@/core/burrito/updateTranslationSB';
 import * as localForage from 'localforage';
 import {
-    readContent,
+    readContent, createRepository,createContent, updateContent,
   } from 'gitea-react-toolkit';
 import * as logger from '../../../logger';
 import { environment } from '../../../../environment';
@@ -12,7 +12,8 @@ import { environment } from '../../../../environment';
 const md5 = require('md5');
 const path = require('path');
 
-export const importServerProject = async (updateBurrito, repo, sbData, auth, userBranch, action) => {
+// import gitea project to local
+export const importServerProject = async (updateBurrito, repo, sbData, auth, userBranch, action, ignoreFilesPaths=[]) => {
     logger.debug('GiteaUtils.js', 'Inside Import Project');
     // console.log('inside server project import');
     await localForage.getItem('userProfile').then(async (user) => {
@@ -20,6 +21,7 @@ export const importServerProject = async (updateBurrito, repo, sbData, auth, use
     const fs = window.require('fs');
     const newpath = localStorage.getItem('userPath');
     let sbDataObject = sbData;
+    console.log("sbdataObje : ", sbDataObject);
     const projectDir = path.join(newpath, 'autographa', 'users', currentUser, 'projects');
     fs.mkdirSync(projectDir, { recursive: true });
     if (!sbData?.meta?.dateCreated) {
@@ -100,10 +102,11 @@ export const importServerProject = async (updateBurrito, repo, sbData, auth, use
     logger.debug('dropzone giteaUtils import.js', 'Creating a directory if not exists.');
 
     // fetch and add ingredients
-    action.setUploadstart(true);
+    action?.setUploadstart(true);
     for (const key in sbDataObject.ingredients) {
-        action.setTotalUploaded((prev) => prev + 1);
+        action?.setTotalUploaded((prev) => prev + 1);
         // console.log(key);
+        if (!ignoreFilesPaths.includes(key)) {
         await readContent(
             {
               config: auth.config,
@@ -130,7 +133,8 @@ export const importServerProject = async (updateBurrito, repo, sbData, auth, use
             } else {
               logger.debug('dropzone giteaUtils import.js', `Error in read ${key} from Server `);
             }
-          })
+          });
+        }
       }
     // check md5 values
     Object.entries(sbDataObject.ingredients).forEach(([key, value]) => {
@@ -165,6 +169,7 @@ export const importServerProject = async (updateBurrito, repo, sbData, auth, use
               bookMarks: [],
             },
           },
+          sync : { services: { door43 : [] } },
         };
         logger.debug('dropzone giteaUtils import.js', 'Creating the ag-settings.json file.');
         await fs.writeFileSync(path.join(projectDir, `${projectName}_${id}`, dirName, 'ag-settings.json'), JSON.stringify(settings));
@@ -192,6 +197,7 @@ export const importServerProject = async (updateBurrito, repo, sbData, auth, use
           setting.project[sbDataObject.type.flavorType.flavor.name].copyright = settings.project[sbDataObject.type.flavorType.flavor.name]?.copyright ? settings.project[sbDataObject.type.flavorType.flavor.name]?.copyright : { title: 'Custom' };
           setting.project[sbDataObject.type.flavorType.flavor.name].refResources = settings.project[sbDataObject.type.flavorType.flavor.name]?.refResources ? settings.project[sbDataObject.type.flavorType.flavor.name]?.refResources : [];
           setting.project[sbDataObject.type.flavorType.flavor.name].bookMarks = settings.project[sbDataObject.type.flavorType.flavor.name]?.bookMarks ? settings.project[sbDataObject.type.flavorType.flavor.name]?.bookMarks : [];
+          setting.sync.services.door43 = setting?.sync?.services?.door43 ? setting?.sync?.services?.door43 : [];
           settings = setting;
         }
         settings.project[sbDataObject.type.flavorType.flavor.name].lastSeen = moment().format();
@@ -222,7 +228,207 @@ export const importServerProject = async (updateBurrito, repo, sbData, auth, use
     }
     await fs.writeFileSync(path.join(projectDir, `${projectName}_${id}`, 'metadata.json'), JSON.stringify(sbDataObject));
     logger.debug('importBurrito.js', 'Creating the metadata.json Burrito file.');
-    action.setUploadstart(false);
+    action?.setUploadstart(false);
     console.log('finished import project');
     });
 };
+
+// sync profile updation
+export const createSyncProfile = async (auth) => {
+  // console.log("use Effect called auth changes : ", auth);
+  const fs = window.require('fs');
+  const path = require('path');
+  await localForage.getItem('userProfile').then((user) => {
+    const currentUser = user?.username;
+    const newpath = localStorage.getItem('userPath');
+    const file = path.join(newpath, 'autographa', 'users', currentUser, 'ag-user-settings.json');
+    if (fs.existsSync(file)) {
+      fs.readFile(file, (err, data) => {
+        if (err) {
+          logger.error('GiteaFileBrowser.js', 'Failed to read the data from file');
+        } else {
+        logger.debug('GiteaFileBrowser.js', 'Successfully read the data from file');
+        const json = JSON.parse(data);
+        // console.log("user json : ",json);
+        if (!json.sync && !json.sync?.services) {
+          // first time sync
+          json.sync = {
+            services: {
+              door43: [
+                {
+                  token: '',
+                  expired: false,
+                  default: false,
+                  username: auth?.user?.username,
+                  dateCreated: moment().format(),
+                  dateModified: null,
+                },
+              ],
+            },
+          };
+        } else if (!json.sync?.services?.door43?.some((element) => element.username === auth?.user?.username)) {
+            // user not in list create new entry
+            json.sync?.services?.door43?.push(
+              {
+                token: '',
+                expired: false,
+                default: false,
+                username: auth?.user?.username,
+                dateCreated: moment().format(),
+                dateModified: null,
+              },
+            );
+          }
+        // add token to file on login
+        // eslint-disable-next-line array-callback-return
+        json.sync?.services?.door43?.filter((element) => {
+            if (element.username === auth?.user?.username) {
+              element.expired = false;
+              element.dateModified = moment().format();
+              element.token = {
+                config: auth.config,
+                token: auth.token,
+                user: {
+                  email: auth.user.email,
+                  username: auth.user.username,
+                  login: auth.user.login,
+                  id: auth.user.id,
+                },
+              };
+            }
+          });
+        logger.debug('GiteaFileBrowser.js', 'Upadting the settings in existing file');
+        fs.writeFileSync(file, JSON.stringify(json));
+      }
+      });
+    }
+  });
+};
+
+// create repo for new project sync
+export const handleCreateRepo = async (repoName, auth, description) => {
+  const settings = {
+    name: repoName,
+    description: description || `${repoName}`,
+    private: false,
+  };
+  // eslint-disable-next-line no-async-promise-executor
+  return new Promise(async (resolve, reject) => {
+    await createRepository(
+      {
+        config: auth.config,
+        repo: settings?.name,
+        settings,
+      },
+    ).then((result) => {
+      logger.debug('Dropzone.js', 'call to create repo from Gitea');
+      // console.log("create repo : ", result);
+      resolve(result);
+    }).catch((err) => {
+      logger.debug('Dropzone.js', 'call to create repo from Gitea Error : ', err);
+      // console.log("create repo : ", result);
+      reject(err);
+    });
+  });
+};
+
+// upload file to gitea
+export const createFiletoServer = async (fileContent, filePath, branch, repoName, auth) => {
+  await createContent({
+    config: auth.config,
+    owner: auth.user.login,
+    // repo: repo.name,
+    repo: repoName,
+    branch: branch,
+    filepath: filePath,
+    content: fileContent,
+    message: `commit ${filePath}`,
+    author: {
+      email: auth.user.email,
+      username: auth.user.username,
+    },
+  }).then(() => {
+    logger.debug('Dropzone.js', `file uploaded to Gitea ${filePath}`);
+    // console.log('RESPONSE :', res);
+  })
+  .catch((err) => {
+    logger.debug('Dropzone.js', `failed to upload file to Gitea ${filePath} ${err}`);
+    console.log(filePath, ' : error : ', err);
+    throw {error : err};
+  });
+};
+
+// update file in gitea
+export const updateFiletoServer = async (fileContent, filePath, branch, repoName, auth) => {
+  await readContent(
+    {
+      config: auth.config,
+      owner: auth.user.login,
+      repo: repoName.toLowerCase(),
+      // ref: `${username}/${created}.1`,
+      ref: branch,
+      filepath: filePath,
+    },
+  ).then(async (result) => {
+    logger.debug('Dropzone.js', 'sending the data from Gitea with content');
+    if (result === null){
+      throw 'can not read repo'
+    }
+    await updateContent({
+      config: auth.config,
+      owner: auth.user.login,
+      repo: repoName.toLowerCase(),
+      branch: branch,
+      filepath: result.path,
+      content: fileContent,
+      message: `updated ${filePath}`,
+      author: {
+        email: auth.user.email,
+        username: auth.user.username,
+      },
+      sha: result.sha,
+    // eslint-disable-next-line no-unused-vars
+    }).then((res) => {
+      logger.debug('Dropzone.js', 'file uploaded to Gitea \'metadata.json\'');
+      // console.log('RESPONSE :', res);
+    })
+    .catch((err) => {
+      logger.debug('Dropzone.js', 'failed to upload file to Gitea \'metadata.json\'', err);
+      console.log(filePath, ' : error : ', err);
+    });
+  });
+};
+
+// upload project to a branch on exsting repo
+export const uploadProjectToBranchRepoExist = async ({repo, userProjectBranch, metaDataSbRemote, agUsername, auth, ignoreFilesPaths=[]}) => {
+  // console.log('in replace existing upload func----', repo, userProjectBranch, metaDataSbRemote, agUsername, auth);
+  logger.debug('giteaUitils.js', 'Upload project to tempory branch for merge');
+  try {
+    const newpath = localStorage.getItem('userPath');
+    const fs = window.require('fs');
+    const path = require('path');
+    const projectId = Object.keys(metaDataSbRemote.identification.primary.ag)[0];
+    const projectName = metaDataSbRemote.identification.name.en;
+    // const projectCreated = metaDataSbRemote.meta.dateCreated.split('T')[0];
+    const projectsMetaPath = path.join(newpath, 'autographa', 'users', agUsername, 'projects', `${projectName}_${projectId}`);
+    const MetadataLocal = fs.readFileSync(path.join(projectsMetaPath, 'metadata.json'));
+    const localSB = JSON.parse(MetadataLocal);
+    if (!ignoreFilesPaths.includes('metadata.json')) {
+      await createFiletoServer(JSON.stringify(MetadataLocal), 'metadata.json', `${userProjectBranch.name}-merge`, repo.name, auth)
+    }
+    const ingredientsObj = localSB.ingredients;
+    for (const key in ingredientsObj) {
+      if (Object.prototype.hasOwnProperty.call(ingredientsObj, key)) {
+        if (!ignoreFilesPaths.includes(key)){
+          const metadata1 = fs.readFileSync(path.join(projectsMetaPath, key), 'utf8');
+          await createFiletoServer(metadata1, key, `${userProjectBranch.name}-merge`, repo.name, auth);
+        }
+      }
+    }
+    logger.debug('giteaUitils.js', 'Upload project to tempory branch for merge finished');
+  }
+  catch(data){
+    logger.debug('giteaUitils.js', 'Upload project to tempory branch for merge Error' , err);
+    throw data;
+  };
+}

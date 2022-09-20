@@ -6,6 +6,8 @@ import MenuBar from '@/components/Menubar/MenuBar';
 import CustomUsfmToolbar from '@/components/EditorPage/UsfmEditor/CustomUsfmToolbar';
 import { ProjectContext } from '@/components/context/ProjectContext';
 import CustomNofications from '@/components/Notification/CustomNofications';
+// import { handleAutoSync } from '@/components/Sync/Gitea/EditorAutoSync';
+import AutoSync from '@/components/Sync/Gitea/EditorAutoSync';
 import localforage from 'localforage';
 import Font from '@/icons/font.svg';
 import ColumnsIcon from '@/icons/basil/Outline/Interface/Columns.svg';
@@ -42,6 +44,7 @@ export default function SubMenuBar() {
   const {
     states: {
       editorSave,
+      selectedProject,
     },
     actions: {
       setOpenSideBar,
@@ -231,11 +234,15 @@ export default function SubMenuBar() {
         <div className="w-2/5">
           <div className="flex justify-end">
 
+            {/* saved text and animations */}
             <div className={`group ${menuStyles.saved}`}>
               <span>
                 {editorSave}
               </span>
             </div>
+
+            {/* Auto sync button */}
+            <AutoSync selectedProject={selectedProject} />
 
             <button aria-label="add-panels" title={t('tooltip-editor-layout')} type="button" onClick={() => handleResource()} className={`group ${menuStyles.btn}`}>
               <ColumnsIcon fill="currentColor" className="h-6 w-6" aria-hidden="true" />
