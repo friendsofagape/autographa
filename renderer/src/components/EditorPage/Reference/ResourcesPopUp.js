@@ -78,6 +78,7 @@ const ResourcesPopUp = ({
   const [translationWord, setTranslationWord] = useState(translationWords);
   const [translationAcademy, setTranslationAcademy] = useState(translationAcademys);
   const [loading, setLoading] = useState(false);
+  const [resourceIconClick, setResourceIconClick] = useState(false);
   const { t } = useTranslation();
   const {
     states: {
@@ -189,7 +190,6 @@ const ResourcesPopUp = ({
 
   const openResourceDialogBox = () => {
     if (selectResource === 'bible') {
-      // console.log('bible resource add');
       logger.debug('DownloadResourcePopUp.js', 'Calling bible resource pop up');
       setIsOpenDonwloadPopUp(true);
     } else {
@@ -604,8 +604,33 @@ const ResourcesPopUp = ({
 
                       {selectResource === 'bible' || selectResource === 'obs' ? (
                         <button type="button" className="flex gap-6 mx-5 absolute bottom-5 right-0 justify-end z-10 outline-none">
-                          <PlusCircleIcon className="h-10 w-10 m-5 text-primary" onClick={() => openResourceDialogBox()} />
-                          { selectResource === 'obs'
+                          {selectResource === 'bible' ? (
+                            <>
+                              {resourceIconClick
+                              && (
+                              <div className="flex-col absolute bottom-14 right-7 justify-end text-white">
+                                <button
+                                  type="button"
+                                  className="bg-primary  mb-2 w-44 p-1 border-none rounded-md hover:bg-secondary"
+                                  tabIndex={-3}
+                                  onClick={() => { openResourceDialogBox(true); setResourceIconClick(!resourceIconClick); }}
+                                >
+                                  Resource Collections
+                                </button>
+                                <button
+                                  type="button"
+                                  className="bg-primary  mb-2 w-44 p-1 border-none rounded-md hover:bg-secondary"
+                                  tabIndex={-2}
+                                  onClick={() => { setOpenImportResourcePopUp(true); openResourceDialog(); setResourceIconClick(!resourceIconClick); }}
+                                >
+                                  Custom Resource
+                                </button>
+                              </div>
+                            )}
+                              <PlusCircleIcon className="h-10 w-10 m-5 text-primary" onClick={() => setResourceIconClick(!resourceIconClick)} />
+                            </>
+                          ) : <PlusCircleIcon className="h-10 w-10 m-5 text-primary" onClick={() => openResourceDialogBox()} /> }
+                          { (selectResource === 'bible' || selectResource === 'obs')
                           && (
                           <ImportResource
                             open={openImportResourcePopUp}

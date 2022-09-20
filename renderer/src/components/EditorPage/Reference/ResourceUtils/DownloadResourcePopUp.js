@@ -331,7 +331,7 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
                         logger.debug('DownloadResourcePopUp.js', 'deleting zip file - rename project with project + id in ag format');
                         if (fs.existsSync(folder)) {
                           fs.renameSync(path.join(folder, currentResourceProject.name), path.join(folder, currentProjectName));
-                          fs.unlinkSync(path.join(folder, `${currentProjectName}.zips`), () => {
+                          fs.unlinkSync(path.join(folder, `${currentProjectName}.zip`), () => {
                             logger.debug('DownloadResourcePopUp.js', 'error in deleting zip');
                             throw new Error(`Removing Resource Zip Failed :  ${currentResourceProject.name}`);
                           });
