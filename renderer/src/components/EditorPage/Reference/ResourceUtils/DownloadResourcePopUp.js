@@ -13,6 +13,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import LoadingScreen from '@/components/Loading/LoadingScreen';
 import { XIcon } from '@heroicons/react/solid';
 import { AutographaContext } from '@/components/context/AutographaContext';
+import { InformationCircleIcon } from '@heroicons/react/outline';
 import DownloadSvg from '@/icons/basil/Outline/Files/Download.svg';
 import CustomMultiComboBox from './CustomMultiComboBox';
 import langJson from '../../../../lib/lang/langNames.json';
@@ -495,12 +496,20 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
                     <div className=" flex-col text-sm p-2 ">
                       <div className="flex justify-between items-center">
                         <label htmlFor="filter-lang">Language</label>
-                        <CustomMultiComboBox
-                          selectedList={selectedLangFilter}
-                          setSelectedList={setSelectedLangFilter}
-                          customData={langJson}
-                          filterParams="ang"
-                        />
+                        <div className="flex items-center">
+                          <div title="type and select multiple items , selected item can be removed by clicking again">
+                            <InformationCircleIcon
+                              className="h-5 w-5 mr-1"
+                              aria-hidden="true"
+                            />
+                          </div>
+                          <CustomMultiComboBox
+                            selectedList={selectedLangFilter}
+                            setSelectedList={setSelectedLangFilter}
+                            customData={langJson}
+                            filterParams="ang"
+                          />
+                        </div>
                       </div>
                       <div className="flex justify-between  items-center mt-2">
                         <label htmlFor="filter-type">Type</label>
