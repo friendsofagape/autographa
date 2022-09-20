@@ -387,7 +387,10 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
                     }).catch((err) => {
                       throw new Error(`Fetch Resource Failed :  ${err}`);
                     });
-                  logger.debug('DownloadResourcePopUp.js', 'Finished : ');
+                  logger.debug('DownloadResourcePopUp.js', 'Finished single resource: ');
+                  setOpenSnackBar(true);
+                  setNotify('success');
+                  setSnackText(`${resource.name} : ${resource.owner} download completed`);
                 }
               }
               // console.log('lang group finished ---------------------------');
@@ -395,7 +398,7 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
             console.log('DOWNLOAD FINISHED');
             setOpenSnackBar(true);
             setNotify('success');
-            setSnackText('Resource Downloaded Succesfully');
+            setSnackText('All Resource Downloaded Succesfully');
             await addNewNotification(
               'Resource',
               'Resource Download successfull',
