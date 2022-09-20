@@ -302,7 +302,7 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
                               checksum: { md5: checksum },
                               mimeType: currentResourceMeta.dublin_core.format,
                               size: stats.size,
-                              scope: { [project?.identifier]: [] },
+                              scope: { [project?.identifier.toUpperCase()]: [] },
                             };
                           } else {
                             logger.debug('DownloadResourcePopUp.js', 'error file not found in resource download');
@@ -347,7 +347,10 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
             }
             // console.log('lang group finished ---------------------------');
           }
-          console.log('DOWNLOAD FINISHED');
+          // console.log('DOWNLOAD FINISHED');
+          setOpenSnackBar(true);
+          setNotify('success');
+          setSnackText('Resource Downloaded Succesfully');
           logger.debug('DownloadResourcePopUp.js', 'Completed Download all resource selected');
         } catch (err) {
           logger.debug('DownloadResourcePopUp.js', 'Catching error in dowload resource', err);
