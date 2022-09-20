@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-// import localforage, * as localForage from 'localforage';
+import localForage from 'localforage';
 import { Dialog, Transition } from '@headlessui/react';
 import { useTranslation } from 'react-i18next';
 import { SnackBar } from '@/components/SnackBar';
@@ -18,7 +18,7 @@ import langJson from '../../../../lib/lang/langNames.json';
 import createBibleResourceSB from './createBibleResourceSB';
 import customLicense from '../../../../lib/license/Custom.md';
 import { environment } from '../../../../../environment';
-import * as logger from '../../../logger';
+import * as logger from '../../../../logger';
 
 const md5 = require('md5');
 
@@ -51,6 +51,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenDonwloadPopUp }) {
+  logger.debug('DownloadResourcePopUp.js', 'in download resource pop up');
   const { t } = useTranslation();
   const [snackBar, setOpenSnackBar] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
@@ -68,6 +69,7 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
   };
 
   const fetchResource = async (filter) => {
+    logger.debug('DownloadResourcePopUp.js', 'fetching resource as per filter applied');
     setLoading(true);
     // subject = bible and lang = en - if not custom filter or initial loading
     const baseUrl = 'https://git.door43.org/api/catalog/v5/search';
@@ -104,6 +106,7 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
     await fetch(url)
       .then((response) => response.json())
       .then((res) => {
+        logger.debug('DownloadResourcePopUp.js', 'generating language based resources after fetch');
         const temp_resource = {};
         res.data.forEach((element) => {
           element.isChecked = false;
@@ -119,6 +122,7 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
   };
 
   const handleCheckbox = (e, obj) => {
+    logger.debug('DownloadResourcePopUp.js', 'In check box resource selection');
     const temp_resource = resourceData;
     if (obj.selection === 'full') {
       // eslint-disable-next-line array-callback-return
@@ -137,29 +141,26 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
       ...current,
       ...temp_resource,
     }));
-    // console.log('after updatechecked : ', resourceData);
   };
 
   const handleClickFilter = () => {
+    logger.debug('DownloadResourcePopUp.js', 'In toggle filter');
     if (!loading) {
       setLoadFilterDiv(!loadFilterDiv);
     }
   };
 
   const handleClearFilter = () => {
+    logger.debug('DownloadResourcePopUp.js', 'In clear filter');
     setSelectedLangFilter([]);
     setSelectedTypeFilter([]);
   };
 
   const handleSaveFilter = async () => {
+    logger.debug('DownloadResourcePopUp.js', 'save filter and call fetch');
     setLoadFilterDiv(!loadFilterDiv);
     if (selectedLangFilter.length > 0 || selectedTypeFilter.length > 0) {
       await fetchResource(true);
-      // .then(() => {
-      //   // clear filter after fetch finish
-      // setSelectedLangFilter([]);
-      // setSelectedTypeFilter([]);
-      // });
     } else {
       setOpenSnackBar(true);
       setNotify('warning');
@@ -168,6 +169,7 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
   };
 
   const generateAgSettings = async (metaData, currentResourceMeta) => new Promise((resolve) => {
+    logger.debug('DownloadResourcePopUp.js', 'In generate ag-settings for resource downloaded');
     const settings = {
       version: environment.AG_SETTING_VERSION,
       project: {
@@ -188,11 +190,12 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
   });
 
   const handleDownloadResources = async () => {
+    logger.debug('DownloadResourcePopUp.js', 'In resource download - started');
     let isContentToDwnld = 0;
-    console.log('click download');
     const path = require('path');
     const newpath = localStorage.getItem('userPath');
     localForage.getItem('userProfile').then(async (user) => {
+      logger.debug('DownloadResourcePopUp.js', 'In resource download user fetch - ', user?.username);
       const folder = path.join(newpath, 'autographa', 'users', `${user?.username}`, 'resources');
       let resourceBurritoFile;
       let currentResourceMeta = '';
@@ -201,135 +204,154 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
       let currentProjectName = '';
 
       (async () => {
-        // eslint-disable-next-line no-restricted-syntax, guard-for-in
-        for (const key in resourceData) {
-          // eslint-disable-next-line no-await-in-loop, no-restricted-syntax, guard-for-in
-          for (const row in resourceData[key]) {
-            const resource = resourceData[key][row];
-            if (resource.isChecked) {
-              isContentToDwnld += 1;
-              // eslint-disable-next-line no-await-in-loop
-              await fetch(resource.metadata_json_url)
-                .then((res) => res.json())
-                // eslint-disable-next-line no-loop-func
-                .then(async (response) => {
-                  currentResourceMeta = response;
-                  currentResourceProject = resource;
-                  resourceBurritoFile = await createBibleResourceSB(user?.username, currentResourceMeta, currentResourceProject);
-                  console.log(`${resource.name}-${resource.owner}`);
-                  console.log(resourceBurritoFile);
-                  currentProjectName = `${resource.name}_${Object.keys(resourceBurritoFile.identification.primary.ag)[0]}`;
-                  // console.log(currentProjectName);
-                  await fetch(resource.zipball_url)
-                    .then((res) => res.arrayBuffer())
-                    .then(async (blob) => {
-                      if (!fs.existsSync(folder)) {
-                        fs.mkdirSync(folder, { recursive: true });
-                      }
-                      // wririntg zip to local
-                      await fs.writeFileSync(path.join(folder, `${currentProjectName}.zip`), Buffer.from(blob));
-
-                      // extract zip
-                      const filecontent = await fs.readFileSync(path.join(folder, `${currentProjectName}.zip`));
-                      const result = await JSZip.loadAsync(filecontent);
-                      const keys = Object.keys(result.files);
-                      // eslint-disable-next-line no-restricted-syntax
-                      for (const key of keys) {
-                        const item = result.files[key];
-                        if (item.dir) {
-                          fs.mkdirSync(path.join(folder, item.name), { recursive: true });
-                        } else {
-                          // eslint-disable-next-line no-await-in-loop
-                          fs.writeFileSync(path.join(folder, item.name), Buffer.from(await item.async('arraybuffer')));
+        try {
+          logger.debug('DownloadResourcePopUp.js', 'In resource download all resource loop');
+          // eslint-disable-next-line no-restricted-syntax, guard-for-in
+          for (const key in resourceData) {
+            // eslint-disable-next-line no-await-in-loop, no-restricted-syntax, guard-for-in
+            for (const row in resourceData[key]) {
+              const resource = resourceData[key][row];
+              if (resource.isChecked) {
+                isContentToDwnld += 1;
+                // eslint-disable-next-line no-await-in-loop
+                await fetch(resource.metadata_json_url)
+                  .then((res) => res.json())
+                  // eslint-disable-next-line no-loop-func
+                  .then(async (response) => {
+                    logger.debug('DownloadResourcePopUp.js', 'In resource download - fetch resourceMeta yml');
+                    currentResourceMeta = response;
+                    currentResourceProject = resource;
+                    resourceBurritoFile = await createBibleResourceSB(user?.username, currentResourceMeta, currentResourceProject);
+                    logger.debug('DownloadResourcePopUp.js', 'In resource download - basic burrito generated for resource ', `${resource.name}-${resource.owner}`);
+                    // console.log(`${resource.name}-${resource.owner}`);
+                    // console.log(resourceBurritoFile);
+                    currentProjectName = `${resource.name}_${Object.keys(resourceBurritoFile.identification.primary.ag)[0]}`;
+                    // console.log(currentProjectName);
+                    await fetch(resource.zipball_url)
+                      .then((res) => res.arrayBuffer())
+                      .then(async (blob) => {
+                        logger.debug('DownloadResourcePopUp.js', 'In resource download - downloading zip content ');
+                        if (!fs.existsSync(folder)) {
+                          fs.mkdirSync(folder, { recursive: true });
                         }
-                        if (key.toLowerCase().includes('license')) {
-                          console.log('inside license -----');
-                          licenseFileFound = true;
-                          if (fs.existsSync(path.join(folder, key))) {
-                            const licenseContent = fs.readFileSync(path.join(folder, key), 'utf8');
-                            const checksum = md5(licenseContent);
-                            const stats = fs.statSync(path.join(folder, key));
-                            resourceBurritoFile.ingredients[key.replace(row.name, '.')] = {
-                              // resourceBurritoFile.ingredients[key] = {
-                              checksum: { md5: checksum },
+                        // wririntg zip to local
+                        await fs.writeFileSync(path.join(folder, `${currentProjectName}.zip`), Buffer.from(blob));
+                        logger.debug('DownloadResourcePopUp.js', 'In resource download - downloading zip content completed ');
+
+                        // extract zip
+                        logger.debug('DownloadResourcePopUp.js', 'In resource download - Unzip downloaded resource');
+                        const filecontent = await fs.readFileSync(path.join(folder, `${currentProjectName}.zip`));
+                        const result = await JSZip.loadAsync(filecontent);
+                        const keys = Object.keys(result.files);
+                        // eslint-disable-next-line no-restricted-syntax
+                        for (const key of keys) {
+                          const item = result.files[key];
+                          if (item.dir) {
+                            fs.mkdirSync(path.join(folder, item.name), { recursive: true });
+                          } else {
+                            // eslint-disable-next-line no-await-in-loop
+                            fs.writeFileSync(path.join(folder, item.name), Buffer.from(await item.async('arraybuffer')));
+                          }
+                          if (key.toLowerCase().includes('license')) {
+                            logger.debug('DownloadResourcePopUp.js', 'In resource download - check license file found');
+                            licenseFileFound = true;
+                            if (fs.existsSync(path.join(folder, key))) {
+                              const licenseContent = fs.readFileSync(path.join(folder, key), 'utf8');
+                              const checksum = md5(licenseContent);
+                              const stats = fs.statSync(path.join(folder, key));
+                              resourceBurritoFile.ingredients[key.replace(row.name, '.')] = {
+                                checksum: { md5: checksum },
+                                mimeType: 'text/md',
+                                size: stats.size,
+                                role: 'x-licence',
+                              };
+                            }
+                          }
+                        }
+
+                        // custom license adding
+                        if (!licenseFileFound) {
+                          logger.debug('DownloadResourcePopUp.js', 'In resource custom license add - no license found');
+                          // console.log('no license file found -', md5(customLicense));
+                          if (fs.existsSync(path.join(folder, currentResourceProject.name))) {
+                            fs.writeFileSync(path.join(folder, currentResourceProject.name, 'LICENSE.md'), customLicense);
+                            const stats = fs.statSync(path.join(folder, currentResourceProject.name, 'LICENSE.md'));
+                            resourceBurritoFile.ingredients['./LICENSE.md'] = {
+                              checksum: { md5: md5(customLicense) },
                               mimeType: 'text/md',
                               size: stats.size,
                               role: 'x-licence',
                             };
                           }
                         }
-                      }
 
-                      // custom license adding
-                      if (!licenseFileFound) {
-                        console.log('no license file found -', md5(customLicense));
-                        if (fs.existsSync(path.join(folder, currentResourceProject.name))) {
-                          fs.writeFileSync(path.join(folder, currentResourceProject.name, 'LICENSE.md'), customLicense);
-                          const stats = fs.statSync(path.join(folder, currentResourceProject.name, 'LICENSE.md'));
-                          resourceBurritoFile.ingredients['./LICENSE.md'] = {
-                            checksum: { md5: md5(customLicense) },
-                            mimeType: 'text/md',
-                            size: stats.size,
-                            role: 'x-licence',
-                          };
-                        }
-                      }
+                        // generating ingredients content in metadata
+                        currentResourceMeta?.projects.forEach(async (project) => {
+                          logger.debug('DownloadResourcePopUp.js', 'In adding ingredients to burrito');
+                          if (fs.existsSync(path.join(folder, currentResourceProject.name, project.path))) {
+                            const filecontent = await fs.readFileSync(path.join(folder, currentResourceProject.name, project.path), 'utf8');
+                            // find checksum & size by read the file
+                            const checksum = md5(filecontent);
+                            const stats = fs.statSync(path.join(folder, currentResourceProject.name, project.path));
+                            resourceBurritoFile.ingredients[project.path] = {
+                              checksum: { md5: checksum },
+                              mimeType: currentResourceMeta.dublin_core.format,
+                              size: stats.size,
+                              scope: { [project?.identifier]: [] },
+                            };
+                          } else {
+                            logger.debug('DownloadResourcePopUp.js', 'error file not found in resource download');
+                            console.log('ERR xxxxxxxxxxxxxxxxxxxxx File not found in the project directory', project.path);
+                          }
+                        });
 
-                      // generating ingredients content in metadata
-                      currentResourceMeta?.projects.forEach(async (project) => {
-                        if (fs.existsSync(path.join(folder, currentResourceProject.name, project.path))) {
-                          // console.log('folder exist extracted', currentResourceProject.name, project.path);
-                          const filecontent = await fs.readFileSync(path.join(folder, currentResourceProject.name, project.path), 'utf8');
-                          // find checksum & size by read the file
-                          const checksum = md5(filecontent);
-                          const stats = fs.statSync(path.join(folder, currentResourceProject.name, project.path));
-                          resourceBurritoFile.ingredients[project.path] = {
-                            checksum: { md5: checksum },
-                            mimeType: currentResourceMeta.dublin_core.format,
-                            size: stats.size,
-                            scope: { [project?.identifier]: [] },
-                          };
-                        } else {
-                          console.log('ERR xxxxxxxxxxxxxxxxxxxxx File not found in the project directory', project.path);
+                        // ag settings file generation
+                        logger.debug('DownloadResourcePopUp.js', 'generating ag-settings');
+                        const settings = await generateAgSettings(resourceBurritoFile, currentResourceMeta);
+                        await fs.writeFileSync(path.join(folder, currentResourceProject.name, 'ag-settings.json'), JSON.stringify(settings));
+                        const settingsContent = fs.readFileSync(path.join(folder, currentResourceProject.name, 'ag-settings.json'), 'utf8');
+                        const checksum = md5(settingsContent);
+                        const stats = fs.statSync(path.join(folder, currentResourceProject.name, 'ag-settings.json'));
+                        resourceBurritoFile.ingredients['./ag-settings.json'] = {
+                          checksum: { md5: checksum },
+                          mimeType: 'application/json',
+                          size: stats.size,
+                          role: 'x-autographa',
+                        };
+                        // write metaData.json
+                        await fs.writeFileSync(path.join(folder, currentResourceProject.name, 'metadata.json'), JSON.stringify(resourceBurritoFile));
+
+                        // finally remove zip and rename base folder to projectname_id
+                        logger.debug('DownloadResourcePopUp.js', 'deleting zip file - rename project with project + id in ag format');
+                        if (fs.existsSync(folder)) {
+                          fs.unlinkSync(path.join(folder, `${currentProjectName}.zip`), (err) => {
+                            logger.debug('DownloadResourcePopUp.js', 'error in deleting zip');
+                            console.log('error : ', err);
+                          });
+                          fs.renameSync(path.join(folder, currentResourceProject.name), path.join(folder, currentProjectName));
                         }
                       });
-
-                      // ag settings file generation
-                      const settings = await generateAgSettings(resourceBurritoFile, currentResourceMeta);
-                      await fs.writeFileSync(path.join(folder, currentResourceProject.name, 'ag-settings.json'), JSON.stringify(settings));
-                      const settingsContent = fs.readFileSync(path.join(folder, currentResourceProject.name, 'ag-settings.json'), 'utf8');
-                      const checksum = md5(settingsContent);
-                      const stats = fs.statSync(path.join(folder, currentResourceProject.name, 'ag-settings.json'));
-                      resourceBurritoFile.ingredients['./ag-settings.json'] = {
-                        checksum: { md5: checksum },
-                        mimeType: 'application/json',
-                        size: stats.size,
-                        role: 'x-autographa',
-                      };
-                      // write metaData.json
-                      await fs.writeFileSync(path.join(folder, currentResourceProject.name, 'metadata.json'), JSON.stringify(resourceBurritoFile));
-
-                      // finally remove zip and rename base folder to projectname_id
-                      if (fs.existsSync(folder)) {
-                        fs.unlinkSync(path.join(folder, `${currentProjectName}.zip`), (err) => { console.log('error : ', err); });
-                        fs.renameSync(path.join(folder, currentResourceProject.name), path.join(folder, currentProjectName));
-                      }
-                    });
-                });
+                  });
+              }
             }
+            // console.log('---------------------------');
           }
-          console.log('---------------------------');
+          // console.log('DOWNLOAD FINISHED');
+          logger.debug('DownloadResourcePopUp.js', 'Completed Download all resource selected');
+        } catch (err) {
+          logger.debug('DownloadResourcePopUp.js', 'Catching error in dowload resource', err);
         }
-        console.log('DOWN<OAD FINISHED');
       })();
 
       if (isContentToDwnld === 0) {
+        logger.debug('DownloadResourcePopUp.js', 'No resource selected to download - warning');
         console.log('please select Resource to Download');
       }
     });
   };
 
   React.useEffect(() => {
+    logger.debug('DownloadResourcePopUp.js', 'in useEffect initial load of resource');
     fetchResource(false);
   }, []);
 

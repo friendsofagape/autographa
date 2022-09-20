@@ -189,7 +189,8 @@ const ResourcesPopUp = ({
 
   const openResourceDialogBox = () => {
     if (selectResource === 'bible') {
-      console.log('bible resource add');
+      // console.log('bible resource add');
+      logger.debug('DownloadResourcePopUp.js', 'Calling bible resource pop up');
       setIsOpenDonwloadPopUp(true);
     } else {
       setOpenImportResourcePopUp(true);

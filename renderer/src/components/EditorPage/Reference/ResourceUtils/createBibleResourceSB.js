@@ -18,7 +18,6 @@ const findCode = (list, id) => {
   };
 const createBibleResourceSB = async (username, resourceMeta, projectResource) => {
     logger.debug('createBibleResourceSB.js', 'Create Metadata for downloaded bible resource');
-    // console.log('metaData resource : ', resourceMeta);
     // generate unique key
     const key = username + projectResource.name + projectResource.owner + moment().format();
     const id = uuidv5(key, environment.uuidToken);
