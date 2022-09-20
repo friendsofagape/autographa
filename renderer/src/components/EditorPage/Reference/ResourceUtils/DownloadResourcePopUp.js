@@ -392,6 +392,12 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
                   setOpenSnackBar(true);
                   setNotify('success');
                   setSnackText(`${resource.name} : ${resource.owner} download completed`);
+                  // eslint-disable-next-line no-await-in-loop
+                  await addNewNotification(
+                    'Resource Download',
+                    `${resource.name} : ${resource.owner} download completed`,
+                    'success',
+                  );
                 }
               }
               // console.log('lang group finished ---------------------------');
@@ -402,7 +408,7 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
             setSnackText('All Resource Downloaded Succesfully');
             await addNewNotification(
               'Resource',
-              'Resource Download successfull',
+              'Resource Download Completed',
               'success',
             );
             logger.debug('DownloadResourcePopUp.js', 'Completed Download all resource selected');

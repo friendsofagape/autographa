@@ -49,7 +49,7 @@ function CustomMultiComboBox({
                     >
                       <Combobox.Options className="absolute w-full z-40 mt-1 max-h-48 scrollbars-width overflow-auto rounded-md bg-white py-1 px-2 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm cursor-pointer">
                         {filteredData.map((data) => (
-                          <Combobox.Option key={data?.id || data?.pk} className={selectedList.includes(data) ? 'bg-gray-400' : ''} value={data}>
+                          <Combobox.Option key={data?.id || data?.pk} className={`${selectedList.includes(data) ? 'bg-gray-400' : ''} hover:bg-gray-300 p-1`} value={data}>
                             {data[filterParams]}
                           </Combobox.Option>
                         ))}
