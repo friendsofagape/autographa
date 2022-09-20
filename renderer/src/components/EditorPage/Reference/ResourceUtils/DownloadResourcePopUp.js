@@ -170,23 +170,27 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
 
   const generateAgSettings = async (metaData, currentResourceMeta) => new Promise((resolve) => {
     logger.debug('DownloadResourcePopUp.js', 'In generate ag-settings for resource downloaded');
-    const settings = {
-      version: environment.AG_SETTING_VERSION,
-      project: {
-        [metaData.type.flavorType.flavor.name]: {
-          scriptDirection: currentResourceMeta?.dublin_core?.language?.direction,
-          starred: false,
-          description: currentResourceMeta?.dublin_core?.description,
-          versification: 'ENG',
-          copyright: currentResourceMeta?.dublin_core?.rights,
-          lastSeen: moment().format(),
-          refResources: [],
-          bookMarks: [],
+    try {
+      const settings = {
+        version: environment.AG_SETTING_VERSION,
+        project: {
+          [metaData.type.flavorType.flavor.name]: {
+            scriptDirection: currentResourceMeta?.dublin_core?.language?.direction,
+            starred: false,
+            description: currentResourceMeta?.dublin_core?.description,
+            versification: 'ENG',
+            copyright: currentResourceMeta?.dublin_core?.rights,
+            lastSeen: moment().format(),
+            refResources: [],
+            bookMarks: [],
+          },
         },
-      },
-      sync: { services: { door43: [] } },
-    };
-    resolve(settings);
+        sync: { services: { door43: [] } },
+      };
+      resolve(settings);
+    } catch (err) {
+      throw new Error(`Generate Ag-settings Failed :  ${err}`);
+    }
   });
 
   const handleDownloadResources = async () => {
@@ -206,6 +210,7 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
       (async () => {
         try {
           logger.debug('DownloadResourcePopUp.js', 'In resource download all resource loop');
+          console.log('resource download started ---');
           // eslint-disable-next-line no-restricted-syntax, guard-for-in
           for (const key in resourceData) {
             // eslint-disable-next-line no-await-in-loop, no-restricted-syntax, guard-for-in
@@ -301,7 +306,8 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
                             };
                           } else {
                             logger.debug('DownloadResourcePopUp.js', 'error file not found in resource download');
-                            console.log('ERR xxxxxxxxxxxxxxxxxxxxx File not found in the project directory', project.path);
+                            // console.log('ERR xxxxxxxxxxxxxxxxxxxxx File not found in the project directory', project.path);
+                            throw new Error(`File not Exist in project Directory:  ${project.path}`);
                           }
                         });
 
@@ -324,28 +330,39 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
                         // finally remove zip and rename base folder to projectname_id
                         logger.debug('DownloadResourcePopUp.js', 'deleting zip file - rename project with project + id in ag format');
                         if (fs.existsSync(folder)) {
-                          fs.unlinkSync(path.join(folder, `${currentProjectName}.zip`), (err) => {
-                            logger.debug('DownloadResourcePopUp.js', 'error in deleting zip');
-                            console.log('error : ', err);
-                          });
                           fs.renameSync(path.join(folder, currentResourceProject.name), path.join(folder, currentProjectName));
+                          fs.unlinkSync(path.join(folder, `${currentProjectName}.zips`), () => {
+                            logger.debug('DownloadResourcePopUp.js', 'error in deleting zip');
+                            throw new Error(`Removing Resource Zip Failed :  ${currentResourceProject.name}`);
+                          });
                         }
+                      }).catch((err) => {
+                        throw new Error(`Download Resource file Failed :  ${err}`);
                       });
+                  }).catch((err) => {
+                    throw new Error(`Fetch Resource Failed :  ${err}`);
                   });
+                logger.debug('DownloadResourcePopUp.js', `Total download Finished : ${isContentToDwnld}`);
               }
             }
-            // console.log('---------------------------');
+            // console.log('lang group finished ---------------------------');
           }
-          // console.log('DOWNLOAD FINISHED');
+          console.log('DOWNLOAD FINISHED');
           logger.debug('DownloadResourcePopUp.js', 'Completed Download all resource selected');
         } catch (err) {
           logger.debug('DownloadResourcePopUp.js', 'Catching error in dowload resource', err);
+          setOpenSnackBar(true);
+          setNotify('failure');
+          setSnackText(`Error : ${err?.message || err}`);
         }
       })();
 
       if (isContentToDwnld === 0) {
         logger.debug('DownloadResourcePopUp.js', 'No resource selected to download - warning');
-        console.log('please select Resource to Download');
+        setOpenSnackBar(true);
+        setNotify('warning');
+        setSnackText('please select Resource to Download');
+        // console.log('please select Resource to Download');
       }
     });
   };

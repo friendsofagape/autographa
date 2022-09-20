@@ -19,6 +19,7 @@ const findCode = (list, id) => {
 const createBibleResourceSB = async (username, resourceMeta, projectResource) => {
     logger.debug('createBibleResourceSB.js', 'Create Metadata for downloaded bible resource');
     // generate unique key
+    try {
     const key = username + projectResource.name + projectResource.owner + moment().format();
     const id = uuidv5(key, environment.uuidToken);
     const localizedNames = {};
@@ -80,6 +81,9 @@ const createBibleResourceSB = async (username, resourceMeta, projectResource) =>
         logger.debug('createBibleResourceSB.js', 'Created the createBibleResource SB');
         resolve(json);
       });
+    } catch (err) {
+      throw new Error(`Generate Burrito Failed :  ${err}`);
+    }
 };
 
 export default createBibleResourceSB;
