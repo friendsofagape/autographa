@@ -15,21 +15,24 @@ function CustomMultiComboBox({
         : [];
             return (
               <>
-                {/* {selectedList.length > 0 && (
-                  <div className="absolute bg-white p-2 right-auto">
-                    <ul>
+                {selectedList.length > 0 && (
+                  <div className="relative z-10 w-60 p-0.5">
+                    <select className='relative h-8 mt-1 z-40 overflow-scroll scrollbars-width text-xs rounded '>
                       {selectedList.map((person) => (
-                        <li key={person.id}>{person.name}</li>
+                        <option key={person.id}>{person.ang}</option>
                           ))}
-                    </ul>
+                    </select>
                   </div>
-                    )} */}
+                    )}
                 <Combobox value={selectedList} onChange={setSelectedList} multiple>
                   <div className="relative mt-1">
                     <div className="relative w-full cursor-default overflow-hidden rounded-lg bg-white text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 sm:text-sm">
                       <Combobox.Input
                         className="w-full border-none py-2 pl-3 pr-10 text-sm leading-5 text-gray-900 focus:ring-0"
-                        displayValue="Select one or Multiple"
+                        displayValue="Select one or Multiple "
+                        // displayValue={(filteredData) =>
+                        //   filteredData  .map((item) => item.ang).join(', ')
+                        // }
                         placeholder="Select one or Multiple "
                         onChange={(event) => setQuery(event.target.value)}
                       />
