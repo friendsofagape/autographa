@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 /* eslint-disable react-hooks/exhaustive-deps */
 import {
   useEffect, forwardRef, useRef, useState,
@@ -24,6 +23,8 @@ const AudioWaveForm = (props) => {
     resumeRecording,
     volume,
     speed,
+    setTrigger,
+    interaction,
     btnColor,
     barGap,
     barWidth,
@@ -49,6 +50,7 @@ const AudioWaveForm = (props) => {
     normalize: true,
     partialRender: true,
     hideScrollbar: true,
+    interact: interaction ?? true,
     backend: 'MediaElement',
     plugins: [
       microphone,
@@ -117,6 +119,7 @@ const AudioWaveForm = (props) => {
   const handlePlay = () => {
     if (url) {
       wavesurfer.current?.play();
+      setTrigger();
     }
   };
   const handlePause = () => {
@@ -210,4 +213,11 @@ AudioWaveForm.propTypes = {
   show: PropTypes.bool,
   volume: PropTypes.any,
   speed: PropTypes.any,
+  call: PropTypes.any,
+  startRecording: PropTypes.func,
+  stopRecording: PropTypes.func,
+  pauseRecording: PropTypes.func,
+  resumeRecording: PropTypes.func,
+  setTrigger: PropTypes.func,
+  interaction: PropTypes.bool,
 };

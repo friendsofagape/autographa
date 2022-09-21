@@ -337,6 +337,7 @@ const Player = ({
           barWidth="2"
           waveColor="#ffffff"
           btnColor="text-white"
+          // url={(location && Object.keys(url).length !== 0) && (take ? (url[take] ? url[take] : '') : url[url?.default])}
           url={(location && Object.keys(url).length !== 0) && (take ? (url[take] ? path.join(location, url[take]) : '') : path.join(location, url[url?.default]))}
           call={trigger}
           startRecording={startRecording}
@@ -346,6 +347,7 @@ const Player = ({
           volume={volume}
           speed={currentSpeed}
           show={false}
+          setTrigger={setTrigger}
         />
       </div>
     </div>

@@ -67,6 +67,7 @@ const EditorPage = ({
                 // url={mainChunk[mainChunk.default]} for development
                 url={location && (mainChunk[mainChunk.default] ? path.join(location, mainChunk[mainChunk.default]) : '')}
                 show={false}
+                interaction={false}
               />
             </div>
             {/* <div className="bg-white mt-5 border border-gray-200 rounded-lg relative">

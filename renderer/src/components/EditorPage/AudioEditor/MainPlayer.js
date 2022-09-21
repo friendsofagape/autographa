@@ -99,7 +99,9 @@ const MainPlayer = () => {
     const fs = window.require('fs');
     const path = require('path');
     let i = 1;
-    while (i < 4) {
+    // Checking whether the take has any audio
+    if (fs.existsSync(path.join(audioCurrentChapter.filePath, audioCurrentChapter.chapterNum, `${chapter}_${verse}_${value}.mp3`))) {
+      while (i < 4) {
       // Looking for the existed default file so that we can easily rename both the files
       if (fs.existsSync(path.join(audioCurrentChapter.filePath, audioCurrentChapter.chapterNum, `${chapter}_${verse}_${i}_default.mp3`))) {
         // Checking whether the user is trying to default the same default file, else rename both.
@@ -112,6 +114,7 @@ const MainPlayer = () => {
     }
     // Finally loading the data back
     loadChapter();
+    }
   };
   const handleFunction = () => {
     // We have used trigger to identify whether the call is from DeleteAudio or Re-record
