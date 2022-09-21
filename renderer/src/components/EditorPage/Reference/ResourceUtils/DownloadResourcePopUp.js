@@ -22,6 +22,7 @@ import customLicense from '../../../../lib/license/Custom.md';
 import { environment } from '../../../../../environment';
 import * as logger from '../../../../logger';
 
+const grammar = require('usfm-grammar');
 const md5 = require('md5');
 
 const fs = window.require('fs');
@@ -29,7 +30,7 @@ const JSZip = require('jszip');
 
 const subjectTypeArray = [
   { id: 2, name: 'Bible' },
-  // { id: 1, name: 'Aligned Bible' },
+  { id: 1, name: 'Aligned Bible' },
   // { id: 3, name: 'Hebrew Old Testament' },
   // { id: 4, name: 'Greek New Testament' },
 ];
@@ -135,8 +136,8 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
       }
     } else {
       // initial load
-      url = `${baseUrl}?subject=Bible&lang=en`;
-      // url = `${baseUrl}?subject=Bible&lang=en&lang=ml`;
+      // url = `${baseUrl}?subject=Bible&lang=en`;
+      url = `${baseUrl}?subject=Bible&subject=Aligned Bible&lang=en&lang=ml`;
     }
     // url = 'https://git.door43.org/api/catalog/v5/search?subject=Aligned%20Bible&subject=Bible&lang=en&lang=ml&lang=hi';
     await fetch(url)
@@ -154,6 +155,11 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
         });
         setresourceData(temp_resource);
         setLoading(false);
+      }).catch((err) => {
+        logger.debug('DownloadResourcePopUp.js', 'Error on fetch content : ', err);
+        setOpenSnackBar(true);
+        setNotify('failure');
+        setSnackText(`Error fetch content \n : ${err}`);
       });
   };
 
@@ -300,8 +306,36 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
                             if (item.dir) {
                               fs.mkdirSync(path.join(folder, item.name), { recursive: true });
                             } else {
+                              // call usfm grammmar if Aligned Bible to convert
                               // eslint-disable-next-line no-await-in-loop
-                              fs.writeFileSync(path.join(folder, item.name), Buffer.from(await item.async('arraybuffer')));
+                              const bufferContent = Buffer.from(await item.async('arraybuffer'));
+
+                              // aligned bible conversion section test --------------------------------------------------------
+                              // fs.writeFileSync(path.join(folder, item.name), bufferContent);
+                              // if (currentResourceProject.subject === 'Aligned Bible' && key.endsWith('.usfm')) {
+                              //   logger.debug('DownloadResourcePopUp.js', 'In resource download - convert Aligned to normal usfm');
+
+                              //   console.log('inside aligned conversion : ', currentResourceProject.subject, 'file : ', key);
+                              //   console.log('my ufsm parser buffer inp ---', bufferContent);
+
+                              //   const uint8array = new TextEncoder('utf-8').encode(bufferContent);
+                              //   const decodedText = new TextDecoder().decode(uint8array);
+                              //   console.log('my ufsm parser buffer string value  ====---', decodedText);
+
+                              //   // const decodedTextRead = fs.readFileSync(path.join(folder, key), 'utf8');
+
+                              //   const myUsfmParser = new grammar.USFMParser(decodedText);
+                              //   // const alignedJsonVerseOnly = myUsfmParser.toJSON(grammar.FILTER.SCRIPTURE);
+                              //   const alignedJsonVerseOnly = myUsfmParser.toJSON();
+                              //   console.log('aligned data verse : ', alignedJsonVerseOnly);
+                              //   const myJsonParser = new grammar.JSONParser(alignedJsonVerseOnly);
+                              //   const usfmData = myJsonParser.toUSFM();
+                              //   console.log('converted data : ', usfmData);
+                              //   console.log('===================================================');
+                              // }
+                              // aligned bible conversion section test --------------------------------------------------------
+                              // // eslint-disable-next-line no-await-in-loop
+                              fs.writeFileSync(path.join(folder, item.name), bufferContent);
                             }
                             if (key.toLowerCase().includes('license')) {
                               logger.debug('DownloadResourcePopUp.js', 'In resource download - check license file found');
