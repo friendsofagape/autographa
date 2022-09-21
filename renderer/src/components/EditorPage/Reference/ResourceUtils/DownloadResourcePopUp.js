@@ -297,22 +297,22 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
             // find checksum & size by read the file
             const checksum = md5(filecontent);
             const stats = fs.statSync(path.join(folder, file));
-            resourceBurritoFile.ingredients[file.replace(currentResourceProject.name, '.')] = {
+            resourceBurritoFile.ingredients[file.replace(`${currentResourceProject.name}/`, '')] = {
               checksum: { md5: checksum },
               mimeType: currentResourceMeta.dublin_core.format,
               size: stats.size,
             };
             if (endPart.toLowerCase() === 'front.md') {
-              resourceBurritoFile.ingredients[file.replace(currentResourceProject.name, '.')].role = 'pubdata';
+              resourceBurritoFile.ingredients[file.replace(`${currentResourceProject.name}/`, '')].role = 'pubdata';
             } else if (regX.test(endPart)) {
               // eslint-disable-next-line array-callback-return
-              resourceBurritoFile.ingredients[file.replace(currentResourceProject.name, '.')].scope = OBSData.filter((story) => {
+              resourceBurritoFile.ingredients[file.replace(`${currentResourceProject.name}/`, '')].scope = OBSData.filter((story) => {
                 if (`${story.storyId.toString().padStart(2, 0)}.md` === endPart.toLowerCase()) {
                   return story;
                 }
               })[0].scope;
             } else {
-              resourceBurritoFile.ingredients[file.replace(currentResourceProject.name, '.')].role = 'title';
+              resourceBurritoFile.ingredients[file.replace(`${currentResourceProject.name}/`, '')].role = 'title';
             }
           } else {
             logger.debug('DownloadResourcePopUp.js', 'error file not found in resource download');
@@ -337,7 +337,7 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
     localForage.getItem('userProfile').then(async (user) => {
       logger.debug('DownloadResourcePopUp.js', 'In resource download user fetch - ', user?.username);
       const folder = path.join(newpath, 'autographa', 'users', `${user?.username}`, 'resources');
-      let resourceBurritoFile;
+      let resourceBurritoFile = {};
       let currentResourceMeta = '';
       let currentResourceProject = '';
       let licenseFileFound = false;
@@ -371,7 +371,7 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
                       resourceBurritoFile = await createDownloadedResourceSB(user?.username, currentResourceMeta, currentResourceProject, selectResource);
                       logger.debug('DownloadResourcePopUp.js', 'In resource download - basic burrito generated for resource ', `${resource.name}-${resource.owner}`);
                       // console.log(`${resource.name}-${resource.owner}`);
-                      console.log(resourceBurritoFile);
+                      // console.log('buritto before ingred : ', resourceBurritoFile);
 
                       currentProjectName = `${resource.name}_${Object.keys(resourceBurritoFile.identification.primary.ag)[0]}`;
                       // console.log(currentProjectName);
@@ -436,11 +436,12 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
                             if (key.toLowerCase().includes('license')) {
                               logger.debug('DownloadResourcePopUp.js', 'In resource download - check license file found');
                               licenseFileFound = true;
+                              // console.log('license exist');
                               if (fs.existsSync(path.join(folder, key))) {
                                 const licenseContent = fs.readFileSync(path.join(folder, key), 'utf8');
                                 const checksum = md5(licenseContent);
                                 const stats = fs.statSync(path.join(folder, key));
-                                resourceBurritoFile.ingredients[key.replace(row.name, '.')] = {
+                                resourceBurritoFile.ingredients[key.replace(currentResourceProject.name, '.')] = {
                                   checksum: { md5: checksum },
                                   mimeType: 'text/md',
                                   size: stats.size,
@@ -467,7 +468,7 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
                           // custom license adding
                           if (!licenseFileFound) {
                             logger.debug('DownloadResourcePopUp.js', 'In resource custom license add - no license found');
-                            // console.log('no license file found -', md5(customLicenseContent));
+                            console.log('no license file found -', md5(customLicenseContent));
                             if (fs.existsSync(path.join(folder, currentResourceProject.name))) {
                               fs.writeFileSync(path.join(folder, currentResourceProject.name, 'LICENSE.md'), customLicenseContent);
                               const stats = fs.statSync(path.join(folder, currentResourceProject.name, 'LICENSE.md'));
@@ -495,6 +496,8 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
                           };
                           // write metaData.json
                           await fs.writeFileSync(path.join(folder, currentResourceProject.name, 'metadata.json'), JSON.stringify(resourceBurritoFile));
+
+                          // console.log('buritto after FINAL write  : ', resourceBurritoFile);
 
                           // finally remove zip and rename base folder to projectname_id
                           logger.debug('DownloadResourcePopUp.js', 'deleting zip file - rename project with project + id in ag format');

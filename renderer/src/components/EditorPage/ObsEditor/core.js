@@ -11,9 +11,14 @@ const loadData = (fs, file, projectName, username) => {
   let j = 1;
   let dirName;
   while (i < j) {
-    const firstKey = Object.keys(_data.ingredients)[i];
+    // const firstKey = Object.keys(_data.ingredients)[i];
+    // const folderName = firstKey.split(/[(\\)?(/)?]/gm).slice(0);
+    const firstKey = Object.keys(_data.ingredients).filter((data) => data.endsWith(`${file}.md`))[0];
     const folderName = firstKey.split(/[(\\)?(/)?]/gm).slice(0);
     dirName = folderName[0];
+    // console.log('first key : ', firstKey);
+    // console.log('folder name  : ', folderName);
+    // console.log('dir name  : ', dirName);
     const stats = fs.statSync(path.join(filePath, dirName));
     if (!stats.isDirectory()) {
       j += 1;
