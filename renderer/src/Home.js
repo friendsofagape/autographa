@@ -9,10 +9,13 @@ import ReferenceContextProvider from './components/context/ReferenceContext';
 import * as logger from './logger';
 import ProjectList from './modules/projects/ProjectList';
 import AutographaContextProvider from './components/context/AutographaContext';
+import { useRouter } from 'next/router';
 
 const Home = () => {
+  const router = useRouter()
   const { states, action } = React.useContext(AuthenticationContext);
   const [token, setToken] = React.useState();
+  const [user, setUser] = React.useState();
   React.useEffect(() => {
     logger.debug('Home.js', 'Triggers loadUsers for the users list');
     const fs = window.require('fs');
@@ -32,10 +35,20 @@ const Home = () => {
         setToken(value);
       });
     }
-  }, [setToken, action, states.accessToken]);
+    localForage.getItem('users').then((user) => {
+      if (user.length !== 0) {
+        const newuser = user[0].username
+        setUser(newuser)
+        
+      }else{
+        localForage.removeItem('sessionToken')
+        // router.push('/') 
+      }
+    })
+  }, [setToken,user, setUser, action, states.accessToken]);
   return (
     <>
-      {token
+      {token && user
         ? (
           <AuthenticationContextProvider>
             <ProjectContextProvider>
