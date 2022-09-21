@@ -17,23 +17,30 @@ import { InformationCircleIcon } from '@heroicons/react/outline';
 import DownloadSvg from '@/icons/basil/Outline/Files/Download.svg';
 import CustomMultiComboBox from './CustomMultiComboBox';
 import langJson from '../../../../lib/lang/langNames.json';
-import createBibleResourceSB from './createBibleResourceSB';
+import createDownloadedResourceSB from './createDownloadedResourceSB';
 import customLicense from '../../../../lib/license/Custom.md';
+import OBSLicense from '../../../../lib/OBSLicense.md';
+import OBSData from '../../../../lib/OBSData.json';
 import { environment } from '../../../../../environment';
 import * as logger from '../../../../logger';
 
-const grammar = require('usfm-grammar');
+// const grammar = require('usfm-grammar');
 const md5 = require('md5');
 
 const fs = window.require('fs');
 const JSZip = require('jszip');
 
-const subjectTypeArray = [
-  { id: 2, name: 'Bible' },
-  { id: 1, name: 'Aligned Bible' },
+const subjectTypeArray = {
+  bible: [
+    { id: 2, name: 'Bible' },
+    { id: 1, name: 'Aligned Bible' },
   // { id: 3, name: 'Hebrew Old Testament' },
   // { id: 4, name: 'Greek New Testament' },
-];
+  ],
+  obs: [
+    { id: 1, name: 'Open Bible Stories' },
+  ],
+};
 
 // mui styles for accordion
 const useStyles = makeStyles((theme) => ({
@@ -131,13 +138,31 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
           }
         });
       } else {
-        // nothing selected default will be bible
-        url += '&subject=Bible';
+        // nothing selected default will be bible || obs
+        switch (selectResource) {
+          case 'bible':
+            url += '&subject=Bible';
+            break;
+          case 'obs':
+            url += `&subject=${subjectTypeArray.obs[0].name}`;
+            break;
+          default:
+            break;
+        }
       }
     } else {
       // initial load
-      // url = `${baseUrl}?subject=Bible&lang=en`;
-      url = `${baseUrl}?subject=Bible&subject=Aligned Bible&lang=en&lang=ml`;
+      switch (selectResource) {
+        case 'bible':
+          url = `${baseUrl}?subject=Bible&lang=en`;
+          break;
+        case 'obs':
+          url = `${baseUrl}?subject=${subjectTypeArray.obs[0].name}&lang=en`;
+          break;
+        default:
+          break;
+      }
+      // url = `${baseUrl}?subject=Bible&subject=Aligned Bible&lang=en&lang=ml`;
     }
     // url = 'https://git.door43.org/api/catalog/v5/search?subject=Aligned%20Bible&subject=Bible&lang=en&lang=ml&lang=hi';
     await fetch(url)
@@ -210,7 +235,7 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
     }
   };
 
-  const generateAgSettings = async (metaData, currentResourceMeta) => new Promise((resolve) => {
+  const generateAgSettings = async (metaData, currentResourceMeta, selectResource) => new Promise((resolve) => {
     logger.debug('DownloadResourcePopUp.js', 'In generate ag-settings for resource downloaded');
     try {
       const settings = {
@@ -220,7 +245,6 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
             scriptDirection: currentResourceMeta?.dublin_core?.language?.direction,
             starred: false,
             description: currentResourceMeta?.dublin_core?.description,
-            versification: 'ENG',
             copyright: currentResourceMeta?.dublin_core?.rights,
             lastSeen: moment().format(),
             refResources: [],
@@ -229,11 +253,75 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
         },
         sync: { services: { door43: [] } },
       };
+      if (selectResource === 'bible') {
+        settings.versification = 'ENG';
+      }
       resolve(settings);
     } catch (err) {
       throw new Error(`Generate Ag-settings Failed :  ${err}`);
     }
   });
+
+  const generateResourceIngredientsTextTransaltion = async (currentResourceMeta, path, folder, currentResourceProject, resourceBurritoFile) => {
+    // generating ingredients content in metadata
+    currentResourceMeta?.projects.forEach(async (project) => {
+      logger.debug('DownloadResourcePopUp.js', 'In adding ingredients to burrito for TextTransaltion');
+      if (fs.existsSync(path.join(folder, currentResourceProject.name, project.path))) {
+        const filecontent = await fs.readFileSync(path.join(folder, currentResourceProject.name, project.path), 'utf8');
+        // find checksum & size by read the file
+        const checksum = md5(filecontent);
+        const stats = fs.statSync(path.join(folder, currentResourceProject.name, project.path));
+        resourceBurritoFile.ingredients[project.path] = {
+          checksum: { md5: checksum },
+          mimeType: currentResourceMeta.dublin_core.format,
+          size: stats.size,
+          scope: { [project?.identifier.toUpperCase()]: [] },
+        };
+      } else {
+        logger.debug('DownloadResourcePopUp.js', 'error file not found in resource download');
+        throw new Error(`File not Exist in project Directory:  ${project.path}`);
+      }
+    });
+    return resourceBurritoFile;
+  };
+
+  const generateResourceIngredientsOBS = async (currentResourceMeta, path, folder, currentResourceProject, resourceBurritoFile, files) => {
+    logger.debug('DownloadResourcePopUp.js', 'In adding ingredients to burrito of OBS');
+    files.forEach(async (file) => {
+      const endPart = file.split('/').pop();
+      const regX = /^\d{2}.md$/;
+      if (regX.test(endPart) || ['intro.md', 'title.md'].indexOf(endPart) > -1) {
+        // console.log('matched : ', file);
+        if (fs.existsSync(path.join(folder, file))) {
+            const filecontent = await fs.readFileSync(path.join(folder, file), 'utf8');
+            // find checksum & size by read the file
+            const checksum = md5(filecontent);
+            const stats = fs.statSync(path.join(folder, file));
+            resourceBurritoFile.ingredients[file.replace(currentResourceProject.name, '.')] = {
+              checksum: { md5: checksum },
+              mimeType: currentResourceMeta.dublin_core.format,
+              size: stats.size,
+            };
+            if (endPart.toLowerCase() === 'front.md') {
+              resourceBurritoFile.ingredients[file.replace(currentResourceProject.name, '.')].role = 'pubdata';
+            } else if (regX.test(endPart)) {
+              // eslint-disable-next-line array-callback-return
+              resourceBurritoFile.ingredients[file.replace(currentResourceProject.name, '.')].scope = OBSData.filter((story) => {
+                if (`${story.storyId.toString().padStart(2, 0)}.md` === endPart.toLowerCase()) {
+                  return story;
+                }
+              })[0].scope;
+            } else {
+              resourceBurritoFile.ingredients[file.replace(currentResourceProject.name, '.')].role = 'title';
+            }
+          } else {
+            logger.debug('DownloadResourcePopUp.js', 'error file not found in resource download');
+            throw new Error(`File not Exist in project Directory:  ${file}`);
+          }
+      }
+    });
+    return resourceBurritoFile;
+  };
 
   const handleDownloadResources = async () => {
     // check total count to download
@@ -254,6 +342,7 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
       let currentResourceProject = '';
       let licenseFileFound = false;
       let currentProjectName = '';
+      let customLicenseContent = 'empty';
 
       (async () => {
         try {
@@ -278,10 +367,12 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
                       logger.debug('DownloadResourcePopUp.js', 'In resource download - fetch resourceMeta yml');
                       currentResourceMeta = response;
                       currentResourceProject = resource;
-                      resourceBurritoFile = await createBibleResourceSB(user?.username, currentResourceMeta, currentResourceProject);
+                      // creating burrito template
+                      resourceBurritoFile = await createDownloadedResourceSB(user?.username, currentResourceMeta, currentResourceProject, selectResource);
                       logger.debug('DownloadResourcePopUp.js', 'In resource download - basic burrito generated for resource ', `${resource.name}-${resource.owner}`);
                       // console.log(`${resource.name}-${resource.owner}`);
-                      // console.log(resourceBurritoFile);
+                      console.log(resourceBurritoFile);
+
                       currentProjectName = `${resource.name}_${Object.keys(resourceBurritoFile.identification.primary.ag)[0]}`;
                       // console.log(currentProjectName);
                       await fetch(resource.zipball_url)
@@ -300,16 +391,17 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
                           const filecontent = await fs.readFileSync(path.join(folder, `${currentProjectName}.zip`));
                           const result = await JSZip.loadAsync(filecontent);
                           const keys = Object.keys(result.files);
+
                           // eslint-disable-next-line no-restricted-syntax
                           for (const key of keys) {
                             const item = result.files[key];
                             if (item.dir) {
                               fs.mkdirSync(path.join(folder, item.name), { recursive: true });
                             } else {
-                              // call usfm grammmar if Aligned Bible to convert
                               // eslint-disable-next-line no-await-in-loop
                               const bufferContent = Buffer.from(await item.async('arraybuffer'));
 
+                              // call usfm grammmar if Aligned Bible to convert
                               // aligned bible conversion section test --------------------------------------------------------
                               // fs.writeFileSync(path.join(folder, item.name), bufferContent);
                               // if (currentResourceProject.subject === 'Aligned Bible' && key.endsWith('.usfm')) {
@@ -318,18 +410,22 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
                               //   console.log('inside aligned conversion : ', currentResourceProject.subject, 'file : ', key);
                               //   console.log('my ufsm parser buffer inp ---', bufferContent);
 
-                              //   const uint8array = new TextEncoder('utf-8').encode(bufferContent);
-                              //   const decodedText = new TextDecoder().decode(uint8array);
-                              //   console.log('my ufsm parser buffer string value  ====---', decodedText);
+                              //   // const uint8array = new TextEncoder('utf-8').encode(bufferContent);
+                              //   // const decodedText = new TextDecoder().decode(uint8array);
+                              //   // // console.log('my ufsm parser buffer string value  ====---', decodedText);
 
-                              //   // const decodedTextRead = fs.readFileSync(path.join(folder, key), 'utf8');
+                              //   const decodedTextRead = fs.readFileSync(path.join(folder, key), 'utf8');
 
-                              //   const myUsfmParser = new grammar.USFMParser(decodedText);
-                              //   // const alignedJsonVerseOnly = myUsfmParser.toJSON(grammar.FILTER.SCRIPTURE);
-                              //   const alignedJsonVerseOnly = myUsfmParser.toJSON();
-                              //   console.log('aligned data verse : ', alignedJsonVerseOnly);
+                              //   const myUsfmParser = new grammar.USFMParser(decodedTextRead);
+                              //   console.log('usfm parse step 1');
+                              //   const alignedJsonVerseOnly = myUsfmParser.toJSON(grammar.FILTER.SCRIPTURE);
+                              //   // const alignedJsonVerseOnly = myUsfmParser.toJSON();
+                              //   console.log('aligned data verse complaeted  step 2: ');
+                              //   // console.log('aligned data verse complaeted  : ', alignedJsonVerseOnly);
                               //   const myJsonParser = new grammar.JSONParser(alignedJsonVerseOnly);
+                              //   console.log('usfm parse step 3');
                               //   const usfmData = myJsonParser.toUSFM();
+                              //   console.log('usfm parse step 4 finished');
                               //   console.log('converted data : ', usfmData);
                               //   console.log('===================================================');
                               // }
@@ -354,15 +450,29 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
                             }
                           }
 
+                          // ingredients add to burrito
+                          switch (selectResource) {
+                            case 'bible':
+                              resourceBurritoFile = await generateResourceIngredientsTextTransaltion(currentResourceMeta, path, folder, currentResourceProject, resourceBurritoFile);
+                              customLicenseContent = customLicense;
+                              break;
+                              case 'obs':
+                              resourceBurritoFile = await generateResourceIngredientsOBS(currentResourceMeta, path, folder, currentResourceProject, resourceBurritoFile, keys);
+                              customLicenseContent = OBSLicense;
+                              break;
+                            default:
+                              throw new Error(' can not process :Inavalid Type od Resource requested');
+                          }
+
                           // custom license adding
                           if (!licenseFileFound) {
                             logger.debug('DownloadResourcePopUp.js', 'In resource custom license add - no license found');
-                            // console.log('no license file found -', md5(customLicense));
+                            // console.log('no license file found -', md5(customLicenseContent));
                             if (fs.existsSync(path.join(folder, currentResourceProject.name))) {
-                              fs.writeFileSync(path.join(folder, currentResourceProject.name, 'LICENSE.md'), customLicense);
+                              fs.writeFileSync(path.join(folder, currentResourceProject.name, 'LICENSE.md'), customLicenseContent);
                               const stats = fs.statSync(path.join(folder, currentResourceProject.name, 'LICENSE.md'));
                               resourceBurritoFile.ingredients['./LICENSE.md'] = {
-                                checksum: { md5: md5(customLicense) },
+                                checksum: { md5: md5(customLicenseContent) },
                                 mimeType: 'text/md',
                                 size: stats.size,
                                 role: 'x-licence',
@@ -370,30 +480,9 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
                             }
                           }
 
-                          // generating ingredients content in metadata
-                          currentResourceMeta?.projects.forEach(async (project) => {
-                            logger.debug('DownloadResourcePopUp.js', 'In adding ingredients to burrito');
-                            if (fs.existsSync(path.join(folder, currentResourceProject.name, project.path))) {
-                              const filecontent = await fs.readFileSync(path.join(folder, currentResourceProject.name, project.path), 'utf8');
-                              // find checksum & size by read the file
-                              const checksum = md5(filecontent);
-                              const stats = fs.statSync(path.join(folder, currentResourceProject.name, project.path));
-                              resourceBurritoFile.ingredients[project.path] = {
-                                checksum: { md5: checksum },
-                                mimeType: currentResourceMeta.dublin_core.format,
-                                size: stats.size,
-                                scope: { [project?.identifier.toUpperCase()]: [] },
-                              };
-                            } else {
-                              logger.debug('DownloadResourcePopUp.js', 'error file not found in resource download');
-                              // console.log('ERR xxxxxxxxxxxxxxxxxxxxx File not found in the project directory', project.path);
-                              throw new Error(`File not Exist in project Directory:  ${project.path}`);
-                            }
-                          });
-
                           // ag settings file generation
                           logger.debug('DownloadResourcePopUp.js', 'generating ag-settings');
-                          const settings = await generateAgSettings(resourceBurritoFile, currentResourceMeta);
+                          const settings = await generateAgSettings(resourceBurritoFile, currentResourceMeta, selectResource);
                           await fs.writeFileSync(path.join(folder, currentResourceProject.name, 'ag-settings.json'), JSON.stringify(settings));
                           const settingsContent = fs.readFileSync(path.join(folder, currentResourceProject.name, 'ag-settings.json'), 'utf8');
                           const checksum = md5(settingsContent);
@@ -556,7 +645,7 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
                         <CustomMultiComboBox
                           selectedList={selectedTypeFilter}
                           setSelectedList={setSelectedTypeFilter}
-                          customData={subjectTypeArray}
+                          customData={selectResource === 'bible' ? subjectTypeArray.bible : subjectTypeArray.obs}
                         />
                       </div>
                       <div className="flex justify-end mt-5 gap-5 px-5">

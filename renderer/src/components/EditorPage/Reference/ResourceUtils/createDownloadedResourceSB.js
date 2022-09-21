@@ -1,13 +1,14 @@
 import moment from 'moment';
 import { v5 as uuidv5 } from 'uuid';
-import burrito from '../../../../lib/BurritoTemplete.json';
+import Textburrito from '../../../../lib/BurritoTemplete.json';
+import OBSburrito from '../../../../lib/OBSTemplete.json';
 import languageCode from '../../../../lib/LanguageCode.json';
 import * as logger from '../../../../logger';
 import { environment } from '../../../../../environment';
 import packageInfo from '../../../../../../package.json';
 
 const findCode = (list, id) => {
-    logger.debug('createBibleResourceSB.js', 'In findCode for getting the language code');
+    logger.debug('createDownloadedResourceSB.js', 'In findCode for getting the language code');
     let code = '';
     list.forEach((obj) => {
       if ((obj.name).toLowerCase() === id.toLowerCase()) {
@@ -16,8 +17,8 @@ const findCode = (list, id) => {
     });
     return code;
   };
-const createBibleResourceSB = async (username, resourceMeta, projectResource) => {
-    logger.debug('createBibleResourceSB.js', 'Create Metadata for downloaded bible resource');
+const createDownloadedResourceSB = async (username, resourceMeta, projectResource, selectResource) => {
+    logger.debug('createDownloadedResourceSB.js', 'Create Metadata for downloaded bible resource');
     // generate unique key
     try {
     const key = username + projectResource.name + projectResource.owner + moment().format();
@@ -26,7 +27,17 @@ const createBibleResourceSB = async (username, resourceMeta, projectResource) =>
     // console.log('unique id : ', id);
     return new Promise((resolve) => {
         let json = {};
-        json = burrito;
+        switch (selectResource) {
+          case 'bible':
+            json = Textburrito;
+            break;
+            case 'obs':
+            json = OBSburrito;
+            break;
+          default:
+            throw new Error(' can not process :Inavalid Type od Resource requested');
+            // break;
+        }
         json.meta.generator.userName = username;
         json.meta.generator.softwareName = 'Autographa';
         json.meta.generator.softwareVersion = packageInfo.version;
@@ -72,13 +83,16 @@ const createBibleResourceSB = async (username, resourceMeta, projectResource) =>
           },
         ];
         json.copyright.licenses[0].ingredient = 'LICENSE.md';
-        resourceMeta.books.forEach((scope) => {
-          json.type.flavorType.currentScope[scope.toUpperCase()] = [];
-          localizedNames[scope.toUpperCase()] = json.localizedNames[scope.toUpperCase()];
-        });
-        json.localizedNames = localizedNames;
 
-        logger.debug('createBibleResourceSB.js', 'Created the createBibleResource SB');
+        if (selectResource === 'bible') {
+          resourceMeta.books.forEach((scope) => {
+            json.type.flavorType.currentScope[scope.toUpperCase()] = [];
+            localizedNames[scope.toUpperCase()] = json.localizedNames[scope.toUpperCase()];
+          });
+          json.localizedNames = localizedNames;
+        }
+
+        logger.debug('createDownloadedResourceSB.js', 'Created the createBibleResource SB');
         resolve(json);
       });
     } catch (err) {
@@ -86,4 +100,4 @@ const createBibleResourceSB = async (username, resourceMeta, projectResource) =>
     }
 };
 
-export default createBibleResourceSB;
+export default createDownloadedResourceSB;
