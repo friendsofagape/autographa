@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
@@ -65,6 +66,7 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
   const { t } = useTranslation();
   const [snackBar, setOpenSnackBar] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
+  const [downloadStarted, setDownloadStarted] = React.useState(false);
   const [loadFilterDiv, setLoadFilterDiv] = React.useState(false);
   const [snackText, setSnackText] = React.useState('');
   // eslint-disable-next-line no-unused-vars
@@ -353,6 +355,7 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
             // }
             logger.debug('DownloadResourcePopUp.js', 'In resource download all resource loop');
             console.log('resource download started ---', selectedResourceCount);
+            setDownloadStarted(true);
             // eslint-disable-next-line no-restricted-syntax, guard-for-in
             for (const key in resourceData) {
               // eslint-disable-next-line no-await-in-loop, no-restricted-syntax, guard-for-in
@@ -529,6 +532,7 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
               // console.log('lang group finished ---------------------------');
             }
             console.log('DOWNLOAD FINISHED');
+            setDownloadStarted(false);
             setOpenSnackBar(true);
             setNotify('success');
             setSnackText('All Resource Downloaded Succesfully');
@@ -672,9 +676,17 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
                 )}
               </div>
 
-              <div className="w-full bg-white my-3 ">
+              <div className=" bg-white my-3 ">
                 <div aria-label="resources-download-content" className="flex-col  p-2 ">
-                  {loading ? <LoadingScreen /> : (
+                  {loading ? <LoadingScreen />
+                  : downloadStarted
+                  ? (
+                    <div className="flex justify-evenly items-center text-sm font-medium text-center">
+                      <LoadingScreen />
+                      <div className=" ">Downlaod in Progress..</div>
+                    </div>
+)
+                  : (
                     <>
                       {Object.keys(resourceData).map((element) => (
                         <div className="mb-1">
