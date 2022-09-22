@@ -585,15 +585,17 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
       >
         <Dialog
           as="div"
-          className="fixed inset-0 z-10 overflow-y-auto"
+          className="fixed inset-0 z-50 overflow-y-auto"
           static
           open={isOpenDonwloadPopUp}
           onClose={modalClose}
         >
-          <Dialog.Overlay className="fixed inset-0 bg-black opacity-30" />
+          {/* <Dialog.Overlay className="fixed inset-0 bg-black opacity-30" /> */}
+          <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
 
           <div className="flex items-center justify-center h-screen ">
-            <div className="flex-col max-w-xl max-h-[32rem] items-center justify-center  z-50 shadow rounded bg-white ">
+            {/* <div className="flex-col max-w-xl max-h-[32rem] items-center justify-center  z-50 shadow rounded bg-white "> */}
+            <div className="flex-col md:w-6/12 xl:max-w-xl items-center justify-center z-50 shadow rounded bg-white">
 
               <div className="w-full flex bg-secondary justify-between text-white p-1 rounded-t ">
                 <div aria-label="resources-download-title" className="z-50  flex uppercase  p-2 text-xs tracking-widest leading-snug">
@@ -626,12 +628,17 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
                 <hr />
                 {/* filter / status section show on conditions */}
                 {loadFilterDiv && (
-                  <div className="flex-col  border-2 m-2 border-gray-300 bg-gray-200">
-                    <div className="w-full flex justify-center text-sm py-1">Filter Options</div>
+                  // <div className="flex-col  border-2 m-2 border-gray-300 bg-gray-200">
+                  //   <div className="w-full flex justify-center text-sm py-1">Filter Options</div>
 
-                    <div className=" flex-col text-sm p-2 ">
+                  //   <div className=" flex-col text-sm p-2 ">
+                  <div className="flex-col border-2 m-2 border-gray-300 bg-gray-200">
+                    <div className="w-full flex justify-center text-md py-1 bg-black text-white">Filter Options</div>
+
+                    <div className=" flex-col text-sm p-2 mt-2">
                       <div className="flex justify-between items-center">
-                        <label htmlFor="filter-lang">Language</label>
+                        {/* <label htmlFor="filter-lang">Language</label> */}
+                        <label htmlFor="filter-lang" className="font-bold text-base">Language</label>
                         <div className="flex items-center">
                           <div title="type and select multiple items , selected item can be removed by clicking again">
                             <InformationCircleIcon
@@ -647,8 +654,10 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
                           />
                         </div>
                       </div>
-                      <div className="flex justify-between  items-center mt-2">
-                        <label htmlFor="filter-type">Type</label>
+                      {/* <div className="flex justify-between  items-center mt-2">
+                        <label htmlFor="filter-type">Type</label> */}
+                      <div className="flex justify-between items-center mt-2">
+                        <label htmlFor="filter-type" className="font-bold text-base">Type</label>
                         <CustomMultiComboBox
                           selectedList={selectedTypeFilter}
                           setSelectedList={setSelectedTypeFilter}
@@ -676,7 +685,8 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
                 )}
               </div>
 
-              <div className=" bg-white my-3 ">
+              {/* <div className=" bg-white my-3 "> */}
+              <div className="w-full bg-white my-3 overflow-auto max-h-60 scrollbars-width ">
                 <div aria-label="resources-download-content" className="flex-col  p-2 ">
                   {loading ? <LoadingScreen />
                   : downloadStarted
