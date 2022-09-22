@@ -34,9 +34,9 @@ const JSZip = require('jszip');
 const subjectTypeArray = {
   bible: [
     { id: 2, name: 'Bible' },
-    { id: 1, name: 'Aligned Bible' },
-  // { id: 3, name: 'Hebrew Old Testament' },
-  // { id: 4, name: 'Greek New Testament' },
+    // { id: 1, name: 'Aligned Bible' },
+    // { id: 3, name: 'Hebrew Old Testament' },
+    // { id: 4, name: 'Greek New Testament' },
   ],
   obs: [
     { id: 1, name: 'Open Bible Stories' },
@@ -66,7 +66,6 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
   const { t } = useTranslation();
   const [snackBar, setOpenSnackBar] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
-  const [downloadStarted, setDownloadStarted] = React.useState(false);
   const [loadFilterDiv, setLoadFilterDiv] = React.useState(false);
   const [snackText, setSnackText] = React.useState('');
   // eslint-disable-next-line no-unused-vars
@@ -76,10 +75,10 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
   const [selectedLangFilter, setSelectedLangFilter] = React.useState([]);
   const [selectedTypeFilter, setSelectedTypeFilter] = React.useState([]);
   // resource Download
-  // const [downloadStarted, setDownloadStarted] = React.useState(false);
+  const [downloadStarted, setDownloadStarted] = React.useState(false);
   // const [downloadCompleted, setDownloadCompleted] = React.useState(false);
-  // const [totalDownload, setTotalDownload] = React.useState(0);
-  // const [downloadCount, setDownloadCount] = React.useState(0);
+  const [totalDownload, setTotalDownload] = React.useState(0);
+  const [downloadCount, setDownloadCount] = React.useState(0);
 
   // const [resourceDownload, setResourceDownload] = React.useState({
   //   started: false,
@@ -97,7 +96,9 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
   } = React.useContext(AutographaContext);
 
   const modalClose = () => {
-    setIsOpenDonwloadPopUp(false);
+    if (!downloadStarted) {
+      setIsOpenDonwloadPopUp(false);
+    }
   };
 
   const addNewNotification = async (title, text, type) => {
@@ -227,13 +228,19 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
 
   const handleSaveFilter = async () => {
     logger.debug('DownloadResourcePopUp.js', 'save filter and call fetch');
-    setLoadFilterDiv(!loadFilterDiv);
-    if (selectedLangFilter.length > 0 || selectedTypeFilter.length > 0) {
-      await fetchResource(true);
+    if (!downloadStarted) {
+      setLoadFilterDiv(!loadFilterDiv);
+      if (selectedLangFilter.length > 0 || selectedTypeFilter.length > 0) {
+        await fetchResource(true);
+      } else {
+        setOpenSnackBar(true);
+        setNotify('warning');
+        setSnackText('No filter applied, please select filter');
+      }
     } else {
       setOpenSnackBar(true);
       setNotify('warning');
-      setSnackText('No filter applied, please select filter');
+      setSnackText('Please Wait, Download in progrss');
     }
   };
 
@@ -295,31 +302,31 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
       if (regX.test(endPart) || ['intro.md', 'title.md'].indexOf(endPart) > -1) {
         // console.log('matched : ', file);
         if (fs.existsSync(path.join(folder, file))) {
-            const filecontent = await fs.readFileSync(path.join(folder, file), 'utf8');
-            // find checksum & size by read the file
-            const checksum = md5(filecontent);
-            const stats = fs.statSync(path.join(folder, file));
-            resourceBurritoFile.ingredients[file.replace(`${currentResourceProject.name}/`, '')] = {
-              checksum: { md5: checksum },
-              mimeType: currentResourceMeta.dublin_core.format,
-              size: stats.size,
-            };
-            if (endPart.toLowerCase() === 'front.md') {
-              resourceBurritoFile.ingredients[file.replace(`${currentResourceProject.name}/`, '')].role = 'pubdata';
-            } else if (regX.test(endPart)) {
-              // eslint-disable-next-line array-callback-return
-              resourceBurritoFile.ingredients[file.replace(`${currentResourceProject.name}/`, '')].scope = OBSData.filter((story) => {
-                if (`${story.storyId.toString().padStart(2, 0)}.md` === endPart.toLowerCase()) {
-                  return story;
-                }
-              })[0].scope;
-            } else {
-              resourceBurritoFile.ingredients[file.replace(`${currentResourceProject.name}/`, '')].role = 'title';
-            }
+          const filecontent = await fs.readFileSync(path.join(folder, file), 'utf8');
+          // find checksum & size by read the file
+          const checksum = md5(filecontent);
+          const stats = fs.statSync(path.join(folder, file));
+          resourceBurritoFile.ingredients[file.replace(`${currentResourceProject.name}/`, '')] = {
+            checksum: { md5: checksum },
+            mimeType: currentResourceMeta.dublin_core.format,
+            size: stats.size,
+          };
+          if (endPart.toLowerCase() === 'front.md') {
+            resourceBurritoFile.ingredients[file.replace(`${currentResourceProject.name}/`, '')].role = 'pubdata';
+          } else if (regX.test(endPart)) {
+            // eslint-disable-next-line array-callback-return
+            resourceBurritoFile.ingredients[file.replace(`${currentResourceProject.name}/`, '')].scope = OBSData.filter((story) => {
+              if (`${story.storyId.toString().padStart(2, 0)}.md` === endPart.toLowerCase()) {
+                return story;
+              }
+            })[0].scope;
           } else {
-            logger.debug('DownloadResourcePopUp.js', 'error file not found in resource download');
-            throw new Error(`File not Exist in project Directory:  ${file}`);
+            resourceBurritoFile.ingredients[file.replace(`${currentResourceProject.name}/`, '')].role = 'title';
           }
+        } else {
+          logger.debug('DownloadResourcePopUp.js', 'error file not found in resource download');
+          throw new Error(`File not Exist in project Directory:  ${file}`);
+        }
       }
     });
     return resourceBurritoFile;
@@ -349,10 +356,11 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
       (async () => {
         try {
           if (selectedResourceCount > 0) {
-            // if (downloadStarted) {
-            //   console.log('downlaod in progress');
-            //   throw new Error('Download in progress');
-            // }
+            if (downloadStarted) {
+              // console.log('downlaod in progress');
+              throw new Error('Download in progress, please wait');
+            }
+            setTotalDownload(selectedResourceCount);
             logger.debug('DownloadResourcePopUp.js', 'In resource download all resource loop');
             console.log('resource download started ---', selectedResourceCount);
             setDownloadStarted(true);
@@ -460,7 +468,7 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
                               resourceBurritoFile = await generateResourceIngredientsTextTransaltion(currentResourceMeta, path, folder, currentResourceProject, resourceBurritoFile);
                               customLicenseContent = customLicense;
                               break;
-                              case 'obs':
+                            case 'obs':
                               resourceBurritoFile = await generateResourceIngredientsOBS(currentResourceMeta, path, folder, currentResourceProject, resourceBurritoFile, keys);
                               customLicenseContent = OBSLicense;
                               break;
@@ -521,6 +529,7 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
                   setOpenSnackBar(true);
                   setNotify('success');
                   setSnackText(`${resource.name} : ${resource.owner} download completed`);
+                  setDownloadCount((prev) => prev + 1);
                   // eslint-disable-next-line no-await-in-loop
                   await addNewNotification(
                     'Resource Download',
@@ -533,6 +542,8 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
             }
             console.log('DOWNLOAD FINISHED');
             setDownloadStarted(false);
+            setTotalDownload(0);
+            setDownloadCount(0);
             setOpenSnackBar(true);
             setNotify('success');
             setSnackText('All Resource Downloaded Succesfully');
@@ -628,11 +639,8 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
                 <hr />
                 {/* filter / status section show on conditions */}
                 {loadFilterDiv && (
-                  // <div className="flex-col  border-2 m-2 border-gray-300 bg-gray-200">
-                  //   <div className="w-full flex justify-center text-sm py-1">Filter Options</div>
-
-                  //   <div className=" flex-col text-sm p-2 ">
-                  <div className="flex-col border-2 m-2 border-gray-300 bg-gray-200">
+                  <div className="flex-col border-2 m-2 border-gray-300 ">
+                    {/* <div className="flex-col border-2 m-2 border-gray-300 bg-gray-200"> */}
                     <div className="w-full flex justify-center text-md py-1 bg-black text-white">Filter Options</div>
 
                     <div className=" flex-col text-sm p-2 mt-2">
@@ -654,8 +662,6 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
                           />
                         </div>
                       </div>
-                      {/* <div className="flex justify-between  items-center mt-2">
-                        <label htmlFor="filter-type">Type</label> */}
                       <div className="flex justify-between items-center mt-2">
                         <label htmlFor="filter-type" className="font-bold text-base">Type</label>
                         <CustomMultiComboBox
@@ -689,64 +695,73 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
               <div className="w-full bg-white my-3 overflow-auto max-h-60 scrollbars-width ">
                 <div aria-label="resources-download-content" className="flex-col  p-2 ">
                   {loading ? <LoadingScreen />
-                  : downloadStarted
-                  ? (
-                    <div className="flex justify-evenly items-center text-sm font-medium text-center">
-                      <LoadingScreen />
-                      <div className=" ">Downlaod in Progress..</div>
-                    </div>
-)
-                  : (
-                    <>
-                      {Object.keys(resourceData).map((element) => (
-                        <div className="mb-1">
-                          <Accordion className={classes.root}>
-                            <AccordionSummary
-                              expandIcon={<ExpandMore style={{ color: '#000' }} />}
-                              aria-controls="panel1a-content"
-                              id="panel1a-header"
-                              className={classes.summary}
-                            >
-                              <Typography className={classes.heading}>
-                                <div className="flex gap-3 justify-center items-center">
-                                  <input type="CheckBox" className="" onChange={(e) => handleCheckbox(e, { selection: 'full', id: element })} />
-                                  <h4>{`${resourceData[element][0].language_title} (${element})`}</h4>
-                                </div>
-                              </Typography>
-                            </AccordionSummary>
-                            <AccordionDetails>
-
-                              <div className="w-full">
-                                <div className="grid md:grid-cols-9 grid-cols-10 gap-2 text-center">
-                                  <div className="col-span-1" />
-                                  <div className="col-span-1 font-medium">Resource</div>
-                                  <div className="md:col-span-2 col-span-3 font-medium">Type</div>
-                                  <div className="col-span-3 font-medium">Organization</div>
-                                  <div className="col-span-2 font-medium" />
-                                </div>
-                                <hr />
-                                {resourceData[element].map((row) => (
-                                  <div className="grid md:grid-cols-9 grid-cols-10 gap-2 text-center p-1.5 text-sm">
-                                    <div>
-                                      <input className="col-span-1" type="CheckBox" checked={row.isChecked} onChange={(e) => handleCheckbox(e, { selection: 'single', id: row.id, parent: element })} />
-                                    </div>
-                                    <div className="col-span-1">{row.name}</div>
-                                    <div className="md:col-span-2 col-span-3">{row.subject}</div>
-                                    <div className="col-span-3">{row.owner}</div>
-                                    <div className="col-span-2 text-xs">
-                                      {`${(row.released).split('T')[0]} (${row.release.tag_name})`}
-                                    </div>
-                                  </div>
-                                ))}
-                              </div>
-                            </AccordionDetails>
-                          </Accordion>
-                          <hr />
+                    : downloadStarted
+                      ? (
+                        <div className="flex justify-evenly items-center text-sm font-medium text-center">
+                          <LoadingScreen />
+                          <div className="p-1">
+                            Downlaod in Progress
+                            <span>
+                              (
+                              {downloadCount}
+                              /
+                              {totalDownload}
+                              )
+                            </span>
+                          </div>
                         </div>
-                      ))}
+                      )
+                      : (
+                        <>
+                          {Object.keys(resourceData).map((element) => (
+                            <div className="mb-1">
+                              <Accordion className={classes.root}>
+                                <AccordionSummary
+                                  expandIcon={<ExpandMore style={{ color: '#000' }} />}
+                                  aria-controls="panel1a-content"
+                                  id="panel1a-header"
+                                  className={classes.summary}
+                                >
+                                  <Typography className={classes.heading}>
+                                    <div className="flex gap-3 justify-center items-center">
+                                      <input type="CheckBox" className="" onChange={(e) => handleCheckbox(e, { selection: 'full', id: element })} />
+                                      <h4>{`${resourceData[element][0].language_title} (${element})`}</h4>
+                                    </div>
+                                  </Typography>
+                                </AccordionSummary>
+                                <AccordionDetails>
 
-                    </>
-                  )}
+                                  <div className="w-full">
+                                    <div className="grid md:grid-cols-9 grid-cols-10 gap-2 text-center">
+                                      <div className="col-span-1" />
+                                      <div className="col-span-1 font-medium">Resource</div>
+                                      <div className="md:col-span-2 col-span-3 font-medium">Type</div>
+                                      <div className="col-span-3 font-medium">Organization</div>
+                                      <div className="col-span-2 font-medium" />
+                                    </div>
+                                    <hr />
+                                    {resourceData[element].map((row) => (
+                                      <div className="grid md:grid-cols-9 grid-cols-10 gap-2 text-center p-1.5 text-sm">
+                                        <div>
+                                          <input className="col-span-1" type="CheckBox" checked={row.isChecked} onChange={(e) => handleCheckbox(e, { selection: 'single', id: row.id, parent: element })} />
+                                        </div>
+                                        <div className="col-span-1">{row.name}</div>
+                                        <div className="md:col-span-2 col-span-3">{row.subject}</div>
+                                        <div className="col-span-3">{row.owner}</div>
+                                        <div className="col-span-2 text-xs">
+                                          {`${(row.released).split('T')[0]} (${row.release.tag_name})`}
+                                        </div>
+                                      </div>
+                                    ))}
+                                  </div>
+                                </AccordionDetails>
+                              </Accordion>
+                              <hr />
+                            </div>
+                          ))}
+
+                        </>
+                      )}
                 </div>
               </div>
 
