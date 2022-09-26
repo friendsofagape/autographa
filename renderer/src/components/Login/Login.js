@@ -138,7 +138,7 @@ export default function Login() {
         //   .then((response) => response.json())
         //   .then((data) => console.log(data));
       } else {
-        router.push('/projects');
+        router.push('/');
         // } else {
         // router.push('/newproject');
         // The below code is commented for UI dev purpose.
