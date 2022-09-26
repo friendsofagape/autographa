@@ -79,6 +79,7 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
   // const [downloadCompleted, setDownloadCompleted] = React.useState(false);
   const [totalDownload, setTotalDownload] = React.useState(0);
   const [downloadCount, setDownloadCount] = React.useState(0);
+  const [expandAccordion, setExpandAccordion] = React.useState('');
 
   // const [resourceDownload, setResourceDownload] = React.useState({
   //   started: false,
@@ -99,6 +100,11 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
     if (!downloadStarted) {
       setIsOpenDonwloadPopUp(false);
     }
+  };
+
+  const toggleAcordion = (element) => {
+    if (expandAccordion === element) { setExpandAccordion(''); }
+    if (expandAccordion !== element) { setExpandAccordion(element); }
   };
 
   const addNewNotification = async (title, text, type) => {
@@ -168,11 +174,14 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
       // url = `${baseUrl}?subject=Bible&subject=Aligned Bible&lang=en&lang=ml`;
     }
     // url = 'https://git.door43.org/api/catalog/v5/search?subject=Aligned%20Bible&subject=Bible&lang=en&lang=ml&lang=hi';
+    const temp_resource = {};
+    selectedLangFilter.forEach((langObj) => {
+      temp_resource[langObj.lc] = [];
+    });
     await fetch(url)
       .then((response) => response.json())
       .then((res) => {
         logger.debug('DownloadResourcePopUp.js', 'generating language based resources after fetch');
-        const temp_resource = {};
         res.data.forEach((element) => {
           element.isChecked = false;
           if (element.language in temp_resource) {
@@ -242,6 +251,17 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
       setNotify('warning');
       setSnackText('Please Wait, Download in progrss');
     }
+  };
+
+  const handleRemoveAccordion = (langCode) => {
+    const resourceDataFiltered = [];
+    // eslint-disable-next-line array-callback-return
+    Object.keys(resourceData).filter((element) => {
+      if (element.toLowerCase() !== langCode.toLowerCase()) {
+        resourceDataFiltered[element] = resourceData[element];
+      }
+    });
+    setresourceData(resourceDataFiltered);
   };
 
   const generateAgSettings = async (metaData, currentResourceMeta, selectResource) => new Promise((resolve) => {
@@ -640,12 +660,10 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
                 {/* filter / status section show on conditions */}
                 {loadFilterDiv && (
                   <div className="flex-col border-2 m-2 border-gray-300 ">
-                    {/* <div className="flex-col border-2 m-2 border-gray-300 bg-gray-200"> */}
                     <div className="w-full flex justify-center text-md py-1 bg-black text-white">Filter Options</div>
 
                     <div className=" flex-col text-sm p-2 mt-2">
                       <div className="flex justify-between items-center">
-                        {/* <label htmlFor="filter-lang">Language</label> */}
                         <label htmlFor="filter-lang" className="font-bold text-base">Language</label>
                         <div className="flex items-center">
                           <div title="type and select multiple items , selected item can be removed by clicking again">
@@ -715,44 +733,81 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
                         <>
                           {Object.keys(resourceData).map((element) => (
                             <div className="mb-1">
-                              <Accordion className={classes.root}>
+                              <Accordion
+                                className={classes.root}
+                                expanded={expandAccordion === element}
+                              >
                                 <AccordionSummary
                                   expandIcon={<ExpandMore style={{ color: '#000' }} />}
-                                  aria-controls="panel1a-content"
-                                  id="panel1a-header"
+                                  aria-controls={`panel1a-header${element}`}
+                                  id={`panel1a-header${element}`}
                                   className={classes.summary}
+                                  IconButtonProps={{
+                                    onClick: () => toggleAcordion(element),
+                                  }}
                                 >
-                                  <Typography className={classes.heading}>
-                                    <div className="flex gap-3 justify-center items-center">
-                                      <input type="CheckBox" className="" onChange={(e) => handleCheckbox(e, { selection: 'full', id: element })} />
-                                      <h4>{`${resourceData[element][0].language_title} (${element})`}</h4>
+                                  <div className="flex justify-between w-full px-2">
+                                    <Typography className={classes.heading}>
+                                      <div className="flex gap-3 justify-center items-center">
+                                        <input
+                                          type="CheckBox"
+                                          disabled={!(resourceData[element].length > 0)}
+                                          className={`${resourceData[element].length > 0 ? '' : 'bg-gray-300'}`}
+                                          onChange={(e) => handleCheckbox(e, { selection: 'full', id: element })}
+                                        />
+                                        <h4 className={`${resourceData[element].length > 0 ? '' : ' text-red-600'} `}>
+                                          {`(${element}) ${resourceData[element].length > 0 ? resourceData[element][0].language_title : 'No Content'} `}
+                                        </h4>
+                                      </div>
+                                    </Typography>
+                                    <div className="">
+                                      <XIcon
+                                        className="h-4 w-4 text-red-600 cursor-pointer transform transition duration-200 hover:scale-[1.7]"
+                                        onClick={() => handleRemoveAccordion(element)}
+                                      />
                                     </div>
-                                  </Typography>
+                                  </div>
                                 </AccordionSummary>
                                 <AccordionDetails>
-
                                   <div className="w-full">
-                                    <div className="grid md:grid-cols-9 grid-cols-10 gap-2 text-center">
-                                      <div className="col-span-1" />
-                                      <div className="col-span-1 font-medium">Resource</div>
-                                      <div className="md:col-span-2 col-span-3 font-medium">Type</div>
-                                      <div className="col-span-3 font-medium">Organization</div>
-                                      <div className="col-span-2 font-medium" />
-                                    </div>
-                                    <hr />
-                                    {resourceData[element].map((row) => (
-                                      <div className="grid md:grid-cols-9 grid-cols-10 gap-2 text-center p-1.5 text-sm">
-                                        <div>
-                                          <input className="col-span-1" type="CheckBox" checked={row.isChecked} onChange={(e) => handleCheckbox(e, { selection: 'single', id: row.id, parent: element })} />
+                                    {resourceData[element].length > 0 ? (
+                                      <>
+                                        <div className="grid md:grid-cols-9 grid-cols-10 gap-2 text-center">
+                                          <div className="col-span-1" />
+                                          <div className="col-span-1 font-medium">Resource</div>
+                                          <div className="md:col-span-2 col-span-3 font-medium">Type</div>
+                                          <div className="col-span-3 font-medium">Organization</div>
+                                          <div className="col-span-2 font-medium" />
                                         </div>
-                                        <div className="col-span-1">{row.name}</div>
-                                        <div className="md:col-span-2 col-span-3">{row.subject}</div>
-                                        <div className="col-span-3">{row.owner}</div>
-                                        <div className="col-span-2 text-xs">
-                                          {`${(row.released).split('T')[0]} (${row.release.tag_name})`}
+
+                                        <hr />
+
+                                        {resourceData[element]?.map((row) => (
+                                          <div className="grid md:grid-cols-9 grid-cols-10 gap-2 text-center p-1.5 text-sm">
+                                            <div>
+                                              <input
+                                                className="col-span-1"
+                                                type="CheckBox"
+                                                checked={row.isChecked}
+                                                onChange={(e) => handleCheckbox(e, { selection: 'single', id: row.id, parent: element })}
+                                              />
+                                            </div>
+                                            <div className="col-span-1">{row.name}</div>
+                                            <div className="md:col-span-2 col-span-3">{row.subject}</div>
+                                            <div className="col-span-3">{row.owner}</div>
+                                            <div className="col-span-2 text-xs">
+                                              {`${(row.released).split('T')[0]} (${row.release.tag_name})`}
+                                            </div>
+                                          </div>
+                                    ))}
+                                      </>
+                                    ) : (
+                                      <div className="flex text-base font-medium justify-center items-center ">
+                                        <div className="">
+                                          No Content Available
                                         </div>
                                       </div>
-                                    ))}
+                                    )}
                                   </div>
                                 </AccordionDetails>
                               </Accordion>
