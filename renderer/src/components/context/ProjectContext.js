@@ -198,7 +198,7 @@ const ProjectContextProvider = ({ children }) => {
       if (copyright.title === 'Custom') {
         updateJson('copyright');
       } else {
-        const myLicence = Array.isArray(licenceList)? licenceList.find((item) => item.title === copyright.title): [];
+        const myLicence = Array.isArray(licenceList) ? licenceList.find((item) => item.title === copyright.title) : [];
         // eslint-disable-next-line import/no-dynamic-require
         const licensefile = require(`../../lib/license/${copyright.title}.md`);
         myLicence.licence = licensefile.default;
