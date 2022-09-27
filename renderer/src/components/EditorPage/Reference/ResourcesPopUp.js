@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import { StarIcon } from '@heroicons/react/outline';
 import React, {
   useEffect, useRef, useState, Fragment, useContext,
@@ -73,10 +74,17 @@ const ResourcesPopUp = ({
   const [openSnackBar, setOpenSnackBar] = useState(false);
   const [snackText, setSnackText] = useState('');
   const [error, setError] = useState('');
-  const [translationNote, setTranslationNote] = useState(translationNotes);
-  const [translationQuestion, setTranslationQuestion] = useState(translationQuestions);
-  const [translationWord, setTranslationWord] = useState(translationWords);
-  const [translationAcademy, setTranslationAcademy] = useState(translationAcademys);
+  // const [translationNote, setTranslationNote] = useState(translationNotes);
+  // const [translationQuestion, setTranslationQuestion] = useState(translationQuestions);
+  // const [translationWord, setTranslationWord] = useState(translationWords);
+  // const [translationAcademy, setTranslationAcademy] = useState(translationAcademys);
+  const [translationNote, setTranslationNote] = useState([]);
+  const [translationQuestion, setTranslationQuestion] = useState([]);
+  const [translationWord, setTranslationWord] = useState([]);
+  const [translationAcademy, setTranslationAcademy] = useState([]);
+  const [obsTranslationNote, setObsTranslationNote] = useState([]);
+  const [obsTranslationQuestion, setObsTranslationQuestion] = useState([]);
+
   const [loading, setLoading] = useState(false);
   const [resourceIconClick, setResourceIconClick] = useState(false);
   const { t } = useTranslation();
@@ -237,55 +245,162 @@ const ResourcesPopUp = ({
     readCustomResources({ resourceId: 'twlm', translationData: translationWord });
     readCustomResources({ resourceId: 'tn', translationData: translationNote });
     readCustomResources({ resourceId: 'ta', translationData: translationAcademy });
-    readCustomResources({ resourceId: 'obs-tn', translationData: obsTranslationNotes });
-    readCustomResources({ resourceId: 'obs-tq', translationData: obsTranslationQuestions });
+    readCustomResources({ resourceId: 'obs-tn', translationData: obsTranslationNote });
+    readCustomResources({ resourceId: 'obs-tq', translationData: obsTranslationQuestion });
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showInput]);
+
+  // const callResource = (resource) => {
+  //   logger.debug('ResourcesPopUp.js', 'Displaying resource table');
+  //   const resources = [
+  //     { id: 'tn', title: t('label-resource-tn'), resource: translationNote },
+  //     { id: 'twlm', title: t('label-resource-twlm'), resource: translationWord },
+  //     { id: 'tq', title: t('label-resource-tq'), resource: translationQuestion },
+  //     { id: 'ta', title: t('label-resource-ta'), resource: translationAcademy },
+  //     { id: 'obs-tn', title: t('label-resource-obs-tn'), resource: obsTranslationNotes },
+  //     { id: 'obs-tq', title: t('label-resource-obs-tq'), resource: obsTranslationQuestions }];
+  //   const reference = resources.find((r) => r.id === resource);
+
+  //   return (
+  //     reference
+  //     && (
+  //     <tbody className="bg-white ">
+  //       {(reference.resource).map((notes) => (
+  //         <tr className="hover:bg-gray-200" id={notes.name} key={notes.name + notes.owner}>
+  //           <td className="px-5 py-3 hidden">
+  //             <StarIcon className="h-5 w-5 text-gray-300" aria-hidden="true" />
+  //           </td>
+  //           <td className="p-4 text-sm text-gray-600">
+  //             <div
+  //               className="focus:outline-none"
+  //               onClick={(e) => handleRowSelect(e, notes.language, `${reference.title} ${notes.name}`, notes.owner)}
+  //               role="button"
+  //               tabIndex="0"
+  //             >
+  //               {`${notes.name} (${notes.owner})`}
+  //             </div>
+  //           </td>
+  //           <td className="p-4 text-sm text-gray-600">
+  //             <div
+  //               className="focus:outline-none"
+  //               onClick={(e) => handleRowSelect(e, notes.language, `${reference.title} ${notes.name}`, notes.owner)}
+  //               role="button"
+  //               tabIndex="0"
+  //             >
+  //               {notes.language}
+  //             </div>
+  //           </td>
+  //         </tr>
+  //       ))}
+  //     </tbody>
+  //     )
+  //   );
+  // };
+
+  const fetchTranslationResource = async (urlpath, setResource) => {
+    const baseUrl = 'https://git.door43.org/api/catalog/v5/search?';
+    if (urlpath) {
+      const resourceData = [];
+      await fetch(`${baseUrl}subject=${urlpath}`)
+      .then((res) => res.json())
+      .then((response) => {
+        response.data.forEach((data) => {
+          resourceData.push(createData(data.language_title, data.language, data.owner));
+        });
+        if (resourceData.length === response.data.length) {
+          setResource(resourceData);
+        }
+      }).catch((err) => {
+        console.log('error in fetch resource : ', err);
+      });
+    }
+  };
+
+  useEffect(() => {
+    (async () => {
+      console.log('resource : ', selectResource);
+      setLoading(true);
+      switch (selectResource) {
+        case 'tn':
+            await fetchTranslationResource('TSV Translation Notes', setTranslationNote);
+            console.log('get content : ', translationNote);
+          break;
+        case 'twlm':
+          await fetchTranslationResource('Translation Words', setTranslationWord);
+          console.log('get content : ', translationWord);
+          break;
+        case 'tq':
+          await fetchTranslationResource('Translation Questions', setTranslationQuestion);
+          console.log('get content : ', translationQuestion);
+        break;
+        case 'obs-tn':
+          await fetchTranslationResource('OBS Translation Notes', setObsTranslationNote);
+          console.log('get content : ', obsTranslationNote);
+        break;
+        case 'obs-tq':
+          await fetchTranslationResource('OBS Translation Questions', setObsTranslationQuestion);
+          console.log('get content : ', obsTranslationQuestion);
+        break;
+        case 'ta':
+          await fetchTranslationResource('Translation Academy', setTranslationAcademy);
+          console.log('get content : ', translationAcademy);
+        break;
+
+          default:
+            break;
+          }
+        setLoading(false);
+        })();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectResource]);
+
   const callResource = (resource) => {
     logger.debug('ResourcesPopUp.js', 'Displaying resource table');
+
     const resources = [
       { id: 'tn', title: t('label-resource-tn'), resource: translationNote },
       { id: 'twlm', title: t('label-resource-twlm'), resource: translationWord },
       { id: 'tq', title: t('label-resource-tq'), resource: translationQuestion },
       { id: 'ta', title: t('label-resource-ta'), resource: translationAcademy },
-      { id: 'obs-tn', title: t('label-resource-obs-tn'), resource: obsTranslationNotes },
-      { id: 'obs-tq', title: t('label-resource-obs-tq'), resource: obsTranslationQuestions }];
+      { id: 'obs-tn', title: t('label-resource-obs-tn'), resource: obsTranslationNote },
+      { id: 'obs-tq', title: t('label-resource-obs-tq'), resource: obsTranslationQuestion }];
     const reference = resources.find((r) => r.id === resource);
     return (
-      reference
-      && (
-      <tbody className="bg-white ">
-        {(reference.resource).map((notes) => (
-          <tr className="hover:bg-gray-200" id={notes.name} key={notes.name + notes.owner}>
-            <td className="px-5 py-3 hidden">
-              <StarIcon className="h-5 w-5 text-gray-300" aria-hidden="true" />
-            </td>
-            <td className="p-4 text-sm text-gray-600">
-              <div
-                className="focus:outline-none"
-                onClick={(e) => handleRowSelect(e, notes.language, `${reference.title} ${notes.name}`, notes.owner)}
-                role="button"
-                tabIndex="0"
-              >
-                {`${notes.name} (${notes.owner})`}
-              </div>
-            </td>
-            <td className="p-4 text-sm text-gray-600">
-              <div
-                className="focus:outline-none"
-                onClick={(e) => handleRowSelect(e, notes.language, `${reference.title} ${notes.name}`, notes.owner)}
-                role="button"
-                tabIndex="0"
-              >
-                {notes.language}
-              </div>
-            </td>
-          </tr>
+      loading ? <LoadingScreen />
+      : (
+        <tbody className="bg-white ">
+          {(reference.resource).map((notes) => (
+            <tr className="hover:bg-gray-200" id={notes.name} key={notes.name + notes.owner}>
+              <td className="px-5 py-3 hidden">
+                <StarIcon className="h-5 w-5 text-gray-300" aria-hidden="true" />
+              </td>
+              <td className="p-4 text-sm text-gray-600">
+                <div
+                  className="focus:outline-none"
+                  onClick={(e) => handleRowSelect(e, notes.language, `${reference.title} ${notes.name}`, notes.owner)}
+                  role="button"
+                  tabIndex="0"
+                >
+                  {`${notes.name} (${notes.owner})`}
+                </div>
+              </td>
+              <td className="p-4 text-sm text-gray-600">
+                <div
+                  className="focus:outline-none"
+                  onClick={(e) => handleRowSelect(e, notes.language, `${reference.title} ${notes.name}`, notes.owner)}
+                  role="button"
+                  tabIndex="0"
+                >
+                  {notes.language}
+                </div>
+              </td>
+            </tr>
         ))}
-      </tbody>
+        </tbody>
       )
     );
   };
+
   const importResources = (resource) => {
     if (showInput) {
       return (
@@ -510,6 +625,7 @@ const ResourcesPopUp = ({
                             </th>
                           </tr>
                         </thead>
+
                         {selectResource === 'bible' ? (
                           <tbody className="bg-white">
                             {(subMenuItems) && (
