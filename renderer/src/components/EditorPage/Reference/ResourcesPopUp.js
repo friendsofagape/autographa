@@ -22,6 +22,7 @@ import ResourceOption from './ResourceOption';
 import ImportResource from './ImportResource';
 import * as logger from '../../../logger';
 import DownloadResourcePopUp from './ResourceUtils/DownloadResourcePopUp';
+import DownloadCreateSBforHelps from './ResourceUtils/DownloadCreateSBforHelps';
 
 function createData(name, language, owner) {
   return {
@@ -298,20 +299,24 @@ const ResourcesPopUp = ({
   // };
 
   const fetchTranslationResource = async (urlpath, setResource) => {
+    logger.debug('ResourcesPopUp.js', `fetchTranslationResource :  ${selectResource}`);
     const baseUrl = 'https://git.door43.org/api/catalog/v5/search?';
     if (urlpath) {
       const resourceData = [];
       await fetch(`${baseUrl}subject=${urlpath}`)
       .then((res) => res.json())
       .then((response) => {
-        response.data.forEach((data) => {
-          resourceData.push(createData(data.language_title, data.language, data.owner));
+        response.data.forEach(async (data) => {
+          const createdData = createData(data.language_title, data.language, data.owner);
+          createdData.responseData = data;
+          resourceData.push(createdData);
         });
         if (resourceData.length === response.data.length) {
           setResource(resourceData);
         }
       }).catch((err) => {
         console.log('error in fetch resource : ', err);
+        logger.debug('ResourcesPopUp.js', `fetchTranslationResource Error ${selectResource} :  ${err}`);
       });
     }
   };
@@ -319,31 +324,32 @@ const ResourcesPopUp = ({
   useEffect(() => {
     (async () => {
       console.log('resource : ', selectResource);
+      logger.debug('ResourcesPopUp.js', `get available selected resources ${selectResource}`);
       setLoading(true);
       switch (selectResource) {
         case 'tn':
             await fetchTranslationResource('TSV Translation Notes', setTranslationNote);
-            console.log('get content : ', translationNote);
+            // console.log('get content : ', translationNote);
           break;
         case 'twlm':
           await fetchTranslationResource('Translation Words', setTranslationWord);
-          console.log('get content : ', translationWord);
+          // console.log('get content : ', translationWord);
           break;
         case 'tq':
           await fetchTranslationResource('Translation Questions', setTranslationQuestion);
-          console.log('get content : ', translationQuestion);
+          // console.log('get content : ', translationQuestion);
         break;
         case 'obs-tn':
           await fetchTranslationResource('OBS Translation Notes', setObsTranslationNote);
-          console.log('get content : ', obsTranslationNote);
+          // console.log('get content : ', obsTranslationNote);
         break;
         case 'obs-tq':
           await fetchTranslationResource('OBS Translation Questions', setObsTranslationQuestion);
-          console.log('get content : ', obsTranslationQuestion);
+          // console.log('get content : ', obsTranslationQuestion);
         break;
         case 'ta':
           await fetchTranslationResource('Translation Academy', setTranslationAcademy);
-          console.log('get content : ', translationAcademy);
+          // console.log('get content : ', translationAcademy);
         break;
 
           default:
@@ -353,6 +359,11 @@ const ResourcesPopUp = ({
         })();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectResource]);
+
+  const handleDownloadHelpsResources = async (event, reference) => {
+    console.log('clicked download : ', reference);
+    await DownloadCreateSBforHelps(reference?.responseData);
+  };
 
   const callResource = (resource) => {
     logger.debug('ResourcesPopUp.js', 'Displaying resource table');
@@ -365,6 +376,7 @@ const ResourcesPopUp = ({
       { id: 'obs-tn', title: t('label-resource-obs-tn'), resource: obsTranslationNote },
       { id: 'obs-tq', title: t('label-resource-obs-tq'), resource: obsTranslationQuestion }];
     const reference = resources.find((r) => r.id === resource);
+    // console.log('selected referecne : ', reference);
     return (
       loading ? <LoadingScreen />
       : (
@@ -388,6 +400,16 @@ const ResourcesPopUp = ({
                 <div
                   className="focus:outline-none"
                   onClick={(e) => handleRowSelect(e, notes.language, `${reference.title} ${notes.name}`, notes.owner)}
+                  role="button"
+                  tabIndex="0"
+                >
+                  {notes.language}
+                </div>
+              </td>
+              <td className="p-4 text-sm text-gray-600">
+                <div
+                  className="focus:outline-none"
+                  onClick={(e) => handleDownloadHelpsResources(e, notes)}
                   role="button"
                   tabIndex="0"
                 >
@@ -672,7 +694,7 @@ const ResourcesPopUp = ({
                           ))
                         )}
                           </tbody>
-                    ) : callResource(selectResource)}
+                    ) : selectResource !== 'obs' && callResource(selectResource)}
                         {selectResource === 'obs' && (
                           <tbody className="bg-white">
                             {(subMenuItems) && (
