@@ -18,6 +18,8 @@ import { writeCustomResources } from '@/core/reference/writeCustomResources';
 import { readCustomResources } from '@/core/reference/readCustomResources';
 import { SnackBar } from '@/components/SnackBar';
 import LoadingScreen from '@/components/Loading/LoadingScreen';
+import DownloadSvg from '@/icons/basil/Outline/Files/Download.svg';
+import RefreshSvg from '@/icons/basil/Outline/Interface/Refresh.svg';
 import ResourceOption from './ResourceOption';
 import ImportResource from './ImportResource';
 import * as logger from '../../../logger';
@@ -377,10 +379,71 @@ const ResourcesPopUp = ({
       { id: 'obs-tq', title: t('label-resource-obs-tq'), resource: obsTranslationQuestion }];
     const reference = resources.find((r) => r.id === resource);
     // console.log('selected referecne : ', reference);
+    console.log('sub menu item : ', subMenuItems);
+    const offlineResource = subMenuItems ? subMenuItems?.filter((item) => item?.value?.agOffline && item?.value?.dublin_core?.identifier === resource) : [];
+    console.log('offline  items from submenu : ', offlineResource);
     return (
       loading ? <LoadingScreen />
       : (
         <tbody className="bg-white ">
+          {/* offline resources head */}
+          {offlineResource.length > 0 && (
+            <tr className="">
+              <td colSpan="3" className="p-4 text-sm text-gray-900 font-bold">
+                {' '}
+                Downloaded Resources
+                {' '}
+                <hr />
+              </td>
+            </tr>
+          )}
+          {/* offline resources body */}
+          {offlineResource.length > 0 && offlineResource.map((resource) => (
+            <>
+              <tr className="hover:bg-gray-200" id={resource?.projectDir} key={resource.value.meta.id + resource.value.meta.language}>
+                <td className="p-4 text-sm text-gray-600">
+                  <div
+                    className="focus:outline-none"
+                    onClick={(e) => handleRowSelect(e, resource?.value?.meta?.language, `${resource?.value?.meta?.subject} ${resource?.value?.meta?.language_title}`, resource?.value?.meta?.owner)}
+                    role="button"
+                    tabIndex="0"
+                  >
+                    {`${resource?.value?.meta?.name} (${resource?.value?.meta?.owner})`}
+                  </div>
+                </td>
+                <td className="p-4 text-sm text-gray-600">
+                  <div
+                    className="focus:outline-none"
+                    onClick={(e) => handleRowSelect(e, resource?.value?.meta?.language, `${resource?.value?.meta?.subject} ${resource?.value?.meta?.language_title}`, resource?.value?.meta?.owner)}
+                    role="button"
+                    tabIndex="0"
+                  >
+                    {resource?.value?.meta?.language}
+                  </div>
+                </td>
+                <td className="p-4 text-sm text-gray-600 ">
+                  <div
+                    className="text-xs cursor-pointer focus:outline-none"
+                    role="button"
+                    tabIndex={0}
+                    title="check updates"
+                    // onClick={(e) => handleDownloadHelpsResources(e, notes)}
+                  >
+                    <RefreshSvg
+                      fill="currentColor"
+                      className="w-6 h-6"
+                    />
+                  </div>
+                </td>
+              </tr>
+              <td colSpan={3}>
+                {' '}
+                <hr className="border-4 rounded-md" />
+              </td>
+            </>
+          ))}
+
+          {/* online resources section */}
           {(reference.resource).map((notes) => (
             <tr className="hover:bg-gray-200" id={notes.name} key={notes.name + notes.owner}>
               <td className="px-5 py-3 hidden">
@@ -408,12 +471,16 @@ const ResourcesPopUp = ({
               </td>
               <td className="p-4 text-sm text-gray-600">
                 <div
-                  className="focus:outline-none"
-                  onClick={(e) => handleDownloadHelpsResources(e, notes)}
+                  className="text-xs cursor-pointer focus:outline-none"
                   role="button"
-                  tabIndex="0"
+                  tabIndex={0}
+                  title="download"
+                  onClick={(e) => handleDownloadHelpsResources(e, notes)}
                 >
-                  {notes.language}
+                  <DownloadSvg
+                    fill="currentColor"
+                    className="w-6 h-6"
+                  />
                 </div>
               </td>
             </tr>
@@ -651,7 +718,7 @@ const ResourcesPopUp = ({
                         {selectResource === 'bible' ? (
                           <tbody className="bg-white">
                             {(subMenuItems) && (
-                          subMenuItems.map((ref) => (ref.value.type.flavorType.name === 'scripture'
+                          subMenuItems.map((ref) => (ref?.value?.type?.flavorType?.name === 'scripture'
                           && (
                             <tr className="hover:bg-gray-200" key={ref.value.identification.name.en + ref.projectDir}>
                               <td className="px-5 py-3 hidden">
@@ -697,8 +764,9 @@ const ResourcesPopUp = ({
                     ) : selectResource !== 'obs' && callResource(selectResource)}
                         {selectResource === 'obs' && (
                           <tbody className="bg-white">
+                            {console.log('sub menu items : ', subMenuItems)}
                             {(subMenuItems) && (
-                          subMenuItems.map((ref) => (ref.value.type.flavorType.name === 'gloss'
+                          subMenuItems.map((ref) => (ref?.value?.type?.flavorType?.name === 'gloss'
                           && (
                           <tr className="hover:bg-gray-200" key={ref.value.identification.name.en + ref.projectDir}>
                             <td className="px-5 py-3 hidden">

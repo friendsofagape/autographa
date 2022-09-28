@@ -70,8 +70,12 @@ const DownloadCreateSBforHelps = async (projectResource) => {
                         await fetch(projectResource.metadata_json_url)
                             .then((res) => res.json())
                             .then(async (data) => {
-                                console.log('json data : ', data);
-                                await fs.writeFileSync(path.join(folder, projectResource?.name, 'metadatayml.json'), JSON.stringify(data));
+                                // console.log('json data : ', data);
+                                // adding offline true tag in  meta for identification
+                                data.agOffline = true;
+                                data.meta = projectResource;
+                                console.log('json data after : ', data);
+                                await fs.writeFileSync(path.join(folder, projectResource?.name, 'metadata.json'), JSON.stringify(data));
 
                                 // // creating fake burrito to get ingredients list
                                 // json = Textburrito;
