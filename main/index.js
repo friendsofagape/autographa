@@ -15,6 +15,7 @@ function createWindow() {
  mainWindow = new BrowserWindow({
     width: 900,
     height: 600,
+    icon: join(__dirname, '../public/icons/ag-logo.ico'),
     autoHideMenuBar: true,
     webPreferences: {
       nodeIntegration: true,
