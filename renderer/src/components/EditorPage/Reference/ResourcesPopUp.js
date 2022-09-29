@@ -79,11 +79,11 @@ const ResourcesPopUp = ({
   const [error, setError] = useState('');
   // const [translationNote, setTranslationNote] = useState(translationNotes);
   // const [translationQuestion, setTranslationQuestion] = useState(translationQuestions);
-  // const [translationWord, setTranslationWord] = useState(translationWords);
+  const [translationWord, setTranslationWord] = useState(translationWords);
   // const [translationAcademy, setTranslationAcademy] = useState(translationAcademys);
   const [translationNote, setTranslationNote] = useState([]);
   const [translationQuestion, setTranslationQuestion] = useState([]);
-  const [translationWord, setTranslationWord] = useState([]);
+  // const [translationWord, setTranslationWord] = useState([]);
   const [translationAcademy, setTranslationAcademy] = useState([]);
   const [obsTranslationNote, setObsTranslationNote] = useState([]);
   const [obsTranslationQuestion, setObsTranslationQuestion] = useState([]);
@@ -290,10 +290,10 @@ const ResourcesPopUp = ({
             await fetchTranslationResource('TSV Translation Notes', setTranslationNote);
             // console.log('get content : ', translationNote);
           break;
-        case 'twlm':
-          await fetchTranslationResource('Translation Words', setTranslationWord);
-          // console.log('get content : ', translationWord);
-          break;
+        // case 'twlm':
+        //   await fetchTranslationResource('Translation Words', setTranslationWord);
+        //   // console.log('get content : ', translationWord);
+        //   break;
         case 'tq':
           await fetchTranslationResource('Translation Questions', setTranslationQuestion);
           // console.log('get content : ', translationQuestion);
