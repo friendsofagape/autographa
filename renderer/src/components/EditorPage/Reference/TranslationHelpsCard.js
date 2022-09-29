@@ -27,7 +27,9 @@ export default function TranslationHelpsCard({
   viewMode,
   offlineResource,
 }) {
-  const [offlineObj, setOfflineObj] = useState([]);
+  const [offlineItems, setOfflineItems] = useState([]);
+  const [offlineItemsDisable, setOfflineItemsDisable] = useState(false);
+  const [offlineMarkdown, setOfflineMarkdown] = useState('');
 
   // eslint-disable-next-line prefer-const
   let { items, markdown, isLoading } = useContent({
@@ -48,42 +50,74 @@ export default function TranslationHelpsCard({
       // read tn tsv contents and pass to items
       try {
         localForage.getItem('userProfile').then(async (user) => {
-          logger.debug('OfflineResourceFetch.js', 'reading offline obs-tn ', offlineResource.data?.projectDir);
+          logger.debug('TranslationHelpsCard.js', 'reading offline helps ', offlineResource.data?.projectDir);
           const path = require('path');
           const newpath = localStorage.getItem('userPath');
           const currentUser = user?.username;
           const folder = path.join(newpath, 'autographa', 'users', `${currentUser}`, 'resources');
           const projectName = `${offlineResource?.data?.value?.meta?.name}_${offlineResource?.data?.value?.meta?.owner}_${offlineResource?.data?.value?.meta?.release?.tag_name}`;
-          if (fs.existsSync(path.join(folder, projectName))) {
-            // eslint-disable-next-line array-callback-return
-            const currentFile = offlineResource?.data?.value?.projects.filter((item) => {
-              if (item?.identifier.toLowerCase() === projectId.toLowerCase()) {
-                return item;
+
+          // switch resources
+          switch (resourceId) {
+            case 'tn':
+              if (fs.existsSync(path.join(folder, projectName))) {
+                // eslint-disable-next-line array-callback-return
+                const currentFile = offlineResource?.data?.value?.projects.filter((item) => {
+                  if (item?.identifier.toLowerCase() === projectId.toLowerCase()) {
+                    return item;
+                  }
+              });
+              // console.log('project name content : ', currentFile[0].path);
+              const filecontent = await fs.readFileSync(path.join(folder, projectName, currentFile[0].path), 'utf8');
+              // convert tsv to json
+              const json = filecontent.split('\n')
+                .map((file) => {
+                    const [Book, Chapter, Verse, ID, SupportReference, OrigQuote, Occurrence, GLQuote, OccurrenceNote] = file.split('\t');
+                    return {
+                      Book, Chapter, Verse, ID, SupportReference, OrigQuote, Occurrence, GLQuote, OccurrenceNote,
+                      };
+                }).filter((data) => data.Chapter === chapter && data.Verse === verse);
+                // change contents of items
+                // console.log('file content : ', json);
+                setOfflineItemsDisable(false);
+                setOfflineItems(json);
               }
-          });
-          // console.log('project name content : ', currentFile[0].path);
-          const filecontent = await fs.readFileSync(path.join(folder, projectName, currentFile[0].path), 'utf8');
-          // convert tsv to json
-          const json = filecontent.split('\n')
-            .map((file) => {
-                const [Book, Chapter, Verse, ID, SupportReference, OrigQuote, Occurrence, GLQuote, OccurrenceNote] = file.split('\t');
-                return {
-                  Book, Chapter, Verse, ID, SupportReference, OrigQuote, Occurrence, GLQuote, OccurrenceNote,
-                  };
-            }).filter((data) => data.Chapter === chapter && data.Verse === verse);
-            // change contents of items
-            console.log('file content : ', json);
-            setOfflineObj(json);
-            // items = json;
+              break;
+
+            case 'tq':
+              if (fs.existsSync(path.join(folder, projectName))) {
+                // check book avaialble
+                  // console.log('project name found : ', { projectName, projectId });
+                  // eslint-disable-next-line array-callback-return
+                  offlineResource?.data?.value?.projects.filter((project) => {
+                    if (project.identifier.toLowerCase() === projectId.toLowerCase()) {
+                      const contentDir = path.join(folder, projectName, project.path, chapter.toString().padStart(2, 0));
+                      if (fs.existsSync(path.join(contentDir, `${verse.toString().padStart(2, 0)}.md`))) {
+                        const filecontent = fs.readFileSync(path.join(contentDir, `${verse.toString().padStart(2, 0)}.md`), 'utf8');
+                        // console.log('content : ', { filecontent });
+                        setOfflineItemsDisable(true);
+                        setOfflineMarkdown(filecontent);
+                      } else {
+                        setOfflineMarkdown('');
+                      }
+                    }
+                  });
+              }
+              break;
+
+            default:
+              break;
           }
         });
       } catch (err) {
         console.log('err on fetch local tn: ', err);
+        logger.debug('TranslationHelpsCard.js', 'reading offline helps Error :  ', err);
       }
     }
   }, [verse, chapter, languageId, resourceId, owner, offlineResource, projectId, items]);
 
-  items = offlineResource?.offline ? offlineObj : items;
+  items = !offlineItemsDisable && offlineResource?.offline ? offlineItems : items;
+  markdown = offlineResource.offline ? offlineMarkdown : markdown;
 
   const {
     state: {

@@ -84,6 +84,7 @@ const TranslationHelps = ({
               filePath={translationQuestionsPath}
               owner={owner}
               server="https://git.door43.org"
+              offlineResource={offlineResource}
             />
           );
         case 'ta':
