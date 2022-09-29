@@ -58,7 +58,7 @@ export default function TaNavigation({ languageId, referenceResources }) {
           if (fs.existsSync(path.join(folder, projectName, 'translate'))) {
             fs.readdir(path.join(folder, projectName, 'translate'), async (err, folderNames) => {
               if (err) {
-                console.log(`Unable to scan directory: ${ err}`);
+                // console.log(`Unable to scan directory: ${ err}`);
                 logger.debug('TaNavigation.js', `Unable to scan directory: ${ err}`);
               }
               let foldersCount = 0;
@@ -121,7 +121,6 @@ export default function TaNavigation({ languageId, referenceResources }) {
 
     useEffect(() => {
         setTaNavigationPath(selected.folder);
-        console.log('selected : ', selected.folder);
         }, [selected, setTaNavigationPath]);
   return (
     <div className="flex fixed">
