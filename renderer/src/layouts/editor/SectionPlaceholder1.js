@@ -321,6 +321,7 @@ const SectionPlaceholder1 = () => {
                 title={referenceColumnOneData1.refName}
                 selectedResource={referenceColumnOneData1.selectedResource}
                 languageId={referenceColumnOneData1.languageId}
+                referenceResources={referenceColumnOneData1}
                 setReferenceResources={setReferenceColumnOneData1}
                 setLoadResource={setLoadResource1}
                 loadResource={loadResource1}
@@ -368,6 +369,7 @@ const SectionPlaceholder1 = () => {
                 title={referenceColumnOneData2.refName}
                 selectedResource={referenceColumnOneData2.selectedResource}
                 languageId={referenceColumnOneData2.languageId}
+                referenceResources={referenceColumnOneData2}
                 setReferenceResources={setReferenceColumnOneData2}
                 setLoadResource={setLoadResource2}
                 loadResource={loadResource2}

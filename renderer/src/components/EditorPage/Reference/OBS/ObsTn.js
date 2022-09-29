@@ -56,6 +56,7 @@ function ObsTnCard({
                         fs.readdir(notesDir, async (err, files) => {
                             if (err) {
                                 console.log(`Unable to scan directory: ${ err}`);
+                                throw err;
                             }
                             // listing all files using forEach
                             await files.forEach(async (file) => {
@@ -71,6 +72,7 @@ function ObsTnCard({
                 });
         } catch (err) {
             console.log('err on fetch local : ', err);
+            throw err;
         }
     }
     setItems([]);

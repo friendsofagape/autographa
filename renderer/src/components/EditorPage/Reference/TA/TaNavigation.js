@@ -5,9 +5,12 @@ import {
 import { Combobox, Transition } from '@headlessui/react';
 import { CheckIcon, SelectorIcon } from '@heroicons/react/solid';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
+import localForage from 'localforage';
 import * as logger from '../../../../logger';
 
-export default function TaNavigation({ languageId }) {
+const fs = window.require('fs');
+
+export default function TaNavigation({ languageId, referenceResources }) {
   const [selected, setSelected] = useState('');
   // const [hovered, setHovered] = useState(null);
   const [query, setQuery] = useState('');
@@ -40,7 +43,43 @@ export default function TaNavigation({ languageId }) {
             .includes(query.toLowerCase().replace(/\s+/g, '')));
 
     useEffect(() => {
-      const taArray = [];
+      if (referenceResources && referenceResources?.offlineResource?.offline) {
+        // offline
+        const taArrayOffline = [];
+        const { offlineResource } = referenceResources;
+        // console.log('offline data : ', { taList, offlineResource });
+        localForage.getItem('userProfile').then(async (user) => {
+          logger.debug('TaNavigation.js', 'reading offline helps ', offlineResource.data?.projectDir);
+          const path = require('path');
+          const newpath = localStorage.getItem('userPath');
+          const currentUser = user?.username;
+          const folder = path.join(newpath, 'autographa', 'users', `${currentUser}`, 'resources');
+          const projectName = `${offlineResource?.data?.value?.meta?.name}_${offlineResource?.data?.value?.meta?.owner}_${offlineResource?.data?.value?.meta?.release?.tag_name}`;
+          if (fs.existsSync(path.join(folder, projectName, 'translate'))) {
+            fs.readdir(path.join(folder, projectName, 'translate'), async (err, folderNames) => {
+              if (err) {
+                console.log(`Unable to scan directory: ${ err}`);
+                logger.debug('TaNavigation.js', `Unable to scan directory: ${ err}`);
+              }
+              let foldersCount = 0;
+              await folderNames.forEach(async (folderName) => {
+                if (fs.lstatSync(path.join(folder, projectName, 'translate', folderName)).isDirectory()) {
+                  foldersCount += 1;
+                  const title = await fs.readFileSync(path.join(folder, projectName, 'translate', folderName, 'title.md'), 'utf8');
+                  const subTitle = await fs.readFileSync(path.join(folder, projectName, 'translate', folderName, 'sub-title.md'), 'utf8');
+                  taArrayOffline.push({ folder: folderName, title, subTitle });
+                }
+                if (taArrayOffline.length === foldersCount) {
+                  setTaList(taArrayOffline);
+                  setSelected(taArrayOffline[0]);
+                }
+              });
+            });
+          }
+        });
+      } else {
+        // online
+        const taArray = [];
       fetch(`${BaseUrl}${owner}/${languageId}_ta/contents/translate/`)
       .then((response) => response.json())
       .then((actualData) => {
@@ -77,10 +116,12 @@ export default function TaNavigation({ languageId }) {
       .catch((err) => {
         logger.debug('In Fetch TA Content.js', `Error in Fetch : ${err.message}`);
        });
-     }, [languageId, owner]);
+      }
+     }, [languageId, owner, referenceResources]);
 
     useEffect(() => {
         setTaNavigationPath(selected.folder);
+        console.log('selected : ', selected.folder);
         }, [selected, setTaNavigationPath]);
   return (
     <div className="flex fixed">
@@ -164,4 +205,5 @@ export default function TaNavigation({ languageId }) {
 
 TaNavigation.propTypes = {
   languageId: PropTypes.string,
+  referenceResources: PropTypes.object,
 };

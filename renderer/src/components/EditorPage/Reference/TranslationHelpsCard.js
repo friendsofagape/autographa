@@ -44,11 +44,15 @@ export default function TranslationHelpsCard({
     server,
   });
 
+  // console.log('online data structure : ', { items, markdown, isLoading });
+
   useEffect(() => {
     if (offlineResource && offlineResource.offline) {
       console.log('offline in Helpscard : ', offlineResource);
       // read tn tsv contents and pass to items
       try {
+        setOfflineMarkdown('');
+        setOfflineItems('');
         localForage.getItem('userProfile').then(async (user) => {
           logger.debug('TranslationHelpsCard.js', 'reading offline helps ', offlineResource.data?.projectDir);
           const path = require('path');
@@ -105,6 +109,17 @@ export default function TranslationHelpsCard({
               }
               break;
 
+              case 'ta':
+                // console.log('filepath : ', { filePath });
+                setOfflineMarkdown('');
+              if (fs.existsSync(path.join(folder, projectName, 'translate', filePath))) {
+                const filecontent = fs.readFileSync(path.join(folder, projectName, 'translate', filePath), 'utf8');
+                // console.log('filecontent : ', { filecontent });
+                setOfflineItemsDisable(true);
+                setOfflineMarkdown(filecontent);
+              }
+              break;
+
             default:
               break;
           }
@@ -114,10 +129,10 @@ export default function TranslationHelpsCard({
         logger.debug('TranslationHelpsCard.js', 'reading offline helps Error :  ', err);
       }
     }
-  }, [verse, chapter, languageId, resourceId, owner, offlineResource, projectId, items]);
+  }, [verse, chapter, languageId, resourceId, owner, offlineResource, projectId, items, filePath]);
 
   items = !offlineItemsDisable && offlineResource?.offline ? offlineItems : items;
-  markdown = offlineResource.offline ? offlineMarkdown : markdown;
+  markdown = offlineResource?.offline ? offlineMarkdown : markdown;
 
   const {
     state: {

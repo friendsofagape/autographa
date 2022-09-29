@@ -16,6 +16,7 @@ import ConfirmationModal from './ConfirmationModal';
 export default function EditorSection({
   title,
   selectedResource,
+  referenceResources,
   setReferenceResources,
   children,
   languageId,
@@ -174,6 +175,7 @@ export default function EditorSection({
                 <div className="h-12 flex">
                   <TaNavigation
                     languageId={languageId}
+                    referenceResources={referenceResources}
                   />
                   <div className="relative lg:left-72 sm:left-48 sm:ml-2.5 top-4 text-xxs uppercase tracking-wider font-bold leading-3 truncate">
                     {title}
@@ -290,6 +292,7 @@ EditorSection.propTypes = {
   title: PropTypes.string,
   children: PropTypes.any,
   selectedResource: PropTypes.string,
+  referenceResources: PropTypes.object,
   setReferenceResources: PropTypes.func,
   row: PropTypes.string,
   languageId: PropTypes.string,
