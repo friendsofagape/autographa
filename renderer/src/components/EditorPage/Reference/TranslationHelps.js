@@ -6,7 +6,7 @@ import TranslationHelpsCard from './TranslationHelpsCard';
 import ObsTnCard from './OBS/ObsTn';
 
 const TranslationHelps = ({
- selectedResource, languageId, refName, bookId, chapter, verse, owner, story,
+ selectedResource, languageId, refName, bookId, chapter, verse, owner, story, offlineResource,
 }) => {
   const {
     state: {
@@ -37,6 +37,7 @@ const TranslationHelps = ({
               resourceId="tn"
               owner={owner}
               server="https://git.door43.org"
+              offlineResource={offlineResource}
             />
           );
         case 'twl':
@@ -132,6 +133,7 @@ const TranslationHelps = ({
               resourceId="obs-tn"
               owner={owner}
               server="https://git.door43.org"
+              offlineResource={offlineResource}
             />
           );
         case 'obs-tq':
@@ -146,6 +148,7 @@ const TranslationHelps = ({
               resourceId="obs-tq"
               owner={owner}
               server="https://git.door43.org"
+              offlineResource={offlineResource}
             />
           );
         default:
@@ -206,4 +209,5 @@ TranslationHelps.propTypes = {
   verse: PropTypes.string,
   owner: PropTypes.string,
   story: PropTypes.string,
+  offlineResource: PropTypes.bool || PropTypes.object,
 };

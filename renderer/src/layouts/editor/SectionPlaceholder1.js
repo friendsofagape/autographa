@@ -26,6 +26,7 @@ const SectionPlaceholder1 = () => {
     refName: '',
     header: '',
     owner: '',
+    offlineResource: { offline: false },
   });
   const [referenceColumnOneData2, setReferenceColumnOneData2] = useState({
     languageId: '',
@@ -33,6 +34,7 @@ const SectionPlaceholder1 = () => {
     refName: '',
     header: '',
     owner: '',
+    offlineResource: { offline: false },
   });
   const [loadResource1, setLoadResource1] = useState(false);
   const [loadResource2, setLoadResource2] = useState(false);
@@ -129,20 +131,24 @@ const SectionPlaceholder1 = () => {
                   || openResource2 === false) {
                     if (_rownum === '1') {
                       setReferenceColumnOneData1({
+                        ...referenceColumnOneData1,
                         languageId: _value?.language,
                         selectedResource: _value?.resouceId,
                         refName: _value?.name,
                         header: _value?.name,
                         owner: _value?.owner,
+                        offlineResource: _value?.offline,
                       });
                   }
                   if (_rownum === '2') {
                       setReferenceColumnOneData2({
+                        ...referenceColumnOneData2,
                         languageId: _value?.language,
                         selectedResource: _value?.resouceId,
                         refName: _value?.name,
                         header: _value?.name,
                         owner: _value?.owner,
+                        offlineResource: _value?.offline,
                       });
                   }
                 }
@@ -206,6 +212,7 @@ const SectionPlaceholder1 = () => {
                         name: referenceColumnOneData1?.refName,
                         owner: referenceColumnOneData1?.owner,
                         navigation: { book: '1TI', chapter: '1' },
+                        offline: referenceColumnOneData1.offlineResource,
                       },
                     };
                 }
@@ -218,6 +225,7 @@ const SectionPlaceholder1 = () => {
                       name: referenceColumnOneData1?.refName,
                       owner: referenceColumnOneData1?.owner,
                       navigation: { book: '1TI', chapter: '1' },
+                      offline: referenceColumnOneData1.offlineResource,
                     },
                     2: {
                       resouceId: referenceColumnOneData2?.selectedResource,
@@ -225,6 +233,7 @@ const SectionPlaceholder1 = () => {
                       name: referenceColumnOneData2?.refName,
                       owner: referenceColumnOneData2?.owner,
                       navigation: { book: '1TI', chapter: '1' },
+                      offline: referenceColumnOneData2.offlineResource,
                     },
                   };
                 }
@@ -246,7 +255,8 @@ const SectionPlaceholder1 = () => {
   }, [openResource1, openResource2, referenceColumnOneData1?.languageId, referenceColumnOneData1.refName,
     referenceColumnOneData1?.selectedResource, referenceColumnOneData2?.languageId, referenceColumnOneData2?.refName,
     referenceColumnOneData2?.selectedResource, sectionNum, layout, referenceColumnOneData1,
-    referenceColumnOneData2?.owner, removingSection, addingSection]);
+    referenceColumnOneData2?.owner, removingSection, addingSection, referenceColumnOneData2?.offlineResource,
+    referenceColumnOneData1?.offlineResource]);
 
   const CustomNavigation1 = (
     <CustomNavigation
@@ -343,6 +353,7 @@ const SectionPlaceholder1 = () => {
                     chapter={_chapter1}
                     verse={_verse1}
                     story={_obsNavigation1}
+                    offlineResource={referenceColumnOneData1.offlineResource}
                   />
                 )
               )
@@ -390,6 +401,7 @@ const SectionPlaceholder1 = () => {
                     chapter={_chapter2}
                     verse={_verse2}
                     story={_obsNavigation2}
+                    offlineResource={referenceColumnOneData2.offlineResource}
                   />
                 )
               )

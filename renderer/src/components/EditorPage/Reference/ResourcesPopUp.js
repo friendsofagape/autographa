@@ -185,13 +185,17 @@ const ResourcesPopUp = ({
     setTranslationAcademy('');
   };
 
-  const handleRowSelect = (e, row, name, owner) => {
+  const handleRowSelect = (e, row, name, owner, offline = false) => {
+    const offlineResource = offline
+    ? { offline: true, data: offline }
+    : { offline: false };
     setReferenceResources({
       selectedResource: selectResource,
       languageId: row,
       refName: name,
       header: title,
       owner,
+      offlineResource,
     });
     // setOwner(owner);
     removeSection();
@@ -252,53 +256,6 @@ const ResourcesPopUp = ({
     readCustomResources({ resourceId: 'obs-tq', translationData: obsTranslationQuestion });
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showInput]);
-
-  // const callResource = (resource) => {
-  //   logger.debug('ResourcesPopUp.js', 'Displaying resource table');
-  //   const resources = [
-  //     { id: 'tn', title: t('label-resource-tn'), resource: translationNote },
-  //     { id: 'twlm', title: t('label-resource-twlm'), resource: translationWord },
-  //     { id: 'tq', title: t('label-resource-tq'), resource: translationQuestion },
-  //     { id: 'ta', title: t('label-resource-ta'), resource: translationAcademy },
-  //     { id: 'obs-tn', title: t('label-resource-obs-tn'), resource: obsTranslationNotes },
-  //     { id: 'obs-tq', title: t('label-resource-obs-tq'), resource: obsTranslationQuestions }];
-  //   const reference = resources.find((r) => r.id === resource);
-
-  //   return (
-  //     reference
-  //     && (
-  //     <tbody className="bg-white ">
-  //       {(reference.resource).map((notes) => (
-  //         <tr className="hover:bg-gray-200" id={notes.name} key={notes.name + notes.owner}>
-  //           <td className="px-5 py-3 hidden">
-  //             <StarIcon className="h-5 w-5 text-gray-300" aria-hidden="true" />
-  //           </td>
-  //           <td className="p-4 text-sm text-gray-600">
-  //             <div
-  //               className="focus:outline-none"
-  //               onClick={(e) => handleRowSelect(e, notes.language, `${reference.title} ${notes.name}`, notes.owner)}
-  //               role="button"
-  //               tabIndex="0"
-  //             >
-  //               {`${notes.name} (${notes.owner})`}
-  //             </div>
-  //           </td>
-  //           <td className="p-4 text-sm text-gray-600">
-  //             <div
-  //               className="focus:outline-none"
-  //               onClick={(e) => handleRowSelect(e, notes.language, `${reference.title} ${notes.name}`, notes.owner)}
-  //               role="button"
-  //               tabIndex="0"
-  //             >
-  //               {notes.language}
-  //             </div>
-  //           </td>
-  //         </tr>
-  //       ))}
-  //     </tbody>
-  //     )
-  //   );
-  // };
 
   const fetchTranslationResource = async (urlpath, setResource) => {
     logger.debug('ResourcesPopUp.js', `fetchTranslationResource :  ${selectResource}`);
@@ -369,7 +326,7 @@ const ResourcesPopUp = ({
 
   const callResource = (resource) => {
     logger.debug('ResourcesPopUp.js', 'Displaying resource table');
-
+    // console.log('selected resource === : ', resource);
     const resources = [
       { id: 'tn', title: t('label-resource-tn'), resource: translationNote },
       { id: 'twlm', title: t('label-resource-twlm'), resource: translationWord },
@@ -378,13 +335,14 @@ const ResourcesPopUp = ({
       { id: 'obs-tn', title: t('label-resource-obs-tn'), resource: obsTranslationNote },
       { id: 'obs-tq', title: t('label-resource-obs-tq'), resource: obsTranslationQuestion }];
     const reference = resources.find((r) => r.id === resource);
-    // console.log('selected referecne : ', reference);
-    console.log('sub menu item : ', subMenuItems);
+    // console.log('selected referecne === : ', reference);
+    // console.log('sub menu item -------: ', subMenuItems);
     const offlineResource = subMenuItems ? subMenuItems?.filter((item) => item?.value?.agOffline && item?.value?.dublin_core?.identifier === resource) : [];
-    console.log('offline  items from submenu : ', offlineResource);
+    // console.log('offline  items from submenu >>>>>: ', offlineResource);
     return (
-      loading ? <LoadingScreen />
-      : (
+      resource
+      && loading ? <LoadingScreen />
+      : resource && (
         <tbody className="bg-white ">
           {/* offline resources head */}
           {offlineResource.length > 0 && (
@@ -404,7 +362,7 @@ const ResourcesPopUp = ({
                 <td className="p-4 text-sm text-gray-600">
                   <div
                     className="focus:outline-none"
-                    onClick={(e) => handleRowSelect(e, resource?.value?.meta?.language, `${resource?.value?.meta?.subject} ${resource?.value?.meta?.language_title}`, resource?.value?.meta?.owner)}
+                    onClick={(e) => handleRowSelect(e, resource?.value?.meta?.language, `${resource?.value?.meta?.subject} ${resource?.value?.meta?.language_title}`, resource?.value?.meta?.owner, resource)}
                     role="button"
                     tabIndex="0"
                   >
@@ -414,7 +372,7 @@ const ResourcesPopUp = ({
                 <td className="p-4 text-sm text-gray-600">
                   <div
                     className="focus:outline-none"
-                    onClick={(e) => handleRowSelect(e, resource?.value?.meta?.language, `${resource?.value?.meta?.subject} ${resource?.value?.meta?.language_title}`, resource?.value?.meta?.owner)}
+                    onClick={(e) => handleRowSelect(e, resource?.value?.meta?.language, `${resource?.value?.meta?.subject} ${resource?.value?.meta?.language_title}`, resource?.value?.meta?.owner, resource)}
                     role="button"
                     tabIndex="0"
                   >
@@ -764,7 +722,6 @@ const ResourcesPopUp = ({
                     ) : selectResource !== 'obs' && callResource(selectResource)}
                         {selectResource === 'obs' && (
                           <tbody className="bg-white">
-                            {console.log('sub menu items : ', subMenuItems)}
                             {(subMenuItems) && (
                           subMenuItems.map((ref) => (ref?.value?.type?.flavorType?.name === 'gloss'
                           && (

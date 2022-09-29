@@ -130,11 +130,11 @@ const DownloadCreateSBforHelps = async (projectResource) => {
                         // finally remove zip and rename base folder to projectname_id
                         logger.debug('DownloadCreateSBforHelps.js', 'deleting zip file - rename project with project + id in ag format');
                         if (fs.existsSync(folder)) {
-                            // fs.renameSync(path.join(folder, currentResourceProject.name), path.join(folder, currentProjectName));
-                            fs.unlinkSync(path.join(folder, `${projectResource.name}.zip`), () => {
+                            fs.renameSync(path.join(folder, projectResource?.name), path.join(folder, `${projectResource?.name}_${projectResource?.owner}_${projectResource?.release?.tag_name}`));
+                            fs.unlinkSync(path.join(folder, `${projectResource?.name}.zip`), () => {
                                 logger.debug('DownloadCreateSBforHelps.js', 'error in deleting zip');
-                                console.log(`Removing Resource Zip Failed :  ${projectResource.name}`);
-                                throw new Error(`Removing Resource Zip Failed :  ${projectResource.name}`);
+                                console.log(`Removing Resource Zip Failed :  ${projectResource?.name}.zip`);
+                                throw new Error(`Removing Resource Zip Failed :  ${projectResource?.name}.zip`);
                             });
                         }
                     });
