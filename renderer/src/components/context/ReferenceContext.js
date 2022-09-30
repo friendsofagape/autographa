@@ -78,16 +78,16 @@ export default function ReferenceContextProvider({ children }) {
                     if (resources.identification.name.en === _projectname[0]) {
                       switch (resources.type.flavorType.flavor.name) {
                         case 'textTranslation':
-                          setBookmarksVerses(resources.project.textTranslation.bookMarks);
-                          setProjectScriptureDir(resources.project.textTranslation.scriptDirection);
+                          setBookmarksVerses(resources.project?.textTranslation.bookMarks);
+                          setProjectScriptureDir(resources.project?.textTranslation.scriptDirection);
                           break;
                         case 'textStories':
-                          setBookmarksVerses(resources.project.textStories.bookMarks);
-                          setProjectScriptureDir(resources.project.textStories.scriptDirection);
+                          setBookmarksVerses(resources.project?.textStories.bookMarks);
+                          setProjectScriptureDir(resources.project?.textStories.scriptDirection);
                           break;
                         case 'audioTranslation':
-                          setBookmarksVerses(resources.project.audioTranslation.bookMarks);
-                          setProjectScriptureDir(resources.project.audioTranslation.scriptDirection);
+                          setBookmarksVerses(resources.project?.audioTranslation.bookMarks);
+                          setProjectScriptureDir(resources.project?.audioTranslation.scriptDirection);
                           break;
                         default:
                           break;

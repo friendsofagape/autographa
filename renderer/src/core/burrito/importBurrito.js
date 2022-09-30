@@ -64,7 +64,7 @@ export const viewBurrito = async (filePath, currentUser, resource) => {
       sb = JSON.stringify(metadata);
     }
     const success = await validate('metadata', path.join(filePath, 'metadata.json'), sb, metadata.meta.version);
-    if (success) {
+    if (success || metadata.type?.flavorType?.flavor?.name === 'audioTranslation') {
       result.validate = true;
       logger.debug('importBurrito.js', 'Burrito file validated successfully');
       result.projectName = metadata.identification?.name?.en;
@@ -91,6 +91,32 @@ export const viewBurrito = async (filePath, currentUser, resource) => {
   }
   return result;
 };
+const updateAudioDir = async (dir, path, fs) => {
+  const AdmZip = window.require('adm-zip');
+  const metadata = fs.readFileSync(path.join(dir, 'metadata.json'));
+  const buritto = JSON.parse(metadata);
+  const result = Object.keys(buritto.ingredients).filter((key) => key.includes('ag_internal_audio.zip'));
+  if (result.length > 0) {
+    const zip = new AdmZip(path.join(dir, 'audio', 'ingredients', 'ag_internal_audio.zip'));
+    zip.extractAllTo(path.join(dir, 'audio', 'ingredients'), true);
+    fs.unlinkSync(path.join(dir, 'audio', 'ingredients', 'ag_internal_audio.zip'));
+    const renames = Object.keys(buritto.ingredients);
+    await renames?.forEach((rename) => {
+      if (!rename.includes('ag_internal_audio.zip')) {
+        buritto.ingredients[rename.replace(rename, path.join('audio', rename))] = buritto.ingredients[rename];
+      }
+      delete buritto.ingredients[rename];
+    });
+    await fs.writeFileSync(path.join(dir, 'metadata.json'), JSON.stringify(buritto));
+  } else {
+    const renames = Object.keys(buritto.ingredients);
+    await renames?.forEach((rename) => {
+      buritto.ingredients[rename.replace(rename, path.join('audio', rename))] = buritto.ingredients[rename];
+      delete buritto.ingredients[rename];
+    });
+    await fs.writeFileSync(path.join(dir, 'metadata.json'), JSON.stringify(buritto));
+  }
+};
 const importBurrito = async (filePath, currentUser, updateBurritoVersion) => {
   logger.debug('importBurrito.js', 'Inside importBurrito');
   const fs = window.require('fs');
@@ -111,7 +137,7 @@ const importBurrito = async (filePath, currentUser, updateBurritoVersion) => {
       sb = JSON.stringify(metadata);
     }
     const success = validate('metadata', path.join(filePath, 'metadata.json'), sb, metadata.meta.version);
-    if (success) {
+    if (success || metadata.type?.flavorType?.flavor?.name === 'audioTranslation') {
       logger.debug('importBurrito.js', 'Burrito file validated successfully');
       let projectName = metadata.identification?.name?.en;
       let id;
@@ -185,13 +211,19 @@ const importBurrito = async (filePath, currentUser, updateBurritoVersion) => {
       const firstKey = Object.keys(metadata.ingredients)[0];
       const folderName = firstKey.split(/[(\\)?(/)?]/gm).slice(0);
       const dirName = folderName[0];
-      fs.mkdirSync(path.join(projectDir, `${projectName}_${id}`, dirName), { recursive: true });
+      let audioDir;
+      if (metadata.type?.flavorType?.flavor?.name === 'audioTranslation') {
+        audioDir = path.join(projectDir, `${projectName}_${id}`, 'audio');
+      } else {
+        audioDir = path.join(projectDir, `${projectName}_${id}`);
+      }
+      fs.mkdirSync(path.join(audioDir, dirName), { recursive: true });
       logger.debug('importBurrito.js', 'Creating a directory if not exists.');
-      await fse.copy(filePath, path.join(projectDir, `${projectName}_${id}`))
+      await fse.copy(filePath, audioDir)
       .then(() => {
         Object.entries(metadata.ingredients).forEach(([key, value]) => {
           logger.debug('importBurrito.js', 'Fetching keys from ingredients.');
-          const content = fs.readFileSync(path.join(projectDir, `${projectName}_${id}`, key), 'utf8');
+          const content = fs.readFileSync(path.join(audioDir, key), 'utf8');
           const checksum = md5(content);
           if (checksum !== value.checksum.md5) {
             logger.debug('importBurrito.js', 'Updating the checksum.');
@@ -225,8 +257,8 @@ const importBurrito = async (filePath, currentUser, updateBurritoVersion) => {
           },
         };
         logger.debug('importBurrito.js', 'Creating the ag-settings.json file.');
-        await fs.writeFileSync(path.join(projectDir, `${projectName}_${id}`, dirName, 'ag-settings.json'), JSON.stringify(settings));
-        const stat = fs.statSync(path.join(projectDir, `${projectName}_${id}`, dirName, 'ag-settings.json'));
+        await fs.writeFileSync(path.join(audioDir, dirName, 'ag-settings.json'), JSON.stringify(settings));
+        const stat = fs.statSync(path.join(audioDir, dirName, 'ag-settings.json'));
         metadata.ingredients[path.join(dirName, 'ag-settings.json')] = {
           checksum: {
             md5: md5(settings),
@@ -237,7 +269,7 @@ const importBurrito = async (filePath, currentUser, updateBurritoVersion) => {
         };
       } else {
         logger.debug('importBurrito.js', 'Updating ag-settings.json file');
-        const ag = fs.readFileSync(path.join(projectDir, `${projectName}_${id}`, dirName, 'ag-settings.json'));
+        const ag = fs.readFileSync(path.join(audioDir, dirName, 'ag-settings.json'));
         let settings = JSON.parse(ag);
         if (settings.version !== environment.AG_SETTING_VERSION) {
           // eslint-disable-next-line prefer-const
@@ -253,14 +285,14 @@ const importBurrito = async (filePath, currentUser, updateBurritoVersion) => {
           settings = setting;
         }
         settings.project[metadata.type.flavorType.flavor.name].lastSeen = moment().format();
-        await fs.writeFileSync(path.join(projectDir, `${projectName}_${id}`, dirName, 'ag-settings.json'), JSON.stringify(settings));
+        await fs.writeFileSync(path.join(audioDir, dirName, 'ag-settings.json'), JSON.stringify(settings));
       }
       if (metadata.copyright.fullStatementPlain) {
         const newLicence1 = (metadata.copyright.fullStatementPlain.en).replace(/\\n/gm, '\n');
         const newLicence = newLicence1?.replace(/\\r/gm, '\r');
         const licence = newLicence?.replace(/'/gm, '"');
-        await fs.writeFileSync(path.join(projectDir, `${projectName}_${id}`, dirName, 'license.md'), licence);
-        const copyrightStats = fs.statSync(path.join(projectDir, `${projectName}_${id}`, dirName, 'license.md'));
+        await fs.writeFileSync(path.join(audioDir, dirName, 'license.md'), licence);
+        const copyrightStats = fs.statSync(path.join(audioDir, dirName, 'license.md'));
         metadata.copyright.licenses = [{ ingredient: 'license.md' }];
         metadata.ingredients[path.join(dirName, 'license.md')] = {
           checksum: {
@@ -279,6 +311,11 @@ const importBurrito = async (filePath, currentUser, updateBurritoVersion) => {
       }
       await fs.writeFileSync(path.join(projectDir, `${projectName}_${id}`, 'metadata.json'), JSON.stringify(metadata));
       logger.debug('importBurrito.js', 'Creating the metadata.json Burrito file.');
+      if (metadata.type?.flavorType?.flavor?.name === 'audioTranslation') {
+        const proDir = path.join(projectDir, `${projectName}_${id}`);
+        fs.unlinkSync(path.join(proDir, 'audio', 'metadata.json'));
+        updateAudioDir(proDir, path, fs);
+      }
       status.push({ type: 'success', value: 'Project Imported Successfully' });
     } else {
       logger.error('importBurrito.js', 'Invalid burrito file (metadata.json).');

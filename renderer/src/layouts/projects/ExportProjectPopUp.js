@@ -90,7 +90,6 @@ export default function ExportProjectPopUp(props) {
     return files.reduce((all, folderContents) => all.concat(folderContents), []);
   }
   const exportFullAudio = async (metadata, folder, path, fs) => {
-    // const archiver = window.require('archiver');
     const AdmZip = window.require('adm-zip');
     const fse = window.require('fs-extra');
     const burrito = metadata;
@@ -99,8 +98,6 @@ export default function ExportProjectPopUp(props) {
       fs.mkdirSync(dir, { recursive: true });
     }
     const zip = new AdmZip();
-    // var output = fs.createWriteStream(path.join(dir,'ag_internal_audio.zip'));
-    // var archive = archiver('zip', { zlib: { level: 9 }});
     const directories = fs.readdirSync(path.join(folder, 'audio', 'ingredients'), { withFileTypes: true })
       .filter((item) => item.isDirectory())
       .map((item) => item.name);
@@ -108,15 +105,6 @@ export default function ExportProjectPopUp(props) {
       zip.addLocalFolder(path.join(folder, 'audio', 'ingredients', sourceDir), sourceDir);
     });
     zip.writeZip(path.join(dir, 'ag_internal_audio.zip'));
-    // var result = archive;
-    // directories.forEach(sourceDir => {
-    //   result = result.directory(path.join(metadata?.folder,'audio', 'ingredients',sourceDir), sourceDir);
-    // });
-    // result
-    //   .on('error', err => reject(err))
-    //   .pipe(output);
-    // // output.on('close', () => resolve());
-    // archive.finalize();
     const list = await walk(path.join(folder, 'audio', 'ingredients'), path, fs);
     const otherFiles = list.filter((name) => !name.includes('.mp3') && !name.includes('.wav'));
     await otherFiles.forEach(async (file) => {
@@ -150,6 +138,7 @@ export default function ExportProjectPopUp(props) {
     const list = await walk(path.join(folder, 'audio', 'ingredients'), path, fs);
     const defaultAudio = list.filter((name) => name.includes('_default'));
     const otherFiles = list.filter((name) => !name.includes('.mp3') && !name.includes('.wav'));
+    // Unable to use forEach, since forEach doesn't wait to finish the loop
     // eslint-disable-next-line
     for (const audio of defaultAudio) {
       const book = audio.split(/[\/\\]/).slice(-3)[0];
