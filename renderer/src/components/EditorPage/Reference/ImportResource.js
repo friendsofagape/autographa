@@ -40,14 +40,21 @@ export default function ImportResource({
       closePopUp(false);
       setValid(false);
     }
-    const importReference = async (projectsDir, name) => {
+    const importReference = async (projectsDir, name, burritoType) => {
+      const fs = window.require('fs');
       const fse = window.require('fs-extra');
       const path = require('path');
-      await fse.copy(
-folderPath,
-path.join(projectsDir, name),
-{ overwrite: true },
-).then(() => {
+      let dirPath;
+      if (burritoType === 'scripture / audioTranslation') {
+        dirPath = path.join(projectsDir, name, 'audio');
+      } else {
+        dirPath = path.join(projectsDir, name);
+      }
+      await fse.copy(folderPath, dirPath, { overwrite: true })
+      .then(async () => {
+        if (burritoType === 'scripture / audioTranslation') {
+          await fs.renameSync(path.join(projectsDir, name, 'audio', 'metadata.json'), path.join(projectsDir, name, 'metadata.json'));
+        }
         setOpenSnackBar(true);
         setNotify('success');
         setSnackText(t('dynamic-msg-import-resource-snack'));
@@ -90,7 +97,7 @@ path.join(projectsDir, name),
             } else {
               setLoading(true);
               logger.debug('ImportResource.js', 'Its a new project');
-              importReference(projectsDir, name);
+              importReference(projectsDir, name, result.burritoType);
             }
           } else {
             setOpenSnackBar(true);

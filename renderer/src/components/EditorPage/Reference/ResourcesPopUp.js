@@ -663,7 +663,7 @@ const ResourcesPopUp = ({
                     ) }
                       </table>
 
-                      {selectResource === 'bible' || selectResource === 'obs' ? (
+                      {selectResource === 'bible' || selectResource === 'obs' || selectResource === 'audio' ? (
                         <button type="button" className="flex gap-6 mx-5 absolute bottom-5 right-0 justify-end z-10 outline-none">
                           <PlusCircleIcon className="h-10 w-10 m-5 text-primary" onClick={() => openResourceDialogBox()} />
                           <ImportResource
