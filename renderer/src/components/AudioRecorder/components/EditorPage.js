@@ -18,7 +18,7 @@ const EditorPage = ({
     }
   };
   return (
-    <div className="bg-white col-span-4 m-3 ml-0 border-b-2 border-secondary rounded-md shadow overflow-hidden">
+    <div className="bg-white rounded-md overflow-hidden">
       {content?.map((mainChunk) => (
         mainChunk.verseNumber
           && (
