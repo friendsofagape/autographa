@@ -209,7 +209,7 @@ function useProjectsSort() {
                           default:
                             break;
                         }
-                        if (_project.project?.textTranslation?.starred === true || _project.project?.textStories?.starred === true) {
+                        if (_project.project?.textTranslation?.starred === true || _project.project?.textStories?.starred === true || _project.project?.audioTranslation?.starred === true) {
                           // FetchStarred(projectName,language, createdAt, updatedAt);
                           FetchStarred(
                             _project.identification.name.en,
