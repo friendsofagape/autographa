@@ -39,7 +39,7 @@ const translationNotes = [
   createData('Malayalam', 'ml', 'Door43-catalog'),
   createData('Gujarati', 'gu', 'Door43-catalog'),
 ];
-const translationWords = [
+const translationWordLists = [
   createData('English', 'en', 'Door43-catalog'),
   createData('Spanish', 'es-419', 'es-419_gl'),
 ];
@@ -79,11 +79,10 @@ const ResourcesPopUp = ({
   const [error, setError] = useState('');
   // const [translationNote, setTranslationNote] = useState(translationNotes);
   // const [translationQuestion, setTranslationQuestion] = useState(translationQuestions);
-  const [translationWord, setTranslationWord] = useState(translationWords);
+  const [translationWordList, settranslationWordList] = useState(translationWordLists);
   // const [translationAcademy, setTranslationAcademy] = useState(translationAcademys);
   const [translationNote, setTranslationNote] = useState([]);
   const [translationQuestion, setTranslationQuestion] = useState([]);
-  // const [translationWord, setTranslationWord] = useState([]);
   const [translationAcademy, setTranslationAcademy] = useState([]);
   const [obsTranslationNote, setObsTranslationNote] = useState([]);
   const [obsTranslationQuestion, setObsTranslationQuestion] = useState([]);
@@ -181,7 +180,7 @@ const ResourcesPopUp = ({
     setOpenResourcePopUp(false);
     setTranslationNote('');
     setTranslationQuestion('');
-    setTranslationWord('');
+    settranslationWordList('');
     setTranslationAcademy('');
   };
 
@@ -249,7 +248,7 @@ const ResourcesPopUp = ({
 
   useEffect(() => {
     readCustomResources({ resourceId: 'tq', translationData: translationQuestion });
-    readCustomResources({ resourceId: 'twlm', translationData: translationWord });
+    readCustomResources({ resourceId: 'twlm', translationData: translationWordList });
     readCustomResources({ resourceId: 'tn', translationData: translationNote });
     readCustomResources({ resourceId: 'ta', translationData: translationAcademy });
     readCustomResources({ resourceId: 'obs-tn', translationData: obsTranslationNote });
@@ -291,8 +290,8 @@ const ResourcesPopUp = ({
             // console.log('get content : ', translationNote);
           break;
         // case 'twlm':
-        //   await fetchTranslationResource('Translation Words', setTranslationWord);
-        //   // console.log('get content : ', translationWord);
+        //   await fetchTranslationResource('Translation Words', settranslationWordList);
+        //   // console.log('get content : ', translationWordList);
         //   break;
         case 'tq':
           await fetchTranslationResource('Translation Questions', setTranslationQuestion);
@@ -326,10 +325,10 @@ const ResourcesPopUp = ({
 
   const callResource = (resource) => {
     logger.debug('ResourcesPopUp.js', 'Displaying resource table');
-    // console.log('selected resource === : ', resource);
+    console.log('selected resource ==== : ', resource);
     const resources = [
       { id: 'tn', title: t('label-resource-tn'), resource: translationNote },
-      { id: 'twlm', title: t('label-resource-twlm'), resource: translationWord },
+      { id: 'twlm', title: t('label-resource-twl'), resource: translationWordList },
       { id: 'tq', title: t('label-resource-tq'), resource: translationQuestion },
       { id: 'ta', title: t('label-resource-ta'), resource: translationAcademy },
       { id: 'obs-tn', title: t('label-resource-obs-tn'), resource: obsTranslationNote },
@@ -568,8 +567,8 @@ const ResourcesPopUp = ({
                       <ResourceOption
                         imageUrl="/illustrations/image-icon.svg"
                         id="twlm"
-                        text={t('label-resource-twlm')}
-                        translationData={translationWords}
+                        text={t('label-resource-twl')}
+                        translationData={translationWordLists}
                         readCustomResources={readCustomResources}
                         selectResource={selectResource}
                         setSelectResource={setSelectResource}
