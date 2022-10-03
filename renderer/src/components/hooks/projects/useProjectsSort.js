@@ -128,62 +128,6 @@ function useProjectsSort() {
     handleRequestSortUnstarred('asc', 'view');
   };
 
-  const archiveProject = async (project, name) => {
-    const projectList = await localForage.getItem('projectmeta');
-    // eslint-disable-next-line array-callback-return
-    projectList.projects.map((proj) => {
-      if (proj.identification.name.en === project.name) {
-        project.isArchived = !project.isArchived;
-      }
-    });
-
-    const projectArrayTemp = [];
-    if (isElectron()) {
-      let currentUser;
-      await localForage.getItem('userProfile').then((value) => {
-        currentUser = value?.username;
-      });
-      const projects = localForage.getItem('projectmeta');
-      projects.then((value) => {
-        if (value) {
-          projectArrayTemp.push(value);
-        }
-      }).then(() => {
-        projectArrayTemp[0].projects.forEach((_project) => {
-          if (_project.identification.name.en === name) {
-            let dirName;
-            switch (_project.type.flavorType.flavor.name) {
-              case 'textTranslation':
-                dirName = 'textTranslation';
-                break;
-              case 'textStories':
-                dirName = 'textStories';
-                break;
-              default:
-                break;
-            }
-            const status = _project.project[dirName].isArchived;
-            const selectedProject = _project;
-            selectedProject.project[dirName].isArchived = !status;
-            selectedProject.project[dirName].lastSeen = moment().format();
-          }
-        });
-      }).finally(() => {
-        localForage.setItem('projectmeta', projectArrayTemp[0])
-          .then(() => {
-            projectArrayTemp[0].projects.forEach((_project) => {
-              if (_project.identification.name.en === name) {
-                const id = Object.keys(_project.identification.primary.ag);
-                const projectName = `${name}_${id}`;
-                logger.debug('useProjectsSort.js', `Updating archive/restore in AG settings for ${name}`);
-                updateAgSettings(currentUser, projectName, _project);
-              }
-            });
-          });
-      });
-    }
-  };
-
   // eslint-disable-next-line
     useEffect(() => {
     if (temparray) {
@@ -341,6 +285,53 @@ function useProjectsSort() {
             setUnStarredProjets(unstarrtedData);
         });
        }
+    };
+
+    const archiveProject = async (project, name) => {
+      const userProfile = await localForage.getItem('userProfile');
+      const currentUser = userProfile?.username;
+
+      const projects = await localForage.getItem('projectmeta');
+
+      console.log('projects', projects);
+
+      const projectArrayTemp = JSON.parse(JSON.stringify(projects));
+
+      projectArrayTemp.projects.forEach((_project) => {
+        if (_project.identification.name.en === name) {
+          let dirName;
+          switch (_project.type.flavorType.flavor.name) {
+            case 'textTranslation': {
+              dirName = 'textTranslation';
+              break;
+            }
+            case 'textStories': {
+              dirName = 'textStories';
+              break;
+            }
+            default:
+              break;
+          }
+          const status = _project.project[dirName].isArchived;
+          const selectedProject = _project;
+          selectedProject.project[dirName].isArchived = !status;
+          selectedProject.project[dirName].lastSeen = moment().format();
+        }
+      });
+
+      await localForage.setItem('projectmeta', projectArrayTemp);
+
+      console.log('projectArrayTemp', projectArrayTemp);
+
+      projectArrayTemp.projects.forEach((_project) => {
+        if (_project.identification.name.en === name) {
+          const id = Object.keys(_project.identification.primary.ag);
+          const projectName = `${name}_${id}`;
+          logger.debug('useProjectsSort.js', `Updating archive/restore in AG settings for ${name}`);
+          updateAgSettings(currentUser, projectName, _project);
+        }
+      });
+      await FetchProjects();
     };
 
     React.useEffect(() => {

@@ -27,6 +27,7 @@ export default function ProjectList() {
   const { t } = useTranslation();
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('name');
+  const [showArchived, setShowArchived] = useState(false);
 
   const filterList = ['name', 'language', 'type', 'date', 'view'];
   const {
@@ -112,8 +113,6 @@ export default function ProjectList() {
     await FetchProjects();
   };
 
-  const [showArchived, setShowArchived] = useState(false);
-
   function filterArchive(project) {
     if (project.isArchived === showArchived || project.isArchived === undefined) {
       return true;
@@ -145,9 +144,9 @@ export default function ProjectList() {
                 <div className="px-4 py-4 sm:px-0">
 
                   <div className="flex flex-col">
-                    <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                    <div className="-my-2 sm:-mx-6 lg:-mx-8">
                       <div className="align-middle inline-block min-w-full sm:px-6 lg:px-8">
-                        <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                        <div className="shadow border-b border-gray-200 sm:rounded-lg">
                           <table data-testid="tablelayout" className="min-w-full divide-y divide-gray-200 mb-9">
                             <EnhancedTableHead
                               order={order}
@@ -224,82 +223,79 @@ export default function ProjectList() {
                                         leaveFrom="transform scale-100 opacity-100"
                                         leaveTo="transform scale-95 opacity-0"
                                       >
-                                        <Disclosure.Panel as={Fragment}>
-                                          <tr key={project.name}>
-                                            <td />
-                                            <td className="px-6 py-4">
-                                              <div className="text-xxs uppercase font-regular text-gray-500 tracking-wider p-1">description</div>
-                                              <div className="text-sm tracking-wide p-1">{project.description}</div>
-                                            </td>
-                                            <td colSpan="3" className="px-5">
-                                              <div className="text-xxs uppercase font-regular text-gray-500 tracking-wider p-1">Project ID</div>
-                                              <div className="text-sm tracking-wide p-1">{project.id[0]}</div>
-                                            </td>
-                                            <td className="pl-5">
+                                        <Disclosure.Panel as="tr" key={project.name}>
+                                          <td />
+                                          <td className="px-6 py-4">
+                                            <div className="text-xxs uppercase font-regular text-gray-500 tracking-wider p-1">description</div>
+                                            <div className="text-sm tracking-wide p-1">{project.description}</div>
+                                          </td>
+                                          <td colSpan="3" className="px-5">
+                                            <div className="text-xxs uppercase font-regular text-gray-500 tracking-wider p-1">Project ID</div>
+                                            <div className="text-sm tracking-wide p-1">{project.id[0]}</div>
+                                          </td>
+                                          <td className="pl-5">
 
-                                              <Menu as="div">
-                                                <div>
-                                                  <Menu.Button className="px-5">
-                                                    <DotsVerticalIcon aria-label="star-menu-project" className="h-5 w-5 text-primary" aria-hidden="true" />
-                                                  </Menu.Button>
-                                                </div>
-                                                <Transition
-                                                  as={Fragment}
-                                                  enter="transition ease-out duration-100"
-                                                  enterFrom="transform opacity-0 scale-95"
-                                                  enterTo="transform opacity-100 scale-100"
-                                                  leave="transition ease-in duration-75"
-                                                  leaveFrom="transform opacity-100 scale-100"
-                                                  leaveTo="transform opacity-0 scale-95"
-                                                >
-                                                  <Menu.Items className="fixed right-26 top-4 w-56 mt-2 z-50 origin-top-right bg-white divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                                                    <div className="px-1 py-1 ">
-                                                      <Menu.Item>
-                                                        {({ active }) => (
-                                                          <button
-                                                            type="button"
-                                                            className={`${active ? 'bg-primary text-white' : 'text-gray-900'
-                                                              } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
-                                                            onClick={() => editproject(project)}
-                                                          >
-                                                            {t('btn-edit')}
-                                                          </button>
-                                                        )}
-                                                      </Menu.Item>
-                                                      <Menu.Item>
-                                                        {({ active }) => (
-                                                          <button
-                                                            type="button"
-                                                            className={`${active ? 'bg-primary text-white' : 'text-gray-900'
-                                                              } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
-                                                            onClick={() => openExportPopUp(project)}
-                                                          >
-                                                            {t('btn-export')}
-                                                          </button>
-                                                        )}
-                                                      </Menu.Item>
-                                                      <Menu.Item>
-                                                        {({ active }) => (
-                                                          <button
-                                                            type="button"
-                                                            className={`${active ? 'bg-primary text-white' : 'text-gray-900'
-                                                              } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
-                                                            onClick={() => {
-                                                              archiveProject(project, project.name);
-                                                              setShowArchived(!showArchived);
-                                                            }}
-                                                          >
-                                                            {project.isArchived === true ? 'Restore' : 'Archive'}
-                                                          </button>
-                                                        )}
-                                                      </Menu.Item>
-                                                    </div>
-                                                  </Menu.Items>
-                                                </Transition>
-                                              </Menu>
+                                            <Menu as="div">
+                                              <div>
+                                                <Menu.Button className="px-5">
+                                                  <DotsVerticalIcon aria-label="star-menu-project" className="h-5 w-5 text-primary" aria-hidden="true" />
+                                                </Menu.Button>
+                                              </div>
+                                              <Transition
+                                                as={Fragment}
+                                                enter="transition ease-out duration-100"
+                                                enterFrom="transform opacity-0 scale-95"
+                                                enterTo="transform opacity-100 scale-100"
+                                                leave="transition ease-in duration-75"
+                                                leaveFrom="transform opacity-100 scale-100"
+                                                leaveTo="transform opacity-0 scale-95"
+                                              >
+                                                <Menu.Items className="fixed right-26 top-4 w-56 mt-2 z-50 origin-top-right bg-white divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                                                  <div className="px-1 py-1 ">
+                                                    <Menu.Item>
+                                                      {({ active }) => (
+                                                        <button
+                                                          type="button"
+                                                          className={`${active ? 'bg-primary text-white' : 'text-gray-900'
+                                                            } group flex rounded-md items-center w-full px-2 py-2 text-sm ${project.isArchived ? 'hidden' : 'flex'}`}
+                                                          onClick={() => editproject(project)}
+                                                        >
+                                                          {t('btn-edit')}
+                                                        </button>
+                                                      )}
+                                                    </Menu.Item>
+                                                    <Menu.Item>
+                                                      {({ active }) => (
+                                                        <button
+                                                          type="button"
+                                                          className={`${active ? 'bg-primary text-white' : 'text-gray-900'
+                                                            } group rounded-md items-center w-full px-2 py-2 text-sm ${project.isArchived ? 'hidden' : 'flex'}`}
+                                                          onClick={() => openExportPopUp(project)}
+                                                        >
+                                                          {t('btn-export')}
+                                                        </button>
+                                                      )}
+                                                    </Menu.Item>
+                                                    <Menu.Item>
+                                                      {({ active }) => (
+                                                        <button
+                                                          type="button"
+                                                          className={`${active ? 'bg-primary text-white' : 'text-gray-900'
+                                                            } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
+                                                          onClick={() => {
+                                                            archiveProject(project, project.name);
+                                                          }}
+                                                        >
+                                                          {project.isArchived === true ? 'Restore' : 'Archive'}
+                                                        </button>
+                                                      )}
+                                                    </Menu.Item>
+                                                  </div>
+                                                </Menu.Items>
+                                              </Transition>
+                                            </Menu>
 
-                                            </td>
-                                          </tr>
+                                          </td>
                                         </Disclosure.Panel>
                                       </Transition>
                                     </>
@@ -386,82 +382,79 @@ export default function ProjectList() {
                                         leaveFrom="transform scale-100 opacity-100"
                                         leaveTo="transform scale-95 opacity-0"
                                       >
-                                        <Disclosure.Panel as={Fragment}>
-                                          <tr key={project.name}>
-                                            <td />
-                                            <td className="px-6 py-4">
-                                              <div className="text-xxs uppercase font-regular text-gray-500 tracking-wider p-1">description</div>
-                                              <div aria-label="project-description-display" className="text-sm tracking-wide p-1">{project.description}</div>
-                                            </td>
-                                            <td colSpan="3" className="px-5">
-                                              <div className="text-xxs uppercase font-regular text-gray-500 tracking-wider p-1">Project ID</div>
-                                              <div className="text-sm tracking-wide p-1">{project.id[0]}</div>
-                                            </td>
-                                            <td className="pl-5">
-                                              <Menu as="div">
-                                                <div>
-                                                  <Menu.Button className="px-5">
-                                                    <DotsVerticalIcon className="h-5 w-5 text-primary" aria-label="unstar-menu-project" aria-hidden="true" />
-                                                  </Menu.Button>
-                                                </div>
-                                                <Transition
-                                                  as={Fragment}
-                                                  enter="transition ease-out duration-100"
-                                                  enterFrom="transform opacity-0 scale-95"
-                                                  enterTo="transform opacity-100 scale-100"
-                                                  leave="transition ease-in duration-75"
-                                                  leaveFrom="transform opacity-100 scale-100"
-                                                  leaveTo="transform opacity-0 scale-95"
-                                                >
-                                                  <Menu.Items className="fixed right-26 top-4 w-56 mb-1 z-50 origin-top-right bg-white divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                                                    <div className="px-1 py-1">
-                                                      <Menu.Item>
-                                                        {({ active }) => (
-                                                          <button
-                                                            type="button"
-                                                            aria-label="edit-project"
-                                                            className={`${active ? 'bg-primary text-white' : 'text-gray-900'
-                                                              } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
-                                                            onClick={() => editproject(project)}
-                                                          >
-                                                            {t('btn-edit')}
-                                                          </button>
-                                                        )}
-                                                      </Menu.Item>
-                                                      <Menu.Item>
-                                                        {({ active }) => (
-                                                          <button
-                                                            type="button"
-                                                            className={`${active ? 'bg-primary text-white' : 'text-gray-900'
-                                                              } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
-                                                            onClick={() => openExportPopUp(project)}
-                                                          >
-                                                            {t('btn-export')}
-                                                          </button>
-                                                        )}
-                                                      </Menu.Item>
-                                                      <Menu.Item>
-                                                        {({ active }) => (
-                                                          <button
-                                                            type="button"
-                                                            className={`${active ? 'bg-primary text-white' : 'text-gray-900'
-                                                              } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
-                                                            onClick={() => {
-                                                              archiveProject(project, project.name);
-                                                              setShowArchived(!showArchived);
-                                                            }}
-                                                          >
-                                                            {project.isArchived === true ? 'Restore' : 'Archive'}
-                                                          </button>
-                                                        )}
-                                                      </Menu.Item>
-                                                    </div>
-                                                  </Menu.Items>
-                                                </Transition>
-                                              </Menu>
+                                        <Disclosure.Panel as="tr" key={project.name}>
+                                          <td />
+                                          <td className="px-6 py-4">
+                                            <div className="text-xxs uppercase font-regular text-gray-500 tracking-wider p-1">description</div>
+                                            <div aria-label="project-description-display" className="text-sm tracking-wide p-1">{project.description}</div>
+                                          </td>
+                                          <td colSpan="3" className="px-5">
+                                            <div className="text-xxs uppercase font-regular text-gray-500 tracking-wider p-1">Project ID</div>
+                                            <div className="text-sm tracking-wide p-1">{project.id[0]}</div>
+                                          </td>
+                                          <td className="pl-5">
+                                            <Menu as="div">
+                                              <div>
+                                                <Menu.Button className="px-5">
+                                                  <DotsVerticalIcon className="h-5 w-5 text-primary" aria-label="unstar-menu-project" aria-hidden="true" />
+                                                </Menu.Button>
+                                              </div>
+                                              <Transition
+                                                as={Fragment}
+                                                enter="transition ease-out duration-100"
+                                                enterFrom="transform opacity-0 scale-95"
+                                                enterTo="transform opacity-100 scale-100"
+                                                leave="transition ease-in duration-75"
+                                                leaveFrom="transform opacity-100 scale-100"
+                                                leaveTo="transform opacity-0 scale-95"
+                                              >
+                                                <Menu.Items className="fixed right-26 top-4 w-56 mb-1 z-50 origin-top-right bg-white divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                                                  <div className="px-1 py-1">
+                                                    <Menu.Item>
+                                                      {({ active }) => (
+                                                        <button
+                                                          type="button"
+                                                          aria-label="edit-project"
+                                                          className={`${active ? 'bg-primary text-white' : 'text-gray-900'
+                                                            } group rounded-md items-center w-full px-2 py-2 text-sm ${project.isArchived ? 'hidden' : 'flex'}`}
+                                                          onClick={() => editproject(project)}
+                                                        >
+                                                          {t('btn-edit')}
+                                                        </button>
+                                                      )}
+                                                    </Menu.Item>
+                                                    <Menu.Item>
+                                                      {({ active }) => (
+                                                        <button
+                                                          type="button"
+                                                          className={`${active ? 'bg-primary text-white' : 'text-gray-900'
+                                                            } group rounded-md items-center w-full px-2 py-2 text-sm ${project.isArchived ? 'hidden' : 'flex'}`}
+                                                          onClick={() => openExportPopUp(project)}
+                                                        >
+                                                          {t('btn-export')}
+                                                        </button>
+                                                      )}
+                                                    </Menu.Item>
+                                                    <Menu.Item>
+                                                      {({ active }) => (
+                                                        <button
+                                                          type="button"
+                                                          className={`${active ? 'bg-primary text-white' : 'text-gray-900'
+                                                            } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
+                                                          onClick={() => {
+                                                            archiveProject(project, project.name);
+                                                          }}
+                                                        >
+                                                          {project.isArchived === true ? 'Restore' : 'Archive'}
+                                                        </button>
+                                                      )}
+                                                    </Menu.Item>
+                                                  </div>
+                                                </Menu.Items>
+                                              </Transition>
+                                            </Menu>
 
-                                            </td>
-                                          </tr>
+                                          </td>
                                         </Disclosure.Panel>
 
                                       </Transition>
