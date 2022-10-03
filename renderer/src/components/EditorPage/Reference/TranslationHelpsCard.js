@@ -112,8 +112,8 @@ export default function TranslationHelpsCard({
               case 'ta':
                 // console.log('filepath : ', { filePath });
                 setOfflineMarkdown('');
-              if (fs.existsSync(path.join(folder, projectName, 'translate', filePath))) {
-                const filecontent = fs.readFileSync(path.join(folder, projectName, 'translate', filePath), 'utf8');
+              if (filePath && fs.existsSync(path.join(folder, projectName, filePath))) {
+                const filecontent = fs.readFileSync(path.join(folder, projectName, filePath), 'utf8');
                 // console.log('filecontent : ', { filecontent });
                 setOfflineItemsDisable(true);
                 setOfflineMarkdown(filecontent);
@@ -142,7 +142,6 @@ export default function TranslationHelpsCard({
       setFilters, setFontSize, setItemIndex, setMarkdownView,
     },
   } = useCardState({ items });
-
   return (
     <>
       <TranslationhelpsNav
