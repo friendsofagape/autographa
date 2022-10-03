@@ -26,6 +26,7 @@ import { environment } from '../../../../../environment';
 import * as logger from '../../../../logger';
 
 // const grammar = require('usfm-grammar');
+// const usfmJS = require('usfm-js');
 const md5 = require('md5');
 
 const fs = window.require('fs');
@@ -417,8 +418,8 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
                           await fs.writeFileSync(path.join(folder, `${currentProjectName}.zip`), Buffer.from(blob));
                           logger.debug('DownloadResourcePopUp.js', 'In resource download - downloading zip content completed ');
 
-                          // extract zip
                           logger.debug('DownloadResourcePopUp.js', 'In resource download - Unzip downloaded resource');
+                          // extract zip
                           const filecontent = await fs.readFileSync(path.join(folder, `${currentProjectName}.zip`));
                           const result = await JSZip.loadAsync(filecontent);
                           const keys = Object.keys(result.files);
@@ -431,7 +432,7 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
                             } else {
                               // eslint-disable-next-line no-await-in-loop
                               const bufferContent = Buffer.from(await item.async('arraybuffer'));
-
+                              fs.writeFileSync(path.join(folder, item.name), bufferContent);
                               // call usfm grammmar if Aligned Bible to convert
                               // aligned bible conversion section test --------------------------------------------------------
                               // fs.writeFileSync(path.join(folder, item.name), bufferContent);
@@ -462,7 +463,26 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
                               // }
                               // aligned bible conversion section test --------------------------------------------------------
                               // // eslint-disable-next-line no-await-in-loop
-                              fs.writeFileSync(path.join(folder, item.name), bufferContent);
+
+                              // test usfm-js
+                              // fs.writeFileSync(path.join(folder, item.name), bufferContent);
+                              // console.log({ current: currentResourceProject?.subject, key });
+                              // if (currentResourceProject.subject === 'Aligned Bible' && key.endsWith('.usfm')) {
+                              //   logger.debug('DownloadResourcePopUp.js', 'In resource download - convert Aligned to normal usfm');
+                              //   console.log('inside aligned conversion : ', currentResourceProject.subject, 'file : ', key);
+                              //   const uint8array = new TextEncoder('utf-8').encode(bufferContent);
+                              //   const decodedText = new TextDecoder().decode(uint8array);
+                              //   // console.log('my ufsm parser buffer string value  ====---', decodedText);
+                              //   // eslint-disable-next-line no-await-in-loop
+                              //   const toJSON = await usfmJS.toJSON(decodedText);
+                              //   // console.log('decode json usfm : ', { toJSON });
+                              //   // const convetedUsfm = usfmJS.toUSFM(toJSON, { forcedNewLines: true });
+                              //     const myJsonParser = new grammar.JSONParser(toJSON);
+                              //   const usfmData = myJsonParser.toUSFM();
+                              //   fs.writeFileSync(path.join(folder, item.name), usfmData);
+                              // } else {
+                              //   fs.writeFileSync(path.join(folder, item.name), bufferContent);
+                              // }
                             }
                             if (key.toLowerCase().includes('license')) {
                               logger.debug('DownloadResourcePopUp.js', 'In resource download - check license file found');

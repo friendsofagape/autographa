@@ -14356,10 +14356,17 @@
     "ohm-js" "^15.5.0"
     "yargs" "^17.0.1"
 
-"usfm-js@^2.0.2", "usfm-js@^2.1.0":
+"usfm-js@^2.0.2":
   "integrity" "sha512-DemzdzAwrVeuzRwnZYOKvAle/U2ZUUf04NQSVDgqZCSFyH7hVhe2/PWC7jT2DKnPMYoa0IxnG3XGbuOPXgZ/oQ=="
   "resolved" "https://registry.npmjs.org/usfm-js/-/usfm-js-2.1.0.tgz"
   "version" "2.1.0"
+  dependencies:
+    "lodash.clonedeep" "^4.5.0"
+
+"usfm-js@^2.1.0", "usfm-js@^3.4.1":
+  "integrity" "sha512-i+C0pEAbMmaH9rnWVKqsKGzEXWyl0QIq08NZI7ctKzYIFmuNS51GyJ1FshodIwi9MluxIBMpF9Bw353soZ8JEw=="
+  "resolved" "https://registry.npmjs.org/usfm-js/-/usfm-js-3.4.1.tgz"
+  "version" "3.4.1"
   dependencies:
     "lodash.clonedeep" "^4.5.0"
 
