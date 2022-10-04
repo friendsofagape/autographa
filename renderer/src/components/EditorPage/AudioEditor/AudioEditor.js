@@ -18,7 +18,7 @@ import { getDetails } from '../ObsEditor/ObsEditor';
 
 const grammar = require('usfm-grammar');
 
-const AudioEditor = ({editor}) => {
+const AudioEditor = ({ editor }) => {
   const [snackBar, setOpenSnackBar] = useState(false);
   const [snackText, setSnackText] = useState('');
   const [notify, setNotify] = useState();

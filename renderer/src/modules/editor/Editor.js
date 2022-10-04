@@ -17,7 +17,7 @@ import { ProjectContext } from '@/components/context/ProjectContext';
 import * as logger from '../../logger';
 
 export default function Editor({
-  children, callFrom,editor
+  children, callFrom, editor,
 }) {
   const {
     states: {
@@ -27,7 +27,6 @@ export default function Editor({
       setScrollLock,
     },
   } = useContext(ProjectContext);
-  console.log(children, editor,'hello')
   const {
     state: {
       selectedFont,
@@ -127,7 +126,7 @@ export default function Editor({
   };
   const { t } = useTranslation();
   return (
-    <div className={`flex flex-col bg-white border-b-2 border-secondary ${editor==='audioTranslation'? 'lg:max-h-[30rem] md:max-h-[24rem]':'h-editor'} rounded-md shadow scrollbar-width`}>
+    <div className={`flex flex-col bg-white border-b-2 border-secondary ${editor === 'audioTranslation' ? 'lg:max-h-[30rem] md:max-h-[24rem]' : 'h-editor'} rounded-md shadow scrollbar-width`}>
       <div className="flex flex-wrap items-center justify-between bg-secondary ">
         {/* {(callFrom === 'textTranslation' && <BibleNavigation />) || (callFrom === 'obs' && <ObsNavigation value={value} onChange={onChange} />)} */}
         {(callFrom === 'textTranslation' && <BibleNavigation />) || (callFrom === 'obs'
@@ -371,4 +370,5 @@ export default function Editor({
 Editor.propTypes = {
   children: PropTypes.any,
   callFrom: PropTypes.string,
+  editor: PropTypes.string
 };

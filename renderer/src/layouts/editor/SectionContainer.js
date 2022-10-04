@@ -35,8 +35,8 @@ const SectionContainer = () => {
   return (
     <>
       <div className="grid grid-flow-col auto-cols-fr m-3 gap-2">
-        <SectionPlaceholder1 editor={editor}/>
-        <SectionPlaceholder2 editor={editor}/>
+        <SectionPlaceholder1 editor={editor} />
+        <SectionPlaceholder2 editor={editor} />
         {(editor === 'textTranslation' && <UsfmEditor />)
       || (editor === 'textStories' && <ObsEditor />)
       || (editor === 'audioTranslation' && <AudioEditor editor={editor} />)}

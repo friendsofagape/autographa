@@ -18,7 +18,7 @@ const TranslationHelps = dynamic(
   { ssr: false },
 );
 
-const SectionPlaceholder2 = ({editor}) => {
+const SectionPlaceholder2 = ({ editor }) => {
   const supportedBooks = null;
   const [referenceColumnTwoData1, setReferenceColumnTwoData1] = useState({
     languageId: '',
@@ -303,7 +303,7 @@ const SectionPlaceholder2 = ({editor}) => {
       ? (layout >= 1 && layout <= 2) : (layout > 1 && layout <= 2)) && (
       <>
         {(openResource3 === false || openResource4 === false) && (
-        <div className={`bg-white rounded-md grid gap-2 ${editor==='audioTranslation' ? `lg:max-h-[30rem] md:max-h-[24rem]`: 'h-editor'} overflow-x-auto`}>
+        <div className={`bg-white rounded-md grid gap-2 ${editor === 'audioTranslation' ? 'lg:max-h-[30rem] md:max-h-[24rem]' : 'h-editor'} overflow-x-auto`}>
           <EditorSection
             row="3"
             hideAddition={hideAddition}
