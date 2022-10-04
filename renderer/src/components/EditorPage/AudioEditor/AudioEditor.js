@@ -1,9 +1,8 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-nested-ternary */
-import {
-  useState, useEffect, useContext, useRef, useCallback,
- } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import Editor from '@/modules/editor/Editor';
+import PropTypes from 'prop-types';
 import { isElectron } from '@/core/handleElectron';
 import { readRefMeta } from '@/core/reference/readRefMeta';
 import { readRefBurrito } from '@/core/reference/readRefBurrito';
@@ -18,7 +17,7 @@ import { getDetails } from '../ObsEditor/ObsEditor';
 
 const grammar = require('usfm-grammar');
 
-const AudioEditor = () => {
+const AudioEditor = ({ editor }) => {
   const [snackBar, setOpenSnackBar] = useState(false);
   const [snackText, setSnackText] = useState('');
   const [notify, setNotify] = useState();
@@ -211,7 +210,7 @@ const AudioEditor = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [bookId, chapter]);
   return (
-    <Editor callFrom="textTranslation">
+    <Editor callFrom="textTranslation" editor={editor}>
       {((isLoading || !audioContent) && displyScreen) && <EmptyScreen />}
       {isLoading && !displyScreen && <LoadingScreen /> }
       {audioContent && isLoading === false
@@ -227,3 +226,7 @@ const AudioEditor = () => {
   );
  };
  export default AudioEditor;
+
+ AudioEditor.propTypes = {
+  editor: PropTypes.string,
+};

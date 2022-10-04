@@ -2,6 +2,7 @@
 import dynamic from 'next/dynamic';
 import { useContext, useEffect, useState } from 'react';
 import localforage from 'localforage';
+import PropTypes from 'prop-types';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import EditorSection from '@/layouts/editor/EditorSection';
 import ReferenceBible from '@/components/EditorPage/Reference/ReferenceBible/ReferenceBible';
@@ -18,7 +19,7 @@ const TranslationHelps = dynamic(
   { ssr: false },
 );
 
-const SectionPlaceholder2 = () => {
+const SectionPlaceholder2 = ({ editor }) => {
   const supportedBooks = null;
   const [referenceColumnTwoData1, setReferenceColumnTwoData1] = useState({
     languageId: '',
@@ -303,7 +304,7 @@ const SectionPlaceholder2 = () => {
       ? (layout >= 1 && layout <= 2) : (layout > 1 && layout <= 2)) && (
       <>
         {(openResource3 === false || openResource4 === false) && (
-        <div className="bg-white rounded-md grid gap-2 h-editor overflow-x-auto">
+        <div className={`bg-white rounded-md grid gap-2 ${editor === 'audioTranslation' ? 'lg:max-h-[30rem] md:max-h-[24rem]' : 'h-editor'} overflow-x-auto`}>
           <EditorSection
             row="3"
             hideAddition={hideAddition}
@@ -404,3 +405,7 @@ const SectionPlaceholder2 = () => {
   );
 };
 export default SectionPlaceholder2;
+
+SectionPlaceholder2.propTypes = {
+  editor: PropTypes.string,
+};
