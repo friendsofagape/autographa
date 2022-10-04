@@ -17,13 +17,10 @@ const fetchProjectsMeta = async ({ currentUser }) => {
         const data = fs.readFileSync(path.join(projectsMetaPath, dir, 'metadata.json'), 'utf8');
         const parseData = JSON.parse(data);
         let setting;
-        const firstKey = Object.keys(parseData.ingredients)[0];
-        const folderName = firstKey.split(/[(\\)?(/)?]/gm).slice(0);
-        const dirName = folderName[0];
-
-        try {
-          setting = fs.readFileSync(path.join(projectsMetaPath, dir, dirName, 'ag-settings.json'), 'utf8');
-        } catch (err) {
+        const result = Object.keys(parseData.ingredients).filter((key) => key.includes('ag-settings.json'));
+        if (result[0]) {
+          setting = fs.readFileSync(path.join(projectsMetaPath, dir, result[0]), 'utf8');
+        } else {
           logger.error('fetchProjectsMeta.js', 'Unable to find ag-settings for the project');
         }
         if (setting) {

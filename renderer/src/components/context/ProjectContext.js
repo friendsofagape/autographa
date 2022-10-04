@@ -233,7 +233,7 @@ const ProjectContextProvider = ({ children }) => {
         update,
         projectType,
       };
-      if (projectType === 'Translation') {
+      if (projectType !== 'OBS') {
         createProjectTranslationUtils();
         const temp_obj = {
           versificationScheme: versificationScheme.title,

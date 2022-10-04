@@ -9,24 +9,24 @@ import { ReferenceContext } from '@/components/context/ReferenceContext';
 import writeToFile from '@/core/editor/writeToFile';
 import EditorPanel from './EditorPanel';
 
+export const getDetails = () => new Promise((resolve) => {
+  localforage.getItem('userProfile').then((value) => {
+    const username = value?.username;
+    localforage.getItem('currentProject').then((projectName) => {
+      const path = require('path');
+      const newpath = localStorage.getItem('userPath');
+      const projectsDir = path.join(newpath, 'autographa', 'users', username, 'projects', projectName);
+      const metaPath = path.join(newpath, 'autographa', 'users', username, 'projects', projectName, 'metadata.json');
+      resolve({
+        projectName, username, projectsDir, metaPath, path,
+      });
+    });
+  });
+});
 const ObsEditor = () => {
   const [mdData, setMdData] = useState();
   const [directoryName, setDirectoryName] = useState();
   const { state: { obsNavigation } } = useContext(ReferenceContext);
-  const getDetails = () => new Promise((resolve) => {
-    localforage.getItem('userProfile').then((value) => {
-      const username = value?.username;
-      localforage.getItem('currentProject').then((projectName) => {
-        const path = require('path');
-        const newpath = localStorage.getItem('userPath');
-        const projectsDir = path.join(newpath, 'autographa', 'users', username, 'projects', projectName);
-        const metaPath = path.join(newpath, 'autographa', 'users', username, 'projects', projectName, 'metadata.json');
-        resolve({
-          projectName, username, projectsDir, metaPath, path,
-        });
-      });
-    });
-  });
   const updateStory = (story) => {
     setMdData(story);
     let title; let body = ''; let end;

@@ -70,6 +70,9 @@ function useProjectsSort() {
               case 'textStories':
                 dirName = 'textStories';
                 break;
+              case 'audioTranslation':
+                dirName = 'audioTranslation';
+                break;
               default:
                 break;
             }
@@ -198,10 +201,15 @@ function useProjectsSort() {
                             description = _project.project?.textStories?.description;
                             flavorType = 'OBS';
                             break;
+                          case 'audioTranslation':
+                            lastSeen = _project.project?.audioTranslation?.lastSeen;
+                            description = _project.project?.audioTranslation?.description;
+                            flavorType = 'Audio';
+                            break;
                           default:
                             break;
                         }
-                        if (_project.project?.textTranslation?.starred === true || _project.project?.textStories?.starred === true) {
+                        if (_project.project?.textTranslation?.starred === true || _project.project?.textStories?.starred === true || _project.project?.audioTranslation?.starred === true) {
                           // FetchStarred(projectName,language, createdAt, updatedAt);
                           FetchStarred(
                             _project.identification.name.en,

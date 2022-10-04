@@ -91,8 +91,11 @@ export default function ProjectList() {
       const data = fs.readFileSync(path.join(folder, 'metadata.json'), 'utf-8');
       let metadata = JSON.parse(data);
       const firstKey = Object.keys(metadata.ingredients)[0];
-      const folderName = firstKey.split(/[(\\)?(/)?]/gm).slice(0);
-      const dirName = folderName[0];
+      const folderName = firstKey.split(/[(\\)?(/)?]/gm).slice(0, -1);
+      let dirName = '';
+      folderName.forEach((folder) => {
+        dirName = path.join(dirName, folder);
+      });
       const settings = fs.readFileSync(path.join(folder, dirName, 'ag-settings.json'), 'utf-8');
       const agSetting = JSON.parse(settings);
       metadata = { ...metadata, ...agSetting };

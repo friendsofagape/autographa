@@ -10,11 +10,11 @@ import { useRouter } from 'next/router';
 import localforage from 'localforage';
 import { useTranslation } from 'react-i18next';
 import { SnackBar } from '@/components/SnackBar';
+import { AutographaContext } from '@/components/context/AutographaContext';
 import CloseIcon from '@/illustrations/close-button-black.svg';
 import importBurrito, { viewBurrito } from '../../core/burrito/importBurrito';
 import * as logger from '../../logger';
 import ConfirmationModal from '../editor/ConfirmationModal';
-import { AutographaContext } from '@/components/context/AutographaContext';
 import burrito from '../../lib/BurritoTemplete.json';
 
 export default function ImportProjectPopUp(props) {
@@ -70,7 +70,7 @@ export default function ImportProjectPopUp(props) {
     modelClose();
     logger.debug('ImportProjectPopUp.js', 'Inside callImport');
     await localforage.getItem('userProfile').then(async (value) => {
-      const status = await importBurrito(folderPath, value.username,updateBurriot);
+      const status = await importBurrito(folderPath, value.username, updateBurriot);
       setOpenSnackBar(true);
       closePopUp(false);
       setNotify(status[0].type);
@@ -89,20 +89,20 @@ export default function ImportProjectPopUp(props) {
       setModel({
         openModel: true,
         title: t('modal-title-update-burrito'),
-        confirmMessage: t('dynamic-msg-update-burrito-version',{version1:sbData?.version, version2:burrito?.meta?.version}),
+        confirmMessage: t('dynamic-msg-update-burrito-version', { version1: sbData?.version, version2: burrito?.meta?.version }),
         buttonName: t('btn-update'),
       });
     } else {
       callImport(false);
     }
   };
-  const callFunction = () =>{
-    if (model.buttonName==='Replace'){
-      checkBurritoVersion()
+  const callFunction = () => {
+    if (model.buttonName === 'Replace') {
+      checkBurritoVersion();
     } else {
       callImport(true);
     }
-  }
+  };
   const importProject = async () => {
     logger.debug('ImportProjectPopUp.js', 'Inside importProject');
     if (folderPath) {
@@ -240,14 +240,16 @@ export default function ImportProjectPopUp(props) {
                             value={sbData.burritoType}
                             disabled
                           />
+                          {(sbData.burritoType !== 'scripture / audioTranslation') && (
                           <label className="inline-flex items-center">
                             {(sbData?.validate)
                               ? <CheckIcon className="w-6 h-6 text-green-500 border" />
                             : <XIcon className="w-6 h-6 text-red-500 border" />}
                             {(sbData?.validate)
                               ? <span className="ml-2">{t('dynamic-msg-burrito-validate-import-project')}</span>
-                            : <span className="ml-2 text-red-500">{(sbData?.version) ? t('dynamic-msg-burrito-validation-expected',{version:sbData.version}) : t('dynamic-msg-burrito-validation-failed')}</span>}
+                            : <span className="ml-2 text-red-500">{(sbData?.version) ? t('dynamic-msg-burrito-validation-expected', { version: sbData.version }) : t('dynamic-msg-burrito-validation-failed')}</span>}
                           </label>
+)}
                         </div>
                       )}
 
@@ -292,7 +294,7 @@ export default function ImportProjectPopUp(props) {
         setOpenModal={() => modelClose()}
         confirmMessage={model.confirmMessage}
         buttonName={model.buttonName}
-        closeModal={()=>callFunction()}
+        closeModal={() => callFunction()}
       />
     </>
   );
