@@ -94,7 +94,7 @@ export default function TaNavigation({ languageId, referenceResources }) {
           await fetch(`${BaseUrl}${owner}/${languageId}_ta/contents/${selectedOption}/`)
           .then((response) => response.json())
           .then((folderData) => {
-            console.log({ folderData });
+            // console.log({ folderData });
             folderData?.forEach((element) => {
             const pattern = /^.*\.(yml|yaml)/gm;
             if (!pattern.test(element.name.toLowerCase())) {
@@ -133,9 +133,11 @@ export default function TaNavigation({ languageId, referenceResources }) {
 
     useEffect(() => {
         if (referenceResources?.offlineResource?.offline) {
-          setTaNavigationPath(`${selectedOption}/${selected?.folder}`);
+          // setTaNavigationPath(`${selectedOption}/${selected?.folder}`);
+          setTaNavigationPath({ option: selectedOption, path: selected?.folder });
         } else {
-          setTaNavigationPath(selected?.folder);
+          // setTaNavigationPath(selected?.folder);
+          setTaNavigationPath({ option: selectedOption, path: selected?.folder });
         }
         }, [referenceResources, selected, selectedOption, setTaNavigationPath]);
   return (

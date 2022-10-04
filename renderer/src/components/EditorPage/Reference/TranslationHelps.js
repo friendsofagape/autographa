@@ -19,7 +19,7 @@ const TranslationHelps = ({
   const translationQuestionsPath = `${(chapter < 10) ? (`0${ chapter}`)
   : chapter}/${(verse < 10) ? (`0${ verse}`) : verse}.md`;
 
-  const filePathTa = `${taNavigationPath}/01.md`;
+  const filePathTa = `${taNavigationPath?.path}/01.md`;
 
   return (
     <>
@@ -108,7 +108,8 @@ const TranslationHelps = ({
               title={t('label-resource-ta')}
               chapter={chapter}
               branch={branch}
-              projectId="translate"
+              // projectId="translate"
+              projectId={taNavigationPath?.option}
               languageId={languageId}
               resourceId="ta"
               owner={owner}

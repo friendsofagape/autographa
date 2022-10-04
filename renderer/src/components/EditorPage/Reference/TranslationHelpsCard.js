@@ -48,7 +48,7 @@ export default function TranslationHelpsCard({
 
   useEffect(() => {
     if (offlineResource && offlineResource.offline) {
-      console.log('offline in Helpscard : ', offlineResource);
+      // console.log('offline in Helpscard : ', offlineResource);
       // read tn tsv contents and pass to items
       try {
         setOfflineMarkdown('');
@@ -110,10 +110,10 @@ export default function TranslationHelpsCard({
               break;
 
               case 'ta':
-                // console.log('filepath : ', { filePath });
+                // console.log('filepath : ', { projectId, filePath });
                 setOfflineMarkdown('');
-              if (filePath && fs.existsSync(path.join(folder, projectName, filePath))) {
-                const filecontent = fs.readFileSync(path.join(folder, projectName, filePath), 'utf8');
+              if (filePath && fs.existsSync(path.join(folder, projectName, projectId, filePath))) {
+                const filecontent = fs.readFileSync(path.join(folder, projectName, projectId, filePath), 'utf8');
                 // console.log('filecontent : ', { filecontent });
                 setOfflineItemsDisable(true);
                 setOfflineMarkdown(filecontent);
@@ -135,7 +135,7 @@ export default function TranslationHelpsCard({
           }
         });
       } catch (err) {
-        console.log('err on fetch local tn: ', err);
+        // console.log('err on fetch local tn: ', err);
         logger.debug('TranslationHelpsCard.js', 'reading offline helps Error :  ', err);
       }
     }

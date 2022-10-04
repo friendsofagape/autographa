@@ -47,7 +47,10 @@ export default function ReferenceContextProvider({ children }) {
     const [openImportResourcePopUp, setOpenImportResourcePopUp] = useState(false);
     const [obsNavigation, setObsNavigation] = useState('1');
     const [selectedStory, setSelectedStory] = useState();
-    const [taNavigationPath, setTaNavigationPath] = useState('');
+    const [taNavigationPath, setTaNavigationPath] = useState({
+      option: '',
+      path: '',
+    });
     const handleClick = (event) => {
       setAnchorEl(event.currentTarget);
     };
