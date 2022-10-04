@@ -120,6 +120,16 @@ export default function TranslationHelpsCard({
               }
               break;
 
+              case 'tw':
+                // console.log('filepath : ', { filePath });
+                setOfflineMarkdown('');
+              if (filePath && fs.existsSync(path.join(folder, projectName, 'bible', filePath))) {
+                const filecontent = fs.readFileSync(path.join(folder, projectName, 'bible', filePath), 'utf8');
+                setOfflineItemsDisable(true);
+                setOfflineMarkdown(filecontent);
+              }
+              break;
+
             default:
               break;
           }

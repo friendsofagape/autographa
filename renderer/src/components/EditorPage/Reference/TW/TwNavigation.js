@@ -9,8 +9,6 @@ import MultiComboBox from '../MultiComboBox';
 const fs = window.require('fs');
 
 export default function TwNavigation({ languageId, referenceResources, setReferenceResources }) {
-  { console.log({ referenceResources }); }
-
   const [selected, setSelected] = useState('');
   const [twList, setTwList] = useState([]);
   const [options, setoptions] = useState([]);
@@ -22,6 +20,60 @@ export default function TwNavigation({ languageId, referenceResources, setRefere
   useEffect(() => {
     if (referenceResources && referenceResources?.offlineResource?.offline) {
       // offline
+      // console.log('offline : ', { referenceResources });
+      const taArrayOffline = [];
+      const { offlineResource } = referenceResources;
+      localForage.getItem('userProfile').then(async (user) => {
+        logger.debug('TwNavigation.js', 'reading offline helps ', offlineResource.data?.projectDir);
+        const path = require('path');
+        const newpath = localStorage.getItem('userPath');
+        const currentUser = user?.username;
+        const folder = path.join(newpath, 'autographa', 'users', `${currentUser}`, 'resources');
+        const projectName = `${offlineResource?.data?.value?.meta?.name}_${offlineResource?.data?.value?.meta?.owner}_${offlineResource?.data?.value?.meta?.release?.tag_name}`;
+        // set Options
+        const optionsDir = path.join(folder, projectName, 'bible');
+        const tempOptions = [];
+        if (fs.existsSync(optionsDir)) {
+          fs.readdir(optionsDir, async (err, optionsNames) => {
+            if (err) {
+              // console.log(`Unable to scan directory: ${ err}`);
+              logger.debug('TwNavigation.js', `Unable to scan directory: ${ err}`);
+            }
+            // console.log({ optionsNames });
+            let optionsCount = 0;
+            await optionsNames.forEach(async (folderName) => {
+              if (fs.lstatSync(path.join(optionsDir, folderName)).isDirectory()) {
+                optionsCount += 1;
+                tempOptions.push(folderName);
+              }
+            });
+            if (tempOptions.length === optionsCount) {
+                    setoptions(tempOptions);
+              }
+            // fetch contents of selected folder
+            if (selectedOption && selectedOption?.length > 0 && fs.existsSync(path.join(optionsDir, selectedOption))) {
+              fs.readdir(path.join(optionsDir, selectedOption), async (err, folderContents) => {
+                let contentsCount = 0;
+                folderContents.forEach((content) => {
+                  if (fs.lstatSync(path.join(optionsDir, selectedOption, content)).isFile()) {
+                    contentsCount += 1;
+                    taArrayOffline.push(
+                      {
+                        folder: path.join(selectedOption, content),
+                        title: content.replace('.md', ''),
+                        subTitle: '',
+                      },
+                      );
+                  }
+                });
+                if (taArrayOffline.length === contentsCount) {
+                  setTwList(taArrayOffline);
+                }
+              });
+            }
+        });
+        }
+      });
     } else {
       // online
       // get options
