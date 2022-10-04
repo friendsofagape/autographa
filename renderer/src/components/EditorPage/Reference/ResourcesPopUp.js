@@ -25,6 +25,7 @@ import ImportResource from './ImportResource';
 import * as logger from '../../../logger';
 import DownloadResourcePopUp from './ResourceUtils/DownloadResourcePopUp';
 import DownloadCreateSBforHelps from './ResourceUtils/DownloadCreateSBforHelps';
+import checkHelpsVersionUpdate from './ResourceUtils/CheckHelpsVersionUpdate';
 
 function createData(name, language, owner) {
   return {
@@ -326,6 +327,11 @@ const ResourcesPopUp = ({
     await DownloadCreateSBforHelps(reference?.responseData);
   };
 
+  const handleCheckUpdateHelpsResources = async (event, reference) => {
+    // console.log('clicked update : ', reference);
+    await checkHelpsVersionUpdate(reference);
+  };
+
   const callResource = (resource) => {
     logger.debug('ResourcesPopUp.js', 'Displaying resource table');
     console.log('selected resource ==== : ', resource);
@@ -338,7 +344,7 @@ const ResourcesPopUp = ({
       { id: 'obs-tn', title: t('label-resource-obs-tn'), resource: obsTranslationNote },
       { id: 'obs-tq', title: t('label-resource-obs-tq'), resource: obsTranslationQuestion }];
     const reference = resources.find((r) => r.id === resource);
-    console.log('selected referecne === : ', { reference });
+    // console.log('selected referecne === : ', { reference });
     // console.log('sub menu item -------: ', subMenuItems);
     const offlineResource = subMenuItems ? subMenuItems?.filter((item) => item?.value?.agOffline && item?.value?.dublin_core?.identifier === resource) : [];
     // console.log('offline  items from submenu >>>>>: ', offlineResource);
@@ -388,7 +394,7 @@ const ResourcesPopUp = ({
                     role="button"
                     tabIndex={0}
                     title="check updates"
-                    // onClick={(e) => handleDownloadHelpsResources(e, notes)}
+                    onClick={(e) => handleCheckUpdateHelpsResources(e, resource)}
                   >
                     <RefreshSvg
                       fill="currentColor"
