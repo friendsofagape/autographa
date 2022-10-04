@@ -44,7 +44,7 @@ export default function TranslationHelpsCard({
     server,
   });
 
-  console.log('online data structure : ', { items, markdown, isLoading });
+  // console.log('online data structure : ', { items, markdown, isLoading });
 
   useEffect(() => {
     if (offlineResource && offlineResource.offline) {

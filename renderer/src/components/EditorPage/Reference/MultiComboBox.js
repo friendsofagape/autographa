@@ -76,9 +76,9 @@ function MultiComboBox({
                   Nothing found.
                 </div>
                   ) : (
-                  filteredData.map((taData) => (
+                  filteredData.map((taData, index) => (
                     <Combobox.Option
-                      key={`${taData.folder}}`}
+                      key={`${taData.folder}_${index + 0}}`}
                       className={({ active }) => `relative cursor-default w-4/5 lg:w-96 select-none py-1.5 px-4 ${
                           active ? 'text-primary bg-gray-200' : 'text-gray-900'
                           }`}

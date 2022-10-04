@@ -83,6 +83,7 @@ const ResourcesPopUp = ({
   // const [translationAcademy, setTranslationAcademy] = useState(translationAcademys);
   const [translationNote, setTranslationNote] = useState([]);
   const [translationQuestion, setTranslationQuestion] = useState([]);
+  const [translationWord, settranslationWord] = useState([]);
   const [translationAcademy, setTranslationAcademy] = useState([]);
   const [obsTranslationNote, setObsTranslationNote] = useState([]);
   const [obsTranslationQuestion, setObsTranslationQuestion] = useState([]);
@@ -181,6 +182,7 @@ const ResourcesPopUp = ({
     setTranslationNote('');
     setTranslationQuestion('');
     settranslationWordList('');
+    settranslationWord('');
     setTranslationAcademy('');
   };
 
@@ -249,6 +251,7 @@ const ResourcesPopUp = ({
   useEffect(() => {
     readCustomResources({ resourceId: 'tq', translationData: translationQuestion });
     readCustomResources({ resourceId: 'twlm', translationData: translationWordList });
+    readCustomResources({ resourceId: 'tw', translationData: translationWord });
     readCustomResources({ resourceId: 'tn', translationData: translationNote });
     readCustomResources({ resourceId: 'ta', translationData: translationAcademy });
     readCustomResources({ resourceId: 'obs-tn', translationData: obsTranslationNote });
@@ -289,10 +292,10 @@ const ResourcesPopUp = ({
             await fetchTranslationResource('TSV Translation Notes', setTranslationNote);
             // console.log('get content : ', translationNote);
           break;
-        // case 'twlm':
-        //   await fetchTranslationResource('Translation Words', settranslationWordList);
-        //   // console.log('get content : ', translationWordList);
-        //   break;
+        case 'tw':
+          await fetchTranslationResource('Translation Words', settranslationWord);
+          // console.log('get content : ', translationWordList);
+          break;
         case 'tq':
           await fetchTranslationResource('Translation Questions', setTranslationQuestion);
           // console.log('get content : ', translationQuestion);
@@ -329,12 +332,13 @@ const ResourcesPopUp = ({
     const resources = [
       { id: 'tn', title: t('label-resource-tn'), resource: translationNote },
       { id: 'twlm', title: t('label-resource-twl'), resource: translationWordList },
+      { id: 'tw', title: t('label-resource-twlm'), resource: translationWord },
       { id: 'tq', title: t('label-resource-tq'), resource: translationQuestion },
       { id: 'ta', title: t('label-resource-ta'), resource: translationAcademy },
       { id: 'obs-tn', title: t('label-resource-obs-tn'), resource: obsTranslationNote },
       { id: 'obs-tq', title: t('label-resource-obs-tq'), resource: obsTranslationQuestion }];
     const reference = resources.find((r) => r.id === resource);
-    // console.log('selected referecne === : ', reference);
+    console.log('selected referecne === : ', { reference });
     // console.log('sub menu item -------: ', subMenuItems);
     const offlineResource = subMenuItems ? subMenuItems?.filter((item) => item?.value?.agOffline && item?.value?.dublin_core?.identifier === resource) : [];
     // console.log('offline  items from submenu >>>>>: ', offlineResource);
@@ -568,6 +572,18 @@ const ResourcesPopUp = ({
                         imageUrl="/illustrations/image-icon.svg"
                         id="twlm"
                         text={t('label-resource-twl')}
+                        translationData={translationWordLists}
+                        readCustomResources={readCustomResources}
+                        selectResource={selectResource}
+                        setSelectResource={setSelectResource}
+                        setTitle={setTitle}
+                        setSubMenuItems={setSubMenuItems}
+                        setShowInput={setShowInput}
+                      />
+                      <ResourceOption
+                        imageUrl="/illustrations/image-icon.svg"
+                        id="tw"
+                        text={t('label-resource-twlm')}
                         translationData={translationWordLists}
                         readCustomResources={readCustomResources}
                         selectResource={selectResource}

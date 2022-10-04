@@ -10,6 +10,7 @@ import { ProjectContext } from '@/components/context/ProjectContext';
 import ResourcesPopUp from '@/components/EditorPage/Reference/ResourcesPopUp';
 import { classNames } from '@/util/classNames';
 import TaNavigation from '@/components/EditorPage/Reference/TA/TaNavigation';
+import TwNavigation from '@/components/EditorPage/Reference/TW/TwNavigation';
 import ConfirmationModal from './ConfirmationModal';
 // import MinimizeIcon from '@/illustrations/minimize.svg';
 
@@ -171,12 +172,21 @@ export default function EditorSection({
 
           <div className="bg-gray-200 rounded-t overflow-hidden">
             <div className="flex">
-              {selectedResource === 'ta' ? (
+              {selectedResource === 'ta' || selectedResource === 'tw' ? (
                 <div className="h-12 flex">
-                  <TaNavigation
-                    languageId={languageId}
-                    referenceResources={referenceResources}
-                  />
+                  {selectedResource === 'ta' ? (
+                    <TaNavigation
+                      languageId={languageId}
+                      referenceResources={referenceResources}
+                    />
+                  ) : (
+                    <TwNavigation
+                      languageId={languageId}
+                      referenceResources={referenceResources}
+                      setReferenceResources={setReferenceResources}
+                    />
+                  )}
+
                   <div className="relative lg:left-72 sm:left-48 sm:ml-2.5 top-4 text-xxs uppercase tracking-wider font-bold leading-3 truncate">
                     {title}
                   </div>

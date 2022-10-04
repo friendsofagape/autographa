@@ -87,10 +87,26 @@ const TranslationHelps = ({
               offlineResource={offlineResource}
             />
           );
+        case 'tw':
+          return (
+            <TranslationHelpsCard
+              title={t('label-resource-twlm')}
+              chapter={chapter}
+              branch={branch}
+              projectId="bible"
+              languageId={languageId}
+              resourceId="tw"
+              owner={owner}
+              filePath={offlineResource?.twSelected?.folder}
+              server="https://git.door43.org"
+              offlineResource={offlineResource}
+            />
+            );
         case 'ta':
           return (
             <TranslationHelpsCard
               title={t('label-resource-ta')}
+              chapter={chapter}
               branch={branch}
               projectId="translate"
               languageId={languageId}
