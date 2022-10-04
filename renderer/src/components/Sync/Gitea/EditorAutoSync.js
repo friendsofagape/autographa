@@ -143,7 +143,6 @@ function AutoSync({ selectedProject }) {
                 async (result) => {
                     if (result.id) {
                       try {
-                        console.log('sync auto -- create repo + upload started');
                         logger.debug('EditorAutoSync.js', 'Auto Sync New project - repo + upload started');
                         setUploadstart(true);
                         const Metadata = fs.readFileSync(path.join(projectsMetaPath, 'metadata.json'));
@@ -166,7 +165,6 @@ function AutoSync({ selectedProject }) {
                             }
                         }
                         logger.debug('EditorAutoSync.js', 'Auto Sync finished create project and upload');
-                        console.log('finished create project and upload');
                         setUploadstart(false);
                         setUploadDone(true);
                         setTotalUploaded(0);
@@ -200,7 +198,6 @@ function AutoSync({ selectedProject }) {
                 async (error) => {
                     if (error.message.includes('409')) {
                       try {
-                        console.log('started update project ');
                         logger.debug('EditorAutoSync.js', 'Auto Sync existing project - update started');
                         setUploadstart(true);
                         const metadataContent = fs.readFileSync(path.join(projectsMetaPath, 'metadata.json'));
@@ -217,7 +214,6 @@ function AutoSync({ selectedProject }) {
                             }
                         }
                         logger.debug('EditorAutoSync.js', 'Auto Sync existing project - update finished');
-                        console.log('Finish updating project');
                         setUploadstart(false);
                         setUploadDone(true);
                         setTotalUploaded(0);
@@ -232,7 +228,6 @@ function AutoSync({ selectedProject }) {
                         );
                         setOpenSnackBar(true);
                     } catch (err) {
-                      console.log('error in catch : ---------- ', err);
                       logger.debug('EditorAutoSync.js', 'Auto Sync existing project - error', err);
                       setUploadstart(false);
                       setTotalUploaded(0);
