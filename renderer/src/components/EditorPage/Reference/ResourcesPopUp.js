@@ -431,6 +431,7 @@ const ResourcesPopUp = ({
                 </div>
               </td>
               <td className="p-4 text-sm text-gray-600">
+                {reference.id !== 'twlm' && (
                 <div
                   className="text-xs cursor-pointer focus:outline-none"
                   role="button"
@@ -443,6 +444,7 @@ const ResourcesPopUp = ({
                     className="w-6 h-6"
                   />
                 </div>
+                )}
               </td>
             </tr>
         ))}
@@ -670,7 +672,11 @@ const ResourcesPopUp = ({
                   </div>
                 </div>
                 {loading
-                  ? <LoadingScreen />
+                  ? (
+                    <div className="relative w-full max-h-sm scrollbars-width overflow-auto ">
+                      <LoadingScreen />
+                    </div>
+                    )
                   : (
                     <div className="relative w-full max-h-sm scrollbars-width overflow-auto ">
                       <table className="border-separate border-spacing-0 w-full">
