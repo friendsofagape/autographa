@@ -370,5 +370,5 @@ export default function Editor({
 Editor.propTypes = {
   children: PropTypes.any,
   callFrom: PropTypes.string,
-  editor: PropTypes.string
+  editor: PropTypes.string,
 };

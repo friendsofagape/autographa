@@ -1,9 +1,8 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-nested-ternary */
-import {
-  useState, useEffect, useContext, useRef, useCallback,
- } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import Editor from '@/modules/editor/Editor';
+import PropTypes from 'prop-types';
 import { isElectron } from '@/core/handleElectron';
 import { readRefMeta } from '@/core/reference/readRefMeta';
 import { readRefBurrito } from '@/core/reference/readRefBurrito';
@@ -227,3 +226,7 @@ const AudioEditor = ({ editor }) => {
   );
  };
  export default AudioEditor;
+
+ AudioEditor.propTypes = {
+  editor: PropTypes.string,
+};
