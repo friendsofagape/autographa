@@ -316,7 +316,6 @@ function AutoSync({ selectedProject }) {
     }, [uploadDone]);
 
     React.useEffect(() => {
-      console.log({ usersList });
       (async () => {
         await getGiteaUsersList()
           .then(async (val) => {
