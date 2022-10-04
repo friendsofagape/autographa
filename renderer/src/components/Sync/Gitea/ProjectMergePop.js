@@ -66,14 +66,15 @@ function ProjectMergePop({ setMerge, projectObj, addNewNotification }) {
         description: '',
       },
     ];
+    const path = require('path');
 
-    const ignoreFilesPaths = ['ingredients/ag-settings.json', 'metadata.json'];
+    // const ignoreFilesPaths = ['ingredients/ag-settings.json', 'metadata.json'];
+    const ignoreFilesPaths = [path.join('ingredients', 'ag-settings.json'), 'metadata.json'];
 
     const undoMergeOrDeleteOldBackup = async (undo = false) => {
       logger.debug('projectMergePop.js', 'in undo merge or delete old backup');
       const newpath = localStorage.getItem('userPath');
       const fs = window.require('fs');
-      const path = require('path');
       const projectBackupPath = path.join(newpath, 'autographa', 'users', projectObj?.agUsername, 'projects-backups');
       // Sorted files in directory on creation date
       const backupFileList = await fs.readdirSync(projectBackupPath);

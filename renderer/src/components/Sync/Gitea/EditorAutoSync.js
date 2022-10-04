@@ -81,7 +81,23 @@ function AutoSync({ selectedProject }) {
         const newpath = localStorage.getItem('userPath');
         localForage.getItem('userProfile').then(async (user) => {
           const currentUser = user?.username;
-          const settingsPath = path.join(newpath, 'autographa', 'users', currentUser, 'projects', projectname, 'ingredients/ag-settings.json');
+          // settings path from burrito igredients
+          localforage.getItem('projectmeta').then((val) => {
+            // eslint-disable-next-line array-callback-return
+            const currentProjectMeta = val.projects.filter((project) => {
+              const id = Object.keys(project?.identification?.primary?.ag);
+              if (projectname === `${project?.identification?.name?.en}_${id}`) {
+                return project;
+              }
+            });
+          // eslint-disable-next-line array-callback-return
+          const settingsIngredientsPath = Object.keys(currentProjectMeta[0]?.ingredients).filter((path) => {
+            if (path.includes('ag-settings.json')) {
+              return path;
+            }
+          });
+          // const settingsPath = path.join(newpath, 'autographa', 'users', currentUser, 'projects', projectname, 'ingredients', 'ag-settings.json');
+          const settingsPath = path.join(newpath, 'autographa', 'users', currentUser, 'projects', projectname, settingsIngredientsPath[0]);
           let settings = fs.readFileSync(settingsPath);
           settings = JSON.parse(settings);
           if (action === 'get') {
@@ -109,6 +125,7 @@ function AutoSync({ selectedProject }) {
             logger.debug('EditorAutoSync.js', 'Upadting the ag settings with sync data');
             fs.writeFileSync(settingsPath, JSON.stringify(settings));
           }
+        });
         });
         }
       };
@@ -299,6 +316,7 @@ function AutoSync({ selectedProject }) {
     }, [uploadDone]);
 
     React.useEffect(() => {
+      console.log({ usersList });
       (async () => {
         await getGiteaUsersList()
           .then(async (val) => {
@@ -386,7 +404,7 @@ function AutoSync({ selectedProject }) {
                           >
                             Sync
                           </Dialog.Title>
-                          { usersList.length !== 0
+                          { usersList?.length !== 0
                             && (
                             <p className="text-sm pt-1 text-gray-900">
                               Select door43 username
@@ -402,7 +420,7 @@ function AutoSync({ selectedProject }) {
                       </div>
 
                       <div className="mt-3">
-                        { usersList.length !== 0
+                        { usersList?.length !== 0
                             && (
                             <Listbox value={selectedUsername} onChange={setselectedUsername}>
                               <div className="relative mt-1 ">
@@ -422,7 +440,7 @@ function AutoSync({ selectedProject }) {
                                   leaveTo="opacity-0"
                                 >
                                   <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                                    {usersList.map((user, userIdx) => (
+                                    {usersList?.map((user, userIdx) => (
                                       <Listbox.Option
                                     // eslint-disable-next-line react/no-array-index-key
                                         key={userIdx}
@@ -452,7 +470,7 @@ function AutoSync({ selectedProject }) {
                             </Listbox>
                         )}
 
-                        { usersList.length !== 0
+                        { usersList?.length !== 0
                             ? (
                               <div className="mt-3">
                                 <p className="px-2 text-sm">
@@ -477,7 +495,7 @@ function AutoSync({ selectedProject }) {
                       </div>
                       <div className="mt-4 ">
                         <div className="bg-gray-200 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                          {usersList.length !== 0
+                          {usersList?.length !== 0
                           ? (
                             <button
                               aria-label="confirm-sync"
