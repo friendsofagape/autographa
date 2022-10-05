@@ -31,6 +31,7 @@ function AutoSync({ selectedProject }) {
     const [uploadStart, setUploadstart] = React.useState(false);
     const [uploadDone, setUploadDone] = React.useState(false);
     const [totalFiles, settotalFiles] = React.useState(0);
+    const [currentProjectBurrito, setcurrentProjectBurrito] = React.useState(null);
 
     const {
       action: {
@@ -91,6 +92,9 @@ function AutoSync({ selectedProject }) {
                 return project;
               }
             });
+            if (currentProjectMeta.length === 1) {
+              setcurrentProjectBurrito(currentProjectMeta[0]);
+            }
           // eslint-disable-next-line array-callback-return
           const settingsIngredientsPath = Object.keys(currentProjectMeta[0]?.ingredients).filter((path) => {
             if (path.includes('ag-settings.json')) {
@@ -333,6 +337,7 @@ function AutoSync({ selectedProject }) {
             }
           });
       })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedProject, lastSyncedUser]);
 
     return (
@@ -421,7 +426,20 @@ function AutoSync({ selectedProject }) {
                       </div>
 
                       <div className="mt-3">
-                        { usersList?.length !== 0
+                        {/* audio project no sync */}
+                        {currentProjectBurrito?.type?.flavorType?.flavor?.name === 'audioTranslation' ? (
+                          <div className="mt-3">
+                            <p className="px-2 text-sm">
+                              Sorry, Currently Sync is not avaialbe for
+                              {' '}
+                              <b>Audio Translation</b>
+                              {' '}
+                              Projects
+                            </p>
+                          </div>
+                        ) : (
+                          <>
+                            { usersList?.length !== 0
                             && (
                             <Listbox value={selectedUsername} onChange={setselectedUsername}>
                               <div className="relative mt-1 ">
@@ -471,7 +489,7 @@ function AutoSync({ selectedProject }) {
                             </Listbox>
                         )}
 
-                        { usersList?.length !== 0
+                            { usersList?.length !== 0
                             ? (
                               <div className="mt-3">
                                 <p className="px-2 text-sm">
@@ -492,11 +510,13 @@ function AutoSync({ selectedProject }) {
                                 </p>
                               </div>
                             )}
+                          </>
+                        )}
 
                       </div>
                       <div className="mt-4 ">
                         <div className="bg-gray-200 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                          {usersList?.length !== 0
+                          {usersList?.length !== 0 && currentProjectBurrito?.type?.flavorType?.flavor?.name !== 'audioTranslation'
                           ? (
                             <button
                               aria-label="confirm-sync"
@@ -507,7 +527,7 @@ function AutoSync({ selectedProject }) {
                               {t('label-sync')}
                             </button>
                           )
-                          : (
+                          : currentProjectBurrito?.type?.flavorType?.flavor?.name !== 'audioTranslation' && (
                             <button
                               href="/sync"
                               type="button"
