@@ -19,13 +19,13 @@ import { readCustomResources } from '@/core/reference/readCustomResources';
 import { SnackBar } from '@/components/SnackBar';
 import LoadingScreen from '@/components/Loading/LoadingScreen';
 import DownloadSvg from '@/icons/basil/Outline/Files/Download.svg';
-import RefreshSvg from '@/icons/basil/Outline/Interface/Refresh.svg';
 import ResourceOption from './ResourceOption';
 import ImportResource from './ImportResource';
 import * as logger from '../../../logger';
 import DownloadResourcePopUp from './ResourceUtils/DownloadResourcePopUp';
 import DownloadCreateSBforHelps from './ResourceUtils/DownloadCreateSBforHelps';
-import checkHelpsVersionUpdate from './ResourceUtils/CheckHelpsVersionUpdate';
+// import checkHelpsVersionUpdate from './ResourceUtils/CheckHelpsVersionUpdate';
+import CheckHelpsUpdatePopUp from './ResourceUtils/CheckHelpsUpdatePopUp';
 
 function createData(name, language, owner) {
   return {
@@ -90,6 +90,7 @@ const ResourcesPopUp = ({
   const [obsTranslationQuestion, setObsTranslationQuestion] = useState([]);
 
   const [loading, setLoading] = useState(false);
+  const [dowloading, setDownloading] = useState(false);
   const [resourceIconClick, setResourceIconClick] = useState(false);
   const { t } = useTranslation();
   const {
@@ -324,12 +325,7 @@ const ResourcesPopUp = ({
 
   const handleDownloadHelpsResources = async (event, reference) => {
     console.log('clicked download : ', reference);
-    await DownloadCreateSBforHelps(reference?.responseData);
-  };
-
-  const handleCheckUpdateHelpsResources = async (event, reference) => {
-    // console.log('clicked update : ', reference);
-    await checkHelpsVersionUpdate(reference);
+    await DownloadCreateSBforHelps(reference?.responseData, setDownloading);
   };
 
   const callResource = (resource) => {
@@ -389,7 +385,7 @@ const ResourcesPopUp = ({
                   </div>
                 </td>
                 <td className="p-4 text-sm text-gray-600 ">
-                  <div
+                  {/* <div
                     className="text-xs cursor-pointer focus:outline-none"
                     role="button"
                     tabIndex={0}
@@ -400,7 +396,8 @@ const ResourcesPopUp = ({
                       fill="currentColor"
                       className="w-6 h-6"
                     />
-                  </div>
+                  </div> */}
+                  <CheckHelpsUpdatePopUp resource={resource} />
                 </td>
               </tr>
               <td colSpan={3}>
