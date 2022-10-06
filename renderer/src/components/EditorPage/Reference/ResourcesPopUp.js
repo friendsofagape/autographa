@@ -323,9 +323,16 @@ const ResourcesPopUp = ({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectResource]);
 
-  const handleDownloadHelpsResources = async (event, reference) => {
-    console.log('clicked download : ', reference);
-    await DownloadCreateSBforHelps(reference?.responseData, setDownloading);
+  const handleDownloadHelpsResources = async (event, reference, offlineResource) => {
+    try {
+      console.log('clicked download : ', reference);
+      await DownloadCreateSBforHelps(reference?.responseData, setDownloading, false, offlineResource);
+    } catch (err) {
+      logger.debug('ResourcesPopUp.js', 'Error Downlaod ', err);
+      setOpenSnackBar(true);
+      setError('failure');
+      setSnackText(err?.message);
+    }
   };
 
   const callResource = (resource) => {
@@ -362,50 +369,39 @@ const ResourcesPopUp = ({
           )}
           {/* offline resources body */}
           {offlineResource.length > 0 && offlineResource.map((resource) => (
-            <>
-              <tr className="hover:bg-gray-200" id={resource?.projectDir} key={resource.value.meta.id + resource.value.meta.language}>
-                <td className="p-4 text-sm text-gray-600">
-                  <div
-                    className="focus:outline-none"
-                    onClick={(e) => handleRowSelect(e, resource?.value?.meta?.language, `${resource?.value?.meta?.subject} ${resource?.value?.meta?.language_title}`, resource?.value?.meta?.owner, resource)}
-                    role="button"
-                    tabIndex="0"
-                  >
-                    {`${resource?.value?.meta?.name} (${resource?.value?.meta?.owner})`}
-                  </div>
-                </td>
-                <td className="p-4 text-sm text-gray-600">
-                  <div
-                    className="focus:outline-none"
-                    onClick={(e) => handleRowSelect(e, resource?.value?.meta?.language, `${resource?.value?.meta?.subject} ${resource?.value?.meta?.language_title}`, resource?.value?.meta?.owner, resource)}
-                    role="button"
-                    tabIndex="0"
-                  >
-                    {resource?.value?.meta?.language}
-                  </div>
-                </td>
-                <td className="p-4 text-sm text-gray-600 ">
-                  {/* <div
-                    className="text-xs cursor-pointer focus:outline-none"
-                    role="button"
-                    tabIndex={0}
-                    title="check updates"
-                    onClick={(e) => handleCheckUpdateHelpsResources(e, resource)}
-                  >
-                    <RefreshSvg
-                      fill="currentColor"
-                      className="w-6 h-6"
-                    />
-                  </div> */}
-                  <CheckHelpsUpdatePopUp resource={resource} />
-                </td>
-              </tr>
-              <td colSpan={3}>
-                {' '}
-                <hr className="border-4 rounded-md" />
+            <tr className="hover:bg-gray-200" id={resource?.projectDir} key={resource.value.meta.id + resource.value.meta.language}>
+              <td className="p-4 text-sm text-gray-600">
+                <div
+                  className="focus:outline-none"
+                  onClick={(e) => handleRowSelect(e, resource?.value?.meta?.language, `${resource?.value?.meta?.subject} ${resource?.value?.meta?.language_title}`, resource?.value?.meta?.owner, resource)}
+                  role="button"
+                  tabIndex="0"
+                >
+                  {`${resource?.value?.meta?.name} (${resource?.value?.meta?.owner})`}
+                </div>
               </td>
-            </>
+              <td className="p-4 text-sm text-gray-600">
+                <div
+                  className="focus:outline-none"
+                  onClick={(e) => handleRowSelect(e, resource?.value?.meta?.language, `${resource?.value?.meta?.subject} ${resource?.value?.meta?.language_title}`, resource?.value?.meta?.owner, resource)}
+                  role="button"
+                  tabIndex="0"
+                >
+                  {resource?.value?.meta?.language}
+                </div>
+              </td>
+              <td className="p-4 text-sm text-gray-600 ">
+                <CheckHelpsUpdatePopUp resource={resource} />
+              </td>
+            </tr>
           ))}
+
+          <tr>
+            <td colSpan={3}>
+              {' '}
+              <hr className="border-4 rounded-md" />
+            </td>
+          </tr>
 
           {/* online resources section */}
           {(reference.resource).map((notes) => (
@@ -440,7 +436,7 @@ const ResourcesPopUp = ({
                   role="button"
                   tabIndex={0}
                   title="download"
-                  onClick={(e) => handleDownloadHelpsResources(e, notes)}
+                  onClick={(e) => handleDownloadHelpsResources(e, notes, offlineResource)}
                 >
                   <DownloadSvg
                     fill="currentColor"
@@ -499,7 +495,7 @@ const ResourcesPopUp = ({
     }
     return (
       <button type="button" className="flex gap-6 mx-5 absolute bottom-5 right-0 justify-end z-10 outline-none">
-        <PlusCircleIcon title={t('label-upload')} className="h-10 w-10 m-5 text-primary" onClick={() => setShowInput(true)} aria-hidden="true" />
+        {/* <PlusCircleIcon title={t('label-upload')} className="h-10 w-10 m-5 text-primary" onClick={() => setShowInput(true)} aria-hidden="true" /> */}
       </button>
     );
   };

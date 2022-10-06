@@ -16,7 +16,7 @@ const checkHelpsVersionUpdate = async (reference) => {
       logger.debug('checkHelpsUpdatePopup.js', 'check update for resource');
       // console.log('reference : ', { reference });
       return new Promise((resolve) => {
-      let currentResourceReleased = reference?.value?.meta?.released;
+      const currentResourceReleased = reference?.value?.meta?.released;
       let latestResourceReleased = null;
       // get released from repo fetch new meta
       const subject = reference?.value?.meta?.subject;
@@ -30,7 +30,7 @@ const checkHelpsVersionUpdate = async (reference) => {
           latestResourceReleased = resultMeta?.data[0]?.released;
 
           // check for update
-          currentResourceReleased = '2019-07-01T21:38:48Z';
+          // currentResourceReleased = '2019-07-01T21:38:48Z';
           console.log({ currentResourceReleased, latestResourceReleased });
           if (new Date(latestResourceReleased) > new Date(currentResourceReleased)) {
               resolve({

@@ -1,30 +1,14 @@
-// import moment from 'moment';
-// import { v5 as uuidv5 } from 'uuid';
 import localForage from 'localforage';
-// import Textburrito from '../../../../lib/BurritoTemplete.json';
-// import languageCode from '../../../../lib/LanguageCode.json';
 import * as logger from '../../../../logger';
-// import { environment } from '../../../../../environment';
-// import packageInfo from '../../../../../../package.json';
 
 const fs = window.require('fs');
 const JSZip = require('jszip');
 
-// const findCode = (list, id) => {
-//     logger.debug('createDownloadedResourceSB.js', 'In findCode for getting the language code');
-//     let code = '';
-//     list.forEach((obj) => {
-//         if ((obj.name).toLowerCase() === id.toLowerCase()) {
-//             code = obj.lang_code;
-//         }
-//     });
-//     return code;
-// };
-const DownloadCreateSBforHelps = async (projectResource, setLoading, update = false) => {
+const DownloadCreateSBforHelps = async (projectResource, setLoading, update = false, offlineResource = false) => {
     try {
-        console.log('download/update started --------', { projectResource, setLoading });
+        console.log('download/update started --------', { projectResource, update, offlineResource });
         setLoading(true);
-        localForage.getItem('userProfile').then(async (user) => {
+        await localForage.getItem('userProfile').then(async (user) => {
             logger.debug('DownloadCreateSBforHelps.js', 'In helps-resource download user fetch - ', user?.username);
             const path = require('path');
             const newpath = localStorage.getItem('userPath');
@@ -34,9 +18,24 @@ const DownloadCreateSBforHelps = async (projectResource, setLoading, update = fa
             // const key = currentUser + projectResource.name + projectResource.owner + moment().format();
             // const id = uuidv5(key, environment.uuidToken);
 
+            // check if resource already exist in offline
+            if (!update && offlineResource) {
+                // eslint-disable-next-line array-callback-return
+                const resourceExist = offlineResource.filter((offline) => {
+                    if (offline?.projectDir === `${projectResource?.name}_${projectResource?.owner}_${projectResource?.release?.tag_name}`) {
+                        return offline;
+                    }
+                });
+                if (resourceExist.length > 0) {
+                    throw new Error('Resource Already Exist');
+                    // eslint-disable-next-line no-throw-literal
+                    // throw 'Resource Already Exist';
+                }
+            }
+
             // eslint-disable-next-line no-async-promise-executor
-            return new Promise(async (resolve) => {
-                const json = {};
+            // return new Promise(async (resolve) => {
+                // const json = {};
                 // download and unzip the content
                 await fetch(projectResource?.zipball_url)
                     .then((res) => res.arrayBuffer())
@@ -76,53 +75,6 @@ const DownloadCreateSBforHelps = async (projectResource, setLoading, update = fa
                                 data.meta = projectResource;
                                 // console.log('json data after : ', data);
                                 await fs.writeFileSync(path.join(folder, projectResource?.name, 'metadata.json'), JSON.stringify(data));
-
-                                // // creating fake burrito to get ingredients list
-                                // json = Textburrito;
-                                // json.meta.generator.userName = currentUser;
-                                // json.meta.generator.softwareName = 'Autographa';
-                                // json.meta.generator.softwareVersion = packageInfo.version;
-                                // json.meta.dateCreated = moment().format();
-                                // json.idAuthorities = {
-                                //     dcs: {
-                                //         id: new URL(projectResource.url).hostname,
-                                //         name: {
-                                //             en: projectResource.owner,
-                                //         },
-                                //     },
-                                // };
-                                // json.identification.primary = {
-                                //     ag: {
-                                //         [id]: {
-                                //             revision: '1',
-                                //             timestamp: moment().format(),
-                                //         },
-                                //     },
-                                // };
-                                // json.identification.upstream = {
-                                //     dcs: [{
-                                //         [`${projectResource.owner}:${projectResource.name}`]: {
-                                //             revision: projectResource.release.tag_name,
-                                //             timestamp: projectResource.released,
-                                //         },
-                                //     },
-                                //     ],
-                                // };
-                                // json.identification.name.en = projectResource.name;
-                                // json.identification.abbreviation.en = '';
-                                // const code = findCode(languageCode, resourceMeta?.dublin_core?.language?.title);
-                                // if (code) {
-                                //     json.languages[0].tag = code;
-                                // } else {
-                                //     json.languages[0].tag = resourceMeta?.dublin_core.language?.title.substring(0, 3);
-                                // }
-                                // json.languages[0].name.en = projectResource?.language_title;
-                                // json.copyright.shortStatements = [
-                                //     {
-                                //         statement: resourceMeta?.dublin_core?.rights,
-                                //     },
-                                // ];
-                                // json.copyright.licenses[0].ingredient = 'LICENSE.md';
                             }).catch((err) => {
                                 // console.log('failed to save yml metadata.json : ', err);
                                 logger.debug('DownloadCreateSBforHelps.js', 'failed to save yml metadata.json : ', err);
@@ -156,12 +108,12 @@ const DownloadCreateSBforHelps = async (projectResource, setLoading, update = fa
                 logger.debug('DownloadCreateSBforHelps.js', 'download completed');
                 console.log('download finished --------');
                 setLoading(false);
-                resolve(json);
+                // resolve(json);
             });
-        });
+        // });
     } catch (err) {
         setLoading(false);
-        throw new Error(`Generate Burrito Failed :  ${err}`);
+        throw err;
     }
 };
 
