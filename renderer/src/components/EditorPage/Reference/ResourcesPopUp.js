@@ -1,5 +1,4 @@
 /* eslint-disable no-nested-ternary */
-import { StarIcon } from '@heroicons/react/outline';
 import React, {
   useEffect, useRef, useState, Fragment, useContext,
 } from 'react';
@@ -18,7 +17,7 @@ import { writeCustomResources } from '@/core/reference/writeCustomResources';
 import { readCustomResources } from '@/core/reference/readCustomResources';
 import { SnackBar } from '@/components/SnackBar';
 import LoadingScreen from '@/components/Loading/LoadingScreen';
-import { SearchIcon } from '@heroicons/react/outline';
+import { SearchIcon, StarIcon } from '@heroicons/react/outline';
 import DownloadSvg from '@/icons/basil/Outline/Files/Download.svg';
 import ResourceOption from './ResourceOption';
 import ImportResource from './ImportResource';
@@ -93,6 +92,12 @@ const ResourcesPopUp = ({
   const [dowloading, setDownloading] = useState(false);
   const [currentDownloading, setCurrentDownloading] = useState(null);
   const [resourceIconClick, setResourceIconClick] = useState(false);
+
+  const [filteredResorces, setFilteredResources] = useState(false);
+  const [currentOnlineResorces, setCurrentOnlineResorces] = useState([]);
+  const [currentOfflineResorces, setCurrentOfflineResorces] = useState([]);
+  const [currentFullResorces, setCurrentFUllResorces] = useState([]);
+
   const { t } = useTranslation();
   const {
     states: {
@@ -345,6 +350,59 @@ const ResourcesPopUp = ({
     }
   };
 
+  const getCurrentOnlineOfflineHelpsResurces = () => {
+    const resources = [
+      { id: 'tn', title: t('label-resource-tn'), resource: translationNote },
+      { id: 'twlm', title: t('label-resource-twl'), resource: translationWordList },
+      { id: 'tw', title: t('label-resource-twlm'), resource: translationWord },
+      { id: 'tq', title: t('label-resource-tq'), resource: translationQuestion },
+      { id: 'ta', title: t('label-resource-ta'), resource: translationAcademy },
+      { id: 'obs-tn', title: t('label-resource-obs-tn'), resource: obsTranslationNote },
+      { id: 'obs-tq', title: t('label-resource-obs-tq'), resource: obsTranslationQuestion }];
+    const reference = resources.find((r) => r.id === selectedResource);
+    const offlineResource = subMenuItems ? subMenuItems?.filter((item) => item?.value?.agOffline && item?.value?.dublin_core?.identifier === selectResource) : [];
+    return { reference, offlineResource };
+  };
+
+  useEffect(() => {
+    const data = getCurrentOnlineOfflineHelpsResurces();
+    // console.log({ data });
+    setCurrentFUllResorces(data);
+  }, [selectResource, loading]);
+
+  const handleChangeQuery = (query) => {
+    // console.log({ currentFullResorces, query, selectResource });
+    const filtered = { offlineResource: [], onLineResource: [] };
+    if (['tn', 'tw', 'tq', 'ta', 'obs-tn', 'obs-tq'].includes(selectResource.toLowerCase())) {
+      if (query?.length > 0) {
+        const FilteredOffline = currentFullResorces?.offlineResource.filter((data) => {
+            const meta = data?.value?.meta;
+            const searchFields = [meta?.language, meta?.language_title, meta?.name, meta?.full_name, meta?.owner].map((v) => v.toLowerCase());
+            // if (searchFields.includes(query.toLowerCase())) {
+            // return searchFields.map(() => )toLowerCase().indexOf(partial.toLowerCase()) > -1;
+            searchFields.map((key) => {
+              if (key.indexOf(query.toLowerCase()) > -1) {
+                console.log({ key, query });
+                return data;
+              }
+            });
+        });
+        const FilteredOnline = currentFullResorces?.reference?.resource?.filter((data) => {
+          const searchFields = [data?.language, data?.name, data?.owner].map((v) => v.toLowerCase());
+          // if (searchFields.includes(query.toLowerCase())) {
+          //     return data;
+          //   }
+          searchFields.map((key) => {
+            if (key.indexOf(query.toLowerCase()) > -1) {
+              return data;
+            }
+          });
+        });
+        console.log({ FilteredOffline, FilteredOnline });
+      }
+    }
+    // setFilteredResources(data);
+  };
   const callResource = (resource) => {
     logger.debug('ResourcesPopUp.js', 'Displaying resource table');
     console.log('selected resource ==== : ', resource);
@@ -698,7 +756,7 @@ const ResourcesPopUp = ({
                         id="search_box"
                         autoComplete="given-name"
                         placeholder={t('label-search')}
-                      // onChange={(e) => handleChange(e.target.value)}
+                        onChange={(e) => handleChangeQuery(e.target.value)}
                         className="pl-8  bg-gray-100 text-black w-1/2 block rounded-full shadow-sm sm:text-xs focus:border-primary border-gray-300 h-7"
                       />
                     </div>
