@@ -18,13 +18,13 @@ import { writeCustomResources } from '@/core/reference/writeCustomResources';
 import { readCustomResources } from '@/core/reference/readCustomResources';
 import { SnackBar } from '@/components/SnackBar';
 import LoadingScreen from '@/components/Loading/LoadingScreen';
+import { SearchIcon } from '@heroicons/react/outline';
 import DownloadSvg from '@/icons/basil/Outline/Files/Download.svg';
 import ResourceOption from './ResourceOption';
 import ImportResource from './ImportResource';
 import * as logger from '../../../logger';
 import DownloadResourcePopUp from './ResourceUtils/DownloadResourcePopUp';
 import DownloadCreateSBforHelps from './ResourceUtils/DownloadCreateSBforHelps';
-// import checkHelpsVersionUpdate from './ResourceUtils/CheckHelpsVersionUpdate';
 import CheckHelpsUpdatePopUp from './ResourceUtils/CheckHelpsUpdatePopUp';
 
 function createData(name, language, owner) {
@@ -545,12 +545,12 @@ const ResourcesPopUp = ({
                   aria-label="close-resources"
                   type="button"
                   onClick={removeSection}
-                  className="p-2 focus:outline-none bg-black absolute z-10 b top-0 right-0"
+                  className="p-3 focus:outline-none bg-secondary absolute z-10 b top-0 right-0"
                 >
                   <XIcon className="h-4 w-4 text-white" />
                 </button>
                 <div>
-                  <div aria-label="resources-title" className="uppercase bg-secondary text-white p-2 text-xs tracking-widest leading-snug rounded-tl text-center">
+                  <div aria-label="resources-title" className="uppercase bg-secondary text-white p-3 text-xs tracking-widest leading-snug rounded-tl text-center">
                     {t('label-resource')}
                   </div>
                   <div style={{ width: 'max-content' }} className="relative bg-gray-100 px-3 py-3 h-full overflow-auto scrollbars-width">
@@ -686,15 +686,33 @@ const ResourcesPopUp = ({
                     </div>
                   </div>
                 </div>
-                {loading
+
+                <div className="flex flex-col w-full ">
+                  <div aria-label="resources-search" className="pt-1.5 pb-[6.5px] uppercase bg-secondary text-white text-xs tracking-widest leading-snug text-center">
+                    <div className="flex ">
+                      <SearchIcon className="h-4 w-4 absolute ml-3 my-[6px] text-primary" />
+                      <input
+                        data-testid="search"
+                        type="search"
+                        name="search_box"
+                        id="search_box"
+                        autoComplete="given-name"
+                        placeholder={t('label-search')}
+                      // onChange={(e) => handleChange(e.target.value)}
+                        className="pl-8  bg-gray-100 text-black w-1/2 block rounded-full shadow-sm sm:text-xs focus:border-primary border-gray-300 h-7"
+                      />
+                    </div>
+                  </div>
+
+                  {loading
                   ? (
-                    <div className="relative w-full max-h-sm scrollbars-width overflow-auto ">
+                    <div className="relative w-full h-full max-h-sm scrollbars-width overflow-auto ">
                       <LoadingScreen />
                     </div>
                     )
                   : (
-                    <div className="relative w-full max-h-sm scrollbars-width overflow-auto ">
-                      <table className="border-separate border-spacing-0 w-full">
+                    <div className="relative w-full max-h-sm scrollbars-width overflow-auto pb-10">
+                      <table className="border-separate border-spacing-0 w-full ">
                         <thead className="bg-white">
                           <tr className="text-sm text-left">
                             <th className="px-5 py-3 font-medium text-gray-300 hidden">
@@ -852,6 +870,7 @@ const ResourcesPopUp = ({
                   )}
                     </div>
                   )}
+                </div>
               </div>
 
             </div>
