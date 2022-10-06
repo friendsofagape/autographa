@@ -91,6 +91,7 @@ const ResourcesPopUp = ({
 
   const [loading, setLoading] = useState(false);
   const [dowloading, setDownloading] = useState(false);
+  const [currentDownloading, setCurrentDownloading] = useState(null);
   const [resourceIconClick, setResourceIconClick] = useState(false);
   const { t } = useTranslation();
   const {
@@ -278,7 +279,7 @@ const ResourcesPopUp = ({
           setResource(resourceData);
         }
       }).catch((err) => {
-        console.log('error in fetch resource : ', err);
+        // console.log('error in fetch resource : ', err);
         logger.debug('ResourcesPopUp.js', `fetchTranslationResource Error ${selectResource} :  ${err}`);
       });
     }
@@ -286,7 +287,7 @@ const ResourcesPopUp = ({
 
   useEffect(() => {
     (async () => {
-      console.log('resource : ', selectResource);
+      // console.log('resource : ', selectResource);
       logger.debug('ResourcesPopUp.js', `get available selected resources ${selectResource}`);
       setLoading(true);
       switch (selectResource) {
@@ -325,8 +326,17 @@ const ResourcesPopUp = ({
 
   const handleDownloadHelpsResources = async (event, reference, offlineResource) => {
     try {
-      console.log('clicked download : ', reference);
-      await DownloadCreateSBforHelps(reference?.responseData, setDownloading, false, offlineResource);
+      logger.debug('ResourcesPopUp.js', 'Helps Download started');
+      // console.log('clicked download : ', reference);
+      // set Current downloading
+      setCurrentDownloading(reference);
+      await DownloadCreateSBforHelps(reference?.responseData, setDownloading, false, offlineResource)
+      .then(() => {
+        setCurrentDownloading(null);
+        setOpenSnackBar(true);
+        setError('success');
+        setSnackText('Resource Download Finished');
+      });
     } catch (err) {
       logger.debug('ResourcesPopUp.js', 'Error Downlaod ', err);
       setOpenSnackBar(true);
@@ -438,10 +448,16 @@ const ResourcesPopUp = ({
                   title="download"
                   onClick={(e) => handleDownloadHelpsResources(e, notes, offlineResource)}
                 >
-                  <DownloadSvg
-                    fill="currentColor"
-                    className="w-6 h-6"
-                  />
+                  {dowloading && currentDownloading?.responseData?.id === notes?.responseData?.id ? (
+                    <div className="">
+                      <LoadingScreen />
+                    </div>
+                  ) : (
+                    <DownloadSvg
+                      fill="currentColor"
+                      className="w-6 h-6"
+                    />
+                  )}
                 </div>
                 )}
               </td>
