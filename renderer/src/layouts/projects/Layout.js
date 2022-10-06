@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   DownloadIcon,
+  ArchiveIcon,
+  DesktopComputerIcon,
 } from '@heroicons/react/outline';
 import { useTranslation } from 'react-i18next';
 import SideBar from './SideBar';
@@ -17,9 +19,12 @@ export default function ProjectsLayout(props) {
     isImport,
     colOne,
     colTwo,
+    showArchived,
+    setShowArchived,
   } = props;
 
   const [openPopUp, setOpenPopUp] = useState(false);
+
   const { t } = useTranslation();
   function openImportPopUp() {
     setOpenPopUp(true);
@@ -27,6 +32,9 @@ export default function ProjectsLayout(props) {
 
   function closeImportPopUp() {
     setOpenPopUp(false);
+  }
+  function toggleArchive() {
+    setShowArchived((value) => !value);
   }
 
   return (
@@ -43,27 +51,55 @@ export default function ProjectsLayout(props) {
             ? (
               <div className="mx-auto py-4 px-4 sm:px-4 lg:px-6 border-primary border-b-4 flex items-center justify-between">
                 <div className="flex items-center">
-                  <h1 aria-label="projects" className="text-xl font-bold text-gray-900 uppercase tracking-wider">{title}</h1>
-                  {header}
+                  <div className="flex items-center">
+                    <h1 aria-label="projects" className="text-xl font-bold text-gray-900 uppercase tracking-wider">{showArchived ? 'Archived Projects' : title}</h1>
+                    {header}
+                  </div>
                 </div>
-
-                {isImport
-                  && (
-                    <>
-                      <button
-                        aria-label="import"
-                        type="button"
-                        className="flex text-white ml-5 font-bold text-xs px-3 py-2 rounded-full
+                <div className="ml-auto flex">
+                  {isImport
+                    && (
+                      <>
+                        <button
+                          aria-label="import"
+                          type="button"
+                          className="flex text-white ml-5 font-bold text-xs px-3 py-2 rounded-full
                                     leading-3 tracking-wider uppercase bg-primary items-center"
-                        onClick={openImportPopUp}
-                      >
-                        <DownloadIcon className="h-4 mr-2 text-white" />
-                        {t('btn-import')}
-                      </button>
-                      <ImportProjectPopUp open={openPopUp} closePopUp={closeImportPopUp} />
-                    </>
-                  )}
+                          onClick={openImportPopUp}
+                        >
+                          <DownloadIcon className="h-4 mr-2 text-white" />
+                          {t('btn-import')}
+                        </button>
+                        <ImportProjectPopUp open={openPopUp} closePopUp={closeImportPopUp} />
+                      </>
+                    )}
 
+                  {/* Archived projects button */}
+                  {title === 'Projects' && (
+                    <div>
+                      <button
+                        className={`flex text-white ml-5 font-bold text-xs px-3 py-2 rounded-full
+                                    leading-3 tracking-wider uppercase ${showArchived ? 'bg-primary' : 'bg-red-600'} items-center`}
+                        type="button"
+                        onClick={toggleArchive}
+                      >
+
+                        {showArchived ? (
+                          <>
+                            <DesktopComputerIcon className="h-4 mr-2 text-white" />
+                            <span>Active</span>
+                          </>
+                        ) : (
+                          <>
+                            <ArchiveIcon className="h-4 mr-2 text-white" />
+                            <span>Archived</span>
+                          </>
+                        )}
+                      </button>
+
+                    </div>
+                  )}
+                </div>
               </div>
             )
             : (
@@ -77,6 +113,7 @@ export default function ProjectsLayout(props) {
                 </div>
               </div>
             )}
+
         </header>
 
         {children}
@@ -96,4 +133,6 @@ ProjectsLayout.propTypes = {
   isImport: PropTypes.bool,
   colOne: PropTypes.element,
   colTwo: PropTypes.element,
+  showArchived: PropTypes.bool,
+  setShowArchived: PropTypes.func,
 };
