@@ -68,6 +68,7 @@ export const createAudioVersification = (
             audioTranslation: {
               // scriptDirection: direction,
               starred: call === 'edit' ? currentBurrito.project.audioTranslation.starred : false,
+              isArchived: call === 'edit' ? currentBurrito.project.audioTranslation.isArchived : false,
               versification,
               description: project.description,
               copyright: copyright.title,

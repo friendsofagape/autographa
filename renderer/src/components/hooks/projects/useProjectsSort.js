@@ -209,6 +209,7 @@ function useProjectsSort() {
                           case 'audioTranslation':
                             lastSeen = _project.project?.audioTranslation?.lastSeen;
                             description = _project.project?.audioTranslation?.description;
+                            isArchived = _project.project?.audioTranslation?.isArchived;
                             flavorType = 'Audio';
                             break;
                           default:
@@ -287,13 +288,15 @@ function useProjectsSort() {
        }
     };
 
+   /**
+    * Updates the project's archive status in the localForage database.
+    * @param name - the name of the project
+    */
     const archiveProject = async (project, name) => {
       const userProfile = await localForage.getItem('userProfile');
       const currentUser = userProfile?.username;
 
       const projects = await localForage.getItem('projectmeta');
-
-      console.log('projects', projects);
 
       const projectArrayTemp = JSON.parse(JSON.stringify(projects));
 
@@ -309,6 +312,10 @@ function useProjectsSort() {
               dirName = 'textStories';
               break;
             }
+            case 'audioTranslation': {
+              dirName = 'audioTranslation';
+              break;
+            }
             default:
               break;
           }
@@ -320,8 +327,6 @@ function useProjectsSort() {
       });
 
       await localForage.setItem('projectmeta', projectArrayTemp);
-
-      console.log('projectArrayTemp', projectArrayTemp);
 
       projectArrayTemp.projects.forEach((_project) => {
         if (_project.identification.name.en === name) {
