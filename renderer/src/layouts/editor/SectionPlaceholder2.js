@@ -13,6 +13,7 @@ import NavigationObs from '@/components/EditorPage/ObsEditor/NavigationObs';
 import ReferenceObs from '@/components/EditorPage/ObsEditor/ReferenceObs';
 import { isElectron } from '@/core/handleElectron';
 import core from '@/components/EditorPage/ObsEditor/core';
+import ReferenceAudio from '@/components/EditorPage/Reference/Audio/ReferenceAudio';
 
 const TranslationHelps = dynamic(
   () => import('@/components/EditorPage/Reference/TranslationHelps'),
@@ -337,6 +338,14 @@ const SectionPlaceholder2 = ({ editor }) => {
                 <ReferenceObs
                   stories={stories1}
                 />
+                )) || (referenceColumnTwoData1.selectedResource === 'audio' && (
+                <ReferenceAudio
+                  languageId={referenceColumnTwoData1.languageId}
+                  refName={referenceColumnTwoData1.refName}
+                  bookId={_bookId1}
+                  chapter={_chapter1}
+                  verse={_verse1}
+                />
                 )) || (
                   <TranslationHelps
                     selectedResource={referenceColumnTwoData1.selectedResource}
@@ -382,6 +391,14 @@ const SectionPlaceholder2 = ({ editor }) => {
               )) || (referenceColumnTwoData2.selectedResource === 'obs' && (
                 <ReferenceObs
                   stories={stories2}
+                />
+                )) || (referenceColumnTwoData2.selectedResource === 'audio' && (
+                <ReferenceAudio
+                  languageId={referenceColumnTwoData2.languageId}
+                  refName={referenceColumnTwoData2.refName}
+                  bookId={_bookId1}
+                  chapter={_chapter1}
+                  verse={_verse1}
                 />
                 )) || (
                   <TranslationHelps
