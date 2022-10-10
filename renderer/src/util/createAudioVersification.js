@@ -77,6 +77,7 @@ export const createAudioVersification = (
               bookMarks: [],
             },
           },
+          sync: { services: { door43: [] } },
         };
         logger.debug('createAudioVersification.js', 'Creating ag-settings.json file in ingredients');
         await fs.writeFileSync(path.join(folder, 'ag-settings.json'), JSON.stringify(settings));
