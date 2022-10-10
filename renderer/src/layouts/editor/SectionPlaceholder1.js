@@ -391,10 +391,10 @@ const SectionPlaceholder1 = ({ editor }) => {
                   <ReferenceObs
                     stories={stories2}
                   />
-                )) || (referenceColumnOneData1.selectedResource === 'audio' && (
+                )) || (referenceColumnOneData2.selectedResource === 'audio' && (
                 <ReferenceAudio
-                  languageId={referenceColumnOneData1.languageId}
-                  refName={referenceColumnOneData1.refName}
+                  languageId={referenceColumnOneData2.languageId}
+                  refName={referenceColumnOneData2.refName}
                   bookId={_bookId1}
                   chapter={_chapter1}
                   verse={_verse1}
