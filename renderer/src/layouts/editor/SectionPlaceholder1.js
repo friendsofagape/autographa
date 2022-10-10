@@ -303,7 +303,7 @@ const SectionPlaceholder1 = ({ editor }) => {
       {(layout > 0 && layout <= 2) && (
         <>
           {(openResource1 === false || openResource2 === false) && (
-            <div className={`bg-white rounded-md grid gap-2 ${editor === 'audioTranslation' ? 'lg:max-h-[30rem] md:max-h-[24rem]' : 'h-editor'} overflow-x-auto`}>
+            <div className={`bg-white rounded-md grid gap-2 ${editor === 'audioTranslation' ? 'md:max-h-[64vh] lg:max-h-[70vh]' : 'h-editor'} overflow-x-auto`}>
               <EditorSection
                 row="1"
                 CustomNavigation={(referenceColumnOneData1.selectedResource).lastIndexOf('obs', 0) === 0 ? ObsNavigation1 : CustomNavigation1}

@@ -82,7 +82,6 @@ const Player = ({
 	return (
   <div className="relative">
     <div className="relative bottom-0">
-      {/* <div className='absolute bottom-0'> */}
       <div className="grid grid-flow-col auto-cols-fr text-white bg-black transparent p-1 justify-between items-center">
         <div className="flex flex-col px-10 items-center border-r border-r-gray-800">
           <div className="text-xxs text-gray-300 uppercase tracking-wider mb-2">
@@ -281,7 +280,7 @@ const Player = ({
               </button>
               <input
                 type="range"
-                className="md:w-12 lg:w-full"
+                className="md:w-12 w-full xl:w-44"
                 min={0}
                 max={1}
                 step={0.1}
