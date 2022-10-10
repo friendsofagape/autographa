@@ -78,10 +78,11 @@ function CheckHelpsUpdatePopUp({ resource }) {
         // setOpenSnackBar(true);
     };
 
-    React.useEffect(() => {
-    }, []);
+    // React.useEffect(() => {
+    // }, []);
 
     const handleCheckUpdateHelpsResources = async (event, resource) => {
+      console.log({ resource });
       setIsOpen(true);
       setIsLoading(true);
       await checkHelpsVersionUpdate(resource)

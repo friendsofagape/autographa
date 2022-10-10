@@ -848,7 +848,7 @@ const ResourcesPopUp = ({
                     ) : selectResource !== 'obs' && callResource(selectResource)}
                         {selectResource === 'obs' && (
                           <tbody className="bg-white">
-                            {filteredBibleObs.length > 0 && (
+                            {filteredBibleObs?.length > 0 && (
                           filteredBibleObs.map((ref) => (ref?.value?.type?.flavorType?.name === 'gloss'
                           && (
                           <tr className="hover:bg-gray-200" key={ref.value.identification.name.en + ref.projectDir}>
@@ -887,6 +887,12 @@ const ResourcesPopUp = ({
                                 {ref.value.languages[0].name.en}
                               </div>
                             </td>
+                            {/* {ref?.value?.identification?.upstream
+                            && (
+                            <td className="p-4 text-sm text-gray-600 ">
+                              <CheckHelpsUpdatePopUp resource={ref} />
+                            </td>
+                            )} */}
                           </tr>
                           )
                           ))
