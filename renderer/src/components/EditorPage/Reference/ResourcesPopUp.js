@@ -94,8 +94,7 @@ const ResourcesPopUp = ({
   const [resourceIconClick, setResourceIconClick] = useState(false);
 
   const [filteredResorces, setFilteredResources] = useState({});
-  // const [currentOnlineResorces, setCurrentOnlineResorces] = useState([]);
-  // const [currentOfflineResorces, setCurrentOfflineResorces] = useState([]);
+  const [filteredBibleObs, setFilteredBibleObs] = useState([]);
   const [currentFullResorces, setCurrentFUllResorces] = useState([]);
 
   const { t } = useTranslation();
@@ -350,6 +349,38 @@ const ResourcesPopUp = ({
         filtered.onlineResource = resourceData?.reference;
         setFilteredResources(filtered);
       }
+    } else if (selectResource === 'bible') {
+      const bibleArr = subMenuItems?.filter((ref) => ref?.value?.type?.flavorType?.name === 'scripture');
+      if (query?.length > 0) {
+        // eslint-disable-next-line array-callback-return
+        const bibleFilter = bibleArr.filter((item) => {
+          if (item?.projectDir.toLowerCase().includes(query.toLowerCase())
+          || item?.value?.identification?.name?.en?.toLowerCase().includes(query.toLowerCase())
+          || item?.value?.languages[0]?.name?.en?.toLowerCase().includes(query.toLowerCase())
+          || item?.value?.languages[0]?.tag?.toLowerCase().includes(query.toLowerCase())) {
+            return item;
+          }
+        });
+        setFilteredBibleObs(bibleFilter);
+      } else {
+        setFilteredBibleObs(bibleArr);
+      }
+    } else if (selectResource === 'obs') {
+      const obsArr = subMenuItems?.filter((ref) => ref?.value?.type?.flavorType?.name === 'gloss');
+      if (query?.length > 0) {
+        // eslint-disable-next-line array-callback-return
+        const obsFilter = obsArr.filter((item) => {
+          if (item?.projectDir.toLowerCase().includes(query.toLowerCase())
+          || item?.value?.identification?.name?.en?.toLowerCase().includes(query.toLowerCase())
+          || item?.value?.languages[0]?.name?.en?.toLowerCase().includes(query.toLowerCase())
+          || item?.value?.languages[0]?.tag?.toLowerCase().includes(query.toLowerCase())) {
+            return item;
+          }
+        });
+        setFilteredBibleObs(obsFilter);
+      } else {
+        setFilteredBibleObs(obsArr);
+      }
     }
   };
 
@@ -397,7 +428,7 @@ const ResourcesPopUp = ({
     setCurrentFUllResorces(data);
     handleChangeQuery('', data);
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectResource, loading]);
+  }, [selectResource, loading, subMenuItems]);
 
   const callResource = (resource) => {
     logger.debug('ResourcesPopUp.js', 'Displaying resource table');
@@ -770,8 +801,8 @@ const ResourcesPopUp = ({
 
                         {selectResource === 'bible' ? (
                           <tbody className="bg-white">
-                            {(subMenuItems) && (
-                          subMenuItems.map((ref) => (ref?.value?.type?.flavorType?.name === 'scripture'
+                            {filteredBibleObs?.length > 0 && (
+                          filteredBibleObs.map((ref) => (ref?.value?.type?.flavorType?.name === 'scripture'
                           && (
                             <tr className="hover:bg-gray-200" key={ref.value.identification.name.en + ref.projectDir}>
                               <td className="px-5 py-3 hidden">
@@ -817,8 +848,8 @@ const ResourcesPopUp = ({
                     ) : selectResource !== 'obs' && callResource(selectResource)}
                         {selectResource === 'obs' && (
                           <tbody className="bg-white">
-                            {(subMenuItems) && (
-                          subMenuItems.map((ref) => (ref?.value?.type?.flavorType?.name === 'gloss'
+                            {filteredBibleObs.length > 0 && (
+                          filteredBibleObs.map((ref) => (ref?.value?.type?.flavorType?.name === 'gloss'
                           && (
                           <tr className="hover:bg-gray-200" key={ref.value.identification.name.en + ref.projectDir}>
                             <td className="px-5 py-3 hidden">
