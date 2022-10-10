@@ -119,6 +119,23 @@ export default function ImportPopUp(props) {
           break;
         }
 
+        case 'Audio': {
+          const usfm = fs.readFileSync(filePath, 'utf8');
+          const myUsfmParser = new grammar.USFMParser(usfm);
+          const isJsonValid = myUsfmParser.validate();
+          if (isJsonValid) {
+            logger.debug('ImportPopUp.js', 'Valid USFM file.');
+            const jsonOutput = myUsfmParser.toJSON();
+            files.push({ id: jsonOutput.book.bookCode, content: usfm });
+          } else {
+            logger.warn('ImportPopUp.js', 'Invalid USFM file.');
+            setNotify('failure');
+            setSnackText(t('dynamic-msg-invalid-usfm-file'));
+            setOpenSnackBar(true);
+          }
+          break;
+        }
+
         case 'OBS': {
           const mdfile = fs.readFileSync(filePath, 'utf8');
           let filename = filePath.split(/[(\\)?(/)?]/gm).pop();
