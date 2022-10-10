@@ -91,6 +91,7 @@ const saveProjectsMeta = async (projectMetaObj) => {
         projectMetaObj.copyright,
         projectMetaObj.project,
         projectMetaObj.call,
+        projectMetaObj.projectType,
       ).then(async (ingredient) => {
         logger.debug('saveProjectsMeta.js', 'Calling createTranslationSB for creating burrito.');
         const burritoFile = await createTranslationSB(
@@ -180,13 +181,13 @@ const saveProjectsMeta = async (projectMetaObj) => {
   const audioBurritoChecksAndCreation = async () => {
     logger.debug('saveProjectsMeta.js', 'In audio Burrito Checks And Creation');
 
-    // projectMetaObj.importedFiles.forEach((file) => {
-    //   if (!bookAvailable(projectMetaObj.canonSpecification.currentScope, file.id)) {
-    //     checkCanon = true;
-    //     logger.warn('saveProjectsMeta.js', `${file.id} is not added in Canon Specification or scope`);
-    //     status.push({ type: 'warning', value: `${file.id} is not added in Canon Specification` });
-    //   }
-    // });
+    projectMetaObj.importedFiles.forEach((file) => {
+      if (!bookAvailable(projectMetaObj.canonSpecification.currentScope, file.id)) {
+        checkCanon = true;
+        logger.warn('saveProjectsMeta.js', `${file.id} is not added in Canon Specification or scope`);
+        status.push({ type: 'warning', value: `${file.id} is not added in Canon Specification` });
+      }
+    });
 
     if (projectMetaObj.call === 'edit' && !checker((projectMetaObj.canonSpecification.currentScope), Object.keys(projectMetaObj.project.type.flavorType.currentScope))) {
       checkCanon = true;
@@ -249,7 +250,57 @@ const saveProjectsMeta = async (projectMetaObj) => {
           `${projectMetaObj.newProjectFields.projectName}_${id}`,
           'metadata.json',
         ), JSON.stringify(burritoFile));
-      }).finally(() => {
+      })
+      .then(async () => {
+        // Adding text USFM to audio project
+        if ((projectMetaObj.importedFiles).length !== 0) {
+          const newScope = [];
+          projectMetaObj.importedFiles.forEach((file) => {
+            newScope.push(file.id);
+          });
+          // ingredient has the list of created files in the form of SB Ingredients
+          logger.debug('saveProjectsMeta.js', 'Calling creatVersification for generating USFM files.');
+          await createVersificationUSFM(
+            currentUser,
+            projectMetaObj.newProjectFields,
+            projectMetaObj.versificationScheme,
+            newScope,
+            projectMetaObj.language.scriptDirection,
+            id,
+            projectMetaObj.importedFiles,
+            projectMetaObj.copyright,
+            projectMetaObj.project,
+            projectMetaObj.call,
+            'Audio',
+          ).then(async (ingredient) => {
+            logger.debug('saveProjectsMeta.js', 'Calling createTranslationSB for creating burrito.');
+            const burritoFile = await createTranslationSB(
+              currentUser,
+              projectMetaObj.newProjectFields,
+              scope,
+              projectMetaObj.language.title,
+              projectMetaObj.copyright,
+              id,
+              projectMetaObj.project,
+              projectMetaObj.call,
+              projectMetaObj.update,
+            );
+            if (projectMetaObj.call === 'edit') {
+              burritoFile.ingredients = { ...projectMetaObj.project.ingredients, ...ingredient };
+            } else {
+              burritoFile.ingredients = ingredient;
+            }
+            logger.debug('saveProjectsMeta.js', 'Creating a burrito file.');
+            await fs.writeFileSync(path.join(
+              projectDir,
+              `${projectMetaObj.newProjectFields.projectName}_${id}`,
+              'text-1',
+              'metadata.json',
+            ), JSON.stringify(burritoFile));
+          });
+        }
+      })
+      .finally(() => {
         logger.debug('saveProjectsMeta.js', projectMetaObj.call === 'new' ? 'New project created successfully.' : 'Updated the Changes.');
         status.push({ type: 'success', value: (projectMetaObj.call === 'new' ? 'New project created' : 'Updated the changes') });
       });

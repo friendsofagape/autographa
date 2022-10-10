@@ -359,8 +359,6 @@ export default function NewProject({ call, project, closeEdit }) {
                     <TargetLanguagePopover projectType={headerDropDown} />
                   </div>
                 </div>
-                {headerDropDown !== 'Audio'
-                && (
                 <div className="mt-5">
                   <button
                     type="button"
@@ -372,7 +370,6 @@ export default function NewProject({ call, project, closeEdit }) {
                   </button>
                   <ImportPopUp open={openPopUp} closePopUp={closeImportPopUp} projectType={headerDropDown} />
                 </div>
-                )}
               </div>
 
               <div>
@@ -433,7 +430,7 @@ export default function NewProject({ call, project, closeEdit }) {
         openModal={replaceWarning}
         title="Do Not Replace Existing Content"
         setOpenModal={setReplaceWarning}
-        confirmMessage="This action will replace the existing contents, Press OK to Avoid or CANCEL to continue edit with replace"
+        confirmMessage="This action will replace if the existing contents, Press OK to Avoid or CANCEL to continue edit with replace"
         buttonName={t('btn-ok')}
         closeModal={closeEdit}
       />
