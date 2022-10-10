@@ -433,6 +433,7 @@ const ResourcesPopUp = ({
   const callResource = (resource) => {
     logger.debug('ResourcesPopUp.js', 'Displaying resource table');
     // console.log('selected resource ==== : ', resource);
+    console.log({ filteredResorces });
     return (
       resource
       && loading ? <LoadingScreen />
@@ -472,6 +473,16 @@ const ResourcesPopUp = ({
                   {resource?.value?.meta?.language}
                 </div>
               </td>
+              <td className="p-4 text-xs text-gray-600">
+                <div
+                  className="focus:outline-none"
+                  onClick={(e) => handleRowSelect(e, resource?.value?.meta?.language, `${resource?.value?.meta?.subject} ${resource?.value?.meta?.language_title}`, resource?.value?.meta?.owner, resource)}
+                  role="button"
+                  tabIndex="0"
+                >
+                  {resource?.value?.meta && `${(resource.value.meta.released).split('T')[0]} (${resource?.value?.meta?.release.tag_name})`}
+                </div>
+              </td>
               <td className="p-4 text-sm text-gray-600 ">
                 <CheckHelpsUpdatePopUp resource={resource} />
               </td>
@@ -479,7 +490,7 @@ const ResourcesPopUp = ({
           ))}
 
           <tr>
-            <td colSpan={3}>
+            <td colSpan={4}>
               {' '}
               <hr className="border-4 rounded-md" />
             </td>
@@ -509,6 +520,16 @@ const ResourcesPopUp = ({
                   tabIndex="0"
                 >
                   {notes.language}
+                </div>
+              </td>
+              <td className="p-4 text-sm text-gray-600">
+                <div
+                  className="focus:outline-none"
+                  onClick={(e) => handleRowSelect(e, notes.language, `${filteredResorces?.onlineResource?.title} ${notes.name}`, notes.owner)}
+                  role="button"
+                  tabIndex="0"
+                >
+                  {notes?.responseData && `${(notes.responseData.released).split('T')[0]} (${notes?.responseData?.release.tag_name})`}
                 </div>
               </td>
               <td className="p-4 text-sm text-gray-600">
