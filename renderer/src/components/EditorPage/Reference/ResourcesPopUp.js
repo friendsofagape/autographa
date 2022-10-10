@@ -93,9 +93,9 @@ const ResourcesPopUp = ({
   const [currentDownloading, setCurrentDownloading] = useState(null);
   const [resourceIconClick, setResourceIconClick] = useState(false);
 
-  const [filteredResorces, setFilteredResources] = useState(false);
-  const [currentOnlineResorces, setCurrentOnlineResorces] = useState([]);
-  const [currentOfflineResorces, setCurrentOfflineResorces] = useState([]);
+  const [filteredResorces, setFilteredResources] = useState({});
+  // const [currentOnlineResorces, setCurrentOnlineResorces] = useState([]);
+  // const [currentOfflineResorces, setCurrentOfflineResorces] = useState([]);
   const [currentFullResorces, setCurrentFUllResorces] = useState([]);
 
   const { t } = useTranslation();
@@ -290,6 +290,69 @@ const ResourcesPopUp = ({
     }
   };
 
+  const handleDownloadHelpsResources = async (event, reference, offlineResource) => {
+    try {
+      logger.debug('ResourcesPopUp.js', 'Helps Download started');
+      // console.log('clicked download : ', reference);
+      // set Current downloading
+      setCurrentDownloading(reference);
+      await DownloadCreateSBforHelps(reference?.responseData, setDownloading, false, offlineResource)
+      .then(() => {
+        setCurrentDownloading(null);
+        setOpenSnackBar(true);
+        setError('success');
+        setSnackText('Resource Download Finished');
+      });
+    } catch (err) {
+      logger.debug('ResourcesPopUp.js', 'Error Downlaod ', err);
+      setOpenSnackBar(true);
+      setError('failure');
+      setSnackText(err?.message);
+    }
+  };
+
+  const getCurrentOnlineOfflineHelpsResurces = (selectResource) => {
+    const resources = [
+      { id: 'tn', title: t('label-resource-tn'), resource: translationNote },
+      { id: 'twlm', title: t('label-resource-twl'), resource: translationWordList },
+      { id: 'tw', title: t('label-resource-twlm'), resource: translationWord },
+      { id: 'tq', title: t('label-resource-tq'), resource: translationQuestion },
+      { id: 'ta', title: t('label-resource-ta'), resource: translationAcademy },
+      { id: 'obs-tn', title: t('label-resource-obs-tn'), resource: obsTranslationNote },
+      { id: 'obs-tq', title: t('label-resource-obs-tq'), resource: obsTranslationQuestion }];
+    const reference = resources.find((r) => r.id === selectResource);
+    const offlineResource = subMenuItems ? subMenuItems?.filter((item) => item?.value?.agOffline && item?.value?.dublin_core?.identifier === selectResource) : [];
+    return { reference, offlineResource };
+  };
+
+  const handleChangeQuery = (query, resourceData) => {
+    const filtered = { offlineResource: [], onlineResource: { ...resourceData?.reference } || {} };
+    if (['tn', 'tw', 'tq', 'ta', 'obs-tn', 'obs-tq', 'twlm'].includes(selectResource.toLowerCase())) {
+      if (query?.length > 0) {
+        filtered.offlineResource = resourceData?.offlineResource.filter((data) => {
+            const meta = data?.value?.meta;
+            // const searchFields = [meta?.language, meta?.language_title, meta?.name, meta?.full_name, meta?.owner].map((v) => v.toLowerCase());
+            const searchFields = ['language', 'language_title', 'name', 'full_name', 'owner'].map((v) => v.toLowerCase());
+            return searchFields.some((key) => meta[key].toLowerCase().includes(query.toLowerCase()));
+        });
+        // filtered.onlineResource = resourceData?.reference;
+        filtered.onlineResource.resource = [];
+        resourceData?.reference?.resource?.forEach((data) => {
+          // const searchFields = [data?.language, data?.name, data?.owner].map((v) => v.toLowerCase());
+          const searchFields = ['language', 'name', 'owner'].map((v) => v.toLowerCase());
+          if (searchFields.some((key) => data[key].toLowerCase().includes(query.toLowerCase()))) {
+            filtered?.onlineResource?.resource?.push(data);
+          }
+        });
+        setFilteredResources(filtered);
+      } else {
+        filtered.offlineResource = resourceData?.offlineResource;
+        filtered.onlineResource = resourceData?.reference;
+        setFilteredResources(filtered);
+      }
+    }
+  };
+
   useEffect(() => {
     (async () => {
       // console.log('resource : ', selectResource);
@@ -325,107 +388,27 @@ const ResourcesPopUp = ({
             break;
           }
         setLoading(false);
-        })();
+      })();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectResource]);
 
-  const handleDownloadHelpsResources = async (event, reference, offlineResource) => {
-    try {
-      logger.debug('ResourcesPopUp.js', 'Helps Download started');
-      // console.log('clicked download : ', reference);
-      // set Current downloading
-      setCurrentDownloading(reference);
-      await DownloadCreateSBforHelps(reference?.responseData, setDownloading, false, offlineResource)
-      .then(() => {
-        setCurrentDownloading(null);
-        setOpenSnackBar(true);
-        setError('success');
-        setSnackText('Resource Download Finished');
-      });
-    } catch (err) {
-      logger.debug('ResourcesPopUp.js', 'Error Downlaod ', err);
-      setOpenSnackBar(true);
-      setError('failure');
-      setSnackText(err?.message);
-    }
-  };
-
-  const getCurrentOnlineOfflineHelpsResurces = () => {
-    const resources = [
-      { id: 'tn', title: t('label-resource-tn'), resource: translationNote },
-      { id: 'twlm', title: t('label-resource-twl'), resource: translationWordList },
-      { id: 'tw', title: t('label-resource-twlm'), resource: translationWord },
-      { id: 'tq', title: t('label-resource-tq'), resource: translationQuestion },
-      { id: 'ta', title: t('label-resource-ta'), resource: translationAcademy },
-      { id: 'obs-tn', title: t('label-resource-obs-tn'), resource: obsTranslationNote },
-      { id: 'obs-tq', title: t('label-resource-obs-tq'), resource: obsTranslationQuestion }];
-    const reference = resources.find((r) => r.id === selectedResource);
-    const offlineResource = subMenuItems ? subMenuItems?.filter((item) => item?.value?.agOffline && item?.value?.dublin_core?.identifier === selectResource) : [];
-    return { reference, offlineResource };
-  };
-
   useEffect(() => {
-    const data = getCurrentOnlineOfflineHelpsResurces();
-    // console.log({ data });
+    const data = getCurrentOnlineOfflineHelpsResurces(selectResource);
     setCurrentFUllResorces(data);
+    handleChangeQuery('', data);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectResource, loading]);
 
-  const handleChangeQuery = (query) => {
-    // console.log({ currentFullResorces, query, selectResource });
-    const filtered = { offlineResource: [], onLineResource: [] };
-    if (['tn', 'tw', 'tq', 'ta', 'obs-tn', 'obs-tq'].includes(selectResource.toLowerCase())) {
-      if (query?.length > 0) {
-        const FilteredOffline = currentFullResorces?.offlineResource.filter((data) => {
-            const meta = data?.value?.meta;
-            const searchFields = [meta?.language, meta?.language_title, meta?.name, meta?.full_name, meta?.owner].map((v) => v.toLowerCase());
-            // if (searchFields.includes(query.toLowerCase())) {
-            // return searchFields.map(() => )toLowerCase().indexOf(partial.toLowerCase()) > -1;
-            searchFields.map((key) => {
-              if (key.indexOf(query.toLowerCase()) > -1) {
-                console.log({ key, query });
-                return data;
-              }
-            });
-        });
-        const FilteredOnline = currentFullResorces?.reference?.resource?.filter((data) => {
-          const searchFields = [data?.language, data?.name, data?.owner].map((v) => v.toLowerCase());
-          // if (searchFields.includes(query.toLowerCase())) {
-          //     return data;
-          //   }
-          searchFields.map((key) => {
-            if (key.indexOf(query.toLowerCase()) > -1) {
-              return data;
-            }
-          });
-        });
-        console.log({ FilteredOffline, FilteredOnline });
-      }
-    }
-    // setFilteredResources(data);
-  };
   const callResource = (resource) => {
     logger.debug('ResourcesPopUp.js', 'Displaying resource table');
-    console.log('selected resource ==== : ', resource);
-    const resources = [
-      { id: 'tn', title: t('label-resource-tn'), resource: translationNote },
-      { id: 'twlm', title: t('label-resource-twl'), resource: translationWordList },
-      { id: 'tw', title: t('label-resource-twlm'), resource: translationWord },
-      { id: 'tq', title: t('label-resource-tq'), resource: translationQuestion },
-      { id: 'ta', title: t('label-resource-ta'), resource: translationAcademy },
-      { id: 'obs-tn', title: t('label-resource-obs-tn'), resource: obsTranslationNote },
-      { id: 'obs-tq', title: t('label-resource-obs-tq'), resource: obsTranslationQuestion }];
-    const reference = resources.find((r) => r.id === resource);
-    // console.log('selected referecne === : ', { reference });
-    // console.log('sub menu item -------: ', subMenuItems);
-    const offlineResource = subMenuItems ? subMenuItems?.filter((item) => item?.value?.agOffline && item?.value?.dublin_core?.identifier === resource) : [];
-    // console.log('offline  items from submenu >>>>>: ', offlineResource);
+    // console.log('selected resource ==== : ', resource);
     return (
       resource
       && loading ? <LoadingScreen />
-      : resource && (
+      : resource && Object.keys(filteredResorces).length > 0 && (
         <tbody className="bg-white ">
           {/* offline resources head */}
-          {offlineResource.length > 0 && (
+          {filteredResorces?.offlineResource?.length > 0 && (
             <tr className="">
               <td colSpan="3" className="p-4 text-sm text-gray-900 font-bold">
                 {' '}
@@ -436,7 +419,7 @@ const ResourcesPopUp = ({
             </tr>
           )}
           {/* offline resources body */}
-          {offlineResource.length > 0 && offlineResource.map((resource) => (
+          {filteredResorces?.offlineResource?.length > 0 && filteredResorces?.offlineResource?.map((resource) => (
             <tr className="hover:bg-gray-200" id={resource?.projectDir} key={resource.value.meta.id + resource.value.meta.language}>
               <td className="p-4 text-sm text-gray-600">
                 <div
@@ -471,8 +454,8 @@ const ResourcesPopUp = ({
             </td>
           </tr>
 
-          {/* online resources section */}
-          {(reference.resource).map((notes) => (
+          {/* online resources section  */}
+          {filteredResorces?.onlineResource?.resource?.length > 0 && filteredResorces?.onlineResource?.resource?.map((notes) => (
             <tr className="hover:bg-gray-200" id={notes.name} key={notes.name + notes.owner}>
               <td className="px-5 py-3 hidden">
                 <StarIcon className="h-5 w-5 text-gray-300" aria-hidden="true" />
@@ -480,7 +463,7 @@ const ResourcesPopUp = ({
               <td className="p-4 text-sm text-gray-600">
                 <div
                   className="focus:outline-none"
-                  onClick={(e) => handleRowSelect(e, notes.language, `${reference.title} ${notes.name}`, notes.owner)}
+                  onClick={(e) => handleRowSelect(e, notes.language, `${filteredResorces?.onlineResource?.title} ${notes.name}`, notes.owner)}
                   role="button"
                   tabIndex="0"
                 >
@@ -490,7 +473,7 @@ const ResourcesPopUp = ({
               <td className="p-4 text-sm text-gray-600">
                 <div
                   className="focus:outline-none"
-                  onClick={(e) => handleRowSelect(e, notes.language, `${reference.title} ${notes.name}`, notes.owner)}
+                  onClick={(e) => handleRowSelect(e, notes.language, `${filteredResorces?.onlineResource?.title} ${notes.name}`, notes.owner)}
                   role="button"
                   tabIndex="0"
                 >
@@ -498,13 +481,13 @@ const ResourcesPopUp = ({
                 </div>
               </td>
               <td className="p-4 text-sm text-gray-600">
-                {reference.id !== 'twlm' && (
+                {filteredResorces?.onlineResource?.id !== 'twlm' && (
                 <div
                   className="text-xs cursor-pointer focus:outline-none"
                   role="button"
                   tabIndex={0}
                   title="download"
-                  onClick={(e) => handleDownloadHelpsResources(e, notes, offlineResource)}
+                  onClick={(e) => handleDownloadHelpsResources(e, notes, filteredResorces?.offlineResource)}
                 >
                   {dowloading && currentDownloading?.responseData?.id === notes?.responseData?.id ? (
                     <div className="">
@@ -756,7 +739,7 @@ const ResourcesPopUp = ({
                         id="search_box"
                         autoComplete="given-name"
                         placeholder={t('label-search')}
-                        onChange={(e) => handleChangeQuery(e.target.value)}
+                        onChange={(e) => handleChangeQuery(e.target.value, currentFullResorces)}
                         className="pl-8  bg-gray-100 text-black w-1/2 block rounded-full shadow-sm sm:text-xs focus:border-primary border-gray-300 h-7"
                       />
                     </div>
