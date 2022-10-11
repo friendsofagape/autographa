@@ -407,6 +407,9 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
                       currentResourceProject = resource;
                       // creating burrito template
                       resourceBurritoFile = await createDownloadedResourceSB(user?.username, currentResourceMeta, currentResourceProject, selectResource);
+                      // adding online fetch response meta as resourceMeta
+                      resourceBurritoFile.resourceMeta = currentResourceProject;
+
                       logger.debug('DownloadResourcePopUp.js', 'In resource download - basic burrito generated for resource ', `${resource.name}-${resource.owner}`);
                       // console.log(`${resource.name}-${resource.owner}`);
                       // console.log('buritto before ingred : ', resourceBurritoFile);

@@ -488,7 +488,7 @@ const ResourcesPopUp = ({
                 </div>
               </td>
               <td className="p-4 text-sm text-gray-600 ">
-                <CheckHelpsUpdatePopUp resource={resource} />
+                <CheckHelpsUpdatePopUp resource={resource} selectResource={selectResource} />
               </td>
             </tr>
           ))}
@@ -870,6 +870,12 @@ const ResourcesPopUp = ({
                                   {ref.value.languages[0].name.en}
                                 </div>
                               </td>
+                              {ref?.value?.resourceMeta?.released
+                            && (
+                            <td className="p-4 text-sm text-gray-600 ">
+                              <CheckHelpsUpdatePopUp resource={ref} selectResource={selectResource} />
+                            </td>
+                            )}
                             </tr>
                           )
                           ))
@@ -917,12 +923,12 @@ const ResourcesPopUp = ({
                                 {ref.value.languages[0].name.en}
                               </div>
                             </td>
-                            {/* {ref?.value?.identification?.upstream
+                            {ref?.value?.resourceMeta?.released
                             && (
                             <td className="p-4 text-sm text-gray-600 ">
-                              <CheckHelpsUpdatePopUp resource={ref} />
+                              <CheckHelpsUpdatePopUp resource={ref} selectResource={selectResource} />
                             </td>
-                            )} */}
+                            )}
                           </tr>
                           )
                           ))
@@ -932,7 +938,7 @@ const ResourcesPopUp = ({
                       </table>
 
                       {selectResource === 'bible' || selectResource === 'obs' ? (
-                        <button type="button" className="flex gap-6 mx-5 absolute bottom-5 right-0 justify-end z-10 outline-none">
+                        <button type="button" className="flex gap-6 mx-5 absolute bottom-2 right-0 justify-end z-10 outline-none">
                           {resourceIconClick
                               && (
                               <div className="flex-col absolute bottom-14 right-7 justify-end text-white">

@@ -11,52 +11,68 @@ import DownloadCreateSBforHelps from './DownloadCreateSBforHelps';
 
 // const path = require('path');
 
-const checkHelpsVersionUpdate = async (reference) => {
+const checkHelpsVersionUpdate = async (reference, selectResource) => {
   try {
       logger.debug('checkHelpsUpdatePopup.js', 'check update for resource');
-      // console.log('reference : ', { reference });
+      // console.log('reference : ', { reference, selectResource });
       return new Promise((resolve) => {
-      const currentResourceReleased = reference?.value?.meta?.released;
-      let latestResourceReleased = null;
-      // get released from repo fetch new meta
-      const subject = reference?.value?.meta?.subject;
-      const lang = reference?.value?.meta?.language;
-      const owner = reference?.value?.meta?.owner;
-      fetch(`https://git.door43.org/api/catalog/v5/search?subject=${subject}&lang=${lang}&owner=${owner}`)
-      .then((res) => res.json())
-      .then((resultMeta) => {
-          // console.log({ resultMeta });
-          logger.debug('checkHelpsVersionUpdate.js', { currentResourceReleased, latestResourceReleased });
-          latestResourceReleased = resultMeta?.data[0]?.released;
+        let subject = null;
+        let lang = null;
+        let owner = null;
+        let currentResourceReleased = null;
+        let currentVersion = null;
+        let latestResourceReleased = null;
+        if (selectResource === 'obs' || selectResource === 'bible') {
+          currentResourceReleased = reference?.value?.resourceMeta?.released;
+          currentVersion = reference?.value?.resourceMeta?.release?.name;
+          subject = reference?.value?.resourceMeta?.subject;
+          lang = reference?.value?.resourceMeta?.language;
+          owner = reference?.value?.resourceMeta?.owner;
+        } else {
+        // get released from repo fetch new meta
+        currentResourceReleased = reference?.value?.meta?.released;
+        currentVersion = reference?.value?.meta?.release?.name;
+        subject = reference?.value?.meta?.subject;
+        lang = reference?.value?.meta?.language;
+        owner = reference?.value?.meta?.owner;
+        }
+        if (subject && lang && owner) {
+        fetch(`https://git.door43.org/api/catalog/v5/search?subject=${subject}&lang=${lang}&owner=${owner}`)
+        .then((res) => res.json())
+        .then((resultMeta) => {
+            // console.log({ resultMeta });
+            latestResourceReleased = resultMeta?.data[0]?.released;
+            logger.debug('checkHelpsVersionUpdate.js', { currentResourceReleased, latestResourceReleased });
 
-          // check for update
-          // currentResourceReleased = '2019-07-01T21:38:48Z';
-          console.log({ currentResourceReleased, latestResourceReleased });
-          if (new Date(latestResourceReleased) > new Date(currentResourceReleased)) {
-              resolve({
-                status: true,
-                currentVersion: reference?.value?.meta?.release?.name,
-                latestVersion: resultMeta?.data[0]?.release?.name,
-                latestMeta: resultMeta?.data[0],
-              });
-              logger.debug('checkHelpsVersionUpdate.js', 'update avaailable');
-          } else {
-              resolve({
-                status: false,
-                currentVersion: reference?.value?.meta?.release?.name,
-                latestVersion: resultMeta?.data[0]?.release?.name,
-                latestMeta: resultMeta?.data[0],
-              });
-              logger.debug('checkHelpsVersionUpdate.js', 'No update avaailable');
-          }
-      });
+            // check for update
+            currentResourceReleased = '2022-04-02T23:38:13Z';
+            console.log({ currentResourceReleased, latestResourceReleased });
+            if (new Date(latestResourceReleased) > new Date(currentResourceReleased)) {
+                resolve({
+                  status: true,
+                  currentVersion,
+                  latestVersion: resultMeta?.data[0]?.release?.name,
+                  latestMeta: resultMeta?.data[0],
+                });
+                logger.debug('checkHelpsVersionUpdate.js', 'update avaailable');
+            } else {
+                resolve({
+                  status: false,
+                  currentVersion,
+                  latestVersion: resultMeta?.data[0]?.release?.name,
+                  latestMeta: resultMeta?.data[0],
+                });
+                logger.debug('checkHelpsVersionUpdate.js', 'No update avaailable');
+            }
+        });
+      }
     });
   } catch (err) {
       console.log('error check update :', { err });
   }
 };
 
-function CheckHelpsUpdatePopUp({ resource }) {
+function CheckHelpsUpdatePopUp({ resource, selectResource }) {
     const [isOpen, setIsOpen] = React.useState(false);
     const [isloading, setIsLoading] = React.useState(false);
     const [versions, setVersions] = React.useState({});
@@ -72,7 +88,11 @@ function CheckHelpsUpdatePopUp({ resource }) {
       };
 
     const UpdateResource = async () => {
-      await DownloadCreateSBforHelps(versions?.meta, setIsLoading, { status: true, prevVersion: resource?.value?.meta?.release?.tag_name, setIsOpen });
+      if (selectResource === 'obs' || selectResource === 'bible') {
+        console.log('bible or obs update call');
+      } else {
+        await DownloadCreateSBforHelps(versions?.meta, setIsLoading, { status: true, prevVersion: resource?.value?.meta?.release?.tag_name, setIsOpen });
+      }
       // setNotify('failure');
         // setSnackText('Please select a valid account to sync..');
         // setOpenSnackBar(true);
@@ -82,10 +102,9 @@ function CheckHelpsUpdatePopUp({ resource }) {
     // }, []);
 
     const handleCheckUpdateHelpsResources = async (event, resource) => {
-      console.log({ resource });
       setIsOpen(true);
       setIsLoading(true);
-      await checkHelpsVersionUpdate(resource)
+      await checkHelpsVersionUpdate(resource, selectResource)
       .then((obj) => {
         setUpdateStatus(obj.status);
         setVersions({ current: obj?.currentVersion, latest: obj?.latestVersion, meta: obj?.latestMeta });
@@ -189,7 +208,7 @@ function CheckHelpsUpdatePopUp({ resource }) {
                                 No updates available
                                 latest Version is
                                 {' '}
-                                <strong>{resource?.value?.meta?.release?.name}</strong>
+                                <strong>{versions?.latest}</strong>
                               </p>
                               )}
                           </div>
@@ -252,6 +271,7 @@ function CheckHelpsUpdatePopUp({ resource }) {
 
 CheckHelpsUpdatePopUp.propTypes = {
     resource: PropTypes.object,
+    selectResource: PropTypes.string,
   };
 
 export default CheckHelpsUpdatePopUp;
