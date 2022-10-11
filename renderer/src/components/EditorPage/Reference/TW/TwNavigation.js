@@ -3,6 +3,7 @@ import {
     useState, useEffect,
 } from 'react';
 import localForage from 'localforage';
+import { SnackBar } from '@/components/SnackBar';
 import * as logger from '../../../../logger';
 import MultiComboBox from '../MultiComboBox';
 
@@ -13,6 +14,9 @@ export default function TwNavigation({ languageId, referenceResources, setRefere
   const [twList, setTwList] = useState([]);
   const [options, setoptions] = useState([]);
   const [selectedOption, setselectedOption] = useState(null);
+  const [openSnackBar, setOpenSnackBar] = useState(false);
+  const [snackText, setSnackText] = useState('');
+  const [error, setError] = useState('');
 
   const baseUrl = 'https://git.door43.org/api/v1/repos';
   const owner = referenceResources?.owner;
@@ -111,12 +115,17 @@ export default function TwNavigation({ languageId, referenceResources, setRefere
           await fetch(`${baseUrl}/${owner}/${languageId}_tw/contents/bible/${selectedOption}?ref=${meta?.data[0]?.release?.tag_name}`)
           .then((response) => response.json())
           .then((twData) => {
-            twData.forEach((data) => {
+            twData && twData?.forEach((data) => {
               data.folder = data?.path.replace('bible/', '');
               data.title = data?.name.replace('.md', '');
               data.subTitle = '';
             });
             setTwList(twData);
+          }).catch((err) => {
+            logger.debug('TwNavigation.js', 'reading offline helps ', err);
+            setOpenSnackBar(true);
+            setError('failure');
+            setSnackText('Can not load content');
           });
         };
 
@@ -137,19 +146,29 @@ export default function TwNavigation({ languageId, referenceResources, setRefere
     }, [selected, selectedOption, setReferenceResources]);
 
   return (
-    <div className="flex fixed">
-      <div className="bg-grey text-danger py-0 uppercase tracking-wider text-xs font-semibold">
-        <div aria-label="resource-bookname" className="px-1" />
-        <MultiComboBox
-          selected={selected}
-          setSelected={setSelected}
-          data={twList}
-          options={options}
-          selectedOption={selectedOption}
-          setselectedOption={setselectedOption}
-        />
+    <>
+      <div className="flex fixed">
+        <div className="bg-grey text-danger py-0 uppercase tracking-wider text-xs font-semibold">
+          <div aria-label="resource-bookname" className="px-1" />
+          <MultiComboBox
+            selected={selected}
+            setSelected={setSelected}
+            data={twList}
+            options={options}
+            selectedOption={selectedOption}
+            setselectedOption={setselectedOption}
+          />
+        </div>
       </div>
-    </div>
+
+      <SnackBar
+        openSnackBar={openSnackBar}
+        setOpenSnackBar={setOpenSnackBar}
+        snackText={snackText}
+        setSnackText={setSnackText}
+        error={error}
+      />
+    </>
   );
 }
 

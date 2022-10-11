@@ -96,6 +96,7 @@ const ResourcesPopUp = ({
   const [filteredResorces, setFilteredResources] = useState({});
   const [filteredBibleObs, setFilteredBibleObs] = useState([]);
   const [currentFullResorces, setCurrentFUllResorces] = useState([]);
+  const [selectedPreProd, setSelectedPreProd] = React.useState(false);
 
   const { t } = useTranslation();
   const {
@@ -269,9 +270,13 @@ const ResourcesPopUp = ({
   const fetchTranslationResource = async (urlpath, setResource) => {
     logger.debug('ResourcesPopUp.js', `fetchTranslationResource :  ${selectResource}`);
     const baseUrl = 'https://git.door43.org/api/catalog/v5/search?';
+    let url = `${baseUrl}subject=${urlpath}`;
+    if (selectedPreProd) {
+      url += '&stage=preprod';
+    }
     if (urlpath) {
       const resourceData = [];
-      await fetch(`${baseUrl}subject=${urlpath}`)
+      await fetch(url)
       .then((res) => res.json())
       .then((response) => {
         response.data.forEach(async (data) => {
@@ -421,14 +426,14 @@ const ResourcesPopUp = ({
         setLoading(false);
       })();
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectResource]);
+  }, [selectResource, selectedPreProd]);
 
   useEffect(() => {
     const data = getCurrentOnlineOfflineHelpsResurces(selectResource);
     setCurrentFUllResorces(data);
     handleChangeQuery('', data);
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectResource, loading, subMenuItems]);
+  }, [selectResource, loading, subMenuItems, selectedPreProd]);
 
   const callResource = (resource) => {
     logger.debug('ResourcesPopUp.js', 'Displaying resource table');
@@ -497,7 +502,7 @@ const ResourcesPopUp = ({
 
           {/* online resources section  */}
           {filteredResorces?.onlineResource?.resource?.length > 0 && filteredResorces?.onlineResource?.resource?.map((notes) => (
-            <tr className="hover:bg-gray-200" id={notes.name} key={notes.name + notes.owner}>
+            <tr className={`${notes?.responseData?.stage === 'preprod' && 'bg-[#FFFF00]'} hover:bg-gray-200 `} id={notes.name} key={notes.name + notes.owner}>
               <td className="px-5 py-3 hidden">
                 <StarIcon className="h-5 w-5 text-gray-300" aria-hidden="true" />
               </td>
@@ -646,14 +651,6 @@ const ResourcesPopUp = ({
                     {t('label-resource')}
                   </div>
                   <div style={{ width: 'max-content' }} className="relative bg-gray-100 px-3 py-3 h-full overflow-auto scrollbars-width">
-                    {/* <input
-                    className="rounded h-8 bg-gray-200 border-none uppercase pr-6 text-xs
-                      tracking-widest leading-snug font-bold"
-                    placeholder="Search"
-                    type="search"
-                    id="gsearch"
-                    name="gsearch"
-                    /> */}
                     <div className="grid grid-rows-5 py-5 gap-4">
                       <ResourceOption
                         imageUrl="/illustrations/bible-icon.svg"
@@ -781,7 +778,7 @@ const ResourcesPopUp = ({
 
                 <div className="flex flex-col w-full ">
                   <div aria-label="resources-search" className="pt-1.5 pb-[6.5px] uppercase bg-secondary text-white text-xs tracking-widest leading-snug text-center">
-                    <div className="flex ">
+                    <div className="flex">
                       <SearchIcon className="h-4 w-4 absolute ml-3 my-[6px] text-primary" />
                       <input
                         data-testid="search"
@@ -793,6 +790,19 @@ const ResourcesPopUp = ({
                         onChange={(e) => handleChangeQuery(e.target.value, currentFullResorces)}
                         className="pl-8  bg-gray-100 text-black w-1/2 block rounded-full shadow-sm sm:text-xs focus:border-primary border-gray-300 h-7"
                       />
+                      {(selectResource !== 'obs' && selectResource !== 'bible' && selectResource !== 'twlm')
+                      && (
+                      <div className="flex items-center ml-2">
+                        <label htmlFor="pre-prod">Pre Release</label>
+                        <input
+                          className="ml-2"
+                          type="checkbox"
+                          id="pre-prod"
+                          checked={selectedPreProd}
+                          onClick={(e) => setSelectedPreProd(e.target.checked)}
+                        />
+                      </div>
+                      )}
                     </div>
                   </div>
 
