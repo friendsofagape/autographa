@@ -466,7 +466,7 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
                               {totalDownload}
                               )
                             </span> */}
-                            <span>
+                            <span className="ml-2">
                               {totalDownload}
                             </span>
                           </div>
