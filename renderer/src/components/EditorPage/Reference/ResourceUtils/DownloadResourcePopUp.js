@@ -725,7 +725,7 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
                             name="pre-prod"
                             type="checkbox"
                             checked={selectedPreProd}
-                            onClick={(e) => setSelectedPreProd(e.target.checked)}
+                            onChange={(e) => setSelectedPreProd(e.target.checked)}
                           />
                         </div>
                       </div>
@@ -882,7 +882,7 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
 DownloadResourcePopUp.propTypes = {
   selectResource: PropTypes.string,
   isOpenDonwloadPopUp: PropTypes.bool,
-  setIsOpenDonwloadPopUp: PropTypes.bool,
+  setIsOpenDonwloadPopUp: PropTypes.func,
 };
 
 export default DownloadResourcePopUp;

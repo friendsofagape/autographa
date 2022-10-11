@@ -456,7 +456,7 @@ const ResourcesPopUp = ({
           )}
           {/* offline resources body */}
           {filteredResorces?.offlineResource?.length > 0 && filteredResorces?.offlineResource?.map((resource) => (
-            <tr className="hover:bg-gray-200" id={resource?.projectDir} key={resource.value.meta.id + resource.value.meta.language}>
+            <tr className={`${resource?.value?.meta?.stage === 'preprod' && 'bg-[#FFFF00]'} hover:bg-gray-200 `} id={resource?.projectDir} key={resource.value.meta.id + resource.value.meta.language}>
               <td className="p-4 text-sm text-gray-600">
                 <div
                   className="focus:outline-none"
@@ -799,7 +799,7 @@ const ResourcesPopUp = ({
                           type="checkbox"
                           id="pre-prod"
                           checked={selectedPreProd}
-                          onClick={(e) => setSelectedPreProd(e.target.checked)}
+                          onChange={(e) => setSelectedPreProd(e.target.checked)}
                         />
                       </div>
                       )}
