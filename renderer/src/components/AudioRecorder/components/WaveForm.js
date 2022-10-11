@@ -47,8 +47,8 @@ const AudioWaveForm = (props) => {
     barGap: barGap ?? 2,
     responsive: true,
     height,
-    normalize: true,
-    partialRender: true,
+    // normalize: true,
+    // partialRender: true,
     hideScrollbar: true,
     interact: interaction ?? true,
     backend: 'MediaElement',
@@ -57,13 +57,19 @@ const AudioWaveForm = (props) => {
     ],
   });
 
-  const createForm = async () => {
+  const createForm = async (currentUrl) => {
     const options = formWaveSurferOptions(waveformRef.current);
     wavesurfer.current = WaveSurfer.create(options);
-
-    wavesurfer.current?.load(url || 'temp.mp3');
+    // Below url is for testing/development purpose
+    // const currentUrl = 'https://www.mfiles.co.uk/mp3-downloads/brahms-st-anthony-chorale-theme-two-pianos.mp3';
+    wavesurfer.current?.load(currentUrl);
     // wavesurfer.current?.setVolume(volume);
     wavesurfer.current?.setPlaybackRate(speed);
+  };
+
+  const createRecForm = async () => {
+    const options = formWaveSurferOptions(waveformRef.current);
+    wavesurfer.current = WaveSurfer.create(options);
     wavesurfer.current?.microphone.on('deviceReady', (stream) => {
       // eslint-disable-next-line no-console
       console.log('Device ready!', stream);
@@ -76,7 +82,7 @@ const AudioWaveForm = (props) => {
 
   useEffect(() => {
     if (url) {
-      createForm();
+      createForm(url);
 
       return () => {
         if (wavesurfer.current) {
@@ -88,7 +94,7 @@ const AudioWaveForm = (props) => {
   }, [url]);
   useEffect(() => {
     if (call === 'record') {
-      createForm();
+      createRecForm();
 
       return () => {
         if (wavesurfer.current) {
@@ -174,7 +180,6 @@ const AudioWaveForm = (props) => {
           <>
             <div className="w-full">
               <div id="waveform" ref={waveformRef} />
-              <p>Audio available</p>
             </div>
             {show
             && (
