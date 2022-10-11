@@ -200,9 +200,12 @@ export const generateResourceIngredientsOBS = async (currentResourceMeta, path, 
   return resourceBurritoFile;
 };
 
-export const handleDownloadResources = async (resourceData, selectResource, action) => {
+export const handleDownloadResources = async (resourceData, selectResource, action, update = false) => {
   logger.debug('DownloadResourcePopUp.js', 'In resource download - started : ');
   const newpath = localStorage.getItem('userPath');
+//   console.log({
+//  resourceData, selectResource, action, update,
+// });
   return new Promise((resolve, reject) => {
   localForage.getItem('userProfile').then(async (user) => {
     logger.debug('DownloadResourcePopUp.js', 'In resource download user fetch - ', user?.username);
@@ -234,7 +237,8 @@ export const handleDownloadResources = async (resourceData, selectResource, acti
                   resourceBurritoFile = await createDownloadedResourceSB(user?.username, currentResourceMeta, currentResourceProject, selectResource);
                   // adding online fetch response meta as resourceMeta
                   resourceBurritoFile.resourceMeta = currentResourceProject;
-                  logger.debug('passed  create burrito ---------->', { resourceBurritoFile });
+                  resourceBurritoFile.resourceMeta.lastUpdatedAg = moment().format();
+                  logger.debug('passed  create burrito ---------->');
 
                   logger.debug('DownloadResourcePopUp.js', 'In resource download - basic burrito generated for resource ', `${resource.name}-${resource.owner}`);
                   // logger.debug(`${resource.name}-${resource.owner}`);
@@ -360,6 +364,14 @@ export const handleDownloadResources = async (resourceData, selectResource, acti
             }
           }
           // console.log('lang group finished ---------------------------');
+          if (update && update.status) {
+            // eslint-disable-next-line no-await-in-loop
+            await fs.rmdir(path.join(folder, update?.oldResource?.projectDir), { recursive: true }, (err) => {
+              if (err) {
+                throw new Error(`Delete old Resource failed :  ${err}`);
+              }
+            });
+          }
           resolve({ status: 'success' });
         }
       } catch (err) {

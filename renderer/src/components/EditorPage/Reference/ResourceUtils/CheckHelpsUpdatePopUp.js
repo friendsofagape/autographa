@@ -8,6 +8,7 @@ import LoadingScreen from '@/components/Loading/LoadingScreen';
 import * as logger from '../../../../logger';
 import RefreshSvg from '@/icons/basil/Outline/Interface/Refresh.svg';
 import DownloadCreateSBforHelps from './DownloadCreateSBforHelps';
+import { handleDownloadResources } from './createDownloadedResourceSB';
 
 // const path = require('path');
 
@@ -45,7 +46,7 @@ const checkHelpsVersionUpdate = async (reference, selectResource) => {
             logger.debug('checkHelpsVersionUpdate.js', { currentResourceReleased, latestResourceReleased });
 
             // check for update
-            currentResourceReleased = '2022-04-02T23:38:13Z';
+            currentResourceReleased = '2019-03-02T23:38:13Z';
             console.log({ currentResourceReleased, latestResourceReleased });
             if (new Date(latestResourceReleased) > new Date(currentResourceReleased)) {
                 resolve({
@@ -84,18 +85,43 @@ function CheckHelpsUpdatePopUp({ resource, selectResource }) {
     const [notify, setNotify] = React.useState();
 
     const modalClose = () => {
-        setIsOpen(false);
+        if (!isloading) {
+          setIsOpen(false);
+        }
       };
 
     const UpdateResource = async () => {
       if (selectResource === 'obs' || selectResource === 'bible') {
-        console.log('bible or obs update call');
+        const resourceData = {};
+        const lang = resource?.value?.resourceMeta?.language;
+        resourceData[lang] = [resource?.value?.resourceMeta];
+        setIsLoading(true);
+        await handleDownloadResources(resourceData, selectResource, null, { status: true, oldResource: resource })
+        .then(() => {
+          setIsLoading(false);
+          setNotify('success');
+          setSnackText('Resource Updated');
+          setOpenSnackBar(true);
+          modalClose();
+        }).catch((err) => {
+          setIsLoading(false);
+          setNotify('failure');
+          setSnackText(`Resource Update failed ${err}`);
+          setOpenSnackBar(true);
+          modalClose();
+        });
       } else {
-        await DownloadCreateSBforHelps(versions?.meta, setIsLoading, { status: true, prevVersion: resource?.value?.meta?.release?.tag_name, setIsOpen });
+        await DownloadCreateSBforHelps(versions?.meta, setIsLoading, { status: true, prevVersion: resource?.value?.meta?.release?.tag_name, setIsOpen })
+        .then(() => {
+          setNotify('success');
+          setSnackText('Resource Updated');
+          setOpenSnackBar(true);
+        }).catch((err) => {
+          setNotify('failure');
+          setSnackText(`Resource Update failed ${err}`);
+          setOpenSnackBar(true);
+        });
       }
-      // setNotify('failure');
-        // setSnackText('Please select a valid account to sync..');
-        // setOpenSnackBar(true);
     };
 
     // React.useEffect(() => {

@@ -2,6 +2,7 @@ const loadData = (fs, file, projectName, username) => {
   const newpath = localStorage.getItem('userPath');
   const path = require('path');
   const filePath = path.join(newpath, 'autographa', 'users', username, 'resources', projectName);
+  if (fs.existsSync(path.join(filePath))) {
   const data = fs.readFileSync(
     path.join(filePath, 'metadata.json'),
     'utf8',
@@ -27,6 +28,8 @@ const loadData = (fs, file, projectName, username) => {
   }
   const content = fs.readFileSync(path.join(filePath, dirName, `${file}.md`), 'utf8');
   return content;
+}
+  return 'No Content';
 };
 const core = (fs, num, projectName, username) => {
   const stories = [];

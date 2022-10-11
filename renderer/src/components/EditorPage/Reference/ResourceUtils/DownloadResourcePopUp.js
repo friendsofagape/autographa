@@ -91,10 +91,9 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
   } = React.useContext(AutographaContext);
 
   const modalClose = () => {
-    setIsOpenDonwloadPopUp(false);
-    // if (!downloadStarted) {
-    //   setIsOpenDonwloadPopUp(false);
-    // }
+    if (!downloadStarted) {
+      setIsOpenDonwloadPopUp(false);
+    }
   };
 
   const toggleAcordion = (element) => {

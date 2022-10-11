@@ -25,6 +25,7 @@ import * as logger from '../../../logger';
 import DownloadResourcePopUp from './ResourceUtils/DownloadResourcePopUp';
 import DownloadCreateSBforHelps from './ResourceUtils/DownloadCreateSBforHelps';
 import CheckHelpsUpdatePopUp from './ResourceUtils/CheckHelpsUpdatePopUp';
+import RemoveResource from './ResourceUtils/RemoveResource';
 
 function createData(name, language, owner) {
   return {
@@ -488,7 +489,16 @@ const ResourcesPopUp = ({
                 </div>
               </td>
               <td className="p-4 text-sm text-gray-600 ">
-                <CheckHelpsUpdatePopUp resource={resource} selectResource={selectResource} />
+                {console.log({ resource })}
+                <div className="flex flex-col gap-1">
+                  <div className="flex flex-row">
+                    <CheckHelpsUpdatePopUp resource={resource} selectResource={selectResource} />
+                    <RemoveResource resource={resource} selectResource={selectResource} closeResourceWindow={removeSection} />
+                  </div>
+                  <div className="text-[9px] mt-2 text-black">
+                    <span>{resource?.value?.lastUpdatedAg?.split('T')[0]}</span>
+                  </div>
+                </div>
               </td>
             </tr>
           ))}
@@ -813,7 +823,7 @@ const ResourcesPopUp = ({
                     </div>
                     )
                   : (
-                    <div className="relative w-full max-h-sm scrollbars-width overflow-auto pb-10">
+                    <div className="relative w-full max-h-sm min-h-[90%] scrollbars-width overflow-auto pb-10 ">
                       <table className="border-separate border-spacing-0 w-full ">
                         <thead className="bg-white">
                           <tr className="text-sm text-left">
@@ -870,12 +880,20 @@ const ResourcesPopUp = ({
                                   {ref.value.languages[0].name.en}
                                 </div>
                               </td>
-                              {ref?.value?.resourceMeta?.released
-                            && (
-                            <td className="p-4 text-sm text-gray-600 ">
-                              <CheckHelpsUpdatePopUp resource={ref} selectResource={selectResource} />
-                            </td>
-                            )}
+                              <td className="p-4 text-sm text-gray-600 ">
+                                <div className="flex flex-col gap-1">
+                                  <div className="flex">
+                                    {ref?.value?.resourceMeta?.released
+                                  && (
+                                    <CheckHelpsUpdatePopUp resource={ref} selectResource={selectResource} />
+                                    )}
+                                    <RemoveResource resource={ref} selectResource={selectResource} closeResourceWindow={removeSection} />
+                                  </div>
+                                  <div className="text-[9px] mt-2 text-black">
+                                    <span>{ref?.value?.resourceMeta && ref?.value?.resourceMeta?.lastUpdatedAg.split('T')[0]}</span>
+                                  </div>
+                                </div>
+                              </td>
                             </tr>
                           )
                           ))
@@ -923,12 +941,34 @@ const ResourcesPopUp = ({
                                 {ref.value.languages[0].name.en}
                               </div>
                             </td>
-                            {ref?.value?.resourceMeta?.released
-                            && (
-                            <td className="p-4 text-sm text-gray-600 ">
-                              <CheckHelpsUpdatePopUp resource={ref} selectResource={selectResource} />
+                            <td className="p-4 text-xs text-gray-600">
+                              <div
+                                className="focus:outline-none"
+                                onClick={(e) => handleRowSelect(
+                                    e,
+                                    ref.value.languages[0].name.en,
+                                    ref.projectDir,
+                                    )}
+                                role="button"
+                                tabIndex="0"
+                              >
+                                {ref?.value?.resourceMeta && `${(ref.value.resourceMeta.released).split('T')[0]} (${ref?.value?.resourceMeta?.release.tag_name})`}
+                              </div>
                             </td>
-                            )}
+                            <td className="p-4 text-sm text-gray-600 ">
+                              <div className="flex flex-col gap-1">
+                                <div className="flex">
+                                  {ref?.value?.resourceMeta?.released
+                                  && (
+                                    <CheckHelpsUpdatePopUp resource={ref} selectResource={selectResource} />
+                                    )}
+                                  <RemoveResource resource={ref} selectResource={selectResource} closeResourceWindow={removeSection} />
+                                </div>
+                                <div className="text-[9px] mt-2 text-black">
+                                  <span>{ref?.value?.resourceMeta && ref?.value?.resourceMeta?.lastUpdatedAg.split('T')[0]}</span>
+                                </div>
+                              </div>
+                            </td>
                           </tr>
                           )
                           ))
@@ -938,7 +978,7 @@ const ResourcesPopUp = ({
                       </table>
 
                       {selectResource === 'bible' || selectResource === 'obs' ? (
-                        <button type="button" className="flex gap-6 mx-5 absolute bottom-2 right-0 justify-end z-10 outline-none">
+                        <button type="button" className="flex gap-6 mx-5 absolute bottom-0 right-0 justify-end z-10 outline-none">
                           {resourceIconClick
                               && (
                               <div className="flex-col absolute bottom-14 right-7 justify-end text-white">

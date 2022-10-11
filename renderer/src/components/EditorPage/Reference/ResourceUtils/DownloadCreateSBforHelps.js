@@ -1,4 +1,5 @@
 import localForage from 'localforage';
+import moment from 'moment';
 import * as logger from '../../../../logger';
 
 const fs = window.require('fs');
@@ -73,7 +74,8 @@ const DownloadCreateSBforHelps = async (projectResource, setLoading, update = fa
                                 // adding offline true tag in  meta for identification
                                 data.agOffline = true;
                                 data.meta = projectResource;
-                                // console.log('json data after : ', data);
+                                data.lastUpdatedAg = moment().format();
+                                console.log('json data after : ', data);
                                 await fs.writeFileSync(path.join(folder, projectResource?.name, 'metadata.json'), JSON.stringify(data));
                             }).catch((err) => {
                                 // console.log('failed to save yml metadata.json : ', err);
