@@ -433,7 +433,6 @@ const ResourcesPopUp = ({
   const callResource = (resource) => {
     logger.debug('ResourcesPopUp.js', 'Displaying resource table');
     // console.log('selected resource ==== : ', resource);
-    console.log({ filteredResorces });
     return (
       resource
       && loading ? <LoadingScreen />

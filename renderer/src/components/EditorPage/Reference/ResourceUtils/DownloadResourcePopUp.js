@@ -75,6 +75,7 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
   const [resourceData, setresourceData] = React.useState([]);
   const [selectedLangFilter, setSelectedLangFilter] = React.useState([]);
   const [selectedTypeFilter, setSelectedTypeFilter] = React.useState([]);
+  const [selectedPreProd, setSelectedPreProd] = React.useState(false);
   // resource Download
   const [downloadStarted, setDownloadStarted] = React.useState(false);
   // const [downloadCompleted, setDownloadCompleted] = React.useState(false);
@@ -174,6 +175,10 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
       }
       // url = `${baseUrl}?subject=Bible&subject=Aligned Bible&lang=en&lang=ml`;
     }
+    // pre-release items
+    if (selectedPreProd) {
+      url += '&stage=preprod';
+    }
     // url = 'https://git.door43.org/api/catalog/v5/search?subject=Aligned%20Bible&subject=Bible&lang=en&lang=ml&lang=hi';
     const temp_resource = {};
     selectedLangFilter.forEach((langObj) => {
@@ -234,6 +239,7 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
     logger.debug('DownloadResourcePopUp.js', 'In clear filter');
     setSelectedLangFilter([]);
     setSelectedTypeFilter([]);
+    setSelectedPreProd(false);
   };
 
   const handleSaveFilter = async () => {
@@ -519,7 +525,7 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
                           // custom license adding
                           if (!licenseFileFound) {
                             logger.debug('DownloadResourcePopUp.js', 'In resource custom license add - no license found');
-                            console.log('no license file found -', md5(customLicenseContent));
+                            // console.log('no license file found -', md5(customLicenseContent));
                             if (fs.existsSync(path.join(folder, currentResourceProject.name))) {
                               fs.writeFileSync(path.join(folder, currentResourceProject.name, 'LICENSE.md'), customLicenseContent);
                               const stats = fs.statSync(path.join(folder, currentResourceProject.name, 'LICENSE.md'));
@@ -618,6 +624,7 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
   React.useEffect(() => {
     logger.debug('DownloadResourcePopUp.js', 'in useEffect initial load of resource');
     fetchResource(false);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const classes = useStyles();
@@ -707,6 +714,20 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
                           setSelectedList={setSelectedTypeFilter}
                           customData={selectResource === 'bible' ? subjectTypeArray.bible : subjectTypeArray.obs}
                         />
+                      </div>
+                      <div className="flex justify-between items-center mt-2">
+                        <div className="fle w-1/2">
+                          <label htmlFor="pre-prod" className="font-bold text-base">Pre Release</label>
+                        </div>
+                        <div className="flex w-1/2 justify-center">
+                          <input
+                            id="pre-prod"
+                            name="pre-prod"
+                            type="checkbox"
+                            checked={selectedPreProd}
+                            onClick={(e) => setSelectedPreProd(e.target.checked)}
+                          />
+                        </div>
                       </div>
                       <div className="flex justify-end mt-5 gap-5 px-5">
                         <button
@@ -803,7 +824,7 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
                                         <hr />
 
                                         {resourceData[element]?.map((row) => (
-                                          <div className="grid md:grid-cols-9 grid-cols-10 gap-2 text-center p-1.5 text-sm">
+                                          <div className={`${row.stage === 'preprod' && 'bg-[#FFFF00]' } grid md:grid-cols-9 grid-cols-10 gap-2 text-center p-1.5 text-sm `}>
                                             <div>
                                               <input
                                                 className="col-span-1"
