@@ -12,7 +12,7 @@ import { SnackBar } from '@/components/SnackBar';
 import useValidator from '@/components/hooks/useValidator';
 import ConfirmationModal from '@/layouts/editor/ConfirmationModal';
 import LayoutIcon from '@/icons/basil/Outline/Interface/Layout.svg';
-// import BullhornIcon from '@/icons/basil/Outline/Communication/Bullhorn.svg';
+import BullhornIcon from '@/icons/basil/Outline/Communication/Bullhorn.svg';
 // import ProcessorIcon from '@/icons/basil/Outline/Devices/Processor.svg';
 // import CheckIcon from '@/icons/basil/Outline/Interface/Check.svg';
 import ImageIcon from '@/icons/basil/Outline/Files/Image.svg';
@@ -28,11 +28,11 @@ const solutions = [
     href: '##',
     icon: LayoutIcon,
   },
-  // {
-  //   name: 'Audio',
-  //   href: '##',
-  //   icon: BullhornIcon,
-  // },
+  {
+    name: 'Audio',
+    href: '##',
+    icon: BullhornIcon,
+  },
   // {
   //   name: 'MT',
   //   href: '##',
@@ -249,6 +249,10 @@ export default function NewProject({ call, project, closeEdit }) {
         setHeaderDropDown('OBS');
         break;
 
+      case 'audioTranslation':
+        setHeaderDropDown('Audio');
+        break;
+
       default:
         break;
     }
@@ -331,11 +335,14 @@ export default function NewProject({ call, project, closeEdit }) {
                 </div>
                 <div className="flex gap-5 mt-5 items-center">
                   <div>
-                    <div className="absolute">
-                      <TargetLanguageTag>
-                        {language.scriptDirection ? language.scriptDirection : 'LTR'}
-                      </TargetLanguageTag>
-                    </div>
+                    {headerDropDown !== 'Audio'
+                      && (
+                      <div className="absolute">
+                        <TargetLanguageTag>
+                          {language.scriptDirection ? language.scriptDirection : 'LTR'}
+                        </TargetLanguageTag>
+                      </div>
+                    )}
                     <h4 className="text-xs font-base mb-2 text-primary  tracking-wide leading-4  font-light">
                       {t('label-target-language')}
                       <span className="text-error">*</span>
@@ -349,10 +356,9 @@ export default function NewProject({ call, project, closeEdit }) {
                     />
                   </div>
                   <div className="mt-5">
-                    <TargetLanguagePopover />
+                    <TargetLanguagePopover projectType={headerDropDown} />
                   </div>
                 </div>
-
                 <div className="mt-5">
                   <button
                     type="button"
@@ -424,7 +430,7 @@ export default function NewProject({ call, project, closeEdit }) {
         openModal={replaceWarning}
         title="Do Not Replace Existing Content"
         setOpenModal={setReplaceWarning}
-        confirmMessage="This action will replace the existing contents, Press OK to Avoid or CANCEL to continue edit with replace"
+        confirmMessage="This action will replace if the existing contents, Press OK to Avoid or CANCEL to continue edit with replace"
         buttonName={t('btn-ok')}
         closeModal={closeEdit}
       />

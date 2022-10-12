@@ -51,6 +51,10 @@ export default function ReferenceContextProvider({ children }) {
       option: '',
       path: '',
     });
+    const [audioContent, setAudioContent] = useState();
+    const [audioPath, setAudioPath] = useState();
+    // Trigger the function after every recording and default change
+    const [audioCurrentChapter, setAudioCurrentChapter] = useState();
     const handleClick = (event) => {
       setAnchorEl(event.currentTarget);
     };
@@ -77,12 +81,16 @@ export default function ReferenceContextProvider({ children }) {
                     if (resources.identification.name.en === _projectname[0]) {
                       switch (resources.type.flavorType.flavor.name) {
                         case 'textTranslation':
-                          setBookmarksVerses(resources.project.textTranslation.bookMarks);
-                          setProjectScriptureDir(resources.project.textTranslation.scriptDirection);
+                          setBookmarksVerses(resources.project?.textTranslation.bookMarks);
+                          setProjectScriptureDir(resources.project?.textTranslation.scriptDirection);
                           break;
                         case 'textStories':
-                          setBookmarksVerses(resources.project.textStories.bookMarks);
-                          setProjectScriptureDir(resources.project.textStories.scriptDirection);
+                          setBookmarksVerses(resources.project?.textStories.bookMarks);
+                          setProjectScriptureDir(resources.project?.textStories.scriptDirection);
+                          break;
+                        case 'audioTranslation':
+                          setBookmarksVerses(resources.project?.audioTranslation.bookMarks);
+                          setProjectScriptureDir(resources.project?.audioTranslation.scriptDirection);
                           break;
                         default:
                           break;
@@ -253,6 +261,9 @@ export default function ReferenceContextProvider({ children }) {
         obsNavigation,
         selectedStory,
         taNavigationPath,
+        audioContent,
+        audioCurrentChapter,
+        audioPath,
       },
       actions: {
         setLanguageId,
@@ -291,6 +302,9 @@ export default function ReferenceContextProvider({ children }) {
         setObsNavigation,
         setSelectedStory,
         setTaNavigationPath,
+        setAudioContent,
+        setAudioCurrentChapter,
+        setAudioPath,
       },
     };
 

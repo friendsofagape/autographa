@@ -161,6 +161,7 @@ export const importServerProject = async (updateBurrito, repo, sbData, auth, use
             [sbDataObject.type.flavorType.flavor.name]: {
               scriptDirection: 'LTR',
               starred: false,
+              isArchived: false,
               versification: '',
               description: '',
               copyright: '',
@@ -192,6 +193,7 @@ export const importServerProject = async (updateBurrito, repo, sbData, auth, use
           setting.version = environment.AG_SETTING_VERSION;
           setting.project[sbDataObject.type.flavorType.flavor.name].scriptDirection = settings.project[sbDataObject.type.flavorType.flavor.name]?.scriptDirection ? settings.project[sbDataObject.type.flavorType.flavor.name]?.scriptDirection : '';
           setting.project[sbDataObject.type.flavorType.flavor.name].starred = settings.project[sbDataObject.type.flavorType.flavor.name]?.starred ? settings.project[sbDataObject.type.flavorType.flavor.name]?.starred : false;
+          setting.project[sbDataObject.type.flavorType.flavor.name].isArchived = settings.project[sbDataObject.type.flavorType.flavor.name]?.isArchived ? settings.project[sbDataObject.type.flavorType.flavor.name]?.isArchived : false;
           setting.project[sbDataObject.type.flavorType.flavor.name].versification = settings.project[sbDataObject.type.flavorType.flavor.name]?.versification ? settings.project[sbDataObject.type.flavorType.flavor.name]?.versification : 'ENG';
           setting.project[sbDataObject.type.flavorType.flavor.name].description = settings.project[sbDataObject.type.flavorType.flavor.name]?.description ? settings.project[sbDataObject.type.flavorType.flavor.name]?.description : '';
           setting.project[sbDataObject.type.flavorType.flavor.name].copyright = settings.project[sbDataObject.type.flavorType.flavor.name]?.copyright ? settings.project[sbDataObject.type.flavorType.flavor.name]?.copyright : { title: 'Custom' };

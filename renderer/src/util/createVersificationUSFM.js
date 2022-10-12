@@ -18,10 +18,16 @@ export const createVersificationUSFM = (
   copyright,
   currentBurrito,
   call,
+  projectType,
 ) => {
   logger.debug('createVersificationUSFM.js', 'In createVersificationUSFM');
   const newpath = localStorage.getItem('userPath');
-  const folder = path.join(newpath, 'autographa', 'users', username, 'projects', `${project.projectName}_${id}`, 'ingredients');
+  let folder = path.join(newpath, 'autographa', 'users', username, 'projects', `${project.projectName}_${id}`);
+  if (projectType === 'Audio') {
+    folder = path.join(folder, 'text-1', 'ingredients');
+  } else {
+    folder = path.join(folder, 'ingredients');
+  }
   const schemes = [
     { name: 'eng', file: 'eng.json' },
     { name: 'lxx', file: 'lxx.json' },
@@ -141,7 +147,8 @@ export const createVersificationUSFM = (
           project: {
             textTranslation: {
               scriptDirection: direction,
-              starred: call === 'edit' ? currentBurrito.project.textTranslation.starred : false,
+              starred: call === 'edit' ? currentBurrito.project?.textTranslation.starred : false,
+              isArchived: call === 'edit' ? currentBurrito.project?.textTranslation.isArchived : false,
               versification,
               description: project.description,
               copyright: copyright.title,

@@ -70,6 +70,9 @@ function useProjectsSort() {
               case 'textStories':
                 dirName = 'textStories';
                 break;
+              case 'audioTranslation':
+                dirName = 'audioTranslation';
+                break;
               default:
                 break;
             }
@@ -139,11 +142,11 @@ function useProjectsSort() {
     // eslint-disable-next-line
       }, [temparray, active]);
 
-    const createData = (name, language, date, view, description, id, type) => ({
-      name, language, date, view, description, id, type,
+    const createData = (name, language, date, view, description, id, type, isArchived) => ({
+      name, language, date, view, description, id, type, isArchived,
     });
 
-    const FetchStarred = (ProjectName, Language, createdAt, LastView, ProjectDescription, id, type) => {
+    const FetchStarred = (ProjectName, Language, createdAt, LastView, ProjectDescription, id, type, isArchived) => {
       starrtedData.push(createData(
         ProjectName,
         Language,
@@ -152,10 +155,11 @@ function useProjectsSort() {
         ProjectDescription,
         id,
         type,
+        isArchived,
       ));
     };
 
-    const FetchUnstarred = (ProjectName, Language, createdAt, LastView, ProjectDescription, id, type) => {
+    const FetchUnstarred = (ProjectName, Language, createdAt, LastView, ProjectDescription, id, type, isArchived) => {
       unstarrtedData.push(createData(
         ProjectName,
         Language,
@@ -164,6 +168,7 @@ function useProjectsSort() {
         ProjectDescription,
         id,
         type,
+        isArchived,
       ));
     };
 
@@ -187,21 +192,30 @@ function useProjectsSort() {
                         let lastSeen;
                         let description;
                         let flavorType;
+                        let isArchived;
                         switch (_project.type.flavorType.flavor.name) {
                           case 'textTranslation':
                             lastSeen = _project.project?.textTranslation?.lastSeen;
                             description = _project.project?.textTranslation?.description;
+                            isArchived = _project.project.textTranslation.isArchived;
                             flavorType = 'Text Translation';
                             break;
                           case 'textStories':
                             lastSeen = _project.project?.textStories?.lastSeen;
                             description = _project.project?.textStories?.description;
+                            isArchived = _project.project?.textStories?.isArchived;
                             flavorType = 'OBS';
+                            break;
+                          case 'audioTranslation':
+                            lastSeen = _project.project?.audioTranslation?.lastSeen;
+                            description = _project.project?.audioTranslation?.description;
+                            isArchived = _project.project?.audioTranslation?.isArchived;
+                            flavorType = 'Audio';
                             break;
                           default:
                             break;
                         }
-                        if (_project.project?.textTranslation?.starred === true || _project.project?.textStories?.starred === true) {
+                        if (_project.project?.textTranslation?.starred === true || _project.project?.textStories?.starred === true || _project.project?.audioTranslation?.starred === true) {
                           // FetchStarred(projectName,language, createdAt, updatedAt);
                           FetchStarred(
                             _project.identification.name.en,
@@ -211,6 +225,7 @@ function useProjectsSort() {
                             description,
                             created,
                             flavorType,
+                            isArchived,
                             );
                         } else {
                           FetchUnstarred(
@@ -221,6 +236,7 @@ function useProjectsSort() {
                             description,
                             created,
                             flavorType,
+                            isArchived,
                             );
                         }
                       });
@@ -251,6 +267,7 @@ function useProjectsSort() {
                 projects.get('language'),
                 projects.get('date'),
                 projects.get('lastview'),
+                projects.get('isArchived'),
                 );
               } else {
                   FetchUnstarred(
@@ -258,6 +275,7 @@ function useProjectsSort() {
                     projects.get('language'),
                     projects.get('date'),
                     projects.get('lastview'),
+                    projects.get('isArchived'),
                 );
               }
           });
@@ -268,6 +286,57 @@ function useProjectsSort() {
             setUnStarredProjets(unstarrtedData);
         });
        }
+    };
+
+   /**
+    * Updates the project's archive status in the localForage database.
+    * @param name - the name of the project
+    */
+    const archiveProject = async (project, name) => {
+      const userProfile = await localForage.getItem('userProfile');
+      const currentUser = userProfile?.username;
+
+      const projects = await localForage.getItem('projectmeta');
+
+      const projectArrayTemp = JSON.parse(JSON.stringify(projects));
+
+      projectArrayTemp.projects.forEach((_project) => {
+        if (_project.identification.name.en === name) {
+          let dirName;
+          switch (_project.type.flavorType.flavor.name) {
+            case 'textTranslation': {
+              dirName = 'textTranslation';
+              break;
+            }
+            case 'textStories': {
+              dirName = 'textStories';
+              break;
+            }
+            case 'audioTranslation': {
+              dirName = 'audioTranslation';
+              break;
+            }
+            default:
+              break;
+          }
+          const status = _project.project[dirName].isArchived;
+          const selectedProject = _project;
+          selectedProject.project[dirName].isArchived = !status;
+          selectedProject.project[dirName].lastSeen = moment().format();
+        }
+      });
+
+      await localForage.setItem('projectmeta', projectArrayTemp);
+
+      projectArrayTemp.projects.forEach((_project) => {
+        if (_project.identification.name.en === name) {
+          const id = Object.keys(_project.identification.primary.ag);
+          const projectName = `${name}_${id}`;
+          logger.debug('useProjectsSort.js', `Updating archive/restore in AG settings for ${name}`);
+          updateAgSettings(currentUser, projectName, _project);
+        }
+      });
+      await FetchProjects();
     };
 
     React.useEffect(() => {
@@ -291,6 +360,7 @@ function useProjectsSort() {
         handleClickStarred,
         handleDelete,
         handleRequestSortUnstarred,
+        archiveProject,
         setStarredRow,
         setUnStarredRow,
         settemparray,

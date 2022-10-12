@@ -195,7 +195,7 @@ const ResourcesPopUp = ({
     setTranslationAcademy('');
   };
 
-  const handleRowSelect = (e, row, name, owner, offline = false) => {
+  const handleRowSelect = (e, row, name, owner, flavorname, offline = false) => {
     const offlineResource = offline
     ? { offline: true, data: offline }
     : { offline: false };
@@ -206,6 +206,7 @@ const ResourcesPopUp = ({
       header: title,
       owner,
       offlineResource,
+      flavor: flavorname,
     });
     // setOwner(owner);
     removeSection();
@@ -461,7 +462,7 @@ const ResourcesPopUp = ({
               <td className="p-4 text-sm text-gray-600">
                 <div
                   className="focus:outline-none"
-                  onClick={(e) => handleRowSelect(e, resource?.value?.meta?.language, `${resource?.value?.meta?.subject} ${resource?.value?.meta?.language_title}`, resource?.value?.meta?.owner, resource)}
+                  onClick={(e) => handleRowSelect(e, resource?.value?.meta?.language, `${resource?.value?.meta?.subject} ${resource?.value?.meta?.language_title}`, resource?.value?.meta?.owner, resource?.value?.meta?.subject, resource)}
                   role="button"
                   tabIndex="0"
                 >
@@ -471,7 +472,7 @@ const ResourcesPopUp = ({
               <td className="p-4 text-sm text-gray-600">
                 <div
                   className="focus:outline-none"
-                  onClick={(e) => handleRowSelect(e, resource?.value?.meta?.language, `${resource?.value?.meta?.subject} ${resource?.value?.meta?.language_title}`, resource?.value?.meta?.owner, resource)}
+                  onClick={(e) => handleRowSelect(e, resource?.value?.meta?.language, `${resource?.value?.meta?.subject} ${resource?.value?.meta?.language_title}`, resource?.value?.meta?.owner, resource?.value?.meta?.subject, resource)}
                   role="button"
                   tabIndex="0"
                 >
@@ -481,7 +482,7 @@ const ResourcesPopUp = ({
               <td className="p-4 text-xs text-gray-600">
                 <div
                   className="focus:outline-none"
-                  onClick={(e) => handleRowSelect(e, resource?.value?.meta?.language, `${resource?.value?.meta?.subject} ${resource?.value?.meta?.language_title}`, resource?.value?.meta?.owner, resource)}
+                  onClick={(e) => handleRowSelect(e, resource?.value?.meta?.language, `${resource?.value?.meta?.subject} ${resource?.value?.meta?.language_title}`, resource?.value?.meta?.owner, resource?.value?.meta?.subject, resource)}
                   role="button"
                   tabIndex="0"
                 >
@@ -518,7 +519,7 @@ const ResourcesPopUp = ({
               <td className="p-4 text-sm text-gray-600">
                 <div
                   className="focus:outline-none"
-                  onClick={(e) => handleRowSelect(e, notes.language, `${filteredResorces?.onlineResource?.title} ${notes.name}`, notes.owner)}
+                  onClick={(e) => handleRowSelect(e, notes.language, `${filteredResorces?.onlineResource?.title} ${notes.name}`, notes.owner, '')}
                   role="button"
                   tabIndex="0"
                 >
@@ -528,7 +529,7 @@ const ResourcesPopUp = ({
               <td className="p-4 text-sm text-gray-600">
                 <div
                   className="focus:outline-none"
-                  onClick={(e) => handleRowSelect(e, notes.language, `${filteredResorces?.onlineResource?.title} ${notes.name}`, notes.owner)}
+                  onClick={(e) => handleRowSelect(e, notes.language, `${filteredResorces?.onlineResource?.title} ${notes.name}`, notes.owner, '')}
                   role="button"
                   tabIndex="0"
                 >
@@ -538,7 +539,7 @@ const ResourcesPopUp = ({
               <td className="p-4 text-sm text-gray-600">
                 <div
                   className="focus:outline-none"
-                  onClick={(e) => handleRowSelect(e, notes.language, `${filteredResorces?.onlineResource?.title} ${notes.name}`, notes.owner)}
+                  onClick={(e) => handleRowSelect(e, notes.language, `${filteredResorces?.onlineResource?.title} ${notes.name}`, notes.owner, '')}
                   role="button"
                   tabIndex="0"
                 >
@@ -765,6 +766,16 @@ const ResourcesPopUp = ({
                         setSubMenuItems={setSubMenuItems}
                         setShowInput={setShowInput}
                       />
+                      <ResourceOption
+                        imageUrl="/icons/basil/Outline/Media/Microphone.svg"
+                        id="audio"
+                        text="Audio"
+                        selectResource={selectResource}
+                        setSelectResource={setSelectResource}
+                        setTitle={setTitle}
+                        setSubMenuItems={setSubMenuItems}
+                        setShowInput={setShowInput}
+                      />
                       {/* <ResourceOption
                       imageUrl="/illustrations/location-icon.svg"
                       id="map"
@@ -841,7 +852,7 @@ const ResourcesPopUp = ({
                         {selectResource === 'bible' ? (
                           <tbody className="bg-white">
                             {filteredBibleObs?.length > 0 && (
-                          filteredBibleObs.map((ref) => (ref?.value?.type?.flavorType?.name === 'scripture'
+                          filteredBibleObs.map((ref) => (ref?.value?.type?.flavorType?.flavor?.name === 'textTranslation'
                           && (
                             <tr className="hover:bg-gray-200" key={ref.value.identification.name.en + ref.projectDir}>
                               <td className="px-5 py-3 hidden">
@@ -854,6 +865,8 @@ const ResourcesPopUp = ({
                                     e,
                                     ref.value.languages[0].name.en,
                                     ref.projectDir,
+                                    '',
+                                    ref.value.type.flavorType.name,
                                     )}
                                   role="button"
                                   tabIndex="0"
@@ -872,6 +885,8 @@ const ResourcesPopUp = ({
                                     e,
                                     ref.value.languages[0].name.en,
                                     ref.projectDir,
+                                    '',
+                                    ref.value.type.flavorType.name,
                                   )}
                                   role="button"
                                   tabIndex="0"
@@ -902,7 +917,7 @@ const ResourcesPopUp = ({
                         {selectResource === 'obs' && (
                           <tbody className="bg-white">
                             {filteredBibleObs?.length > 0 && (
-                          filteredBibleObs.map((ref) => (ref?.value?.type?.flavorType?.name === 'gloss'
+                          filteredBibleObs.map((ref) => (ref?.value?.type?.flavorType?.flavor?.name === 'textStories'
                           && (
                           <tr className="hover:bg-gray-200" key={ref.value.identification.name.en + ref.projectDir}>
                             <td className="px-5 py-3 hidden">
@@ -915,6 +930,8 @@ const ResourcesPopUp = ({
                                     e,
                                     ref.value.languages[0].name.en,
                                     ref.projectDir,
+                                    '',
+                                    ref.value.type.flavorType.name,
                                     )}
                                 role="button"
                                 tabIndex="0"
@@ -933,6 +950,8 @@ const ResourcesPopUp = ({
                                     e,
                                     ref.value.languages[0].name.en,
                                     ref.projectDir,
+                                    '',
+                                    ref.value.type.flavorType.name,
                                     )}
                                 role="button"
                                 tabIndex="0"
@@ -947,6 +966,8 @@ const ResourcesPopUp = ({
                                     e,
                                     ref.value.languages[0].name.en,
                                     ref.projectDir,
+                                    '',
+                                    ref.value.type.flavorType.name,
                                     )}
                                 role="button"
                                 tabIndex="0"
@@ -974,21 +995,75 @@ const ResourcesPopUp = ({
                         )}
                           </tbody>
                     ) }
+                        {selectResource === 'audio' && (
+                        <tbody className="bg-white">
+                          {(subMenuItems) && (
+                          subMenuItems.map((ref) => (ref.value.type.flavorType.flavor.name === 'audioTranslation'
+                          && (
+                          <tr className="hover:bg-gray-200" key={ref.value.identification.name.en + ref.projectDir}>
+                            <td className="px-5 py-3 hidden">
+                              <StarIcon className="h-5 w-5 text-gray-300" aria-hidden="true" />
+                            </td>
+                            <td className="p-4 text-sm text-gray-600">
+                              <div
+                                className="focus:outline-none"
+                                onClick={(e) => handleRowSelect(
+                                    e,
+                                    ref.value.languages[0].name.en,
+                                    ref.projectDir,
+                                    '',
+                                    ref.value.type.flavorType.name,
+                                    )}
+                                role="button"
+                                tabIndex="0"
+                              >
+                                {ref.value.identification.name.en}
+                                {' '}
+                                (
+                                {ref.projectDir}
+                                )
+                              </div>
+                            </td>
+                            <td className="p-4 text-sm text-gray-600">
+                              <div
+                                className="focus:outline-none"
+                                onClick={(e) => handleRowSelect(
+                                    e,
+                                    ref.value.languages[0].name.en,
+                                    ref.projectDir,
+                                    '',
+                                    ref.value.type.flavorType.flavor.name,
+                                    )}
+                                role="button"
+                                tabIndex="0"
+                              >
+                                {ref.value.languages[0].name.en}
+                              </div>
+                            </td>
+                          </tr>
+                          )
+                          ))
+                        )}
+                        </tbody>
+                    ) }
                       </table>
 
-                      {selectResource === 'bible' || selectResource === 'obs' ? (
+                      {selectResource === 'bible' || selectResource === 'obs' || selectResource === 'audio' ? (
                         <button type="button" className="flex gap-6 mx-5 absolute bottom-0 right-0 justify-end z-10 outline-none">
                           {resourceIconClick
                               && (
                               <div className="flex-col absolute bottom-14 right-7 justify-end text-white">
-                                <button
-                                  type="button"
-                                  className="bg-primary  mb-2 w-44 p-1 border-none rounded-md hover:bg-secondary"
-                                  tabIndex={-3}
-                                  onClick={() => { openResourceDialogBox(); setResourceIconClick(!resourceIconClick); }}
-                                >
-                                  Resource Collections
-                                </button>
+                                {selectResource !== 'audio'
+                                && (
+                                  <button
+                                    type="button"
+                                    className="bg-primary  mb-2 w-44 p-1 border-none rounded-md hover:bg-secondary"
+                                    tabIndex={-3}
+                                    onClick={() => { openResourceDialogBox(); setResourceIconClick(!resourceIconClick); }}
+                                  >
+                                    Resource Collections
+                                  </button>
+                                  )}
                                 <button
                                   type="button"
                                   className="bg-primary  mb-2 w-44 p-1 border-none rounded-md hover:bg-secondary"
@@ -1000,7 +1075,7 @@ const ResourcesPopUp = ({
                               </div>
                             )}
                           <PlusCircleIcon className="h-10 w-10 m-5 text-primary" onClick={() => setResourceIconClick(!resourceIconClick)} />
-                          { (selectResource === 'bible' || selectResource === 'obs')
+                          { (selectResource === 'bible' || selectResource === 'obs' || selectResource === 'audio')
                           && (
                           <ImportResource
                             open={openImportResourcePopUp}

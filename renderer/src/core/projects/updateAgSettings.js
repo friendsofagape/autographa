@@ -7,11 +7,9 @@ export const updateAgSettings = async (username, projectName, data) => {
   const newpath = localStorage.getItem('userPath');
   const fs = window.require('fs');
   const path = require('path');
-  const firstKey = Object.keys(data.ingredients)[0];
-  const folderName = firstKey.split(/[(\\)?(/)?]/gm).slice(0);
-  const dirName = folderName[0];
-  const folder = path.join(newpath, 'autographa', 'users', username, 'projects', projectName, dirName);
-  const settings = await fs.readFileSync(path.join(folder, 'ag-settings.json'), 'utf8');
+  const result = Object.keys(data.ingredients).filter((key) => key.includes('ag-settings.json'));
+  const folder = path.join(newpath, 'autographa', 'users', username, 'projects', projectName, result[0]);
+  const settings = await fs.readFileSync(folder, 'utf8');
   const setting = JSON.parse(settings);
   if (settings.version !== environment.AG_SETTING_VERSION) {
     setting.version = environment.AG_SETTING_VERSION;
@@ -23,7 +21,7 @@ export const updateAgSettings = async (username, projectName, data) => {
 }
   setting.project[data.type.flavorType.flavor.name] = data.project[data.type.flavorType.flavor.name];
   logger.debug('updateAgSettings.js', 'Updating the ag-settings.json');
-  await fs.writeFileSync(path.join(folder, 'ag-settings.json'), JSON.stringify(setting));
+  await fs.writeFileSync(folder, JSON.stringify(setting));
 };
 export const saveReferenceResource = () => {
   logger.debug('updateAgSettings.js', 'In saveReferenceResource for saving the reference data');

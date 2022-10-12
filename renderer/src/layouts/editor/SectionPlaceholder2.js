@@ -2,6 +2,7 @@
 import dynamic from 'next/dynamic';
 import { useContext, useEffect, useState } from 'react';
 import localforage from 'localforage';
+import PropTypes from 'prop-types';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import EditorSection from '@/layouts/editor/EditorSection';
 import ReferenceBible from '@/components/EditorPage/Reference/ReferenceBible/ReferenceBible';
@@ -12,13 +13,14 @@ import NavigationObs from '@/components/EditorPage/ObsEditor/NavigationObs';
 import ReferenceObs from '@/components/EditorPage/ObsEditor/ReferenceObs';
 import { isElectron } from '@/core/handleElectron';
 import core from '@/components/EditorPage/ObsEditor/core';
+import ReferenceAudio from '@/components/EditorPage/Reference/Audio/ReferenceAudio';
 
 const TranslationHelps = dynamic(
   () => import('@/components/EditorPage/Reference/TranslationHelps'),
   { ssr: false },
 );
 
-const SectionPlaceholder2 = () => {
+const SectionPlaceholder2 = ({ editor }) => {
   const supportedBooks = null;
   const [referenceColumnTwoData1, setReferenceColumnTwoData1] = useState({
     languageId: '',
@@ -313,7 +315,7 @@ const SectionPlaceholder2 = () => {
       ? (layout >= 1 && layout <= 2) : (layout > 1 && layout <= 2)) && (
       <>
         {(openResource3 === false || openResource4 === false) && (
-        <div className="bg-white rounded-md grid gap-2 h-editor overflow-x-auto">
+        <div className={`bg-white rounded-md grid gap-2 ${editor === 'audioTranslation' ? 'md:max-h-[64vh] lg:max-h-[70vh]' : 'h-editor'} overflow-x-auto`}>
           <EditorSection
             row="3"
             hideAddition={hideAddition}
@@ -346,6 +348,14 @@ const SectionPlaceholder2 = () => {
               )) || (referenceColumnTwoData1.selectedResource === 'obs' && (
                 <ReferenceObs
                   stories={stories1}
+                />
+                )) || (referenceColumnTwoData1.selectedResource === 'audio' && (
+                <ReferenceAudio
+                  languageId={referenceColumnTwoData1.languageId}
+                  refName={referenceColumnTwoData1.refName}
+                  bookId={_bookId1}
+                  chapter={_chapter1}
+                  verse={_verse1}
                 />
                 )) || (
                   <TranslationHelps
@@ -395,6 +405,14 @@ const SectionPlaceholder2 = () => {
                 <ReferenceObs
                   stories={stories2}
                 />
+                )) || (referenceColumnTwoData2.selectedResource === 'audio' && (
+                <ReferenceAudio
+                  languageId={referenceColumnTwoData2.languageId}
+                  refName={referenceColumnTwoData2.refName}
+                  bookId={_bookId1}
+                  chapter={_chapter1}
+                  verse={_verse1}
+                />
                 )) || (
                   <TranslationHelps
                     selectedResource={referenceColumnTwoData2.selectedResource}
@@ -418,3 +436,7 @@ const SectionPlaceholder2 = () => {
   );
 };
 export default SectionPlaceholder2;
+
+SectionPlaceholder2.propTypes = {
+  editor: PropTypes.string,
+};

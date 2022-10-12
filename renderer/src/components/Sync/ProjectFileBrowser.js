@@ -142,10 +142,13 @@ export default function ProjectFileBrowser() {
             <tbody className="bg-white divide-y divide-gray-200 h-full">
               {/* {agProjects.map((project, i) => ( */}
               {agProjects.map((project) => (
+                // not listing audio project in sync list
+                agProjectsMeta.filter((projectData) => projectData?.identification?.name?.en === project && projectData?.type?.flavorType?.flavor?.name !== 'audioTranslation').length > 0
+                && (
                 <tr
                   key={project}
                   draggable
-                  onDragStart={() => onDragEndFolder(agProjectsMeta.filter((projectData) => projectData.identification.name.en === project))}
+                  onDragStart={() => onDragEndFolder(agProjectsMeta.filter((projectData) => projectData?.identification?.name?.en === project))}
                     // onClick={() => handleProjects(project, i)}
                   data-testid="project-id"
                   className="cursor-pointer"
@@ -172,6 +175,7 @@ export default function ProjectFileBrowser() {
                   {/* <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{file.created}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{file.updated}</td> */}
                 </tr>
+)
                 ))}
               <Dropzone dropped={() => handleDropFolderAg()} />
               {/* <Dropzone dropped={() => handleDrop({ index, username })} /> */}
