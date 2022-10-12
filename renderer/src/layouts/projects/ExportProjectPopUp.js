@@ -165,10 +165,12 @@ export default function ExportProjectPopUp(props) {
         burrito.ingredients[path.join('ingredients', book, chapter, mp3)].scope[book] = [verse.replace('_', ':')];
       }).catch((err) => logger.error('ExportProjectPopUp.js', `${err}`));
     }
-    await otherFiles.forEach(async (file) => {
+    // We need to execute these loop before going to next line so 'for' is used instead of 'forEach'
+    // eslint-disable-next-line no-restricted-syntax
+    for (const file of otherFiles) {
       const filePath = file.split(/[\/\\]ingredients[\/\\]/)[1];
-      await fse.copy(file, path.join(folderPath, project.name, 'ingredients', filePath));
-    });
+      fse.copySync(file, path.join(folderPath, project.name, 'ingredients', filePath));
+    }
     // Wants to export the TEXT along with the project so not updating the file path
     if (!checkText) {
       const renames = Object.keys(burrito.ingredients).filter((key) => key.includes('audio'));
@@ -179,8 +181,8 @@ export default function ExportProjectPopUp(props) {
     }
     await fs.writeFileSync(path.join(folderPath, project.name, 'metadata.json'), JSON.stringify(burrito));
     if (checkText && fs.existsSync(path.join(folder, 'text-1'))) {
-      await fse.copy(path.join(folderPath, project.name, 'ingredients'), path.join(folderPath, project.name, 'audio', 'ingredients'));
-      await fse.copy(path.join(folder, 'text-1'), path.join(folderPath, project.name, 'text1'));
+      await fse.copySync(path.join(folderPath, project.name, 'ingredients'), path.join(folderPath, project.name, 'audio', 'ingredients'));
+      await fse.copySync(path.join(folder, 'text-1'), path.join(folderPath, project.name, 'text-1'));
       await fs.rmSync(path.join(folderPath, project.name, 'ingredients'), { recursive: true, force: true });
     }
 
