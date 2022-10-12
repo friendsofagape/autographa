@@ -75,7 +75,7 @@ const DownloadCreateSBforHelps = async (projectResource, setLoading, update = fa
                                 data.agOffline = true;
                                 data.meta = projectResource;
                                 data.lastUpdatedAg = moment().format();
-                                console.log('json data after : ', data);
+                                // console.log('json data after : ', data);
                                 await fs.writeFileSync(path.join(folder, projectResource?.name, 'metadata.json'), JSON.stringify(data));
                             }).catch((err) => {
                                 // console.log('failed to save yml metadata.json : ', err);

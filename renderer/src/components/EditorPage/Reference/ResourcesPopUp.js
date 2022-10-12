@@ -489,7 +489,6 @@ const ResourcesPopUp = ({
                 </div>
               </td>
               <td className="p-4 text-sm text-gray-600 ">
-                {console.log({ resource })}
                 <div className="flex flex-col gap-1">
                   <div className="flex flex-row">
                     <CheckHelpsUpdatePopUp resource={resource} selectResource={selectResource} />

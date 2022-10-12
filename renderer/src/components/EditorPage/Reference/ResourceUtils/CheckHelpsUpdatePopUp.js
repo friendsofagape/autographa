@@ -43,11 +43,11 @@ const checkHelpsVersionUpdate = async (reference, selectResource) => {
         .then((resultMeta) => {
             // console.log({ resultMeta });
             latestResourceReleased = resultMeta?.data[0]?.released;
-            logger.debug('checkHelpsVersionUpdate.js', { currentResourceReleased, latestResourceReleased });
 
             // check for update
-            currentResourceReleased = '2019-03-02T23:38:13Z';
+            // currentResourceReleased = '2019-03-02T23:38:13Z';
             console.log({ currentResourceReleased, latestResourceReleased });
+            logger.debug('checkHelpsVersionUpdate.js', { currentResourceReleased, latestResourceReleased });
             if (new Date(latestResourceReleased) > new Date(currentResourceReleased)) {
                 resolve({
                   status: true,
