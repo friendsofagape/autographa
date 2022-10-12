@@ -111,8 +111,10 @@ const updateAudioDir = async (dir, path, fs) => {
   } else {
     const renames = Object.keys(buritto.ingredients);
     await renames?.forEach((rename) => {
-      buritto.ingredients[rename.replace(rename, path.join('audio', rename))] = buritto.ingredients[rename];
-      delete buritto.ingredients[rename];
+      if (!rename.match(/audio[/\\]/g)) {
+        buritto.ingredients[rename.replace(rename, path.join('audio', rename))] = buritto.ingredients[rename];
+        delete buritto.ingredients[rename];
+      }
     });
     await fs.writeFileSync(path.join(dir, 'metadata.json'), JSON.stringify(buritto));
   }
@@ -210,12 +212,15 @@ const importBurrito = async (filePath, currentUser, updateBurritoVersion) => {
       }
       const firstKey = Object.keys(metadata.ingredients)[0];
       const folderName = firstKey.split(/[(\\)?(/)?]/gm).slice(0);
-      const dirName = folderName[0];
+      let dirName = folderName[0];
       let audioDir;
-      if (metadata.type?.flavorType?.flavor?.name === 'audioTranslation') {
+      // Checking the Flavor, because the Audio project should have 'audio' folder
+      // Check whether the selected project has 'audio' folder or not
+      if (metadata.type?.flavorType?.flavor?.name === 'audioTranslation' && !fs.existsSync(path.join(filePath, 'audio'))) {
         audioDir = path.join(projectDir, `${projectName}_${id}`, 'audio');
       } else {
         audioDir = path.join(projectDir, `${projectName}_${id}`);
+        if (fs.existsSync(path.join(filePath, 'audio'))) { dirName = path.join(dirName, 'ingredients'); }
       }
       fs.mkdirSync(path.join(audioDir, dirName), { recursive: true });
       logger.debug('importBurrito.js', 'Creating a directory if not exists.');
@@ -316,7 +321,9 @@ const importBurrito = async (filePath, currentUser, updateBurritoVersion) => {
       logger.debug('importBurrito.js', 'Creating the metadata.json Burrito file.');
       if (metadata.type?.flavorType?.flavor?.name === 'audioTranslation') {
         const proDir = path.join(projectDir, `${projectName}_${id}`);
-        fs.unlinkSync(path.join(proDir, 'audio', 'metadata.json'));
+        if (fs.existsSync(path.join(proDir, 'audio', 'metadata.json'))) {
+          fs.unlinkSync(path.join(proDir, 'audio', 'metadata.json'));
+        }
         updateAudioDir(proDir, path, fs);
       }
       status.push({ type: 'success', value: 'Project Imported Successfully' });
