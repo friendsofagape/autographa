@@ -33,11 +33,13 @@ export default function ExportProjectPopUp(props) {
   const [openModal, setOpenModal] = React.useState(false);
   const [metadata, setMetadata] = React.useState({});
   const [audioExport, setAudioExport] = React.useState('default');
+  const [checkText, setCheckText] = React.useState(false);
   function close() {
     logger.debug('ExportProjectPopUp.js', 'Closing the Dialog Box');
     closePopUp(false);
     setValid(false);
     setMetadata({});
+    setCheckText(false);
   }
   const openFileDialogSettingData = async () => {
     logger.debug('ExportProjectPopUp.js', 'Inside openFileDialogSettingData');
@@ -163,21 +165,33 @@ export default function ExportProjectPopUp(props) {
         burrito.ingredients[path.join('ingredients', book, chapter, mp3)].scope[book] = [verse.replace('_', ':')];
       }).catch((err) => logger.error('ExportProjectPopUp.js', `${err}`));
     }
-    await otherFiles.forEach(async (file) => {
+    // We need to execute these loop before going to next line so 'for' is used instead of 'forEach'
+    // eslint-disable-next-line no-restricted-syntax
+    for (const file of otherFiles) {
       const filePath = file.split(/[\/\\]ingredients[\/\\]/)[1];
-      await fse.copy(file, path.join(folderPath, project.name, 'ingredients', filePath));
-    });
-    const renames = Object.keys(burrito.ingredients).filter((key) => key.includes('audio'));
-    await renames?.forEach((rename) => {
-      burrito.ingredients[rename.replace(/audio[\/\\]/, '')] = burrito.ingredients[rename];
-      delete burrito.ingredients[rename];
-    });
+      fse.copySync(file, path.join(folderPath, project.name, 'ingredients', filePath));
+    }
+    // Wants to export the TEXT along with the project so not updating the file path
+    if (!checkText) {
+      const renames = Object.keys(burrito.ingredients).filter((key) => key.includes('audio'));
+      await renames?.forEach((rename) => {
+        burrito.ingredients[rename.replace(/audio[\/\\]/, '')] = burrito.ingredients[rename];
+        delete burrito.ingredients[rename];
+      });
+    }
     await fs.writeFileSync(path.join(folderPath, project.name, 'metadata.json'), JSON.stringify(burrito));
+    if (checkText && fs.existsSync(path.join(folder, 'text-1'))) {
+      await fse.copySync(path.join(folderPath, project.name, 'ingredients'), path.join(folderPath, project.name, 'audio', 'ingredients'));
+      await fse.copySync(path.join(folder, 'text-1'), path.join(folderPath, project.name, 'text-1'));
+      await fs.rmSync(path.join(folderPath, project.name, 'ingredients'), { recursive: true, force: true });
+    }
+
     logger.debug('ExportProjectPopUp.js', 'Exported Successfully');
     setNotify('success');
     setSnackText(t('dynamic-msg-export-success'));
     setOpenSnackBar(true);
     closePopUp(false);
+    setCheckText(false);
   };
 
   const exportBible = async () => {
@@ -295,7 +309,9 @@ export default function ExportProjectPopUp(props) {
                           checked={audioExport === 'default'}
                           onChange={() => setAudioExport('default')}
                         />
-                        <span className=" ml-4 text-xs font-bold">Verse-wise Default (Verse-wise export with only the default take of each verse kept as a Scripture Burrito)</span>
+                        <span className=" ml-4 text-xs font-bold" title="Verse-wise export with only the default take of each verse kept as a Scripture Burrito">Verse-wise Default</span>
+                        <input id="visible_1" className="visible ml-4" type="checkbox" checked={checkText} onClick={() => setCheckText(!checkText)} />
+                        <span className=" ml-2 text-xs font-bold" title="You can have the text content along with the Audio">With Text (if available)</span>
                       </div>
                       <div>
                         <input
@@ -305,7 +321,7 @@ export default function ExportProjectPopUp(props) {
                           checked={audioExport === 'full'}
                           onChange={() => setAudioExport('full')}
                         />
-                        <span className=" ml-3 text-xs font-bold">Full project (All takes of every verse saved as a ZIP archive within Scripture Burrito)</span>
+                        <span className=" ml-4 text-xs font-bold" title="All takes of every verse saved as a ZIP archive within Scripture Burrito">Full project</span>
                       </div>
                     </div>
 )}
