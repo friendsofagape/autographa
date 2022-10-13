@@ -95,7 +95,7 @@ const ResourcesPopUp = ({
   const [resourceIconClick, setResourceIconClick] = useState(false);
 
   const [filteredResorces, setFilteredResources] = useState({});
-  const [filteredBibleObs, setFilteredBibleObs] = useState([]);
+  const [filteredBibleObsAudio, setfilteredBibleObsAudioAudio] = useState([]);
   const [currentFullResorces, setCurrentFUllResorces] = useState([]);
   const [selectedPreProd, setSelectedPreProd] = React.useState(false);
 
@@ -357,7 +357,7 @@ const ResourcesPopUp = ({
         setFilteredResources(filtered);
       }
     } else if (selectResource === 'bible') {
-      const bibleArr = subMenuItems?.filter((ref) => ref?.value?.type?.flavorType?.name === 'scripture');
+      const bibleArr = subMenuItems?.filter((ref) => ref?.value?.type?.flavorType?.flavour?.name === 'textTranslation');
       if (query?.length > 0) {
         // eslint-disable-next-line array-callback-return
         const bibleFilter = bibleArr.filter((item) => {
@@ -368,12 +368,12 @@ const ResourcesPopUp = ({
             return item;
           }
         });
-        setFilteredBibleObs(bibleFilter);
+        setfilteredBibleObsAudioAudio(bibleFilter);
       } else {
-        setFilteredBibleObs(bibleArr);
+        setfilteredBibleObsAudioAudio(bibleArr);
       }
     } else if (selectResource === 'obs') {
-      const obsArr = subMenuItems?.filter((ref) => ref?.value?.type?.flavorType?.name === 'gloss');
+      const obsArr = subMenuItems?.filter((ref) => ref?.value?.type?.flavorType?.flavour?.name === 'textStories');
       if (query?.length > 0) {
         // eslint-disable-next-line array-callback-return
         const obsFilter = obsArr.filter((item) => {
@@ -384,9 +384,25 @@ const ResourcesPopUp = ({
             return item;
           }
         });
-        setFilteredBibleObs(obsFilter);
+        setfilteredBibleObsAudioAudio(obsFilter);
       } else {
-        setFilteredBibleObs(obsArr);
+        setfilteredBibleObsAudioAudio(obsArr);
+      }
+    } else if (selectResource === 'audio') {
+      const audioArr = subMenuItems?.filter((ref) => ref?.value?.type?.flavorType?.flavor?.name === 'audioTranslation');
+      if (query?.length > 0) {
+        // eslint-disable-next-line array-callback-return
+        const audioFilter = audioArr.filter((item) => {
+          if (item?.projectDir.toLowerCase().includes(query.toLowerCase())
+          || item?.value?.identification?.name?.en?.toLowerCase().includes(query.toLowerCase())
+          || item?.value?.languages[0]?.name?.en?.toLowerCase().includes(query.toLowerCase())
+          || item?.value?.languages[0]?.tag?.toLowerCase().includes(query.toLowerCase())) {
+            return item;
+          }
+        });
+        setfilteredBibleObsAudioAudio(audioFilter);
+      } else {
+        setfilteredBibleObsAudioAudio(audioArr);
       }
     }
   };
@@ -462,7 +478,14 @@ const ResourcesPopUp = ({
               <td className="p-4 text-sm text-gray-600">
                 <div
                   className="focus:outline-none"
-                  onClick={(e) => handleRowSelect(e, resource?.value?.meta?.language, `${resource?.value?.meta?.subject} ${resource?.value?.meta?.language_title}`, resource?.value?.meta?.owner, resource?.value?.meta?.subject, resource)}
+                  onClick={(e) => handleRowSelect(
+                  e,
+                  resource?.value?.meta?.language,
+                  `${resource?.value?.meta?.subject} ${resource?.value?.meta?.language_title}`,
+                  resource?.value?.meta?.owner,
+                  resource?.value?.meta?.subject,
+                  resource,
+                  )}
                   role="button"
                   tabIndex="0"
                 >
@@ -797,8 +820,8 @@ const ResourcesPopUp = ({
                 </div>
 
                 <div className="flex flex-col w-full ">
-                  <div aria-label="resources-search" className="pt-1.5 pb-[6.5px] uppercase bg-secondary text-white text-xs tracking-widest leading-snug text-center">
-                    <div className="flex">
+                  <div aria-label="resources-search" className="pt-1.5 pb-[6.5px]  bg-secondary text-white text-xs tracking-widest leading-snug text-center">
+                    <div className="flex justify-between">
                       <SearchIcon className="h-4 w-4 absolute ml-3 my-[6px] text-primary" />
                       <input
                         data-testid="search"
@@ -810,17 +833,17 @@ const ResourcesPopUp = ({
                         onChange={(e) => handleChangeQuery(e.target.value, currentFullResorces)}
                         className="pl-8  bg-gray-100 text-black w-1/2 block rounded-full shadow-sm sm:text-xs focus:border-primary border-gray-300 h-7"
                       />
-                      {(selectResource !== 'obs' && selectResource !== 'bible' && selectResource !== 'twlm')
+                      {(selectResource !== 'obs' && selectResource !== 'bible' && selectResource !== 'twlm' && selectResource !== 'audio')
                       && (
-                      <div className="flex items-center ml-2">
-                        <label htmlFor="pre-prod">Pre Release</label>
+                      <div className="flex items-center mr-16">
                         <input
-                          className="ml-2"
+                          className="mr-2"
                           type="checkbox"
                           id="pre-prod"
                           checked={selectedPreProd}
                           onChange={(e) => setSelectedPreProd(e.target.checked)}
                         />
+                        <label htmlFor="pre-prod">Prerelease</label>
                       </div>
                       )}
                     </div>
@@ -851,8 +874,8 @@ const ResourcesPopUp = ({
 
                         {selectResource === 'bible' ? (
                           <tbody className="bg-white">
-                            {filteredBibleObs?.length > 0 && (
-                          filteredBibleObs.map((ref) => (ref?.value?.type?.flavorType?.flavor?.name === 'textTranslation'
+                            {filteredBibleObsAudio?.length > 0 && (
+                          filteredBibleObsAudio.map((ref) => (ref?.value?.type?.flavorType?.flavor?.name === 'textTranslation'
                           && (
                             <tr className="hover:bg-gray-200" key={ref.value.identification.name.en + ref.projectDir}>
                               <td className="px-5 py-3 hidden">
@@ -913,11 +936,11 @@ const ResourcesPopUp = ({
                           ))
                         )}
                           </tbody>
-                    ) : selectResource !== 'obs' && callResource(selectResource)}
+                    ) : selectResource !== 'obs' && selectResource !== 'audio' && callResource(selectResource)}
                         {selectResource === 'obs' && (
                           <tbody className="bg-white">
-                            {filteredBibleObs?.length > 0 && (
-                          filteredBibleObs.map((ref) => (ref?.value?.type?.flavorType?.flavor?.name === 'textStories'
+                            {filteredBibleObsAudio?.length > 0 && (
+                          filteredBibleObsAudio.map((ref) => (ref?.value?.type?.flavorType?.flavor?.name === 'textStories'
                           && (
                           <tr className="hover:bg-gray-200" key={ref.value.identification.name.en + ref.projectDir}>
                             <td className="px-5 py-3 hidden">
@@ -997,8 +1020,8 @@ const ResourcesPopUp = ({
                     ) }
                         {selectResource === 'audio' && (
                         <tbody className="bg-white">
-                          {(subMenuItems) && (
-                          subMenuItems.map((ref) => (ref.value.type.flavorType.flavor.name === 'audioTranslation'
+                          {filteredBibleObsAudio?.length > 0 && (
+                          filteredBibleObsAudio.map((ref) => (ref?.value?.type?.flavorType?.flavor?.name === 'audioTranslation'
                           && (
                           <tr className="hover:bg-gray-200" key={ref.value.identification.name.en + ref.projectDir}>
                             <td className="px-5 py-3 hidden">
@@ -1038,6 +1061,20 @@ const ResourcesPopUp = ({
                                 tabIndex="0"
                               >
                                 {ref.value.languages[0].name.en}
+                              </div>
+                            </td>
+                            <td className="p-4 text-sm text-gray-600 ">
+                              <div className="flex flex-col gap-1">
+                                <div className="flex">
+                                  {ref?.value?.resourceMeta?.released
+                                  && (
+                                    <CheckHelpsUpdatePopUp resource={ref} selectResource={selectResource} />
+                                    )}
+                                  <RemoveResource resource={ref} selectResource={selectResource} closeResourceWindow={removeSection} />
+                                </div>
+                                <div className="text-[9px] mt-2 text-black">
+                                  <span>{ref?.value?.resourceMeta && ref?.value?.resourceMeta?.lastUpdatedAg.split('T')[0]}</span>
+                                </div>
                               </div>
                             </td>
                           </tr>

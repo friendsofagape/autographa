@@ -41,35 +41,36 @@ function ObsTnCard({
     }
     async function fetchOfflineData() {
       try {
-            localForage.getItem('userProfile').then(async (user) => {
-                console.log('inside offline fetch function :  ', offlineResource);
-                logger.debug('OfflineResourceFetch.js', 'reading offline obs-tn ', offlineResource.data?.projectDir);
-                const path = require('path');
-                const newpath = localStorage.getItem('userPath');
-                const currentUser = user?.username;
-                const folder = path.join(newpath, 'autographa', 'users', `${currentUser}`, 'resources');
-                const projectName = `${offlineResource.data?.value?.meta?.name}_${offlineResource.data?.value?.meta?.owner}_${offlineResource.data?.value?.meta?.name}_${offlineResource.data?.value?.meta?.release?.tag_name}`;
-                    if (fs.existsSync(path.join(folder, projectName))) {
-                        const contentDir = offlineResource.data?.value?.projects[0]?.path;
-                        const notesDir = path.join(folder, projectName, contentDir, chapter.toString().padStart(2, 0));
-                        const items = [];
-                        fs.readdir(notesDir, async (err, files) => {
-                            if (err) {
-                                console.log(`Unable to scan directory: ${ err}`);
-                                throw err;
-                            }
-                            // listing all files using forEach
-                            await files.forEach(async (file) => {
-                                const filecontent = await fs.readFileSync(path.join(notesDir, file), 'utf8');
-                                items.push({ OccurrenceNote: filecontent });
-                            });
-                            if (items.length === files.length) {
-                              logger.debug('OfflineResourceFetch.js', 'reading offline obs-tn finished ');
-                              setItems(items);
-                            }
-                            });
-                    }
-                });
+      localForage.getItem('userProfile').then(async (user) => {
+          console.log('inside offline fetch function :  ', offlineResource);
+          logger.debug('OfflineResourceFetch.js', 'reading offline obs-tn ', offlineResource.data?.projectDir);
+          const path = require('path');
+          const newpath = localStorage.getItem('userPath');
+          const currentUser = user?.username;
+          const folder = path.join(newpath, 'autographa', 'users', `${currentUser}`, 'resources');
+          const projectName = `${offlineResource.data?.value?.meta?.name}_${offlineResource.data?.value?.meta?.owner}_${offlineResource.data?.value?.meta?.release?.tag_name}`;
+          console.log({ projectName });
+            if (fs.existsSync(path.join(folder, projectName))) {
+              const contentDir = offlineResource.data?.value?.projects[0]?.path;
+              const notesDir = path.join(folder, projectName, contentDir, chapter.toString().padStart(2, 0));
+              const items = [];
+              fs.readdir(notesDir, async (err, files) => {
+                  if (err) {
+                      console.log(`Unable to scan directory: ${ err}`);
+                      throw err;
+                  }
+                  // listing all files using forEach
+                  await files.forEach(async (file) => {
+                      const filecontent = await fs.readFileSync(path.join(notesDir, file), 'utf8');
+                      items.push({ OccurrenceNote: filecontent });
+                  });
+                  if (items.length === files.length) {
+                    logger.debug('OfflineResourceFetch.js', 'reading offline obs-tn finished ');
+                    setItems(items);
+                  }
+                  });
+            }
+          });
         } catch (err) {
             console.log('err on fetch local : ', err);
             throw err;
