@@ -1,5 +1,6 @@
 // const nodeExternals = require('webpack-node-externals');
 const path = require('path');
+const colors = require('tailwindcss/colors');
 
 const nextConfig = {
   webpack: (config, { isServer }) => {
@@ -33,7 +34,10 @@ const nextConfig = {
               removeAttrs: {
                 attrs: ['fill'],
               },
-            }],
+            },
+            require('@tailwindcss/forms'),
+            require('@tailwindcss/typography'),
+          ],
           },
         },
       },
