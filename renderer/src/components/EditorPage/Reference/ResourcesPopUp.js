@@ -365,7 +365,8 @@ const ResourcesPopUp = ({
         setFilteredResources(filtered);
       }
     } else if (selectResource === 'bible') {
-      const bibleArr = subMenuItems?.filter((ref) => ref?.value?.type?.flavorType?.flavour?.name === 'textTranslation');
+      console.log({ subMenuItems });
+      const bibleArr = subMenuItems?.filter((ref) => ref?.value?.type?.flavorType?.flavor?.name === 'textTranslation');
       if (query?.length > 0) {
         // eslint-disable-next-line array-callback-return
         const bibleFilter = bibleArr.filter((item) => {
@@ -381,7 +382,7 @@ const ResourcesPopUp = ({
         setfilteredBibleObsAudioAudio(bibleArr);
       }
     } else if (selectResource === 'obs') {
-      const obsArr = subMenuItems?.filter((ref) => ref?.value?.type?.flavorType?.flavour?.name === 'textStories');
+      const obsArr = subMenuItems?.filter((ref) => ref?.value?.type?.flavorType?.flavor?.name === 'textStories');
       if (query?.length > 0) {
         // eslint-disable-next-line array-callback-return
         const obsFilter = obsArr.filter((item) => {
@@ -843,7 +844,7 @@ const ResourcesPopUp = ({
                       />
                       {(selectResource !== 'obs' && selectResource !== 'bible' && selectResource !== 'twlm' && selectResource !== 'audio')
                       && (
-                      <div className="flex items-center ml-10">
+                      <div className="flex items-center ml-[7vw]">
                         <input
                           className="mr-2"
                           type="checkbox"
@@ -923,6 +924,22 @@ const ResourcesPopUp = ({
                                   tabIndex="0"
                                 >
                                   {ref.value.languages[0].name.en}
+                                </div>
+                              </td>
+                              <td className="p-4 text-xs text-gray-600">
+                                <div
+                                  className="focus:outline-none"
+                                  onClick={(e) => handleRowSelect(
+                                    e,
+                                    ref.value.languages[0].name.en,
+                                    ref.projectDir,
+                                    '',
+                                    ref.value.type.flavorType.name,
+                                    )}
+                                  role="button"
+                                  tabIndex="0"
+                                >
+                                  {ref?.value?.resourceMeta && `${(ref.value.resourceMeta.released).split('T')[0]} (${ref?.value?.resourceMeta?.release.tag_name})`}
                                 </div>
                               </td>
                               <td className="p-4 text-sm text-gray-600 ">

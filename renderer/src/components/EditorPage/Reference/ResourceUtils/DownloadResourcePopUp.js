@@ -416,7 +416,7 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
                       </div>
                       <div className="flex justify-between items-center mt-2">
                         <div className="fle w-1/2">
-                          <label htmlFor="pre-prod" className="font-bold text-base">Preelease</label>
+                          <label htmlFor="pre-prod" className="font-bold text-base">Prerelease</label>
                         </div>
                         <div className="flex w-1/2 justify-center">
                           <input
