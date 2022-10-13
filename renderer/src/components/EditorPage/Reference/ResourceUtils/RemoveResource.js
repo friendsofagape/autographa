@@ -33,6 +33,7 @@ function RemoveResource({ resource, selectResource, closeResourceWindow }) {
             switch (selectResource) {
               case 'obs':
               case 'bible':
+              case 'audio':
                   resourceName = resource?.projectDir;
                   break;
               case 'tn':

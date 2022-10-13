@@ -49,7 +49,6 @@ function ObsTnCard({
           const currentUser = user?.username;
           const folder = path.join(newpath, 'autographa', 'users', `${currentUser}`, 'resources');
           const projectName = `${offlineResource.data?.value?.meta?.name}_${offlineResource.data?.value?.meta?.owner}_${offlineResource.data?.value?.meta?.release?.tag_name}`;
-          console.log({ projectName });
             if (fs.existsSync(path.join(folder, projectName))) {
               const contentDir = offlineResource.data?.value?.projects[0]?.path;
               const notesDir = path.join(folder, projectName, contentDir, chapter.toString().padStart(2, 0));
@@ -57,6 +56,7 @@ function ObsTnCard({
               fs.readdir(notesDir, async (err, files) => {
                   if (err) {
                       console.log(`Unable to scan directory: ${ err}`);
+                      logger.debug('OfflineResourceFetch.js', 'reading offline dir not found err :  ', err);
                       throw err;
                   }
                   // listing all files using forEach
