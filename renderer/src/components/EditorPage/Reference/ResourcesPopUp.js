@@ -290,30 +290,38 @@ const ResourcesPopUp = ({
           setResource(resourceData);
         }
       }).catch((err) => {
-        // console.log('error in fetch resource : ', err);
+        setOpenSnackBar(true);
+        setError('failure');
+        setSnackText('Load Online resource Failed. Might be due to internet');
         logger.debug('ResourcesPopUp.js', `fetchTranslationResource Error ${selectResource} :  ${err}`);
       });
     }
   };
 
   const handleDownloadHelpsResources = async (event, reference, offlineResource) => {
-    try {
-      logger.debug('ResourcesPopUp.js', 'Helps Download started');
-      // console.log('clicked download : ', reference);
-      // set Current downloading
-      setCurrentDownloading(reference);
-      await DownloadCreateSBforHelps(reference?.responseData, setDownloading, false, offlineResource)
-      .then(() => {
-        setCurrentDownloading(null);
-        setOpenSnackBar(true);
-        setError('success');
-        setSnackText('Resource Download Finished');
-      });
-    } catch (err) {
-      logger.debug('ResourcesPopUp.js', 'Error Downlaod ', err);
+    if (!dowloading) {
+      try {
+        logger.debug('ResourcesPopUp.js', 'Helps Download started');
+        // console.log('clicked download : ', reference);
+        // set Current downloading
+        setCurrentDownloading(reference);
+        await DownloadCreateSBforHelps(reference?.responseData, setDownloading, false, offlineResource)
+        .then(() => {
+          setCurrentDownloading(null);
+          setOpenSnackBar(true);
+          setError('success');
+          setSnackText('Resource Download Finished');
+          });
+        } catch (err) {
+          logger.debug('ResourcesPopUp.js', 'Error Downlaod ', err);
+          setOpenSnackBar(true);
+          setError('failure');
+          setSnackText(err?.message);
+        }
+    } else {
       setOpenSnackBar(true);
-      setError('failure');
-      setSnackText(err?.message);
+      setError('warning');
+      setSnackText('Download in progress');
     }
   };
 
@@ -474,7 +482,7 @@ const ResourcesPopUp = ({
           )}
           {/* offline resources body */}
           {filteredResorces?.offlineResource?.length > 0 && filteredResorces?.offlineResource?.map((resource) => (
-            <tr className={`${resource?.value?.meta?.stage === 'preprod' && 'bg-[#FFFF00]'} hover:bg-gray-200 `} id={resource?.projectDir} key={resource.value.meta.id + resource.value.meta.language}>
+            <tr className={`${resource?.value?.meta?.stage === 'preprod' && 'bg-yellow-200'} hover:bg-gray-200 `} id={resource?.projectDir} key={resource.value.meta.id + resource.value.meta.language}>
               <td className="p-4 text-sm text-gray-600">
                 <div
                   className="focus:outline-none"
@@ -535,7 +543,7 @@ const ResourcesPopUp = ({
 
           {/* online resources section  */}
           {filteredResorces?.onlineResource?.resource?.length > 0 && filteredResorces?.onlineResource?.resource?.map((notes) => (
-            <tr className={`${notes?.responseData?.stage === 'preprod' && 'bg-[#FFFF00]'} hover:bg-gray-200 `} id={notes.name} key={notes.name + notes.owner}>
+            <tr className={`${notes?.responseData?.stage === 'preprod' && 'bg-yellow-200'} hover:bg-gray-200 `} id={notes.name} key={notes.name + notes.owner}>
               <td className="px-5 py-3 hidden">
                 <StarIcon className="h-5 w-5 text-gray-300" aria-hidden="true" />
               </td>
@@ -821,7 +829,7 @@ const ResourcesPopUp = ({
 
                 <div className="flex flex-col w-full ">
                   <div aria-label="resources-search" className="pt-1.5 pb-[6.5px]  bg-secondary text-white text-xs tracking-widest leading-snug text-center">
-                    <div className="flex justify-between">
+                    <div className="flex">
                       <SearchIcon className="h-4 w-4 absolute ml-3 my-[6px] text-primary" />
                       <input
                         data-testid="search"
@@ -835,7 +843,7 @@ const ResourcesPopUp = ({
                       />
                       {(selectResource !== 'obs' && selectResource !== 'bible' && selectResource !== 'twlm' && selectResource !== 'audio')
                       && (
-                      <div className="flex items-center mr-16">
+                      <div className="flex items-center ml-10">
                         <input
                           className="mr-2"
                           type="checkbox"

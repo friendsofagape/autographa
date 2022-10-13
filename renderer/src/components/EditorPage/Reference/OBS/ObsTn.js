@@ -42,7 +42,7 @@ function ObsTnCard({
     async function fetchOfflineData() {
       try {
       localForage.getItem('userProfile').then(async (user) => {
-          console.log('inside offline fetch function :  ', offlineResource);
+          // console.log('inside offline fetch function :  ', offlineResource);
           logger.debug('OfflineResourceFetch.js', 'reading offline obs-tn ', offlineResource.data?.projectDir);
           const path = require('path');
           const newpath = localStorage.getItem('userPath');
@@ -55,7 +55,7 @@ function ObsTnCard({
               const items = [];
               fs.readdir(notesDir, async (err, files) => {
                   if (err) {
-                      console.log(`Unable to scan directory: ${ err}`);
+                      // console.log(`Unable to scan directory: ${ err}`);
                       logger.debug('OfflineResourceFetch.js', 'reading offline dir not found err :  ', err);
                       throw err;
                   }

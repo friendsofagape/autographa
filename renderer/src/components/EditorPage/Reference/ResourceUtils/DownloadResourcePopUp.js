@@ -192,9 +192,10 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
         setLoading(false);
       }).catch((err) => {
         logger.debug('DownloadResourcePopUp.js', 'Error on fetch content : ', err);
+        setLoading(false);
         setOpenSnackBar(true);
         setNotify('failure');
-        setSnackText(`Error fetch content \n : ${err}`);
+        setSnackText(`${err.message || err} , Error might be due to Internet`);
       });
   };
 
@@ -277,7 +278,7 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
       }
       setTotalDownload(selectedResourceCount);
       logger.debug('DownloadResourcePopUp.js', 'In resource download all resource loop');
-      console.log('resource download started ---', selectedResourceCount);
+      // console.log('resource download started ---', selectedResourceCount);
       setDownloadStarted(true);
       const action = { setDownloadCount };
       await handleDownloadResources(resourceData, selectResource, action)
@@ -415,7 +416,7 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
                       </div>
                       <div className="flex justify-between items-center mt-2">
                         <div className="fle w-1/2">
-                          <label htmlFor="pre-prod" className="font-bold text-base">Pre Release</label>
+                          <label htmlFor="pre-prod" className="font-bold text-base">Preelease</label>
                         </div>
                         <div className="flex w-1/2 justify-center">
                           <input
@@ -440,7 +441,7 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
                           className="w-20 h-8  bg-success leading-loose rounded shadow text-xs font-base  text-white tracking-wide  font-light uppercase"
                           onClick={handleSaveFilter}
                         >
-                          {t('btn-save')}
+                          Save Filter
                         </button>
                       </div>
                     </div>
@@ -525,7 +526,7 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
                                         <hr />
 
                                         {resourceData[element]?.map((row) => (
-                                          <div className={`${row.stage === 'preprod' && 'bg-[#FFFF00]' } grid md:grid-cols-9 grid-cols-10 gap-2 text-center p-1.5 text-sm `}>
+                                          <div className={`${row.stage === 'preprod' && 'bg-yellow-200' } grid md:grid-cols-9 grid-cols-10 gap-2 text-center p-1.5 text-sm `}>
                                             <div>
                                               <input
                                                 className="col-span-1"
