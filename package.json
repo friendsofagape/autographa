@@ -159,7 +159,6 @@
 		"translation-helps-rcl": "^3.3.0",
 		"usfm-editor": "0.8.7",
 		"usfm-grammar": "^2.3.0",
-		"usfm-js": "^3.4.1",
 		"uuid": "^8.3.2",
 		"wavesurfer.js": "^6.2.0",
 		"webpack-node-externals": "^3.0.0",
