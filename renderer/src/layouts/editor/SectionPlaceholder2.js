@@ -338,17 +338,27 @@ const SectionPlaceholder2 = ({ editor }) => {
             {
               (loadResource3 === true)
               && ((referenceColumnTwoData1.selectedResource === 'bible' && (
-                <ReferenceBible
-                  languageId={referenceColumnTwoData1.languageId}
-                  refName={referenceColumnTwoData1.refName}
-                  bookId={_bookId1}
-                  chapter={_chapter1}
-                  verse={_verse1}
-                />
+                <>
+                    {referenceColumnTwoData1?.languageId && referenceColumnTwoData1.flavor
+                  && (
+                  <ReferenceBible
+                    languageId={referenceColumnTwoData1.languageId}
+                    refName={referenceColumnTwoData1.refName}
+                    bookId={_bookId1}
+                    chapter={_chapter1}
+                    verse={_verse1}
+                  />
+                )}
+                </>
               )) || (referenceColumnTwoData1.selectedResource === 'obs' && (
-                <ReferenceObs
-                  stories={stories1}
-                />
+                <>
+                    {referenceColumnTwoData1?.languageId && referenceColumnTwoData1.flavor
+                  && (
+                  <ReferenceObs
+                    stories={stories1}
+                  />
+                  )}
+                </>
                 )) || (referenceColumnTwoData1.selectedResource === 'audio' && (
                 <ReferenceAudio
                   languageId={referenceColumnTwoData1.languageId}
@@ -394,17 +404,27 @@ const SectionPlaceholder2 = ({ editor }) => {
             {
               (loadResource4 === true)
               && ((referenceColumnTwoData2.selectedResource === 'bible' && (
-                <ReferenceBible
-                  languageId={referenceColumnTwoData2.languageId}
-                  refName={referenceColumnTwoData2.refName}
-                  bookId={_bookId2}
-                  chapter={_chapter2}
-                  verse={_verse2}
-                />
+                <>
+                  {referenceColumnTwoData2?.languageId && referenceColumnTwoData2.flavor
+            && (
+              <ReferenceBible
+                languageId={referenceColumnTwoData2.languageId}
+                refName={referenceColumnTwoData2.refName}
+                bookId={_bookId2}
+                chapter={_chapter2}
+                verse={_verse2}
+              />
+                )}
+                </>
               )) || (referenceColumnTwoData2.selectedResource === 'obs' && (
+                <>
+                  {referenceColumnTwoData2?.languageId && referenceColumnTwoData2.flavor
+              && (
                 <ReferenceObs
                   stories={stories2}
                 />
+              )}
+                </>
                 )) || (referenceColumnTwoData2.selectedResource === 'audio' && (
                 <ReferenceAudio
                   languageId={referenceColumnTwoData2.languageId}

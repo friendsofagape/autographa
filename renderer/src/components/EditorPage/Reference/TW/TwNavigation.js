@@ -150,14 +150,16 @@ export default function TwNavigation({ languageId, referenceResources, setRefere
       <div className="flex fixed">
         <div className="bg-grey text-danger py-0 uppercase tracking-wider text-xs font-semibold">
           <div aria-label="resource-bookname" className="px-1" />
-          <MultiComboBox
-            selected={selected}
-            setSelected={setSelected}
-            data={twList}
-            options={options}
-            selectedOption={selectedOption}
-            setselectedOption={setselectedOption}
-          />
+          {languageId && owner && (
+            <MultiComboBox
+              selected={selected}
+              setSelected={setSelected}
+              data={twList}
+              options={options}
+              selectedOption={selectedOption}
+              setselectedOption={setselectedOption}
+            />
+            )}
         </div>
       </div>
 

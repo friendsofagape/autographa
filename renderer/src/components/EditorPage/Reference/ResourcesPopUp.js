@@ -282,7 +282,7 @@ const ResourcesPopUp = ({
       .then((res) => res.json())
       .then((response) => {
         response.data.forEach(async (data) => {
-          const createdData = createData(data.language_title, data.language, data.owner);
+          const createdData = createData(data?.language_title, data?.language, data?.owner);
           createdData.responseData = data;
           resourceData.push(createdData);
         });
@@ -343,7 +343,7 @@ const ResourcesPopUp = ({
     const filtered = { offlineResource: [], onlineResource: { ...resourceData?.reference } || {} };
     if (['tn', 'tw', 'tq', 'ta', 'obs-tn', 'obs-tq', 'twlm'].includes(selectResource.toLowerCase())) {
       if (query?.length > 0) {
-        filtered.offlineResource = resourceData?.offlineResource.filter((data) => {
+        filtered.offlineResource = resourceData?.offlineResource?.filter((data) => {
             const meta = data?.value?.meta;
             // const searchFields = [meta?.language, meta?.language_title, meta?.name, meta?.full_name, meta?.owner].map((v) => v.toLowerCase());
             const searchFields = ['language', 'language_title', 'name', 'full_name', 'owner'].map((v) => v.toLowerCase());
@@ -365,11 +365,10 @@ const ResourcesPopUp = ({
         setFilteredResources(filtered);
       }
     } else if (selectResource === 'bible') {
-      console.log({ subMenuItems });
       const bibleArr = subMenuItems?.filter((ref) => ref?.value?.type?.flavorType?.flavor?.name === 'textTranslation');
       if (query?.length > 0) {
         // eslint-disable-next-line array-callback-return
-        const bibleFilter = bibleArr.filter((item) => {
+        const bibleFilter = bibleArr?.filter((item) => {
           if (item?.projectDir.toLowerCase().includes(query.toLowerCase())
           || item?.value?.identification?.name?.en?.toLowerCase().includes(query.toLowerCase())
           || item?.value?.languages[0]?.name?.en?.toLowerCase().includes(query.toLowerCase())
@@ -525,7 +524,7 @@ const ResourcesPopUp = ({
                 <div className="flex flex-col gap-1">
                   <div className="flex flex-row">
                     <CheckHelpsUpdatePopUp resource={resource} selectResource={selectResource} />
-                    <RemoveResource resource={resource} selectResource={selectResource} closeResourceWindow={removeSection} />
+                    <RemoveResource resource={resource} selectResource={selectResource} closeResourceWindow={removeSection} handleRowSelect={handleRowSelect} />
                   </div>
                   <div className="text-[9px] mt-2 text-black">
                     <span>{resource?.value?.lastUpdatedAg?.split('T')[0]}</span>
@@ -949,7 +948,7 @@ const ResourcesPopUp = ({
                                   && (
                                     <CheckHelpsUpdatePopUp resource={ref} selectResource={selectResource} />
                                     )}
-                                    <RemoveResource resource={ref} selectResource={selectResource} closeResourceWindow={removeSection} />
+                                    <RemoveResource resource={ref} selectResource={selectResource} closeResourceWindow={removeSection} handleRowSelect={handleRowSelect} />
                                   </div>
                                   <div className="text-[9px] mt-2 text-black">
                                     <span>{ref?.value?.resourceMeta && ref?.value?.resourceMeta?.lastUpdatedAg.split('T')[0]}</span>
@@ -1030,7 +1029,7 @@ const ResourcesPopUp = ({
                                   && (
                                     <CheckHelpsUpdatePopUp resource={ref} selectResource={selectResource} />
                                     )}
-                                  <RemoveResource resource={ref} selectResource={selectResource} closeResourceWindow={removeSection} />
+                                  <RemoveResource resource={ref} selectResource={selectResource} closeResourceWindow={removeSection} handleRowSelect={handleRowSelect} />
                                 </div>
                                 <div className="text-[9px] mt-2 text-black">
                                   <span>{ref?.value?.resourceMeta && ref?.value?.resourceMeta?.lastUpdatedAg.split('T')[0]}</span>
@@ -1095,7 +1094,7 @@ const ResourcesPopUp = ({
                                   && (
                                     <CheckHelpsUpdatePopUp resource={ref} selectResource={selectResource} />
                                     )}
-                                  <RemoveResource resource={ref} selectResource={selectResource} closeResourceWindow={removeSection} />
+                                  {/* <RemoveResource resource={ref} selectResource={selectResource} closeResourceWindow={removeSection} handleRowSelect={handleRowSelect} /> */}
                                 </div>
                                 <div className="text-[9px] mt-2 text-black">
                                   <span>{ref?.value?.resourceMeta && ref?.value?.resourceMeta?.lastUpdatedAg.split('T')[0]}</span>

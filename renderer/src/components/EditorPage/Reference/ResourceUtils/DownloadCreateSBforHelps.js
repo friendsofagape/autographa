@@ -7,7 +7,8 @@ const JSZip = require('jszip');
 
 const DownloadCreateSBforHelps = async (projectResource, setLoading, update = false, offlineResource = false) => {
     try {
-        console.log('download/update started --------', { projectResource, update, offlineResource });
+        // console.log('download/update started --------', { projectResource, update, offlineResource });
+        logger.debug('DownloadCreateSBforHelps.js', 'Download Started');
         setLoading(true);
         await localForage.getItem('userProfile').then(async (user) => {
             logger.debug('DownloadCreateSBforHelps.js', 'In helps-resource download user fetch - ', user?.username);
@@ -108,7 +109,7 @@ const DownloadCreateSBforHelps = async (projectResource, setLoading, update = fa
                         }
                     });
                 logger.debug('DownloadCreateSBforHelps.js', 'download completed');
-                console.log('download finished --------');
+                // console.log('download finished --------');
                 setLoading(false);
                 // resolve(json);
             });

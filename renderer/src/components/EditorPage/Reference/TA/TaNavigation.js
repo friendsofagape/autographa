@@ -95,7 +95,7 @@ export default function TaNavigation({ languageId, referenceResources }) {
           .then((response) => response.json())
           .then((folderData) => {
             // console.log({ folderData });
-            folderData?.forEach((element) => {
+            !folderData?.message && folderData?.forEach((element) => {
             const pattern = /^.*\.(yml|yaml)/gm;
             if (!pattern.test(element.name.toLowerCase())) {
               const tempObj = {};
@@ -144,14 +144,16 @@ export default function TaNavigation({ languageId, referenceResources }) {
     <div className="flex fixed">
       <div className="bg-grey text-danger py-0 uppercase tracking-wider text-xs font-semibold">
         <div aria-label="resource-bookname" className="px-1" />
-        <MultiComboBox
-          selected={selected}
-          setSelected={setSelected}
-          data={taList}
-          options={options}
-          selectedOption={selectedOption}
-          setselectedOption={setselectedOption}
-        />
+        {languageId && owner && (
+          <MultiComboBox
+            selected={selected}
+            setSelected={setSelected}
+            data={taList}
+            options={options}
+            selectedOption={selectedOption}
+            setselectedOption={setselectedOption}
+          />
+          )}
       </div>
     </div>
   );

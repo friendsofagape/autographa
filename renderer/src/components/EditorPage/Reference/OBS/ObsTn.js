@@ -30,6 +30,8 @@ function ObsTnCard({
   useEffect(() => {
     if (items.length !== 0) {
       setMarkdown(items[index].OccurrenceNote);
+    } else {
+      setMarkdown('');
     }
   }, [items, index]);
   useEffect(() => {
@@ -72,7 +74,7 @@ function ObsTnCard({
             }
           });
         } catch (err) {
-            console.log('err on fetch local : ', err);
+            logger.debug('err on fetch local : ', err);
             throw err;
         }
     }
@@ -86,20 +88,22 @@ function ObsTnCard({
   }, [chapter, languageId, owner, resourceId, offlineResource]);
 
   return (
-    <ObsResourceCard
-      {...props}
-      chapter={chapter}
-      verse={frame}
-      items={items}
-      selectedQuote={selectedQuote}
-      setQuote={setQuote}
-      markdown={markdown}
-      languageId={languageId}
-      classes={classes}
-      shouldSetQuoteOnClick
-      index={index}
-      setIndex={(v) => setIndex(v)}
-    />
+    markdown ? (
+      <ObsResourceCard
+        {...props}
+        chapter={chapter}
+        verse={frame}
+        items={items}
+        selectedQuote={selectedQuote}
+        setQuote={setQuote}
+        markdown={markdown}
+        languageId={languageId}
+        classes={classes}
+        shouldSetQuoteOnClick
+        index={index}
+        setIndex={(v) => setIndex(v)}
+      />
+) : ''
   );
 }
 

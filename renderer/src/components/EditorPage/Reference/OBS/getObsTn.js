@@ -9,13 +9,13 @@ export const getObsTn = async (owner, repo, path) => {
     fetch(`${BaseUrl}${owner}/${repo}/contents`)
     .then((data) => data.json())
     .then((data) => {
-      const check = data.some((obj) => obj.name === 'content');
+      const check = !data?.message && data?.some((obj) => obj.name === 'content');
       // console.log("check : " + check);
+      const file = [];
       if (check) {
         fetch(`${BaseUrl}${owner}/${repo}/contents/${path}`)
           .then((data) => data.json())
         .then((data) => {
-          const file = [];
           data.forEach((content) => {
             fetch(content.download_url)
             .then((tnNotes) => tnNotes.text())
@@ -33,6 +33,7 @@ export const getObsTn = async (owner, repo, path) => {
       } else {
           error.status = true;
           error.msg = 'Invalid URL , No content Directory';
+          resolve([]);
       }
     });
   });

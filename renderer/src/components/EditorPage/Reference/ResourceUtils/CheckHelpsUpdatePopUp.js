@@ -46,7 +46,7 @@ const checkHelpsVersionUpdate = async (reference, selectResource) => {
 
             // check for update
             // currentResourceReleased = '2019-03-02T23:38:13Z';
-            console.log({ currentResourceReleased, latestResourceReleased });
+            // console.log({ currentResourceReleased, latestResourceReleased });
             logger.debug('checkHelpsVersionUpdate.js', { currentResourceReleased, latestResourceReleased });
             if (new Date(latestResourceReleased) > new Date(currentResourceReleased)) {
                 resolve({
@@ -69,7 +69,8 @@ const checkHelpsVersionUpdate = async (reference, selectResource) => {
       }
     });
   } catch (err) {
-      console.log('error check update :', { err });
+      // console.log('error check update :', { err });
+      logger.debug('checkHelpsVersionUpdate.js', 'error check update :', { err });
   }
 };
 

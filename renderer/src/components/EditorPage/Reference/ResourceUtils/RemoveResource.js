@@ -11,7 +11,9 @@ import TrashSvg from '@/icons/basil/Outline/Interface/Trash.svg';
 const fs = window.require('fs');
 const path = require('path');
 
-function RemoveResource({ resource, selectResource, closeResourceWindow }) {
+function RemoveResource({
+ resource, selectResource, closeResourceWindow, handleRowSelect,
+}) {
     logger.warn('removeResource.js', 'inside remove resource');
     const { t } = useTranslation();
     const [snackBar, setOpenSnackBar] = React.useState(false);
@@ -55,6 +57,7 @@ function RemoveResource({ resource, selectResource, closeResourceWindow }) {
                 // throw new Error(`Remove Resource failed :  ${err}`);
               }
               // console.log('resource remove success');
+              handleRowSelect(null, null, null, null, '');
               setOpenSnackBar(true);
               setNotify('success');
               setSnackText('Removed Resource Successfully');
@@ -92,7 +95,7 @@ function RemoveResource({ resource, selectResource, closeResourceWindow }) {
           setOpenModal={setOpenModal}
           confirmMessage="Are you sure want to remove the resource. This action can not be reverted"
           buttonName={t('btn-replace')}
-          closeModal={handleRemoveResourceResources}
+          closeModal={() => handleRemoveResourceResources()}
         />
 
       </>
@@ -103,6 +106,7 @@ RemoveResource.propTypes = {
     resource: PropTypes.object,
     selectResource: PropTypes.string,
     closeResourceWindow: PropTypes.func,
+    handleRowSelect: PropTypes.func,
   };
 
 export default RemoveResource;
