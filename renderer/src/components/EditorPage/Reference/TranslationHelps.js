@@ -6,7 +6,7 @@ import TranslationHelpsCard from './TranslationHelpsCard';
 import ObsTnCard from './OBS/ObsTn';
 
 const TranslationHelps = ({
- selectedResource, languageId, refName, bookId, chapter, verse, owner, story,
+ selectedResource, languageId, refName, bookId, chapter, verse, owner, story, offlineResource,
 }) => {
   const {
     state: {
@@ -19,7 +19,7 @@ const TranslationHelps = ({
   const translationQuestionsPath = `${(chapter < 10) ? (`0${ chapter}`)
   : chapter}/${(verse < 10) ? (`0${ verse}`) : verse}.md`;
 
-  const filePathTa = `${taNavigationPath}/01.md`;
+  const filePathTa = `${taNavigationPath?.path}/01.md`;
 
   return (
     <>
@@ -37,6 +37,7 @@ const TranslationHelps = ({
               resourceId="tn"
               owner={owner}
               server="https://git.door43.org"
+              offlineResource={offlineResource}
             />
           );
         case 'twl':
@@ -83,19 +84,38 @@ const TranslationHelps = ({
               filePath={translationQuestionsPath}
               owner={owner}
               server="https://git.door43.org"
+              offlineResource={offlineResource}
             />
           );
+        case 'tw':
+          return (
+            <TranslationHelpsCard
+              title={t('label-resource-twlm')}
+              chapter={chapter}
+              branch={branch}
+              projectId="bible"
+              languageId={languageId}
+              resourceId="tw"
+              owner={owner}
+              filePath={offlineResource?.twSelected?.folder}
+              server="https://git.door43.org"
+              offlineResource={offlineResource}
+            />
+            );
         case 'ta':
           return (
             <TranslationHelpsCard
               title={t('label-resource-ta')}
+              chapter={chapter}
               branch={branch}
-              projectId="translate"
+              // projectId="translate"
+              projectId={taNavigationPath?.option}
               languageId={languageId}
               resourceId="ta"
               owner={owner}
               filePath={filePathTa}
               server="https://git.door43.org"
+              offlineResource={offlineResource}
             />
             );
         case 'bible':
@@ -132,6 +152,7 @@ const TranslationHelps = ({
               resourceId="obs-tn"
               owner={owner}
               server="https://git.door43.org"
+              offlineResource={offlineResource}
             />
           );
         case 'obs-tq':
@@ -146,6 +167,7 @@ const TranslationHelps = ({
               resourceId="obs-tq"
               owner={owner}
               server="https://git.door43.org"
+              offlineResource={offlineResource}
             />
           );
         default:
@@ -206,4 +228,5 @@ TranslationHelps.propTypes = {
   verse: PropTypes.string,
   owner: PropTypes.string,
   story: PropTypes.string,
+  offlineResource: PropTypes.bool || PropTypes.object,
 };

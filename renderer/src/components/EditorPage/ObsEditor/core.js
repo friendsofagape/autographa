@@ -2,6 +2,7 @@ const loadData = (fs, file, projectName, username) => {
   const newpath = localStorage.getItem('userPath');
   const path = require('path');
   const filePath = path.join(newpath, 'autographa', 'users', username, 'resources', projectName);
+  if (fs.existsSync(path.join(filePath))) {
   const data = fs.readFileSync(
     path.join(filePath, 'metadata.json'),
     'utf8',
@@ -11,9 +12,14 @@ const loadData = (fs, file, projectName, username) => {
   let j = 1;
   let dirName;
   while (i < j) {
-    const firstKey = Object.keys(_data.ingredients)[i];
+    // const firstKey = Object.keys(_data.ingredients)[i];
+    // const folderName = firstKey.split(/[(\\)?(/)?]/gm).slice(0);
+    const firstKey = Object.keys(_data.ingredients).filter((data) => data.endsWith(`${file}.md`))[0];
     const folderName = firstKey.split(/[(\\)?(/)?]/gm).slice(0);
     dirName = folderName[0];
+    // console.log('first key : ', firstKey);
+    // console.log('folder name  : ', folderName);
+    // console.log('dir name  : ', dirName);
     const stats = fs.statSync(path.join(filePath, dirName));
     if (!stats.isDirectory()) {
       j += 1;
@@ -22,6 +28,8 @@ const loadData = (fs, file, projectName, username) => {
   }
   const content = fs.readFileSync(path.join(filePath, dirName, `${file}.md`), 'utf8');
   return content;
+}
+  return 'No Content';
 };
 const core = (fs, num, projectName, username) => {
   const stories = [];

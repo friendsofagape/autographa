@@ -47,7 +47,10 @@ export default function ReferenceContextProvider({ children }) {
     const [openImportResourcePopUp, setOpenImportResourcePopUp] = useState(false);
     const [obsNavigation, setObsNavigation] = useState('1');
     const [selectedStory, setSelectedStory] = useState();
-    const [taNavigationPath, setTaNavigationPath] = useState('');
+    const [taNavigationPath, setTaNavigationPath] = useState({
+      option: '',
+      path: '',
+    });
     const [audioContent, setAudioContent] = useState();
     const [audioPath, setAudioPath] = useState();
     // Trigger the function after every recording and default change

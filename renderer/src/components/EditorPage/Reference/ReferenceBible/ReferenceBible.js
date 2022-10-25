@@ -81,7 +81,7 @@ const ReferenceBible = ({
           setIsLoading(true);
           const _books = [];
           setDisplayScreen(false);
-          if (ref.value.languages[0].name.en === languageId) {
+          if (ref?.value && ref?.value?.languages && ref?.value?.languages[0]?.name?.en === languageId) {
             Object.entries(ref.value.ingredients).forEach(
               ([key, _ingredients]) => {
                 if (_ingredients.scope) {

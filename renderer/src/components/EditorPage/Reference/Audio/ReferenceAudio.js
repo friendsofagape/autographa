@@ -77,7 +77,7 @@ const ReferenceAudio = ({
           const _books = [];
           setDisplayScreen(false);
           // Fetching the selected reference project
-          if (ref.value.identification.name.en === refName) {
+          if (ref?.value?.identification?.name?.en === refName) {
             Object.entries(ref.value.type.flavorType.currentScope).forEach(
               ([_bookID, _ingredients]) => {
               _books.push(_bookID);

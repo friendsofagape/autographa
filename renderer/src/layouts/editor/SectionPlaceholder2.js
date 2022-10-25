@@ -28,6 +28,7 @@ const SectionPlaceholder2 = ({ editor }) => {
     refName: '',
     header: '',
     owner: '',
+    offlineResource: { offline: false },
   });
   const [referenceColumnTwoData2, setReferenceColumnTwoData2] = useState({
     languageId: '',
@@ -35,6 +36,7 @@ const SectionPlaceholder2 = ({ editor }) => {
     refName: '',
     header: '',
     owner: '',
+    offlineResource: { offline: false },
   });
   const [loadResource3, setLoadResource3] = useState(false);
   const [loadResource4, setLoadResource4] = useState(false);
@@ -127,20 +129,24 @@ const SectionPlaceholder2 = ({ editor }) => {
                 // if (openResource3 === false || openResource4 === false) {
                   if (_rownum === '1') {
                       setReferenceColumnTwoData1({
+                        ...referenceColumnTwoData1,
                         languageId: _value?.language,
                         selectedResource: _value?.resouceId,
                         refName: _value?.name,
                         header: _value?.name,
                         owner: _value?.owner,
+                        offlineResource: _value?.offline,
                       });
                   }
                   if (_rownum === '2') {
                       setReferenceColumnTwoData2({
+                        ...referenceColumnTwoData2,
                         languageId: _value?.language,
                         selectedResource: _value?.resouceId,
                         refName: _value?.name,
                         header: _value?.name,
                         owner: _value?.owner,
+                        offlineResource: _value?.offline,
                       });
                   }
                 // }
@@ -206,6 +212,7 @@ const SectionPlaceholder2 = ({ editor }) => {
                         name: referenceColumnTwoData1?.refName,
                         owner: referenceColumnTwoData1?.owner,
                         navigation: { book: '1TI', chapter: '2' },
+                        offline: referenceColumnTwoData1.offlineResource,
                       },
                   };
                 }
@@ -218,6 +225,7 @@ const SectionPlaceholder2 = ({ editor }) => {
                       name: referenceColumnTwoData1?.refName,
                       owner: referenceColumnTwoData1?.owner,
                       navigation: { book: '1TI', chapter: '2' },
+                      offline: referenceColumnTwoData1.offlineResource,
                     },
                     2: {
                       resouceId: referenceColumnTwoData2?.selectedResource,
@@ -225,6 +233,7 @@ const SectionPlaceholder2 = ({ editor }) => {
                       name: referenceColumnTwoData2?.refName,
                       owner: referenceColumnTwoData2?.owner,
                       navigation: { book: '1TI', chapter: '2' },
+                      offline: referenceColumnTwoData2.offlineResource,
                     },
                   };
                 }
@@ -249,7 +258,8 @@ const SectionPlaceholder2 = ({ editor }) => {
   }, [openResource1, openResource2, openResource3, openResource4, referenceColumnTwoData1?.languageId,
     referenceColumnTwoData1.refName, referenceColumnTwoData1?.selectedResource, referenceColumnTwoData2?.languageId,
     referenceColumnTwoData2?.refName, referenceColumnTwoData2?.selectedResource, sectionNum, layout,
-    referenceColumnTwoData1?.owner, referenceColumnTwoData2?.owner, removingSection, addingSection]);
+    referenceColumnTwoData1?.owner, referenceColumnTwoData2?.owner, removingSection, addingSection,
+  referenceColumnTwoData1.offlineResource, referenceColumnTwoData2.offlineResource]);
 
   const CustomNavigation1 = (
     <CustomNavigation
@@ -314,6 +324,7 @@ const SectionPlaceholder2 = ({ editor }) => {
             title={referenceColumnTwoData1.refName}
             selectedResource={referenceColumnTwoData1.selectedResource}
             languageId={referenceColumnTwoData1.languageId}
+            referenceResources={referenceColumnTwoData1}
             setReferenceResources={setReferenceColumnTwoData1}
             setLoadResource={setLoadResource3}
             loadResource={loadResource3}
@@ -327,17 +338,27 @@ const SectionPlaceholder2 = ({ editor }) => {
             {
               (loadResource3 === true)
               && ((referenceColumnTwoData1.selectedResource === 'bible' && (
-                <ReferenceBible
-                  languageId={referenceColumnTwoData1.languageId}
-                  refName={referenceColumnTwoData1.refName}
-                  bookId={_bookId1}
-                  chapter={_chapter1}
-                  verse={_verse1}
-                />
+                <>
+                    {referenceColumnTwoData1?.languageId && referenceColumnTwoData1.flavor
+                  && (
+                  <ReferenceBible
+                    languageId={referenceColumnTwoData1.languageId}
+                    refName={referenceColumnTwoData1.refName}
+                    bookId={_bookId1}
+                    chapter={_chapter1}
+                    verse={_verse1}
+                  />
+                )}
+                </>
               )) || (referenceColumnTwoData1.selectedResource === 'obs' && (
-                <ReferenceObs
-                  stories={stories1}
-                />
+                <>
+                    {referenceColumnTwoData1?.languageId && referenceColumnTwoData1.flavor
+                  && (
+                  <ReferenceObs
+                    stories={stories1}
+                  />
+                  )}
+                </>
                 )) || (referenceColumnTwoData1.selectedResource === 'audio' && (
                 <ReferenceAudio
                   languageId={referenceColumnTwoData1.languageId}
@@ -355,6 +376,7 @@ const SectionPlaceholder2 = ({ editor }) => {
                     chapter={_chapter1}
                     verse={_verse1}
                     story={_obsNavigation1}
+                    offlineResource={referenceColumnTwoData1.offlineResource}
                   />
                 )
               )
@@ -368,6 +390,7 @@ const SectionPlaceholder2 = ({ editor }) => {
             title={referenceColumnTwoData2.refName}
             selectedResource={referenceColumnTwoData2.selectedResource}
             languageId={referenceColumnTwoData2.languageId}
+            referenceResources={referenceColumnTwoData2}
             setReferenceResources={setReferenceColumnTwoData2}
             setLoadResource={setLoadResource4}
             loadResource={loadResource4}
@@ -381,17 +404,27 @@ const SectionPlaceholder2 = ({ editor }) => {
             {
               (loadResource4 === true)
               && ((referenceColumnTwoData2.selectedResource === 'bible' && (
-                <ReferenceBible
-                  languageId={referenceColumnTwoData2.languageId}
-                  refName={referenceColumnTwoData2.refName}
-                  bookId={_bookId2}
-                  chapter={_chapter2}
-                  verse={_verse2}
-                />
+                <>
+                  {referenceColumnTwoData2?.languageId && referenceColumnTwoData2.flavor
+            && (
+              <ReferenceBible
+                languageId={referenceColumnTwoData2.languageId}
+                refName={referenceColumnTwoData2.refName}
+                bookId={_bookId2}
+                chapter={_chapter2}
+                verse={_verse2}
+              />
+                )}
+                </>
               )) || (referenceColumnTwoData2.selectedResource === 'obs' && (
+                <>
+                  {referenceColumnTwoData2?.languageId && referenceColumnTwoData2.flavor
+              && (
                 <ReferenceObs
                   stories={stories2}
                 />
+              )}
+                </>
                 )) || (referenceColumnTwoData2.selectedResource === 'audio' && (
                 <ReferenceAudio
                   languageId={referenceColumnTwoData2.languageId}
@@ -409,6 +442,7 @@ const SectionPlaceholder2 = ({ editor }) => {
                     chapter={_chapter2}
                     verse={_verse2}
                     story={_obsNavigation2}
+                    offlineResource={referenceColumnTwoData2.offlineResource}
                   />
                 )
               )
