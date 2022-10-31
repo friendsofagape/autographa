@@ -27,39 +27,47 @@ export default function SideBar() {
       </div>
       <ul>
         <li className="text-gray-900 font-medium hover:text-white hover:bg-primary cursor-pointer py-5 group">
-          <Link href="/projects">
-            <a aria-label="projectList" className="flex flex-col items-center" href="#projects">
-              <ProjectsIcon
-                fill="none"
-                strokecurrent="none"
-                className="h-7 w-7 text-dark group-hover:text-white"
-              />
-              <div className="text-xs mt-3 uppercase">{t('projects-page')}</div>
-            </a>
+          <Link
+            href="/projects"
+            aria-label="projectList"
+            className="flex flex-col items-center"
+          >
+
+            <ProjectsIcon
+              fill="none"
+              strokecurrent="none"
+              className="h-7 w-7 text-dark group-hover:text-white"
+            />
+            <div className="text-xs mt-3 uppercase">{t('projects-page')}</div>
+
           </Link>
         </li>
         <li className="text-gray-900 font-medium hover:text-white hover:bg-primary cursor-pointer py-5 group">
-          <Link href="/newproject">
-            <a aria-label="new" className="flex flex-col items-center" href="#new">
-              <NewProjectIcon
-                fill="none"
-                strokecurrent="none"
-                className="h-7 w-7 text-dark group-hover:text-white"
-              />
-              <div className="text-xs mt-3 uppercase">{t('btn-new')}</div>
-            </a>
+          <Link
+            href="/newproject"
+            aria-label="new"
+            className="flex flex-col items-center"
+          >
+
+            <NewProjectIcon
+              fill="none"
+              strokecurrent="none"
+              className="h-7 w-7 text-dark group-hover:text-white"
+            />
+            <div className="text-xs mt-3 uppercase">{t('btn-new')}</div>
+
           </Link>
         </li>
         <li className="text-gray-900 font-medium hover:text-white hover:bg-primary cursor-pointer py-5">
-          <Link href="/sync">
-            <a className="flex flex-col items-center" href="#sync">
-              <SyncIcon
-                fill="none"
-                strokecurrent="none"
-                className="h-7 w-7 text-dark group-hover:text-white"
-              />
-              <div className="text-xs mt-3 uppercase">{t('label-sync')}</div>
-            </a>
+          <Link href="/sync" className="flex flex-col items-center">
+
+            <SyncIcon
+              fill="none"
+              strokecurrent="none"
+              className="h-7 w-7 text-dark group-hover:text-white"
+            />
+            <div className="text-xs mt-3 uppercase">{t('label-sync')}</div>
+
           </Link>
         </li>
         {/* {(appMode === 'online')
@@ -79,6 +87,5 @@ export default function SideBar() {
           )} */}
       </ul>
     </div>
-
   );
 }
