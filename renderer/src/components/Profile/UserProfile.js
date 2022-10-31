@@ -71,36 +71,40 @@ const UserProfile = (_username) => {
                 {profile.map((item) => (
                   <Menu.Item key={item}>
                     {({ active }) => (
-                      <Link href="/profile">
-                        <a
+                      (
+                        <Link
+                          href="/profile"
                           id="profile"
-                          href="#profile"
                           className={classNames(
-                            active ? 'bg-gray-100' : '',
-                            'block px-4 py-2 text-sm text-gray-700',
-                          )}
+                          active ? 'bg-gray-100' : '',
+                          'block px-4 py-2 text-sm text-gray-700',
+                        )}
                         >
+
                           {item}
-                        </a>
-                      </Link>
+
+                        </Link>
+)
                     )}
                   </Menu.Item>
                 ))}
                 <Menu.Item>
                   {({ active }) => (
-                    <Link href="/">
-                      <a
+                    (
+                      <Link
+                        href="/"
                         id="signout"
-                        href="#signout"
                         onClick={() => logout()}
                         className={classNames(
-                          active ? 'bg-gray-100' : '',
-                          'block px-4 py-2 text-sm text-gray-700',
-                        )}
+                        active ? 'bg-gray-100' : '',
+                        'block px-4 py-2 text-sm text-gray-700',
+                      )}
                       >
+
                         {t('btn-signout')}
-                      </a>
-                    </Link>
+
+                      </Link>
+)
 
                   )}
                 </Menu.Item>
