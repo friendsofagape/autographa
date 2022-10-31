@@ -28,52 +28,52 @@ export default function SideBar() {
       <ul>
         <li className="text-gray-900 font-medium hover:text-white hover:bg-primary cursor-pointer py-5 group">
           <Link href="/projects">
-            <a aria-label="projectList" className="flex flex-col items-center" href="#projects">
+            <Link aria-label="projectList" className="flex flex-col items-center" href="#projects">
               <ProjectsIcon
                 fill="none"
                 strokecurrent="none"
                 className="h-7 w-7 text-dark group-hover:text-white"
               />
               <div className="text-xs mt-3 uppercase">{t('projects-page')}</div>
-            </a>
+            </Link>
           </Link>
         </li>
         <li className="text-gray-900 font-medium hover:text-white hover:bg-primary cursor-pointer py-5 group">
           <Link href="/newproject">
-            <a aria-label="new" className="flex flex-col items-center" href="#new">
+            <Link aria-label="new" className="flex flex-col items-center" href="#new">
               <NewProjectIcon
                 fill="none"
                 strokecurrent="none"
                 className="h-7 w-7 text-dark group-hover:text-white"
               />
               <div className="text-xs mt-3 uppercase">{t('btn-new')}</div>
-            </a>
+            </Link>
           </Link>
         </li>
         <li className="text-gray-900 font-medium hover:text-white hover:bg-primary cursor-pointer py-5">
           <Link href="/sync">
-            <a className="flex flex-col items-center" href="#sync">
+            <Link className="flex flex-col items-center" href="#sync">
               <SyncIcon
                 fill="none"
                 strokecurrent="none"
                 className="h-7 w-7 text-dark group-hover:text-white"
               />
               <div className="text-xs mt-3 uppercase">{t('label-sync')}</div>
-            </a>
+            </Link>
           </Link>
         </li>
         {/* {(appMode === 'online')
           && (
           <li className="text-gray-900 font-medium hover:text-white hover:bg-primary cursor-pointer py-5">
             <Link href="/sync">
-              <a className="flex flex-col items-center" href="#sync">
+              <Link className="flex flex-col items-center" href="#sync">
                 <SyncIcon
                   fill="none"
                   strokecurrent="none"
                   className="h-7 w-7 text-dark group-hover:text-white"
                 />
                 <div className="text-xs mt-3 uppercase">{t('label-sync')}</div>
-              </a>
+              </Link>
             </Link>
           </li>
           )} */}

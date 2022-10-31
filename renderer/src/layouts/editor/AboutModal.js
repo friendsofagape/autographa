@@ -12,6 +12,7 @@ import {
   DocumentTextIcon,
 } from '@heroicons/react/outline';
 import { useTranslation } from 'react-i18next';
+import Link from 'next/link';
 import LogoIcon from '@/icons/logo.svg';
 import packageInfo from '../../../../package.json';
 
@@ -166,7 +167,7 @@ export default function AboutModal(props) {
                 >
                   {t('btn-close')}
                 </button>
-                <a
+                <Link
                   // type="button"
                   href="https://github.com/friendsofagape/autographa"
                   target="_blank"
@@ -174,9 +175,9 @@ export default function AboutModal(props) {
                   rel="noreferrer"
                 >
                   {t('btn-source-code')}
-                </a>
+                </Link>
 
-                {/* <a
+                {/* <Link
                   // type="button"
                   // href="https://github.com/friendsofagape/autographa/blob/development/LICENSE"
                   // target="_blank"
@@ -185,7 +186,7 @@ export default function AboutModal(props) {
                   rel="noreferrer"
                 >
                   Check For Update
-                </a> */}
+                </Link> */}
 
               </div>
             </div>

@@ -72,7 +72,7 @@ const UserProfile = (_username) => {
                   <Menu.Item key={item}>
                     {({ active }) => (
                       <Link href="/profile">
-                        <a
+                        <Link
                           id="profile"
                           href="#profile"
                           className={classNames(
@@ -81,7 +81,7 @@ const UserProfile = (_username) => {
                           )}
                         >
                           {item}
-                        </a>
+                        </Link>
                       </Link>
                     )}
                   </Menu.Item>
@@ -89,7 +89,7 @@ const UserProfile = (_username) => {
                 <Menu.Item>
                   {({ active }) => (
                     <Link href="/">
-                      <a
+                      <Link
                         id="signout"
                         href="#signout"
                         onClick={() => logout()}
@@ -99,7 +99,7 @@ const UserProfile = (_username) => {
                         )}
                       >
                         {t('btn-signout')}
-                      </a>
+                      </Link>
                     </Link>
 
                   )}

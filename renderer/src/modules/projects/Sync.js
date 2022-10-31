@@ -5,6 +5,7 @@ import { Dialog, Transition } from '@headlessui/react';
 import ProjectsLayout from '@/layouts/projects/Layout';
 import Gitea from '@/components/Sync/Gitea/Gitea';
 import ProjectFileBrowser from '@/components/Sync/ProjectFileBrowser';
+import Link from 'next/link';
 
 export default function Sync() {
   const [isOpen, setIsOpen] = useState(false);
@@ -36,22 +37,22 @@ export default function Sync() {
       colTwo={(
         <ul className="list-none p-0 flex">
           <li className="mr-2">
-            <a className="bg-secondary text-white inline-block rounded-t py-2 px-6 text-sm uppercase" href="#a">
+            <Link className="bg-secondary text-white inline-block rounded-t py-2 px-6 text-sm uppercase" href="#a">
               <img className="inline mr-2 w-4" src="/brands/door43.png" alt="Door 43 Logo" />
               {t('label-door43')}
-            </a>
+            </Link>
           </li>
           {/* <li className="mr-2">
-            <a className="bg-gray-200 inline-block rounded-t py-2 px-6 hover:text-white hover:bg-black text-sm uppercase" href="#b">
+            <Link className="bg-gray-200 inline-block rounded-t py-2 px-6 hover:text-white hover:bg-black text-sm uppercase" href="#b">
               <img className="inline mr-2 w-5" src="/brands/paratext.png" width="18" alt="Paratext Logo" />
               {t('label-paratext')}
-            </a>
+            </Link>
           </li>
           <li className="mr-2">
-            <a className="bg-gray-200 inline-block rounded-t py-2 px-6 hover:text-white hover:bg-black text-sm uppercase" href="#c">
+            <Link className="bg-gray-200 inline-block rounded-t py-2 px-6 hover:text-white hover:bg-black text-sm uppercase" href="#c">
               <img className="inline mr-2 w-5" src="/brands/gitea.png" width="18" alt="Gitea Logo" />
               {t('label-Gitea')}
-            </a>
+            </Link>
           </li> */}
         </ul>
       )}

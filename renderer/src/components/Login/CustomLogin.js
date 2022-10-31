@@ -4,6 +4,7 @@ import { TextField, Typography } from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import PersonOutlineIcon from '@material-ui/icons/PersonOutline';
 import 'tailwindcss/tailwind.css';
+import Link from 'next/link';
 
 const CustomLogin = ({
  ui, error, login, userlist, validation, buttonname,
@@ -78,9 +79,9 @@ const CustomLogin = ({
         ))}
       <div className="text-xs mb-8 max-w-md appearance-none py-2 px-3">
         {ui?.viewForgot && (
-        <a className="text-xs text-error float-right" href="/signup">
+        <Link className="text-xs text-error float-right" href="/signup">
           Forgot Password?
-        </a>
+        </Link>
           )}
       </div>
       <input

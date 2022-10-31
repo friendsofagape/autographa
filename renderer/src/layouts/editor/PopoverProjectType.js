@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import {
   Popover, Transition,
 } from '@headlessui/react';
+import Link from 'next/link';
 
 export default function PopoverProjectType(props) {
   const {
@@ -35,7 +36,7 @@ export default function PopoverProjectType(props) {
               <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
                 <div className="relative grid gap-0 bg-black p-4 grid-cols-2">
                   {items.map((item) => (
-                    <a
+                    <Link
                       key={item.name}
                       href={item.href}
                       data-id={item.name}
@@ -53,7 +54,7 @@ export default function PopoverProjectType(props) {
                         {item.name}
                       </p>
 
-                    </a>
+                    </Link>
                   ))}
                 </div>
 

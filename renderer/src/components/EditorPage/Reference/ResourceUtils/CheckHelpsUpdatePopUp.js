@@ -5,6 +5,7 @@ import { Dialog, Transition } from '@headlessui/react';
 import { useTranslation } from 'react-i18next';
 import { SnackBar } from '@/components/SnackBar';
 import LoadingScreen from '@/components/Loading/LoadingScreen';
+import Link from 'next/link';
 import * as logger from '../../../../logger';
 import RefreshSvg from '@/icons/basil/Outline/Interface/Refresh.svg';
 import DownloadCreateSBforHelps from './DownloadCreateSBforHelps';
@@ -191,10 +192,10 @@ function CheckHelpsUpdatePopUp({ resource, selectResource }) {
                           </Dialog.Title>
                         </div>
                         <div className="">
-                          <a className="bg-secondary text-white inline-block rounded-t py-2 px-4 text-sm uppercase" href="#a">
+                          <Link className="bg-secondary text-white inline-block rounded-t py-2 px-4 text-sm uppercase" href="#a">
                             <img className="inline mr-2 w-6" src="/brands/door43.png" alt="Door 43 Logo" />
                             {t('label-door43')}
-                          </a>
+                          </Link>
                         </div>
                       </div>
 

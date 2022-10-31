@@ -117,14 +117,14 @@ export default function Signup() {
           <div className="ml-10 2xl:ml-40 mt-32">
             <div className="text-green-500 pb-12">
               {t('label-already-have-account')}
-              <a
+              <Link
                 data-testid="signup"
                 href="/login"
                 className="text-blue-600 ml-2"
               >
                 {t('label-sign-in')}
                 !
-              </a>
+              </Link>
             </div>
             <div className="text-3xl font-medium text-black"> Welcome!</div>
             <div className="text-lg

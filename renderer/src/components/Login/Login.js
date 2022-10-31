@@ -4,6 +4,7 @@ import { ChevronRightIcon, UserIcon } from '@heroicons/react/solid';
 
 import * as localForage from 'localforage';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 import LogoIcon from '@/icons/logo.svg';
 import GroupIcon from '@/illustrations/group.svg';
 // import SittingIcon from '@/illustrations/sitting.svg';
@@ -166,14 +167,14 @@ export default function Login() {
               : (
                 <div className="text-success pb-12">
                   {i18n.t('label-dont-have-account')}
-                  <a
+                  <Link
                     data-testid="signup"
                     href="/signup"
                     className="text-primary ml-2"
                   >
                     {i18n.t('label-sign-up')}
                     !
-                  </a>
+                  </Link>
                 </div>
               )}
           <div className="text-3xl font-medium text-secondary text-center">{i18n.t('label-sign-in')}</div>
@@ -217,10 +218,10 @@ export default function Login() {
         </div>
 
         <div className="absolute bottom-4 left-0 right-0 flex items-center justify-center gap-5 bg-white text-black font-bold hidden">
-          <a href="/" onClick={(event) => event.preventDefault()}>EN(US)</a>
-          <a href="/" onClick={(event) => event.preventDefault()}>ABOUT</a>
-          <a href="/" onClick={(event) => event.preventDefault()}>PRIVACY</a>
-          <a href="/" onClick={(event) => event.preventDefault()}>TERMS</a>
+          <Link href="/" onClick={(event) => event.preventDefault()}>EN(US)</Link>
+          <Link href="/" onClick={(event) => event.preventDefault()}>ABOUT</Link>
+          <Link href="/" onClick={(event) => event.preventDefault()}>PRIVACY</Link>
+          <Link href="/" onClick={(event) => event.preventDefault()}>TERMS</Link>
         </div>
       </div>
 
