@@ -7,8 +7,6 @@ import localForage from 'localforage';
 import * as logger from '../../../../logger';
 import MultiComboBox from '../MultiComboBox';
 
-const fs = window.require('fs');
-
 export default function TaNavigation({ languageId, referenceResources }) {
   const [selected, setSelected] = useState('');
   const [options, setoptions] = useState([]);
@@ -44,6 +42,7 @@ export default function TaNavigation({ languageId, referenceResources }) {
         // console.log('offline data : ', { taList, offlineResource });
         localForage.getItem('userProfile').then(async (user) => {
           logger.debug('TaNavigation.js', 'reading offline helps ', offlineResource.data?.projectDir);
+          const fs = window.require('fs');
           const path = require('path');
           const newpath = localStorage.getItem('userPath');
           const currentUser = user?.username;

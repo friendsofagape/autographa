@@ -138,7 +138,7 @@ export default function CustomizedHook({
         {groupedOptions.length > 0 ? (
           <Listbox {...getListboxProps()}>
             {groupedOptions.map((option, index) => (
-              <li {...getOptionProps({ option, index })}>
+              <li key={option.title} {...getOptionProps({ option, index })}>
                 <span>{option.title}</span>
                 <CheckIcon fontSize="small" />
               </li>

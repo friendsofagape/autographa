@@ -9,8 +9,6 @@ import ReferenceCard from './ReferenceCard';
 import TranslationhelpsNav from './TranslationhelpsNav';
 import * as logger from '../../../logger';
 
-const fs = window.require('fs');
-
 export default function TranslationHelpsCard({
   title,
   verse,
@@ -55,6 +53,7 @@ export default function TranslationHelpsCard({
         setOfflineItems('');
         localForage.getItem('userProfile').then(async (user) => {
           logger.debug('TranslationHelpsCard.js', 'reading offline helps ', offlineResource.data?.projectDir);
+          const fs = window.require('fs');
           const path = require('path');
           const newpath = localStorage.getItem('userPath');
           const currentUser = user?.username;
