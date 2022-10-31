@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-css-tags */
 import Head from 'next/head';
 import i18n from './translations/i18n';
 

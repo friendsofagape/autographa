@@ -51,6 +51,7 @@ function MultiComboBox({
               <div className="flex flex-col">
                 { options.length > 0 && options.map((option) => (
                   <div
+                    key={option}
                     role="button"
                     tabIndex={-2}
                     className="flex px-2 py-1 cursor-pointer justify-between hover:bg-gray-200 rounded-md"

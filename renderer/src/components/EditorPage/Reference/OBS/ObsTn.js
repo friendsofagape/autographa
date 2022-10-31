@@ -8,8 +8,6 @@ import { getObsTn } from './getObsTn';
 import ObsResourceCard from './ObsResourceCard';
 import * as logger from '../../../../logger';
 
-const fs = window.require('fs');
-
 function ObsTnCard({
   resource,
   chapter,
@@ -46,6 +44,7 @@ function ObsTnCard({
       localForage.getItem('userProfile').then(async (user) => {
           // console.log('inside offline fetch function :  ', offlineResource);
           logger.debug('OfflineResourceFetch.js', 'reading offline obs-tn ', offlineResource.data?.projectDir);
+          const fs = window.require('fs');
           const path = require('path');
           const newpath = localStorage.getItem('userPath');
           const currentUser = user?.username;

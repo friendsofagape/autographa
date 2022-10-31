@@ -8,7 +8,6 @@ import localForage from 'localforage';
 import * as logger from '../../../../logger';
 import TrashSvg from '@/icons/basil/Outline/Interface/Trash.svg';
 
-const fs = window.require('fs');
 const path = require('path');
 
 function RemoveResource({
@@ -29,6 +28,7 @@ function RemoveResource({
         logger.warn('removeResource.js', 'inside removing resource call');
         localForage.getItem('userProfile').then(async (user) => {
             logger.debug('DownloadResourcePopUp.js', 'In resource download user fetch - ', user?.username);
+            const fs = window.require('fs');
             const newpath = localStorage.getItem('userPath');
             const folder = path.join(newpath, 'autographa', 'users', `${user?.username}`, 'resources');
             let resourceName = null;
