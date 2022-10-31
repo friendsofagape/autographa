@@ -55,20 +55,19 @@ export default function LicencePopover({ call }) {
     setCopyRight({ id: name, title: copyright.title, licence: content });
   };
   return (
-
     <>
       <div className="flex gap-3">
         {/* <button
-          type="button"
-          onClick={() => { openlicenceNav('add'); openModal(); }}
-          className="focus:outline-none
-          bg-primary h-8 w-8 flex items-center justify-center rounded-full"
-        >
-          <PlusIcon
-            className="h-5 w-5 text-white"
-            aria-hidden="true"
-          />
-        </button> */}
+        type="button"
+        onClick={() => { openlicenceNav('add'); openModal(); }}
+        className="focus:outline-none
+        bg-primary h-8 w-8 flex items-center justify-center rounded-full"
+      >
+        <PlusIcon
+          className="h-5 w-5 text-white"
+          aria-hidden="true"
+        />
+      </button> */}
         <button
           type="button"
           onClick={() => { openlicenceNav(); openModal(); }}
@@ -127,35 +126,35 @@ export default function LicencePopover({ call }) {
                       checked={preview}
                       onChange={setPreview}
                       className={`${preview ? 'bg-primary' : 'bg-dark'}
-                                  relative inline-flex flex-shrink-0 h-5 w-10 border-2 border-transparent rounded-full cursor-pointer
-                                  transition-colors ease-in-out duration-200 focus:outline-none focus-visible:ring-2
-                                focus-visible:ring-white focus-visible:ring-opacity-75`}
+                                relative inline-flex flex-shrink-0 h-5 w-10 border-2 border-transparent rounded-full cursor-pointer
+                                transition-colors ease-in-out duration-200 focus:outline-none focus-visible:ring-2
+                              focus-visible:ring-white focus-visible:ring-opacity-75`}
                     >
                       <span className="sr-only">Use setting</span>
                       <span
                         aria-hidden="true"
                         className={`${preview ? 'translate-x-5' : 'translate-x-0'}
-                                    pointer-events-none inline-block h-4 w-4 rounded-full bg-white shadow-lg transform ring-0 transition ease-in-out duration-200`}
+                                  pointer-events-none inline-block h-4 w-4 rounded-full bg-white shadow-lg transform ring-0 transition ease-in-out duration-200`}
                       />
                     </Switch>
 
                     {/* <Switch
-                      as="button"
-                      checked={preview}
-                      onChange={setPreview}
-                      className={`${preview ? 'bg-indigo-600' : 'bg-gray-200'
-                        } relative inline-flex flex-shrink-0 h-6 transition-colors
-                         duration-200 ease-in-out border-2 border-transparent
-                         rounded-full cursor-pointer w-11 focus:outline-none focus:shadow-outline`}
-                    >
-                      {({ checked }) => (
-                        <span
-                          className={`${checked ? 'translate-x-5' : 'translate-x-0'
-                            } inline-block w-5 h-5 transition duration-200 ease-in-out
-                             transform bg-white rounded-full`}
-                        />
-                      )}
-                    </Switch> */}
+                    as="button"
+                    checked={preview}
+                    onChange={setPreview}
+                    className={`${preview ? 'bg-indigo-600' : 'bg-gray-200'
+                      } relative inline-flex flex-shrink-0 h-6 transition-colors
+                       duration-200 ease-in-out border-2 border-transparent
+                       rounded-full cursor-pointer w-11 focus:outline-none focus:shadow-outline`}
+                  >
+                    {({ checked }) => (
+                      <span
+                        className={`${checked ? 'translate-x-5' : 'translate-x-0'
+                          } inline-block w-5 h-5 transition duration-200 ease-in-out
+                           transform bg-white rounded-full`}
+                      />
+                    )}
+                  </Switch> */}
 
                   </Switch.Group>
                 </div>
@@ -173,9 +172,9 @@ export default function LicencePopover({ call }) {
                     preview={preview}
                     onEdit={callback}
                     inputFilters={[
-                      [/<br>/gi, '\n'],
-                      [/(<u>|<\/u>)/gi, '__'],
-                    ]}
+                    [/<br>/gi, '\n'],
+                    [/(<u>|<\/u>)/gi, '__'],
+                  ]}
                     outputFilters={[[/\n/gi, '<br>']]}
                   />
 
@@ -183,20 +182,20 @@ export default function LicencePopover({ call }) {
 
                 <div className="absolute bottom-5 left-0 right-5 flex gap-3 justify-end">
                   {edit
-                    && (
-                      <button
-                        type="button"
-                        className="mt-5 bg-success w-28 h-8 border-color-success rounded uppercase text-white text-xs shadow focus:outline-none"
-                        onClick={() => { addLicence(); closeModal(); }}
-                      >
-                        {t('btn-save')}
-                      </button>
-                    )}
+                  && (
+                    <button
+                      type="button"
+                      className="mt-5 bg-success w-28 h-8 border-color-success rounded uppercase text-white text-xs shadow focus:outline-none"
+                      onClick={() => { addLicence(); closeModal(); }}
+                    >
+                      {t('btn-save')}
+                    </button>
+                  )}
                   <button
                     type="button"
                     onClick={closeModal}
                     className=" mt-5
-                  bg-error w-28 h-8 border-color-error rounded uppercase shadow text-white text-xs tracking-wide leading-4 font-light focus:outline-none"
+                bg-error w-28 h-8 border-color-error rounded uppercase shadow text-white text-xs tracking-wide leading-4 font-light focus:outline-none"
                   >
                     {t('btn-cancel')}
                   </button>

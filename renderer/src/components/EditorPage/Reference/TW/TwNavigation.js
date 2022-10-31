@@ -7,8 +7,6 @@ import { SnackBar } from '@/components/SnackBar';
 import * as logger from '../../../../logger';
 import MultiComboBox from '../MultiComboBox';
 
-const fs = window.require('fs');
-
 export default function TwNavigation({ languageId, referenceResources, setReferenceResources }) {
   const [selected, setSelected] = useState('');
   const [twList, setTwList] = useState([]);
@@ -29,6 +27,7 @@ export default function TwNavigation({ languageId, referenceResources, setRefere
       const { offlineResource } = referenceResources;
       localForage.getItem('userProfile').then(async (user) => {
         logger.debug('TwNavigation.js', 'reading offline helps ', offlineResource.data?.projectDir);
+        const fs = window.require('fs');
         const path = require('path');
         const newpath = localStorage.getItem('userPath');
         const currentUser = user?.username;
