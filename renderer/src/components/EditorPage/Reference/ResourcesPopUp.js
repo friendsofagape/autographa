@@ -524,7 +524,7 @@ const ResourcesPopUp = ({
                 <div className="flex flex-col gap-1">
                   <div className="flex flex-row">
                     <CheckHelpsUpdatePopUp resource={resource} selectResource={selectResource} />
-                    <RemoveResource resource={resource} selectResource={selectResource} closeResourceWindow={removeSection} handleRowSelect={handleRowSelect} />
+                    <RemoveResource resource={resource} selectResource={selectResource} closeResourceWindow={removeSection} />
                   </div>
                   <div className="text-[9px] mt-2 text-black">
                     <span>{resource?.value?.lastUpdatedAg?.split('T')[0]}</span>
@@ -948,7 +948,7 @@ const ResourcesPopUp = ({
                                   && (
                                     <CheckHelpsUpdatePopUp resource={ref} selectResource={selectResource} />
                                     )}
-                                    <RemoveResource resource={ref} selectResource={selectResource} closeResourceWindow={removeSection} handleRowSelect={handleRowSelect} />
+                                    <RemoveResource resource={ref} selectResource={selectResource} closeResourceWindow={removeSection} />
                                   </div>
                                   <div className="text-[9px] mt-2 text-black">
                                     <span>{ref?.value?.resourceMeta && ref?.value?.resourceMeta?.lastUpdatedAg.split('T')[0]}</span>
@@ -1029,7 +1029,7 @@ const ResourcesPopUp = ({
                                   && (
                                     <CheckHelpsUpdatePopUp resource={ref} selectResource={selectResource} />
                                     )}
-                                  <RemoveResource resource={ref} selectResource={selectResource} closeResourceWindow={removeSection} handleRowSelect={handleRowSelect} />
+                                  <RemoveResource resource={ref} selectResource={selectResource} closeResourceWindow={removeSection} />
                                 </div>
                                 <div className="text-[9px] mt-2 text-black">
                                   <span>{ref?.value?.resourceMeta && ref?.value?.resourceMeta?.lastUpdatedAg.split('T')[0]}</span>
@@ -1094,7 +1094,7 @@ const ResourcesPopUp = ({
                                   && (
                                     <CheckHelpsUpdatePopUp resource={ref} selectResource={selectResource} />
                                     )}
-                                  {/* <RemoveResource resource={ref} selectResource={selectResource} closeResourceWindow={removeSection} handleRowSelect={handleRowSelect} /> */}
+                                  {/* <RemoveResource resource={ref} selectResource={selectResource} closeResourceWindow={removeSection}  /> */}
                                 </div>
                                 <div className="text-[9px] mt-2 text-black">
                                   <span>{ref?.value?.resourceMeta && ref?.value?.resourceMeta?.lastUpdatedAg.split('T')[0]}</span>

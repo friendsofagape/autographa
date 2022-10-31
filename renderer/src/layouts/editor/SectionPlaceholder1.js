@@ -49,6 +49,7 @@ const SectionPlaceholder1 = ({ editor }) => {
       chapter,
       verse,
       obsNavigation,
+      resetResourceOnDeleteOffline,
     },
     actions: {
       setRow,
@@ -56,8 +57,10 @@ const SectionPlaceholder1 = ({ editor }) => {
       setOpenResource1,
       setOpenResource2,
       applyBooksFilter,
+      setResetResourceOnDeleteOffline,
     },
   } = useContext(ReferenceContext);
+
   const {
     states: {
       scrollLock,
@@ -103,6 +106,43 @@ const SectionPlaceholder1 = ({ editor }) => {
     // }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [layout]);
+
+  useEffect(() => {
+    if (resetResourceOnDeleteOffline?.referenceColumnOneData1Reset) {
+      setReferenceColumnOneData1((prev) => ({
+        ...prev,
+        languageId: '',
+        selectedResource: '',
+        refName: '',
+        header: '',
+        owner: '',
+        offlineResource: { offline: false },
+      }
+      ));
+      setResetResourceOnDeleteOffline((prev) => ({
+        ...prev,
+        referenceColumnOneData1Reset: false,
+      }
+      ));
+    } else if (resetResourceOnDeleteOffline?.referenceColumnOneData2Reset) {
+      setReferenceColumnOneData2((prev) => ({
+        ...prev,
+        languageId: '',
+        selectedResource: '',
+        refName: '',
+        header: '',
+        owner: '',
+        offlineResource: { offline: false },
+      }
+      ));
+      setResetResourceOnDeleteOffline((prev) => ({
+        ...prev,
+        referenceColumnOneData2Reset: false,
+      }
+      ));
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [resetResourceOnDeleteOffline?.referenceColumnOneData1Reset, resetResourceOnDeleteOffline?.referenceColumnOneData2Reset]);
 
   useEffect(() => {
     const refsHistory = [];
@@ -258,7 +298,8 @@ const SectionPlaceholder1 = ({ editor }) => {
     referenceColumnOneData1?.selectedResource, referenceColumnOneData2?.languageId, referenceColumnOneData2?.refName,
     referenceColumnOneData2?.selectedResource, sectionNum, layout, referenceColumnOneData1,
     referenceColumnOneData2?.owner, removingSection, addingSection, referenceColumnOneData2?.offlineResource,
-    referenceColumnOneData1?.offlineResource]);
+    referenceColumnOneData1?.offlineResource, resetResourceOnDeleteOffline?.referenceColumnOneData1Reset,
+    resetResourceOnDeleteOffline?.referenceColumnOneData2Reset]);
 
   const CustomNavigation1 = (
     <CustomNavigation
