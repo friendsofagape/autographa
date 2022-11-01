@@ -26,9 +26,9 @@ const EditorPage = ({
             role="button"
             tabIndex={0}
             key={mainChunk.verseNumber}
-            className="relative bg-gray-100 m-3 px-3 py-4 justify-center items-center
+            className={`relative ${mainChunk.verseNumber === verse ? 'bg-light' : 'bg-gray-100'} m-3 px-3 py-4 justify-center items-center
             border border-gray-200 rounded-lg
-            hover:bg-light cursor-pointe"
+            hover:bg-light cursor-pointe`}
             onClick={() => selectVerse(mainChunk.verseNumber, mainChunk.verseText)}
           >
             <div
