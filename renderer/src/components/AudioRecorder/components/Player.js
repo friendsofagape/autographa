@@ -25,7 +25,6 @@ import PropTypes from 'prop-types';
 import {
  forwardRef, useCallback, useRef, useState, useEffect,
 } from 'react';
-
 import PlayIcon from '@/icons/basil/Outline/Media/Play.svg';
 import PauseIcon from '@/icons/basil/Outline/Media/Pause.svg';
 
@@ -78,6 +77,11 @@ const Player = ({
 	const changeTake = (value) => {
 		setTake(value);
 		setTrigger();
+	};
+  const micSettings = () => {
+		const { shell } = window.require('electron');
+		shell.openExternal('ms-settings:sound');
+		shell.openExternal('x-apple.systempreferences:');
 	};
 	return (
   <div className="relative">
@@ -133,7 +137,7 @@ const Player = ({
               </div>
               <button
                 type="button"
-                className="p-2 bg-dark rounded-md hover:bg-error"
+                className="p-2 bg-error rounded-md hover:bg-dark"
                 onClick={() => setTrigger('recPause')}
               >
                 <PauseIcon
@@ -373,6 +377,7 @@ const Player = ({
             <button
               type="button"
               className="p-2 bg-dark rounded-md hover:bg-error"
+              onClick={() => micSettings()}
             >
               <CogIcon className="w-5 h-5" aria-hidden="true" />
             </button>
