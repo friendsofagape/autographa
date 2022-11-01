@@ -7,9 +7,6 @@ const path = require('path');
 let error;
 const uniqueUser = (users, username) => users.some((user) => user.username === username);
 
-/**
- * Reads a file from the user's computer and stores it in localForage.
- */
 export const loadUsers = async () => {
   const newpath = localStorage.getItem('userPath');
   const fs = window.require('fs');
@@ -34,13 +31,6 @@ export const loadUsers = async () => {
   }
 };
 
-/**
- * It creates a new user and adds it to a JSON file.
- * </code>
- * @param values - {
- * @param fs - is the filesystem module
- * @returns a promise.
- */
 export const handleJson = async (values, fs) => {
   const newpath = localStorage.getItem('userPath');
   logger.debug('handleJson.js', 'Inside handleJson');

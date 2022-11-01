@@ -1,14 +1,309 @@
-import React from 'react';
-import LeftLogin from './LeftLogin';
-import RightLogin from './RightLogin';
+import React, { useEffect } from 'react';
+// import 'tailwindcss/tailwind.css';
+import { ChevronRightIcon, UserIcon } from '@heroicons/react/solid';
+
+import * as localForage from 'localforage';
+import { useRouter } from 'next/router';
+import LogoIcon from '@/icons/logo.svg';
+import GroupIcon from '@/illustrations/group.svg';
+// import SittingIcon from '@/illustrations/sitting.svg';
+import VectorOne from '@/illustrations/vector-one.svg';
+import HalfMoon from '@/illustrations/half-moon.svg';
+import Quote from '@/illustrations/quote.svg';
+import * as logger from '../../logger';
+import { isElectron } from '../../core/handleElectron';
+import CustomLogin from './CustomLogin';
+import { AuthenticationContext } from './AuthenticationContextProvider';
+
+import { createUser, handleLogin } from '../../core/Login/handleLogin';
+import i18n from '../../translations/i18n';
 
 export default function Login() {
+  const router = useRouter();
+  const online = {
+    textfield: {
+      count: [
+        { label: i18n.t('label-username'), type: 'text', name: 'identifier' },
+        { label: i18n.t('label-password'), type: 'password', name: 'password' },
+      ],
+    },
+    viewForgot: true,
+  };
+  const offline = {
+    autocomplete: { count: [{ label: i18n.t('label-username') }] },
+    viewForgot: false,
+  };
+  const tab = React.useState(!isElectron());
+  const [users, setUsers] = React.useState([]);
+  const {
+    states: { config },
+    action: { generateToken },
+    // action: { generateToken, getConfig },
+  } = React.useContext(AuthenticationContext);
+  // eslint-disable-next-line no-unused-vars
+  const [tabvalue, setTabValue] = React.useState(0);
+  const [ui, setUi] = React.useState(isElectron() ? offline : online);
+  const [valid, setValid] = React.useState({
+    username: false,
+    password: false,
+  });
+  // eslint-disable-next-line no-unused-vars
+  const [token, setToken] = React.useState();
+  const [error, setError] = React.useState({
+    identifier: '',
+    password: '',
+    msg: '',
+  });
+  // eslint-disable-next-line no-unused-vars
+  const handleChange = (newValue) => {
+    setTabValue(newValue);
+    setUi(newValue === 0 ? offline : online);
+  };
+  // The below code is commented for UI dev purpose.
+  useEffect(() => {
+    if (users.length === 0) {
+      localForage.getItem('users').then((user) => {
+        if (user) {
+          setUsers(user);
+        }
+      });
+    }
+  }, [users]);
+  // useEffect(() => {
+  //   if (!isElectron()) {
+  //     // window is accessible here.
+  //     const url = window.location.href;
+  //     const regex = /(.*)login\?flow=/gm;
+  //     getConfig(url.replace(regex, ''));
+  //   }
+  // // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
+  useEffect(() => {
+    if (config) {
+      // eslint-disable-next-line prefer-const
+      let err = {};
+      err.msg = config?.messages?.[0]?.text;
+      config.fields.forEach((field) => {
+        if (field.name === 'csrf_token') {
+          setToken(field.value);
+        } else {
+          err[field.name] = field.messages?.[0].text;
+        }
+      });
+      setError(err);
+    }
+  }, [config]);
+  const handleValidation = (values) => {
+    let user;
+    if (values.username) {
+      user = true;
+    } else {
+      user = false;
+    }
+    setValid({ ...valid, username: !user });
+    return user;
+  };
+  const handleSubmit = async (values) => {
+    localForage.setItem('appMode', 'offline');
+    logger.debug('Login.js', 'In handleSubmit');
+    if (isElectron()) {
+      // router.push('/main');
+      // The below code is commented for UI dev purpose.
+      if (handleValidation(values)) {
+        const fs = window.require('fs');
+        logger.debug('Login.js', 'Triggers handleLogin to check whether the user is existing or not');
+        const user = handleLogin(users, values);
+        if (user) {
+          logger.debug('Login.js', 'Triggers generateToken to generate a Token for the user');
+          generateToken(user);
+        } else {
+          logger.debug('Login.js', 'Triggers createUser for creating a new user');
+          createUser(values, fs)
+            .then((val) => {
+              logger.debug('Login.js', 'Triggers generateToken to generate a Token for the user');
+              generateToken(val);
+            });
+        }
+      }
+    } else {
+      // eslint-disable-next-line no-lonely-if
+      if (isElectron()) {
+        router.push('/projects');
+        // const requestOptions = {
+        //   method: 'POST',
+        //   headers: { 'Content-Type': 'application/json' },
+        //   body: document.aglogin,
+        // };
+        // fetch(config?.action, requestOptions)
+        //   .then((response) => response.json())
+        //   .then((data) => console.log(data));
+      } else {
+        router.push('/');
+        // } else {
+        // router.push('/newproject');
+        // The below code is commented for UI dev purpose.
+        // document.aglogin.action = config.action;
+        // document.aglogin.method = config.method;
+        // // eslint-disable-next-line prefer-const
+        // let input = document.createElement('input');
+        //   input.setAttribute('type', 'hidden');
+        //   input.setAttribute('name', 'csrf_token');
+        //   input.setAttribute('value', token);
+        // document.aglogin.appendChild(input);
+        // document.aglogin.submit();
+        // }
+        // router.push('/login');
+      }
+    }
+  };
   return (
     <div className="grid grid-cols-7 h-screen">
-      <div className="col-span-3  justify-center items-center h-full relative">
-        <LeftLogin />
+
+      <div className="col-span-3 flex justify-center items-center h-full relative">
+
+        <div className="flex flex-col justify-center w-3/4 max-w-md">
+          {tab[0] === false ? null
+              : (
+                <div className="text-success pb-12">
+                  {i18n.t('label-dont-have-account')}
+                  <a
+                    data-testid="signup"
+                    href="/signup"
+                    className="text-primary ml-2"
+                  >
+                    {i18n.t('label-sign-up')}
+                    !
+                  </a>
+                </div>
+              )}
+          <div className="text-3xl font-medium text-secondary text-center">{i18n.t('label-sign-in')}</div>
+          {users.map((user, index) => {
+              if (index < 5) {
+                return (
+                  <div
+                    key={user.username}
+                    id={user.username}
+                    className="grid grid-cols-4 py-3 m-2 justify-center items-center justify-items-center gap-2
+                  bg-gray-100 text-dark rounded-lg cursor-pointer
+                  border-2 border-transparent
+                  hover:bg-primary hover:text-white hover:border-primary group"
+                    role="button"
+                    tabIndex="0"
+                    onClick={() => { handleSubmit({ username: user.username }); }}
+                  >
+                    <div className="h-10 w-10 flex justify-center items-center bg-gray-200 rounded-full group-hover:bg-secondary">
+                      <UserIcon className="h-5 w-5" />
+                    </div>
+                    <div className="col-span-2">
+                      {user.username}
+                    </div>
+                    <div className="h-6 w-6 flex items-center justify-center bg-gray-200 rounded-full group-hover:bg-secondary">
+                      <ChevronRightIcon data-test-id="submit" className="h-5 w-5" />
+                    </div>
+                  </div>
+                );
+              }
+              return '';
+            })}
+          <CustomLogin
+            ui={ui}
+            error={valid}
+            login={handleSubmit}
+            userlist={users}
+            validation={error}
+            buttonname={i18n.t('btn-signin')}
+          />
+          <div />
+        </div>
+
+        <div className="absolute bottom-4 left-0 right-0 flex items-center justify-center gap-5 bg-white text-black font-bold hidden">
+          <a href="/" onClick={(event) => event.preventDefault()}>EN(US)</a>
+          <a href="/" onClick={(event) => event.preventDefault()}>ABOUT</a>
+          <a href="/" onClick={(event) => event.preventDefault()}>PRIVACY</a>
+          <a href="/" onClick={(event) => event.preventDefault()}>TERMS</a>
+        </div>
       </div>
-      <RightLogin />
+
+      <div className="col-span-4 bg-secondary relative flex flex-col justify-between">
+
+        <div className="my-5 mt-10 flex gap-3 justify-center items-center">
+          <LogoIcon
+            className="h-5 w-5 text-white group-hover:text-white"
+            aria-hidden="true"
+          />
+          <div className="text-white uppercase font-bold tracking-wider text-2xl">{i18n.t('app-name')}</div>
+          <div className="text-primary font-bold text-3xl">2.0</div>
+        </div>
+
+        <div className="flex flex-col justify-center items-center relative">
+
+          <div className="">
+            {/* <img width="61" height="56" src="/illustrations/group.svg" alt="" /> */}
+            <GroupIcon
+              fill="#FF4A4A"
+              width={61}
+              height={56}
+            />
+          </div>
+
+          <div className="mx-10 md:mx-20 lg:mx-32 text-xl text-white leading-9 relative">
+            <div className="absolute top-0 left-0">
+              <Quote height={26} fill="#0068E2" />
+              {/* <img height="26" src="/illustrations/quote.svg" alt="" /> */}
+            </div>
+
+            <div className="py-10">
+              {i18n.t('text-login-page-desc')}
+            </div>
+
+            {/* <div className="flex pt-5">
+                <div className="pr-4">FEATURE</div>
+                <img className="" src="/illustrations/green-check.svg" alt="logo" />
+              </div> */}
+          </div>
+
+          <div className="flex ">
+            <div className="">
+              <img src="/illustrations/sitting.png" alt="" />
+              {/* <SittingIcon
+                  width={236}
+                  height={338}
+                /> */}
+              {/* <img
+                  srcSet="/illustrations/sitting.svg 1200w"
+                  src="/illustrations/sitting.svg"
+                  alt=""
+                /> */}
+
+            </div>
+            <div>
+              <VectorOne
+                width={34}
+                height={33}
+                fill="#FF4A4A"
+              />
+              {/* <img
+                  width="34"
+                  height="33"
+                  src="/illustrations/vector-one.svg"
+                  alt=""
+                /> */}
+            </div>
+          </div>
+
+        </div>
+
+        <div className="">
+          <HalfMoon width={124} height={70} />
+          {/* <img
+              srcSet="/illustrations/half-moon.svg 1200w"
+              src="/illustrations/half-moon.svg"
+              alt=""
+            /> */}
+        </div>
+
+      </div>
+
     </div>
   );
 }
