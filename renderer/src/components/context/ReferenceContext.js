@@ -55,6 +55,12 @@ export default function ReferenceContextProvider({ children }) {
     const [audioPath, setAudioPath] = useState();
     // Trigger the function after every recording and default change
     const [audioCurrentChapter, setAudioCurrentChapter] = useState();
+    const [resetResourceOnDeleteOffline, setResetResourceOnDeleteOffline] = useState({
+      referenceColumnOneData1Reset: false,
+      referenceColumnOneData2Reset: false,
+      referenceColumnTwoData1Reset: false,
+      referenceColumnTwoData2Reset: false,
+    });
     const handleClick = (event) => {
       setAnchorEl(event.currentTarget);
     };
@@ -115,6 +121,7 @@ export default function ReferenceContextProvider({ children }) {
          verseList,
          bookName,
          bookId,
+
       }, actions: {
          onChangeBook,
          onChangeChapter,
@@ -264,6 +271,7 @@ export default function ReferenceContextProvider({ children }) {
         audioContent,
         audioCurrentChapter,
         audioPath,
+        resetResourceOnDeleteOffline,
       },
       actions: {
         setLanguageId,
@@ -305,6 +313,7 @@ export default function ReferenceContextProvider({ children }) {
         setAudioContent,
         setAudioCurrentChapter,
         setAudioPath,
+        setResetResourceOnDeleteOffline,
       },
     };
 
