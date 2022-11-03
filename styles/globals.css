@@ -2,12 +2,26 @@
 @tailwind components;
 @tailwind utilities;
 
+
+@font-face {
+	font-family: "Inter";
+	src: url("../renderer/src/assets/fonts/Inter/Inter-Medium.ttf"),
+		url("../renderer/src/assets/fonts/Inter/Inter-Regular.ttf"),
+		url("../renderer/src/assets/fonts/Inter/Inter-SemiBold.ttf"),
+		url("../renderer/src/assets/fonts/Inter/Inter-Thin.ttf"),
+		url("../renderer/src/assets/fonts/Inter/Inter-Light.ttf"),
+		url("../renderer/src/assets/fonts/Inter/Inter-ExtraLight.ttf");
+	font-weight: 100 500;
+}
+
 /* Chrome, Safari and Opera */
 .no-scrollbars::-webkit-scrollbar {
 	display: none;
 }
 
 .no-scrollbars {
-	-ms-overflow-style: none; /* IE and Edge */
-	scrollbar-width: none; /* Firefox */
+	-ms-overflow-style: none;
+	/* IE and Edge */
+	scrollbar-width: none;
+	/* Firefox */
 }
