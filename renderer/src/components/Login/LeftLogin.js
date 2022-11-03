@@ -1,11 +1,11 @@
-import { isElectron } from '@/core/handleElectron';
-import { createUser, handleLogin } from '@/core/Login/handleLogin';
 import { Dialog, Transition } from '@headlessui/react';
 import { useRouter } from 'next/router';
 import React, {
   Fragment, useContext, useEffect, useState,
 } from 'react';
 import * as localForage from 'localforage';
+import { createUser, handleLogin } from '../../core/Login/handleLogin';
+import { isElectron } from '../../core/handleElectron';
 import * as logger from '../../logger';
 import { AuthenticationContext } from './AuthenticationContextProvider';
 
