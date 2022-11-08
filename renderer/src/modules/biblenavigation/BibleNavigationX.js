@@ -1,23 +1,19 @@
-import PropTypes from 'prop-types'; // can be removed
+import PropTypes from 'prop-types';
 import { Dialog, Transition } from '@headlessui/react';
 import {
-  Fragment, useEffect, useRef, useState,
+ Fragment, useContext, useEffect, useRef, useState,
 } from 'react';
-import {
-  XIcon,
-  ChevronDownIcon,
-} from '@heroicons/react/solid';
-import { useBibleReference } from 'bible-reference-rcl';
+import { XIcon, ChevronDownIcon } from '@heroicons/react/solid';
+import * as localforage from 'localforage';
 import SelectBook from '@/components/EditorPage/Navigation/reference/SelectBook';
 import SelectVerse from '@/components/EditorPage/Navigation/reference/SelectVerse';
 
-export default function CustomNavigation({
-  initialBook,
-  initialChapter,
-  initialVerse,
-  setNavigation,
-  showVerse,
-}) {
+import { ReferenceContext } from '@/components/context/ReferenceContext';
+
+export default function BibleNavigationX(props) {
+  const { showVerse } = props;
+  const supportedBooks = null; // if empty array or null then all books available
+
   const {
     state: {
       bookId,
@@ -27,38 +23,30 @@ export default function CustomNavigation({
       verse,
       chapterList,
       verseList,
+      languageId,
+      //  closeNavigation,
     }, actions: {
       onChangeBook,
       onChangeChapter,
       onChangeVerse,
       applyBooksFilter,
+      setCloseNavigation,
     },
-  } = useBibleReference({
-    initialBook,
-    initialChapter,
-    initialVerse,
-});
+  } = useContext(ReferenceContext);
+
+  useEffect(() => {
+    applyBooksFilter(supportedBooks);
+  }, [applyBooksFilter, supportedBooks]);
+
   const [openBook, setOpenBook] = useState(false);
   const [openVerse, setOpenVerse] = useState(false);
   const cancelButtonRef = useRef(null);
-  const supportedBooks = null;
 
   const [multiSelectVerse] = useState(false);
   const [multiSelectBook] = useState(false);
   const [selectedVerses, setSelectedVerses] = useState([]);
   const [selectedBooks, setSelectedBooks] = useState([]);
   const [verselectActive, setVerseSelectActive] = useState(false);
-
-  useEffect(() => {
-    applyBooksFilter(supportedBooks);
-  }, [applyBooksFilter, supportedBooks]);
-
-  useEffect(() => {
-    setNavigation({
-      bookId, chapter, verse,
-    });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [bookId, chapter, verse]);
 
   function closeBooks() {
     setOpenBook(false);
@@ -80,49 +68,65 @@ export default function CustomNavigation({
     if (multiSelectVerse) { setSelectedVerses([]); }
   }
 
-//   useEffect(() => {
-//     if (isElectron()) {
-//       localforage.getItem('refBibleBurrito')
-//         .then((refs) => {
-//           refs.forEach((ref) => {
-//             if (languageId !== null) {
-//             if (ref.languages[0].tag === languageId) {
-//               const supportedBooks = [];
-//               Object.entries((ref.type.flavorType.currentScope)).forEach(
-//                   ([key]) => {
-//                     supportedBooks.push(key.toLowerCase());
-//                   },
-//                   );
-//                   applyBooksFilter(supportedBooks);
-//                 }
-//               }
-//           });
-//       });
-//   }
-//   // eslint-disable-next-line react-hooks/exhaustive-deps
-//   }, [languageId]);
+  useEffect(() => {
+    const getSupportedBooks = async () => {
+      const refs = await localforage.getItem('refBibleBurrito');
+      refs?.forEach((ref) => {
+        if (languageId !== null) {
+          if (ref.value.languages[0].tag === languageId) {
+            const supportedBooks = [];
+            Object.entries((ref.value.type.flavorType.currentScope)).forEach(
+              ([key]) => {
+                supportedBooks.push(key.toLowerCase());
+              },
+            );
+            applyBooksFilter(supportedBooks);
+          }
+        }
+      });
+    };
+    getSupportedBooks();
+  }, [languageId, applyBooksFilter]);
+
+  useEffect(() => {
+    async function setReference() {
+      await localforage.setItem('navigationHistory', [bookId, chapter, verse]);
+    }
+    setReference();
+  }, [bookId, chapter, verse]);
+
+  useEffect(() => {
+    if (openBook === false && openVerse === false) {
+      setCloseNavigation(true);
+    }
+    if (openBook || openVerse) {
+      setCloseNavigation(false);
+    }
+  }, [openVerse, openBook, setCloseNavigation]);
 
   return (
     <>
       <div className="flex">
         <div className="bg-primary text-white py-2 uppercase tracking-wider text-xs font-semibold">
-          <span aria-label="resource-bookname" className="px-3">{bookName}</span>
+          <span aria-label="editor-bookname" className="px-3">{bookName}</span>
           <span
-            className="focus:outline-none bg-white py-4 bg-opacity-10"
+            aria-label="open-book"
+            className="focus:outline-none bg-white py-3 bg-opacity-10"
             onClick={openBooks}
             role="button"
             tabIndex="-2"
           >
-            <ChevronDownIcon className="focus:outline-none inline h-4 w-4 mx-1 text-white" aria-hidden="true" />
+            <ChevronDownIcon className="inline h-4 w-4 mx-1 text-white" aria-hidden="true" />
           </span>
           <span className="px-3">{chapter}</span>
           <span
-            className="focus:outline-none bg-white py-4 bg-opacity-10"
+            aria-label="open-chapter"
+            className="focus:outline-none bg-white py-3 bg-opacity-10"
             onClick={selectBook}
             role="button"
             tabIndex="-1"
           >
-            <ChevronDownIcon className="focus:outline-none inline h-4 w-4 mx-1 text-white" aria-hidden="true" />
+            <ChevronDownIcon className="inline h-4 w-4 mx-1 text-white" aria-hidden="true" />
           </span>
           {showVerse
             && (
@@ -154,7 +158,7 @@ export default function CustomNavigation({
         >
           <Dialog.Overlay className="fixed inset-0 bg-black opacity-30" />
           <div className="flex items-center justify-center h-screen ">
-            <div className="w-5/12 m-auto z-50 shadow overflow-hidden sm:rounded-lg">
+            <div className="w-9/12 m-auto z-50 shadow overflow-hidden sm:rounded-lg">
               <SelectBook
                 selectBook={selectBook}
                 bookList={bookList}
@@ -203,7 +207,7 @@ export default function CustomNavigation({
           <Dialog.Overlay className="fixed inset-0 bg-black opacity-30" />
           <div className="flex items-center justify-center h-screen">
 
-            <div className="w-3/12 m-auto z-50 bg-black text-white shadow overflow-hidden sm:rounded-lg">
+            <div className=" w-6/12 max-w-md m-auto z-50 bg-black text-white shadow overflow-hidden sm:rounded-lg">
               <SelectVerse
                 chapter={chapter}
                 verse={verse}
@@ -237,10 +241,6 @@ export default function CustomNavigation({
   );
 }
 
-CustomNavigation.propTypes = {
+BibleNavigationX.propTypes = {
   showVerse: PropTypes.bool,
-  initialBook: PropTypes.string,
-  initialChapter: PropTypes.string,
-  initialVerse: PropTypes.string,
-  setNavigation: PropTypes.func,
 };

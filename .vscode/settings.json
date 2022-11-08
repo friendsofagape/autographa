@@ -9,7 +9,7 @@
 	"prettier.disableLanguages": ["js"],
 	"prettier.useTabs": true,
 	"editor.formatOnSave": true,
-	"editor.multiCursorModifier": "ctrlCmd",
+	"editor.multiCursorModifier": "alt",
 	"editor.renderWhitespace": "none",
 	"editor.renderControlCharacters": true,
 	"prettier.arrowParens": "always",

@@ -13,7 +13,7 @@ export default function SelectBook({
   selectedBooks,
   setSelectedBooks,
   scope,
- }) {
+}) {
   const [openNT, setOpenNT] = useState(true);
   const [openOT, setOpenOT] = useState(true);
 
@@ -64,7 +64,7 @@ export default function SelectBook({
     <>
       <div className="flex flex-row text-center bg-gray-800 text-white text-sm font-bold tracking-wide uppercase">
         <div className="w-40 m-auto grid grid-cols-3 gap-0 bg-primary">
-          <div role="button" onClick={toggle} className="p-2 bg-black hover:bg-primary backdrop-opacity-20 cursor-pointer" tabIndex={0}>{t('btn-all') }</div>
+          <div role="button" onClick={toggle} className="p-2 bg-black hover:bg-primary backdrop-opacity-20 cursor-pointer" tabIndex={0}>{t('btn-all')}</div>
           <div role="button" onClick={toggleOT} tabIndex={-1} className={openOT === false ? 'p-2 bg-black hover:bg-primary backdrop-opacity-20 cursor-pointer' : 'p-2 border-r-2 border-black hover:bg-black border-opacity-5 cursor-pointer'}>{t('btn-ot')}</div>
           <div role="button" onClick={toggleNT} tabIndex={-2} className={openNT === false ? 'p-2 bg-black hover:bg-primary backdrop-opacity-20 cursor-pointer' : 'p-2 border-r-2 border-black hover:bg-black border-opacity-5 cursor-pointer'}>{t('btn-nt')}</div>
         </div>
@@ -91,19 +91,19 @@ export default function SelectBook({
               <Disclosure.Panel static>
                 <div className="bg-white grid grid-cols-4 gap-1 p-4 text-xxs text-left font-bold tracking-wide uppercase" style={{ pointerEvents: scope !== 'Other' ? 'none' : 'auto' }}>
                   {bookList.map((book, index) => (
-                      index <= 38 && (
-                        <div
-                          role="presentation"
-                          key={book.name}
-                          aria-label={`ot-${book.name}`}
-                          onClick={(e) => (
+                    index <= 38 && (
+                      <div
+                        role="presentation"
+                        key={book.name}
+                        aria-label={`ot-${book.name}`}
+                        onClick={(e) => (
                           multiSelectBook
-                          ? selectMultipleBooks(e, book.key, book.name)
-                          : bookSelect(e, book.key, book.name))}
-                          className={`${styles.bookSelect} ${selectedBooks.includes((book.key).toUpperCase()) ? styles.active : ''}`}
-                        >
-                          {book.name}
-                        </div>
+                            ? selectMultipleBooks(e, book.key, book.name)
+                            : bookSelect(e, book.key, book.name))}
+                        className={`${styles.bookSelect} ${selectedBooks.includes((book.key).toUpperCase()) ? styles.active : ''}`}
+                      >
+                        {book.name}
+                      </div>
                     )
                   ))}
                 </div>
@@ -131,18 +131,18 @@ export default function SelectBook({
               <Disclosure.Panel static>
                 <div className="bg-white grid grid-cols-4 gap-1 p-4 text-xxs text-left font-bold tracking-wide uppercase" style={{ pointerEvents: scope !== 'Other' ? 'none' : 'auto' }}>
                   {bookList.map((book, index) => (index > 38 && (
-                  <div
-                    key={book.name}
-                    role="presentation"
-                    aria-label={`nt-${book.name}`}
-                    onClick={(e) => (multiSelectBook
-                    ? selectMultipleBooks(e, book.key, book.name)
-                    : bookSelect(e, book.key, book.name))}
-                    className={`${styles.bookSelect} ${selectedBooks.includes((book.key).toUpperCase()) ? styles.active : ''}`}
-                  >
-                    {book.name}
-                  </div>
-                    )
+                    <div
+                      key={book.name}
+                      role="presentation"
+                      aria-label={`nt-${book.name}`}
+                      onClick={(e) => (multiSelectBook
+                        ? selectMultipleBooks(e, book.key, book.name)
+                        : bookSelect(e, book.key, book.name))}
+                      className={`${styles.bookSelect} ${selectedBooks.includes((book.key).toUpperCase()) ? styles.active : ''}`}
+                    >
+                      {book.name}
+                    </div>
+                  )
                   ))}
                 </div>
               </Disclosure.Panel>

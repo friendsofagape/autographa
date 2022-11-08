@@ -85,11 +85,9 @@ export const createVersificationUSFM = (
               const usfm = {
                 book: {
                   bookCode: book,
+                  meta: [{ h: book }, [{ mt: [book] }]],
                 },
                 chapters,
-                // _messages: {
-                //   _warnings: [],
-                // },
               };
               const myJsonParser = new grammar.JSONParser(usfm);
               const isJsonValid = myJsonParser.validate();
