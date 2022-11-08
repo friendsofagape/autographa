@@ -1,362 +1,201 @@
+/* eslint-disable */
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import FormControl from '@material-ui/core/FormControl';
-import TextField from '@material-ui/core/TextField';
-import PersonOutlineIcon from '@material-ui/icons/PersonOutline';
-import LockOpenIcon from '@material-ui/icons/LockOpen';
-import MailOutlineIcon from '@material-ui/icons/MailOutline';
-import AccountBalanceOutlinedIcon from '@material-ui/icons/AccountBalanceOutlined';
-import LanguageOutlinedIcon from '@material-ui/icons/LanguageOutlined';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
-import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Autocomplete from '@material-ui/lab/Autocomplete';
-import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
+import { useRouter } from 'next/router';
 import * as logger from '../../logger';
-import { handleJson } from '../../core/handleJson';
-import { HashPassword } from '../../core/hashing';
+import useApi from './useApi';
+import CustomLogin from '../Login/CustomLogin'
+import { useTranslation } from 'react-i18next';
+// import configData from '../../config.json';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    height: '100vh',
-    overflow: 'hidden',
-  },
-  paper: {
-    margin: theme.spacing(8, 4),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    textAlign: 'center',
-  },
-  margin: {
-    margin: theme.spacing(1),
-  },
-}));
 export default function Signup() {
-  const classes = useStyles();
-  // const bgImage = ["img1", "img2", "img3"];
-  // const [index, setIndex] = React.useState(0);
-  // const bgImg = bgImage[index % bgImage.length];
-  const [jsonObj, setJsonObj] = React.useState();
-  const [result, setResult] = React.useState();
-  const [values, setValues] = React.useState({
-    firstname: '',
-    lastname: '',
-    email: '',
-    work: 'Individual',
-    organization: '',
-    selectedregion: '',
-    password: '',
-    confirmpassword: '',
-  });
+  const router = useRouter();
+  const { t } = useTranslation();
+  const { state: { config }, action: { getFlow } } = useApi();
+  const ui = {
+    textfield: {
+      count: [
+        { label: t('label-email'), type: 'email', name: 'email' },
+        { label: t('label-name'), type: 'text', name: 'identifier' },
+        { label: t('label-password'), type: 'password', name: 'password' },
+        { label: t('label-confirm-password'), type: 'password', name: 'password' },
+      ],
+    },
+    viewForgot: false,
+  };
+  React.useEffect(() => {
+    if (router?.query?.flow) {
+      getFlow(router.query.flow);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router?.query]);
+
+  const [token, setToken] = React.useState();
   const [valid, setValid] = React.useState({
-    validfirstname: false,
-    validlastname: false,
-    validemail: false,
-    validpassword: false,
-    validconfirmpassword: false,
-    validorganization: false,
-    validselectedregion: false,
+    username: false,
+    email:false,
+    password: false,
   });
-  const [errormsg, setErrormsg] = React.useState('');
-  const region = [
-    { id: 1, place: 'Delhi, India' },
-    { id: 2, place: 'Helsinki, Finland' },
-    { id: 3, place: 'New York, United States' },
-    { id: 4, place: 'Morocco, North Africa' },
-  ];
-  const handleFirstname = (prop) => (event) => {
-    setValues({ ...values, [prop]: event.target.value });
-  };
-  const handleLastname = (prop) => (event) => {
-    setValues({ ...values, [prop]: event.target.value });
-  };
-  const handleEmail = (prop) => (event) => {
-    setValues({ ...values, [prop]: event.target.value });
-  };
-  const handleRadio = (prop) => (event) => {
-    setValues({ ...values, [prop]: event.target.value });
-  };
-  const handleOrganization = (prop) => (event) => {
-    setValues({ ...values, [prop]: event.target.value });
-  };
+  const [error, setError] = React.useState({
+    identifier: '',
+    password: '',
+    msg: '',
+  });
 
-  const handlePassword = (prop) => (event) => {
-    setValues({ ...values, [prop]: event.target.value });
-  };
-
-  const handleValidation = () => {
-    logger.debug('Singup.js', 'Into handleValidation');
-    let validation;
-    if (!values.firstname) {
-      setValid({ ...valid, validfirstname: true });
-      validation = false;
-    } else if (!values.lastname) {
-      setValid({ ...valid, validlastname: true });
-      validation = false;
-    } else if (!values.email) {
-      setValid({ ...valid, validemail: true });
-      validation = false;
-    } else if (!values.organization && values.work === 'Organization') {
-      setValid({ ...valid, validorganization: true });
-      validation = false;
-    } else if (!values.selectedregion) {
-      setValid({ ...valid, validselectedregion: true });
-      validation = false;
-    } else if (!values.password) {
-      setValid({ ...valid, validpassword: true });
-      validation = false;
-    } else if (!values.confirmpassword) {
-      setValid({ ...valid, validconfirmpassword: true });
-      validation = false;
-    } else {
-      setValid(false);
-      validation = true;
-    }
-    logger.debug('Singup.js', 'End handleValidation');
-    return validation;
-  };
+  // const handleValidation = (values) => {
+  //   logger.debug('Singup.js', 'Into handleValidation');
+  //   let validation;
+  //   if (!values.firstname) {
+  //     setValid({ ...valid, validfirstname: true });
+  //     validation = false;
+  //   } else if (!values.email) {
+  //     setValid({ ...valid, validemail: true });
+  //     validation = false;
+  //   } else if (!values.password) {
+  //     setValid({ ...valid, validpassword: true });
+  //     validation = false;
+  //   } else if (!values.confirmpassword) {
+  //     setValid({ ...valid, validconfirmpassword: true });
+  //     validation = false;
+  //   } else {
+  //     setValid(false);
+  //     validation = true;
+  //   }
+  //   logger.debug('Singup.js', 'End handleValidation');
+  //   return validation;
+  // };
   React.useEffect(() => {
-    if (result) {
-      result.then((response) => {
-        if (response.userExist === true) {
-          setValid({ validemail: true });
-          setErrormsg('User exists with same Email');
-          logger.error('Singup.js, User exist, use different Mail ID');
-        } else if (response.fetchFile === true) {
-          logger.error('Singup.js, Unable to fetch Data from file');
+    if (config) {
+      // eslint-disable-next-line prefer-const
+      let err = {};
+      err.msg = config?.messages?.[0]?.text;
+      (config.fields).forEach((field) => {
+        if (field.name === 'csrf_token') {
+          setToken(field.value);
         } else {
-          logger.debug('Singup.js, End handleSubmit');
+          err[field.name] = field.messages?.[0].text;
         }
       });
+      setError(err);
     }
-  }, [result]);
-  React.useEffect(() => {
-    if (jsonObj) {
-      const fs = window.require('fs');
-      setResult(handleJson(jsonObj, fs));
-    }
-  }, [jsonObj]);
-  const handleSubmit = () => {
-    setErrormsg();
+  }, [config]);
+  const handleSubmit = async (values) => {
+    console.log("sub",values)
+    setError({});
     logger.debug('Singup.js', 'Into handleSubmit');
-    if (handleValidation()) {
-      if (values.password === values.confirmpassword) {
-        const hashedPassword = HashPassword(values.password);
-        setJsonObj({
-          first_name: values.firstname,
-          last_name: values.lastname,
-          email: values.email,
-          work: values.work,
-          organization: values.organization,
-          region: values.selectedregion,
-          password: hashedPassword.password,
-          salt: hashedPassword.salt,
-        });
-      } else {
-        logger.debug('Singup.js, Passwords do not match');
-        setValid({ ...valid, validconfirmpassword: true });
-        setErrormsg('Passwords do not match');
-      }
-    } else {
-      Object.keys(valid).forEach((key) => {
-        if (valid[key] === true) {
-          logger.error(`Singup.js, Validation Failed for ${key}`);
-        }
-      });
-    }
+    // if (handleValidation(values)) {
+      // if (values.password === values.confirmpassword) {
+        logger.debug('Singup.js, Passwords matched');
+        router.push('/newproject');
+        // The below code is commented for bypassing the authentication.
+        // document.agsignup.action = config.action;
+        // document.agsignup.method = config.method;
+        // // eslint-disable-next-line prefer-const
+        // let input = document.createElement('input');
+        //   input.setAttribute('type', 'hidden');
+        //   input.setAttribute('name', 'csrf_token');
+        //   input.setAttribute('value', token);
+        // document.agsignup.appendChild(input);
+        // document.agsignup.submit();
+      // } else {
+      //   logger.debug('Singup.js', 'Passwords do not match');
+      //   setValid({ ...valid, validconfirmpassword: true });
+      //   setError({ msg: 'Passwords do not match' });
+      // }
+    // } else {
+    //   Object.keys(valid).forEach((key) => {
+    //     if (valid[key] === true) {
+    //       logger.error('Singup.js', `Validation Failed for ${key}`);
+    //     }
+    //   });
+    // }
   };
-
-  // useEffect(() => {
-  //   const timer = setInterval(() => setIndex((i) => i + 1), 5000);
-  //   return () => clearInterval(timer);
-  // }, []);
 
   return (
-    <div>
-      <Grid container className={classes.root} justify="center">
-        <Grid item xs={5}>
-          <Paper className={classes.paper}>
-            <FormControl>
-              <Typography variant="h5" gutterBottom>
-                Sign Up
-              </Typography>
-              <Typography variant="subtitle2" gutterBottom>
-                Be part of a great community & have fun with us
-              </Typography>
-              <Typography color="error">{errormsg}</Typography>
-              <Typography component="span">
-                <Grid container spacing={1} alignItems="flex-end">
-                  <Grid item>
-                    <PersonOutlineIcon />
-                  </Grid>
-                  <Grid item>
-                    <TextField
-                      className={classes.margin}
-                      inputProps={{
-                        'data-testid': 'firstnamefield',
-                      }}
-                      label="First Name"
-                      onChange={handleFirstname('firstname')}
-                      error={valid.validfirstname}
-                    />
-                  </Grid>
-                  <Grid item>
-                    <TextField
-                      className={classes.margin}
-                      inputProps={{
-                        'data-testid': 'lastnamefield',
-                      }}
-                      label="Last Name"
-                      onChange={handleLastname('lastname')}
-                      error={valid.validlastname}
-                    />
-                  </Grid>
-                </Grid>
-              </Typography>
-              <Grid container spacing={1} alignItems="flex-end">
-                <Grid item>
-                  <MailOutlineIcon />
-                </Grid>
-                <Grid item>
-                  <TextField
-                    className={classes.margin}
-                    inputProps={{
-                      'data-testid': 'emailfield',
-                    }}
-                    label="Enter Your Email"
-                    onChange={handleEmail('email')}
-                    error={valid.validemail}
-                  />
-                </Grid>
-              </Grid>
-              <RadioGroup
-                row
-                data-testid="radioButton"
-                style={{ justifyContent: 'center' }}
-                value={values.work}
-                onChange={handleRadio('work')}
+    <>
+      <div>
+        <div className="inline-block min-h-screen  bg-white w-5/12">
+          <div className="ml-10 2xl:ml-40 mt-32">
+            <div className="text-green-500 pb-12">
+              {t('label-already-have-account')}
+              <a
+                data-testid="signup"
+                href="/login"
+                className="text-blue-600 ml-2"
               >
-                <FormControlLabel
-                  value="Individual"
-                  control={<Radio color="primary" />}
-                  label="Individual"
-                />
-                <FormControlLabel
-                  value="Organization"
-                  control={<Radio color="primary" />}
-                  label="Organization"
-                />
-              </RadioGroup>
-              <Grid container spacing={1} alignItems="flex-end">
-                <Grid item>
-                  <AccountBalanceOutlinedIcon />
-                </Grid>
-                <Grid item>
-                  <TextField
-                    className={classes.margin}
-                    inputProps={{
-                      'data-testid': 'orgfield',
-                    }}
-                    label="Name of the Organization"
-                    error={valid.validorganization}
-                    onChange={handleOrganization('organization')}
-                    disabled={values.work === 'Individual'}
-                  />
-                </Grid>
-              </Grid>
-              <Typography component="span">
-                <Grid container spacing={1} alignItems="flex-end">
-                  <Grid item>
-                    <LanguageOutlinedIcon />
-                  </Grid>
-                  <Grid item>
-                    <Autocomplete
-                      id="region"
-                      options={region}
-                      getOptionLabel={(option) => option.place}
-                      getOptionSelected={(option, value) => option.place === value.place}
-                      onInputChange={(event, newInputValue) => {
-                        setValues({ ...values, selectedregion: newInputValue });
-                      }}
-                      renderInput={(params) => (
-                        <TextField
-                          className={classes.margin}
-                          {...params}
-                          error={valid.validselectedregion}
-                          label="Select Region"
-                        />
-                      )}
-                    />
-                  </Grid>
-                </Grid>
-              </Typography>
-              <Typography component="span">
-                <Grid container spacing={1} alignItems="flex-end">
-                  <Grid item>
-                    <LockOpenIcon />
-                  </Grid>
-                  <Grid item>
-                    <TextField
-                      className={classes.margin}
-                      inputProps={{
-                        'data-testid': 'passwordfield',
-                      }}
-                      label="Password"
-                      type="password"
-                      value={values.password}
-                      error={valid.validpassword}
-                      onChange={handlePassword('password')}
-                    />
-                  </Grid>
-                  <Grid item>
-                    <TextField
-                      className={classes.margin}
-                      inputProps={{
-                        'data-testid': 'confirmpassfield',
-                      }}
-                      label="Confirm Password"
-                      type="password"
-                      value={values.confirmpassword}
-                      error={valid.validconfirmpassword}
-                      onChange={handlePassword('confirmpassword')}
-                    />
-                  </Grid>
-                </Grid>
-              </Typography>
-              <Button
-                data-testid="submitButton"
-                variant="contained"
-                onClick={handleSubmit}
-              >
-                Sign Up
-              </Button>
-              <Typography variant="caption" gutterBottom>
-                By signing up, you agree to our Terms and Conditions and
-                <Typography
-                  color="primary"
-                  variant="caption"
-                  component="a"
-                  target="_blank"
-                >
-                  Private Policy
-                </Typography>
-              </Typography>
-            </FormControl>
-          </Paper>
-        </Grid>
-        <Grid
-          container
-          alignItems="flex-start"
-          justify="flex-end"
-          direction="row"
+                {t('label-sign-in')}
+                !
+              </a>
+            </div>
+            <div className="text-3xl font-medium text-black"> Welcome!</div>
+            <div className="text-lg
+            font-light
+            pb-14 text-gray-400"
+            >
+              {t('text-sign-up-quote')}
+            </div>
+            <CustomLogin
+              ui={ui}
+              error={valid}
+              login={handleSubmit}
+              userlist={[]}
+              validation={error}
+              buttonname={t('btn-signup')}
+            />
+            <div />
+          </div>
+          {/* <div className="2xl:ml-40 pt-72 2xl:pl-5 pl-14 space-x-14 sm:space-y-2
+          text-black font-bold"
+          >
+            <a href="/">EN(US)</a>
+            <a href="/">ABOUT</a>
+            <a href="/">PRIVACY</a>
+            <a href="/">TERMS</a>
+          </div> */}
+        </div>
+        <div className="absolute
+        inline-block bg-black min-h-screen w-7/12 pt-8 pl-40 pr-40"
         >
-          <a href="/login">Go Back</a>
-        </Grid>
-      </Grid>
-    </div>
+          <div className="grid grid-rows-1 justify-items-center relative">
+            <div className="justify-center">
+              <div className="flex gap-3 ">
+                <img src="/logo.svg" alt="logo" />
+                <div className="text-white">{t('app-name')}</div>
+                <div className="text-blue-800 font-bold">2.0</div>
+              </div>
+              <div className="pt-8 pl-72">
+                <img src="/illustrations/group.svg" alt="Group" />
+              </div>
+              <div className="w-96 pt-16 mb-10 text-xl text-white leading-9">
+                <div className="pb-5">
+                  <img src="/illustrations/quote.svg" alt="quote" />
+                </div>
+
+                Lorem ipsum dolor sit amet,
+                consectetur adipiscing elit. Consectetur
+                viverra facilisis platea malesuada faucibus justo.
+                Donec sit amet diam, in. Arcu, felis sed tempor orci,
+                pretium velit amet. Nullam amet, in justo a auctor sem felis.
+
+                <div className="flex pt-5">
+                  <div className="pr-4">FEATURE</div>
+                  <img className="" src="/illustrations/green-check.svg" alt="logo" />
+                </div>
+              </div>
+              <div className="flex pb-20">
+                <div className="pl-24">
+                  <img className="w-56 h-80" src="/illustrations/sitting.svg" alt="Sitting" />
+                </div>
+                <div>
+                  <img className="pl-10" src="/illustrations/vector-one.svg" alt="VectorOne" />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className=" bottom-0 pt-10 absolute left-5">
+            <img src="/illustrations/half-moon.svg" alt="logo" />
+          </div>
+        </div>
+      </div>
+    </>
   );
 }

@@ -1,9 +1,10 @@
-import Main from '../renderer/src/components/main';
+import Login from '@/components/Login/Login';
+import AuthenticationContextProvider from '@/components/Login/AuthenticationContextProvider';
 
 const login = () => (
-  <div>
-    <Main />
-  </div>
+  <AuthenticationContextProvider>
+    <Login />
+  </AuthenticationContextProvider>
 );
 
 export default login;

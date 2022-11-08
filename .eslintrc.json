@@ -1,61 +1,108 @@
 {
-    "root": true,
-    "parser": "babel-eslint",
-    "extends": [
-        "eslint:recommended",
-        "plugin:react/recommended",
-        "plugin:import/errors",
-        "plugin:import/warnings",
-        "plugin:jsx-a11y/recommended",
-        "plugin:react-hooks/recommended",
-        "airbnb"
-    ],
-    "rules": {
-        "react/react-in-jsx-scope": "off",
-        "react/jsx-filename-extension": [
-            1,
-            {
-                "extensions": [
-                    ".js",
-                    ".jsx"
-                ]
-            }
-        ],
-        "react/jsx-props-no-spreading": "off",
-        "eslint no-unused-expressions": "off",
-        "import/prefer-default-export": "off",
-        "import/no-extraneous-dependencies": "off",
-        "react/require-default-props": "off",
-        "react/forbid-prop-types": "off",
-        "linebreak-style": 0,
-        "global-require": 0,
-        "eslint linebreak-style": [0, "error", "windows"],
-        "curly": [
-            "error",
-            "all"
-            ],
-            "template-curly-spacing" : "off",
-            "indent" : "off"
-        },
-        "env": {
-            "browser": true,
-            "es6": true,
-            "node": true,
-            "jest": false
-        },
-        "parserOptions": {
-            "ecmaVersion": 2018,
-            "sourceType": "module",
-            "ecmaFeatures": {
-                "jsx": true
-            }
-        },
-        "settings": {
-            "react": {
-                "version": "detect"
-            }
-        },
-        "plugins": [
-            "react"
-        ]
+	"root": true,
+	"parser": "@babel/eslint-parser",
+	"extends": [
+		"eslint:recommended",
+		"plugin:react/recommended",
+		"plugin:import/errors",
+		"plugin:import/warnings",
+		"plugin:jsx-a11y/recommended",
+		"plugin:react-hooks/recommended",
+		"airbnb",
+		"next"
+	],
+	"rules": {
+		"@next/next/no-html-link-for-pages": "off",
+		"@next/next/no-img-element": "off",
+		"react/react-in-jsx-scope": "off",
+		"no-underscore-dangle": "off",
+		"no-unused-expressions": "off",
+		"max-len": "off",
+		"no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
+		"prefer-destructuring": "off",
+		"no-param-reassign": [2, { "props": false }],
+		"camelcase": "off",
+		"consistent-return": "off",
+		"react/function-component-definition": [
+			2,
+			{
+				"namedComponents": [
+					"function-declaration",
+					"function-expression",
+					"arrow-function"
+				],
+				"unnamedComponents": ["function-expression", "arrow-function"]
+			}
+		],
+		"react/jsx-filename-extension": [
+			1,
+			{
+				"extensions": [".js", ".jsx"]
+			}
+		],
+		"react/jsx-no-bind": [
+			1,
+			{
+				"ignoreRefs": true,
+				"allowArrowFunctions": true,
+				"allowFunctions": true,
+				"allowBind": false
+			}
+		],
+		"react/jsx-props-no-spreading": "off",
+		"eslint no-unused-expressions": "off",
+		"no-shadow": "off",
+		"jsx-a11y/label-has-associated-control": 0,
+		"import/prefer-default-export": "off",
+		"import/no-extraneous-dependencies": "off",
+		"jsx-a11y/click-events-have-key-events": "off",
+		"react/require-default-props": "off",
+		"react/forbid-prop-types": "off",
+		"linebreak-style": 0,
+		"global-require": 0,
+		"eslint linebreak-style": [0, "error", "windows"],
+		"import/no-unresolved": [
+			"error",
+			{
+				"ignore": [".svg"]
+			}
+		],
+		"curly": ["error", "all"],
+		"template-curly-spacing": "off",
+		"indent": "off"
+	},
+	"env": {
+		"browser": true,
+		"es6": true,
+		"node": true,
+		"jest": false
+	},
+	"parserOptions": {
+		"ecmaVersion": 2018,
+		"requireConfigFile": false,
+		"sourceType": "module",
+		"ecmaFeatures": {
+			"jsx": true
+		}
+	},
+	"settings": {
+		"react": {
+			"version": "detect"
+		},
+		"import/resolver": {
+			"alias": {
+				"map": [
+					["@/components", "./renderer/src/components/"],
+					["@/layouts", "./renderer/src/layouts/"],
+					["@/modules", "./renderer/src/modules/"],
+					["@/util", "./renderer/src/util/"],
+					["@/core", "./renderer/src/core/"]
+				],
+				"node": {
+					"extensions": [".js", ".jsx", ".ts", ".tsx"]
+				}
+			}
+		}
+	},
+	"plugins": ["react"]
 }

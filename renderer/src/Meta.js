@@ -1,4 +1,6 @@
+/* eslint-disable @next/next/no-css-tags */
 import Head from 'next/head';
+import i18n from './translations/i18n';
 
 const Meta = () => (
   <Head>
@@ -6,7 +8,7 @@ const Meta = () => (
     <meta charSet="utf-8" />
     {/* <link rel="shortcut icon" href="/static/favicon.png" /> */}
     <link rel="stylesheet" type="text/css" href="/static/nprogress.css" />
-    <title>Autographa</title>
+    <title>{i18n.t('app-name')}</title>
   </Head>
 );
 export default Meta;

@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/icons/*": [
+        "public/icons/*"
+      ],
+      "@/illustrations/*": [
+        "public/illustrations/*"
+      ],
+      "@/components/*": [
+        "renderer/src/components/*"
+      ],
+      "@/layouts/*": [
+        "renderer/src/layouts/*"
+      ],
+      "@/modules/*": [
+        "renderer/src/modules/*"
+      ],
+      "@/core/*": [
+        "renderer/src/core/*"
+      ],
+      "@/util/*": [
+        "renderer/src/util/*"
+      ],
+    }
+  }
+}

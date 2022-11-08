@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/components/*": [
+        "src/components/*"
+      ],
+      "@/layouts/*": [
+        "src/layouts/*"
+      ],
+      "@/modules/*": [
+        "src/modules/*"
+      ],
+      "@/core/*": [
+        "src/core/*"
+      ],
+      "@/util/*": [
+        "src/util/*"
+      ],
+      "@/icons/*": [
+        "public/icons/*"
+      ],
+      "@/illustrations/*": [
+        "public/illustrations/*"
+      ],
+    }
+  }
+}

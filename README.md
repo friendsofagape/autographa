@@ -60,16 +60,15 @@ It is relatively easy to setup the application locally for development.
 
 This is an example of how to list things you need to use the software and how to install them.
 
--   [Node.js ^14.5.0](https://nodejs.org/en/)
--   [NPM ^6.9.0](https://www.npmjs.com/get-npm)
+-   [Node.js ^16.15.1](https://nodejs.org/en/)
+-   [NPM ^8.11.0](https://www.npmjs.com/get-npm)
 
 ### Installation
 
 1. Fork and clone this repository
-2. Set `npm config set '@bit:registry' https://node.bit.dev`
-3. Install dependencies with `npm install`
-4. Start the application with `npm start`
-5. Checkout the web version with `npm run dev`
+2. Install dependencies with `npm install`
+3. Start the application with `npm start`
+4. Checkout the web version with `npm run dev`
    Runs the app in the development mode.<br>
    Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
@@ -110,9 +109,10 @@ Usage: logger.[level]("<filename>, <message>")
 -   [React Testing Library](https://jestjs.io/docs/en/getting-started)
 
 6. Run `npm run lint:fix` for code to adapt our linting rules
-7. Commit your Changes (`git commit -m 'Add some NewFeatures'`)
-8. Push to the Branch (`git push origin feature/NewFeature`)
-9. Open a Pull Request and make sure all checks have passed
+7. Run `npm run build` for build checks
+8. Commit your Changes (`git commit -m 'Add some NewFeatures'`)
+9. Push to the Branch (`git push origin feature/NewFeature`)
+10. Open a Pull Request and make sure all checks have passed
 
 <!-- LICENSE -->
 
@@ -130,8 +130,8 @@ Let us know if you face any bugs/problems by opening an [issue](https://github.c
 
 ## Acknowledgements
 
-- [Friends of Agape](http://friendsofagape.org/), for their support and contributions.
-- Developed by [Bridgeconn](https://bridgeconn.com/)
+-   [Friends of Agape](http://friendsofagape.org/), for their support and contributions.
+-   Developed by [Bridgeconn](https://bridgeconn.com/)
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->

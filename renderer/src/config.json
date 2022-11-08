@@ -1,0 +1,5 @@
+{
+	"base_url": "http://127.0.1.1:4433/",
+	"login_url": "http://127.0.1.1:4433/self-service/login/browser",
+	"signup_url": "http://127.0.1.1:4433/self-service/registration/browser"
+}
