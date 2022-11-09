@@ -124,7 +124,13 @@ const AudioWaveForm = (props) => {
   };
   const handlePlay = () => {
     if (url) {
-      wavesurfer.current?.play();
+      try {
+        wavesurfer.current?.play();
+      } catch {
+        createForm(url);
+        handlePlay();
+      }
+
       setTrigger();
     }
   };
