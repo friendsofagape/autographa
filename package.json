@@ -35,13 +35,15 @@
   "build": {
     "asar": true,
     "extraResources": "renderer/public",
+    "extraMetadata": {
+      "main": "main/index.js"
+    },
     "files": [
       "main",
       "renderer/out",
       "public",
       "renderer/public/**/*",
       "build/**/*",
-      "main",
       "postcss.config.js",
       "renderer/jsconfig.json",
       "styles/**/*"
@@ -176,7 +178,8 @@
     "webpack-node-externals": "^3.0.0",
     "winston": "^3.7.2",
     "word-aligner": "^1.0.0",
-    "ws": "^8.8.0"
+    "ws": "^8.8.0",
+    "yarn": "^1.22.19"
   },
   "optionalDependencies": {
     "bufferutil": "^4.0.6",
