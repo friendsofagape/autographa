@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useState, useTransition } from 'react';
 import {
   useDeepCompareCallback,
@@ -61,7 +62,7 @@ export default function usePerf({
           sequenceId,
           _htmlPerf,
         );
-        if (verbose) { console.log({ info: 'Saved sequenceId', bookCode, sequenceId }); }
+        // if (verbose) { console.log({ info: 'Saved sequenceId', bookCode, sequenceId }); }
 
         if (!isEqual(htmlPerf, newHtmlPerf)) { setHtmlPerf(newHtmlPerf); }
         exportUsfm(bookCode);

@@ -40,6 +40,7 @@ export const useReadUsfmFile = () => {
           // setUsfmData(fileData);
           setUsfmData(books);
       } catch (err) {
+        // eslint-disable-next-line no-console
         return console.log(err);
       }
     }
