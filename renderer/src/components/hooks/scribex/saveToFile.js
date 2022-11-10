@@ -31,6 +31,7 @@ export const saveToFile = async (usfmText, bookCode) => {
       }
     });
   } catch (err) {
+    // eslint-disable-next-line no-console
     return console.log(err);
   }
 };

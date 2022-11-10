@@ -5,7 +5,6 @@ import EditorLayout from '@/layouts/editor/Layout';
 // import Editor from '@/modules/editor/Editor';
 import SectionContainer from '@/layouts/editor/SectionContainer';
 import AutographaContextProvider from '@/components/context/AutographaContext';
-import ScribexContextProvider from '@/components/context/ScribexContext';
 
 export default function ReferenceSelector() {
   return (
@@ -13,9 +12,9 @@ export default function ReferenceSelector() {
       <ProjectContextProvider>
         <ReferenceContextProvider>
           <AutographaContextProvider>
-              <EditorLayout>
-                <SectionContainer />
-              </EditorLayout>
+            <EditorLayout>
+              <SectionContainer />
+            </EditorLayout>
           </AutographaContextProvider>
         </ReferenceContextProvider>
       </ProjectContextProvider>

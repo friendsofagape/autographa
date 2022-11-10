@@ -1,10 +1,10 @@
-import Scribex from '@/components/EditorPage/Scribex/Scribex';
 import ScribexContextProvider from '@/components/context/ScribexContext';
+import Scribex from './Scribex';
 
 export default function XelahEditor() {
-	return (
-		<ScribexContextProvider>
-			<Scribex />
-		</ScribexContextProvider>
-	);
+  return (
+    <ScribexContextProvider>
+      <Scribex />
+    </ScribexContextProvider>
+  );
 }
