@@ -283,13 +283,26 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
       setDownloadStarted(true);
       const action = { setDownloadCount };
       await handleDownloadResources(resourceData, selectResource, action)
-      .then(async () => {
-        setOpenSnackBar(true);
-        setNotify('success');
-        setSnackText('All Resource Downloaded Succesfully');
+      .then(async (resolveResp) => {
+        if (selectedResourceCount === resolveResp?.existing) {
+          setOpenSnackBar(true);
+          setNotify('Warning');
+          setSnackText('Existing Resource');
+        } else if (resolveResp?.existing === 0) {
+          setOpenSnackBar(true);
+          setNotify('success');
+          setSnackText(`All ${selectedResourceCount} Resource Downloaded Succesfully`);
+        } else {
+          setOpenSnackBar(true);
+          setNotify('success');
+          setSnackText(`Downloaded ${selectedResourceCount - resolveResp.existing} Resource Downloaded Succesfully
+          , ${resolveResp.existing} Resources are existing`);
+        }
         await addNewNotification(
-          'Resource',
-          `${selectedResourceCount} Resources Downloaded successfully`,
+          'Resource Download',
+          `Total Resources : ${selectedResourceCount} \n
+            Existing Resources : ${resolveResp.existing} \n
+            Downloaded Resources : ${selectedResourceCount - resolveResp.existing} `,
           'success',
         );
         // setDownloadCount((prev) => prev + 1);

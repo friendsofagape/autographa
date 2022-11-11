@@ -218,6 +218,8 @@ export const handleDownloadResources = async (resourceData, selectResource, acti
     let licenseFileFound = false;
     let currentProjectName = '';
     let customLicenseContent = 'empty';
+    let resourceExist = false;
+    let resourceExistCount = 0;
       try {
         // eslint-disable-next-line no-restricted-syntax, guard-for-in
          for (const key in resourceData) {
@@ -226,7 +228,26 @@ export const handleDownloadResources = async (resourceData, selectResource, acti
             const resource = resourceData[key][row];
             if (resource.isChecked) {
               logger.debug('passed is checked ---------->');
-              // eslint-disable-next-line no-await-in-loop
+              if (!update) {
+                // check for duplicate
+                const existingResource = fs.readdirSync(folder, { withFileTypes: true });
+                // eslint-disable-next-line no-loop-func
+                existingResource.forEach((element) => {
+                let filecontentMeta = fs.readFileSync(path.join(folder, element.name, 'metadata.json'), 'utf8');
+                filecontentMeta = JSON.parse(filecontentMeta);
+                if (filecontentMeta?.resourceMeta) {
+                  const storedresourceMeta = filecontentMeta?.resourceMeta;
+                  if (storedresourceMeta?.name === resource?.name && storedresourceMeta?.owner === resource?.owner
+                    && storedresourceMeta?.release?.tag_name === resource?.release?.tag_name) {
+                      logger.debug('DownloadResourcePopUp.js', `In resource download  existing resource ${resource?.name}_${resource?.release?.tag_name}`);
+                      resourceExist = true;
+                      resourceExistCount += 1;
+                    }
+                  }
+                });
+              }
+              if (!resourceExist) {
+                // eslint-disable-next-line no-await-in-loop
               await fetch(resource.metadata_json_url)
                 .then((res) => res.json())
                 // eslint-disable-next-line no-loop-func
@@ -360,6 +381,8 @@ export const handleDownloadResources = async (resourceData, selectResource, acti
                 }).catch((err) => {
                   throw new Error(`Fetch Resource Failed :  ${err}`);
                 });
+              }
+              resourceExist = false;
               logger.debug('DownloadResourcePopUp.js', 'Finished single resource: ');
               logger.debug('completed single resource ---------->', resource.name);
               action && action?.setDownloadCount((prev) => prev + 1);
@@ -374,7 +397,8 @@ export const handleDownloadResources = async (resourceData, selectResource, acti
               }
             });
           }
-          resolve({ status: 'success' });
+          resolve({ status: 'success', existing: resourceExistCount });
+          resourceExistCount = 0;
         }
       } catch (err) {
         logger.debug('DownloadResourcePopUp.js', 'Catching error in dowload resource', err);

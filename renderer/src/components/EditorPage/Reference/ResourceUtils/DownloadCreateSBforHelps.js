@@ -15,10 +15,17 @@ const DownloadCreateSBforHelps = async (projectResource, setLoading, update = fa
             const path = require('path');
             const newpath = localStorage.getItem('userPath');
             const folder = path.join(newpath, 'autographa', 'users', `${user?.username}`, 'resources');
-
             // const currentUser = user?.username;
             // const key = currentUser + projectResource.name + projectResource.owner + moment().format();
             // const id = uuidv5(key, environment.uuidToken);
+            // check for existing resources
+            const existingResource = fs.readdirSync(folder, { withFileTypes: true });
+            const downloadProjectName = `${projectResource?.name}_${projectResource?.owner}_${projectResource?.release?.tag_name}`;
+            existingResource?.forEach((element) => {
+                if (downloadProjectName === element.name) {
+                    throw new Error('Resource Already Exist');
+                }
+            });
 
             // check if resource already exist in offline
             if (!update && offlineResource) {

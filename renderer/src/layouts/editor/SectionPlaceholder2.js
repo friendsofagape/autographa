@@ -380,7 +380,7 @@ const SectionPlaceholder2 = ({ editor }) => {
               (loadResource3 === true)
               && ((referenceColumnTwoData1.selectedResource === 'bible' && (
                 <>
-                    {referenceColumnTwoData1?.languageId && referenceColumnTwoData1.flavor
+                    {referenceColumnTwoData1?.languageId
                   && (
                   <ReferenceBible
                     languageId={referenceColumnTwoData1.languageId}
@@ -393,7 +393,7 @@ const SectionPlaceholder2 = ({ editor }) => {
                 </>
               )) || (referenceColumnTwoData1.selectedResource === 'obs' && (
                 <>
-                    {referenceColumnTwoData1?.languageId && referenceColumnTwoData1.flavor
+                    {referenceColumnTwoData1?.languageId
                   && (
                   <ReferenceObs
                     stories={stories1}
@@ -446,7 +446,7 @@ const SectionPlaceholder2 = ({ editor }) => {
               (loadResource4 === true)
               && ((referenceColumnTwoData2.selectedResource === 'bible' && (
                 <>
-                  {referenceColumnTwoData2?.languageId && referenceColumnTwoData2.flavor
+                  {referenceColumnTwoData2?.languageId
             && (
               <ReferenceBible
                 languageId={referenceColumnTwoData2.languageId}
@@ -459,7 +459,7 @@ const SectionPlaceholder2 = ({ editor }) => {
                 </>
               )) || (referenceColumnTwoData2.selectedResource === 'obs' && (
                 <>
-                  {referenceColumnTwoData2?.languageId && referenceColumnTwoData2.flavor
+                  {referenceColumnTwoData2?.languageId
               && (
                 <ReferenceObs
                   stories={stories2}
