@@ -32,6 +32,7 @@ export default function SelectVerse({
     onChangeChapter(chapterNum, chapter);
     setOpenChapter(false);
     setOpenVerse(true);
+    window.location.href = `#ch-${chapterNum}`;
   };
 
   const onVerseSelect = (e, verseNum) => {
@@ -39,27 +40,28 @@ export default function SelectVerse({
     onChangeVerse(verseNum, verse);
     closeBooks();
     if (multiSelectVerse === false) { closeVerses(); }
+    window.location.href = `#ch${chapter}v${verseNum}`;
   };
 
   const onMultiSelectVerse = async (e, verses) => {
     e.preventDefault();
-      if (controlVerseSelect.includes(parseInt(verses, 10)) === false && verses) {
-        const temp = [...controlVerseSelect];
-          temp.push(parseInt(verses, 10));
-          selectedVerses.push(parseInt(verses, 10));
-          setControlVerseSelect(temp);
-        }
+    if (controlVerseSelect.includes(parseInt(verses, 10)) === false && verses) {
+      const temp = [...controlVerseSelect];
+      temp.push(parseInt(verses, 10));
+      selectedVerses.push(parseInt(verses, 10));
+      setControlVerseSelect(temp);
+    }
   };
 
   useEffect(() => {
     const converMultiverseRange = async () => {
-    if (multiSelectVerse && verselectActive) {
-      const result = await convertToRange(selectedVerses);
-      setSelectedVerses(result);
-      setVerseSelectActive(false);
-    }
-  };
-  converMultiverseRange();
+      if (multiSelectVerse && verselectActive) {
+        const result = await convertToRange(selectedVerses);
+        setSelectedVerses(result);
+        setVerseSelectActive(false);
+      }
+    };
+    converMultiverseRange();
   }, [verselectActive, multiSelectVerse, selectedVerses, setVerseSelectActive, setSelectedVerses]);
 
   return (
@@ -78,8 +80,8 @@ export default function SelectVerse({
             {t('label-verse')}
             : &nbsp;
             {multiSelectVerse
-            ? controlVerseSelect.join()
-            : verse}
+              ? controlVerseSelect.join()
+              : verse}
           </div>
         </div>
         <div className="flex justify-end">
@@ -117,34 +119,34 @@ export default function SelectVerse({
 
       <Disclosure>
         {openVerse && (
-        <Transition
-          show={openVerse}
-          enter="transition duration-100 ease-out"
-          enterFrom="transform scale-95 opacity-0"
-          enterTo="transform scale-100 opacity-100"
-          leave="transition duration-75 ease-out"
-          leaveFrom="transform scale-100 opacity-100"
-          leaveTo="transform scale-95 opacity-0"
-        >
-          <Disclosure.Panel className="grid py-5 grid-cols-10 gap-1 text-center bg-black text-white text-xs font-medium tracking-wide uppercase">
-            {verseList.map((verse) => (
-              <div
-                key={verse.key}
-                role="presentation"
-                style={{ color: controlVerseSelect.includes(parseInt(verse.key, 10)) ? 'seagreen' : '' }}
-                onClick={(e) => (
-                  multiSelectVerse
-                  ? onMultiSelectVerse(e, verse.key)
-                  : onVerseSelect(e, verse.key)
-                )}
-                className={styles.select}
-              >
-                {verse.name}
-              </div>
+          <Transition
+            show={openVerse}
+            enter="transition duration-100 ease-out"
+            enterFrom="transform scale-95 opacity-0"
+            enterTo="transform scale-100 opacity-100"
+            leave="transition duration-75 ease-out"
+            leaveFrom="transform scale-100 opacity-100"
+            leaveTo="transform scale-95 opacity-0"
+          >
+            <Disclosure.Panel className="grid py-5 grid-cols-10 gap-1 text-center bg-black text-white text-xs font-medium tracking-wide uppercase">
+              {verseList.map((verse) => (
+                <div
+                  key={verse.key}
+                  role="presentation"
+                  style={{ color: controlVerseSelect.includes(parseInt(verse.key, 10)) ? 'seagreen' : '' }}
+                  onClick={(e) => (
+                    multiSelectVerse
+                      ? onMultiSelectVerse(e, verse.key)
+                      : onVerseSelect(e, verse.key)
+                  )}
+                  className={styles.select}
+                >
+                  {verse.name}
+                </div>
               ))}
-          </Disclosure.Panel>
-        </Transition>
-          )}
+            </Disclosure.Panel>
+          </Transition>
+        )}
       </Disclosure>
     </>
 

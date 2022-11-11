@@ -231,6 +231,7 @@ const MainPlayer = () => {
     if (audioContent?.length > 0) {
       fetchUrl();
       setTrigger();
+      setTake('take1');
     }
   }, [audioContent, bookId, verse, chapter]);
 

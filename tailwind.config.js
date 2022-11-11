@@ -13,6 +13,7 @@ module.exports = {
       transparent: 'transparent',
       current: 'currentColor',
       primary: '#0073E5',
+      'primary-50': '#E4F2FF',
       secondary: '#151515',
       success: '#40C000',
       error: '#FF4D4D',

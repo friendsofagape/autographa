@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-no-constructed-context-values */
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import * as localforage from 'localforage';
 import { isElectron } from '../../core/handleElectron';
@@ -38,6 +38,7 @@ const ProjectContextProvider = ({ children }) => {
     const [username, setUsername] = React.useState();
     const [selectedProject, setSelectedProject] = React.useState();
     const [importedFiles, setImportedFiles] = React.useState([]);
+    const [sideBarTab, setSideBarTab] = useState('');
 
     const handleProjectFields = (prop) => (event) => {
       setNewProjectFields({ ...newProjectFields, [prop]: event.target.value });
@@ -289,6 +290,7 @@ const ProjectContextProvider = ({ children }) => {
             username,
             openSideBar,
             editorSave,
+            sideBarTab,
         },
         actions: {
             setDrawer,
@@ -308,6 +310,7 @@ const ProjectContextProvider = ({ children }) => {
             setImportedFiles,
             setLanguages,
             setEditorSave,
+            setSideBarTab,
         },
     };
 

@@ -23,7 +23,7 @@ export default function Comments() {
         </div>
       </div>
 
-      <div className="bg-black p-4">
+      {/* <div className="bg-black p-4">
         <div className="bg-black text-white w-full border-0 mb-1 p-2 text-sm rounded">
           “Where were you when I laid the foundation of the earth? Tell me, if you have
           understanding. Who determined its measurements—surely you know! Or who stretched the
@@ -47,7 +47,7 @@ export default function Comments() {
             {t('btn-add')}
           </button>
         </div>
-      </div>
+      </div> */}
     </>
   );
 }
