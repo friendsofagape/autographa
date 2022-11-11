@@ -5,9 +5,9 @@ import { Configuration, PublicApi } from '@ory/kratos-client';
 import * as logger from '../../logger';
 // import configData from '../../config.json';
 // import { isElectron } from '../../core/handleElectron';
-const jwt = require('jsonwebtoken');
 import { useRouter } from 'next/router';
 // const kratos = new PublicApi(new Configuration({ basePath: configData.base_url }));
+const CryptoJS = require("crypto-js");
 
 function useAuthentication() {
   const [accessToken, setaccessToken] = React.useState();
@@ -22,27 +22,32 @@ function useAuthentication() {
   };
   const handleUser = () => {
     logger.debug('useAuthentication.js', 'In handleUser to retrieve the user from the Token');
-    jwt.verify(accessToken, 'agv2', (err, decoded) => {
-      localForage.getItem('users').then((user) => {
-        const obj = user.find(
-          (u) => u.username === decoded.sessionData.user,
-        );
-        setCurrentUser(obj);
-        localForage.setItem('userProfile',obj);
-        localForage.setItem('appMode','offline');
-      });
+    const tokenDecodablePart = accessToken.split('.')[1];
+    const decoded = Buffer.from(tokenDecodablePart, 'base64').toString();
+    const data=JSON.parse(decoded)
+    localForage.getItem('users').then((user) => {
+      const obj = user.find(
+        (u) => u.username === data.sessionData.user,
+      );
+      setCurrentUser(obj);
+      localForage.setItem('userProfile',obj);
+      localForage.setItem('appMode','offline');
     });
   };
   const generateToken = (user) => {
     logger.debug('useAuthentication.js', 'In generateToken to generate a Token for the loggedIn user');
+    const header = '{"alg":"HS256","typ":"JWT"}';
     const sessionData = {
       user: user.username,
       loggedAt: Date(),
       active: true,
       remember: true,
     };
-    // console.log(process.env.REACT_APP_AG_JWT)
-    const token = jwt.sign({ sessionData }, 'agv2');
+    const data=JSON.stringify({sessionData});
+    const base64Header = Buffer.from(header).toString('base64');
+    const base64Data = Buffer.from(data).toString('base64');
+    const signature= CryptoJS.HmacSHA256(base64Header + '.' + base64Data,'agv2').toString();
+    const token = base64Header + '.' + base64Data + '.' + signature;
     if (token) {
       localForage.setItem('sessionToken', token);
       setaccessToken(token);
