@@ -46,6 +46,7 @@ const MainPlayer = () => {
       ([key]) => {
         if (audioContent[key].verseNumber === verse) {
           setCurrentUrl(audioContent[key]);
+          setTrigger('url');
         }
       },
     );
