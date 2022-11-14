@@ -46,14 +46,14 @@ export default function ImportResource({
       const path = require('path');
       let dirPath;
       // Identify the projects with 'audio' folder (projects with Text will have 'audio' folder)
-      if (burritoType === 'scripture / audioTranslation' && !fs.existsSync(folderPath, 'audio')) {
+      if (burritoType === 'scripture / audioTranslation' && !fs.existsSync(path.join(folderPath, 'audio'))) {
         dirPath = path.join(projectsDir, name, 'audio');
       } else {
         dirPath = path.join(projectsDir, name);
       }
       await fse.copy(folderPath, dirPath, { overwrite: true })
       .then(async () => {
-        if (burritoType === 'scripture / audioTranslation' && !fs.existsSync(folderPath, 'audio')) {
+        if (burritoType === 'scripture / audioTranslation' && !fs.existsSync(path.join(folderPath, 'audio'))) {
           await fs.renameSync(path.join(projectsDir, name, 'audio', 'metadata.json'), path.join(projectsDir, name, 'metadata.json'));
         }
         setOpenSnackBar(true);
