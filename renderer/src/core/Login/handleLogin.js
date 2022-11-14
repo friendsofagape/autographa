@@ -12,6 +12,7 @@ export const createUser = (values, fs) => {
     organization: '',
     selectedregion: '',
     lastSeen: new Date(),
+    isArchived: false,
   };
   return handleJson(obj, fs).then(() => obj);
 };
@@ -20,7 +21,7 @@ export const createUser = (values, fs) => {
  * It writes the users to a file.
  * @param users - [{
  */
-const writeToFile = (users) => {
+export const writeToFile = (users) => {
   const newpath = localStorage.getItem('userPath');
   const fs = window.require('fs');
   const path = require('path');
