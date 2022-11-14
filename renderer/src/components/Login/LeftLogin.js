@@ -1,10 +1,12 @@
-import { Dialog, Transition } from '@headlessui/react';
+import { Dialog, Tab, Transition } from '@headlessui/react';
 import { useRouter } from 'next/router';
 import React, {
   Fragment, useContext, useEffect, useState,
 } from 'react';
 import * as localForage from 'localforage';
-import { createUser, handleLogin } from '../../core/Login/handleLogin';
+import { TrashIcon } from '@heroicons/react/outline';
+import { Restore } from '@material-ui/icons';
+import { createUser, handleLogin, writeToFile } from '../../core/Login/handleLogin';
 import { isElectron } from '../../core/handleElectron';
 import * as logger from '../../logger';
 import { AuthenticationContext } from './AuthenticationContextProvider';
@@ -25,7 +27,7 @@ const LeftLogin = () => {
     username: false,
     password: false,
   });
-
+  const [showArchived, setShowArchived] = useState(false);
   const [userNameError, setUserNameError] = useState(false);
 
   /* Checking if the users array is empty, if it is, it is getting the users from localForage and
@@ -44,6 +46,7 @@ const LeftLogin = () => {
 
   function closeModal() {
     setIsOpen(false);
+    setShowArchived(false);
   }
   function openModal() {
     setIsOpen(true);
@@ -82,6 +85,7 @@ const LeftLogin = () => {
 
   /* Sorting the users array by the lastSeen property. */
   const sortedUsers = [...users].sort((a, b) => Date.parse(b.lastSeen) - Date.parse(a.lastSeen));
+
   /**
    * Checks if the user is existing or not, if not then it creates a new user and generates a token
    * for the user.
@@ -138,7 +142,39 @@ const LeftLogin = () => {
     handleSubmit(values);
     setValues({});
   }
+  function classNames(...classes) {
+    return classes.filter(Boolean).join(' ');
+  }
 
+  function archiveUser(users, selectedUser) {
+    const archivedUsers = users.map((user) => {
+      if (user.username === selectedUser.username) {
+        return { ...user, isArchived: true };
+      }
+      return user;
+    });
+
+    setUsers(archivedUsers);
+    localForage.setItem('users', archivedUsers);
+    writeToFile(archivedUsers);
+  }
+  function restoreUser(users, selectedUser) {
+    const activeUsers = users.map((user) => {
+      if (user.username === selectedUser.username) {
+        return { ...user, isArchived: false };
+      }
+      return user;
+    });
+    setUsers(activeUsers);
+    localForage.setItem('users', activeUsers);
+    writeToFile(activeUsers);
+  }
+  const filterUsers = (user) => {
+    if (user.isArchived === showArchived || (user.isArchived === undefined && showArchived === false)) {
+      return true;
+    }
+    return false;
+  };
   return (
     <div className="flex flex-col pt-64 pl-10 md:pt-64 sm:pl-12 md:pl-20 sm:pt-56 w-full">
       <h2 className="text-2xl font-sans font-bold">Welcome!</h2>
@@ -146,8 +182,8 @@ const LeftLogin = () => {
         Welcome back! Login to access Autographa
       </p>
       <div className="p-5">
-        <div className="relative border border-gray-200 rounded-t-[10px] lg:w-72 w-44 sm:w-52 overflow-hidden">
-          {sortedUsers.slice(0, 5).map((user) => (
+        <div className="relative border-gray-200 rounded-t-[10px] lg:w-72 w-44 sm:w-52 overflow-hidden">
+          {sortedUsers.filter(filterUsers).slice(0, 5).map((user) => (
             <div
               key={user}
               className="p-4 py-2 text-sm cursor-pointer bg-[#F9F9F9] hover:bg-primary hover:text-white border-b-[1px] border-[#E3E3E3] font-semibold"
@@ -161,17 +197,19 @@ const LeftLogin = () => {
             </div>
           ))}
         </div>
-        <div className="">
-          <button
-            type="button"
-            onClick={openModal}
-            className={`
+        {sortedUsers.length === 0 ? (<div />) : (
+          <div className="">
+            <button
+              type="button"
+              onClick={openModal}
+              className={`
                                      ${isOpen ? '' : 'text-opacity-90'
               } text-white bg-black w-48 text-xs lg:w-72 sm:w-52 py-[12px] flex items-center justify-center text-md font-bold rounded-b-[10px] sm:text-sm`}
-          >
-            View More
-          </button>
-        </div>
+            >
+              View More
+            </button>
+          </div>
+)}
         <Transition
           appear
           show={isOpen}
@@ -200,24 +238,82 @@ const LeftLogin = () => {
                   leaveFrom="opacity-100 scale-100"
                   leaveTo="opacity-0 scale-95"
                 >
-                  <Dialog.Panel className="w-full max-w-3xl transform overflow-hidden rounded-2xl bg-gray-50 p-6 text-left align-middle shadow-xl transition-all">
-                    <div className="relative grid gap-10 p-7 grid-cols-2 auto-cols-auto">
-
-                      {sortedUsers.map((user) => (
-                        <button
-                          type="button"
-                          key={user}
-                          onClick={() => { handleSubmit({ username: user.username }); }}
-                          className="-m-3 flex items-center py-3 text-sm text-gray-900 cursor-pointer bg-gray-100 hover:bg-primary hover:text-white border rounded-lg border-[#E3E3E3] font-bold"
+                  <Dialog.Panel className="w-full max-w-3xl transform overflow-hidden rounded-2xl bg-gray-50 text-left align-middle shadow-xl transition-all">
+                    <Tab.Group onChange={() => setShowArchived((value) => !value)}>
+                      <Tab.List className="flex space-x-0 rounded-xl">
+                        <Tab
+                          className={({ selected }) => classNames(
+                            'w-full text-md items-center justify-center outline-none font-bold py-4 leading-5 rounded-t-lg',
+                            '',
+                            selected
+                              ? 'text-primary  bg-gray-200'
+                              : 'text-gray-400 hover:text-gray-500 border-b bg-white',
+                          )}
                         >
-                          <div className="ml-4">
-                            <p className="text-md font-semibold ">
-                              {user.username}
-                            </p>
+                          Active
+                        </Tab>
+                        <Tab
+                          className={({ selected }) => classNames(
+                          'w-full text-md items-center justify-center outline-none font-bold py-4 leading-5 rounded-t-lg',
+                          selected
+                              ? ' text-error  bg-gray-200 '
+                              : 'text-gray-400 hover:text-gray-500 border-b bg-white ',
+                          )}
+                        >
+                          Archived
+                        </Tab>
+
+                      </Tab.List>
+                      <Tab.Panels>
+                        <Tab.Panel className="relative overflow-y-auto h-[60vh] p-5">
+                          <div className="grid grid-cols-2">
+                            {sortedUsers.filter(filterUsers).map((user) => (
+                              <div className="flex items-center" key={user.username}>
+                                <div
+                                  role="button"
+                                  tabIndex={0}
+                                  onClick={() => { handleSubmit({ username: user.username }); }}
+                                  className="w-full p-4 py-3 text-sm rounded-lg cursor-pointer bg-[#F9F9F9] hover:bg-primary hover:text-white border border-[#E3E3E3] font-semibold"
+                                >
+
+                                  <p className="text-md font-semibold  ">
+                                    {user.username}
+
+                                  </p>
+                                </div>
+                                <button type="button" className="mx-3" onClick={() => archiveUser(sortedUsers, user)}>
+                                  <TrashIcon className="text-gray-500 h-5 w-5" />
+                                </button>
+
+                              </div>
+                          ))}
                           </div>
-                        </button>
-                      ))}
-                    </div>
+                        </Tab.Panel>
+                        <Tab.Panel className="relative overflow-y-auto h-[60vh] p-5 ">
+                          <div className="grid grid-cols-2">
+                            {sortedUsers.filter(filterUsers).map((user) => (
+                              <div className="flex items-center" key={user.username}>
+                                <div
+                                  role="button"
+                                  tabIndex={0}
+                                  className="w-full p-4 py-3 rounded text-sm cursor-pointer bg-[#F9F9F9] hover:bg-primary hover:text-white border border-[#E3E3E3] font-semibold"
+                                >
+
+                                  <p className="text-md font-semibold  ">
+                                    {user.username}
+
+                                  </p>
+                                </div>
+                                <button type="button" className="mx-3 " onClick={() => restoreUser(sortedUsers, user)}>
+                                  <Restore className="text-gray-500 text-sm" />
+                                </button>
+
+                              </div>
+                          ))}
+                          </div>
+                        </Tab.Panel>
+                      </Tab.Panels>
+                    </Tab.Group>
                   </Dialog.Panel>
                 </Transition.Child>
               </div>
