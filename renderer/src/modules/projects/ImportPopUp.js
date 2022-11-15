@@ -4,7 +4,7 @@ import React, {
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { Dialog, Transition } from '@headlessui/react';
-import { DocumentTextIcon, FolderOpenIcon } from '@heroicons/react/outline';
+import { DocumentTextIcon, FolderOpenIcon } from '@heroicons/react/24/outline';
 import { SnackBar } from '@/components/SnackBar';
 import { ProjectContext } from '@/components/context/ProjectContext';
 import styles from './ImportPopUp.module.css';

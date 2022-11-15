@@ -1,7 +1,7 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Combobox, Transition } from '@headlessui/react';
-import { CheckIcon, SelectorIcon } from '@heroicons/react/solid';
+import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/24/solid';
 import CheckSvg from '@/icons/basil/Outline/Interface/Check.svg';
 
 function MultiComboBox({
@@ -34,7 +34,7 @@ function MultiComboBox({
               onChange={(event) => setQuery(event.target.value)}
             />
             <Combobox.Button className="absolute z-99 inset-y-0 right-0 flex items-center pr-2">
-              <SelectorIcon
+              <ChevronUpDownIcon
                 className="h-5 w-5 text-gray-400"
                 aria-hidden="true"
               />

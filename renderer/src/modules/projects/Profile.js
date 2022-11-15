@@ -1,8 +1,8 @@
 import { PropTypes } from 'prop-types';
 import React from 'react';
 import * as localForage from 'localforage';
-import { XIcon } from '@heroicons/react/solid';
-import { PencilIcon, CheckIcon } from '@heroicons/react/outline';
+import { XMarkIcon } from '@heroicons/react/24/solid';
+import { PencilIcon, CheckIcon } from '@heroicons/react/24/outline';
 import { useTranslation } from 'react-i18next';
 import { classNames } from '@/util/classNames';
 import ProjectsLayout from '@/layouts/projects/Layout';
@@ -54,7 +54,7 @@ function InputBar({ title }) {
           type="button"
           className="m-1 w-6 h-6 flex justify-center items-center bg-primary text-white rounded-full"
         >
-          <XIcon
+          <XMarkIcon
             className="w-3 h-3"
             aria-hidden="true"
           />

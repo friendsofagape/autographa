@@ -5,7 +5,7 @@ import {
   createContent, readContent, get,
 } from 'gitea-react-toolkit';
 import { useTranslation } from 'react-i18next';
-import { ChevronRightIcon } from '@heroicons/react/solid';
+import { ChevronRightIcon } from '@heroicons/react/24/solid';
 import localforage, * as localForage from 'localforage';
 import { SnackBar } from '@/components/SnackBar';
 import { validate } from '@/util/validate';

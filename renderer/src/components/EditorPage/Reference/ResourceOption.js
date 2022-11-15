@@ -1,8 +1,6 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-// const yaml = require('js-yaml');
-
 const ResourceOption = ({
   Icon,
   text,
@@ -17,18 +15,8 @@ const ResourceOption = ({
       setSelectResource(id);
       setTitle(text);
       setShowInput(false);
-        // const jsonParsed = yaml.load(val[0]);
-        // console.log(jsonParsed);
-        // if (translationData.includes({
-        //   name: jsonParsed.dublin_core.title + jsonParsed.dublin_core.source[0].version,
-        //   language: jsonParsed.dublin_core.language.identifier,
-        // }) === false) {
-        //   console.log({ name: `${jsonParsed.dublin_core.title} v${jsonParsed.dublin_core.source[0].version}` });
-        // }
-        // console.log(val);
     }
   };
-
   useEffect(() => {
     if (!selectResource) {
         setSelectResource('bible');

@@ -1,6 +1,6 @@
 import {
     BellIcon,
-  } from '@heroicons/react/outline';
+  } from '@heroicons/react/24/outline';
 import React, { useContext, useEffect, useState } from 'react';
 import localforage from 'localforage';
 import moment from 'moment';

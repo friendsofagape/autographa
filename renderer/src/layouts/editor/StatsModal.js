@@ -10,7 +10,7 @@ import {
 import {
   InformationCircleIcon,
   DocumentTextIcon,
-} from '@heroicons/react/outline';
+} from '@heroicons/react/24/outline';
 
 import { useTranslation } from 'react-i18next';
 import LogoIcon from '@/icons/logo.svg';

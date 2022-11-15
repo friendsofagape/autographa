@@ -4,7 +4,7 @@ import {
 } from 'react';
 import PropTypes from 'prop-types';
 import WaveSurfer from 'wavesurfer.js';
-import { PlayIcon, PauseIcon } from '@heroicons/react/solid';
+import { PlayIcon, PauseIcon } from '@heroicons/react/24/solid';
 // eslint-disable-next-line import/extensions
 import MicrophonePlugin from 'wavesurfer.js/dist/plugin/wavesurfer.microphone.js';
 

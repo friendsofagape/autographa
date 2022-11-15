@@ -12,13 +12,13 @@ import {
 	MinusIcon,
 	PlusIcon,
 	StopIcon,
-	AnnotationIcon,
+	ChatBubbleBottomCenterTextIcon,
 	SpeakerphoneIcon,
 	ArrowNarrowRightIcon,
 	CheckIcon,
-	XIcon,
+	XMarkIcon,
 	PencilIcon,
-} from '@heroicons/react/outline';
+} from '@heroicons/react/24/outline';
 import { Listbox } from '@headlessui/react';
 import dynamic from 'next/dynamic';
 import PropTypes from 'prop-types';

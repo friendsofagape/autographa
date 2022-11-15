@@ -2,13 +2,10 @@
 import React, { useState } from 'react';
 
 import {
-  LockClosedIcon,
-  BookmarkIcon,
-  CollectionIcon,
-  ViewBoardsIcon,
+  RectangleStackIcon,
   PencilIcon,
-  SaveIcon,
-} from '@heroicons/react/outline';
+  ArrowDownOnSquareIcon,
+} from '@heroicons/react/24/outline';
 
 import { ArrowClockwise, ArrowCounterClockwise } from 'phosphor-react';
 
@@ -49,37 +46,26 @@ export default function Buttons(props) {
 
   return (
     <>
-      <CollectionIcon
-        aria-label="Collection-Icon"
+      <RectangleStackIcon
+        aria-label='Collection-Icon'
         className={classNames(
           sectionable ? 'fill-current' : '',
           'h-5 mr-2 w-5 text-white cursor-pointer',
         )}
-        aria-hidden="true"
+        aria-hidden='true'
         onClick={onSectionable}
       />
 
       <PencilIcon
-        aria-label="Collection-Icon"
+        aria-label='Collection-Icon'
         className={classNames(
           editable ? 'fill-current' : '',
           'h-5 mr-2 w-5 text-white cursor-pointer',
         )}
-        aria-hidden="true"
+        aria-hidden='true'
         onClick={onEditable}
       />
 
-      {/* <ViewBoardsIcon
-          aria-label='Block Icon'
-          className='h-5 w-5 text-white cursor-pointer'
-          aria-hidden='true'
-          onClick={() => setBlockable(true)}
-          />
-          <button
-          className='text-blue-700 font-semibold text-primary hover:text-white border border-blue-500 hover:border-transparent rounded'
-          onClick={() => setBlockable(false)}>
-          B Off
-          </button> */}
       <ArrowCounterClockwise
         aria-label="Collection-Icon"
         className="h-5 mr-2 w-5 text-white cursor-pointer"
@@ -92,7 +78,7 @@ export default function Buttons(props) {
         aria-hidden="true"
         onClick={() => redo()}
       />
-      <SaveIcon
+      <ArrowDownOnSquareIcon
         aria-label="Save Icon"
         className="h-5 mr-2 w-5 text-white cursor-pointer"
         aria-hidden="true"
