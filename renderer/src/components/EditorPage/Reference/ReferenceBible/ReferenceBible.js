@@ -67,7 +67,6 @@ const ReferenceBible = ({
     // eslint-disable-next-line no-promise-executor-return
     return new Promise((resolve) => setTimeout(resolve, ms));
   };
-
   useEffect(() => {
     if (isElectron() && refName) {
       setIsLoading(true);

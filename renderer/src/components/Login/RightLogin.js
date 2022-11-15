@@ -35,7 +35,7 @@ export default function RightLogin() {
           </div>
 
           <div className="py-10">
-            <p className="text-md">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Consectetur viverra facilisis platea malesuada faucibus justo. Donec sit amet diam, in. Arcu, felis sed tempor orci, pretium velit amet. Nullam amet, in justo a auctor sem felis.</p>
+            <p className="text-md">A Bible translation editor that is owned by and developed for the community which uses modern technology to solve the practical problems faced on the field in the current Bible translation context.</p>
             <p className="flex gap-2 mt-4 font-semibold items-center">
               <span className="text-lg">FEATURE 1</span>
               <img src="/../illustrations/greenCheck.png" className="w-4 h-4" alt="" />

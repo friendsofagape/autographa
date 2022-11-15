@@ -182,7 +182,7 @@ function RemoveResource({
           title={t('modal-title-remove-resource')}
           setOpenModal={setOpenModal}
           confirmMessage="Are you sure want to remove the resource. This action can not be reverted"
-          buttonName={t('btn-replace')}
+          buttonName={t('btn-remove')}
           closeModal={() => handleRemoveResourceResources()}
         />
 

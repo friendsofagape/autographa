@@ -57,7 +57,7 @@ export default function ProjectsLayout(props) {
                   </div>
                 </div>
                 <div className="ml-auto flex">
-                  {isImport
+                  {isImport && !showArchived
                     && (
                       <>
                         <button

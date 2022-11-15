@@ -289,7 +289,12 @@ const importBurrito = async (filePath, currentUser, updateBurritoVersion) => {
           setting.project[metadata.type.flavorType.flavor.name].copyright = settings.project[metadata.type.flavorType.flavor.name]?.copyright ? settings.project[metadata.type.flavorType.flavor.name]?.copyright : { title: 'Custom' };
           setting.project[metadata.type.flavorType.flavor.name].refResources = settings.project[metadata.type.flavorType.flavor.name]?.refResources ? settings.project[metadata.type.flavorType.flavor.name]?.refResources : [];
           setting.project[metadata.type.flavorType.flavor.name].bookMarks = settings.project[metadata.type.flavorType.flavor.name]?.bookMarks ? settings.project[metadata.type.flavorType.flavor.name]?.bookMarks : [];
-          setting.sync.services.door43 = setting?.sync?.services?.door43 ? setting?.sync?.services?.door43 : [];
+          // setting.sync.services.door43 = setting?.sync?.services?.door43 ? setting?.sync?.services?.door43 : [];
+          if (!setting.sync && !setting.sync?.services) {
+            setting.sync = { services: { door43: [] } };
+            } else {
+              setting.sync.services.door43 = setting?.sync?.services?.door43 ? setting?.sync?.services?.door43 : [];
+            }
           settings = setting;
         }
         settings.project[metadata.type.flavorType.flavor.name].lastSeen = moment().format();

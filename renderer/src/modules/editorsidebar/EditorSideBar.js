@@ -1,5 +1,8 @@
 import PropTypes from 'prop-types';
-import { Fragment, useReducer } from 'react';
+import {
+  Fragment, useReducer, useContext, useEffect,
+} from 'react';
+import { ProjectContext } from '@/components/context/ProjectContext';
 
 import {
   Dialog, Transition,
@@ -10,18 +13,19 @@ import {
 } from '@heroicons/react/solid';
 
 import {
-  // AnnotationIcon,
-  // SearchIcon,
+  AnnotationIcon,
+  SearchIcon,
   BookmarkIcon,
 } from '@heroicons/react/outline';
 
-// import PinIcon from '@/icons/basil/Outline/Status/Pin.svg';
-// import CrossReferenceIcon from '@/icons/crossreference.svg';
-// import FootNotesIcon from '@/icons/footnotes.svg';
+import PinIcon from '@/icons/basil/Outline/Status/Pin.svg';
+import CrossReferenceIcon from '@/icons/crossreference.svg';
+import FootNotesIcon from '@/icons/footnotes.svg';
 
 import Search from './Search';
 import CrossReferences from './CrossReferences';
-import FootNotes from './FootNotes';
+// import FootNotes from './FootNotes';
+import FootNoteEditor from './FootNoteEditor';
 import Comments from './Comments';
 import Bookmarks from '../../components/EditorPage/BookMarks/Bookmarks';
 
@@ -50,7 +54,16 @@ export default function EditorSideBar(props) {
   const {
     isOpen,
     closeSideBar,
+    footnoteProps,
   } = props;
+
+  const {
+    states: { sideBarTab },
+  } = useContext(ProjectContext);
+
+  useEffect(() => {
+    sideBarTab && dispatch({ type: sideBarTab });
+  }, [sideBarTab]);
 
   function closeSideBars() {
     closeSideBar(false);
@@ -100,50 +113,50 @@ export default function EditorSideBar(props) {
 
               <div className="relative text-center bg-black text-white text-xs font-medium tracking-wider uppercase">
                 <div className="grid grid-cols-7 gap-0">
-                  {/* <div className="grid grid-cols-3 col-span-3 gap-0">
+                  <div className="grid grid-cols-3 col-span-3 gap-0">
                     <div
                       onClick={() => dispatch({ type: 'search' })}
                       role="button"
                       tabIndex="0"
                       className={`text-white h-full
-                       w-full hover:bg-primary
-                       cursor-pointer ${state.tabIndex === 0 && 'bg-primary'}`}
+                        w-full hover:bg-primary
+                        cursor-pointer ${state.tabIndex === 0 && 'bg-primary'}`}
                     >
                       <SearchIcon className="w-1/3 m-auto h-full" aria-hidden="true" />
                       {' '}
-                      */}
-                  {/* </div> */}
-                  {/* <div
+
+                    </div>
+                    <div
                       role="button"
                       tabIndex="0"
                       onClick={() => dispatch({ type: 'crossreference' })}
                       className={`text-white h-full
-                       w-full hover:bg-primary
-                       cursor-pointer ${state.tabIndex === 1 && 'bg-primary'}`}
+                        w-full hover:bg-primary
+                        cursor-pointer ${state.tabIndex === 1 && 'bg-primary'}`}
                     >
                       <CrossReferenceIcon
                         fill="currentColor"
                         className="w-1/5 m-auto h-full"
                         aria-hidden="true"
                       />
-                    </div> */}
-                  {/* <div
+                    </div>
+                    <div
                       role="button"
                       tabIndex="0"
                       onClick={() => dispatch({ type: 'footnotes' })}
                       className={`text-white
                       h-full w-full hover:bg-primary
-                       cursor-pointer ${state.tabIndex === 2 && 'bg-primary'}`}
+                        cursor-pointer ${state.tabIndex === 2 && 'bg-primary'}`}
                     >
                       <FootNotesIcon
                         fill="currentColor"
                         className="w-1/6 m-auto h-full"
                         aria-hidden="true"
-                      /> */}
-                  {/* </div> */}
-                  {/* </div> */}
+                      />
+                    </div>
+                  </div>
                   <div className="grid grid-cols-6 col-span-6 gap-0">
-                    {/* <div
+                    <div
                       role="button"
                       tabIndex="0"
                       // onClick={() => dispatch({ type: 'comments' })}
@@ -152,7 +165,7 @@ export default function EditorSideBar(props) {
                       cursor-pointer ${state.tabIndex === 3 && 'bg-primary'}`}
                     >
                       <AnnotationIcon className="w-1/3 m-auto h-full" aria-hidden="true" />
-                    </div> */}
+                    </div>
                     <div
                       role="button"
                       tabIndex="0"
@@ -161,13 +174,13 @@ export default function EditorSideBar(props) {
                     >
                       <BookmarkIcon className="w-1/3 m-auto h-full" aria-hidden="true" />
                     </div>
-                    {/* <div className="text-white h-full w-full hover:bg-primary cursor-pointer">
+                    <div className="text-white h-full w-full hover:bg-primary cursor-pointer">
                       <PinIcon
                         fill="currentColor"
                         className="w-2/5 m-auto h-full"
                         aria-hidden="true"
                       />
-                    </div> */}
+                    </div>
                   </div>
                   <div className="flex justify-end">
                     <button aria-label="close-button" type="button" className="w-9 h-9 bg-gray-900 p-2 focus:outline-none" onClick={closeSideBars}>
@@ -183,7 +196,7 @@ export default function EditorSideBar(props) {
                 {state.tabIndex === 1
                   && <CrossReferences />}
                 {state.tabIndex === 2
-                  && <FootNotes />}
+                  && <FootNoteEditor {...footnoteProps} />}
                 {state.tabIndex === 3
                   && <Comments />}
                 {state.tabIndex === 4

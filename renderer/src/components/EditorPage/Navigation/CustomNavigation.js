@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'; // can be removed
 import { Dialog, Transition } from '@headlessui/react';
 import {
   Fragment, useEffect, useRef, useState,
