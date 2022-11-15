@@ -7,6 +7,7 @@ import { readFile } from '../../../core/editor/readFile';
 //  hook to fetch usfmfile from system drive
 export const useReadUsfmFile = () => {
   const [usfmData, setUsfmData] = useState([]);
+  const [bookAvailable, setbookAvailable] = useState(false);
   const {
     state: {
       bookId,
@@ -31,14 +32,20 @@ export const useReadUsfmFile = () => {
           }
         });
         const [currentBook] = _books.filter((bookObj) => bookObj.bookId === bookId?.toUpperCase());
+        if (currentBook) {
           const fileData = await readFile({ projectname: projectName, filename: currentBook.fileName, username: userName });
           const books = [{
             selectors: { org: 'unfoldingWord', lang: 'en', abbr: 'ult' },
             bookCode: currentBook.bookId.toLowerCase(),
             data: fileData,
           }];
-          // setUsfmData(fileData);
           setUsfmData(books);
+          setbookAvailable(true);
+        } else {
+          setUsfmData([]);
+          setbookAvailable(false);
+        }
+        // setUsfmData(fileData);
       } catch (err) {
         // eslint-disable-next-line no-console
         return console.log(err);
@@ -46,5 +53,5 @@ export const useReadUsfmFile = () => {
     }
     readLocalFile();
   }, [bookId]);
-  return { usfmData };
+  return { usfmData, bookAvailable };
 };

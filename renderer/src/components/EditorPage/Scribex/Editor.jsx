@@ -1,11 +1,12 @@
 /* eslint-disable no-unused-vars */
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { HtmlPerfEditor } from '@xelah/type-perf-html';
 import LoadingScreen from '@/components/Loading/LoadingScreen';
 import SaveIndicator from '@/components/Loading/SaveIndicator';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import { ProjectContext } from '@/components/context/ProjectContext';
+import EmptyScreen from '@/components/Loading/EmptySrceen';
 
 export default function Editor(props) {
   const {
@@ -24,6 +25,7 @@ export default function Editor(props) {
     addSequenceId,
     saveHtmlPerf,
     setGraftSequenceId,
+    bookAvailable,
   } = props;
 
   const {
@@ -32,12 +34,13 @@ export default function Editor(props) {
 
   const { t } = useTranslation();
 
+  console.log({ bookName });
   const {
     states: { openSideBar },
     actions: { setOpenSideBar, setSideBarTab },
   } = useContext(ProjectContext);
   const sequenceId = sequenceIds.at(-1);
-  const style = isSaving || isLoading || !sequenceId ? { cursor: 'progress' } : {};
+  const style = isSaving ? { cursor: 'progress' } : {};
   const bookChanged = sequenceId === htmlPerf?.mainSequenceId;
   const handlers = {
     onBlockClick: ({ content: _content, element }) => {
@@ -56,7 +59,7 @@ export default function Editor(props) {
   };
   useEffect(() => {
     setBookChange(false);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [htmlPerf]);
 
   const {
@@ -70,8 +73,10 @@ export default function Editor(props) {
     }, 1000);
   };
   useEffect(() => {
-    if (isSaving) { autoSaveIndication(); }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    if (isSaving) {
+      autoSaveIndication();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSaving]);
 
   const _props = {
@@ -93,10 +98,12 @@ export default function Editor(props) {
   };
 
   return (
-    <div className="editor" style={style}>
-      {(!sequenceId && <LoadingScreen />)
-        || (bookChange && <LoadingScreen />)}
-      {sequenceId && !bookChange && <HtmlPerfEditor {..._props} />}
+    <div className='editor' style={style}>
+      {!bookAvailable && <EmptyScreen />}
+      {bookAvailable && (!sequenceId || bookChange) && <LoadingScreen />}
+      {bookAvailable && sequenceId && !bookChange && (
+        <HtmlPerfEditor {..._props} />
+      )}
     </div>
   );
 }
