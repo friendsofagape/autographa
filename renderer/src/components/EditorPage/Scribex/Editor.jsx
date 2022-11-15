@@ -34,7 +34,6 @@ export default function Editor(props) {
 
   const { t } = useTranslation();
 
-  console.log({ bookName });
   const {
     states: { openSideBar },
     actions: { setOpenSideBar, setSideBarTab },
@@ -98,7 +97,7 @@ export default function Editor(props) {
   };
 
   return (
-    <div className='editor' style={style}>
+    <div className="editor" style={style}>
       {!bookAvailable && <EmptyScreen />}
       {bookAvailable && (!sequenceId || bookChange) && <LoadingScreen />}
       {bookAvailable && sequenceId && !bookChange && (
