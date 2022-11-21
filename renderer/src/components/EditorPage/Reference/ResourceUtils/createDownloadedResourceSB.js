@@ -26,7 +26,7 @@ const findCode = (list, id) => {
     });
     return code;
   };
-const createDownloadedResourceSB = async (username, resourceMeta, projectResource, selectResource) => {
+export const createDownloadedResourceSB = async (username, resourceMeta, projectResource, selectResource) => {
     logger.debug('createDownloadedResourceSB.js', 'Create Metadata for downloaded bible resource');
     // generate unique key
     try {
@@ -38,10 +38,10 @@ const createDownloadedResourceSB = async (username, resourceMeta, projectResourc
         let json = {};
         switch (selectResource) {
           case 'bible':
-            json = Textburrito;
+            json = { ...Textburrito };
             break;
             case 'obs':
-            json = OBSburrito;
+            json = { ...OBSburrito };
             break;
           default:
             throw new Error(' can not process :Inavalid Type od Resource requested');
@@ -109,7 +109,7 @@ const createDownloadedResourceSB = async (username, resourceMeta, projectResourc
     }
 };
 
-export default createDownloadedResourceSB;
+// export default createDownloadedResourceSB;
 
 export const generateAgSettings = async (metaData, currentResourceMeta, selectResource) => new Promise((resolve) => {
   logger.debug('DownloadResourcePopUp.js', 'In generate ag-settings for resource downloaded');
