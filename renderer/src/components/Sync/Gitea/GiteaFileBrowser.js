@@ -28,6 +28,7 @@ const GiteaFileBrowser = ({ changeRepo }) => {
     states: { dragFromAg },
     action: {
       setDragFromAg, handleDropToAg, setTotalUploadedAg, settotalFilesAg, setUploadstartAg,
+      fetchProjects,
     },
   } = React.useContext(SyncContext);
 
@@ -173,6 +174,8 @@ const GiteaFileBrowser = ({ changeRepo }) => {
           setTotalUploaded(0);
           settotalFiles(0);
           handleDropToAg(null);
+          // refresh left pane local
+          await fetchProjects();
           await addNewNotification(
             'Sync',
             'Project Sync to Ag successfull',
