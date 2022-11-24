@@ -16,7 +16,7 @@ function CustomMultiComboBox({
       // eslint-disable-next-line no-nested-ternary
       filteredData = (query === '')
       ? customData.slice(0, 100).concat(selectedList.filter((item) => customData.slice(0, 100).indexOf(item) === -1))
-      : (query.length >= 2)
+      : (query.length >= 3)
       ? customData.filter((data) => data[filterParams].toLowerCase().includes(query.toLowerCase()))
       : [];
     }
@@ -43,7 +43,7 @@ function CustomMultiComboBox({
                           <Combobox.Input
                             className="w-full border-none py-2 pl-3 pr-10 text-sm leading-5 text-gray-900 focus:ring-0"
                             displayValue=""
-                            placeholder={`${selectedList.length > 0 ? `${selectedList[0][filterParams] }... click for more` : 'Select Language'}`}
+                            placeholder={`${selectedList.length > 0 ? `${selectedList[0][filterParams] }... click for more` : 'Select Language(s)'}`}
                             onFocus={() => !open && setIsActive(true)}
                             onBlur={() => setIsActive(false)}
                             onChange={(event) => setQuery(event.target.value)}
