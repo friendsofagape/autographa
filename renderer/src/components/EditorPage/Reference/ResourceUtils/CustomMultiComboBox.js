@@ -16,7 +16,7 @@ function CustomMultiComboBox({
       // eslint-disable-next-line no-nested-ternary
       filteredData = (query === '')
       ? customData.slice(0, 100).concat(selectedList.filter((item) => customData.slice(0, 100).indexOf(item) === -1))
-      : (query.length >= 3)
+      : (query.length >= 2)
       ? customData.filter((data) => data[filterParams].toLowerCase().includes(query.toLowerCase()))
       : [];
     }
@@ -48,15 +48,15 @@ function CustomMultiComboBox({
                             onBlur={() => setIsActive(false)}
                             onChange={(event) => setQuery(event.target.value)}
                           />
-                          <Combobox.Button
+                          {/* <Combobox.Button
                             className="absolute z-99 inset-y-0 right-0 flex items-center pr-2"
                             onClick={() => (open || isActive ? setIsActive(false) : setIsActive(true))}
-                          >
-                            {/* <SelectorIcon
+                          > */}
+                          {/* <SelectorIcon
                               className="h-5 w-5 text-gray-400"
                               aria-hidden="true"
                             /> */}
-                          </Combobox.Button>
+                          {/* </Combobox.Button> */}
                         </div>
                         <Transition
                           show={open || isActive}
@@ -76,17 +76,17 @@ function CustomMultiComboBox({
                                   <Combobox.Option key={selectedData?.id || selectedData?.pk} className=" hover:bg-gray-300 p-1 italic" value={selectedData}>
                                     {selectedData[filterParams]}
                                   </Combobox.Option>
-                            ))}
+                                  ))}
                               </div>
-                            )}
+                              )}
                               <div>
                                 {selectedList.length > 0 && !query.length > 0 && <div className="mt-1 mb-2 h-[.1rem] w-full bg-secondary" />}
                                 {filteredData.map((data) => (
-                            // <Combobox.Option key={data?.id || data?.pk} className={`${selectedList.includes(data) ? 'bg-gray-400' : ''} hover:bg-gray-300 p-1`} value={data}>
-                                  <Combobox.Option key={data?.id || data?.pk} className=" hover:bg-gray-300 p-1" value={data}>
+                                  <Combobox.Option key={data?.id || data?.pk} className={`${selectedList.includes(data) ? 'bg-gray-400' : ''} hover:bg-gray-300 p-1`} value={data}>
+                                    {/* // <Combobox.Option key={data?.id || data?.pk} className=" hover:bg-gray-300 p-1" value={data}> */}
                                     {data[filterParams]}
                                   </Combobox.Option>
-                            ))}
+                                ))}
                               </div>
                             </div>
                           </Combobox.Options>
