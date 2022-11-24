@@ -192,7 +192,8 @@ function CheckHelpsUpdatePopUp({ resource, selectResource }) {
                         </div>
                         <div className="">
                           <a className="bg-secondary text-white inline-block rounded-t py-2 px-4 text-sm uppercase" href="#a">
-                            <img className="inline mr-2 w-6" src="/brands/door43.png" alt="Door 43 Logo" />
+                            {/* <img className="inline mr-2 w-6" src="/brands/door43.png" alt="Door 43 Logo" /> */}
+                            <img className="inline mr-2 w-6" src="/brands/door43.png" alt="" />
                             {t('label-door43')}
                           </a>
                         </div>
