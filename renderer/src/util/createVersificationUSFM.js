@@ -73,7 +73,7 @@ export const createVersificationUSFM = (
                   verses.push({
                     verseNumber: i.toString(),
                     verseText: '',
-                    // contents: [],
+                    contents: [ "..."], // adding default text to verses to mitigate the empty verse bug
                   });
                 }
                 contents = contents.concat(verses);
