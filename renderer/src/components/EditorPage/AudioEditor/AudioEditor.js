@@ -32,6 +32,7 @@ const AudioEditor = ({ editor }) => {
       isLoading,
       audioContent,
       audioPath,
+      updateWave,
     }, actions: {
       onChangeBook,
       onChangeChapter,

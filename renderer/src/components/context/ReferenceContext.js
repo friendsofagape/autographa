@@ -53,6 +53,7 @@ export default function ReferenceContextProvider({ children }) {
   });
   const [audioContent, setAudioContent] = useState();
   const [audioPath, setAudioPath] = useState();
+  const [updateWave, setUpdateWave] = useState(false);
   // Trigger the function after every recording and default change
   const [audioCurrentChapter, setAudioCurrentChapter] = useState();
   const [resetResourceOnDeleteOffline, setResetResourceOnDeleteOffline] = useState({
@@ -189,6 +190,7 @@ export default function ReferenceContextProvider({ children }) {
       audioCurrentChapter,
       audioPath,
       resetResourceOnDeleteOffline,
+      updateWave,
     },
     actions: {
       setLanguageId,
@@ -230,6 +232,7 @@ export default function ReferenceContextProvider({ children }) {
       setAudioCurrentChapter,
       setAudioPath,
       setResetResourceOnDeleteOffline,
+      setUpdateWave,
     },
   };
   // const goToChapter = (chapternum, versenum) => (
