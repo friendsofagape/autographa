@@ -17,8 +17,10 @@ const MainPlayer = () => {
       audioContent,
       audioCurrentChapter,
       audioPath,
+      updateWave,
     }, actions: {
       setAudioContent,
+      setUpdateWave,
     },
   } = useContext(ReferenceContext);
   const [currentUrl, setCurrentUrl] = useState('');
@@ -89,6 +91,7 @@ const MainPlayer = () => {
             // Storing the content in the ReferenceContext for the MainPlayer component
             setAudioContent(audioCurrentChapter.bookContent[key].contents);
             fetchUrl();
+            setUpdateWave(!updateWave);
           }
         },
       );
@@ -117,7 +120,26 @@ const MainPlayer = () => {
     loadChapter();
     }
   };
+  const playRecordingFeedback = useCallback(
+    async (blobUrl, blob) => {
+      // setCurrentUrl(blobUrl);
+      setAudioBlob(blob);
+    },
+    [],
+  );
+  const {
+    startRecording,
+    stopRecording,
+    pauseRecording,
+    resumeRecording,
+    clearBlobUrl,
+  } = useReactMediaRecorder({
+      audio: {},
+      onStop: playRecordingFeedback,
+      blobPropertyBag: { type: 'audio/mp3' },
+  });
   const handleFunction = () => {
+    setCurrentUrl();
     // We have used trigger to identify whether the call is from DeleteAudio or Re-record
     if (trigger === 'delete') {
       const fs = window.require('fs');
@@ -161,29 +183,13 @@ const MainPlayer = () => {
       // Since we are not loading the entire component and updating the JSON data (audioContent), we need to update it manually.
       setAudioContent(audioCurrentChapter.bookContent[chapter - 1].contents);
       setTrigger();
+      setUpdateWave(!updateWave);
+      clearBlobUrl();
       loadChapter();
     } else {
       setTrigger('record');
     }
   };
-  const playRecordingFeedback = useCallback(
-    async (blobUrl, blob) => {
-      // setCurrentUrl(blobUrl);
-      setAudioBlob(blob);
-    },
-    [],
-  );
-  const {
-    startRecording,
-    stopRecording,
-    pauseRecording,
-    resumeRecording,
-    clearBlobUrl,
-  } = useReactMediaRecorder({
-      audio: {},
-      onStop: playRecordingFeedback,
-      blobPropertyBag: { type: 'audio/mp3' },
-  });
   const saveAudio = (blob) => {
     getDetails()
     .then(({
