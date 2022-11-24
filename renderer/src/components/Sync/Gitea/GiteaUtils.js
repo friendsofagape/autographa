@@ -24,19 +24,19 @@ export const importServerProject = async (updateBurrito, repo, sbData, auth, use
     console.log("sbdataObje : ", sbDataObject);
     const projectDir = path.join(newpath, 'autographa', 'users', currentUser, 'projects');
     fs.mkdirSync(projectDir, { recursive: true });
-    if (!sbData?.meta?.dateCreated) {
+    if (!sbData?.meta?.dateCreated && sbDataObject?.identification?.primary?.ag) {
         const agId = Object.keys(sbDataObject?.identification?.primary?.ag);
         sbDataObject.meta.dateCreated = sbDataObject?.identification?.primary?.ag[agId[0]].timestamp;
     }
     let projectName = sbDataObject.identification?.name?.en;
     let id;
     logger.debug('dropzone giteaUtils import.js', 'Checking for AG primary key');
-    if (sbDataObject.identification.primary.ag !== undefined) {
+    if (sbDataObject?.identification?.primary?.ag !== undefined) {
         Object.entries(sbDataObject.identification?.primary?.ag).forEach(([key]) => {
         logger.debug('dropzone giteaUtils import.js', 'Fetching the key from burrito.');
         id = key;
         });
-    } else if (sbDataObject.identification.upstream.ag !== undefined) {
+    } else if (sbDataObject?.identification?.upstream?.ag !== undefined) {
         Object.entries(sbDataObject.identification.primary).forEach(([key]) => {
         logger.debug('dropzone giteaUtils import.js', 'Swapping data between primary and upstream');
         const identity = sbDataObject.identification.primary[key];
@@ -72,8 +72,8 @@ export const importServerProject = async (updateBurrito, repo, sbData, auth, use
         sbDataObject.identification.primary.ag = latest;
     }
 
-    if (!id) {
-        Object.entries(sbDataObject.identification.primary).forEach(([key]) => {
+    if (!id && sbDataObject?.identification?.primary) {
+        Object.entries(sbDataObject?.identification?.primary).forEach(([key]) => {
         logger.debug('dropzone giteaUtils import.js', 'Swapping data between primary and upstream');
         if (key !== 'ag') {
             const identity = sbDataObject.identification.primary[key];
@@ -95,11 +95,12 @@ export const importServerProject = async (updateBurrito, repo, sbData, auth, use
         logger.debug('dropzone giteaUtils import.js', 'Taking folder name as Project Name');
         projectName = ((repo.name.split('-').pop()).replace(new RegExp('_', 'g'), ' '));
     }
-    const firstKey = Object.keys(sbDataObject.ingredients)[0];
-    const folderName = firstKey.split(/[(\\)?(/)?]/gm).slice(0);
-    const dirName = folderName[0];
-    fs.mkdirSync(path.join(projectDir, `${projectName}_${id}`, dirName), { recursive: true });
-    logger.debug('dropzone giteaUtils import.js', 'Creating a directory if not exists.');
+    if (sbDataObject?.ingredients) {
+      const firstKey = Object.keys(sbDataObject?.ingredients)[0];
+      const folderName = firstKey.split(/[(\\)?(/)?]/gm).slice(0);
+      const dirName = folderName[0];
+      fs.mkdirSync(path.join(projectDir, `${projectName}_${id}`, dirName), { recursive: true });
+      logger.debug('dropzone giteaUtils import.js', 'Creating a directory if not exists.');
 
     // fetch and add ingredients
     action?.setUploadstart(true);
@@ -137,7 +138,7 @@ export const importServerProject = async (updateBurrito, repo, sbData, auth, use
         }
       }
     // check md5 values
-    Object.entries(sbDataObject.ingredients).forEach(([key, value]) => {
+    Object.entries(sbDataObject?.ingredients).forEach(([key, value]) => {
         logger.debug('dropzone giteaUtils import.js', 'Fetching keys from ingredients.');
         const content = fs.readFileSync(path.join(projectDir, `${projectName}_${id}`, key), 'utf8');
         const checksum = md5(content);
@@ -237,7 +238,9 @@ export const importServerProject = async (updateBurrito, repo, sbData, auth, use
     logger.debug('importBurrito.js', 'Creating the metadata.json Burrito file.');
     action?.setUploadstart(false);
     console.log('finished import project');
+  }
     });
+    
 };
 
 // sync profile updation

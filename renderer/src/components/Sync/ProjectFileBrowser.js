@@ -53,7 +53,6 @@ export default function ProjectFileBrowser() {
   //   //   setFiles(res);
   //   // });
   // };
-
   useEffect(() => {
     const getProjects = async () => {
       await fetchProjects();
@@ -84,7 +83,9 @@ export default function ProjectFileBrowser() {
       </div>
 
       {uploadStartAg
-        && <ProgressBar currentValue={totalUploadedAg} totalValue={totalFilesAg} />}
+        && (
+        <ProgressBar currentValue={totalUploadedAg} totalValue={totalFilesAg} />
+  )}
 
       {loading
         ? (
@@ -143,7 +144,8 @@ export default function ProjectFileBrowser() {
               {/* {agProjects.map((project, i) => ( */}
               {agProjects.map((project) => (
                 // not listing audio project in sync list
-                agProjectsMeta.filter((projectData) => projectData?.identification?.name?.en === project && projectData?.type?.flavorType?.flavor?.name !== 'audioTranslation').length > 0
+                agProjectsMeta.filter((projectData) => projectData?.identification?.name?.en === project && projectData?.type?.flavorType?.flavor?.name !== 'audioTranslation'
+                && !projectData?.project[projectData?.type?.flavorType?.flavor?.name]?.isArchived).length > 0
                 && (
                 <tr
                   key={project}
@@ -153,7 +155,6 @@ export default function ProjectFileBrowser() {
                   data-testid="project-id"
                   className="cursor-pointer"
                 >
-
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
                       {/* <svg viewBox="0 0 14 16" fill="none" className="mr-2 h-5 w-5 text-gray-500" xmlns="http://www.w3.org/2000/svg">
