@@ -130,7 +130,8 @@ export default function Scribex({ editor }) {
           </div>
         </div>
         <div
-          className="border-l-2 border-r-2 border-secondary pb-16 prose-sm max-w-none overflow-auto h-full scrollbars-width">
+          className="border-l-2 border-r-2 border-secondary pb-16 prose-sm max-w-none overflow-auto h-full scrollbars-width"
+        >
           <Editor {..._props} />
         </div>
       </div>
