@@ -121,7 +121,8 @@ const SectionPlaceholder2 = ({ editor }) => {
         referenceColumnTwoData1Reset: false,
       }
       ));
-    } else if (resetResourceOnDeleteOffline?.referenceColumnTwoData2Reset) {
+    }
+    if (resetResourceOnDeleteOffline?.referenceColumnTwoData2Reset) {
       setReferenceColumnTwoData2((prev) => ({
         ...prev,
         languageId: '',

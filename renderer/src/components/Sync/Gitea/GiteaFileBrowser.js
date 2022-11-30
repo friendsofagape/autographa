@@ -20,6 +20,7 @@ import {
 } from './GiteaUtils';
 import ProgressBar from '../ProgressBar';
 import ProjectMergePop from './ProjectMergePop';
+import LoadingSpinner from '../LoadingSpinner';
 
 /* eslint-disable no-console */
 // eslint-disable-next-line react/prop-types
@@ -38,6 +39,9 @@ const GiteaFileBrowser = ({ changeRepo }) => {
       // setActiveNotificationCount,
     },
   } = useContext(AutographaContext);
+
+  const [updateGitea, setUpdateGitea] = React.useState(false);
+  const [refreshGiteaListUI, setRefreshGiteaListUI] = React.useState({ triger: false, timeOut: false });
 
   const { t } = useTranslation();
   const [totalUploaded, setTotalUploaded] = React.useState(0);
@@ -184,7 +188,7 @@ const GiteaFileBrowser = ({ changeRepo }) => {
         });
     };
 
-  // Read gitea folder structure and data after drag
+  // Read gitea folder structure and data after drag (Gitea - AG )
   const readGiteaFolderData = async (repo, from) => {
     logger.debug('Dropzone.js', 'calling read Gitea Folder Data event');
     // console.log("read folder data : ", from);
@@ -295,6 +299,7 @@ const GiteaFileBrowser = ({ changeRepo }) => {
     }
   };
 
+  // Drag from Ag - Gitea
   const handleDropFolder = async (data) => {
     logger.debug('Dropzone.js', 'calling handleDropFolder event');
     if (data?.result?.from === 'autographa') {
@@ -317,6 +322,7 @@ const GiteaFileBrowser = ({ changeRepo }) => {
           async (result) => {
           if (result.id) {
             setUploadstartAg(true);
+            setUpdateGitea(true);
             // Successfully created , upload new files to repo
             // console.log("inside success creation", result.name);
             console.log('start uploading');
@@ -353,12 +359,14 @@ const GiteaFileBrowser = ({ changeRepo }) => {
                 .catch((err) => {
                   logger.debug('Dropzone.js', `failed to upload file to Gitea ${key}`);
                   setUploadstartAg(false);
+                  setUpdateGitea(false);
                   // console.log(key, ' : error : ', err);
                 });
             }
           }
             setDragFromAg(null);
             setUploadstartAg(false);
+            setUpdateGitea(false);
             settotalFilesAg(0);
             setTotalUploadedAg(0);
             handleDropToAg(null);
@@ -379,6 +387,7 @@ const GiteaFileBrowser = ({ changeRepo }) => {
             if (error.message.includes('409')) {
               console.log('started update project ');
               setUploadstartAg(true);
+              setUpdateGitea(true);
               const metadataContent = fs.readFileSync(path.join(projectsMetaPath, 'metadata.json'));
               await updateFiletoServer(JSON.stringify(metadataContent), 'metadata.json', `${user?.username}/${projectCreated}.1`, repoName, auth);
               // Read ingredients and update
@@ -391,6 +400,7 @@ const GiteaFileBrowser = ({ changeRepo }) => {
             }
               setDragFromAg(null);
               setUploadstartAg(false);
+              setUpdateGitea(false);
               settotalFilesAg(0);
               setTotalUploadedAg(0);
               logger.debug('Dropzone.js', 'calling handleDropFolder event - update syncing Finished');
@@ -403,6 +413,7 @@ const GiteaFileBrowser = ({ changeRepo }) => {
             } else {
               logger.debug('Dropzone.js', 'calling handleDropFolder event - Repo Updation Error : ', error.message);
               setUploadstartAg(false);
+              setUpdateGitea(false);
               await addNewNotification(
                 'Sync',
                 `Project Sync to Gitea falied - ${error.message}`,
@@ -412,6 +423,7 @@ const GiteaFileBrowser = ({ changeRepo }) => {
           },
           );
           setUploadstartAg(false);
+          setUpdateGitea(false);
       });
     } else {
       handleDropToAg(null);
@@ -455,11 +467,26 @@ const GiteaFileBrowser = ({ changeRepo }) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [auth]);
 
+  React.useEffect(() => {
+    if (updateGitea && !refreshGiteaListUI.triger) {
+      setRefreshGiteaListUI({ ...refreshGiteaListUI, triger: true });
+    }
+    if (!updateGitea && refreshGiteaListUI.triger) {
+      setRefreshGiteaListUI({ ...refreshGiteaListUI, timeOut: true });
+      setTimeout(() => {
+        setRefreshGiteaListUI({ ...refreshGiteaListUI, triger: false, timeOut: false });
+      }, 500);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [updateGitea]);
+
   return (
     (!auth && authComponent)
     || (!repo && (
       <div className="grid grid-rows-2">
-        <div>{repoComponent}</div>
+        <div>
+          {refreshGiteaListUI.timeOut === true ? <LoadingSpinner /> : <div>{repoComponent}</div>}
+        </div>
         <div className="row-span-6">
           <Dropzone dropped={() => handleDropFolder(dragFromAg)} />
         </div>

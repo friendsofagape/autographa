@@ -124,7 +124,9 @@ const SectionPlaceholder1 = ({ editor }) => {
         referenceColumnOneData1Reset: false,
       }
       ));
-    } else if (resetResourceOnDeleteOffline?.referenceColumnOneData2Reset) {
+      setRemovingSection('1');
+    }
+    if (resetResourceOnDeleteOffline?.referenceColumnOneData2Reset) {
       setReferenceColumnOneData2((prev) => ({
         ...prev,
         languageId: '',
@@ -140,6 +142,7 @@ const SectionPlaceholder1 = ({ editor }) => {
         referenceColumnOneData2Reset: false,
       }
       ));
+      setRemovingSection('2');
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [resetResourceOnDeleteOffline?.referenceColumnOneData1Reset, resetResourceOnDeleteOffline?.referenceColumnOneData2Reset]);
@@ -169,8 +172,8 @@ const SectionPlaceholder1 = ({ editor }) => {
             Object.entries(_value).forEach(
               ([_rownum, _value]) => {
                 rows.push(_rownum);
-                if (openResource1 === false
-                  || openResource2 === false) {
+                // if (openResource1 === false
+                //   || openResource2 === false) {
                     if (_rownum === '1') {
                       setReferenceColumnOneData1({
                         ...referenceColumnOneData1,
@@ -193,7 +196,7 @@ const SectionPlaceholder1 = ({ editor }) => {
                         offlineResource: _value?.offline,
                       });
                   }
-                }
+                // }
               },
             );
           }
