@@ -39,6 +39,9 @@ const LeftLogin = () => {
         if (user) {
           setUsers(user);
         }
+        else{
+          router.route('/')
+        }
       }
     };
     checkUsers();

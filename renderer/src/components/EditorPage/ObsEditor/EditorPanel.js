@@ -4,7 +4,14 @@ import PropTypes from 'prop-types';
 import { useContext } from 'react';
 
 const EditorPanel = ({ obsStory, storyUpdate }) => {
-  const { actions: { setSelectedStory } } = useContext(ReferenceContext);
+  const {
+    state: { 
+      selectedFont,
+      fontSize
+    }, 
+    actions: { 
+      setSelectedStory 
+    } } = useContext(ReferenceContext);
   const { states: { scrollLock } } = useContext(ProjectContext);
   const handleChange = (e) => {
     const index = e.target.getAttribute('data-id');
@@ -50,7 +57,11 @@ const EditorPanel = ({ obsStory, storyUpdate }) => {
               onClick={() => setSelectedStory(scrollLock === true ? 0 : story.id)}
               value={story.title}
               data-id={story.id}
-              className="flex-grow text-justify ml-2 p-2 text-sm"
+              className="flex-grow text-justify ml-2 p-2 text-xl"
+              style={{
+                fontFamily: selectedFont || 'sans-serif',
+                fontSize: `${fontSize}rem`,
+              }}
             />
           </div>
           )}
@@ -70,6 +81,11 @@ const EditorPanel = ({ obsStory, storyUpdate }) => {
               value={story.text}
               data-id={story.id}
               className="flex-grow text-justify ml-2 p-2 text-sm"
+              style={{
+                fontFamily: selectedFont || 'sans-serif',
+                fontSize: `${fontSize}rem`,
+                lineHeight: (fontSize > 1.3) ? 1.5 : '',
+              }}
             />
           </div>
           )}
@@ -86,6 +102,11 @@ const EditorPanel = ({ obsStory, storyUpdate }) => {
               value={story.end}
               data-id={story.id}
               className="flex-grow text-justify ml-2 p-2 text-sm"
+              style={{
+                fontFamily: selectedFont || 'sans-serif',
+                fontSize: `${fontSize}rem`,
+                lineHeight: (fontSize > 1.3) ? 1.5 : '',
+              }}
             />
           </div>
           )}

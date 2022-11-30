@@ -13,7 +13,7 @@ import EditorSideBar from '@/modules/editorsidebar/EditorSideBar';
 import Buttons from './Buttons';
 import Editor from './Editor';
 
-export default function Scribex({ editor }) {
+export default function Scribex() {
   const { state, actions } = useContext(ScribexContext);
   const { verbose } = state;
   const { usfmData, bookAvailable } = useReadUsfmFile();
@@ -30,7 +30,13 @@ export default function Scribex({ editor }) {
   });
 
   const {
-    state: { bookId },
+    state: {
+      bookId,
+      selectedFont,
+      fontSize,
+      projectScriptureDir,
+
+    },
   } = useContext(ReferenceContext);
 
   const {
@@ -91,7 +97,7 @@ export default function Scribex({ editor }) {
         closeSideBar={closeSideBar}
         footnoteProps={_props}
       />
-      <div className={`flex flex-col bg-white border-b-2 border-secondary ${editor === 'audioTranslation' ? 'md:max-h-[64vh] lg:max-h-[70vh]' : 'h-editor'} rounded-md shadow scrollbar-width`}>
+      <div className={`flex flex-col bg-white border-b-2 border-secondary h-editor rounded-md shadow scrollbar-width`}>
         <div className="flex flex-wrap items-center mt-1 justify-between bg-secondary ">
           {/* <div className="bg-white border-b-2 border-secondary rounded-md shadow h-editor overflow-hidden">
         <div className="flex items-center justify-between bg-secondary rounded-t-md overflow-hidden sticky top-0 left-0 right-0"> */}
@@ -130,6 +136,12 @@ export default function Scribex({ editor }) {
           </div>
         </div>
         <div
+          style={{
+            fontFamily: selectedFont || 'sans-serif',
+            fontSize: `${fontSize}rem`,
+            lineHeight: (fontSize > 1.3) ? 1.5 : '',
+            direction: `${projectScriptureDir === 'RTL' ? 'rtl' : 'auto'}`,
+          }}
           className="border-l-2 border-r-2 border-secondary pb-16 prose-sm max-w-none overflow-auto h-full scrollbars-width"
         >
           <Editor {..._props} />
