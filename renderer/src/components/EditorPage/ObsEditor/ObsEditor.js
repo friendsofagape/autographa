@@ -7,6 +7,8 @@ import { readFile } from '@/core/editor/readFile';
 import Editor from '@/modules/editor/Editor';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import writeToFile from '@/core/editor/writeToFile';
+import { saveReferenceResource } from '@/core/projects/updateAgSettings';
+import moment from 'moment';
 import EditorPanel from './EditorPanel';
 
 export const getDetails = () => new Promise((resolve) => {
@@ -73,7 +75,28 @@ const ObsEditor = () => {
                     const folderName = key.split(/[(\\)?(/)?]/gm).slice(0);
                     const dirName = folderName[0];
                     setDirectoryName(dirName);
-                    const bookID = obsNavigation.toString().padStart(2, 0);
+                    // Fetching data from projectmeta and updating the navigation and lastSeen back
+                    localforage.getItem('currentProject').then((projectName) => {
+                      const _projectname = projectName?.split('_');
+                      localforage.getItem('projectmeta').then((value) => {
+                        Object.entries(value).forEach(
+                          ([, _value]) => {
+                            Object.entries(_value).forEach(
+                              ([, resources]) => {
+                                if (resources.identification.name.en === _projectname[0]) {
+                                  resources.project[resources.type.flavorType.flavor.name].navigation = obsNavigation;
+                                  resources.project[resources.type.flavorType.flavor.name].lastSeen = moment().format();
+                                }
+                              },
+                            );
+                          },
+                        );
+                        localforage.setItem('projectmeta', value);
+                        // This func will update the ag-setting.json file
+                        saveReferenceResource();
+                      });
+                    });
+                    const bookID = obsNavigation?.toString().padStart(2, 0);
                     if (key === path.join(dirName, `${bookID}.md`)) {
                       readFile({
                         projectname: projectName,

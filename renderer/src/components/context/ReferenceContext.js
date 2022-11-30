@@ -45,7 +45,7 @@ export default function ReferenceContextProvider({ children }) {
   const [isLoading, setIsLoading] = useState(false);
   const [folderPath, setFolderPath] = React.useState();
   const [openImportResourcePopUp, setOpenImportResourcePopUp] = useState(false);
-  const [obsNavigation, setObsNavigation] = useState('1');
+  const [obsNavigation, setObsNavigation] = useState();
   const [selectedStory, setSelectedStory] = useState();
   const [taNavigationPath, setTaNavigationPath] = useState({
     option: '',
@@ -94,6 +94,7 @@ export default function ReferenceContextProvider({ children }) {
                       case 'textStories':
                         setBookmarksVerses(resources.project?.textStories.bookMarks);
                         setProjectScriptureDir(resources.project?.textStories.scriptDirection);
+                        setObsNavigation(resources.project?.textStories.navigation ? resources.project?.textStories.navigation : '1');
                         break;
                       case 'audioTranslation':
                         setBookmarksVerses(resources.project?.audioTranslation.bookMarks);
