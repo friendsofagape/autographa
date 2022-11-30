@@ -5,13 +5,14 @@ import { useContext } from 'react';
 
 const EditorPanel = ({ obsStory, storyUpdate }) => {
   const {
-    state: { 
+    state: {
       selectedFont,
-      fontSize
-    }, 
-    actions: { 
-      setSelectedStory 
-    } } = useContext(ReferenceContext);
+      fontSize,
+    },
+    actions: {
+      setSelectedStory,
+    },
+} = useContext(ReferenceContext);
   const { states: { scrollLock } } = useContext(ProjectContext);
   const handleChange = (e) => {
     const index = e.target.getAttribute('data-id');

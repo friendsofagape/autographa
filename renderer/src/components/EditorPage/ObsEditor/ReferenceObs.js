@@ -14,11 +14,13 @@ const style = {
 };
 const ReferenceObs = ({ stories }) => {
   const [isLoading, setIsLoading] = useState(true);
-  const { state: { 
+  const {
+ state: {
     selectedStory,
     selectedFont,
     fontSize,
-  } } = useContext(ReferenceContext);
+  },
+} = useContext(ReferenceContext);
 
   useEffect(() => {
     if (stories === undefined) {
@@ -47,7 +49,8 @@ const ReferenceObs = ({ stories }) => {
                     {index}
                   </span>
                   <img className="w-1/4 rounded-lg" src={story.img} alt="" />
-                  <p className="text-sm text-gray-600 text-justify" 
+                  <p
+                    className="text-sm text-gray-600 text-justify"
                     style={{
                       fontFamily: selectedFont || 'sans-serif',
                       fontSize: `${fontSize}rem`,
