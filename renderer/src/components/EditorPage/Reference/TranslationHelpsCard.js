@@ -44,6 +44,15 @@ export default function TranslationHelpsCard({
 
   // console.log('online data structure : ', { items, markdown, isLoading });
 
+  const {
+    state: {
+      item, headers, filters, fontSize, itemIndex, markdownView,
+    },
+    actions: {
+      setFilters, setFontSize, setItemIndex, setMarkdownView,
+    },
+  } = useCardState({ items });
+
   useEffect(() => {
     if (offlineResource && offlineResource.offline) {
       // console.log('offline in Helpscard : ', offlineResource);
@@ -138,19 +147,14 @@ export default function TranslationHelpsCard({
         logger.debug('TranslationHelpsCard.js', 'reading offline helps Error :  ', err);
       }
     }
+    // reset index
+    setItemIndex(0);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [verse, chapter, languageId, resourceId, owner, offlineResource, projectId, items, filePath]);
 
   items = !offlineItemsDisable && offlineResource?.offline ? offlineItems : items;
   markdown = offlineResource?.offline ? offlineMarkdown : markdown;
 
-  const {
-    state: {
-      item, headers, filters, fontSize, itemIndex, markdownView,
-    },
-    actions: {
-      setFilters, setFontSize, setItemIndex, setMarkdownView,
-    },
-  } = useCardState({ items });
   return (
     <>
       <TranslationhelpsNav
