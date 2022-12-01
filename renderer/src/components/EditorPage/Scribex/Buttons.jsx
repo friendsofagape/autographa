@@ -52,8 +52,8 @@ export default function Buttons(props) {
       <CollectionIcon
         aria-label="Collection-Icon"
         className={classNames(
-        sectionable ? 'fill-current' : '',
-        'h-5 w-5 text-white cursor-pointer',
+          sectionable ? 'fill-current' : '',
+          'h-5 mr-2 w-5 text-white cursor-pointer',
         )}
         aria-hidden="true"
         onClick={onSectionable}
@@ -62,8 +62,8 @@ export default function Buttons(props) {
       <PencilIcon
         aria-label="Collection-Icon"
         className={classNames(
-        editable ? 'fill-current' : '',
-        'h-5 w-5 text-white cursor-pointer',
+          editable ? 'fill-current' : '',
+          'h-5 mr-2 w-5 text-white cursor-pointer',
         )}
         aria-hidden="true"
         onClick={onEditable}
@@ -82,19 +82,19 @@ export default function Buttons(props) {
           </button> */}
       <ArrowCounterClockwise
         aria-label="Collection-Icon"
-        className="h-5 w-5 text-white cursor-pointer"
+        className="h-5 mr-2 w-5 text-white cursor-pointer"
         aria-hidden="true"
         onClick={() => undo()}
       />
       <ArrowClockwise
         aria-label="Collection Icon"
-        className="h-5 w-5 text-white cursor-pointer"
+        className="h-5 mr-2 w-5 text-white cursor-pointer"
         aria-hidden="true"
         onClick={() => redo()}
       />
       <SaveIcon
         aria-label="Save Icon"
-        className="h-5 w-5 text-white cursor-pointer"
+        className="h-5 mr-2 w-5 text-white cursor-pointer"
         aria-hidden="true"
         onClick={() => exportUsfm(bookCode)}
       />

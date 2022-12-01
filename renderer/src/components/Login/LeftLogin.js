@@ -38,6 +38,8 @@ const LeftLogin = () => {
         const user = await localForage.getItem('users');
         if (user) {
           setUsers(user);
+        } else {
+          router.route('/');
         }
       }
     };
