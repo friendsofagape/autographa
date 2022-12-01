@@ -26,6 +26,11 @@ import DownloadResourcePopUp from './ResourceUtils/DownloadResourcePopUp';
 import DownloadCreateSBforHelps from './ResourceUtils/DownloadCreateSBforHelps';
 import CheckHelpsUpdatePopUp from './ResourceUtils/CheckHelpsUpdatePopUp';
 import RemoveResource from './ResourceUtils/RemoveResource';
+import BibleSvg from '@/illustrations/bible-icon.svg';
+import DictSvg from '@/illustrations/dictionary-icon.svg';
+import ImageSvg from '@/illustrations/image-icon.svg';
+import DialogueSvg from '@/illustrations/dialogue-icon.svg';
+import MicroPhoneSvg from '@/icons/basil/Outline/Media/Microphone.svg';
 
 function createData(name, language, owner) {
   return {
@@ -694,7 +699,8 @@ const ResourcesPopUp = ({
                   <div style={{ width: 'max-content' }} className="relative bg-gray-100 px-3 py-3 h-full overflow-auto scrollbars-width">
                     <div className="grid grid-rows-5 py-5 gap-4">
                       <ResourceOption
-                        imageUrl="/illustrations/bible-icon.svg"
+                        // imageUrl="/illustrations/bible-icon.svg"
+                        Icon={<BibleSvg className="text-white mr-1 h-4 w-5" aria-hidden="true" />}
                         id="bible"
                         text={t('label-resource-bible')}
                         selectResource={selectResource}
@@ -704,7 +710,8 @@ const ResourcesPopUp = ({
                         setShowInput={setShowInput}
                       />
                       <ResourceOption
-                        imageUrl="/illustrations/dictionary-icon.svg"
+                        // imageUrl="/illustrations/dictionary-icon.svg"
+                        Icon={<DictSvg className="text-white mr-1 h-4 w-5" aria-hidden="true" />}
                         id="tn"
                         text={t('label-resource-tn')}
                         translationData={translationNotes}
@@ -716,7 +723,8 @@ const ResourcesPopUp = ({
                         setShowInput={setShowInput}
                       />
                       <ResourceOption
-                        imageUrl="/illustrations/image-icon.svg"
+                        // imageUrl="/illustrations/image-icon.svg"
+                        Icon={<ImageSvg className="text-white mr-1 h-4 w-5" aria-hidden="true" />}
                         id="twlm"
                         text={t('label-resource-twl')}
                         translationData={translationWordLists}
@@ -728,7 +736,8 @@ const ResourcesPopUp = ({
                         setShowInput={setShowInput}
                       />
                       <ResourceOption
-                        imageUrl="/illustrations/image-icon.svg"
+                        // imageUrl="/illustrations/image-icon.svg"
+                        Icon={<ImageSvg className="text-white mr-1 h-4 w-5" aria-hidden="true" />}
                         id="tw"
                         text={t('label-resource-twlm')}
                         translationData={translationWordLists}
@@ -740,7 +749,8 @@ const ResourcesPopUp = ({
                         setShowInput={setShowInput}
                       />
                       <ResourceOption
-                        imageUrl="/illustrations/dialogue-icon.svg"
+                        // imageUrl="/illustrations/dialogue-icon.svg"
+                        Icon={<DialogueSvg className="text-white mr-1 h-4 w-5" aria-hidden="true" />}
                         id="tq"
                         text={t('label-resource-tq')}
                         translationData={translationQuestions}
@@ -752,7 +762,8 @@ const ResourcesPopUp = ({
                         setShowInput={setShowInput}
                       />
                       <ResourceOption
-                        imageUrl="/illustrations/bible-icon.svg"
+                        // imageUrl="/illustrations/bible-icon.svg"
+                        Icon={<BibleSvg className="text-white mr-1 h-4 w-5" aria-hidden="true" />}
                         id="ta"
                         text={t('label-resource-ta')}
                         translationData={translationAcademys}
@@ -764,7 +775,8 @@ const ResourcesPopUp = ({
                         setShowInput={setShowInput}
                       />
                       <ResourceOption
-                        imageUrl="/illustrations/image-icon.svg"
+                        // imageUrl="/illustrations/image-icon.svg"
+                        Icon={<ImageSvg className="text-white mr-1 h-4 w-5" aria-hidden="true" />}
                         id="obs"
                         text={t('label-resource-obs')}
                         selectResource={selectResource}
@@ -774,7 +786,8 @@ const ResourcesPopUp = ({
                         setShowInput={setShowInput}
                       />
                       <ResourceOption
-                        imageUrl="/illustrations/dictionary-icon.svg"
+                        // imageUrl="/illustrations/dictionary-icon.svg"
+                        Icon={<DictSvg className="text-white mr-1 h-4 w-5" aria-hidden="true" />}
                         id="obs-tn"
                         text={t('label-resource-obs-tn')}
                         translationData={obsTranslationNotes}
@@ -786,7 +799,8 @@ const ResourcesPopUp = ({
                         setShowInput={setShowInput}
                       />
                       <ResourceOption
-                        imageUrl="/illustrations/dialogue-icon.svg"
+                        // imageUrl="/illustrations/dialogue-icon.svg"
+                        Icon={<DialogueSvg className="text-white mr-1 h-4 w-5" aria-hidden="true" />}
                         id="obs-tq"
                         text={t('label-resource-obs-tq')}
                         translationData={obsTranslationQuestions}
@@ -798,7 +812,8 @@ const ResourcesPopUp = ({
                         setShowInput={setShowInput}
                       />
                       <ResourceOption
-                        imageUrl="/icons/basil/Outline/Media/Microphone.svg"
+                        // imageUrl="/icons/basil/Outline/Media/Microphone.svg"
+                        Icon={<MicroPhoneSvg className="text-white mr-1 h-4 w-5" aria-hidden="true" />}
                         id="audio"
                         text="Audio"
                         selectResource={selectResource}

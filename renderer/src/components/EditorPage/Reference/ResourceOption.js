@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 // const yaml = require('js-yaml');
 
 const ResourceOption = ({
-  imageUrl,
+  Icon,
   text,
   id,
   selectResource,
@@ -46,18 +46,19 @@ const ResourceOption = ({
       font-semibold tracking-wider py-2 px-4 
       ${id === selectResource ? 'bg-primary outline-none rounded shadow  text-white' : ''}`}
     >
-      <img
+      {/* <img
         className="text-white mr-2"
-        src={imageUrl}
+        src={Icon}
         alt=""
-      />
+      /> */}
+      {Icon}
       {text}
     </button>
   );
 };
 export default ResourceOption;
 ResourceOption.propTypes = {
-  imageUrl: PropTypes.string,
+  // Icon: PropTypes.object,
   text: PropTypes.string,
   selectResource: PropTypes.string,
   id: PropTypes.string,
