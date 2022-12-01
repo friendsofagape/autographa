@@ -14,7 +14,14 @@ const style = {
 };
 const ReferenceObs = ({ stories }) => {
   const [isLoading, setIsLoading] = useState(true);
-  const { state: { selectedStory } } = useContext(ReferenceContext);
+  const {
+ state: {
+    selectedStory,
+    selectedFont,
+    fontSize,
+  },
+} = useContext(ReferenceContext);
+
   useEffect(() => {
     if (stories === undefined) {
       setIsLoading(true);
@@ -31,7 +38,7 @@ const ReferenceObs = ({ stories }) => {
               <div key={story.id} className={`flex gap-5 mb-5 items-center justify-center ${story.id === selectedStory && 'bg-light'}`}>
                 {
                   Object.prototype.hasOwnProperty.call(story, 'title') && (
-                  <p className="text-sm text-gray-600" style={style.bold}>
+                  <p className="text-xl text-gray-600" style={style.bold}>
                     {story.title}
                   </p>
                   )
@@ -42,14 +49,20 @@ const ReferenceObs = ({ stories }) => {
                     {index}
                   </span>
                   <img className="w-1/4 rounded-lg" src={story.img} alt="" />
-                  <p className="text-sm text-gray-600">
+                  <p
+                    className="text-sm text-gray-600 text-justify"
+                    style={{
+                      fontFamily: selectedFont || 'sans-serif',
+                      fontSize: `${fontSize}rem`,
+                    }}
+                  >
                     {story.text}
                   </p>
                 </>
                 )}
                 {
                   Object.prototype.hasOwnProperty.call(story, 'end') && (
-                  <p className="text-sm text-gray-600" style={style.italic}>
+                  <p className="text-md text-gray-600" style={style.italic}>
                     {story.end}
                   </p>
                   )
