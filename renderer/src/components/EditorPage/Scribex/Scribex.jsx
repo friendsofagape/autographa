@@ -97,7 +97,7 @@ export default function Scribex() {
         closeSideBar={closeSideBar}
         footnoteProps={_props}
       />
-      <div className={`flex flex-col bg-white border-b-2 border-secondary h-editor rounded-md shadow scrollbar-width`}>
+      <div className="flex flex-col bg-white border-b-2 border-secondary h-editor rounded-md shadow scrollbar-width">
         <div className="flex flex-wrap items-center mt-1 justify-between bg-secondary ">
           {/* <div className="bg-white border-b-2 border-secondary rounded-md shadow h-editor overflow-hidden">
         <div className="flex items-center justify-between bg-secondary rounded-t-md overflow-hidden sticky top-0 left-0 right-0"> */}
