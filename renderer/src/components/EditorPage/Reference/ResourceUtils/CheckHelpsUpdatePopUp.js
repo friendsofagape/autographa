@@ -9,6 +9,7 @@ import * as logger from '../../../../logger';
 import RefreshSvg from '@/icons/basil/Outline/Interface/Refresh.svg';
 import DownloadCreateSBforHelps from './DownloadCreateSBforHelps';
 import { handleDownloadResources } from './createDownloadedResourceSB';
+import Door43Logo from '@/icons/door43.svg';
 
 // const path = require('path');
 
@@ -193,7 +194,8 @@ function CheckHelpsUpdatePopUp({ resource, selectResource }) {
                         <div className="">
                           <a className="bg-secondary text-white inline-block rounded-t py-2 px-4 text-sm uppercase" href="#a">
                             {/* <img className="inline mr-2 w-6" src="/brands/door43.png" alt="Door 43 Logo" /> */}
-                            <img className="inline mr-2 w-6" src="/brands/door43.png" alt="" />
+                            <Door43Logo className="inline mr-2 w-4" fill="#9bc300" />
+                            {/* <img className="inline mr-2 w-6" src="/brands/door43.png" alt="" /> */}
                             {t('label-door43')}
                           </a>
                         </div>
