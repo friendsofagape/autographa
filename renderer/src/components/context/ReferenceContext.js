@@ -45,7 +45,7 @@ export default function ReferenceContextProvider({ children }) {
   const [isLoading, setIsLoading] = useState(false);
   const [folderPath, setFolderPath] = React.useState();
   const [openImportResourcePopUp, setOpenImportResourcePopUp] = useState(false);
-  const [obsNavigation, setObsNavigation] = useState();
+  const [obsNavigation, setObsNavigation] = useState('1');
   const [selectedStory, setSelectedStory] = useState();
   const [taNavigationPath, setTaNavigationPath] = useState({
     option: '',
