@@ -5,6 +5,7 @@ import { Dialog, Transition } from '@headlessui/react';
 import ProjectsLayout from '@/layouts/projects/Layout';
 import Gitea from '@/components/Sync/Gitea/Gitea';
 import ProjectFileBrowser from '@/components/Sync/ProjectFileBrowser';
+import Door43Logo from '@/icons/door43.svg';
 
 export default function Sync() {
   const [isOpen, setIsOpen] = useState(false);
@@ -37,7 +38,8 @@ export default function Sync() {
         <ul className="list-none p-0 flex">
           <li className="mr-2">
             <a className="bg-secondary text-white inline-block rounded-t py-2 px-6 text-sm uppercase" href="#a">
-              <img className="inline mr-2 w-4" src="/brands/door43.png" alt="" />
+              {/* <img className="inline mr-2 w-4" src="/brands/door43.png" alt="" /> */}
+              <Door43Logo className="inline mr-2 w-4" fill="#9bc300" />
               {/* <img className="inline mr-2 w-4" src="/brands/door43.png" alt="Door 43 Logo" /> */}
               {t('label-door43')}
             </a>

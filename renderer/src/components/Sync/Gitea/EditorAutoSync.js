@@ -15,6 +15,7 @@ import { handleCreateRepo, createFiletoServer, updateFiletoServer } from './Gite
 import CloudUploadIcon from '@/icons/basil/Outline/Files/Cloud-upload.svg';
 import CloudCheckIcon from '@/icons/basil/Solid/Files/Cloud-check.svg';
 import ProgressCircle from '../ProgressCircle';
+import Door43Logo from '@/icons/door43.svg';
 
 const path = require('path');
 
@@ -420,7 +421,8 @@ function AutoSync({ selectedProject }) {
                         <div className="">
                           <a className="bg-secondary text-white inline-block rounded-t py-2 px-4 text-sm uppercase" href="#a">
                             {/* <img className="inline mr-2 w-6" src="/brands/door43.png" alt="Door 43 Logo" /> */}
-                            <img className="inline mr-2 w-6" src="/brands/door43.png" alt="" />
+                            {/* <img className="inline mr-2 w-6" src="/brands/door43.png" alt="" /> */}
+                            <Door43Logo className="inline mr-2 w-4" fill="#9bc300" />
                             {t('label-door43')}
                           </a>
                         </div>
