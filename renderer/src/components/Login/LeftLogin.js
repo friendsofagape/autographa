@@ -185,7 +185,7 @@ const LeftLogin = () => {
         <div className="relative border-gray-200 rounded-t-[10px] lg:w-72 w-44 sm:w-52 overflow-hidden">
           {sortedUsers.filter(filterUsers).slice(0, 5).map((user) => (
             <div
-              key={user}
+              key={user.username}
               className="p-4 py-2 text-sm cursor-pointer bg-[#F9F9F9] hover:bg-primary hover:text-white border-b-[1px] border-[#E3E3E3] font-semibold"
               tabIndex={0}
               role="button"
@@ -204,12 +204,12 @@ const LeftLogin = () => {
               onClick={openModal}
               className={`
                                      ${isOpen ? '' : 'text-opacity-90'
-              } text-white bg-black w-48 text-xs lg:w-72 sm:w-52 py-[12px] flex items-center justify-center text-md font-bold rounded-b-[10px] sm:text-sm`}
+                } text-white bg-black w-48 text-xs lg:w-72 sm:w-52 py-[12px] flex items-center justify-center text-md font-bold rounded-b-[10px] sm:text-sm`}
             >
               View More
             </button>
           </div>
-)}
+        )}
         <Transition
           appear
           show={isOpen}
@@ -254,8 +254,8 @@ const LeftLogin = () => {
                         </Tab>
                         <Tab
                           className={({ selected }) => classNames(
-                          'w-full text-md items-center justify-center outline-none font-bold py-4 leading-5 rounded-t-lg',
-                          selected
+                            'w-full text-md items-center justify-center outline-none font-bold py-4 leading-5 rounded-t-lg',
+                            selected
                               ? ' text-error  bg-gray-200 '
                               : 'text-gray-400 hover:text-gray-500 border-b bg-white ',
                           )}
@@ -286,7 +286,7 @@ const LeftLogin = () => {
                                 </button>
 
                               </div>
-                          ))}
+                            ))}
                           </div>
                         </Tab.Panel>
                         <Tab.Panel className="relative overflow-y-auto h-[60vh] p-5 ">
@@ -309,7 +309,7 @@ const LeftLogin = () => {
                                 </button>
 
                               </div>
-                          ))}
+                            ))}
                           </div>
                         </Tab.Panel>
                       </Tab.Panels>
