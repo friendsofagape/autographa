@@ -1,9 +1,8 @@
-/* eslint-disable no-nested-ternary */
-/* eslint-disable react/prop-types */
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import {
  useContext, useEffect, useRef, useState,
 } from 'react';
+import PropTypes from 'prop-types';
 import LoadingScreen from '../../Loading/LoadingScreen';
 
 const style = {
@@ -22,6 +21,9 @@ const ReferenceObs = ({ stories }) => {
     selectedFont,
     fontSize,
   },
+  actions: {
+    setSelectedStory,
+  },
 } = useContext(ReferenceContext);
 
 const itemEls = useRef([]);
@@ -33,6 +35,8 @@ const itemEls = useRef([]);
       setIsLoading(false);
     }
     itemEls.current.length = 0;
+    setSelectedStory(1);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stories]);
 
   // scroll based on story part selection
@@ -43,7 +47,7 @@ const itemEls = useRef([]);
   };
 
   useEffect(() => {
-    if (stories && selectedStory) {
+    if (stories && selectedStory !== undefined) {
       const currentRef = itemEls.current.filter((obj) => obj.id === selectedStory)[0]?.el;
       if (currentRef) {
         currentRef.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' });
@@ -102,4 +106,9 @@ const itemEls = useRef([]);
     </div>
 );
 };
+
+ReferenceObs.propTypes = {
+  stories: PropTypes.arrayOf(PropTypes.object),
+};
+
 export default ReferenceObs;
