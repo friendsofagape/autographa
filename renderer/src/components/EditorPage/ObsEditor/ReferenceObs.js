@@ -1,7 +1,9 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable react/prop-types */
 import { ReferenceContext } from '@/components/context/ReferenceContext';
-import { useContext, useEffect, useState } from 'react';
+import {
+ useContext, useEffect, useRef, useState,
+} from 'react';
 import LoadingScreen from '../../Loading/LoadingScreen';
 
 const style = {
@@ -22,20 +24,43 @@ const ReferenceObs = ({ stories }) => {
   },
 } = useContext(ReferenceContext);
 
+const itemEls = useRef([]);
+
   useEffect(() => {
     if (stories === undefined) {
       setIsLoading(true);
     } else {
       setIsLoading(false);
     }
+    itemEls.current.length = 0;
   }, [stories]);
+
+  // scroll based on story part selection
+  const addtoItemEls = (el, id) => {
+    if (el && el !== null && !itemEls.current.some((obj) => obj.id === id)) {
+      itemEls.current.push({ id, el });
+    }
+  };
+
+  useEffect(() => {
+    if (stories && selectedStory) {
+      const currentRef = itemEls.current.filter((obj) => obj.id === selectedStory)[0]?.el;
+      if (currentRef) {
+        currentRef.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' });
+      }
+    }
+  }, [selectedStory, stories]);
   return (
     <div>
       { isLoading === false ? (
         <>
           {
             stories.map((story, index) => (
-              <div key={story.id} className={`flex gap-5 mb-5 items-center justify-center ${story.id === selectedStory && 'bg-light'}`}>
+              <div
+                key={story.id}
+                className={`flex gap-5 mb-5 items-center justify-center ${story.id === selectedStory && 'bg-light'}`}
+                ref={(element) => addtoItemEls(element, story.id)}
+              >
                 {
                   Object.prototype.hasOwnProperty.call(story, 'title') && (
                   <p className="text-xl text-gray-600" style={style.bold}>
