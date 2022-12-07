@@ -123,13 +123,6 @@ const LeftLogin = () => {
           generateToken(user);
         }
       }
-    } else {
-      // eslint-disable-next-line no-lonely-if
-      if (isElectron()) {
-        router.push('/projects');
-      } else {
-        router.push('/');
-      }
     }
   };
   /**
@@ -272,7 +265,7 @@ const LeftLogin = () => {
                                 <div
                                   role="button"
                                   tabIndex={0}
-                                  onClick={() => { handleSubmit({ username: user.username }); }}
+                                  onClick={() => { handleSubmit({...values, username: user.username }); }}
                                   className="w-full p-4 py-3 text-sm rounded-lg cursor-pointer bg-[#F9F9F9] hover:bg-primary hover:text-white border border-[#E3E3E3] font-semibold"
                                 >
 
@@ -416,7 +409,6 @@ const LeftLogin = () => {
           </a>
         </div>
       </div>
-
     </div>
   );
 };
