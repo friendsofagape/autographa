@@ -51,12 +51,13 @@
         "linux": {
             "target": [
                 "deb"
-            ]
+            ],
+            "icon": "styles/icon.icns"
         },
         "mac": {
             "category": "public.app-category.Utilities",
             "target": "dmg",
-            "icon": "styles/autographa_logo.ico",
+            "icon": "styles/icon.icns",
             "type": "distribution"
         },
         "win": {
