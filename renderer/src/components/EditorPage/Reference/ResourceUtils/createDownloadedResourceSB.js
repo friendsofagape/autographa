@@ -34,19 +34,21 @@ export const createDownloadedResourceSB = async (username, resourceMeta, project
     const id = uuidv5(key, environment.uuidToken);
     const localizedNames = {};
     // console.log('unique id : ', id);
+    let json = {};
+    switch (selectResource) {
+      case 'bible':
+        // json = { ...Textburrito };
+        json = Textburrito;
+        break;
+      case 'obs':
+        // json = { ...OBSburrito };
+        json = OBSburrito;
+        break;
+      default:
+        throw new Error(' can not process :Inavalid Type od Resource requested');
+        // break;
+    }
     return new Promise((resolve) => {
-        let json = {};
-        switch (selectResource) {
-          case 'bible':
-            json = { ...Textburrito };
-            break;
-            case 'obs':
-            json = { ...OBSburrito };
-            break;
-          default:
-            throw new Error(' can not process :Inavalid Type od Resource requested');
-            // break;
-        }
         json.meta.generator.userName = username;
         json.meta.generator.softwareName = 'Autographa';
         json.meta.generator.softwareVersion = packageInfo.version;
@@ -92,7 +94,6 @@ export const createDownloadedResourceSB = async (username, resourceMeta, project
           },
         ];
         json.copyright.licenses[0].ingredient = 'LICENSE.md';
-
         if (selectResource === 'bible') {
           resourceMeta.books.forEach((scope) => {
             json.type.flavorType.currentScope[scope.toUpperCase()] = [];
@@ -164,7 +165,7 @@ export const generateResourceIngredientsTextTransaltion = async (currentResource
 
 export const generateResourceIngredientsOBS = async (currentResourceMeta, path, folder, currentResourceProject, resourceBurritoFile, files) => {
   logger.debug('DownloadResourcePopUp.js', 'In adding ingredients to burrito of OBS');
-  files.forEach(async (file) => {
+  files.forEach(async (file) => { // en_obs/content/01.md, en_obs/content/front/title.md
     const fs = window.require('fs');
     const endPart = file.split('/').pop();
     const regX = /^\d{2}.md$/;
@@ -264,11 +265,8 @@ export const handleDownloadResources = async (resourceData, selectResource, acti
                   logger.debug('passed  create burrito ---------->');
 
                   logger.debug('DownloadResourcePopUp.js', 'In resource download - basic burrito generated for resource ', `${resource.name}-${resource.owner}`);
-                  // logger.debug(`${resource.name}-${resource.owner}`);
-                  // console.log('buritto before ingred : ', resourceBurritoFile);
 
                   currentProjectName = `${resource.name}_${Object.keys(resourceBurritoFile.identification.primary.ag)[0]}`;
-                  // console.log(currentProjectName);
                   await fetch(resource.zipball_url)
                     .then((res) => res.arrayBuffer())
                     .then(async (blob) => {
@@ -359,12 +357,19 @@ export const handleDownloadResources = async (resourceData, selectResource, acti
                         size: stats.size,
                         role: 'x-autographa',
                       };
+                      // added new section to avoid ingredients issue in meta some times (new user)
+                      const ymlPath = currentResourceMeta?.projects[0]?.path.replace('./', '');
+                      const renames = Object.keys(resourceBurritoFile.ingredients);
+                      const regex = new RegExp(`(\\.\\/)|(${ymlPath}[\\/\\\\])`, 'g');
+                      await renames?.forEach((rename) => {
+                        if (!rename.match(regex)) {
+                          delete resourceBurritoFile.ingredients[rename];
+                        }
+                      });
                       // write metaData.json
                       await fs.writeFileSync(path.join(folder, currentResourceProject.name, 'metadata.json'), JSON.stringify(resourceBurritoFile));
 
                       logger.debug('passed ag settings creations ---------->');
-
-                      // console.log('buritto after FINAL write  : ', resourceBurritoFile);
 
                       // finally remove zip and rename base folder to projectname_id
                       logger.debug('DownloadResourcePopUp.js', 'deleting zip file - rename project with project + id in ag format');
