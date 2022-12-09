@@ -8,6 +8,7 @@ import { FolderOpenIcon } from '@heroicons/react/outline';
 import * as localforage from 'localforage';
 import { useTranslation } from 'react-i18next';
 import updateTranslationSB from '@/core/burrito/updateTranslationSB';
+import updateObsSB from '@/core/burrito/updateObsSB';
 import { SnackBar } from '@/components/SnackBar';
 import CloseIcon from '@/illustrations/close-button-black.svg';
 import { validate } from '../../util/validate';
@@ -48,11 +49,10 @@ export default function ExportProjectPopUp(props) {
     const chosenFolder = await dialog.showOpenDialog(options);
     setFolderPath(chosenFolder.filePaths[0]);
   };
-  const updateBurritoVersion = (username, fs, path, folder) => {
+
+  const updateCommon = (fs, path, folder, project) => {
     const fse = window.require('fs-extra');
-    updateTranslationSB(username, project, openModal)
-        .then(() => {
-          logger.debug('ExportProjectPopUp.js', 'Updated Scripture burrito');
+    logger.debug('ExportProjectPopUp.js', 'Updated Scripture burrito');
           let data = fs.readFileSync(path.join(folder, 'metadata.json'), 'utf-8');
           const sb = JSON.parse(data);
           if (!sb.copyright?.shortStatements && sb.copyright?.licenses) {
@@ -78,7 +78,20 @@ export default function ExportProjectPopUp(props) {
                 closePopUp(false);
               });
           }
+  };
+
+  const updateBurritoVersion = (username, fs, path, folder) => {
+    if (project?.type === 'Text Translation') {
+    updateTranslationSB(username, project, openModal)
+        .then(() => {
+          updateCommon(fs, path, folder, project);
         });
+      } else if (project?.type === 'OBS') {
+        updateObsSB(username, project, openModal)
+        .then(() => {
+          updateCommon(fs, path, folder, project);
+        });
+      }
     setOpenModal(false);
   };
   async function walk(dir, path, fs) {
