@@ -37,6 +37,21 @@ function createWindow() {
   autoUpdater.checkForUpdatesAndNotify();
 }
 
+// prevent multiple app window opening
+const gotTheLock = app.requestSingleInstanceLock();
+if (!gotTheLock) {
+  app.quit();
+} else {
+  app.on('second-instance', () => {
+    // Someone tried to run a second instance, we should focus our window.
+    if (mainWindow) {
+      if (mainWindow.isMinimized()) { mainWindow.restore(); }
+      mainWindow.focus();
+    }
+  });
+
+  // Create myWindow, load the rest of the app, etc...
+
 // Quit the app once all windows are closed
 app.on('ready', async () => {
   await prepareNext('./renderer');
@@ -89,3 +104,6 @@ autoUpdater.on('update-downloaded', () => {
 ipcMain.on('restart_app', () => {
   autoUpdater.quitAndInstall();
 });
+
+// else ends here
+}
