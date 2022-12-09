@@ -27,7 +27,7 @@ export const validate = (schemaName, fn, data, version) => {
   }
   const ajv = new Ajv({ schemas: schemaIndex.schemas });
   logger.debug('validate.js', 'In validate for validation the burrito');
-  const validator = ajv.compile(schemaIndex.schemaIds);
+  const validator = ajv.getSchema(schemaIndex.schemaIds[schemaName]);
 
   if (validator(JSON.parse(data))) {
     logger.debug('validate.js', `Successfully validated the burrito, Location:${fn}`);
