@@ -166,7 +166,7 @@ export default function TranslationHelpsCard({
       <ReferenceCard
         items={items}
         headers={headers}
-        filters={filters}
+        filters={['Note']}
         fontSize={fontSize}
         itemIndex={itemIndex}
         setFilters={setFilters}
