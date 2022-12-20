@@ -10,6 +10,7 @@ import { useTranslation } from 'react-i18next';
 import updateTranslationSB from '@/core/burrito/updateTranslationSB';
 import updateObsSB from '@/core/burrito/updateObsSB';
 import { SnackBar } from '@/components/SnackBar';
+import { mergeAudio } from '@/components/AudioRecorder/core/audioUtils';
 import CloseIcon from '@/illustrations/close-button-black.svg';
 import { validate } from '../../util/validate';
 import * as logger from '../../logger';
@@ -147,27 +148,14 @@ export default function ExportProjectPopUp(props) {
     setOpenSnackBar(true);
     closePopUp(false);
   };
-  const exportDefaultAudio = async (metadata, folder, path, fs) => {
-    const fse = window.require('fs-extra');
-    const burrito = metadata;
-    const list = await walk(path.join(folder, 'audio', 'ingredients'), path, fs);
-    const defaultAudio = list.filter((name) => name.includes('_default'));
-    const otherFiles = list.filter((name) => !name.includes('.mp3') && !name.includes('.wav'));
-    // Unable to use forEach, since forEach doesn't wait to finish the loop
-    // eslint-disable-next-line
-    for (const audio of defaultAudio) {
-      const book = audio.split(/[\/\\]/).slice(-3)[0];
-      const chapter = audio.split(/[\/\\]/).slice(-2)[0];
-      const url = audio.split(/[\/\\]/).slice(-1)[0];
-      const mp3 = url.replace(/_\d_default/, '');
-      const verse = mp3.replace('.mp3', '');
-      // eslint-disable-next-line
-      await fse.copy(audio, path.join(folderPath, project.name, 'ingredients', book, chapter, mp3))
+
+  const writeAndUpdateBurritoDefaultExport = async (audio, path, mp3ExportPath, fs, fse, book, verse, burrito) => {
+    await fse.copy(audio, path.join(folderPath, project.name, mp3ExportPath))
       .then(async () => {
         logger.debug('ExportProjectPopUp.js', 'Creating the ingredients.');
-        const content = fs.readFileSync(path.join(folderPath, project.name, 'ingredients', book, chapter, mp3), 'utf8');
-        const stats = fs.statSync(path.join(folderPath, project.name, 'ingredients', book, chapter, mp3));
-        burrito.ingredients[path.join('ingredients', book, chapter, mp3)] = {
+        const content = fs.readFileSync(path.join(folderPath, project.name, mp3ExportPath), 'utf8');
+        const stats = fs.statSync(path.join(folderPath, project.name, mp3ExportPath));
+        burrito.ingredients[mp3ExportPath] = {
           checksum: {
             md5: md5(content),
           },
@@ -175,8 +163,92 @@ export default function ExportProjectPopUp(props) {
           size: stats.size,
           scope: {},
         };
-        burrito.ingredients[path.join('ingredients', book, chapter, mp3)].scope[book] = [verse.replace('_', ':')];
+        burrito.ingredients[mp3ExportPath].scope[book] = [verse.replace('_', ':')];
       }).catch((err) => logger.error('ExportProjectPopUp.js', `${err}`));
+  };
+
+  const exportChapterAudio = async (defaultAudio, burrito, fs, fse, path, folder) => {
+    const audioObj = {};
+    // eslint-disable-next-line
+    for (const audio of defaultAudio) {
+      const book = audio.split(/[\/\\]/).slice(-3)[0];
+      const chapter = audio.split(/[\/\\]/).slice(-2)[0];
+      const url = audio.split(/[\/\\]/).slice(-1)[0];
+      // eslint-disable-next-line no-await-in-loop
+      if (book in audioObj && chapter in audioObj[book]) {
+          audioObj[book][chapter].push(url);
+      } else if (!(book in audioObj)) {
+          audioObj[book] = { [chapter]: new Array(url) };
+      } else if (book in audioObj && !(chapter in audioObj[book])) {
+          audioObj[book][chapter] = new Array(url);
+      }
+    }
+    // loop the book and chapter to generate merged audio of chapter
+    // eslint-disable-next-line no-restricted-syntax
+    for (const bk in audioObj) {
+      if (Object.prototype.hasOwnProperty.call(audioObj, bk)) {
+        // eslint-disable-next-line no-restricted-syntax
+        for (const ch in audioObj[bk]) {
+          if (Object.prototype.hasOwnProperty.call(audioObj[bk], ch)) {
+            const extension = audioObj[bk][ch][0].split('.').pop();
+            const audioName = `${ch}.${extension}`;
+            const audioExportPath = path.join(folderPath, project.name, 'ingredients', bk);
+            // eslint-disable-next-line no-await-in-loop
+            await mergeAudio(audioObj[bk][ch], path.join(folder, 'audio', 'ingredients', bk, ch), path, bk, ch)
+            .then(async ([mergedAudioBlob, timeStampData]) => {
+              logger.debug('ExportProjectPopUp.js', `generated merged audio for ${bk} : ${ch}`);
+              // Write Merge Audio
+              fs.mkdirSync(audioExportPath, { recursive: true });
+              // eslint-disable-next-line no-await-in-loop
+              await fs.writeFileSync(path.join(audioExportPath, audioName), Buffer.from(new Uint8Array(mergedAudioBlob)));
+              logger.debug('ExportProjectPopUp.js', 'Generated audio written to folder');
+                const content = fs.readFileSync(path.join(audioExportPath, audioName), 'utf8');
+                const stats = fs.statSync(path.join(audioExportPath, audioName));
+                burrito.ingredients[path.join('ingredients', bk, audioName)] = {
+                  checksum: {
+                    md5: md5(content),
+                  },
+                  mimeType: 'audio/mp3',
+                  size: stats.size,
+                  scope: {},
+                };
+                burrito.ingredients[path.join('ingredients', bk, audioName)].scope[bk] = [];
+                logger.debug('ExportProjectPopUp.js', 'Burrito updated for generated Audio');
+                // Write TimeStamp
+                fs.mkdirSync(path.join(folderPath, project.name, 'time stamps'), { recursive: true });
+                await fs.writeFileSync(path.join(folderPath, project.name, 'time stamps', timeStampData[0]), timeStampData[1], 'utf-8');
+                console.log('in write : ', { timeStampData });
+            });
+          }
+        }
+      }
+    }
+  };
+
+  const exportDefaultAudio = async (metadata, folder, path, fs) => {
+    const fse = window.require('fs-extra');
+    const burrito = metadata;
+    const list = await walk(path.join(folder, 'audio', 'ingredients'), path, fs);
+    const defaultAudio = list.filter((name) => name.includes('_default'));
+    const otherFiles = list.filter((name) => !name.includes('.mp3') && !name.includes('.wav'));
+    if (audioExport === 'default') {
+      // Unable to use forEach, since forEach doesn't wait to finish the loop
+    // eslint-disable-next-line
+      for (const audio of defaultAudio) {
+        const book = audio.split(/[\/\\]/).slice(-3)[0];
+        const chapter = audio.split(/[\/\\]/).slice(-2)[0];
+        const url = audio.split(/[\/\\]/).slice(-1)[0];
+        const mp3 = url.replace(/_\d_default/, '');
+        const verse = mp3.replace('.mp3', '');
+        const mp3ExportPath = path.join('ingredients', book, chapter, mp3);
+        // console.log({
+        // book, chapter, url, mp3, verse,
+        // });
+        // eslint-disable-next-line
+        await writeAndUpdateBurritoDefaultExport(audio, path, mp3ExportPath, fs, fse, book, verse, burrito);
+      }
+    } else if (audioExport === 'chapter') {
+      await exportChapterAudio(defaultAudio, burrito, fs, fse, path, folder);
     }
     // We need to execute these loop before going to next line so 'for' is used instead of 'forEach'
     // eslint-disable-next-line no-restricted-syntax
@@ -223,7 +295,7 @@ export default function ExportProjectPopUp(props) {
           metadata, folder, path, fs, username,
         });
         if (project?.type === 'Audio') {
-          if (audioExport === 'default') {
+          if (audioExport === 'default' || audioExport === 'chapter') {
             exportDefaultAudio(metadata, folder, path, fs);
           } else {
             exportFullAudio(metadata, folder, path, fs);
@@ -326,7 +398,18 @@ export default function ExportProjectPopUp(props) {
                         <input id="visible_1" className="visible ml-4" type="checkbox" checked={checkText} onClick={() => setCheckText(!checkText)} />
                         <span className=" ml-2 text-xs font-bold" title="You can have the text content along with the Audio">With Text (if available)</span>
                       </div>
-                      <div>
+                      <div className="mb-3">
+                        <input
+                          type="radio"
+                          className="form-radio h-4 w-4 text-primary"
+                          value="Chapter"
+                          checked={audioExport === 'chapter'}
+                          onChange={() => setAudioExport('chapter')}
+                        />
+                        <span className=" ml-4 text-xs font-bold" title="Chapter Level export with only the default take of each verse">Chapter-wise Default</span>
+                      </div>
+                      <hr className="border-2" />
+                      <div className="mt-3">
                         <input
                           type="radio"
                           className="form-radio h-4 w-4 text-primary"
@@ -337,7 +420,7 @@ export default function ExportProjectPopUp(props) {
                         <span className=" ml-4 text-xs font-bold" title="All takes of every verse saved as a ZIP archive within Scripture Burrito">Full project</span>
                       </div>
                     </div>
-)}
+                    )}
                     <div className="absolute bottom-0 right-0 left-0 bg-white">
                       <div className="flex gap-6 mx-5 justify-end">
                         <button type="button" className="py-2 px-6 rounded shadow bg-error text-white uppercase text-xs tracking-widest font-semibold" onClick={close}>{t('btn-cancel')}</button>
