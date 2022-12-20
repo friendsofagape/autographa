@@ -217,7 +217,6 @@ export default function ExportProjectPopUp(props) {
                 // Write TimeStamp
                 fs.mkdirSync(path.join(folderPath, project.name, 'time stamps'), { recursive: true });
                 await fs.writeFileSync(path.join(folderPath, project.name, 'time stamps', timeStampData[0]), timeStampData[1], 'utf-8');
-                console.log('in write : ', { timeStampData });
             });
           }
         }

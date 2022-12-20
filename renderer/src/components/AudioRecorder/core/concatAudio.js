@@ -4,6 +4,7 @@ export default class concatAudio {
         this._context = this._createContext();
     }
 
+    // eslint-disable-next-line class-methods-use-this
     _createContext() {
         window.AudioContext = window.AudioContext
             || window.webkitAudioContext
@@ -14,9 +15,11 @@ export default class concatAudio {
     async fetchAudio(...filepaths) {
         const files = filepaths.map(async (filepath) => {
             const buffer = await fetch(filepath).then((response) => response.arrayBuffer());
-            return await this._context.decodeAudioData(buffer);
+            const decodedBuff = await this._context.decodeAudioData(buffer);
+            return decodedBuff;
         });
-        return await Promise.all(files);
+        const allFiles = await Promise.all(files);
+        return allFiles;
     }
 
     mergeAudio(buffers) {
@@ -25,6 +28,7 @@ export default class concatAudio {
             this._sampleRate * this._maxDuration(buffers),
             this._sampleRate,
         );
+        // eslint-disable-next-line array-callback-return
         buffers.map((buffer) => {
             if (buffer.getChannelData(0) !== undefined) {
                 for (let i = buffer.getChannelData(0).length - 1; i >= 0; i--) {
@@ -42,6 +46,7 @@ export default class concatAudio {
             this._sampleRate,
         );
         let offset = 0;
+        // eslint-disable-next-line array-callback-return
         buffers.map((buffer) => {
             output.getChannelData(0).set(buffer.getChannelData(0), offset);
             offset += buffer.length;
@@ -95,19 +100,24 @@ export default class concatAudio {
         return this;
     }
 
+    // eslint-disable-next-line class-methods-use-this
     _maxDuration(buffers) {
-        return Math.max.apply(
+        // eslint-disable-next-line prefer-spread
+        const maxDuration = Math.max.apply(
             Math,
             buffers.map((buffer) => buffer.duration),
         );
+        return maxDuration;
     }
 
+    // eslint-disable-next-line class-methods-use-this
     _totalLength(buffers) {
         return buffers
             .map((buffer) => buffer.length)
             .reduce((a, b) => a + b, 0);
     }
 
+    // eslint-disable-next-line class-methods-use-this
     _isSupported() {
         return 'AudioContext' in window;
     }
@@ -132,7 +142,9 @@ export default class concatAudio {
         return this._floatTo16BitPCM(view, buffer, 44);
     }
 
+    // eslint-disable-next-line class-methods-use-this
     _floatTo16BitPCM(dataview, buffer, offset) {
+        // eslint-disable-next-line no-param-reassign
         for (let i = 0; i < buffer.length; i++, offset += 2) {
             const tmp = Math.max(-1, Math.min(1, buffer[i]));
             dataview.setInt16(
@@ -144,13 +156,15 @@ export default class concatAudio {
         return dataview;
     }
 
+    // eslint-disable-next-line class-methods-use-this
     _writeString(dataview, offset, header) {
-        let output;
+        // let output;
         for (let i = 0; i < header.length; i++) {
             dataview.setUint8(offset + i, header.charCodeAt(i));
         }
     }
 
+    // eslint-disable-next-line class-methods-use-this
     _interleave(input) {
         const buffer = input.getChannelData(0);
         const length = buffer.length * 2;
@@ -159,9 +173,9 @@ export default class concatAudio {
         let inputIndex = 0;
 
         while (index < length) {
-            result[index++] = buffer[inputIndex];
-            result[index++] = buffer[inputIndex];
-            inputIndex++;
+            result[index += 1] = buffer[inputIndex];
+            result[index += 1] = buffer[inputIndex];
+            inputIndex += 1;
         }
         return result;
     }
@@ -174,6 +188,7 @@ export default class concatAudio {
         return audio;
     }
 
+    // eslint-disable-next-line class-methods-use-this
     _renderURL(blob) {
         return (window.URL || window.webkitURL).createObjectURL(blob);
     }
