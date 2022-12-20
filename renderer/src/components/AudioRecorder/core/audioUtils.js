@@ -30,7 +30,6 @@ function sec_to_min_sec_milli_convertor(time) {
     const minutes = Math.floor(time / 60);
     const seconds = (time - minutes * 60).toString().split('.')[0].padStart(2, 0);
     const formatedStringTime = `${minutes.toString().padStart(2, 0)}:${seconds}:${milliseconds}`;
-    console.log({ formatedStringTime });
     return [minutes, seconds, milliseconds, formatedStringTime];
 }
 

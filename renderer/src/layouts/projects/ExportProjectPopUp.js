@@ -395,8 +395,10 @@ export default function ExportProjectPopUp(props) {
                           onChange={() => setAudioExport('default')}
                         />
                         <span className=" ml-4 text-xs font-bold" title="Verse-wise export with only the default take of each verse kept as a Scripture Burrito">Verse-wise Default</span>
-                        <input id="visible_1" className="visible ml-4" type="checkbox" checked={checkText} onClick={() => setCheckText(!checkText)} />
-                        <span className=" ml-2 text-xs font-bold" title="You can have the text content along with the Audio">With Text (if available)</span>
+                        <div className="flex flex-row justify-end mr-3">
+                          <input id="visible_1" className="visible" type="checkbox" checked={checkText} onClick={() => setCheckText(!checkText)} />
+                          <span className="ml-2 text-xs font-bold" title="You can have the text content along with the Audio">With Text (if available)</span>
+                        </div>
                       </div>
                       <div className="mb-3">
                         <input
