@@ -46,7 +46,7 @@ export default function TranslationHelpsCard({
 
   const {
     state: {
-      item, headers, filters, fontSize, itemIndex, markdownView,
+      item, headers, fontSize, itemIndex, markdownView,
     },
     actions: {
       setFilters, setFontSize, setItemIndex, setMarkdownView,
