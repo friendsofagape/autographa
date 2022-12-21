@@ -1,4 +1,7 @@
-import React, { useRef, useState, useContext, Fragment } from 'react';
+/* eslint-disable no-unused-vars */
+import React, {
+ useRef, useState, useContext, Fragment,
+} from 'react';
 import { XMarkIcon } from '@heroicons/react/24/solid';
 import ResourcesSidebar from '@/components/Resources/ResourcesSideBar';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
@@ -6,9 +9,9 @@ import ResourceTabPane from '@/components/Resources/ResourceTabPane';
 import { useTranslation } from 'react-i18next';
 import { Dialog, Transition } from '@headlessui/react';
 import { ListResources } from '@/components/Resources/ListResources';
-import * as logger from '../../logger';
 import { SnackBar } from '@/components/SnackBar';
 import SearchBar from '@/components/Resources/SearchBar';
+import * as logger from '../../logger';
 
 export default function ResourcesPopUp(
   {
@@ -96,8 +99,7 @@ export default function ResourcesPopUp(
           <div className="flex flex-col mx-12 mt-10 fixed inset-0 z-10 overflow-y-auto">
             <div className="bg-black relative flex justify-between px-3 items-center rounded-t-lg h-10 ">
               <h1 className="text-white font-bold text-sm">RESOURCES</h1>
-              <div aria-label="resources-search" className="pt-1.5 pb-[6.5px]  bg-secondary text-white text-xs tracking-widest leading-snug text-center">
-              </div>
+              <div aria-label="resources-search" className="pt-1.5 pb-[6.5px]  bg-secondary text-white text-xs tracking-widest leading-snug text-center" />
               <button
                 type="button"
                 className="bg-primary absolute h-full rounded-tr-lg right-0 text-white"
@@ -109,7 +111,7 @@ export default function ResourcesPopUp(
             </div>
             <div className="flex border bg-white">
               <ResourcesSidebar selectResource={selectResource} setSelectResource={setSelectResource} setShowInput={setShowInput} setTitle={setTitle} />
-              <div className="h-[85vh] w-full overflow-x-scroll bg-gray-50 items-center p-3 justify-between" >
+              <div className="h-[85vh] w-full overflow-x-scroll bg-gray-50 items-center p-3 justify-between">
                 <SearchBar
                   currentFullResources={currentFullResources}
                   selectResource={selectResource}

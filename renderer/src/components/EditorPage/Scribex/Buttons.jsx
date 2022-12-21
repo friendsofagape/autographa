@@ -47,22 +47,22 @@ export default function Buttons(props) {
   return (
     <>
       <RectangleStackIcon
-        aria-label='Collection-Icon'
+        aria-label="Collection-Icon"
         className={classNames(
           sectionable ? 'fill-current' : '',
           'h-5 mr-2 w-5 text-white cursor-pointer',
         )}
-        aria-hidden='true'
+        aria-hidden="true"
         onClick={onSectionable}
       />
 
       <PencilIcon
-        aria-label='Collection-Icon'
+        aria-label="Collection-Icon"
         className={classNames(
           editable ? 'fill-current' : '',
           'h-5 mr-2 w-5 text-white cursor-pointer',
         )}
-        aria-hidden='true'
+        aria-hidden="true"
         onClick={onEditable}
       />
 

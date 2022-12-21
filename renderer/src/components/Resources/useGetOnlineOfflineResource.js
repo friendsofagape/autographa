@@ -1,4 +1,5 @@
-export default function getCurrentOnlineOfflineHelpsResources (selectResource) {
+/* eslint-disable no-undef */
+export default function getCurrentOnlineOfflineHelpsResources(selectResource) {
   const resources = [
     { id: 'tn', title: t('label-resource-tn'), resource: translationNote },
     { id: 'twlm', title: t('label-resource-twl'), resource: translationWordList },
@@ -10,4 +11,4 @@ export default function getCurrentOnlineOfflineHelpsResources (selectResource) {
   const reference = resources.find((r) => r.id === selectResource);
   const offlineResource = subMenuItems ? subMenuItems?.filter((item) => item?.value?.agOffline && item?.value?.dublin_core?.identifier === selectResource) : [];
   return { reference, offlineResource };
-};
+}

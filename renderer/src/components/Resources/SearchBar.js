@@ -10,10 +10,10 @@ export default function SearchBar({
   subMenuItems,
   setfilteredBibleObsAudio,
   selectedPreProd,
-  setSelectedPreProd
+  setSelectedPreProd,
 }) {
   const { t } = useTranslation();
-  
+
   return (
     <div className="flex justify-end items-center gap-10">
       {(selectResource !== 'obs' && selectResource !== 'bible' && selectResource !== 'twlm' && selectResource !== 'audio')
@@ -44,5 +44,5 @@ export default function SearchBar({
         />
       </div>
     </div>
-  )
+  );
 }

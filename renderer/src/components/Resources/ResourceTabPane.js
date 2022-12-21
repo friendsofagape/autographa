@@ -24,7 +24,6 @@ export default function ResourceTabPane({
 }) {
   const [isOpenDonwloadPopUp, setIsOpenDonwloadPopUp] = useState(false);
   const [resourceIconClick, setResourceIconClick] = useState(false);
-  console.log({ selectResource });
   const openResourceDialogBox = () => {
     if (selectResource === 'bible' || selectResource === 'obs') {
       logger.debug('DownloadResourcePopUp.js', 'Calling bible resource pop up');
@@ -46,7 +45,7 @@ export default function ResourceTabPane({
           >
             {selectResource}
           </Tab>
-          {selectResource != 'audio'
+          {selectResource !== 'audio'
           && (
           <Tab as={Fragment}>
             {({ selected }) => (

@@ -1,5 +1,5 @@
 import React, {
-  useRef, Fragment, useContext, useState,
+  Fragment, useContext, useState,
 } from 'react';
 import PropTypes from 'prop-types';
 
@@ -13,9 +13,8 @@ import * as logger from '../../logger';
 import { viewBurrito } from '../../core/burrito/importBurrito';
 
 export default function ImportResource({
-  open, closePopUp, setOpenResourcePopUp, setLoading,
+  closePopUp, setOpenResourcePopUp, setLoading,
 }) {
-  const cancelButtonRef = useRef(null);
   const [valid, setValid] = useState(false);
   const [snackBar, setOpenSnackBar] = useState(false);
   const [snackText, setSnackText] = useState('');
@@ -66,7 +65,7 @@ export default function ImportResource({
         logger.debug('ImportResource.js', 'error in uploading resource to specified location');
         setNotify(err);
       });
-      setFolderPath('')
+      setFolderPath('');
   };
   const uploadRefBible = async () => {
     const fs = window.require('fs');
@@ -127,7 +126,7 @@ export default function ImportResource({
           name="location"
           id=""
           value={folderPath}
-          onChange={(e) => c(e.target.value)}
+          onChange={(e) => setFolderPath(e.target.value)}
           className="bg-white w-52 lg:w-80 block rounded shadow-sm sm:text-sm focus:border-primary border-gray-300"
         />
         <button
@@ -172,7 +171,6 @@ export default function ImportResource({
 }
 
 ImportResource.propTypes = {
-  open: PropTypes.bool,
   closePopUp: PropTypes.func,
   setOpenResourcePopUp: PropTypes.func,
   setLoading: PropTypes.func,

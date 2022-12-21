@@ -3,30 +3,30 @@ import localforage from 'localforage';
 const path = require('path');
 
 export async function readCustomResources({ resourceId, translationData }) {
-  console.log("reading custom resources")
   const resourceMapObject = [
-    { id: 'tn', resourceType: "translationNotes" },
-    { id: 'tq', resourceType: "translationQuestions" },
-    { id: 'twlm', resourceType: "translationWordList" },
-    { id: 'ta', resourceType: "translationAcademys" },
+    { id: 'tn', resourceType: 'translationNotes' },
+    { id: 'tq', resourceType: 'translationQuestions' },
+    { id: 'twlm', resourceType: 'translationWordList' },
+    { id: 'ta', resourceType: 'translationAcademys' },
     { id: 'obs-tn', resourceType: 'obsTranslationNotes' },
     // {id: 'tw', resourceType: "translationWords"},
     // { id: 'obs-tq', resourceType: 'obsTranslationQuestions' },
-  ]
+  ];
   const fs = window.require('fs');
   const newpath = localStorage.getItem('userPath');
-  const userProfile = await localforage.getItem('userProfile')
+  const userProfile = await localforage.getItem('userProfile');
   const currentUser = userProfile.username;
   const file = path.join(newpath, 'autographa', 'users', currentUser, 'ag-user-settings.json');
-  const currentResourceType = resourceMapObject.find((resource)=>resource.id == resourceId)?.resourceType
-  console.log({resourceId,currentResourceType})
+  const currentResourceType = resourceMapObject.find((resource) => resource.id === resourceId)?.resourceType;
+  // eslint-disable-next-line no-console
+  console.log({ resourceId, currentResourceType });
   return new Promise((resolve) => {
     if (fs.existsSync(file)) {
       fs.readFile(file, (err, data) => {
         const agSettingsJson = JSON.parse(data);
         // const owner = [];
         switch (resourceId) {
-          case 'tn':          
+          case 'tn':
             (agSettingsJson?.resources.door43.translationNotes)?.forEach(async (url) => {
               const language = url.url?.split('/');
               let resourceExists = false;

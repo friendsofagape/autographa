@@ -1,14 +1,17 @@
-import React, { useContext, useEffect,useReducer } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-nested-ternary */
+/* eslint-disable jsx-a11y/control-has-associated-label */
+import React, { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import RemoveResource from '@/components/Resources/ResourceUtils/RemoveResource';
 import CheckHelpsUpdatePopUp from '@/components/Resources/ResourceUtils/CheckHelpsUpdatePopUp';
 import { ProjectContext } from '@/components/context/ProjectContext';
 import readLocalResources from './useReadLocalResources';
+import LoadingScreen from '../Loading/LoadingScreen';
 
 export default function ObsBibleAudioTab({
   selectResource,
   filteredBibleObsAudio,
-  removeSection,
   handleRowSelect,
   setfilteredBibleObsAudio,
   loading,
@@ -16,6 +19,7 @@ export default function ObsBibleAudioTab({
   subMenuItems,
 }) {
   const { t } = useTranslation();
+  const [renderApp, setRenderApp] = useState(false);
   const {
     states: {
       username,
@@ -26,11 +30,14 @@ export default function ObsBibleAudioTab({
     { resourceType: 'obs', flavorName: 'textStories' },
     { resourceType: 'audio', flavorName: 'audioTranslation' },
   ];
-  const currentResourceType = resourceMap.find((resourceItem) => resourceItem.resourceType == selectResource);
+  const currentResourceType = resourceMap.find((resourceItem) => resourceItem.resourceType === selectResource);
 
   useEffect(() => { // LOADS  locally available
     readLocalResources(username, setSubMenuItems);
-  }, []);
+    if (renderApp === true) {
+      setRenderApp(false);
+    }
+  }, [renderApp]);
 
   useEffect(() => {
     const resourceName = (selectResource === 'bible')
@@ -151,10 +158,14 @@ export default function ObsBibleAudioTab({
                                   && (
                                     <CheckHelpsUpdatePopUp resource={ref} selectResource={selectResource} />
                                   )}
-                                {selectResource !== 'audio' &&
-                                  <RemoveResource resource={ref}
+                                {selectResource !== 'audio'
+                                  && (
+                                  <RemoveResource
+                                    resource={ref}
                                     selectResource={selectResource}
-                                  />}
+                                    setRenderApp={setRenderApp}
+                                  />
+)}
                               </div>
                             </div>
                           </td>

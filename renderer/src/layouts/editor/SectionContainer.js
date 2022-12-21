@@ -34,7 +34,7 @@ const SectionContainer = () => {
       <div className="grid grid-flow-col auto-cols-fr m-3 gap-2">
         <SectionPlaceholder1 editor={editor} />
         <SectionPlaceholder2 editor={editor} />
-        {(editor === 'textTranslation' && <XelahEditor/>)
+        {(editor === 'textTranslation' && <XelahEditor />)
           || (editor === 'textStories' && <ObsEditor />)
           || (editor === 'audioTranslation' && <AudioEditor editor={editor} />)}
       </div>

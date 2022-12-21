@@ -1,3 +1,5 @@
+/* eslint-disable react/no-array-index-key */
+/* eslint-disable no-unused-vars */
 import {
   DocumentTextIcon,
   PhotoIcon,
@@ -21,8 +23,6 @@ export default function ResourcesSidebar({
   const { t } = useTranslation();
 
   const handleClick = (id) => {
-    console.log('handle click');
-    console.log(id);
     setSelectResource(id);
   };
   useEffect(() => {

@@ -7,6 +7,7 @@ function CustomMultiComboBox({
 }) {
   let filteredData = [];
   const [query, setQuery] = useState('');
+  // eslint-disable-next-line no-unused-vars
   const [isActive, setIsActive] = useState(false);
   if (customData.length === 1) {
     setSelectedList(customData);
@@ -23,7 +24,7 @@ function CustomMultiComboBox({
       customData.length > 1 ? (
         <Combobox value={selectedList} onChange={setSelectedList} multiple>
           {({ open }) => (
-            <div className="relative">              
+            <div className="relative">
               <div className="relative w-full border border-gray-200 cursor-default overflow-hidden rounded-lg bg-white text-left shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 sm:text-sm">
 
                 <Combobox.Input
