@@ -1,7 +1,7 @@
 import React, {
  Fragment, useEffect, useState,
 } from 'react';
-import { XIcon } from '@heroicons/react/outline';
+import { XMarkIcon } from '@heroicons/react/24/outline';
 import { Popover, Transition } from '@headlessui/react';
 import PropTypes from 'prop-types';
 
@@ -64,7 +64,7 @@ const SnackBar = ({
               className="bg-black absolute top-0 right-0 h-6 w-6 rounded-full text-center text-white p-1 -mt-2 -mr-2 focus:outline-none"
               onClick={() => closeSnackBar(false)}
             >
-              <XIcon />
+              <XMarkIcon />
             </button>
             <p>
               {snackText}

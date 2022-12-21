@@ -1,7 +1,7 @@
 import {
   ChevronDownIcon,
   ChevronUpIcon,
-} from '@heroicons/react/solid';
+} from '@heroicons/react/24/solid';
 
 export default function SearchSideBar() {
   return (

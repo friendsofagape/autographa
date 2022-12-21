@@ -5,7 +5,7 @@ import {
 
 import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
-import { XIcon } from '@heroicons/react/solid';
+import { XMarkIcon } from '@heroicons/react/24/solid';
 
 export default function Notifications(props) {
   const {
@@ -69,7 +69,7 @@ export default function Notifications(props) {
                 </div>
                 <div className="flex justify-end">
                   <button aria-label="close-notification" type="button" ref={cancelButtonRef} className="w-9 h-9 bg-gray-900 p-2 focus:outline-none" onClick={closeSideBars}>
-                    <XIcon />
+                    <XMarkIcon />
                   </button>
                 </div>
               </div>

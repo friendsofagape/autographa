@@ -3,7 +3,7 @@ import { Dialog, Transition } from '@headlessui/react';
 import {
  Fragment, useContext, useEffect, useRef, useState,
 } from 'react';
-import { XIcon, ChevronDownIcon } from '@heroicons/react/solid';
+import { XMarkIcon, ChevronDownIcon } from '@heroicons/react/24/solid';
 import * as localforage from 'localforage';
 import SelectBook from '@/components/EditorPage/Navigation/reference/SelectBook';
 import SelectVerse from '@/components/EditorPage/Navigation/reference/SelectVerse';
@@ -176,7 +176,7 @@ export default function BibleNavigationX(props) {
                   className="focus:outline-none w-9 h-9 bg-black p-2"
                   onClick={closeBooks}
                 >
-                  <XIcon />
+                  <XMarkIcon />
                 </button>
               </SelectBook>
             </div>
@@ -229,7 +229,7 @@ export default function BibleNavigationX(props) {
                   className="focus:outline-none w-9 h-9 bg-black p-2"
                   onClick={closeVerses}
                 >
-                  <XIcon />
+                  <XMarkIcon />
                 </button>
               </SelectVerse>
             </div>

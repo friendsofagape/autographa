@@ -1,8 +1,8 @@
-import { TrashIcon } from '@heroicons/react/outline';
+import { TrashIcon } from '@heroicons/react/24/outline';
 
 import {
-  XIcon,
-} from '@heroicons/react/solid';
+  XMarkIcon,
+} from '@heroicons/react/24/solid';
 import { useTranslation } from 'react-i18next';
 import BibleNavigation from '@/modules/biblenavigation/BibleNavigation';
 
@@ -18,7 +18,7 @@ export default function Comments() {
             <TrashIcon className="w-4 h-4" />
           </button>
           <button type="button" className="w-8 h-8 bg-black bg-opacity-20 p-2 focus:outline-none">
-            <XIcon />
+            <XMarkIcon />
           </button>
         </div>
       </div>

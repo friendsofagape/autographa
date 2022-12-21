@@ -9,13 +9,13 @@ import {
   CogIcon,
   MinusIcon,
   PlusIcon,
-  AnnotationIcon,
+  ChatBubbleBottomCenterTextIcon,
   SpeakerphoneIcon,
   ArrowNarrowRightIcon,
   CheckIcon,
-  XIcon,
+  XMarkIcon,
   PencilIcon,
-} from '@heroicons/react/outline';
+} from '@heroicons/react/24/outline';
 
 import AuthenticationContextProvider from '@/components/Login/AuthenticationContextProvider';
 import ProjectContextProvider from '@/components/context/ProjectContext';
@@ -203,7 +203,7 @@ export default function ReferenceSelector() {
                               className="w-4 h-4 mr-1"
                               aria-hidden="true"
                             />
-                            <AnnotationIcon
+                            <ChatBubbleBottomCenterTextIcon
                               className="w-4 h-4 mr-1"
                               aria-hidden="true"
                             />
@@ -233,7 +233,7 @@ export default function ReferenceSelector() {
                             type="button"
                             className="flex p-1 px-2 items-center justify-center bg-error  rounded-lg text-xxs font-bold text-white uppercase tracking-wider"
                           >
-                            <XIcon
+                            <XMarkIcon
                               className="w-4 h-4 mr-1"
                               aria-hidden="true"
                             />

@@ -5,9 +5,9 @@ import {
   Fragment, useRef, useState,
 } from 'react';
 import {
-  XIcon,
+  XMarkIcon,
   ChevronDownIcon,
-} from '@heroicons/react/solid';
+} from '@heroicons/react/24/solid';
 
 import styles from '../Navigation/reference/SelectReference.module.css';
 
@@ -109,7 +109,7 @@ export default function NavigationObs({ onChangeNumber, number }) {
                   className="focus:outline-none w-9 h-9 bg-black p-2"
                   onClick={closeVerses}
                 >
-                  <XIcon />
+                  <XMarkIcon />
                 </button>
               </SelectFile>
             </div>

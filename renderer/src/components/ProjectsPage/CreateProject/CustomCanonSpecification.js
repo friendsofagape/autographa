@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
-import { XIcon } from '@heroicons/react/solid';
+import { XMarkIcon } from '@heroicons/react/24/solid';
 import { useBibleReference } from 'bible-reference-rcl';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
@@ -89,7 +89,7 @@ const CustomCanonSpecification = ({ bibleNav, closeBibleNav, handleNav }) => {
                 aria-label="close-custombiblenavigation"
                 onClick={closeBibleNav}
               >
-                <XIcon />
+                <XMarkIcon />
               </button>
             </SelectBook>
             <div className="p-3 flex gap-5 justify-end">

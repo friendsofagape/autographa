@@ -1,5 +1,5 @@
 export const readRefMeta = async ({
-  projectsDir,
+  projectsDir
 }) => {
     const fs = window.require('fs');
     const path = require('path');

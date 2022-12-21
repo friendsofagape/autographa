@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import {
-  ChevronDownIcon, PencilAltIcon,
-} from '@heroicons/react/solid';
+  ChevronDownIcon, PencilSquareIcon,
+} from '@heroicons/react/24/solid';
 
 import EditFootnote from './EditFootnote';
 
@@ -68,7 +68,7 @@ export default function FootNotes() {
                       className="ml-2 p-1 rounded bg-primary text-white"
                       onClick={() => setEditFootNote(true)}
                     >
-                      <PencilAltIcon className="w-3 h-3" />
+                      <PencilSquareIcon className="w-3 h-3" />
                     </button>
                   )}
               </div>

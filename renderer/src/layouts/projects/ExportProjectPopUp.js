@@ -4,7 +4,7 @@ import React, {
 } from 'react';
 import PropTypes from 'prop-types';
 import { Dialog, Transition } from '@headlessui/react';
-import { FolderOpenIcon } from '@heroicons/react/outline';
+import { FolderOpenIcon } from '@heroicons/react/24/outline';
 import * as localforage from 'localforage';
 import { useTranslation } from 'react-i18next';
 import updateTranslationSB from '@/core/burrito/updateTranslationSB';

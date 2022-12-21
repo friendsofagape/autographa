@@ -1,6 +1,6 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import { CheckIcon } from '@heroicons/react/outline';
+import { CheckIcon } from '@heroicons/react/24/outline';
 import {
     Box, Paper, Step, StepContent, StepLabel, Stepper, Typography,
 } from '@material-ui/core';

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import { ViewGridAddIcon } from '@heroicons/react/outline';
+import { SquaresPlusIcon } from '@heroicons/react/24/outline';
 import { classNames } from '@/util/classNames';
 
 export default function ColumnOne(props) {
@@ -70,7 +70,7 @@ export default function ColumnOne(props) {
               type="button"
               className="p-4 bg-gray-200 rounded-lg ring-offset-1"
             >
-              <ViewGridAddIcon className="h-5 w-5" aria-hidden="true" />
+              <SquaresPlusIcon className="h-5 w-5" aria-hidden="true" />
             </button>
           </div>
         </div>
@@ -82,7 +82,7 @@ export default function ColumnOne(props) {
         onClick={addRow}
         className="absolute p-2 bg-primary rounded bottom-0 -right-0 invisible group-hover:visible group-last:hidden"
       >
-        <ViewGridAddIcon className="h-6 w-6 text-white" aria-hidden="true" />
+        <SquaresPlusIcon className="h-6 w-6 text-white" aria-hidden="true" />
       </button>
 
     </div>
