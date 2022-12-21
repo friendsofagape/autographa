@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import * as logger from '../../logger';
 
 function createData(name, language, owner) {
@@ -32,4 +33,4 @@ export const fetchTranslationResource = async (urlpath, setResource, selectResou
       logger.debug('ResourcesPopUp.js', `fetchTranslationResource Error ${selectResource} :  ${err}`);
     }
   }
-}
+};

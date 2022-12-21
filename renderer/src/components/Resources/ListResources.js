@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable jsx-a11y/control-has-associated-label */
 import {
   useEffect, useState, useContext,
 } from 'react';
@@ -6,7 +8,6 @@ import CheckHelpsUpdatePopUp from '@/components/Resources/ResourceUtils/CheckHel
 import RemoveResource from '@/components/Resources/ResourceUtils/RemoveResource';
 import { ArrowDownTrayIcon } from '@heroicons/react/24/solid';
 import { ProjectContext } from '@/components/context/ProjectContext';
-import { readResourceMetadata } from '@/components/Resources/ResourceUtils/readResourceMetadata';
 import * as logger from '../../logger';
 import LoadingScreen from '../Loading/LoadingScreen';
 
@@ -52,10 +53,8 @@ export const ListResources = ({
     createData('Spanish', 'es-419', 'es-419_gl'),
   ];
 
-
   const { t } = useTranslation();
-  const [offlineResources, setOfflineResources] = useState([]);
-  const [onlineResources, setOnlineResources] = useState();
+  // eslint-disable-next-line no-unused-vars
   const [translationWordList, settranslationWordList] = useState(translationWordLists);
   const [translationNote, setTranslationNote] = useState([]);
   const [translationQuestion, setTranslationQuestion] = useState([]);
@@ -89,7 +88,7 @@ export const ListResources = ({
 
   useEffect(() => {
     (async () => {
-      setLoading(true)
+      setLoading(true);
       logger.debug('ResourcesPopUp.js', `get available selected resources ${selectResource}`);
       switch (selectResource) {
         case 'tn':
@@ -113,7 +112,7 @@ export const ListResources = ({
         default:
           break;
       }
-      setLoading(false)
+      setLoading(false);
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectResource, selectedPreProd]);
@@ -140,7 +139,6 @@ export const ListResources = ({
   useEffect(() => { // LOADS locally available
     readLocalResources(username, setSubMenuItems);
   }, []);
-  console.log(">>>>>>>>>>>>>>>>>>>>>",filteredResources?.onlineResource)
 
   return (
     <div className="h-full">

@@ -193,7 +193,6 @@ function RemoveResource({
 RemoveResource.propTypes = {
     resource: PropTypes.object,
     selectResource: PropTypes.string,
-    closeResourceWindow: PropTypes.func,
   };
 
 export default RemoveResource;

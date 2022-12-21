@@ -82,7 +82,7 @@ export const En = {
     'label-resource-name': 'resource name',
     'label-footnotes': 'Foot Notes',
     'label-location': 'location',
-    'label-audio-bible':'Audio',
+    'label-audio-bible': 'Audio',
     'placeholder-resource-name': 'Enter resource name',
     'placeholder-license-name': 'License Name',
     'placeholder-search': 'Search…',

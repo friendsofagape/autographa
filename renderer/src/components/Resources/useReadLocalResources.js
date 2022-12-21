@@ -1,6 +1,6 @@
 import { readResourceMetadata } from '@/components/Resources/ResourceUtils/readResourceMetadata';
 
-export default function readLocalResources(username, setSubMenuItems){
+export default function readLocalResources(username, setSubMenuItems) {
   const parseData = [];
   const fs = window.require('fs');
   const path = require('path');

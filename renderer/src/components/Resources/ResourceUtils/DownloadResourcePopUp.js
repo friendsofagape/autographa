@@ -1,3 +1,6 @@
+/* eslint-disable react/no-array-index-key */
+/* eslint-disable jsx-a11y/control-has-associated-label */
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/jsx-key */
 /* eslint-disable no-nested-ternary */
 import React, { useEffect, useState } from 'react';
@@ -11,10 +14,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import LoadingScreen from '@/components/Loading/LoadingScreen';
 import { XMarkIcon, ArrowDownTrayIcon } from '@heroicons/react/24/solid';
 import { AutographaContext } from '@/components/context/AutographaContext';
+import { TrashIcon } from '@heroicons/react/24/outline';
 import CustomMultiComboBox from './CustomMultiComboBox';
 import langJson from '../../../lib/lang/langNames.json';
 import { handleDownloadResources } from './createDownloadedResourceSB';
-import { TrashIcon } from '@heroicons/react/24/outline';
 import * as logger from '../../../logger';
 
 const subjectTypeArray = {

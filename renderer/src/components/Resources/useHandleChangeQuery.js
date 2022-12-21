@@ -1,4 +1,5 @@
-const handleChangeQuery = (query, resourceData, selectResource,setFilteredResources,subMenuItems,setfilteredBibleObsAudio) => {
+/* eslint-disable no-nested-ternary */
+const handleChangeQuery = (query, resourceData, selectResource, setFilteredResources, subMenuItems, setfilteredBibleObsAudio) => {
   const filtered = { offlineResource: [], onlineResource: { ...resourceData?.reference } || {} };
   if (['tn', 'tw', 'tq', 'ta', 'obs-tn', 'obs-tq', 'twlm'].includes(selectResource?.toLowerCase())) {
     if (query?.length > 0) {
@@ -21,9 +22,9 @@ const handleChangeQuery = (query, resourceData, selectResource,setFilteredResour
       setFilteredResources(filtered);
     }
   } else if (['bible', 'obs', 'audio'].some((item) => item === selectResource)) {
-    const resourceName = (selectResource == 'bible') ?
-      'textTranslation' : (selectResource == 'obs') ?
-        'textStories' : (selectResource == 'audio') ? 'audioTranslation' : '';
+    const resourceName = (selectResource === 'bible')
+      ? 'textTranslation' : (selectResource === 'obs')
+        ? 'textStories' : (selectResource === 'audio') ? 'audioTranslation' : '';
     const resourceArray = subMenuItems?.filter((ref) => ref?.value?.type?.flavorType?.flavor?.name === resourceName);
     if (query?.length > 0) {
       // eslint-disable-next-line array-callback-return
