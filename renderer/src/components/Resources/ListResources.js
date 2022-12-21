@@ -62,7 +62,7 @@ export const ListResources = ({
   const [translationAcademy, setTranslationAcademy] = useState([]);
   const [obsTranslationNote, setObsTranslationNote] = useState([]);
   const [obsTranslationQuestion, setObsTranslationQuestion] = useState([]);
-
+  const [renderApp, setRenderApp] = useState(false);
   const handleDownloadHelpsResources = async (event, reference, offlineResource) => {
     if (!downloading) {
       try {
@@ -72,6 +72,7 @@ export const ListResources = ({
         setCurrentDownloading(null);
         setOpenSnackBar(true);
         setError('success');
+        setRenderApp(true);
         setSnackText('Resource Download Finished');
       } catch (err) {
         logger.debug('ResourcesPopUp.js', 'Error Downlaod ', err);
@@ -138,7 +139,10 @@ export const ListResources = ({
 
   useEffect(() => { // LOADS locally available
     readLocalResources(username, setSubMenuItems);
-  }, []);
+    if (renderApp === true) {
+      setRenderApp(false);
+    }
+  }, [renderApp]);
 
   return (
     <div className="h-full">
@@ -229,6 +233,7 @@ export const ListResources = ({
                         <RemoveResource
                           resource={resource}
                           selectResource={selectResource}
+                          setRenderApp={setRenderApp}
                         />
                       </div>
                     </div>

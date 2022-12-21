@@ -90,7 +90,7 @@ const ResourceResetAfterCheckSameOnRefResourceAgSettings = async (setResetResour
 };
 
 function RemoveResource({
-  resource, selectResource,
+  resource, selectResource, setRenderApp,
 }) {
     logger.warn('removeResource.js', 'inside remove resource');
     const { t } = useTranslation();
@@ -148,6 +148,7 @@ function RemoveResource({
               // read ag-settings of the project
               await ResourceResetAfterCheckSameOnRefResourceAgSettings(setResetResourceOnDeleteOffline, resource);
               // handleRowSelect(null, null, null, null, '');
+              setRenderApp(true);
               setOpenSnackBar(true);
               setNotify('success');
               setSnackText('Removed Resource Successfully');
@@ -193,6 +194,7 @@ function RemoveResource({
 RemoveResource.propTypes = {
     resource: PropTypes.object,
     selectResource: PropTypes.string,
+    setRenderApp: PropTypes.func,
   };
 
 export default RemoveResource;

@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-nested-ternary */
 /* eslint-disable jsx-a11y/control-has-associated-label */
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import RemoveResource from '@/components/Resources/ResourceUtils/RemoveResource';
 import CheckHelpsUpdatePopUp from '@/components/Resources/ResourceUtils/CheckHelpsUpdatePopUp';
@@ -19,6 +19,7 @@ export default function ObsBibleAudioTab({
   subMenuItems,
 }) {
   const { t } = useTranslation();
+  const [renderApp, setRenderApp] = useState(false);
   const {
     states: {
       username,
@@ -33,7 +34,10 @@ export default function ObsBibleAudioTab({
 
   useEffect(() => { // LOADS  locally available
     readLocalResources(username, setSubMenuItems);
-  }, []);
+    if (renderApp === true) {
+      setRenderApp(false);
+    }
+  }, [renderApp]);
 
   useEffect(() => {
     const resourceName = (selectResource === 'bible')
@@ -159,6 +163,7 @@ export default function ObsBibleAudioTab({
                                   <RemoveResource
                                     resource={ref}
                                     selectResource={selectResource}
+                                    setRenderApp={setRenderApp}
                                   />
 )}
                               </div>
