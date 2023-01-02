@@ -14,6 +14,7 @@ import ReferenceObs from '@/components/EditorPage/ObsEditor/ReferenceObs';
 import { isElectron } from '@/core/handleElectron';
 import core from '@/components/EditorPage/ObsEditor/core';
 import ReferenceAudio from '@/components/EditorPage/Reference/Audio/ReferenceAudio';
+import isBackendProjectExist from '@/core/projects/existProjectInBackEnd';
 
 const TranslationHelps = dynamic(
   () => import('@/components/EditorPage/Reference/TranslationHelps'),
@@ -147,9 +148,16 @@ const SectionPlaceholder1 = ({ editor }) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [resetResourceOnDeleteOffline?.referenceColumnOneData1Reset, resetResourceOnDeleteOffline?.referenceColumnOneData2Reset]);
 
+  const checkResourceExist = async (ProjectDir, projectName) => {
+    const existResource = await isBackendProjectExist(ProjectDir, projectName);
+    return existResource;
+  };
+
+  // call useEffect on Load resource
   useEffect(() => {
     const refsHistory = [];
     const rows = [];
+    let resourceExistCheck = false;
     localforage.getItem('currentProject').then((projectName) => {
     const _projectname = projectName?.split('_');
     localforage.getItem('projectmeta').then((value) => {
@@ -168,13 +176,27 @@ const SectionPlaceholder1 = ({ editor }) => {
       if (refsHistory[0]) {
         Object.entries(refsHistory[0]).forEach(
           ([_columnnum, _value]) => {
+            console.log({ _columnnum, _value });
           if (_columnnum === '0' && _value) {
             Object.entries(_value).forEach(
               ([_rownum, _value]) => {
                 rows.push(_rownum);
                 // if (openResource1 === false
                 //   || openResource2 === false) {
-                    if (_rownum === '1') {
+                  console.log('useEffect 1 load reference =====>');
+                  // check the reference is offline / online
+                    if (_value.offline.offline) {
+                      // offline resource exist check fucntion not awaiting always comes false in resouceExistcheck
+                      checkResourceExist(_value.offline.data.projectDir)
+                      .then((resourceStatus) => {
+                        resourceExistCheck = resourceStatus;
+                        console.log({ resourceExistCheck, resourceStatus });
+                      });
+                    } else {
+                      resourceExistCheck = true;
+                    }
+                    console.log('after fun call ====>', { resourceExistCheck, _value });
+                    if (_rownum === '1' && resourceExistCheck) {
                       setReferenceColumnOneData1({
                         ...referenceColumnOneData1,
                         languageId: _value?.language,
@@ -233,11 +255,13 @@ const SectionPlaceholder1 = ({ editor }) => {
     }
   }, [sectionNum]);
 
+  // call useEffect on Save reference (call on new resource / new pane)
   useEffect(() => {
     const refsHistory = [];
     localforage.getItem('currentProject').then((projectName) => {
     const _projectname = projectName?.split('_');
     localforage.getItem('projectmeta').then((value) => {
+      console.log('useEffect 2 save reference load reference =====>');
       Object?.entries(value).forEach(
         ([, _value]) => {
           Object?.entries(_value).forEach(
@@ -341,6 +365,7 @@ const SectionPlaceholder1 = ({ editor }) => {
   );
   useEffect(() => {
     if (isElectron()) {
+      console.log('useEffect 3 set stories OBS');
       localforage.getItem('userProfile').then((user) => {
         const fs = window.require('fs');
         if (_obsNavigation1 && referenceColumnOneData1.refName && referenceColumnOneData1.selectedResource === 'obs') {
