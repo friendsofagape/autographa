@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import {
   ArchiveBoxIcon,
   ArrowDownTrayIcon,
-  DesktopComputerIcon,
+  ComputerDesktopIcon,
+
 } from '@heroicons/react/24/outline';
 import { useTranslation } from 'react-i18next';
 import SideBar from './SideBar';
@@ -86,7 +87,7 @@ export default function ProjectsLayout(props) {
 
                         {showArchived ? (
                           <>
-                            <DesktopComputerIcon className="h-4 mr-2 text-white" />
+                            <ComputerDesktopIcon className="h-4 mr-2 text-white" />
                             <span>Active</span>
                           </>
                         ) : (
