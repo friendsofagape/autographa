@@ -15,6 +15,7 @@ import PropTypes from 'prop-types';
 import { useState } from 'react';
 import PlayIcon from '@/icons/basil/Outline/Media/Play.svg';
 import PauseIcon from '@/icons/basil/Outline/Media/Pause.svg';
+import SpeechRecognition from '../SpeechRecognitionWebApi/SpeechRecognition';
 
 const AudioWaveform = dynamic(() => import('./WaveForm'), { ssr: false });
 
@@ -375,6 +376,16 @@ const Player = ({
               </button>
             </div>
           </div>
+          {/* speech section */}
+          <div className="flex flex-col px-10 items-center border-l border-l-gray-800">
+            <div className="text-xxs text-gray-300 uppercase tracking-wider mb-2">
+              Speech
+            </div>
+            <div className="flex flex-col items-center">
+              <SpeechRecognition trigger={trigger} />
+            </div>
+          </div>
+
         </div>
         <div className="border-t border-gray-800 bg-black text-white">
           <AudioWaveform
