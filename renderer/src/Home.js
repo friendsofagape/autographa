@@ -13,7 +13,6 @@ import AutographaContextProvider from './components/context/AutographaContext';
 const Home = () => {
   const { states, action } = React.useContext(AuthenticationContext);
   const [token, setToken] = React.useState();
-  const [user, setUser] = React.useState();
   React.useEffect(() => {
     logger.debug('Home.js', 'Triggers loadUsers for the users list');
     const fs = window.require('fs');
@@ -24,39 +23,29 @@ const Home = () => {
       logger.debug('Home.js', 'Triggers getToken to fetch the Token if not available');
       action.getToken();
       setToken();
-    } else {
+    }else if(states.accessToken) {
       logger.debug('Home.js', 'Token is available');
-      localForage.getItem('sessionToken').then((value) => {
-        if (!value) {
-          action.setaccessToken();
-        }
-        setToken(value);
-      });
+        setToken(states.accessToken);
     }
-    localForage.getItem('users').then((user) => {
-      if (user.length !== 0) {
-        const newuser = user[0].username;
-        setUser(newuser);
-      } else {
-        localForage.removeItem('sessionToken');
-      }
-    });
-  }, [setToken, user, setUser, action, states.accessToken]);
+
+  }, [token, setToken, action, states.accessToken]);
   return (
     <>
-      {token && user
-        ? (
-          <AuthenticationContextProvider>
-            <ProjectContextProvider>
-              <ReferenceContextProvider>
-                <AutographaContextProvider>
-                  <ProjectList />
-                </AutographaContextProvider>
-              </ReferenceContextProvider>
-            </ProjectContextProvider>
-          </AuthenticationContextProvider>
+      {!token ? 
+        (
+          <Login />         
+        ): 
+        (<AuthenticationContextProvider>
+          <ProjectContextProvider>
+            <ReferenceContextProvider>
+              <AutographaContextProvider>
+                <ProjectList />
+              </AutographaContextProvider>
+            </ReferenceContextProvider>
+          </ProjectContextProvider>
+        </AuthenticationContextProvider>
         )
-        : <Login />}
+        }
     </>
   );
 };
