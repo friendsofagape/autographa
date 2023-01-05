@@ -1,7 +1,7 @@
 import { useEffect, useState, useContext } from 'react';
 import { useProskomma, useImport, useCatalog } from 'proskomma-react-hooks';
 import { useDeepCompareEffect } from 'use-deep-compare';
-import { LockClosedIcon, BookmarkIcon } from '@heroicons/react/outline';
+import { LockClosedIcon, BookmarkIcon } from '@heroicons/react/24/outline';
 import BibleNavigationX from '@/modules/biblenavigation/BibleNavigationX';
 import usePerf from '@/components/hooks/scribex/usePerf';
 import htmlMap from '@/components/hooks/scribex/htmlmap';

@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import {
-  DownloadIcon,
-  ArchiveIcon,
-  DesktopComputerIcon,
-} from '@heroicons/react/outline';
+  ArchiveBoxIcon,
+  ArrowDownTrayIcon,
+  ComputerDesktopIcon,
+
+} from '@heroicons/react/24/outline';
 import { useTranslation } from 'react-i18next';
 import SideBar from './SideBar';
 import TopMenuBar from './TopMenuBar';
@@ -67,7 +68,7 @@ export default function ProjectsLayout(props) {
                                     leading-3 tracking-wider uppercase bg-primary items-center"
                           onClick={openImportPopUp}
                         >
-                          <DownloadIcon className="h-4 mr-2 text-white" />
+                          <ArrowDownTrayIcon className="h-4 mr-2 text-white" />
                           {t('btn-import')}
                         </button>
                         <ImportProjectPopUp open={openPopUp} closePopUp={closeImportPopUp} />
@@ -86,12 +87,12 @@ export default function ProjectsLayout(props) {
 
                         {showArchived ? (
                           <>
-                            <DesktopComputerIcon className="h-4 mr-2 text-white" />
+                            <ComputerDesktopIcon className="h-4 mr-2 text-white" />
                             <span>Active</span>
                           </>
                         ) : (
                           <>
-                            <ArchiveIcon className="h-4 mr-2 text-white" />
+                            <ArchiveBoxIcon className="h-4 mr-2 text-white" />
                             <span>Archived</span>
                           </>
                         )}

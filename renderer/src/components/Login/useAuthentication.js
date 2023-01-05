@@ -46,8 +46,8 @@ function useAuthentication() {
     const data=JSON.stringify({sessionData});
     const base64Header = Buffer.from(header).toString('base64');
     const base64Data = Buffer.from(data).toString('base64');
-    const signature= CryptoJS.HmacSHA256(base64Header + '.' + base64Data,'agv2').toString();
-    const token = base64Header + '.' + base64Data + '.' + signature;
+    const signature= CryptoJS.HmacSHA256(`${base64Header}.${base64Data}`,'agv2').toString();
+    const token = `${base64Header}.${base64Data}.${signature}`;
     if (token) {
       localForage.setItem('sessionToken', token);
       setaccessToken(token);

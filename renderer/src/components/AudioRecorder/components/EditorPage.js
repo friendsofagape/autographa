@@ -53,7 +53,7 @@ const EditorPage = ({
                 className="w-4 h-4 mr-1"
                 aria-hidden="true"
               />
-              <AnnotationIcon
+              <ChatBubbleBottomCenterTextIcon
                 className="w-4 h-4 mr-1"
                 aria-hidden="true"
               />
@@ -87,7 +87,7 @@ const EditorPage = ({
               type="button"
               className="flex p-1 px-2 items-center justify-center bg-error  rounded-lg text-xxs font-bold text-white uppercase tracking-wider"
             >
-              <XIcon
+              <XMarkIcon
                 className="w-4 h-4 mr-1"
                 aria-hidden="true"
               />

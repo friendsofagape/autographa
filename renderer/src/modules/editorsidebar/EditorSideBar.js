@@ -9,14 +9,14 @@ import {
 } from '@headlessui/react';
 
 import {
-  XIcon,
-} from '@heroicons/react/solid';
+  XMarkIcon,
+} from '@heroicons/react/24/solid';
 
 import {
-  AnnotationIcon,
-  SearchIcon,
+  ChatBubbleBottomCenterTextIcon,
+  MagnifyingGlassIcon,
   BookmarkIcon,
-} from '@heroicons/react/outline';
+} from '@heroicons/react/24/outline';
 
 import PinIcon from '@/icons/basil/Outline/Status/Pin.svg';
 import CrossReferenceIcon from '@/icons/crossreference.svg';
@@ -122,9 +122,7 @@ export default function EditorSideBar(props) {
                         w-full hover:bg-primary
                         cursor-pointer ${state.tabIndex === 0 && 'bg-primary'}`}
                     >
-                      <SearchIcon className="w-1/3 m-auto h-full" aria-hidden="true" />
-                      {' '}
-
+                      <MagnifyingGlassIcon className="w-1/3 m-auto h-full" aria-hidden="true" />
                     </div>
                     <div
                       role="button"
@@ -164,7 +162,7 @@ export default function EditorSideBar(props) {
                       w-full hover:bg-primary
                       cursor-pointer ${state.tabIndex === 3 && 'bg-primary'}`}
                     >
-                      <AnnotationIcon className="w-1/3 m-auto h-full" aria-hidden="true" />
+                      <ChatBubbleBottomCenterTextIcon className="w-1/3 m-auto h-full" aria-hidden="true" />
                     </div>
                     <div
                       role="button"
@@ -184,7 +182,7 @@ export default function EditorSideBar(props) {
                   </div>
                   <div className="flex justify-end">
                     <button aria-label="close-button" type="button" className="w-9 h-9 bg-gray-900 p-2 focus:outline-none" onClick={closeSideBars}>
-                      <XIcon />
+                      <XMarkIcon />
                     </button>
                   </div>
                 </div>

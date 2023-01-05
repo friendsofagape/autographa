@@ -1,8 +1,8 @@
 import { useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
-import { ChevronDownIcon } from '@heroicons/react/solid';
-import { ChatAlt2Icon } from '@heroicons/react/outline';
+import { ChevronDownIcon } from '@heroicons/react/24/solid';
+import { ChatAlt2Icon } from '@heroicons/react/24/outline';
 
 import EditComment from './EditComment';
 

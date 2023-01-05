@@ -46,8 +46,7 @@ export default function TranslationHelpsCard({
 
   const {
     state: {
-      // eslint-disable-next-line no-unused-vars
-      item, headers, filters, fontSize, itemIndex, markdownView,
+      item, headers, fontSize, itemIndex, markdownView,
     },
     actions: {
       setFilters, setFontSize, setItemIndex, setMarkdownView,

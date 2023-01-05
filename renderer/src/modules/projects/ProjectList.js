@@ -4,10 +4,10 @@ import { useRouter } from 'next/router';
 import moment from 'moment';
 
 import { Disclosure, Transition, Menu } from '@headlessui/react';
-import { ChevronUpIcon, ChevronDownIcon } from '@heroicons/react/solid';
+import { ChevronUpIcon, ChevronDownIcon } from '@heroicons/react/24/solid';
 import {
-  StarIcon, DotsVerticalIcon,
-} from '@heroicons/react/outline';
+  StarIcon, EllipsisVerticalIcon,
+} from '@heroicons/react/24/outline';
 import localforage from 'localforage';
 
 import { useTranslation } from 'react-i18next';
@@ -238,7 +238,7 @@ export default function ProjectList() {
                                             <Menu as="div">
                                               <div>
                                                 <Menu.Button className="px-5">
-                                                  <DotsVerticalIcon aria-label="star-menu-project" className="h-5 w-5 text-primary" aria-hidden="true" />
+                                                  <EllipsisVerticalIcon aria-label="star-menu-project" className="h-5 w-5 text-primary" aria-hidden="true" />
                                                 </Menu.Button>
                                               </div>
                                               <Transition
@@ -396,7 +396,7 @@ export default function ProjectList() {
                                             <Menu as="div">
                                               <div>
                                                 <Menu.Button className="px-5">
-                                                  <DotsVerticalIcon className="h-5 w-5 text-primary" aria-label="unstar-menu-project" aria-hidden="true" />
+                                                  <EllipsisVerticalIcon className="h-5 w-5 text-primary" aria-label="unstar-menu-project" aria-hidden="true" />
                                                 </Menu.Button>
                                               </div>
                                               <Transition
