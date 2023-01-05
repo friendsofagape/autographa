@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-no-useless-fragment */
 import React from 'react';
-import * as localForage from 'localforage';
+// import * as localForage from 'localforage';
 import Login from './components/Login/Login';
 import AuthenticationContextProvider, { AuthenticationContext } from './components/Login/AuthenticationContextProvider';
 import { loadUsers } from './core/Login/handleJson';
@@ -23,29 +23,28 @@ const Home = () => {
       logger.debug('Home.js', 'Triggers getToken to fetch the Token if not available');
       action.getToken();
       setToken();
-    }else if(states.accessToken) {
+    } else if (states.accessToken) {
       logger.debug('Home.js', 'Token is available');
         setToken(states.accessToken);
     }
-
   }, [token, setToken, action, states.accessToken]);
   return (
     <>
-      {!token ? 
-        (
-          <Login />         
-        ): 
-        (<AuthenticationContextProvider>
-          <ProjectContextProvider>
-            <ReferenceContextProvider>
-              <AutographaContextProvider>
-                <ProjectList />
-              </AutographaContextProvider>
-            </ReferenceContextProvider>
-          </ProjectContextProvider>
-        </AuthenticationContextProvider>
+      {!token
+        ? (
+          <Login />
         )
-        }
+        : (
+          <AuthenticationContextProvider>
+            <ProjectContextProvider>
+              <ReferenceContextProvider>
+                <AutographaContextProvider>
+                  <ProjectList />
+                </AutographaContextProvider>
+              </ReferenceContextProvider>
+            </ProjectContextProvider>
+          </AuthenticationContextProvider>
+        )}
     </>
   );
 };
