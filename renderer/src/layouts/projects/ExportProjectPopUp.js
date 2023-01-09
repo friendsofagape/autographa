@@ -11,6 +11,7 @@ import updateTranslationSB from '@/core/burrito/updateTranslationSB';
 import updateObsSB from '@/core/burrito/updateObsSB';
 import { SnackBar } from '@/components/SnackBar';
 import { mergeAudio } from '@/components/AudioRecorder/core/audioUtils';
+import useSystemNotification from '@/components/hooks/useSystemNotification';
 import CloseIcon from '@/illustrations/close-button-black.svg';
 import { validate } from '../../util/validate';
 import * as logger from '../../logger';
@@ -36,6 +37,9 @@ export default function ExportProjectPopUp(props) {
   const [metadata, setMetadata] = React.useState({});
   const [audioExport, setAudioExport] = React.useState('default');
   const [checkText, setCheckText] = React.useState(false);
+
+  const { pushNotification } = useSystemNotification();
+
   function close() {
     logger.debug('ExportProjectPopUp.js', 'Closing the Dialog Box');
     closePopUp(false);
@@ -269,7 +273,9 @@ export default function ExportProjectPopUp(props) {
       await fse.copySync(path.join(folder, 'text-1'), path.join(folderPath, project.name, 'text-1'));
       await fs.rmSync(path.join(folderPath, project.name, 'ingredients'), { recursive: true, force: true });
     }
-
+    if (audioExport === 'chapter') {
+      pushNotification('Export Project', `${t('dynamic-msg-export-success')} ${project.name} project`);
+    }
     logger.debug('ExportProjectPopUp.js', 'Exported Successfully');
     setNotify('success');
     setSnackText(t('dynamic-msg-export-success'));
@@ -295,6 +301,14 @@ export default function ExportProjectPopUp(props) {
         });
         if (project?.type === 'Audio') {
           if (audioExport === 'default' || audioExport === 'chapter') {
+            if (audioExport === 'chapter') {
+              // long time take for big chapter
+              setNotify('warning');
+              setSnackText('Export Inprogress, you will be notified once completed');
+              setOpenSnackBar(true);
+              closePopUp(false);
+              setCheckText(false);
+            }
             exportDefaultAudio(metadata, folder, path, fs);
           } else {
             exportFullAudio(metadata, folder, path, fs);
