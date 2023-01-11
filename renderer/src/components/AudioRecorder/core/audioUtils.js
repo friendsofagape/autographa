@@ -3,16 +3,6 @@ import * as logger from '../../../logger';
 
 const audio = new ConcatAudio();
 
-// async function writeRecfile(file, audioExportPath, audioName, path) {
-//     const fs = window.require('fs');
-//     const fileReader = new FileReader();
-//     console.log({ audioName }, path.join(audioExportPath, audioName));
-//     fileReader.onload = function () {
-//         fs.mkdirSync(audioExportPath, { recursive: true });
-//         fs.writeFileSync(path.join(audioExportPath, audioName), Buffer.from(new Uint8Array(this.result)));
-//     };
-//     fileReader.readAsArrayBuffer(file);
-// }
 function writeRecfile(file) {
     return new Promise((resolve) => {
         const fileReader = new FileReader();
@@ -25,27 +15,27 @@ function writeRecfile(file) {
 function sec_to_min_sec_milli_convertor(time) {
     let milliseconds = time.toString().split('.')[1];
     if (milliseconds === undefined) {
-        milliseconds = 0;
+        milliseconds = '0';
     }
     const minutes = Math.floor(time / 60);
     const seconds = (time - minutes * 60).toString().split('.')[0].padStart(2, 0);
-    const formatedStringTime = `${minutes.toString().padStart(2, 0)}:${seconds}:${milliseconds}`;
+    const formatedStringTime = `${minutes.toString().padStart(2, 0)}:${seconds}:${milliseconds.padStart(2, 0)}`;
     return [minutes, seconds, milliseconds, formatedStringTime];
 }
 
 async function generateTimeStampData(buffers, book, chapter) {
     logger.debug('audioUtils.js', 'In TimeStamp Generation');
     return new Promise((resolve) => {
-        let fileString = 'Name,Start,Duration,Time Format\n';
-        const seperator = ',';
-        const fileType = 'csv';
+        let fileString = 'verse_text\tstart_timestamp\tduration\n';
+        const seperator = '\t';
+        const fileType = 'tsv';
         const file = `${book}_${chapter.toString().padStart(3, 0)}.${fileType}`;
         let start = 0;
         buffers.forEach((buffer, index) => {
-            const currentVerse = `Verse ${(index + 1).toString().padStart(0, 2)}`;
+            const currentVerse = `Verse_${(index + 1).toString().padStart(2, 0)}`;
             const startTimeString = sec_to_min_sec_milli_convertor(start)[3];
             const durationString = sec_to_min_sec_milli_convertor(buffer.duration)[3];
-            fileString += `${currentVerse + seperator + startTimeString + seperator + durationString + seperator }decimal\n`;
+            fileString += `${currentVerse + seperator + startTimeString + seperator + durationString}\n`;
             start += buffer.duration;
         });
         resolve([file, fileString]);
