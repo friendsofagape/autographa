@@ -1,18 +1,8 @@
 import ConcatAudio from './concatAudio';
 import * as logger from '../../../logger';
 
-const audio = new ConcatAudio();
-
-function writeRecfile(file) {
-    return new Promise((resolve) => {
-        const fileReader = new FileReader();
-        logger.debug('ExportProjectPopUp.js', 'generating array buffer for merged audio');
-        fileReader.onload = () => resolve(fileReader.result);
-        fileReader.readAsArrayBuffer(file);
-    });
-}
-
 function sec_to_min_sec_milli_convertor(time) {
+    logger.debug('audioUtils.js', 'In  time conversion function');
     let milliseconds = time.toString().split('.')[1];
     if (milliseconds === undefined) {
         milliseconds = '0';
@@ -43,6 +33,8 @@ async function generateTimeStampData(buffers, book, chapter) {
 }
 
 export async function mergeAudio(audioArr, dirPath, path, book, chapter) {
+    logger.debug('audioUtils.js', 'In Merge Audio fucntion');
+    const audio = new ConcatAudio(window);
     return new Promise((resolve) => {
         let merged;
         let output;
@@ -50,7 +42,7 @@ export async function mergeAudio(audioArr, dirPath, path, book, chapter) {
         for (let i = 0; i < audioArr.length; i++) {
             audioArr[i] = path.join(dirPath, audioArr[i]);
         }
-        logger.debug('ExportProjectPopUp.js', 'start merging audios');
+        logger.debug('audioUtils.js', 'start merging audios');
         audio.fetchAudio(...audioArr)
         .then(async (buffers) => {
             // generate timestamp data string
@@ -62,12 +54,8 @@ export async function mergeAudio(audioArr, dirPath, path, book, chapter) {
             })
             .then(async ([merged, timeStampData]) => {
                 output = audio.export(merged, 'audio/mp3');
-                logger.debug('ExportProjectPopUp.js', 'Exported Merged Audio');
-                await writeRecfile(output.blob)
-                .then((resolveData) => {
-                    logger.debug('ExportProjectPopUp.js', 'Resolved array buffer of Merged Audio');
-                    resolve([resolveData, timeStampData]);
-                });
+                logger.debug('audioUtils.js', `return Merged Audio for chapter : ${book} : ${chapter}`);
+                resolve([output.blob, timeStampData]);
             });
         });
     });

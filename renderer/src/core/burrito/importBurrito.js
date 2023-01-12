@@ -78,9 +78,9 @@ export const viewBurrito = async (filePath, currentUser, resource) => {
       result.duplicate = duplicate;
     } else {
       result.validate = false;
-      if (metadata.meta.version < '0.3.0') { // add to evn var minimum version of burrito ---------------->>>>
+      if (metadata.meta.version < environment.AG_MINIMUM_BURRITO_VERSION) {
         result.version = metadata.meta.version;
-        logger.error('importBurrito.js', `Expected burrito version 0.3.0 or more instead of ${metadata.meta.version}`);
+        logger.error('importBurrito.js', `Expected burrito version ${environment.AG_MINIMUM_BURRITO_VERSION} or more instead of ${metadata.meta.version}`);
       } else {
         logger.error('importBurrito.js', 'Invalid burrito file (metadata.json).');
       }

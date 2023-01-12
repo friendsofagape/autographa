@@ -1,15 +1,16 @@
 export default class concatAudio {
-    constructor({ sampleRate = 44100 } = {}) {
+    constructor({ sampleRate = 44100, window } = {}) {
         this._sampleRate = sampleRate;
-        this._context = this._createContext();
+        this._context = this._createContext(window);
+        this._window = window;
     }
 
     // eslint-disable-next-line class-methods-use-this
-    _createContext() {
+    _createContext(window) {
         window.AudioContext = window.AudioContext
             || window.webkitAudioContext
             || window.mozAudioContext;
-        return new AudioContext();
+        return new window.AudioContext();
     }
 
     async fetchAudio(...filepaths) {
@@ -190,6 +191,7 @@ export default class concatAudio {
 
     // eslint-disable-next-line class-methods-use-this
     _renderURL(blob) {
-        return (window.URL || window.webkitURL).createObjectURL(blob);
+        // return (window.URL || window.webkitURL).createObjectURL(blob);
+        return (this._window.URL || this._window.webkitURL).createObjectURL(blob);
     }
 }

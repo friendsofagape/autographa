@@ -10,16 +10,14 @@ import { useTranslation } from 'react-i18next';
 import updateTranslationSB from '@/core/burrito/updateTranslationSB';
 import updateObsSB from '@/core/burrito/updateObsSB';
 import { SnackBar } from '@/components/SnackBar';
-import { mergeAudio } from '@/components/AudioRecorder/core/audioUtils';
 // import useSystemNotification from '@/components/hooks/useSystemNotification';
 import CloseIcon from '@/illustrations/close-button-black.svg';
-import { validate } from '../../util/validate';
-import * as logger from '../../logger';
-import burrito from '../../lib/BurritoTemplete.json';
-import ConfirmationModal from '../editor/ConfirmationModal';
-import ProgressCircle from '../../components/Sync/ProgressCircle';
-
-const md5 = require('md5');
+import { validate } from '../../../util/validate';
+import * as logger from '../../../logger';
+import burrito from '../../../lib/BurritoTemplete.json';
+import ConfirmationModal from '../../editor/ConfirmationModal';
+import ProgressCircle from '../../../components/Sync/ProgressCircle';
+import { exportDefaultAudio, exportFullAudio } from './ExportUtils';
 
 export default function ExportProjectPopUp(props) {
   const {
@@ -120,202 +118,13 @@ export default function ExportProjectPopUp(props) {
       }
     setOpenModal(false);
   };
-  async function walk(dir, path, fs) {
-    let files = await fs.readdirSync(dir);
-    files = await Promise.all(files.map(async (file) => {
-        const filePath = path.join(dir, file);
-        const stats = await fs.statSync(filePath);
-        if (stats.isDirectory()) { return walk(filePath, path, fs); }
-        if (stats.isFile()) { return filePath; }
-    }));
-    return files.reduce((all, folderContents) => all.concat(folderContents), []);
-  }
-  const exportFullAudio = async (metadata, folder, path, fs) => {
-    setTotalExported((curr) => curr + 1);
-    const AdmZip = window.require('adm-zip');
-    const fse = window.require('fs-extra');
-    const burrito = metadata;
-    const dir = path.join(folderPath, project.name, 'ingredients');
-    if (!fs.existsSync(dir)) {
-      fs.mkdirSync(dir, { recursive: true });
-    }
-    const zip = new AdmZip();
-    const directories = fs.readdirSync(path.join(folder, 'audio', 'ingredients'), { withFileTypes: true })
-      .filter((item) => item.isDirectory())
-      .map((item) => item.name);
-    directories.forEach((sourceDir) => {
-      zip.addLocalFolder(path.join(folder, 'audio', 'ingredients', sourceDir), sourceDir);
-    });
-    zip.writeZip(path.join(dir, 'ag_internal_audio.zip'));
-    setTotalExported((curr) => curr + 1);
-    const list = await walk(path.join(folder, 'audio', 'ingredients'), path, fs);
-    const otherFiles = list.filter((name) => !name.includes('.mp3') && !name.includes('.wav'));
-    await otherFiles.forEach(async (file) => {
-      const filePath = file.split(/[\/\\]ingredients[\/\\]/)[1];
-      await fse.copy(file, path.join(folderPath, project.name, 'ingredients', filePath));
-    });
-    const renames = Object.keys(burrito.ingredients).filter((key) => key.includes('audio'));
-    await renames?.forEach((rename) => {
-      burrito.ingredients[rename.replace(/audio[\/\\]/, '')] = burrito.ingredients[rename];
-      delete burrito.ingredients[rename];
-    });
-    const content = fs.readFileSync(path.join(dir, 'ag_internal_audio.zip'), 'utf8');
-    const stats = fs.statSync(path.join(dir, 'ag_internal_audio.zip'));
-    burrito.ingredients[path.join('ingredients', 'ag_internal_audio.zip')] = {
-      checksum: {
-        md5: md5(content),
-      },
-      mimeType: 'application/zip',
-      size: stats.size,
-    };
-    setTotalExported((curr) => curr + 1);
-    await fs.writeFileSync(path.join(folderPath, project.name, 'metadata.json'), JSON.stringify(burrito));
-    logger.debug('ExportProjectPopUp.js', 'Exported Successfully');
-    resetExportProgress();
-    setNotify('success');
-    setSnackText(t('dynamic-msg-export-success'));
-    setOpenSnackBar(true);
-    closePopUp(false);
-  };
 
-  const writeAndUpdateBurritoDefaultExport = async (audio, path, mp3ExportPath, fs, fse, book, verse, burrito) => {
-    await fse.copy(audio, path.join(folderPath, project.name, mp3ExportPath))
-      .then(async () => {
-        logger.debug('ExportProjectPopUp.js', 'Creating the ingredients.');
-        const content = fs.readFileSync(path.join(folderPath, project.name, mp3ExportPath), 'utf8');
-        const stats = fs.statSync(path.join(folderPath, project.name, mp3ExportPath));
-        burrito.ingredients[mp3ExportPath] = {
-          checksum: {
-            md5: md5(content),
-          },
-          mimeType: 'audio/mp3',
-          size: stats.size,
-          scope: {},
-        };
-        burrito.ingredients[mp3ExportPath].scope[book] = [verse.replace('_', ':')];
-      }).catch((err) => logger.error('ExportProjectPopUp.js', `${err}`));
-  };
-
-  const exportChapterAudio = async (defaultAudio, burrito, fs, fse, path, folder) => {
-    const audioObj = {};
-    // eslint-disable-next-line
-    for (const audio of defaultAudio) {
-      const book = audio.split(/[\/\\]/).slice(-3)[0];
-      const chapter = audio.split(/[\/\\]/).slice(-2)[0];
-      const url = audio.split(/[\/\\]/).slice(-1)[0];
-      // eslint-disable-next-line no-await-in-loop
-      if (book in audioObj && chapter in audioObj[book]) {
-          audioObj[book][chapter].push(url);
-      } else if (!(book in audioObj)) {
-          audioObj[book] = { [chapter]: new Array(url) };
-      } else if (book in audioObj && !(chapter in audioObj[book])) {
-          audioObj[book][chapter] = new Array(url);
-      }
-    }
-    // loop the book and chapter to generate merged audio of chapter
-    // eslint-disable-next-line no-restricted-syntax
-    for (const bk in audioObj) {
-      if (Object.prototype.hasOwnProperty.call(audioObj, bk)) {
-        console.log('audio obj ==== : ', { audioObj });
-        // eslint-disable-next-line no-restricted-syntax
-        for (const ch in audioObj[bk]) {
-          if (Object.prototype.hasOwnProperty.call(audioObj[bk], ch)) {
-            const extension = audioObj[bk][ch][0].split('.').pop();
-            const audioName = `${ch}.${extension}`;
-            const audioExportPath = path.join(folderPath, project.name, 'ingredients', bk);
-            // eslint-disable-next-line no-await-in-loop
-            await mergeAudio(audioObj[bk][ch], path.join(folder, 'audio', 'ingredients', bk, ch), path, bk, ch)
-            .then(async ([mergedAudioBlob, timeStampData]) => {
-              logger.debug('ExportProjectPopUp.js', `generated merged audio for ${bk} : ${ch}`);
-              console.log('audio created ==== : ', `generated merged audio for => ${bk} : ${ch}`);
-              setTotalExported((curr) => curr + audioObj[bk][ch].length);
-              // Write Merge Audio
-              fs.mkdirSync(audioExportPath, { recursive: true });
-              // eslint-disable-next-line no-await-in-loop
-              await fs.writeFileSync(path.join(audioExportPath, audioName), Buffer.from(new Uint8Array(mergedAudioBlob)));
-              logger.debug('ExportProjectPopUp.js', 'Generated audio written to folder');
-                const content = fs.readFileSync(path.join(audioExportPath, audioName), 'utf8');
-                const stats = fs.statSync(path.join(audioExportPath, audioName));
-                burrito.ingredients[path.join('ingredients', bk, audioName)] = {
-                  checksum: {
-                    md5: md5(content),
-                  },
-                  mimeType: 'audio/mp3',
-                  size: stats.size,
-                  scope: {},
-                };
-                burrito.ingredients[path.join('ingredients', bk, audioName)].scope[bk] = [];
-                logger.debug('ExportProjectPopUp.js', 'Burrito updated for generated Audio');
-                // Write TimeStamp
-                fs.mkdirSync(path.join(folderPath, project.name, 'time stamps'), { recursive: true });
-                await fs.writeFileSync(path.join(folderPath, project.name, 'time stamps', timeStampData[0]), timeStampData[1], 'utf-8');
-            });
-          }
-        }
-      }
-    }
-  };
-
-  const exportDefaultAudio = async (metadata, folder, path, fs) => {
-    const fse = window.require('fs-extra');
-    const burrito = metadata;
-    const list = await walk(path.join(folder, 'audio', 'ingredients'), path, fs);
-    const defaultAudio = list.filter((name) => name.includes('_default'));
-    const otherFiles = list.filter((name) => !name.includes('.mp3') && !name.includes('.wav'));
-    setTotalExports((checkText ? 1 : 0) + list.length); // total audios items to export + common process later
-    if (audioExport === 'default') {
-      // Unable to use forEach, since forEach doesn't wait to finish the loop
-    // eslint-disable-next-line
-      for (const audio of defaultAudio) {
-        const book = audio.split(/[\/\\]/).slice(-3)[0];
-        const chapter = audio.split(/[\/\\]/).slice(-2)[0];
-        const url = audio.split(/[\/\\]/).slice(-1)[0];
-        const mp3 = url.replace(/_\d_default/, '');
-        const verse = mp3.replace('.mp3', '');
-        const mp3ExportPath = path.join('ingredients', book, chapter, mp3);
-        // console.log({
-        // book, chapter, url, mp3, verse,
-        // });
-        // eslint-disable-next-line
-        await writeAndUpdateBurritoDefaultExport(audio, path, mp3ExportPath, fs, fse, book, verse, burrito);
-        setTotalExported((prev) => prev + 1);
-      }
-    } else if (audioExport === 'chapter') {
-      await exportChapterAudio(defaultAudio, burrito, fs, fse, path, folder);
-    }
-    // We need to execute these loop before going to next line so 'for' is used instead of 'forEach'
-    // eslint-disable-next-line no-restricted-syntax
-    for (const file of otherFiles) {
-      const filePath = file.split(/[\/\\]ingredients[\/\\]/)[1];
-      fse.copySync(file, path.join(folderPath, project.name, 'ingredients', filePath));
-      setTotalExported((curr) => curr + 1);
-    }
-    // Wants to export the TEXT along with the project so not updating the file path
-    if (!checkText) {
-      const renames = Object.keys(burrito.ingredients).filter((key) => key.includes('audio'));
-      await renames?.forEach((rename) => {
-        burrito.ingredients[rename.replace(/audio[\/\\]/, '')] = burrito.ingredients[rename];
-        delete burrito.ingredients[rename];
-      });
-    }
-    await fs.writeFileSync(path.join(folderPath, project.name, 'metadata.json'), JSON.stringify(burrito));
-    if (checkText && fs.existsSync(path.join(folder, 'text-1'))) {
-      setTotalExported((prev) => prev + 1);
-      await fse.copySync(path.join(folderPath, project.name, 'ingredients'), path.join(folderPath, project.name, 'audio', 'ingredients'));
-      await fse.copySync(path.join(folder, 'text-1'), path.join(folderPath, project.name, 'text-1'));
-      await fs.rmSync(path.join(folderPath, project.name, 'ingredients'), { recursive: true, force: true });
-    }
-    // if (audioExport === 'chapter') {
-    //   pushNotification('Export Project', `${t('dynamic-msg-export-success')} ${project.name} project`);
-    // }
-    logger.debug('ExportProjectPopUp.js', 'Exported Successfully');
-    resetExportProgress(); // finish export reset all states of export
-    setNotify('success');
-    setSnackText(t('dynamic-msg-export-success'));
-    setOpenSnackBar(true);
-    closePopUp(false);
-    setCheckText(false);
-  };
+  const ExportActions = {
+    setNotify, setSnackText, setOpenSnackBar, setTotalExported, setTotalExports, setExportstart, resetExportProgress, setCheckText,
+   };
+     const ExportStates = {
+    checkText, audioExport, folderPath, project, exportStart,
+   };
 
   const exportBible = async () => {
     const fs = window.require('fs');
@@ -335,10 +144,10 @@ export default function ExportProjectPopUp(props) {
         setExportstart(true); // export start for all type of export
         if (project?.type === 'Audio') {
           if (audioExport === 'default' || audioExport === 'chapter') {
-            exportDefaultAudio(metadata, folder, path, fs);
+            exportDefaultAudio(metadata, folder, path, fs, ExportActions, ExportStates, closePopUp, t);
           } else {
             setTotalExports(3);// 3 step process
-            exportFullAudio(metadata, folder, path, fs);
+            exportFullAudio(metadata, folder, path, fs, ExportActions, ExportStates, closePopUp, t);
           }
         } else if (burrito?.meta?.version !== metadata?.meta?.version) {
             setTotalExports(2); // total 2 steps process

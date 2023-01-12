@@ -16,7 +16,7 @@ import EnhancedTableHead from '@/components/ProjectsPage/Projects/EnhancedTableH
 import AutographaContextProvider, { AutographaContext } from '@/components/context/AutographaContext';
 import { getComparator, stableSort } from '@/components/ProjectsPage/Projects/SortingHelper';
 
-import ExportProjectPopUp from '@/layouts/projects/ExportProjectPopUp';
+import ExportProjectPopUp from '@/layouts/projects/Export/ExportProjectPopUp';
 import ProjectContextProvider from '@/components/context/ProjectContext';
 import SearchTags from './SearchTags';
 import NewProject from './NewProject';
