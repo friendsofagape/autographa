@@ -4,7 +4,7 @@
     "description": "A Bible translation editor for everyone.",
     "email": "autographa.support@bridgeconn.com",
     "author": "Friends of Agape <autographa.support@bridgeconn.com>",
-    "version": "2.2.4-chExpTest",
+    "version": "2.2.4-chExprtTest",
     "license": "MIT",
     "private": true,
     "main": "main/index.js",
