@@ -1,5 +1,5 @@
 export default class concatAudio {
-    constructor({ sampleRate = 44100, window } = {}) {
+    constructor({ sampleRate = 48000, window } = {}) {
         this._sampleRate = sampleRate;
         this._context = this._createContext(window);
         this._window = window;

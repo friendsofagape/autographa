@@ -16,7 +16,7 @@ function sec_to_min_sec_milli_convertor(time) {
 async function generateTimeStampData(buffers, book, chapter) {
     logger.debug('audioUtils.js', 'In TimeStamp Generation');
     return new Promise((resolve) => {
-        let fileString = 'verse_text\tstart_timestamp\tduration\n';
+        let fileString = 'verse_number\tstart_timestamp\tduration\n';
         const seperator = '\t';
         const fileType = 'tsv';
         const file = `${book}_${chapter.toString().padStart(3, 0)}.${fileType}`;

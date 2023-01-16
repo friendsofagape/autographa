@@ -105,7 +105,6 @@ export const exportFullAudio = async (metadata, folder, path, fs, ExportActions,
 const exportChapterAudio = async (defaultAudio, burrito, fs, path, folder, folderPath, project, ExportActions) => {
     logger.debug('ExportProjectUtils.js', 'In export Chapter level audio');
     const audioObj = {};
-    console.log('burrito on start : ', JSON.parse(JSON.stringify(burrito)));
     // delete verse vice ingredients exist in burrito
     const audioExtensions = ['.mp3', '.wav'];
     // eslint-disable-next-line no-unused-vars
@@ -165,7 +164,6 @@ const exportChapterAudio = async (defaultAudio, burrito, fs, path, folder, folde
             });
           }
         }
-        console.log('burrito on end : ', JSON.parse(JSON.stringify(burrito)));
       }
     }
   };

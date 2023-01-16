@@ -263,7 +263,7 @@ export default function ExportProjectPopUp(props) {
                           checked={audioExport === 'chapter'}
                           onChange={() => setAudioExport('chapter')}
                         />
-                        <span className=" ml-4 text-xs font-bold" title="Chapter Level export with only the default take of each verse">Chapter-wise Default</span>
+                        <span className=" ml-4 text-xs font-bold" title="Chapter Level export with only the default take of each verse">Chapter-wise</span>
                       </div>
                       <hr className="border-2" />
                       <div className="mt-3">
