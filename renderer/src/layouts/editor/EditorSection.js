@@ -153,19 +153,15 @@ export default function EditorSection({
           logger.debug('EditorSection.js', 'Setting language direction');
           setProjectScriptureDir(dir);
         });
-      } else if (referenceResources?.offlineResource?.data?.value?.dublin_core?.language?.direction) {
-        // resouces downloaded from doo43 has direction in it dataset.
-        logger.debug('EditorSection.js', 'Setting language direction from dublin_core (downloaded door43 resource)');
-        setProjectScriptureDir(referenceResources?.offlineResource?.data?.value?.dublin_core?.language?.direction);
       } else {
-        // we have language codes stored in 'languageId', so using this function fetching the direction of the language
-        logger.debug('EditorSection.js', 'Setting language direction using languageId for local resource');
-        setProjectScriptureDir(getLanguageDirection(referenceResources.languageId));
+        // Setting language direction to null for Translation Helps
+        logger.debug('EditorSection.js', 'Setting language direction to null for Translation Helps');
+        setProjectScriptureDir();
       }
     } else {
-      // we have language codes stored in 'languageId', so using this function fetching the direction of the language
-      logger.debug('EditorSection.js', 'Setting language direction using languageId for online door43 resource');
-      setProjectScriptureDir(getLanguageDirection(referenceResources.languageId));
+      // Setting language direction to null for Translation Helps
+      logger.debug('EditorSection.js', 'Setting language direction to null for Translation Helps');
+      setProjectScriptureDir();
     }
   }, [referenceResources, title]);
   return (
