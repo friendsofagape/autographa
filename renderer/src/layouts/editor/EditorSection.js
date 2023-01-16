@@ -11,7 +11,7 @@ import ResourcesPopUp from '@/components/Resources/ResourcesPopUp';
 import { classNames } from '@/util/classNames';
 import TaNavigation from '@/components/EditorPage/Reference/TA/TaNavigation';
 import TwNavigation from '@/components/EditorPage/Reference/TW/TwNavigation';
-import { getLanguageDirection, getScriptureDirection } from '@/core/projects/languageUtil';
+import { getScriptureDirection } from '@/core/projects/languageUtil';
 import ConfirmationModal from './ConfirmationModal';
 import * as logger from '../../logger';
 
