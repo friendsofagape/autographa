@@ -3,32 +3,27 @@ const loadData = (fs, file, projectName, username) => {
   const path = require('path');
   const filePath = path.join(newpath, 'autographa', 'users', username, 'resources', projectName);
   if (fs.existsSync(path.join(filePath))) {
-  const data = fs.readFileSync(
-    path.join(filePath, 'metadata.json'),
-    'utf8',
-  );
-  const _data = JSON.parse(data);
-  let i = 0;
-  let j = 1;
-  let dirName;
-  while (i < j) {
-    // const firstKey = Object.keys(_data.ingredients)[i];
-    // const folderName = firstKey.split(/[(\\)?(/)?]/gm).slice(0);
-    const firstKey = Object.keys(_data.ingredients).filter((data) => data.endsWith(`${file}.md`))[0];
-    const folderName = firstKey.split(/[(\\)?(/)?]/gm).slice(0);
-    dirName = folderName[0];
-    // console.log('first key : ', firstKey);
-    // console.log('folder name  : ', folderName);
-    // console.log('dir name  : ', dirName);
-    const stats = fs.statSync(path.join(filePath, dirName));
-    if (!stats.isDirectory()) {
-      j += 1;
+    const data = fs.readFileSync(
+      path.join(filePath, 'metadata.json'),
+      'utf8',
+    );
+    const _data = JSON.parse(data);
+    let i = 0;
+    let j = 1;
+    let dirName;
+    while (i < j) {
+      const firstKey = Object.keys(_data.ingredients).filter((data) => data.endsWith(`${file}.md`))[0];
+      const folderName = firstKey.split(/[(\\)?(/)?]/gm).slice(0);
+      dirName = folderName[0];
+      const stats = fs.statSync(path.join(filePath, dirName));
+      if (!stats.isDirectory()) {
+        j += 1;
+      }
+      i += 1;
     }
-    i += 1;
+    const content = fs.readFileSync(path.join(filePath, dirName, `${file}.md`), 'utf8');
+    return content;
   }
-  const content = fs.readFileSync(path.join(filePath, dirName, `${file}.md`), 'utf8');
-  return content;
-}
   return 'No Content';
 };
 const core = (fs, num, projectName, username) => {
@@ -41,12 +36,14 @@ const core = (fs, num, projectName, username) => {
   allLines.forEach((line) => {
     if (line) {
       if (line.match(/^(\s)*#/gm)) {
+        // Fetching the header content
         const hash = line.match(/# (.*)/);
         stories.push({
           id, title: hash[1],
         });
         id += 1;
       } else if (line.match(/^(\s)*_/gm)) {
+        // Fetching the footer
         const objIndex = stories.findIndex(((obj) => obj.id === id));
         if (objIndex !== -1 && Object.prototype.hasOwnProperty.call(stories[objIndex], 'img')) {
           stories[objIndex].text = '';
@@ -58,6 +55,7 @@ const core = (fs, num, projectName, username) => {
         });
         id += 1;
       } else if (line.match(/^(\s)*!/gm)) {
+        // Fetching the IMG url
         const objIndex = stories.findIndex(((obj) => obj.id === id));
         if (objIndex !== -1 && Object.prototype.hasOwnProperty.call(stories[objIndex], 'img')) {
           stories[objIndex].text = '';
@@ -68,10 +66,15 @@ const core = (fs, num, projectName, username) => {
           id, img: imgUrl[1],
         });
       } else {
+        // Reading the content line by line
         const objIndex = stories.findIndex(((obj) => obj.id === id));
         if (objIndex !== -1) {
+          // Reading first line after img
           stories[objIndex].text = line;
           id += 1;
+        } else {
+          // Reading other lines and appending with previous line data
+          stories[id - 2].text = `${stories[id - 2].text}\n${line}`;
         }
       }
     }
