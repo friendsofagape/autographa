@@ -116,7 +116,8 @@ const ObsEditor = () => {
                           logger.debug('ObsEditor.js', 'Spliting the stories line by line and storing into an array.');
                           // Reading line by line
                           allLines.forEach((line) => {
-                            if (line) {
+                            // To avoid the values after footer, we have added id=0
+                            if (line && id !== 0) {
                               if (line.match(/^(\s)*#/gm)) {
                                 // Fetching the header content
                                 const hash = line.match(/# (.*)/);
@@ -135,7 +136,8 @@ const ObsEditor = () => {
                                 stories.push({
                                   id, end: underscore[1],
                                 });
-                                id += 1;
+                                // Logically footer is the last line of story
+                                id = 0;
                               } else if (line.match(/^(\s)*!/gm)) {
                                 // Fetching the IMG url
                                 const objIndex = stories.findIndex(((obj) => obj.id === id));

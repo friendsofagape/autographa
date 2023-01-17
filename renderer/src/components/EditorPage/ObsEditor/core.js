@@ -34,7 +34,8 @@ const core = (fs, num, projectName, username) => {
   const allLines = data.split(/\r\n|\n/);
   // Reading line by line
   allLines.forEach((line) => {
-    if (line) {
+    // To avoid the values after footer, we have added id=0
+    if (line && id !== 0) {
       if (line.match(/^(\s)*#/gm)) {
         // Fetching the header content
         const hash = line.match(/# (.*)/);
@@ -53,7 +54,8 @@ const core = (fs, num, projectName, username) => {
         stories.push({
           id, end: underscore[1],
         });
-        id += 1;
+        // Logically footer is the last line of story
+        id = 0;
       } else if (line.match(/^(\s)*!/gm)) {
         // Fetching the IMG url
         const objIndex = stories.findIndex(((obj) => obj.id === id));
