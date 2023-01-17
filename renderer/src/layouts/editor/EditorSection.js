@@ -11,8 +11,9 @@ import ResourcesPopUp from '@/components/Resources/ResourcesPopUp';
 import { classNames } from '@/util/classNames';
 import TaNavigation from '@/components/EditorPage/Reference/TA/TaNavigation';
 import TwNavigation from '@/components/EditorPage/Reference/TW/TwNavigation';
+import { getScriptureDirection } from '@/core/projects/languageUtil';
 import ConfirmationModal from './ConfirmationModal';
-// import MinimizeIcon from '@/illustrations/minimize.svg';
+import * as logger from '../../logger';
 
 export default function EditorSection({
   title,
@@ -38,10 +39,10 @@ export default function EditorSection({
 }) {
   const [openResourcePopUp, setOpenResourcePopUp] = useState(false);
   const [openModal, setOpenModal] = useState(false);
+  const [projectScriptureDir, setProjectScriptureDir] = useState();
   const { t } = useTranslation();
   const {
     state: {
-      // selectedFont
       fontSize,
       layout,
       openResource1,
@@ -81,13 +82,9 @@ export default function EditorSection({
       default:
         break;
     }
-    // setLoadResource(false);
     if (sectionNum > 0) {
       setSectionNum(sectionNum - 1);
     }
-    // if (sectionNum <= 1) {
-    //   setLayout(layout - 1);
-    // }
   };
 
   function confirmRemove() {
@@ -143,16 +140,27 @@ export default function EditorSection({
         break;
     }
   };
-
+  useEffect(() => {
+    // Since we are adding reference resources from different places the data we have are inconsistant.
+    // Looking for flavor because flavor is only available for scripture and gloss(obs), not for Translation resources
+    if (referenceResources.flavor && referenceResources.offlineResource.offline === false && title) {
+      logger.debug('EditorSection.js', 'Fetching language direction of this downloaded resource');
+      // offline=false->resources are added directly using collection Tab, offline=true-> resources added from door43
+      // Fetching the language code from burrito file to get the direction
+      getScriptureDirection(title)
+      .then((dir) => {
+        logger.debug('EditorSection.js', 'Setting language direction');
+        setProjectScriptureDir(dir);
+      });
+    } else {
+      // Setting language direction to null for Translation Helps
+      logger.debug('EditorSection.js', 'Setting language direction to null for Translation Helps');
+      setProjectScriptureDir();
+    }
+  }, [referenceResources, title]);
   return (
-
     <>
       <div aria-label="resources-panel" className={classNames(openResource ? 'hidden' : '', 'relative first:mt-0 pb-12 border bg-white border-gray-200 rounded shadow-sm overflow-hidden group')}>
-
-        {/* <div className={`${openResource && 'hidden'}
-        relative first:mt-0 pb-12 ${sectionNum > 1 ? 'h-1/2' : 'h-full'}
-        border bg-white border-gray-200 shadow-sm rounded-b overflow-hidden group`}> */}
-
         <div className="bg-gray-200 rounded-t text-center text-gray-600 relative overflow-hidden">
           {openResourcePopUp
             && (
@@ -240,7 +248,7 @@ export default function EditorSection({
         </div>
 
         <div
-          style={{ fontFamily: 'sans-serif', fontSize: `${fontSize}rem` }}
+          style={{ fontFamily: 'sans-serif', fontSize: `${fontSize}rem`, direction: `${projectScriptureDir?.toUpperCase() === 'RTL' ? 'rtl' : 'ltr'}` }}
           className="prose-sm p-4 text-xl h-full overflow-auto scrollbars-width"
         >
           {
