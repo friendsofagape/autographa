@@ -61,7 +61,7 @@ function useAuthentication() {
     localForage.removeItem('userProfile');
     localForage.setItem('appMode','online');
     getToken();
-    router.push('/')
+    router.push('/login')
   };
   const getConfig = (flowId) => {
     logger.debug('useAuthentication.js', 'getConfig fetch the config from the Kratos using flowID');

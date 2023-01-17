@@ -20,6 +20,7 @@ const LeftLogin = () => {
 
   const [users, setUsers] = useState([]);
   const {
+    states: { accessToken },
     action: { generateToken },
   } = useContext(AuthenticationContext);
   // eslint-disable-next-line no-unused-vars
@@ -85,7 +86,6 @@ const LeftLogin = () => {
 
   /* Sorting the users array by the lastSeen property. */
   const sortedUsers = [...users].sort((a, b) => Date.parse(b.lastSeen) - Date.parse(a.lastSeen));
-
   /**
    * Checks if the user is existing or not, if not then it creates a new user and generates a token
    * for the user.
@@ -122,15 +122,22 @@ const LeftLogin = () => {
           );
           generateToken(user);
         }
+        if(user && accessToken){
+          logger.debug(
+            'LeftLogin.js', 'Showing projectlist page of the user',
+          );
+          router.push('/projects')
+        }
       }
-    } else {
-      // eslint-disable-next-line no-lonely-if
-      if (isElectron()) {
-        router.push('/projects');
-      } else {
-        router.push('/');
-      }
-    }
+    } 
+    // else {
+    //   // eslint-disable-next-line no-lonely-if
+    //   if (isElectron()) {
+    //     router.push('/projects');
+    //   } else {
+    //     router.push('/login');
+    //   }
+    // }
   };
   /**
    * When the form is submitted, prevent the default action, then call the handleSubmit function with
@@ -185,7 +192,7 @@ const LeftLogin = () => {
         <div className="relative border-gray-200 rounded-t-[10px] lg:w-72 w-44 sm:w-52 overflow-hidden">
           {sortedUsers.filter(filterUsers).slice(0, 5).map((user) => (
             <div
-              key={user}
+              key={user.username}
               className="p-4 py-2 text-sm cursor-pointer bg-[#F9F9F9] hover:bg-primary hover:text-white border-b-[1px] border-[#E3E3E3] font-semibold"
               tabIndex={0}
               role="button"
