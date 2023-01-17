@@ -110,7 +110,7 @@ const ObsEditor = () => {
                         if (data) {
                           const stories = [];
                           // eslint-disable-next-line prefer-const
-                          let id = 1;
+                          let id = 1; let footer = false;
                           // eslint-disable-next-line react/prop-types
                           const allLines = data.split(/\r\n|\n/);
                           logger.debug('ObsEditor.js', 'Spliting the stories line by line and storing into an array.');
@@ -125,19 +125,41 @@ const ObsEditor = () => {
                                   id, title: hash[1],
                                 });
                                 id += 1;
-                              } else if (line.match(/^(\s)*_/gm)) {
+                              } else if (line.match(/^(\s)*_/gm) || footer === true) {
                                 // Fetching the footer
                                 const objIndex = stories.findIndex(((obj) => obj.id === id));
                                 if (objIndex !== -1 && Object.prototype.hasOwnProperty.call(stories[objIndex], 'img')) {
                                   stories[objIndex].text = '';
                                   id += 1;
                                 }
-                                const underscore = line.match(/_(.*)_/);
-                                stories.push({
-                                  id, end: underscore[1],
-                                });
-                                // Logically footer is the last line of story
-                                id = 0;
+                                if (line.match(/_(.*)_/g) && footer === false) {
+                                  // single line footer
+                                  const underscore = line.match(/_(.*)_/);
+                                  stories.push({
+                                    id, end: underscore[1],
+                                  });
+                                  // Logically footer is the last line of the story
+                                  id = 0;
+                                } else {
+                                  // To get multi-line footer (footer=true)
+                                  footer = true;
+                                  if (line.match(/^(\s)*_/gm)) {
+                                    // starting of footer
+                                    const underscore = line.match(/^(\s)*_(.*)/);
+                                    stories.push({
+                                      id, end: underscore[2],
+                                    });
+                                  } else if (line.match(/_$/gm)) {
+                                    // end of footer
+                                    const underscore = line.match(/(.*)_$/);
+                                    stories[id - 1].end = `${stories[id - 1].end}\n${underscore[1]}`;
+                                    // Logically footer is the last line of the story
+                                    id = 0;
+                                  } else {
+                                    // middle lines of footer if available
+                                    stories[id - 1].end = `${stories[id - 1].end}\n${line}`;
+                                  }
+                                }
                               } else if (line.match(/^(\s)*!/gm)) {
                                 // Fetching the IMG url
                                 const objIndex = stories.findIndex(((obj) => obj.id === id));
