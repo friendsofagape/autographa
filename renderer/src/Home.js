@@ -9,7 +9,6 @@ import ReferenceContextProvider from './components/context/ReferenceContext';
 import * as logger from './logger';
 import ProjectList from './modules/projects/ProjectList';
 import AutographaContextProvider from './components/context/AutographaContext';
-import LoadingScreen from './components/Loading/LoadingScreen';
 
 const Home = () => {
   const { states, action } = React.useContext(AuthenticationContext);
@@ -24,18 +23,18 @@ const Home = () => {
       logger.debug('Home.js', 'Triggers getToken to fetch the Token if not available');
       action.getToken();
       setToken();
-    } else if (states.accessToken ) {
+    } else if (states.accessToken) {
       logger.debug('Home.js', 'Token is available');
         setToken(states.accessToken);
     }
     localForage.getItem('userProfile').then((value) => {
-      setUser(value)
-    })
-  }, [token,user, setUser, setToken, action, states.accessToken]);
+      setUser(value);
+    });
+  }, [token, user, setUser, setToken, action, states.accessToken]);
 
   return (
     <>
-      {(!token && user === null) 
+      {(!token && user === null)
         ? (
           <Login />
         )

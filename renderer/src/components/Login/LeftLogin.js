@@ -85,7 +85,7 @@ const LeftLogin = () => {
   };
 
   /* Sorting the users array by the lastSeen property. */
-  const sortedUsers = [...users].sort((a, b) => Date.parse(b.lastSeen) - Date.parse(a.lastSeen));
+  const sortedUsers = [...users].sort((a, b) => Date.parse(b.lastSeen) - Date.parse(a.lastSeen));  
   /**
    * Checks if the user is existing or not, if not then it creates a new user and generates a token
    * for the user.
@@ -121,23 +121,14 @@ const LeftLogin = () => {
             'Triggers generateToken to generate a Token for the user',
           );
           generateToken(user);
+          router.push('/projects');
         }
-        if(user && accessToken){
-          logger.debug(
-            'LeftLogin.js', 'Showing projectlist page of the user',
-          );
-          router.push('/projects')
+        if (user && accessToken) {
+          logger.debug('LeftLogin.js', 'Showing projectlist page of the user');
+          router.push('/projects');
         }
       }
-    } 
-    // else {
-    //   // eslint-disable-next-line no-lonely-if
-    //   if (isElectron()) {
-    //     router.push('/projects');
-    //   } else {
-    //     router.push('/login');
-    //   }
-    // }
+    }
   };
   /**
    * When the form is submitted, prevent the default action, then call the handleSubmit function with
@@ -190,7 +181,7 @@ const LeftLogin = () => {
       </p>
       <div className="p-5">
         <div className="relative border-gray-200 rounded-t-[10px] lg:w-72 w-44 sm:w-52 overflow-hidden">
-          {sortedUsers.filter(filterUsers).slice(0, 5).map((user) => (
+          {sortedUsers?.filter(filterUsers).slice(0, 5).map((user) => (
             <div
               key={user.username}
               className="p-4 py-2 text-sm cursor-pointer bg-[#F9F9F9] hover:bg-primary hover:text-white border-b-[1px] border-[#E3E3E3] font-semibold"
@@ -285,13 +276,11 @@ const LeftLogin = () => {
 
                                   <p className="text-md font-semibold  ">
                                     {user.username}
-
                                   </p>
                                 </div>
                                 <button type="button" className="mx-3" onClick={() => archiveUser(sortedUsers, user)}>
                                   <TrashIcon className="text-gray-500 h-5 w-5" />
                                 </button>
-
                               </div>
                           ))}
                           </div>
@@ -305,10 +294,8 @@ const LeftLogin = () => {
                                   tabIndex={0}
                                   className="w-full p-4 py-3 rounded text-sm cursor-pointer bg-[#F9F9F9] hover:bg-primary hover:text-white border border-[#E3E3E3] font-semibold"
                                 >
-
                                   <p className="text-md font-semibold  ">
                                     {user.username}
-
                                   </p>
                                 </div>
                                 <button type="button" className="mx-3 " onClick={() => restoreUser(sortedUsers, user)}>
@@ -375,6 +362,7 @@ const LeftLogin = () => {
                       <div className="mt-4">
                         <input
                           type="text"
+                          value={values.username}
                           onChange={handleChange}
                           className={`flex-shrink flex-grow flex-auto w-full border h-10 ${userNameError ? 'border-red-500' : 'border-primary'} rounded  px-3 self-center relative text-lg  leading-6 text-gray-700 outline-none`}
                           placeholder="Username"

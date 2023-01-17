@@ -176,7 +176,7 @@ function useProjectsSort() {
       if (isElectron()) {
         localForage.getItem('userProfile').then((user) => {
             if (user === null) {
-              router.push('/login')
+              router.push('/login');
             } else {
           logger.debug('useProjectsSort.js', 'Fetching the projects');
             const projectsData = fetchProjectsMeta({ currentUser: user?.username });
