@@ -2,17 +2,18 @@
 import PropTypes from 'prop-types';
 import React, { useContext, useEffect, useState } from 'react';
 import {
-  ViewGridAddIcon, XIcon, AdjustmentsIcon,
-} from '@heroicons/react/outline';
+  SquaresPlusIcon, XMarkIcon, AdjustmentsVerticalIcon,
+} from '@heroicons/react/24/outline';
 import { useTranslation } from 'react-i18next';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import { ProjectContext } from '@/components/context/ProjectContext';
-import ResourcesPopUp from '@/components/EditorPage/Reference/ResourcesPopUp';
+import ResourcesPopUp from '@/components/Resources/ResourcesPopUp';
 import { classNames } from '@/util/classNames';
 import TaNavigation from '@/components/EditorPage/Reference/TA/TaNavigation';
 import TwNavigation from '@/components/EditorPage/Reference/TW/TwNavigation';
+import { getScriptureDirection } from '@/core/projects/languageUtil';
 import ConfirmationModal from './ConfirmationModal';
-// import MinimizeIcon from '@/illustrations/minimize.svg';
+import * as logger from '../../logger';
 
 export default function EditorSection({
   title,
@@ -38,10 +39,10 @@ export default function EditorSection({
 }) {
   const [openResourcePopUp, setOpenResourcePopUp] = useState(false);
   const [openModal, setOpenModal] = useState(false);
+  const [projectScriptureDir, setProjectScriptureDir] = useState();
   const { t } = useTranslation();
   const {
     state: {
-      // selectedFont
       fontSize,
       layout,
       openResource1,
@@ -81,13 +82,9 @@ export default function EditorSection({
       default:
         break;
     }
-    // setLoadResource(false);
     if (sectionNum > 0) {
       setSectionNum(sectionNum - 1);
     }
-    // if (sectionNum <= 1) {
-    //   setLayout(layout - 1);
-    // }
   };
 
   function confirmRemove() {
@@ -143,16 +140,27 @@ export default function EditorSection({
         break;
     }
   };
-
+  useEffect(() => {
+    // Since we are adding reference resources from different places the data we have are inconsistant.
+    // Looking for flavor because flavor is only available for scripture and gloss(obs), not for Translation resources
+    if (referenceResources.flavor && referenceResources.offlineResource.offline === false && title) {
+      logger.debug('EditorSection.js', 'Fetching language direction of this downloaded resource');
+      // offline=false->resources are added directly using collection Tab, offline=true-> resources added from door43
+      // Fetching the language code from burrito file to get the direction
+      getScriptureDirection(title)
+      .then((dir) => {
+        logger.debug('EditorSection.js', 'Setting language direction');
+        setProjectScriptureDir(dir);
+      });
+    } else {
+      // Setting language direction to null for Translation Helps
+      logger.debug('EditorSection.js', 'Setting language direction to null for Translation Helps');
+      setProjectScriptureDir();
+    }
+  }, [referenceResources, title]);
   return (
-
     <>
       <div aria-label="resources-panel" className={classNames(openResource ? 'hidden' : '', 'relative first:mt-0 pb-12 border bg-white border-gray-200 rounded shadow-sm overflow-hidden group')}>
-
-        {/* <div className={`${openResource && 'hidden'}
-        relative first:mt-0 pb-12 ${sectionNum > 1 ? 'h-1/2' : 'h-full'}
-        border bg-white border-gray-200 shadow-sm rounded-b overflow-hidden group`}> */}
-
         <div className="bg-gray-200 rounded-t text-center text-gray-600 relative overflow-hidden">
           {openResourcePopUp
             && (
@@ -200,16 +208,16 @@ export default function EditorSection({
                         {title}
                       </div>
                     </>
-              )
-                : (
-                  <div className="flex">
-                    <div className="py-2 uppercase tracking-wider text-xs font-semibold">
-                      <div className="ml-4 h-4 flex justify-center items-center text-xxs uppercase tracking-wider font-bold leading-3 truncate">
-                        {title}
+                  )
+                    : (
+                      <div className="flex">
+                        <div className="py-2 uppercase tracking-wider text-xs font-semibold">
+                          <div className="ml-4 h-4 flex justify-center items-center text-xxs uppercase tracking-wider font-bold leading-3 truncate">
+                            {title}
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </div>
-                  )}
+                    )}
                 </>
               )}
               <div className="flex bg-gray-300 absolute h-full -right-0 rounded-tr invisible group-hover:visible ">
@@ -220,26 +228,17 @@ export default function EditorSection({
                   onClick={showResourcesPanel}
                   className="px-2"
                 >
-                  <AdjustmentsIcon
+                  <AdjustmentsVerticalIcon
                     className="h-5 w-5 text-dark"
                   />
                 </button>
-                {/* <button
-                onClick={sectionContent}
-                type="button"
-              >
-                <MinimizeIcon
-                  strokeCurrent="none"
-                  className="h-4 w-8 text-dark group-hover:text-white"
-                />
-              </button> */}
                 <button
                   type="button"
                   title={t('tooltip-editor-remove-section')}
                   onClick={removeResource}
                   className="px-2"
                 >
-                  <XIcon
+                  <XMarkIcon
                     className="h-5 w-5 text-dark"
                   />
                 </button>
@@ -249,7 +248,7 @@ export default function EditorSection({
         </div>
 
         <div
-          style={{ fontFamily: 'sans-serif', fontSize: `${fontSize}rem` }}
+          style={{ fontFamily: 'sans-serif', fontSize: `${fontSize}rem`, direction: `${projectScriptureDir?.toUpperCase() === 'RTL' ? 'rtl' : 'ltr'}` }}
           className="prose-sm p-4 text-xl h-full overflow-auto scrollbars-width"
         >
           {
@@ -263,7 +262,7 @@ export default function EditorSection({
                       className="p-4 bg-gray-200 rounded-lg ring-offset-1"
                       onClick={showResourcesPanel}
                     >
-                      <ViewGridAddIcon className="h-5 w-5" aria-hidden="true" />
+                      <SquaresPlusIcon className="h-5 w-5" aria-hidden="true" />
                     </button>
                   </div>
                 </div>
@@ -271,18 +270,18 @@ export default function EditorSection({
               : children
           }
           {hideAddition && (
-          <button
-            type="button"
-            title={t('tooltip-editor-add-section')}
-            onClick={addRow}
-            className="absolute p-2 bg-primary rounded bottom-0 -right-0 invisible group-hover:visible"
-          >
-            <ViewGridAddIcon
-              className="h-6 w-6 text-white"
-              aria-hidden="true"
-            />
-          </button>
-              )}
+            <button
+              type="button"
+              title={t('tooltip-editor-add-section')}
+              onClick={addRow}
+              className="absolute p-2 bg-primary rounded bottom-0 -right-0 invisible group-hover:visible"
+            >
+              <SquaresPlusIcon
+                className="h-6 w-6 text-white"
+                aria-hidden="true"
+              />
+            </button>
+          )}
         </div>
 
       </div>

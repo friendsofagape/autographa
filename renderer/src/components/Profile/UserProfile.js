@@ -6,7 +6,7 @@ import {
 } from '@headlessui/react';
 import {
   UserIcon,
-} from '@heroicons/react/outline';
+} from '@heroicons/react/24/outline';
 import { classNames } from '@/util/classNames';
 import { AuthenticationContext } from '@/components/Login/AuthenticationContextProvider';
 import { useGetUserName } from '@/components/hooks/useGetUserName';

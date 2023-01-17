@@ -1,6 +1,6 @@
 import localForage from 'localforage';
 import moment from 'moment';
-import * as logger from '../../../../logger';
+import * as logger from '../../../logger';
 
 const JSZip = require('jszip');
 

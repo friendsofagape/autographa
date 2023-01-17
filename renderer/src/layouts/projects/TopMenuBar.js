@@ -1,12 +1,13 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   Disclosure,
 } from '@headlessui/react';
-import {
-  MenuIcon,
-  XIcon,
-} from '@heroicons/react/outline';
+// import {
+//   MenuIcon,
+//   XMarkIcon,
+// } from '@heroicons/react/24/outline';
 import Notifications from '@/modules/notifications/Notifications';
 import UserProfile from '@/components/Profile/UserProfile';
 
@@ -62,11 +63,11 @@ export default function TopMenuBar() {
                 {/* Mobile menu button */}
                 <Disclosure.Button className="bg-gray-800 inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
                   <span className="sr-only">{t('label-main-menu')}</span>
-                  {open ? (
-                    <XIcon className="block h-6 w-6" aria-hidden="true" />
+                  {/* {open ? (
+                    <XMarkIcon className="block h-6 w-6" aria-hidden="true" />
                     ) : (
                       <MenuIcon className="block h-6 w-6" aria-hidden="true" />
-                    )}
+                    )} */}
                 </Disclosure.Button>
               </div>
             </div>

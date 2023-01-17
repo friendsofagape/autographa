@@ -3,7 +3,7 @@
 /* eslint-disable no-alert */
 import React, { useState, useEffect, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ChevronRightIcon } from '@heroicons/react/solid';
+import { ChevronRightIcon } from '@heroicons/react/24/solid';
 // import FileIcon from '@/icons/file.svg';
 import Dropzone from './Dropzone/Dropzone';
 // import fetchParseFiles from '../../core/projects/fectchParseFiles';

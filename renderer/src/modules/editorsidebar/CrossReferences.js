@@ -2,10 +2,10 @@ import { useState } from 'react';
 
 import {
   ChevronDownIcon, PlusIcon,
-} from '@heroicons/react/solid';
+} from '@heroicons/react/24/solid';
 import { useTranslation } from 'react-i18next';
 
-import { PencilAltIcon } from '@heroicons/react/outline';
+import { PencilSquareIcon } from '@heroicons/react/24/outline';
 
 import EditCrossReference from './EditCrossReference';
 
@@ -108,7 +108,7 @@ export default function CrossReference() {
                     <div className="flex justify-end">
 
                       <button type="button" className="bg-gray-200 p-1 rounded-sm hidden group-hover:block">
-                        <PencilAltIcon className="w-4 h-4" />
+                        <PencilSquareIcon className="w-4 h-4" />
                       </button>
                     </div>
                   </h5>

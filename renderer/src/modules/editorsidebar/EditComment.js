@@ -1,6 +1,6 @@
 import {
-  XIcon,
-} from '@heroicons/react/solid';
+  XMarkIcon,
+} from '@heroicons/react/24/solid';
 import { useTranslation } from 'react-i18next';
 
 export default function Comments() {
@@ -11,7 +11,7 @@ export default function Comments() {
         <div className="flex-1 px-4 text-xs uppercase">{t('label-add-comment')}</div>
         <div className="flex justify-end">
           <button type="button" className="w-8 h-8 bg-black bg-opacity-20 p-2 focus:outline-none">
-            <XIcon />
+            <XMarkIcon />
           </button>
         </div>
       </div>

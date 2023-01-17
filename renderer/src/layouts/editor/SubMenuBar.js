@@ -1,5 +1,5 @@
 import { useState, useContext, useEffect } from 'react';
-import { BookmarkIcon } from '@heroicons/react/solid';
+import { BookmarkIcon } from '@heroicons/react/24/solid';
 import { useTranslation } from 'react-i18next';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import MenuBar from '@/components/Menubar/MenuBar';
@@ -169,7 +169,7 @@ export default function SubMenuBar() {
                     className="bg-black absolute top-0 right-0 h-6 w-6 rounded-full text-center text-white p-1 -mt-2 -mr-2 focus:outline-none"
                     onClick={() => closeSnackBar(false)}
                   >
-                    <XIcon />
+                    <XMarkIcon />
                   </button>
                   <p>
                     {refernceLoading.text}
@@ -183,7 +183,7 @@ export default function SubMenuBar() {
                     className="bg-black absolute top-0 right-0 h-6 w-6 rounded-full text-center text-white p-1 -mt-2 -mr-2 focus:outline-none"
                     onClick={() => closeSnackBar(false)}
                   >
-                    <XIcon />
+                    <XMarkIcon />
                   </button>
                   <p>This is a Notifiction.</p>
                 </div>
@@ -194,7 +194,7 @@ export default function SubMenuBar() {
                     className="bg-black absolute top-0 right-0 h-6 w-6 rounded-full text-center text-white p-1 -mt-2 -mr-2 focus:outline-none"
                     onClick={() => closeSnackBar(false)}
                   >
-                    <XIcon />
+                    <XMarkIcon />
                   </button>
                   <p>This is a Notifiction.</p>
                 </div> */}

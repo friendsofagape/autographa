@@ -4,7 +4,7 @@ import {
 } from '@headlessui/react';
 import {
   ArrowLeftIcon,
-} from '@heroicons/react/outline';
+} from '@heroicons/react/24/outline';
 import router from 'next/router';
 import { useTranslation } from 'react-i18next';
 import EditorSideBar from '@/modules/editorsidebar/EditorSideBar';
@@ -81,7 +81,7 @@ export default function TopMenuBar() {
                 {/* <div className="absolute inset-y-0 left-0 pl-3
                 flex items-center pointer-events-none">
                   <span className="text-gray-300 sm:text-sm">
-                    <SearchIcon className="h-4 w-4" aria-hidden="true" />
+                    <MagnifyingGlassIcon className="h-4 w-4" aria-hidden="true" />
                   </span>
                 </div>
                 <input

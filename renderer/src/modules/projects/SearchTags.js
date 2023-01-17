@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { useCallback } from 'react';
 
-import { SearchIcon } from '@heroicons/react/outline';
+import { MagnifyingGlassIcon } from '@heroicons/react/24/solid';
 import { useTranslation } from 'react-i18next';
 
 export default function SearchTags({
@@ -51,7 +51,7 @@ export default function SearchTags({
 
   return (
     <div className="relative mx-5">
-      <SearchIcon className="h-5 w-5 absolute left-0 ml-4 my-2 text-primary" />
+      <MagnifyingGlassIcon className="h-5 w-5 absolute left-0 ml-4 my-2 text-primary" />
       <input
         data-testid="search"
         type="search"

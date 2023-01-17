@@ -22,7 +22,7 @@ const TranslationHelps = dynamic(
 );
 
 const SectionPlaceholder1 = ({ editor }) => {
-  const supportedBooks = null;
+  // const supportedBooks = null;
   const [referenceColumnOneData1, setReferenceColumnOneData1] = useState({
     languageId: '',
     selectedResource: '',
@@ -57,7 +57,7 @@ const SectionPlaceholder1 = ({ editor }) => {
       setLayout,
       setOpenResource1,
       setOpenResource2,
-      applyBooksFilter,
+      // applyBooksFilter,
       setResetResourceOnDeleteOffline,
     },
   } = useContext(ReferenceContext);
@@ -91,9 +91,10 @@ const SectionPlaceholder1 = ({ editor }) => {
   const _chapter2 = scrollLock === false ? chapter : naviagation2.chapter;
   const _verse2 = scrollLock === false ? verse : naviagation2.verse;
 
-  useEffect(() => {
-    applyBooksFilter(supportedBooks);
-  }, [applyBooksFilter, supportedBooks]);
+  // useEffect(() => {
+  //   console.log('supportedBooks', supportedBooks);
+  //   applyBooksFilter(supportedBooks);
+  // }, [applyBooksFilter, supportedBooks]);
 
   useEffect(() => {
     if (layout > 0 && layout <= 2) {

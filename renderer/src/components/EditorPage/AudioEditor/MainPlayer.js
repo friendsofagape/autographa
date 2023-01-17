@@ -24,7 +24,6 @@ const MainPlayer = () => {
     },
   } = useContext(ReferenceContext);
   const [currentUrl, setCurrentUrl] = useState('');
-  const [audioBlob, setAudioBlob] = useState('');
   const [take, setTake] = useState('take1');
   const [trigger, setTrigger] = useState('');
   const [model, setModel] = useState({
@@ -120,10 +119,46 @@ const MainPlayer = () => {
     loadChapter();
     }
   };
+  const saveAudio = (blob) => {
+    getDetails()
+    .then(({
+      projectsDir, path,
+    }) => {
+      const fs = window.require('fs');
+      const result = take.replace(/take/g, '');
+      // Fetching the mp3 files
+      const folderName = fs.readdirSync(path.join(projectsDir, 'audio', 'ingredients', bookId.toUpperCase(), chapter));
+      // Checking whether any takes are available for the selected verse
+      const name = folderName.filter((w) => w.match(`^${chapter}_${verse}_`));
+      let filePath;
+      if (name.length > 0) {
+        // While Re-recording replacing the file with same name
+        if (fs.existsSync(path.join(projectsDir, 'audio', 'ingredients', bookId.toUpperCase(), chapter, `${chapter}_${verse}_${result}_default.mp3`))) {
+          filePath = path.join(projectsDir, 'audio', 'ingredients', bookId.toUpperCase(), chapter, `${chapter}_${verse}_${result}_default.mp3`);
+        } else {
+          filePath = path.join(projectsDir, 'audio', 'ingredients', bookId.toUpperCase(), chapter, `${chapter}_${verse}_${result}.mp3`);
+        }
+      } else {
+        filePath = path.join(projectsDir, 'audio', 'ingredients', bookId.toUpperCase(), chapter, `${chapter}_${verse}_${result}_default.mp3`);
+      }
+
+      fs.mkdirSync(path.dirname(filePath), { recursive: true });
+      const fileReader = new FileReader();
+      // eslint-disable-next-line func-names
+      fileReader.onload = function () {
+        // eslint-disable-next-line react/no-this-in-sfc
+        fs.writeFile(filePath, Buffer.from(new Uint8Array(this.result)), (err) => {
+          if (!err) {
+            loadChapter();
+          }
+        });
+      };
+      fileReader.readAsArrayBuffer(blob);
+    });
+  };
   const playRecordingFeedback = useCallback(
     async (blobUrl, blob) => {
-      // setCurrentUrl(blobUrl);
-      setAudioBlob(blob);
+      saveAudio(blob);
     },
     [],
   );
@@ -190,50 +225,7 @@ const MainPlayer = () => {
       setTrigger('record');
     }
   };
-  const saveAudio = (blob) => {
-    getDetails()
-    .then(({
-      projectsDir, path,
-    }) => {
-      const fs = window.require('fs');
-      const result = take.replace(/take/g, '');
-      // Fetching the mp3 files
-      const folderName = fs.readdirSync(path.join(projectsDir, 'audio', 'ingredients', bookId.toUpperCase(), chapter));
-      // Checking whether any takes are available for the selected verse
-      const name = folderName.filter((w) => w.match(`^${chapter}_${verse}_`));
-      let filePath;
-      if (name.length > 0) {
-        // While Re-recording replacing the file with same name
-        if (fs.existsSync(path.join(projectsDir, 'audio', 'ingredients', bookId.toUpperCase(), chapter, `${chapter}_${verse}_${result}_default.mp3`))) {
-          filePath = path.join(projectsDir, 'audio', 'ingredients', bookId.toUpperCase(), chapter, `${chapter}_${verse}_${result}_default.mp3`);
-        } else {
-          filePath = path.join(projectsDir, 'audio', 'ingredients', bookId.toUpperCase(), chapter, `${chapter}_${verse}_${result}.mp3`);
-        }
-      } else {
-        filePath = path.join(projectsDir, 'audio', 'ingredients', bookId.toUpperCase(), chapter, `${chapter}_${verse}_${result}_default.mp3`);
-      }
 
-      fs.mkdirSync(path.dirname(filePath), { recursive: true });
-      const fileReader = new FileReader();
-      // eslint-disable-next-line func-names
-      fileReader.onload = function () {
-        // eslint-disable-next-line react/no-this-in-sfc
-        fs.writeFile(filePath, Buffer.from(new Uint8Array(this.result)), (err) => {
-          if (!err) {
-            loadChapter();
-            clearBlobUrl();
-          }
-        });
-      };
-      fileReader.readAsArrayBuffer(blob);
-    });
-  };
-
-  useEffect(() => {
-    if (audioBlob) {
-      saveAudio(audioBlob);
-    }
-  }, [audioBlob]);
   useEffect(() => {
     if (audioContent?.length > 0) {
       fetchUrl();

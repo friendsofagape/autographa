@@ -1,6 +1,6 @@
 import React, { Fragment, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
-import { PlusIcon, PencilAltIcon } from '@heroicons/react/outline';
+import { PlusIcon, PencilSquareIcon } from '@heroicons/react/24/outline';
 import { useTranslation } from 'react-i18next';
 import { SnackBar } from '@/components/SnackBar';
 import PropTypes from 'prop-types';
@@ -93,7 +93,7 @@ export default function TargetLanguagePopover({ projectType }) {
           className="focus:outline-none bg-primary h-8 w-8 flex items-center justify-center rounded-full"
           onClick={() => { openLanguageNav('edit'); openModal(); }}
         >
-          <PencilAltIcon
+          <PencilSquareIcon
             className="h-5 w-5 text-white"
             aria-hidden="true"
           />

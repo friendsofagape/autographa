@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { Dialog, Transition, Switch } from '@headlessui/react';
 
-import { PencilAltIcon } from '@heroicons/react/outline';
+import { PencilSquareIcon } from '@heroicons/react/24/outline';
 
 import { BlockEditable } from 'markdown-translatable/dist/components';
 import { useTranslation } from 'react-i18next';
@@ -73,7 +73,7 @@ export default function LicencePopover({ call }) {
           onClick={() => { openlicenceNav(); openModal(); }}
           className="focus:outline-none bg-primary h-8 w-8 flex items-center justify-center rounded-full"
         >
-          <PencilAltIcon
+          <PencilSquareIcon
             className="h-5 w-5 text-white"
             aria-hidden="true"
           />

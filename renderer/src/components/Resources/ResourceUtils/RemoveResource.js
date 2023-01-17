@@ -6,8 +6,10 @@ import { SnackBar } from '@/components/SnackBar';
 import ConfirmationModal from '@/layouts/editor/ConfirmationModal';
 import localForage from 'localforage';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
-import * as logger from '../../../../logger';
-import TrashSvg from '@/icons/basil/Outline/Interface/Trash.svg';
+import { TrashIcon } from '@heroicons/react/24/outline';
+import * as logger from '../../../logger';
+
+// import TrashSvg from '@/icons/basil/Outline/Interface/Trash.svg';
 
 const path = require('path');
 
@@ -88,7 +90,7 @@ const ResourceResetAfterCheckSameOnRefResourceAgSettings = async (setResetResour
 };
 
 function RemoveResource({
- resource, selectResource, closeResourceWindow,
+  resource, selectResource, setRenderApp,
 }) {
     logger.warn('removeResource.js', 'inside remove resource');
     const { t } = useTranslation();
@@ -146,10 +148,10 @@ function RemoveResource({
               // read ag-settings of the project
               await ResourceResetAfterCheckSameOnRefResourceAgSettings(setResetResourceOnDeleteOffline, resource);
               // handleRowSelect(null, null, null, null, '');
+              setRenderApp(true);
               setOpenSnackBar(true);
               setNotify('success');
               setSnackText('Removed Resource Successfully');
-              closeResourceWindow();
             });
         });
     };
@@ -163,9 +165,8 @@ function RemoveResource({
           title="Remove Resource"
           onClick={() => setOpenModal(true)}
         >
-          <TrashSvg
-            fill="currentColor"
-            className="w-6 h-6"
+          <TrashIcon
+            className="w-4 h-4"
           />
         </div>
 
@@ -193,7 +194,7 @@ function RemoveResource({
 RemoveResource.propTypes = {
     resource: PropTypes.object,
     selectResource: PropTypes.string,
-    closeResourceWindow: PropTypes.func,
+    setRenderApp: PropTypes.func,
   };
 
 export default RemoveResource;

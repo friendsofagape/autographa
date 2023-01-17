@@ -5,8 +5,9 @@ import { Dialog, Transition } from '@headlessui/react';
 import { useTranslation } from 'react-i18next';
 import { SnackBar } from '@/components/SnackBar';
 import LoadingScreen from '@/components/Loading/LoadingScreen';
-import * as logger from '../../../../logger';
-import RefreshSvg from '@/icons/basil/Outline/Interface/Refresh.svg';
+import { ArrowPathIcon } from '@heroicons/react/24/outline';
+import * as logger from '../../../logger';
+
 import DownloadCreateSBforHelps from './DownloadCreateSBforHelps';
 import { handleDownloadResources } from './createDownloadedResourceSB';
 import Door43Logo from '@/icons/door43.svg';
@@ -149,14 +150,12 @@ function CheckHelpsUpdatePopUp({ resource, selectResource }) {
           title="check updates"
           onClick={(e) => handleCheckUpdateHelpsResources(e, resource)}
         >
-          <RefreshSvg
-            fill="currentColor"
-            // fill="blue"
-            className="w-6 h-6"
+          <ArrowPathIcon
+            className="w-4 h-4"
           />
         </div>
         <Transition appear show={isOpen} as={React.Fragment}>
-          <Dialog as="div" className="relative z-10" onClose={modalClose}>
+          <Dialog as="div" className="relative z-50" onClose={modalClose}>
             <div className="min-h-screen px-4 text-center">
               <Transition.Child
                 as={React.Fragment}

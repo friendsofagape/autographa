@@ -4,8 +4,8 @@ import React, {
 } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import {
- FolderOpenIcon, InformationCircleIcon, CheckIcon, XIcon,
-} from '@heroicons/react/outline';
+ FolderOpenIcon, InformationCircleIcon, CheckIcon, XMarkIcon,
+} from '@heroicons/react/24/outline';
 import { useRouter } from 'next/router';
 import localforage from 'localforage';
 import { useTranslation } from 'react-i18next';
@@ -244,7 +244,7 @@ export default function ImportProjectPopUp(props) {
                           <label className="inline-flex items-center">
                             {(sbData?.validate)
                               ? <CheckIcon className="w-6 h-6 text-green-500 border" />
-                            : <XIcon className="w-6 h-6 text-red-500 border" />}
+                            : <XMarkIcon className="w-6 h-6 text-red-500 border" />}
                             {(sbData?.validate)
                               ? <span className="ml-2">{t('dynamic-msg-burrito-validate-import-project')}</span>
                             : <span className="ml-2 text-red-500">{(sbData?.version) ? t('dynamic-msg-burrito-validation-expected', { version: sbData.version }) : t('dynamic-msg-burrito-validation-failed')}</span>}

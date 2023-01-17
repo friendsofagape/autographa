@@ -1,15 +1,15 @@
 import moment from 'moment';
 import { v5 as uuidv5 } from 'uuid';
 import localForage from 'localforage';
-import Textburrito from '../../../../lib/BurritoTemplete.json';
-import OBSburrito from '../../../../lib/OBSTemplete.json';
-import languageCode from '../../../../lib/LanguageCode.json';
-import * as logger from '../../../../logger';
-import { environment } from '../../../../../environment';
-import packageInfo from '../../../../../../package.json';
-import customLicense from '../../../../lib/license/Custom.md';
-import OBSLicense from '../../../../lib/OBSLicense.md';
-import OBSData from '../../../../lib/OBSData.json';
+import Textburrito from '../../../lib/BurritoTemplete.json';
+import OBSburrito from '../../../lib/OBSTemplete.json';
+import languageCode from '../../../lib/LanguageCode.json';
+import * as logger from '../../../logger';
+import { environment } from '../../../../environment';
+import packageInfo from '../../../../../package.json';
+import customLicense from '../../../lib/license/Custom.md';
+import OBSLicense from '../../../lib/OBSLicense.md';
+import OBSData from '../../../lib/OBSData.json';
 
 const md5 = require('md5');
 
