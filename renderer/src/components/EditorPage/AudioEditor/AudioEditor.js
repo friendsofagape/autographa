@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable no-nested-ternary */
 import { useState, useEffect, useContext } from 'react';
 import Editor from '@/modules/editor/Editor';
@@ -28,18 +27,14 @@ const AudioEditor = ({ editor }) => {
       bookId,
       chapter,
       verse,
-      myEditorRef,
       isLoading,
       audioContent,
       audioPath,
-      updateWave,
+      // eslint-disable-next-line no-unused-vars
+      updateWave, // updateWave is used to update the waveform in the Editor after recording audio
     }, actions: {
-      onChangeBook,
-      onChangeChapter,
       onChangeVerse,
-      applyBooksFilter,
       setIsLoading,
-      goToChapter,
       setAudioContent,
       setAudioCurrentChapter,
       setAudioPath,
