@@ -30,6 +30,8 @@ const AudioEditor = ({ editor }) => {
       isLoading,
       audioContent,
       audioPath,
+      // eslint-disable-next-line no-unused-vars
+      updateWave, // updateWave is used to update the waveform in the Editor after recording audio
     }, actions: {
       onChangeVerse,
       setIsLoading,
