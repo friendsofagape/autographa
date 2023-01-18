@@ -20,6 +20,7 @@ export default function ResourcesPopUp(
     selectedResource,
     setReferenceResources,
     header,
+    referenceResources,
   },
 ) {
   const cancelButtonRef = useRef(null);
@@ -54,7 +55,7 @@ export default function ResourcesPopUp(
     },
   } = useContext(ReferenceContext);
 
-  const handleRowSelect = (e, row, name, owner, flavorname, offline = false) => {
+  const handleRowSelect = (e, row, name, owner, flavorname, userOrCommon,  offline = false,) => {
     const offlineResource = offline
       ? { offline: true, data: offline }
       : { offline: false };
@@ -66,6 +67,7 @@ export default function ResourcesPopUp(
       owner,
       offlineResource,
       flavor: flavorname,
+      ownership: userOrCommon,
     });
     removeSection();
   };
@@ -139,6 +141,7 @@ export default function ResourcesPopUp(
                       subMenuItems={subMenuItems}
                       setSubMenuItems={setSubMenuItems}
                       setfilteredBibleObsAudio={setfilteredBibleObsAudio}
+                      referenceResources={referenceResources}
                     />
                   )
                   : (

@@ -182,6 +182,7 @@ export default function EditorSection({
                   setReferenceResources={setReferenceResources}
                   openResourcePopUp={openResourcePopUp}
                   setOpenResourcePopUp={setOpenResourcePopUp}
+                  referenceResources={referenceResources}
                 />
 
               </div>
