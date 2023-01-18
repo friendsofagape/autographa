@@ -160,7 +160,7 @@ const MainPlayer = () => {
     async (blobUrl, blob) => {
       saveAudio(blob);
     },
-    [],
+    [bookId, chapter, verse],
   );
   const {
     startRecording,

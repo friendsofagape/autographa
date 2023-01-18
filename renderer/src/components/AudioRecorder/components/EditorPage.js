@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import dynamic from 'next/dynamic';
 import PropTypes from 'prop-types';
 
@@ -8,14 +7,14 @@ const EditorPage = ({
  content, onChangeVerse, verse, location,
 }) => {
   const path = require('path');
-  const [selectedverse, setSelectedVerse] = useState();
+  // const [selectedverse, setSelectedVerse] = useState();
   const selectVerse = (value) => {
-    if (selectedverse === value) {
-      setSelectedVerse(0);
-    } else {
-      setSelectedVerse(value);
+    // For opening and closing the verse tab
+    // if (selectedverse === value) {
+    //   setSelectedVerse(0);
+    // } else {
+      // setSelectedVerse(value);
       onChangeVerse(value.toString(), verse);
-    }
   };
   return (
     <div className="bg-white rounded-md overflow-hidden">
