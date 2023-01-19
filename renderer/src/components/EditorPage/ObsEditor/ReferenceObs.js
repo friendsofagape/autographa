@@ -3,6 +3,7 @@ import {
  useContext, useEffect, useRef, useState,
 } from 'react';
 import PropTypes from 'prop-types';
+import { useTranslation } from 'react-i18next';
 import LoadingScreen from '../../Loading/LoadingScreen';
 
 const style = {
@@ -27,6 +28,7 @@ const ReferenceObs = ({ stories }) => {
 } = useContext(ReferenceContext);
 
 const itemEls = useRef([]);
+const { t } = useTranslation();
 
   useEffect(() => {
     if (stories === undefined) {
@@ -75,7 +77,8 @@ const itemEls = useRef([]);
                 {Object.prototype.hasOwnProperty.call(story, 'text') && (
                 <>
                   <span className="w-5 h-5 bg-gray-800 rounded-full flex justify-center text-sm text-white items-center p-3 ">
-                    {index}
+                    {/* {index} */}
+                    {index.toString().split('').map((num) => t(`n-${num}`))}
                   </span>
                   <img className="w-1/4 rounded-lg" src={story.img} alt="" />
                   <p

@@ -3,18 +3,32 @@ import PropTypes from 'prop-types';
 import {
  Box, CircularProgress, Typography,
 } from '@material-ui/core';
+import { createTheme, ThemeProvider } from '@material-ui/core/styles';
 
-function CircularProgressWithLabel({ value }) {
+const progressCircletheme = createTheme({
+  // older versions
+  overrides: {
+    MuiTypography: {
+      body2: {
+        fontSize: [10, '!important'],
+        fontWeight: ['bold'],
+      },
+    },
+  },
+});
+
+function CircularProgressWithLabel({ value, circleSize }) {
   return (
-    <Box sx={{ position: 'relative', display: 'inline-flex' }}>
-      <CircularProgress
-        variant="determinate"
-        value={value}
-        color="secondary"
-        size="2.2rem"
-      />
-      <Box
-        sx={{
+    <ThemeProvider theme={progressCircletheme}>
+      <Box sx={{ position: 'relative', display: 'inline-flex' }}>
+        <CircularProgress
+          variant="determinate"
+          value={value}
+          color="secondary"
+          size={circleSize || '2.2rem'}
+        />
+        <Box
+          sx={{
           top: 0,
           left: 0,
           bottom: 0,
@@ -24,17 +38,18 @@ function CircularProgressWithLabel({ value }) {
           alignItems: 'center',
           justifyContent: 'center',
         }}
-      >
-        <Typography
-          variant="caption"
-          color="text.secondary"
         >
-          {`${Math.round(
+          <Typography
+            variant="body2"
+            color="text.secondary"
+          >
+            {`${Math.round(
           value,
         )}%`}
-        </Typography>
+          </Typography>
+        </Box>
       </Box>
-    </Box>
+    </ThemeProvider>
   );
 }
 
@@ -46,7 +61,7 @@ CircularProgressWithLabel.propTypes = {
   value: PropTypes.number.isRequired,
 };
 
-export default function CircularWithValueLabel({ currentValue, totalValue }) {
+export default function CircularWithValueLabel({ currentValue, totalValue, circleSize = '2.2rem' }) {
   const [progress, setProgress] = React.useState(0);
   React.useEffect(() => {
     // console.log(currentValue, totalValue);
@@ -61,7 +76,7 @@ export default function CircularWithValueLabel({ currentValue, totalValue }) {
     //     </Box>
     // </div>
     <Box sx={{ width: '11%' }}>
-      <CircularProgressWithLabel value={progress} />
+      <CircularProgressWithLabel value={progress} circleSize={circleSize} />
     </Box>
   );
 }

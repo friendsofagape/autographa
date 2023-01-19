@@ -2,6 +2,7 @@ import { ProjectContext } from '@/components/context/ProjectContext';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import PropTypes from 'prop-types';
 import { useContext } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const EditorPanel = ({ obsStory, storyUpdate }) => {
   const {
@@ -14,6 +15,7 @@ const EditorPanel = ({ obsStory, storyUpdate }) => {
     },
 } = useContext(ReferenceContext);
   const { states: { scrollLock } } = useContext(ProjectContext);
+  const { t } = useTranslation();
   const handleChange = (e) => {
     const index = e.target.getAttribute('data-id');
     const value = e.target.value;
@@ -42,6 +44,13 @@ const EditorPanel = ({ obsStory, storyUpdate }) => {
     newData = newStories;
     storyUpdate(newData);
   };
+  const avoidEnter = (e) => {
+    // avoiding enter key for the Header
+    if (e.key === 'Enter' || e.keyCode === 13) {
+      e.preventDefault();
+      return false;
+    }
+  };
   return (
     <>
       {obsStory.map((story, index) => (
@@ -55,6 +64,7 @@ const EditorPanel = ({ obsStory, storyUpdate }) => {
             <textarea
               name={story.title}
               onChange={handleChange}
+              onKeyDown={avoidEnter}
               onClick={() => setSelectedStory(scrollLock === true ? 0 : story.id)}
               value={story.title}
               data-id={story.id}
@@ -73,7 +83,8 @@ const EditorPanel = ({ obsStory, storyUpdate }) => {
             key={story.id}
           >
             <span className="w-5 h-5 bg-gray-800 rounded-full flex justify-center text-sm text-white items-center p-3 ">
-              {index}
+              {/* {index} */}
+              {index.toString().split('').map((num) => t(`n-${num}`))}
             </span>
             <textarea
               name={story.text}

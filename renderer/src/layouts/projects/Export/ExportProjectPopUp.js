@@ -10,13 +10,14 @@ import { useTranslation } from 'react-i18next';
 import updateTranslationSB from '@/core/burrito/updateTranslationSB';
 import updateObsSB from '@/core/burrito/updateObsSB';
 import { SnackBar } from '@/components/SnackBar';
+// import useSystemNotification from '@/components/hooks/useSystemNotification';
 import CloseIcon from '@/illustrations/close-button-black.svg';
-import { validate } from '../../util/validate';
-import * as logger from '../../logger';
-import burrito from '../../lib/BurritoTemplete.json';
-import ConfirmationModal from '../editor/ConfirmationModal';
-
-const md5 = require('md5');
+import { validate } from '../../../util/validate';
+import * as logger from '../../../logger';
+import burrito from '../../../lib/BurritoTemplete.json';
+import ConfirmationModal from '../../editor/ConfirmationModal';
+import ProgressCircle from '../../../components/Sync/ProgressCircle';
+import { exportDefaultAudio, exportFullAudio } from './ExportUtils';
 
 export default function ExportProjectPopUp(props) {
   const {
@@ -35,13 +36,33 @@ export default function ExportProjectPopUp(props) {
   const [metadata, setMetadata] = React.useState({});
   const [audioExport, setAudioExport] = React.useState('default');
   const [checkText, setCheckText] = React.useState(false);
-  function close() {
-    logger.debug('ExportProjectPopUp.js', 'Closing the Dialog Box');
-    closePopUp(false);
-    setValid(false);
-    setMetadata({});
-    setCheckText(false);
+
+  const [totalExported, setTotalExported] = React.useState(0);
+  const [totalExports, setTotalExports] = React.useState(0);
+  const [exportStart, setExportstart] = React.useState(false);
+
+  // const { pushNotification } = useSystemNotification();
+
+  function resetExportProgress() {
+    logger.debug('ExportProjectPopUp.js', 'reset Export Progress');
+    if (!exportStart) {
+      setTotalExported(0);
+      setTotalExports(0);
+      setExportstart(false);
+    }
   }
+
+  function close() {
+    if (!exportStart) {
+      logger.debug('ExportProjectPopUp.js', 'Closing the Dialog Box');
+      resetExportProgress(); // reset export
+      closePopUp(false);
+      setValid(false);
+      setMetadata({});
+      setCheckText(false);
+    }
+  }
+
   const openFileDialogSettingData = async () => {
     logger.debug('ExportProjectPopUp.js', 'Inside openFileDialogSettingData');
     const options = { properties: ['openDirectory'] };
@@ -64,6 +85,7 @@ export default function ExportProjectPopUp(props) {
             logger.debug('ExportProjectPopUp.js', 'Burrito validated successfully');
             fse.copy(folder, path.join(folderPath, project.name))
               .then(() => {
+                resetExportProgress(); // reset export states
                 logger.debug('ExportProjectPopUp.js', 'Exported Successfully');
                 setNotify('success');
                 setSnackText(t('dynamic-msg-export-success'));
@@ -71,6 +93,7 @@ export default function ExportProjectPopUp(props) {
                 closePopUp(false);
               })
               .catch((err) => {
+                resetExportProgress(); // reset export states
                 logger.error('ExportProjectPopUp.js', `Failed to export ${err}`);
                 setNotify('failure');
                 setSnackText(t('dynamic-msg-export-fail'));
@@ -81,6 +104,7 @@ export default function ExportProjectPopUp(props) {
   };
 
   const updateBurritoVersion = (username, fs, path, folder) => {
+    setTotalExported(1); // 1 step of 2 finished
     if (project?.type === 'Text Translation') {
     updateTranslationSB(username, project, openModal)
         .then(() => {
@@ -94,118 +118,13 @@ export default function ExportProjectPopUp(props) {
       }
     setOpenModal(false);
   };
-  async function walk(dir, path, fs) {
-    let files = await fs.readdirSync(dir);
-    files = await Promise.all(files.map(async (file) => {
-        const filePath = path.join(dir, file);
-        const stats = await fs.statSync(filePath);
-        if (stats.isDirectory()) { return walk(filePath, path, fs); }
-        if (stats.isFile()) { return filePath; }
-    }));
-    return files.reduce((all, folderContents) => all.concat(folderContents), []);
-  }
-  const exportFullAudio = async (metadata, folder, path, fs) => {
-    const AdmZip = window.require('adm-zip');
-    const fse = window.require('fs-extra');
-    const burrito = metadata;
-    const dir = path.join(folderPath, project.name, 'ingredients');
-    if (!fs.existsSync(dir)) {
-      fs.mkdirSync(dir, { recursive: true });
-    }
-    const zip = new AdmZip();
-    const directories = fs.readdirSync(path.join(folder, 'audio', 'ingredients'), { withFileTypes: true })
-      .filter((item) => item.isDirectory())
-      .map((item) => item.name);
-    directories.forEach((sourceDir) => {
-      zip.addLocalFolder(path.join(folder, 'audio', 'ingredients', sourceDir), sourceDir);
-    });
-    zip.writeZip(path.join(dir, 'ag_internal_audio.zip'));
-    const list = await walk(path.join(folder, 'audio', 'ingredients'), path, fs);
-    const otherFiles = list.filter((name) => !name.includes('.mp3') && !name.includes('.wav'));
-    await otherFiles.forEach(async (file) => {
-      const filePath = file.split(/[\/\\]ingredients[\/\\]/)[1];
-      await fse.copy(file, path.join(folderPath, project.name, 'ingredients', filePath));
-    });
-    const renames = Object.keys(burrito.ingredients).filter((key) => key.includes('audio'));
-    await renames?.forEach((rename) => {
-      burrito.ingredients[rename.replace(/audio[\/\\]/, '')] = burrito.ingredients[rename];
-      delete burrito.ingredients[rename];
-    });
-    const content = fs.readFileSync(path.join(dir, 'ag_internal_audio.zip'), 'utf8');
-    const stats = fs.statSync(path.join(dir, 'ag_internal_audio.zip'));
-    burrito.ingredients[path.join('ingredients', 'ag_internal_audio.zip')] = {
-      checksum: {
-        md5: md5(content),
-      },
-      mimeType: 'application/zip',
-      size: stats.size,
-    };
-    await fs.writeFileSync(path.join(folderPath, project.name, 'metadata.json'), JSON.stringify(burrito));
-    logger.debug('ExportProjectPopUp.js', 'Exported Successfully');
-    setNotify('success');
-    setSnackText(t('dynamic-msg-export-success'));
-    setOpenSnackBar(true);
-    closePopUp(false);
-  };
-  const exportDefaultAudio = async (metadata, folder, path, fs) => {
-    const fse = window.require('fs-extra');
-    const burrito = metadata;
-    const list = await walk(path.join(folder, 'audio', 'ingredients'), path, fs);
-    const defaultAudio = list.filter((name) => name.includes('_default'));
-    const otherFiles = list.filter((name) => !name.includes('.mp3') && !name.includes('.wav'));
-    // Unable to use forEach, since forEach doesn't wait to finish the loop
-    // eslint-disable-next-line
-    for (const audio of defaultAudio) {
-      const book = audio.split(/[\/\\]/).slice(-3)[0];
-      const chapter = audio.split(/[\/\\]/).slice(-2)[0];
-      const url = audio.split(/[\/\\]/).slice(-1)[0];
-      const mp3 = url.replace(/_\d_default/, '');
-      const verse = mp3.replace('.mp3', '');
-      // eslint-disable-next-line
-      await fse.copy(audio, path.join(folderPath, project.name, 'ingredients', book, chapter, mp3))
-      .then(async () => {
-        logger.debug('ExportProjectPopUp.js', 'Creating the ingredients.');
-        const content = fs.readFileSync(path.join(folderPath, project.name, 'ingredients', book, chapter, mp3), 'utf8');
-        const stats = fs.statSync(path.join(folderPath, project.name, 'ingredients', book, chapter, mp3));
-        burrito.ingredients[path.join('ingredients', book, chapter, mp3)] = {
-          checksum: {
-            md5: md5(content),
-          },
-          mimeType: 'audio/mp3',
-          size: stats.size,
-          scope: {},
-        };
-        burrito.ingredients[path.join('ingredients', book, chapter, mp3)].scope[book] = [verse.replace('_', ':')];
-      }).catch((err) => logger.error('ExportProjectPopUp.js', `${err}`));
-    }
-    // We need to execute these loop before going to next line so 'for' is used instead of 'forEach'
-    // eslint-disable-next-line no-restricted-syntax
-    for (const file of otherFiles) {
-      const filePath = file.split(/[\/\\]ingredients[\/\\]/)[1];
-      fse.copySync(file, path.join(folderPath, project.name, 'ingredients', filePath));
-    }
-    // Wants to export the TEXT along with the project so not updating the file path
-    if (!checkText) {
-      const renames = Object.keys(burrito.ingredients).filter((key) => key.includes('audio'));
-      await renames?.forEach((rename) => {
-        burrito.ingredients[rename.replace(/audio[\/\\]/, '')] = burrito.ingredients[rename];
-        delete burrito.ingredients[rename];
-      });
-    }
-    await fs.writeFileSync(path.join(folderPath, project.name, 'metadata.json'), JSON.stringify(burrito));
-    if (checkText && fs.existsSync(path.join(folder, 'text-1'))) {
-      await fse.copySync(path.join(folderPath, project.name, 'ingredients'), path.join(folderPath, project.name, 'audio', 'ingredients'));
-      await fse.copySync(path.join(folder, 'text-1'), path.join(folderPath, project.name, 'text-1'));
-      await fs.rmSync(path.join(folderPath, project.name, 'ingredients'), { recursive: true, force: true });
-    }
 
-    logger.debug('ExportProjectPopUp.js', 'Exported Successfully');
-    setNotify('success');
-    setSnackText(t('dynamic-msg-export-success'));
-    setOpenSnackBar(true);
-    closePopUp(false);
-    setCheckText(false);
-  };
+  const ExportActions = {
+    setNotify, setSnackText, setOpenSnackBar, setTotalExported, setTotalExports, setExportstart, resetExportProgress, setCheckText,
+   };
+     const ExportStates = {
+    checkText, audioExport, folderPath, project, exportStart,
+   };
 
   const exportBible = async () => {
     const fs = window.require('fs');
@@ -222,15 +141,19 @@ export default function ExportProjectPopUp(props) {
         setMetadata({
           metadata, folder, path, fs, username,
         });
+        setExportstart(true); // export start for all type of export
         if (project?.type === 'Audio') {
-          if (audioExport === 'default') {
-            exportDefaultAudio(metadata, folder, path, fs);
+          if (audioExport === 'default' || audioExport === 'chapter') {
+            exportDefaultAudio(metadata, folder, path, fs, ExportActions, ExportStates, closePopUp, t);
           } else {
-            exportFullAudio(metadata, folder, path, fs);
+            setTotalExports(3);// 3 step process
+            exportFullAudio(metadata, folder, path, fs, ExportActions, ExportStates, closePopUp, t);
           }
         } else if (burrito?.meta?.version !== metadata?.meta?.version) {
+            setTotalExports(2); // total 2 steps process
             setOpenModal(true);
-          } else {
+        } else {
+            setTotalExports(2); // total 2 steps process
             updateBurritoVersion(username, fs, path, folder);
           }
       });
@@ -289,7 +212,7 @@ export default function ExportProjectPopUp(props) {
                   <div className="p-8 overflow-auto w-full h-full no-scrollbars">
                     <div className="bg-white text-sm text-left tracking-wide">
                       <h4 className="text-xs font-base mb-2 text-primary  tracking-wide leading-4  font-light">Export file path</h4>
-                      <div className="flex items-center mb-4">
+                      <div className="flex items-center justify-around mb-4">
                         <input
                           type="text"
                           name="location"
@@ -299,6 +222,7 @@ export default function ExportProjectPopUp(props) {
                           className="bg-white w-52 lg:w-80 block rounded shadow-sm sm:text-sm focus:border-primary border-gray-300"
                         />
                         <button
+                          disabled={exportStart}
                           type="button"
                           title={t('tooltip-import-open-file-location')}
                           className="px-5"
@@ -306,6 +230,9 @@ export default function ExportProjectPopUp(props) {
                         >
                           <FolderOpenIcon className="h-5 w-5 text-primary" aria-hidden="true" />
                         </button>
+                        <div className="">
+                          {exportStart && <ProgressCircle currentValue={totalExported} totalValue={totalExports} circleSize="2.8rem" />}
+                        </div>
                       </div>
                     </div>
                     <div>
@@ -323,10 +250,23 @@ export default function ExportProjectPopUp(props) {
                           onChange={() => setAudioExport('default')}
                         />
                         <span className=" ml-4 text-xs font-bold" title="Verse-wise export with only the default take of each verse kept as a Scripture Burrito">Verse-wise Default</span>
-                        <input id="visible_1" className="visible ml-4" type="checkbox" checked={checkText} onClick={() => setCheckText(!checkText)} />
-                        <span className=" ml-2 text-xs font-bold" title="You can have the text content along with the Audio">With Text (if available)</span>
+                        <div className="flex flex-row justify-end mr-3">
+                          <input id="visible_1" className="visible" type="checkbox" checked={checkText} onClick={() => setCheckText(!checkText)} />
+                          <span className="ml-2 text-xs font-bold" title="You can have the text content along with the Audio">With Text (if available)</span>
+                        </div>
                       </div>
-                      <div>
+                      <div className="mb-3">
+                        <input
+                          type="radio"
+                          className="form-radio h-4 w-4 text-primary"
+                          value="Chapter"
+                          checked={audioExport === 'chapter'}
+                          onChange={() => setAudioExport('chapter')}
+                        />
+                        <span className=" ml-4 text-xs font-bold" title="Chapter Level export with only the default take of each verse">Chapter-wise</span>
+                      </div>
+                      <hr className="border-2" />
+                      <div className="mt-3">
                         <input
                           type="radio"
                           className="form-radio h-4 w-4 text-primary"
@@ -337,11 +277,20 @@ export default function ExportProjectPopUp(props) {
                         <span className=" ml-4 text-xs font-bold" title="All takes of every verse saved as a ZIP archive within Scripture Burrito">Full project</span>
                       </div>
                     </div>
-)}
+                    )}
                     <div className="absolute bottom-0 right-0 left-0 bg-white">
                       <div className="flex gap-6 mx-5 justify-end">
-                        <button type="button" className="py-2 px-6 rounded shadow bg-error text-white uppercase text-xs tracking-widest font-semibold" onClick={close}>{t('btn-cancel')}</button>
                         <button
+                          type="button"
+                          className="py-2 px-6 rounded shadow bg-error text-white uppercase text-xs tracking-widest font-semibold"
+                          onClick={close}
+                          disabled={exportStart}
+                        >
+                          {t('btn-cancel')}
+
+                        </button>
+                        <button
+                          disabled={exportStart}
                           onClick={() => exportBible()}
                           type="button"
                           className="py-2 px-7 rounded shadow bg-success text-white uppercase text-xs tracking-widest font-semibold"
