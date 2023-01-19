@@ -1,6 +1,9 @@
+//  convert TSV to line by line json
+import * as logger from '../../../../logger';
+
 export default async function tsvJSON(tsv) {
     const lines = tsv.split('\n');
-
+    logger.debug('in TsvToJson.js : in convert function');
     const result = [];
 
     const headers = lines[0].split('\t');
@@ -15,6 +18,6 @@ export default async function tsvJSON(tsv) {
 
         result.push(obj);
     }
-
+    logger.debug('in TsvToJson.js : in convert function , Finished');
     return result;
   }

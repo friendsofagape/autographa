@@ -54,10 +54,13 @@ function ObsTnCard({
           const projectName = `${offlineResource.data?.value?.meta?.name}_${offlineResource.data?.value?.meta?.owner}_${offlineResource.data?.value?.meta?.release?.tag_name}`;
           if (fs.existsSync(path.join(folder, projectName))) {
               if (offlineResource.data?.value?.dublin_core?.format?.toLowerCase() === 'text/tsv') {
+                logger.debug('inside OBS TN offline TSV resource');
                 const tsvFileName = offlineResource.data?.value?.projects[0]?.path;
                 const obsTsvData = await fs.readFileSync(path.join(folder, projectName, tsvFileName), 'utf8');
                 const obsTsvJson = obsTsvData && await tsvJSON(obsTsvData);
+                logger.debug('inside OBS TN offline TSV resource : created TSV JSON');
                 await ObsTsvToChapterLevelMd(obsTsvJson, chapter).then((chapterTsvData) => {
+                  logger.debug('inside OBS TN offline TSV resource : generated chapter Md level occurencenot Array');
                   setItems(chapterTsvData);
                 });
               } else {
