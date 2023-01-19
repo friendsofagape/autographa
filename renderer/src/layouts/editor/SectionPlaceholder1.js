@@ -14,6 +14,9 @@ import ReferenceObs from '@/components/EditorPage/ObsEditor/ReferenceObs';
 import { isElectron } from '@/core/handleElectron';
 import core from '@/components/EditorPage/ObsEditor/core';
 import ReferenceAudio from '@/components/EditorPage/Reference/Audio/ReferenceAudio';
+import isBackendProjectExist from '@/core/projects/existProjectInBackEnd';
+import { SnackBar } from '@/components/SnackBar';
+import useAddNotification from '@/components/hooks/useAddNotification';
 
 const TranslationHelps = dynamic(
   () => import('@/components/EditorPage/Reference/TranslationHelps'),
@@ -22,6 +25,10 @@ const TranslationHelps = dynamic(
 
 const SectionPlaceholder1 = ({ editor }) => {
   // const supportedBooks = null;
+  const [snackBar, setOpenSnackBar] = useState(false);
+  const [snackText, setSnackText] = useState('');
+  const [notify, setNotify] = useState();
+  const { addNotification } = useAddNotification();
   const [referenceColumnOneData1, setReferenceColumnOneData1] = useState({
     languageId: '',
     selectedResource: '',
@@ -148,6 +155,14 @@ const SectionPlaceholder1 = ({ editor }) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [resetResourceOnDeleteOffline?.referenceColumnOneData1Reset, resetResourceOnDeleteOffline?.referenceColumnOneData2Reset]);
 
+  const checkResourceExist = async (ProjectDir) => {
+    if (ProjectDir) {
+      const existResource = await isBackendProjectExist(ProjectDir);
+      return existResource;
+    }
+  };
+
+  // call useEffect on Load resource
   useEffect(() => {
     const refsHistory = [];
     const rows = [];
@@ -173,8 +188,58 @@ const SectionPlaceholder1 = ({ editor }) => {
             Object.entries(_value).forEach(
               ([_rownum, _value]) => {
                 rows.push(_rownum);
-                // if (openResource1 === false
-                //   || openResource2 === false) {
+                  // check existing the dir of resource in backend
+                  // helps resurce : offline TRUE , others resourceId == obs/bible/audio _value.resouceId
+                    if (_value.offline.offline || ['obs', 'bible', 'audio'].includes(_value.resouceId.toLowerCase())) {
+                      let projectDirName;
+                      if (_value.offline.offline) {
+                        projectDirName = _value.offline.data.projectDir;
+                      } else {
+                        projectDirName = _value.name;
+                      }
+                      // offline resource exist check fucntion not awaiting always comes false in resouceExistcheck
+                      checkResourceExist(projectDirName)
+                      .then(async (resourceStatus) => {
+                        if (!resourceStatus) {
+                          // setRemovingSection(row);1 2 3 4
+                          if (_columnnum === '0' && _rownum === '1') {
+                            setRemovingSection('1');
+                            // setOpenResource1(true);
+                            setReferenceColumnOneData1((prev) => ({
+                              ...prev,
+                              languageId: '',
+                              selectedResource: '',
+                              refName: '',
+                              header: '',
+                              owner: '',
+                              offlineResource: { offline: false },
+                            }
+                            ));
+                          } else if (_columnnum === '0' && _rownum === '2') {
+                            setRemovingSection('2');
+                            // setOpenResource2(true);
+                            setReferenceColumnOneData2((prev) => ({
+                              ...prev,
+                              languageId: '',
+                              selectedResource: '',
+                              refName: '',
+                              header: '',
+                              owner: '',
+                              offlineResource: { offline: false },
+                            }
+                            ));
+                          }
+                          setNotify('failure');
+                          setSnackText(`${projectDirName} is no longer available. Please download again.`);
+                          setOpenSnackBar(true);
+                          await addNotification(
+                            'Reference Resource',
+                            `${projectDirName} is no longer available \n. Please download again.`,
+                            'failure',
+                          );
+                        }
+                      });
+                    }
                     if (_rownum === '1') {
                       setReferenceColumnOneData1({
                         ...referenceColumnOneData1,
@@ -197,7 +262,6 @@ const SectionPlaceholder1 = ({ editor }) => {
                         offlineResource: _value?.offline,
                       });
                   }
-                // }
               },
             );
           }
@@ -234,6 +298,7 @@ const SectionPlaceholder1 = ({ editor }) => {
     }
   }, [sectionNum]);
 
+  // call useEffect on Save reference (call on new resource / new pane)
   useEffect(() => {
     const refsHistory = [];
     localforage.getItem('currentProject').then((projectName) => {
@@ -341,6 +406,7 @@ const SectionPlaceholder1 = ({ editor }) => {
     />
   );
   useEffect(() => {
+    // Set OBS stories
     if (isElectron()) {
       localforage.getItem('userProfile').then((user) => {
         const fs = window.require('fs');
@@ -496,6 +562,13 @@ const SectionPlaceholder1 = ({ editor }) => {
         )}
         </>
       )}
+      <SnackBar
+        openSnackBar={snackBar}
+        snackText={snackText}
+        setOpenSnackBar={setOpenSnackBar}
+        setSnackText={setSnackText}
+        error={notify}
+      />
     </>
   );
 };

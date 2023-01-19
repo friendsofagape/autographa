@@ -14,6 +14,9 @@ import ReferenceObs from '@/components/EditorPage/ObsEditor/ReferenceObs';
 import { isElectron } from '@/core/handleElectron';
 import core from '@/components/EditorPage/ObsEditor/core';
 import ReferenceAudio from '@/components/EditorPage/Reference/Audio/ReferenceAudio';
+import isBackendProjectExist from '@/core/projects/existProjectInBackEnd';
+import { SnackBar } from '@/components/SnackBar';
+import useAddNotification from '@/components/hooks/useAddNotification';
 
 const TranslationHelps = dynamic(
   () => import('@/components/EditorPage/Reference/TranslationHelps'),
@@ -21,6 +24,10 @@ const TranslationHelps = dynamic(
 );
 
 const SectionPlaceholder2 = ({ editor }) => {
+  const [snackBar, setOpenSnackBar] = useState(false);
+  const [snackText, setSnackText] = useState('');
+  const [notify, setNotify] = useState();
+  const { addNotification } = useAddNotification();
   const supportedBooks = null;
   const [referenceColumnTwoData1, setReferenceColumnTwoData1] = useState({
     languageId: '',
@@ -142,6 +149,14 @@ const SectionPlaceholder2 = ({ editor }) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [resetResourceOnDeleteOffline?.referenceColumnTwoData1Reset, resetResourceOnDeleteOffline?.referenceColumnTwoData2Reset]);
 
+  const checkResourceExist = async (ProjectDir) => {
+    if (ProjectDir) {
+      const existResource = await isBackendProjectExist(ProjectDir);
+      return existResource;
+    }
+  };
+
+  // call useEffect on Load resource
   useEffect(() => {
     const refsHistory = [];
     const rows = [];
@@ -167,7 +182,57 @@ const SectionPlaceholder2 = ({ editor }) => {
             Object.entries(_value).forEach(
               ([_rownum, _value]) => {
                 rows.push(_rownum);
-                // if (openResource3 === false || openResource4 === false) {
+                  // check existing the dir of resource in backend
+                  // helps resurce : offline TRUE , others resourceId == obs/bible/audio _value.resouceId
+                  if (_value.offline.offline || ['obs', 'bible', 'audio'].includes(_value.resouceId.toLowerCase())) {
+                    let projectDirName;
+                    if (_value.offline.offline) {
+                      projectDirName = _value.offline.data.projectDir;
+                    } else {
+                      projectDirName = _value.name;
+                    }
+                    // console.log({ projectDirName });
+                    // offline resource exist check fucntion not awaiting always comes false in resouceExistcheck
+                    checkResourceExist(projectDirName)
+                    .then(async (resourceStatus) => {
+                      if (!resourceStatus) {
+                        if (_columnnum === '1' && _rownum === '1') {
+                          setRemovingSection('3');
+                          setReferenceColumnTwoData1((prev) => ({
+                            ...prev,
+                            languageId: '',
+                            selectedResource: '',
+                            refName: '',
+                            header: '',
+                            owner: '',
+                            offlineResource: { offline: false },
+                          }
+                          ));
+                        } else if (_columnnum === '1' && _rownum === '2') {
+                          setRemovingSection('4');
+                          // setOpenResource2(true);
+                          setReferenceColumnTwoData2((prev) => ({
+                            ...prev,
+                            languageId: '',
+                            selectedResource: '',
+                            refName: '',
+                            header: '',
+                            owner: '',
+                            offlineResource: { offline: false },
+                          }
+                          ));
+                        }
+                        setNotify('failure');
+                        setSnackText(`${projectDirName} is no longer available. Please download again.`);
+                        setOpenSnackBar(true);
+                        await addNotification(
+                          'Reference Resource',
+                          `${projectDirName} is no longer available \n. Please download again.`,
+                          'failure',
+                        );
+                      }
+                    });
+                  }
                   if (_rownum === '1') {
                       setReferenceColumnTwoData1({
                         ...referenceColumnTwoData1,
@@ -494,6 +559,13 @@ const SectionPlaceholder2 = ({ editor }) => {
       )}
       </>
       )}
+      <SnackBar
+        openSnackBar={snackBar}
+        snackText={snackText}
+        setOpenSnackBar={setOpenSnackBar}
+        setSnackText={setSnackText}
+        error={notify}
+      />
     </>
   );
 };
