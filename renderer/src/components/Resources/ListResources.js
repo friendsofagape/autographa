@@ -102,7 +102,7 @@ export const ListResources = ({
           await fetchTranslationResource('Translation Questions', setTranslationQuestion, selectResource, selectedPreProd);
           break;
         case 'obs-tn':
-          await fetchTranslationResource('OBS Translation Notes', setObsTranslationNote, selectResource, selectedPreProd);
+          await fetchTranslationResource('OBS Translation Notes&subject=tsv obs Translation notes', setObsTranslationNote, selectResource, selectedPreProd);
           break;
         case 'obs-tq':
           await fetchTranslationResource('OBS Translation Questions', setObsTranslationQuestion, selectResource, selectedPreProd);

@@ -7,6 +7,8 @@ import localForage from 'localforage';
 import { getObsTn } from './getObsTn';
 import ObsResourceCard from './ObsResourceCard';
 import * as logger from '../../../../logger';
+import tsvJSON from './TsvToJson';
+import ObsTsvToChapterLevelMd from './ObsTsvToChapterLevel';
 
 function ObsTnCard({
   resource,
@@ -50,26 +52,35 @@ function ObsTnCard({
           const currentUser = user?.username;
           const folder = path.join(newpath, 'autographa', 'users', `${currentUser}`, 'resources');
           const projectName = `${offlineResource.data?.value?.meta?.name}_${offlineResource.data?.value?.meta?.owner}_${offlineResource.data?.value?.meta?.release?.tag_name}`;
-            if (fs.existsSync(path.join(folder, projectName))) {
-              const contentDir = offlineResource.data?.value?.projects[0]?.path;
-              const notesDir = path.join(folder, projectName, contentDir, chapter.toString().padStart(2, 0));
-              const items = [];
-              fs.readdir(notesDir, async (err, files) => {
+          if (fs.existsSync(path.join(folder, projectName))) {
+              if (offlineResource.data?.value?.dublin_core?.format?.toLowerCase() === 'text/tsv') {
+                const tsvFileName = offlineResource.data?.value?.projects[0]?.path;
+                const obsTsvData = await fs.readFileSync(path.join(folder, projectName, tsvFileName), 'utf8');
+                const obsTsvJson = obsTsvData && await tsvJSON(obsTsvData);
+                await ObsTsvToChapterLevelMd(obsTsvJson, chapter).then((chapterTsvData) => {
+                  setItems(chapterTsvData);
+                });
+              } else {
+                const contentDir = offlineResource.data?.value?.projects[0]?.path;
+                const notesDir = path.join(folder, projectName, contentDir, chapter.toString().padStart(2, 0));
+                const items = [];
+                fs.readdir(notesDir, async (err, files) => {
                   if (err) {
-                      // console.log(`Unable to scan directory: ${ err}`);
-                      logger.debug('OfflineResourceFetch.js', 'reading offline dir not found err :  ', err);
-                      throw err;
+                    // console.log(`Unable to scan directory: ${ err}`);
+                    logger.debug('OfflineResourceFetch.js', 'reading offline dir not found err :  ', err);
+                    throw err;
                   }
                   // listing all files using forEach
                   await files.forEach(async (file) => {
-                      const filecontent = await fs.readFileSync(path.join(notesDir, file), 'utf8');
-                      items.push({ OccurrenceNote: filecontent });
+                    const filecontent = await fs.readFileSync(path.join(notesDir, file), 'utf8');
+                    items.push({ OccurrenceNote: filecontent });
                   });
                   if (items.length === files.length) {
                     logger.debug('OfflineResourceFetch.js', 'reading offline obs-tn finished ');
                     setItems(items);
                   }
-                  });
+                });
+              }
             }
           });
         } catch (err) {
