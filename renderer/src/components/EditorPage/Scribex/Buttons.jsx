@@ -8,7 +8,7 @@ import {
   Bars2Icon,
   Bars4Icon,
   ArrowUturnLeftIcon,
-  ArrowUturnRightIcon
+  ArrowUturnRightIcon,
 
 } from '@heroicons/react/24/outline';
 
@@ -59,7 +59,7 @@ export default function Buttons(props) {
         )}
         aria-hidden="true"
         onClick={onSectionable}
-        title={sectionable ? "Expand all Chapters" : "Collapse Chapters"}
+        title={sectionable ? 'Expand all Chapters' : 'Collapse Chapters'}
       />
 
       <PencilIcon
@@ -70,29 +70,33 @@ export default function Buttons(props) {
         )}
         aria-hidden="true"
         onClick={onEditable}
-        title={editable ? "Disable Edit" : "Enable Edit"}
+        title={editable ? 'Disable Edit' : 'Enable Edit'}
       />
-      {blockable ? <Bars2Icon
-        aria-label="Article-Icon"
-        className='h-5 mr-2 w-5 text-white cursor-pointer'
-        aria-hidden="true"
-        onClick={onBlockable}
-        title="Collapse blocks"
-      /> :
-        <Bars4Icon
-          aria-label="List-Icon"
-          className='h-5 mr-2 w-5 text-white cursor-pointer'
+      {blockable ? (
+        <Bars2Icon
+          aria-label="Article-Icon"
+          className="h-5 mr-2 w-5 text-white cursor-pointer"
           aria-hidden="true"
           onClick={onBlockable}
-          title="Split into blocks"
-        />}
+          title="Collapse blocks"
+        />
+        )
+        : (
+          <Bars4Icon
+            aria-label="List-Icon"
+            className="h-5 mr-2 w-5 text-white cursor-pointer"
+            aria-hidden="true"
+            onClick={onBlockable}
+            title="Split into blocks"
+          />
+      )}
 
       <ArrowUturnLeftIcon
         aria-label="Undo-Icon"
         className="h-5 mr-2 w-5 text-white cursor-pointer"
         aria-hidden="true"
         onClick={() => undo()}
-        title={"Undo"}
+        title="Undo"
       />
       <ArrowUturnRightIcon
         aria-label="Redo-Icon"
