@@ -10,8 +10,10 @@ import writeToFile from '@/core/editor/writeToFile';
 import { saveReferenceResource } from '@/core/projects/updateAgSettings';
 import moment from 'moment';
 import EditorPanel from './EditorPanel';
+import * as logger from '../../../logger';
 
 export const getDetails = () => new Promise((resolve) => {
+  logger.debug('ObsEditor.js', 'In getDetails() for fetching the burrito file of current project');
   localforage.getItem('userProfile').then((value) => {
     const username = value?.username;
     localforage.getItem('currentProject').then((projectName) => {
@@ -30,6 +32,7 @@ const ObsEditor = () => {
   const [directoryName, setDirectoryName] = useState();
   const { state: { obsNavigation } } = useContext(ReferenceContext);
   const updateStory = (story) => {
+    logger.debug('ObsEditor.js', 'In updateStory for upadting the story to the backend md file');
     setMdData(story);
     let title; let body = ''; let end;
     story.forEach((s) => {
@@ -96,6 +99,7 @@ const ObsEditor = () => {
                         saveReferenceResource();
                       });
                     });
+                    logger.debug('ObsEditor.js', 'Reading the md file for selected OBS story');
                     const bookID = obsNavigation?.toString().padStart(2, 0);
                     if (key === path.join(dirName, `${bookID}.md`)) {
                       readFile({
@@ -106,30 +110,58 @@ const ObsEditor = () => {
                         if (data) {
                           const stories = [];
                           // eslint-disable-next-line prefer-const
-                          let id = 1;
+                          let id = 1; let footer = false;
                           // eslint-disable-next-line react/prop-types
                           const allLines = data.split(/\r\n|\n/);
+                          logger.debug('ObsEditor.js', 'Spliting the stories line by line and storing into an array.');
                           // Reading line by line
                           allLines.forEach((line) => {
-                            if (line) {
+                            // To avoid the values after footer, we have added id=0
+                            if (line && id !== 0) {
                               if (line.match(/^(\s)*#/gm)) {
+                                // Fetching the header content
                                 const hash = line.match(/# (.*)/);
                                 stories.push({
                                   id, title: hash[1],
                                 });
                                 id += 1;
-                              } else if (line.match(/^(\s)*_/gm)) {
+                              } else if (line.match(/^(\s)*_/gm) || footer === true) {
+                                // Fetching the footer
                                 const objIndex = stories.findIndex(((obj) => obj.id === id));
                                 if (objIndex !== -1 && Object.prototype.hasOwnProperty.call(stories[objIndex], 'img')) {
                                   stories[objIndex].text = '';
                                   id += 1;
                                 }
-                                const underscore = line.match(/_(.*)_/);
-                                stories.push({
-                                  id, end: underscore[1],
-                                });
-                                id += 1;
+                                if (line.match(/_(.*)_/g) && footer === false) {
+                                  // single line footer
+                                  const underscore = line.match(/_(.*)_/);
+                                  stories.push({
+                                    id, end: underscore[1],
+                                  });
+                                  // Logically footer is the last line of the story
+                                  id = 0;
+                                } else {
+                                  // To get multi-line footer (footer=true)
+                                  footer = true;
+                                  if (line.match(/^(\s)*_/gm)) {
+                                    // starting of footer
+                                    const underscore = line.match(/^(\s)*_(.*)/);
+                                    stories.push({
+                                      id, end: underscore[2],
+                                    });
+                                  } else if (line.match(/_$/gm)) {
+                                    // end of footer
+                                    const underscore = line.match(/(.*)_$/);
+                                    stories[id - 1].end = `${stories[id - 1].end}\n${underscore[1]}`;
+                                    // Logically footer is the last line of the story
+                                    id = 0;
+                                  } else {
+                                    // middle lines of footer if available
+                                    stories[id - 1].end = `${stories[id - 1].end}\n${line}`;
+                                  }
+                                }
                               } else if (line.match(/^(\s)*!/gm)) {
+                                // Fetching the IMG url
                                 const objIndex = stories.findIndex(((obj) => obj.id === id));
                                 if (objIndex !== -1 && Object.prototype.hasOwnProperty.call(stories[objIndex], 'img')) {
                                   stories[objIndex].text = '';
@@ -140,14 +172,20 @@ const ObsEditor = () => {
                                   id, img: imgUrl[1],
                                 });
                               } else {
+                                // Reading the content line by line
                                 const objIndex = stories.findIndex(((obj) => obj.id === id));
                                 if (objIndex !== -1) {
+                                  // Reading first line after img
                                   stories[objIndex].text = line;
                                   id += 1;
+                                } else {
+                                  // Reading other lines and appending with previous line data
+                                  stories[id - 2].text = `${stories[id - 2].text}\n${line}`;
                                 }
                               }
                             }
                           });
+                          logger.debug('ObsEditor.js', 'Story for selected navigation is been set to the array for Editor');
                           setMdData(stories);
                         }
                       });

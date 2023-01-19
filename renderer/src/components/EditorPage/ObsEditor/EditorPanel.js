@@ -44,6 +44,13 @@ const EditorPanel = ({ obsStory, storyUpdate }) => {
     newData = newStories;
     storyUpdate(newData);
   };
+  const avoidEnter = (e) => {
+    // avoiding enter key for the Header
+    if (e.key === 'Enter' || e.keyCode === 13) {
+      e.preventDefault();
+      return false;
+    }
+  };
   return (
     <>
       {obsStory.map((story, index) => (
@@ -57,6 +64,7 @@ const EditorPanel = ({ obsStory, storyUpdate }) => {
             <textarea
               name={story.title}
               onChange={handleChange}
+              onKeyDown={avoidEnter}
               onClick={() => setSelectedStory(scrollLock === true ? 0 : story.id)}
               value={story.title}
               data-id={story.id}
