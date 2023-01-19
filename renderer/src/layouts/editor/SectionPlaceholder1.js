@@ -15,6 +15,8 @@ import { isElectron } from '@/core/handleElectron';
 import core from '@/components/EditorPage/ObsEditor/core';
 import ReferenceAudio from '@/components/EditorPage/Reference/Audio/ReferenceAudio';
 import isBackendProjectExist from '@/core/projects/existProjectInBackEnd';
+import { SnackBar } from '@/components/SnackBar';
+import useAddNotification from '@/components/hooks/useAddNotification';
 
 const TranslationHelps = dynamic(
   () => import('@/components/EditorPage/Reference/TranslationHelps'),
@@ -23,6 +25,10 @@ const TranslationHelps = dynamic(
 
 const SectionPlaceholder1 = ({ editor }) => {
   // const supportedBooks = null;
+  const [snackBar, setOpenSnackBar] = useState(false);
+  const [snackText, setSnackText] = useState('');
+  const [notify, setNotify] = useState();
+  const { addNotification } = useAddNotification();
   const [referenceColumnOneData1, setReferenceColumnOneData1] = useState({
     languageId: '',
     selectedResource: '',
@@ -149,16 +155,17 @@ const SectionPlaceholder1 = ({ editor }) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [resetResourceOnDeleteOffline?.referenceColumnOneData1Reset, resetResourceOnDeleteOffline?.referenceColumnOneData2Reset]);
 
-  const checkResourceExist = async (ProjectDir, projectName) => {
-    const existResource = await isBackendProjectExist(ProjectDir, projectName);
-    return existResource;
+  const checkResourceExist = async (ProjectDir) => {
+    if (ProjectDir) {
+      const existResource = await isBackendProjectExist(ProjectDir);
+      return existResource;
+    }
   };
 
   // call useEffect on Load resource
   useEffect(() => {
     const refsHistory = [];
     const rows = [];
-    let resourceExistCheck = false;
     localforage.getItem('currentProject').then((projectName) => {
     const _projectname = projectName?.split('_');
     localforage.getItem('projectmeta').then((value) => {
@@ -177,27 +184,63 @@ const SectionPlaceholder1 = ({ editor }) => {
       if (refsHistory[0]) {
         Object.entries(refsHistory[0]).forEach(
           ([_columnnum, _value]) => {
-            console.log({ _columnnum, _value });
           if (_columnnum === '0' && _value) {
             Object.entries(_value).forEach(
               ([_rownum, _value]) => {
                 rows.push(_rownum);
-                // if (openResource1 === false
-                //   || openResource2 === false) {
-                  console.log('useEffect 1 load reference =====>');
-                  // check the reference is offline / online
-                    if (_value.offline.offline) {
+                  // check existing the dir of resource in backend
+                  // helps resurce : offline TRUE , others resourceId == obs/bible/audio _value.resouceId
+                    if (_value.offline.offline || ['obs', 'bible', 'audio'].includes(_value.resouceId.toLowerCase())) {
+                      let projectDirName;
+                      if (_value.offline.offline) {
+                        projectDirName = _value.offline.data.projectDir;
+                      } else {
+                        projectDirName = _value.name;
+                      }
                       // offline resource exist check fucntion not awaiting always comes false in resouceExistcheck
-                      checkResourceExist(_value.offline.data.projectDir)
-                      .then((resourceStatus) => {
-                        resourceExistCheck = resourceStatus;
-                        console.log({ resourceExistCheck, resourceStatus });
+                      checkResourceExist(projectDirName)
+                      .then(async (resourceStatus) => {
+                        if (!resourceStatus) {
+                          // setRemovingSection(row);1 2 3 4
+                          if (_columnnum === '0' && _rownum === '1') {
+                            setRemovingSection('1');
+                            // setOpenResource1(true);
+                            setReferenceColumnOneData1((prev) => ({
+                              ...prev,
+                              languageId: '',
+                              selectedResource: '',
+                              refName: '',
+                              header: '',
+                              owner: '',
+                              offlineResource: { offline: false },
+                            }
+                            ));
+                          } else if (_columnnum === '0' && _rownum === '2') {
+                            setRemovingSection('2');
+                            // setOpenResource2(true);
+                            setReferenceColumnOneData2((prev) => ({
+                              ...prev,
+                              languageId: '',
+                              selectedResource: '',
+                              refName: '',
+                              header: '',
+                              owner: '',
+                              offlineResource: { offline: false },
+                            }
+                            ));
+                          }
+                          setNotify('failure');
+                          setSnackText(`${projectDirName} is no longer available. Please download again.`);
+                          setOpenSnackBar(true);
+                          await addNotification(
+                            'Reference Resource',
+                            `${projectDirName} is no longer available \n. Please download again.`,
+                            'failure',
+                          );
+                        }
                       });
-                    } else {
-                      resourceExistCheck = true;
                     }
-                    console.log('after fun call ====>', { resourceExistCheck, _value });
-                    if (_rownum === '1' && resourceExistCheck) {
+                    if (_rownum === '1') {
                       setReferenceColumnOneData1({
                         ...referenceColumnOneData1,
                         languageId: _value?.language,
@@ -219,7 +262,6 @@ const SectionPlaceholder1 = ({ editor }) => {
                         offlineResource: _value?.offline,
                       });
                   }
-                // }
               },
             );
           }
@@ -262,7 +304,6 @@ const SectionPlaceholder1 = ({ editor }) => {
     localforage.getItem('currentProject').then((projectName) => {
     const _projectname = projectName?.split('_');
     localforage.getItem('projectmeta').then((value) => {
-      console.log('useEffect 2 save reference load reference =====>');
       Object?.entries(value).forEach(
         ([, _value]) => {
           Object?.entries(_value).forEach(
@@ -365,8 +406,8 @@ const SectionPlaceholder1 = ({ editor }) => {
     />
   );
   useEffect(() => {
+    // Set OBS stories
     if (isElectron()) {
-      console.log('useEffect 3 set stories OBS');
       localforage.getItem('userProfile').then((user) => {
         const fs = window.require('fs');
         if (_obsNavigation1 && referenceColumnOneData1.refName && referenceColumnOneData1.selectedResource === 'obs') {
@@ -521,6 +562,13 @@ const SectionPlaceholder1 = ({ editor }) => {
         )}
         </>
       )}
+      <SnackBar
+        openSnackBar={snackBar}
+        snackText={snackText}
+        setOpenSnackBar={setOpenSnackBar}
+        setSnackText={setSnackText}
+        error={notify}
+      />
     </>
   );
 };
