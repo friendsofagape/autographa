@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import * as localForage from 'localforage';
 import { useTranslation } from 'react-i18next';
+// import SpeechRecognition from '@/components/AudioRecorder/SpeechRecognitionWebApi/SpeechRecognition';
 import LogoIcon from '@/icons/logo.svg';
 import ProjectsIcon from '@/icons/projects.svg';
 import NewProjectIcon from '@/icons/new.svg';
@@ -26,6 +27,9 @@ export default function SideBar() {
         />
       </div>
       <ul>
+        {/* <li>
+          <SpeechRecognition true />
+        </li> */}
         <li className="text-gray-900 font-medium hover:text-white hover:bg-primary cursor-pointer py-5 group">
           <Link
             href="/projects"
