@@ -9,14 +9,12 @@ import { createUser, handleLogin, writeToFile } from '../../core/Login/handleLog
 import { isElectron } from '../../core/handleElectron';
 import * as logger from '../../logger';
 import { AuthenticationContext } from './AuthenticationContextProvider';
-import LoadingScreen from '../Loading/LoadingScreen';
 
 const LeftLogin = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [open, setOpen] = useState(false);
   const [values, setValues] = useState({});
-  const [loading, setLoading] = useState(false);
-
+  const [newOpen, setNewOpen] = useState(false);
   const [users, setUsers] = useState([]);
   const {
     action: { generateToken },
@@ -28,6 +26,10 @@ const LeftLogin = () => {
   });
   const [showArchived, setShowArchived] = useState(false);
   const [userNameError, setUserNameError] = useState(false);
+
+  const closeNewModal = () => {
+    setNewOpen(false);
+  };
 
   /* Checking if the users array is empty, if it is, it is getting the users from localForage and
   setting the users array to the users from localForage. */
@@ -81,7 +83,6 @@ const LeftLogin = () => {
     }
     return user;
   };
-
   /* Sorting the users array by the lastSeen property. */
   const sortedUsers = [...users].sort((a, b) => Date.parse(b.lastSeen) - Date.parse(a.lastSeen));
   /**
@@ -128,13 +129,23 @@ const LeftLogin = () => {
    * the values from the form, then reset the form values.
    * @param event - the event object
    */
+
   function formSubmit(event) {
     event.preventDefault();
     handleSubmit(values);
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-    }, 2000);
+    const user = users.findIndex((item) => (item.username === values.username));
+    if (user === -1) {
+      logger.debug(
+        'LeftLogin.js',
+        'user not found, creating a new user',
+      );
+    } else {
+      logger.debug(
+        'LeftLogin.js',
+        'user found',
+      );
+        alert(`${values.username} found in a list, create a new user`); // eslint-disable-line no-alert
+    }
     setValues({});
   }
   function classNames(...classes) {
@@ -338,8 +349,6 @@ const LeftLogin = () => {
               </Transition.Child>
 
               <div className="fixed inset-0 overflow-y-auto">
-                {loading
-                && <LoadingScreen />}
                 <form className="flex min-h-full items-center justify-center p-4 text-center" onSubmit={formSubmit}>
                   <Transition.Child
                     as={Fragment}
@@ -394,6 +403,60 @@ const LeftLogin = () => {
               </div>
             </Dialog>
           </Transition>
+          <Transition appear show={newOpen} as={Fragment}>
+            <Dialog as="div" className="relative z-10" onClose={closeNewModal}>
+              <Transition.Child
+                as={Fragment}
+                enter="ease-out duration-300"
+                enterFrom="opacity-0"
+                enterTo="opacity-100"
+                leave="ease-in duration-200"
+                leaveFrom="opacity-100"
+                leaveTo="opacity-0"
+              >
+                <div className="fixed inset-0 bg-black bg-opacity-25" />
+              </Transition.Child>
+
+              <div className="fixed inset-0 overflow-y-auto">
+                <div className="flex min-h-full items-center justify-center p-4 text-center">
+                  <Transition.Child
+                    as={Fragment}
+                    enter="ease-out duration-300"
+                    enterFrom="opacity-0 scale-95"
+                    enterTo="opacity-100 scale-100"
+                    leave="ease-in duration-200"
+                    leaveFrom="opacity-100 scale-100"
+                    leaveTo="opacity-0 scale-95"
+                  >
+                    <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                      <Dialog.Title
+                        as="h3"
+                        className="text-lg font-medium leading-6 text-gray-900"
+                      >
+                        Payment successful
+                      </Dialog.Title>
+                      <div className="mt-2">
+                        <p className="text-sm text-gray-500">
+                          Your payment has been successfully submitted. We’ve sent
+                          you an email with all of the details of your order.
+                        </p>
+                      </div>
+
+                      <div className="mt-4">
+                        <button
+                          type="button"
+                          className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                          onClick={closeNewModal}
+                        >
+                          Got it, thanks!
+                        </button>
+                      </div>
+                    </Dialog.Panel>
+                  </Transition.Child>
+                </div>
+              </div>
+            </Dialog>
+          </Transition>
         </div>
         <div className="absolute bottom-5 text-xs lg:left-12 xl:left-24 flex sm:left-6  items-center justify-center sm:gap-8 gap-3 lg:gap-12 xl:gap-20 lg:text-sm font-semibold">
           <a href="/" onClick={(event) => event.preventDefault()}>
@@ -410,7 +473,6 @@ const LeftLogin = () => {
           </a>
         </div>
       </div>
-
     </div>
   );
 };
