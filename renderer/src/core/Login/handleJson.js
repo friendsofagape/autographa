@@ -22,7 +22,7 @@ export const loadUsers = async () => {
       if (JSON.parse(data).length === 0) {
         localForage.removeItem('sessionToken');
         localForage.removeItem('users');
-        router.push('/login');
+        router.push('/');
       }
       if (err) {
         logger.error('handleJson.js', 'Failed to read the data from file');

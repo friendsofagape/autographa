@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import * as localForage from 'localforage';
 import moment from 'moment';
-import router from 'next/router';
 import { updateAgSettings } from '../../../core/projects/updateAgSettings';
 import parseProjectMetaUpdate from '../../../core/projects/parseProjectMetaUpdate';
 // import metaFileReplace from '../../../core/projects/metaFileReplace';
@@ -175,9 +174,7 @@ function useProjectsSort() {
     const FetchProjects = async () => {
       if (isElectron()) {
         localForage.getItem('userProfile').then((user) => {
-            if (user === null) {
-              router.push('/login');
-            } else {
+        if (user) {
           logger.debug('useProjectsSort.js', 'Fetching the projects');
             const projectsData = fetchProjectsMeta({ currentUser: user?.username });
             projectsData.then((value) => {

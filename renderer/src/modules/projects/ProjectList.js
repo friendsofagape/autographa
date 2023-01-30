@@ -18,6 +18,7 @@ import { getComparator, stableSort } from '@/components/ProjectsPage/Projects/So
 
 import ExportProjectPopUp from '@/layouts/projects/ExportProjectPopUp';
 import ProjectContextProvider from '@/components/context/ProjectContext';
+import AuthenticationContextProvider from '@/components/Login/AuthenticationContextProvider';
 import SearchTags from './SearchTags';
 import NewProject from './NewProject';
 import * as logger from '../../logger';
@@ -476,7 +477,15 @@ export default function ProjectList() {
             <ExportProjectPopUp open={openPopUp} closePopUp={closeExportPopUp} project={currentProject} />
           </>
         )
-        : <ProjectContextProvider><AutographaContextProvider><NewProject call="edit" project={currentProject} closeEdit={() => closeEditProject()} /></AutographaContextProvider></ProjectContextProvider>}
+        : (
+          <AuthenticationContextProvider>
+            <AutographaContextProvider>
+              <ProjectContextProvider>
+                <NewProject call="edit" project={currentProject} closeEdit={() => closeEditProject()} />
+              </ProjectContextProvider>
+            </AutographaContextProvider>
+          </AuthenticationContextProvider>
+)}
     </>
   );
 }

@@ -13,6 +13,7 @@ function useAuthentication() {
   const [accessToken, setaccessToken] = React.useState();
   const [currentUser, setCurrentUser] = React.useState();
   const [config, setConfig] = React.useState();
+  const [user, setUser] = React.useState()
   const router = useRouter();
   const getToken = () => {
     logger.debug('useAuthentication.js', 'In getToken to check any token stored in localStorage');
@@ -61,7 +62,8 @@ function useAuthentication() {
     localForage.removeItem('userProfile');
     localForage.setItem('appMode','online');
     getToken();
-    router.push('/login')
+    router.push('/')
+
   };
   const getConfig = (flowId) => {
     logger.debug('useAuthentication.js', 'getConfig fetch the config from the Kratos using flowID');
@@ -79,13 +81,14 @@ function useAuthentication() {
   //     });
   //   }
   // }, []);
+  
   React.useEffect(() => {
-    if (accessToken && !currentUser) {
-      handleUser();
+    if(accessToken){
+      handleUser(); 
     }
   });
   const response = {
-    state: { accessToken, currentUser, config },
+    state: { accessToken, config },
     actions: {
       getToken, generateToken, logout, getConfig,setaccessToken
     },

@@ -1,5 +1,4 @@
 import { Dialog, Tab, Transition } from '@headlessui/react';
-import { useRouter } from 'next/router';
 import React, {
   Fragment, useContext, useEffect, useState,
 } from 'react';
@@ -10,17 +9,16 @@ import { createUser, handleLogin, writeToFile } from '../../core/Login/handleLog
 import { isElectron } from '../../core/handleElectron';
 import * as logger from '../../logger';
 import { AuthenticationContext } from './AuthenticationContextProvider';
+import LoadingScreen from '../Loading/LoadingScreen';
 
 const LeftLogin = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [open, setOpen] = useState(false);
   const [values, setValues] = useState({});
-
-  const router = useRouter();
+  const [loading, setLoading] = useState(false);
 
   const [users, setUsers] = useState([]);
   const {
-    states: { accessToken },
     action: { generateToken },
   } = useContext(AuthenticationContext);
   // eslint-disable-next-line no-unused-vars
@@ -85,7 +83,7 @@ const LeftLogin = () => {
   };
 
   /* Sorting the users array by the lastSeen property. */
-  const sortedUsers = [...users].sort((a, b) => Date.parse(b.lastSeen) - Date.parse(a.lastSeen));  
+  const sortedUsers = [...users].sort((a, b) => Date.parse(b.lastSeen) - Date.parse(a.lastSeen));
   /**
    * Checks if the user is existing or not, if not then it creates a new user and generates a token
    * for the user.
@@ -121,11 +119,6 @@ const LeftLogin = () => {
             'Triggers generateToken to generate a Token for the user',
           );
           generateToken(user);
-          router.push('/projects');
-        }
-        if (user && accessToken) {
-          logger.debug('LeftLogin.js', 'Showing projectlist page of the user');
-          router.push('/projects');
         }
       }
     }
@@ -135,9 +128,13 @@ const LeftLogin = () => {
    * the values from the form, then reset the form values.
    * @param event - the event object
    */
-  function handleAdd(event) {
+  function formSubmit(event) {
     event.preventDefault();
     handleSubmit(values);
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
     setValues({});
   }
   function classNames(...classes) {
@@ -188,7 +185,7 @@ const LeftLogin = () => {
               tabIndex={0}
               role="button"
               onClick={() => {
-                handleSubmit({ username: user.username });
+                handleSubmit({ username: user?.username });
               }}
             >
               {user.username}
@@ -341,7 +338,9 @@ const LeftLogin = () => {
               </Transition.Child>
 
               <div className="fixed inset-0 overflow-y-auto">
-                <form className="flex min-h-full items-center justify-center p-4 text-center" onSubmit={handleAdd}>
+                {loading
+                && <LoadingScreen />}
+                <form className="flex min-h-full items-center justify-center p-4 text-center" onSubmit={formSubmit}>
                   <Transition.Child
                     as={Fragment}
                     enter="ease-out duration-300"

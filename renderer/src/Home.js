@@ -19,36 +19,39 @@ const Home = () => {
     loadUsers();
   }, []);
   React.useEffect(() => {
+    localForage.getItem('userProfile').then((user) => {
+      setUser(user);
+    });
     if (!states.accessToken) {
       logger.debug('Home.js', 'Triggers getToken to fetch the Token if not available');
       action.getToken();
       setToken();
-    } else if (states.accessToken) {
+    } else {
       logger.debug('Home.js', 'Token is available');
-        setToken(states.accessToken);
+      localForage.getItem('sessionToken').then((value) => {
+        if (!value) {
+          action.setaccessToken();
+        }
+        setToken(value);
+      });
     }
-    localForage.getItem('userProfile').then((value) => {
-      setUser(value);
-    });
   }, [token, user, setUser, setToken, action, states.accessToken]);
 
   return (
     <>
-      {(!token && user === null)
-        ? (
-          <Login />
-        )
-        : (
-          <AuthenticationContextProvider>
+      {token && user ? (
+        <AuthenticationContextProvider>
+          <AutographaContextProvider>
             <ProjectContextProvider>
               <ReferenceContextProvider>
-                <AutographaContextProvider>
-                  <ProjectList />
-                </AutographaContextProvider>
+                <ProjectList />
               </ReferenceContextProvider>
             </ProjectContextProvider>
-          </AuthenticationContextProvider>
-        )}
+          </AutographaContextProvider>
+        </AuthenticationContextProvider>
+      ) : (
+        <Login />
+      )}
     </>
   );
 };

@@ -9,15 +9,15 @@ import AutographaContextProvider from '@/components/context/AutographaContext';
 export default function ReferenceSelector() {
   return (
     <AuthenticationContextProvider>
-      <ProjectContextProvider>
-        <ReferenceContextProvider>
-          <AutographaContextProvider>
+      <AutographaContextProvider>
+        <ProjectContextProvider>
+          <ReferenceContextProvider>
             <EditorLayout>
               <SectionContainer />
             </EditorLayout>
-          </AutographaContextProvider>
-        </ReferenceContextProvider>
-      </ProjectContextProvider>
+          </ReferenceContextProvider>
+        </ProjectContextProvider>
+      </AutographaContextProvider>
     </AuthenticationContextProvider>
   );
 }
