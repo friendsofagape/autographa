@@ -13,7 +13,6 @@ function useAuthentication() {
   const [accessToken, setaccessToken] = React.useState();
   const [currentUser, setCurrentUser] = React.useState();
   const [config, setConfig] = React.useState();
-  const [user, setUser] = React.useState()
   const router = useRouter();
   const getToken = () => {
     logger.debug('useAuthentication.js', 'In getToken to check any token stored in localStorage');
@@ -88,7 +87,7 @@ function useAuthentication() {
     }
   });
   const response = {
-    state: { accessToken, config },
+    state: { accessToken,currentUser, config },
     actions: {
       getToken, generateToken, logout, getConfig,setaccessToken
     },
