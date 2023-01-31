@@ -26,7 +26,7 @@ function useAuthentication() {
     const decoded = Buffer.from(tokenDecodablePart, 'base64').toString();
     const data=JSON.parse(decoded)
     localForage.getItem('users').then((user) => {
-      const obj = user.find(
+      const obj = user?.find(
         (u) => u.username === data.sessionData.user,
       );
       setCurrentUser(obj);
@@ -61,8 +61,6 @@ function useAuthentication() {
     localForage.removeItem('userProfile');
     localForage.setItem('appMode','online');
     getToken();
-    router.push('/')
-
   };
   const getConfig = (flowId) => {
     logger.debug('useAuthentication.js', 'getConfig fetch the config from the Kratos using flowID');

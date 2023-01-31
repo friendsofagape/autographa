@@ -1,5 +1,4 @@
 import * as localForage from 'localforage';
-import router from 'next/router';
 import * as logger from '../../logger';
 
 const path = require('path');
@@ -17,13 +16,7 @@ export const loadUsers = async () => {
   const path = require('path');
   const file = path.join(newpath, 'autographa', 'users', 'users.json');
   if (fs.existsSync(file)) {
-    localForage.removeItem('userProfile');
     fs.readFile(file, 'utf8', (err, data) => {
-      if (JSON.parse(data).length === 0) {
-        localForage.removeItem('sessionToken');
-        localForage.removeItem('users');
-        router.push('/');
-      }
       if (err) {
         logger.error('handleJson.js', 'Failed to read the data from file');
       } else {
