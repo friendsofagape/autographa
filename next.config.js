@@ -30,13 +30,6 @@ const nextConfig = {
               removeViewBox: false,
             },
             { removeDimensions: true },
-            {
-              removeAttrs: {
-                attrs: ['fill'],
-              },
-            },
-            require('@tailwindcss/forms'),
-            require('@tailwindcss/typography'),
           ],
           },
         },

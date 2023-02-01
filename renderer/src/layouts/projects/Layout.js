@@ -47,6 +47,7 @@ export default function ProjectsLayout(props) {
 
         <TopMenuBar />
 
+        {title && (
         <header className="bg-white shadow">
           {!isTwoCol
             ? (
@@ -116,6 +117,7 @@ export default function ProjectsLayout(props) {
             )}
 
         </header>
+        )}
 
         {children}
 
