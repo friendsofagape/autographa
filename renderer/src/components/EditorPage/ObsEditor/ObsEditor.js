@@ -42,7 +42,8 @@ const ObsEditor = () => {
         title = `# ${s.title}\n\n`;
       }
       if (Object.prototype.hasOwnProperty.call(s, 'end')) {
-        end = `_${s.end}_`;
+        const foot = ((s.end).trim());
+        end = `_${foot}_`;
       }
       if (Object.prototype.hasOwnProperty.call(s, 'text')) {
         body += `![OBS Image](${s.img})\n\n${s.text}\n\n`;
