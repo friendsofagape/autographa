@@ -213,16 +213,19 @@ const SectionPlaceholder2 = ({ editor }) => {
         setAddingSection,
         setRemovingSection,
         sectionPlaceholderNum,
+        setReferenceColumnTwoData1,
+        setReferenceColumnTwoData2,
     );
     })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [openResource1, openResource2, openResource3, openResource4, referenceColumnTwoData1?.languageId,
     referenceColumnTwoData1.refName, referenceColumnTwoData1?.selectedResource, referenceColumnTwoData2?.languageId,
     referenceColumnTwoData2?.refName, referenceColumnTwoData2?.selectedResource, sectionNum, layout,
     referenceColumnTwoData1?.owner, referenceColumnTwoData2?.owner, removingSection, addingSection,
     referenceColumnTwoData1.offlineResource, referenceColumnTwoData2.offlineResource,
-    resetResourceOnDeleteOffline?.referenceColumnTwoData1Reset, resetResourceOnDeleteOffline?.referenceColumnTwoData2Reset,
-  referenceColumnTwoData1, referenceColumnTwoData2]);
+    resetResourceOnDeleteOffline?.referenceColumnTwoData1Reset, resetResourceOnDeleteOffline?.referenceColumnTwoData2Reset]);
 
+    // referenceColumnTwoData1, referenceColumnTwoData2
   const CustomNavigation1 = (
     <CustomNavigation
       setNavigation={setNavigation1}

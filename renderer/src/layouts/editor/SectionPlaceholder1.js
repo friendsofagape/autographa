@@ -207,15 +207,19 @@ const SectionPlaceholder1 = ({ editor }) => {
         setAddingSection,
         setRemovingSection,
         sectionPlaceholderNum,
+        setReferenceColumnOneData1,
+        setReferenceColumnOneData2,
     );
     })();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [openResource1, openResource2, referenceColumnOneData1?.languageId, referenceColumnOneData1.refName,
     referenceColumnOneData1?.selectedResource, referenceColumnOneData2?.languageId, referenceColumnOneData2?.refName,
-    referenceColumnOneData2?.selectedResource, sectionNum, layout, referenceColumnOneData1,
+    referenceColumnOneData2?.selectedResource, sectionNum, layout,
     referenceColumnOneData2?.owner, removingSection, addingSection, referenceColumnOneData2?.offlineResource,
     referenceColumnOneData1?.offlineResource, resetResourceOnDeleteOffline?.referenceColumnOneData1Reset,
-    resetResourceOnDeleteOffline?.referenceColumnOneData2Reset, referenceColumnOneData2]);
+    resetResourceOnDeleteOffline?.referenceColumnOneData2Reset]);
 
+    // referenceColumnOneData2 referenceColumnOneData1
   const CustomNavigation1 = (
     <CustomNavigation
       setNavigation={setNavigation1}

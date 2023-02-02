@@ -14,11 +14,16 @@ export async function saveSettingsResourceHistory(
     setAddingSection,
     setRemovingSection,
     sectionPlaceholderNum,
+    setReferenceColumnData1,
 ) {
     logger.debug('SaveSettingsResourceHistory.js', 'In save reference hsotory func');
+    // removingSection : "1" and openResourceR2 :false and sectionPlaceholderNum: "1" -> reference 2 to reference 1
+    // removingSection : "3" and openResourceR2 and sectionPlaceholderNum: "2" -> reference 2 to reference 1
     let historyColumn = '0';
+    let rowOneDeleteOnTwoExist = removingSection === '1' && openResourceR2 === false;
     if (sectionPlaceholderNum === '2') {
       historyColumn = '1';
+      rowOneDeleteOnTwoExist = removingSection === '3' && openResourceR2 === false;
     }
     return new Promise((resolve) => {
     logger.debug('SaveSettingsResourceHistory.js', `call from placeholder : ${sectionPlaceholderNum}`);
@@ -35,7 +40,7 @@ export async function saveSettingsResourceHistory(
                 if (sectionNum === 1 || sectionNum === 0) {
                   logger.debug('SaveSettingsResourceHistory.js', 'section for remove both rows of C0 or C1');
                   if (openResourceR1 && openResourceR2) {
-                    // works when all rows CxR0, CxR1 remove
+                    // works when all rows CxR0, CxR1 removeconsole.log('working any one row open actions ------ : ', sectionPlaceholderNum);
                       resources.project[resources.type.flavorType.flavor.name].refResources.splice(0, 1);
                     }
                 }
@@ -43,14 +48,29 @@ export async function saveSettingsResourceHistory(
                 if (sectionNum === 1 && (layout > layout_check_num) && !(openResourceR1 && openResourceR2)) {
                   // works when any 1 row open, set object of 1 item
                   logger.debug('SaveSettingsResourceHistory.js', 'section single rows of C0 or C1');
+                  let referenceToUse = referenceColumnData1;
+                  if (rowOneDeleteOnTwoExist) {
+                    referenceToUse = referenceColumnData2;
+                    // reset colum2 --> col1 and col2 - ""
+                    setReferenceColumnData1((prev) => ({
+                      ...prev,
+                      languageId: referenceColumnData2?.languageId,
+                      selectedResource: referenceColumnData2?.selectedResource,
+                      refName: referenceColumnData2?.refName,
+                      header: referenceColumnData2?.header,
+                      owner: referenceColumnData2?.owner,
+                      offlineResource: referenceColumnData2.offlineResource,
+                    }
+                    ));
+                  }
                   resources.project[resources.type.flavorType.flavor.name].refResources[historyColumn] = {
                       1: {
-                        resouceId: referenceColumnData1?.selectedResource,
-                        language: referenceColumnData1?.languageId,
-                        name: referenceColumnData1?.refName,
-                        owner: referenceColumnData1?.owner,
+                        resouceId: referenceToUse?.selectedResource,
+                        language: referenceToUse?.languageId,
+                        name: referenceToUse?.refName,
+                        owner: referenceToUse?.owner,
                         navigation: { book: '1TI', chapter: '1' },
-                        offline: referenceColumnData1.offlineResource,
+                        offline: referenceToUse.offlineResource,
                       },
                     };
                 }
