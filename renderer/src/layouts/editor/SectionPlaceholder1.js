@@ -117,7 +117,7 @@ const SectionPlaceholder1 = ({ editor }) => {
   }, [layout, sectionNum]);
 
   useEffect(() => {
-    if (resetResourceOnDeleteOffline?.referenceColumnOneData1Reset) {
+    if (resetResourceOnDeleteOffline?.referenceColumnOneData1Reset || removingSection === '1') {
       logger.debug('SectionPlaceholder1.js', 'delete resource for pane C0R0');
       setReferenceColumnOneData1((prev) => ({
         ...prev,
@@ -137,7 +137,7 @@ const SectionPlaceholder1 = ({ editor }) => {
       setRemovingSection('1');
       setLoadResource1(false);
     }
-    if (resetResourceOnDeleteOffline?.referenceColumnOneData2Reset) {
+    if (resetResourceOnDeleteOffline?.referenceColumnOneData2Reset || removingSection === '2') {
       logger.debug('SectionPlaceholder1.js', 'delete resource for pane C0R1');
       setReferenceColumnOneData2((prev) => ({
         ...prev,
@@ -158,7 +158,8 @@ const SectionPlaceholder1 = ({ editor }) => {
       setLoadResource2(false);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [resetResourceOnDeleteOffline?.referenceColumnOneData1Reset, resetResourceOnDeleteOffline?.referenceColumnOneData2Reset]);
+  }, [resetResourceOnDeleteOffline?.referenceColumnOneData1Reset, resetResourceOnDeleteOffline?.referenceColumnOneData2Reset,
+      removingSection]);
 
   const getReferenceHistoryOnLoad = async () => new Promise((resolve) => {
     fetchSettingsResourceHistory(
@@ -209,6 +210,8 @@ const SectionPlaceholder1 = ({ editor }) => {
         sectionPlaceholderNum,
         setReferenceColumnOneData1,
         setReferenceColumnOneData2,
+        setOpenResource1,
+        setOpenResource2,
     );
     })();
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -217,7 +220,7 @@ const SectionPlaceholder1 = ({ editor }) => {
     referenceColumnOneData2?.selectedResource, sectionNum, layout,
     referenceColumnOneData2?.owner, removingSection, addingSection, referenceColumnOneData2?.offlineResource,
     referenceColumnOneData1?.offlineResource, resetResourceOnDeleteOffline?.referenceColumnOneData1Reset,
-    resetResourceOnDeleteOffline?.referenceColumnOneData2Reset]);
+    resetResourceOnDeleteOffline?.referenceColumnOneData2Reset, referenceColumnOneData2, referenceColumnOneData1]);
 
     // referenceColumnOneData2 referenceColumnOneData1
   const CustomNavigation1 = (

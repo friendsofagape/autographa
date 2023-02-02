@@ -15,6 +15,9 @@ export async function saveSettingsResourceHistory(
     setRemovingSection,
     sectionPlaceholderNum,
     setReferenceColumnData1,
+    setReferenceColumnData2,
+    setOpenResourceR1,
+    setOpenResourceR2,
 ) {
     logger.debug('SaveSettingsResourceHistory.js', 'In save reference hsotory func');
     // removingSection : "1" and openResourceR2 :false and sectionPlaceholderNum: "1" -> reference 2 to reference 1
@@ -40,8 +43,12 @@ export async function saveSettingsResourceHistory(
                 if (sectionNum === 1 || sectionNum === 0) {
                   logger.debug('SaveSettingsResourceHistory.js', 'section for remove both rows of C0 or C1');
                   if (openResourceR1 && openResourceR2) {
-                    // works when all rows CxR0, CxR1 removeconsole.log('working any one row open actions ------ : ', sectionPlaceholderNum);
-                      resources.project[resources.type.flavorType.flavor.name].refResources.splice(0, 1);
+                    // works when all rows CxR0, CxR1 remove
+                      if (sectionPlaceholderNum === '1') {
+                        resources.project[resources.type.flavorType.flavor.name].refResources.splice(0, 1);
+                      } else if (sectionPlaceholderNum === '2') {
+                        resources.project[resources.type.flavorType.flavor.name].refResources.splice(1, 1);
+                      }
                     }
                 }
                 const layout_check_num = sectionPlaceholderNum === '1' ? 0 : 1;
@@ -62,6 +69,18 @@ export async function saveSettingsResourceHistory(
                       offlineResource: referenceColumnData2.offlineResource,
                     }
                     ));
+                    setReferenceColumnData2((prev) => ({
+                      ...prev,
+                      languageId: '',
+                      selectedResource: '',
+                      refName: '',
+                      header: '',
+                      owner: '',
+                      offlineResource: { offline: false },
+                    }
+                    ));
+                    setOpenResourceR1(false);
+                    setOpenResourceR2(true);
                   }
                   resources.project[resources.type.flavorType.flavor.name].refResources[historyColumn] = {
                       1: {
@@ -98,12 +117,18 @@ export async function saveSettingsResourceHistory(
                   };
                 }
               }
+              if (sectionPlaceholderNum === '2' && layout === 0 && openResourceR1 && openResourceR2) {
+                resources.project[resources.type.flavorType.flavor.name].refResources = [];
+              }
               }
             },
           );
         },
       );
-      if (!openResourceR1 || !openResourceR2 || addingSection <= 2 || removingSection <= 2) {
+      if (
+        (sectionPlaceholderNum === '1' && (!openResourceR1 || !openResourceR2 || addingSection <= 2 || removingSection <= 2))
+        || (sectionPlaceholderNum === '2' && (!openResourceR1 || !openResourceR2 || addingSection >= 3 || removingSection >= 3))
+      ) {
         setRemovingSection();
         setAddingSection();
         localforage.setItem('projectmeta', value).then(() => {

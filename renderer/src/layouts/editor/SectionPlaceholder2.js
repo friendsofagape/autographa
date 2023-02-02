@@ -114,7 +114,7 @@ const SectionPlaceholder2 = ({ editor }) => {
 
   // reset panes on delete offline contents
   useEffect(() => {
-    if (resetResourceOnDeleteOffline?.referenceColumnTwoData1Reset) {
+    if (resetResourceOnDeleteOffline?.referenceColumnTwoData1Reset || removingSection === '3') {
       setReferenceColumnTwoData1((prev) => ({
         ...prev,
         languageId: '',
@@ -132,7 +132,7 @@ const SectionPlaceholder2 = ({ editor }) => {
       ));
       setLoadResource3(false);
     }
-    if (resetResourceOnDeleteOffline?.referenceColumnTwoData2Reset) {
+    if (resetResourceOnDeleteOffline?.referenceColumnTwoData2Reset || removingSection === '4') {
       setReferenceColumnTwoData2((prev) => ({
         ...prev,
         languageId: '',
@@ -151,7 +151,8 @@ const SectionPlaceholder2 = ({ editor }) => {
       setLoadResource4(false);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [resetResourceOnDeleteOffline?.referenceColumnTwoData1Reset, resetResourceOnDeleteOffline?.referenceColumnTwoData2Reset]);
+  }, [resetResourceOnDeleteOffline?.referenceColumnTwoData1Reset, resetResourceOnDeleteOffline?.referenceColumnTwoData2Reset,
+      removingSection]);
 
   const getReferenceHistoryOnLoad = async () => new Promise((resolve) => {
     fetchSettingsResourceHistory(
@@ -215,17 +216,20 @@ const SectionPlaceholder2 = ({ editor }) => {
         sectionPlaceholderNum,
         setReferenceColumnTwoData1,
         setReferenceColumnTwoData2,
+        setOpenResource3,
+        setOpenResource4,
     );
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [openResource1, openResource2, openResource3, openResource4, referenceColumnTwoData1?.languageId,
+  }, [openResource3, openResource4, referenceColumnTwoData1?.languageId,
     referenceColumnTwoData1.refName, referenceColumnTwoData1?.selectedResource, referenceColumnTwoData2?.languageId,
     referenceColumnTwoData2?.refName, referenceColumnTwoData2?.selectedResource, sectionNum, layout,
     referenceColumnTwoData1?.owner, referenceColumnTwoData2?.owner, removingSection, addingSection,
     referenceColumnTwoData1.offlineResource, referenceColumnTwoData2.offlineResource,
-    resetResourceOnDeleteOffline?.referenceColumnTwoData1Reset, resetResourceOnDeleteOffline?.referenceColumnTwoData2Reset]);
+    resetResourceOnDeleteOffline?.referenceColumnTwoData1Reset, resetResourceOnDeleteOffline?.referenceColumnTwoData2Reset,
+    ]);
 
-    // referenceColumnTwoData1, referenceColumnTwoData2
+    // referenceColumnTwoData1, referenceColumnTwoData2 openResource1, openResource2,
   const CustomNavigation1 = (
     <CustomNavigation
       setNavigation={setNavigation1}
