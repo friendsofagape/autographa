@@ -99,9 +99,9 @@ export default function EditorSection({
       if (layout > 1) { setLayout(1); }
       //  else if (layout === 1) { setLayout(0); }
     }
-    if ((openResource1 === false || openResource2 === false) && (openResource3 === false || openResource4 === false)) {
-      setLayout(2);
-    }
+    // if ((openResource1 === false || openResource2 === false) && (openResource3 === false || openResource4 === false)) {
+    //   setLayout(2);
+    // }
     if (openResource1 === true && openResource2 === true
       && openResource3 === true && openResource4 === true) {
       if (layout === 1) {
@@ -114,6 +114,15 @@ export default function EditorSection({
     setOpenResourcePopUp(true);
     setLoadResource(true);
   };
+
+  useEffect(() => {
+    if (!title) {
+      setLoadResource(false);
+    } else {
+      setLoadResource(true);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [openResourcePopUp, title]);
 
   const addRow = () => {
     if (sectionNum >= 0 && sectionNum < 2) {

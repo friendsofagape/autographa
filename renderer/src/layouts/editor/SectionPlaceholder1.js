@@ -8,15 +8,16 @@ import EditorSection from '@/layouts/editor/EditorSection';
 import ReferenceBible from '@/components/EditorPage/Reference/ReferenceBible/ReferenceBible';
 import { ProjectContext } from '@/components/context/ProjectContext';
 import CustomNavigation from '@/components/EditorPage/Navigation/CustomNavigation';
-import { saveReferenceResource } from '@/core/projects/updateAgSettings';
 import NavigationObs from '@/components/EditorPage/ObsEditor/NavigationObs';
 import ReferenceObs from '@/components/EditorPage/ObsEditor/ReferenceObs';
 import { isElectron } from '@/core/handleElectron';
 import core from '@/components/EditorPage/ObsEditor/core';
 import ReferenceAudio from '@/components/EditorPage/Reference/Audio/ReferenceAudio';
-import isBackendProjectExist from '@/core/projects/existProjectInBackEnd';
 import { SnackBar } from '@/components/SnackBar';
 import useAddNotification from '@/components/hooks/useAddNotification';
+import { fetchSettingsResourceHistory } from '@/core/editor/fetchSettingsResourceHistory';
+import { saveSettingsResourceHistory } from '@/core/editor/saveSettingsResourceHistory';
+import * as logger from '../../logger';
 
 const TranslationHelps = dynamic(
   () => import('@/components/EditorPage/Reference/TranslationHelps'),
@@ -25,10 +26,12 @@ const TranslationHelps = dynamic(
 
 const SectionPlaceholder1 = ({ editor }) => {
   // const supportedBooks = null;
+  const sectionPlaceholderNum = '1';
   const [snackBar, setOpenSnackBar] = useState(false);
   const [snackText, setSnackText] = useState('');
   const [notify, setNotify] = useState();
   const { addNotification } = useAddNotification();
+
   const [referenceColumnOneData1, setReferenceColumnOneData1] = useState({
     languageId: '',
     selectedResource: '',
@@ -73,6 +76,7 @@ const SectionPlaceholder1 = ({ editor }) => {
       scrollLock,
     },
   } = useContext(ProjectContext);
+
   const [sectionNum, setSectionNum] = useState(0);
   const [hideAddition, setHideAddition] = useState(true);
   const [removingSection, setRemovingSection] = useState();
@@ -97,11 +101,6 @@ const SectionPlaceholder1 = ({ editor }) => {
   const _chapter2 = scrollLock === false ? chapter : naviagation2.chapter;
   const _verse2 = scrollLock === false ? verse : naviagation2.verse;
 
-  // useEffect(() => {
-  //   console.log('supportedBooks', supportedBooks);
-  //   applyBooksFilter(supportedBooks);
-  // }, [applyBooksFilter, supportedBooks]);
-
   useEffect(() => {
     if (layout > 0 && layout <= 2) {
       setRow(0);
@@ -109,14 +108,17 @@ const SectionPlaceholder1 = ({ editor }) => {
         setSectionNum(1);
       }
     }
-    // if (openResource1 === true && openResource2 === true) {
-    //   setLayout(layout - 1);
-    // }
+    if (sectionNum === 2) {
+      setHideAddition(false);
+    } else {
+    setHideAddition(true);
+    }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [layout]);
+  }, [layout, sectionNum]);
 
   useEffect(() => {
-    if (resetResourceOnDeleteOffline?.referenceColumnOneData1Reset) {
+    if (resetResourceOnDeleteOffline?.referenceColumnOneData1Reset || removingSection === '1') {
+      logger.debug('SectionPlaceholder1.js', 'delete resource for pane C0R0');
       setReferenceColumnOneData1((prev) => ({
         ...prev,
         languageId: '',
@@ -133,8 +135,10 @@ const SectionPlaceholder1 = ({ editor }) => {
       }
       ));
       setRemovingSection('1');
+      setLoadResource1(false);
     }
-    if (resetResourceOnDeleteOffline?.referenceColumnOneData2Reset) {
+    if (resetResourceOnDeleteOffline?.referenceColumnOneData2Reset || removingSection === '2') {
+      logger.debug('SectionPlaceholder1.js', 'delete resource for pane C0R1');
       setReferenceColumnOneData2((prev) => ({
         ...prev,
         languageId: '',
@@ -151,225 +155,74 @@ const SectionPlaceholder1 = ({ editor }) => {
       }
       ));
       setRemovingSection('2');
+      setLoadResource2(false);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [resetResourceOnDeleteOffline?.referenceColumnOneData1Reset, resetResourceOnDeleteOffline?.referenceColumnOneData2Reset]);
+  }, [resetResourceOnDeleteOffline?.referenceColumnOneData1Reset, resetResourceOnDeleteOffline?.referenceColumnOneData2Reset,
+      removingSection]);
 
-  const checkResourceExist = async (ProjectDir) => {
-    if (ProjectDir) {
-      const existResource = await isBackendProjectExist(ProjectDir);
-      return existResource;
-    }
-  };
+  const getReferenceHistoryOnLoad = async () => new Promise((resolve) => {
+    fetchSettingsResourceHistory(
+      setRemovingSection,
+      setReferenceColumnOneData1,
+      setReferenceColumnOneData2,
+      referenceColumnOneData1,
+      referenceColumnOneData2,
+      setLayout,
+      setLoadResource1,
+      setLoadResource2,
+      setOpenResource1,
+      setOpenResource2,
+      setSectionNum,
+      setNotify,
+      setSnackText,
+      setOpenSnackBar,
+      addNotification,
+      sectionPlaceholderNum,
+      ).then(() => {
+        resolve();
+      });
+    });
 
   // call useEffect on Load resource
   useEffect(() => {
-    const refsHistory = [];
-    const rows = [];
-    localforage.getItem('currentProject').then((projectName) => {
-    const _projectname = projectName?.split('_');
-    localforage.getItem('projectmeta').then((value) => {
-      Object.entries(value).forEach(
-        ([, _value]) => {
-          Object.entries(_value).forEach(
-            ([, resources]) => {
-              if (resources.identification.name.en === _projectname[0]) {
-                refsHistory.push(resources.project[resources.type.flavorType.flavor.name].refResources);
-              }
-            },
-          );
-        },
-      );
-    }).then(() => {
-      if (refsHistory[0]) {
-        Object.entries(refsHistory[0]).forEach(
-          ([_columnnum, _value]) => {
-          if (_columnnum === '0' && _value) {
-            Object.entries(_value).forEach(
-              ([_rownum, _value]) => {
-                rows.push(_rownum);
-                  // check existing the dir of resource in backend
-                  // helps resurce : offline TRUE , others resourceId == obs/bible/audio _value.resouceId
-                    if (_value.offline.offline || ['obs', 'bible', 'audio'].includes(_value.resouceId.toLowerCase())) {
-                      let projectDirName;
-                      if (_value.offline.offline) {
-                        projectDirName = _value.offline.data.projectDir;
-                      } else {
-                        projectDirName = _value.name;
-                      }
-                      // offline resource exist check fucntion not awaiting always comes false in resouceExistcheck
-                      checkResourceExist(projectDirName)
-                      .then(async (resourceStatus) => {
-                        if (!resourceStatus) {
-                          // setRemovingSection(row);1 2 3 4
-                          if (_columnnum === '0' && _rownum === '1') {
-                            setRemovingSection('1');
-                            // setOpenResource1(true);
-                            setReferenceColumnOneData1((prev) => ({
-                              ...prev,
-                              languageId: '',
-                              selectedResource: '',
-                              refName: '',
-                              header: '',
-                              owner: '',
-                              offlineResource: { offline: false },
-                            }
-                            ));
-                          } else if (_columnnum === '0' && _rownum === '2') {
-                            setRemovingSection('2');
-                            // setOpenResource2(true);
-                            setReferenceColumnOneData2((prev) => ({
-                              ...prev,
-                              languageId: '',
-                              selectedResource: '',
-                              refName: '',
-                              header: '',
-                              owner: '',
-                              offlineResource: { offline: false },
-                            }
-                            ));
-                          }
-                          setNotify('failure');
-                          setSnackText(`${projectDirName} is no longer available. Please download again.`);
-                          setOpenSnackBar(true);
-                          await addNotification(
-                            'Reference Resource',
-                            `${projectDirName} is no longer available \n. Please download again.`,
-                            'failure',
-                          );
-                        }
-                      });
-                    }
-                    if (_rownum === '1') {
-                      setReferenceColumnOneData1({
-                        ...referenceColumnOneData1,
-                        languageId: _value?.language,
-                        selectedResource: _value?.resouceId,
-                        refName: _value?.name,
-                        header: _value?.name,
-                        owner: _value?.owner,
-                        offlineResource: _value?.offline,
-                      });
-                  }
-                  if (_rownum === '2') {
-                      setReferenceColumnOneData2({
-                        ...referenceColumnOneData2,
-                        languageId: _value?.language,
-                        selectedResource: _value?.resouceId,
-                        refName: _value?.name,
-                        header: _value?.name,
-                        owner: _value?.owner,
-                        offlineResource: _value?.offline,
-                      });
-                  }
-              },
-            );
-          }
-        },
-      );
-      }
-    }).then(() => {
-      if (refsHistory[0]) {
-        let refs = refsHistory[0];
-        refs = refs.filter((x) => x != null);
-        setLayout(refs.length);
-        if (rows.length > 1) {
-          setLoadResource1(true);
-          setLoadResource2(true);
-          setOpenResource1(false);
-          setOpenResource2(false);
-        }
-        if (rows.length === 1) {
-          setLoadResource1(true);
-          setOpenResource1(false);
-        }
-        setSectionNum(rows.length);
-      }
-    });
-  });
+      getReferenceHistoryOnLoad().then(() => {
+        logger.debug('SectionPlaceholder1.js', 'Getting Resources Reference on Load');
+      });
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect(() => {
-    if (sectionNum === 2) {
-      setHideAddition(false);
-    } else {
-      setHideAddition(true);
-    }
-  }, [sectionNum]);
-
   // call useEffect on Save reference (call on new resource / new pane)
   useEffect(() => {
-    const refsHistory = [];
-    localforage.getItem('currentProject').then((projectName) => {
-    const _projectname = projectName?.split('_');
-    localforage.getItem('projectmeta').then((value) => {
-      Object?.entries(value).forEach(
-        ([, _value]) => {
-          Object?.entries(_value).forEach(
-            ([, resources]) => {
-              if (resources.identification.name.en === _projectname[0]) {
-                refsHistory.push(resources.project[resources.type.flavorType.flavor.name].refResources);
-                if (sectionNum === 1 || sectionNum === 0) {
-                  if (openResource1 && openResource2) {
-                      resources.project[resources.type.flavorType.flavor.name].refResources.splice(0, 1);
-                    }
-                }
-                if (sectionNum === 1 && layout > 0 && !(openResource1 && openResource2)) {
-                  resources.project[resources.type.flavorType.flavor.name].refResources[0] = {
-                      1: {
-                        resouceId: referenceColumnOneData1?.selectedResource,
-                        language: referenceColumnOneData1?.languageId,
-                        name: referenceColumnOneData1?.refName,
-                        owner: referenceColumnOneData1?.owner,
-                        navigation: { book: '1TI', chapter: '1' },
-                        offline: referenceColumnOneData1.offlineResource,
-                      },
-                    };
-                }
-                if (sectionNum === 2 && layout > 0) {
-                  if (referenceColumnOneData1.refName !== undefined) {
-                    resources.project[resources.type.flavorType.flavor.name].refResources[0] = {
-                    1: {
-                      resouceId: referenceColumnOneData1?.selectedResource,
-                      language: referenceColumnOneData1?.languageId,
-                      name: referenceColumnOneData1?.refName,
-                      owner: referenceColumnOneData1?.owner,
-                      navigation: { book: '1TI', chapter: '1' },
-                      offline: referenceColumnOneData1.offlineResource,
-                    },
-                    2: {
-                      resouceId: referenceColumnOneData2?.selectedResource,
-                      language: referenceColumnOneData2?.languageId,
-                      name: referenceColumnOneData2?.refName,
-                      owner: referenceColumnOneData2?.owner,
-                      navigation: { book: '1TI', chapter: '1' },
-                      offline: referenceColumnOneData2.offlineResource,
-                    },
-                  };
-                }
-              }
-              }
-            },
-          );
-        },
-      );
-      if (!openResource1 || !openResource2 || addingSection <= 2 || removingSection <= 2) {
-        setRemovingSection();
-        setAddingSection();
-        localforage.setItem('projectmeta', value).then(() => {
-          saveReferenceResource();
-        });
-      }
-    });
-  });
+    logger.debug('SectionPlaceholder1.js', 'in Save reference C0');
+    (async () => {
+      saveSettingsResourceHistory(
+        sectionNum,
+        openResource1,
+        openResource2,
+        layout,
+        referenceColumnOneData1,
+        referenceColumnOneData2,
+        addingSection,
+        removingSection,
+        setAddingSection,
+        setRemovingSection,
+        sectionPlaceholderNum,
+        setReferenceColumnOneData1,
+        setReferenceColumnOneData2,
+        setOpenResource1,
+        setOpenResource2,
+    );
+    })();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [openResource1, openResource2, referenceColumnOneData1?.languageId, referenceColumnOneData1.refName,
     referenceColumnOneData1?.selectedResource, referenceColumnOneData2?.languageId, referenceColumnOneData2?.refName,
-    referenceColumnOneData2?.selectedResource, sectionNum, layout, referenceColumnOneData1,
+    referenceColumnOneData2?.selectedResource, sectionNum, layout,
     referenceColumnOneData2?.owner, removingSection, addingSection, referenceColumnOneData2?.offlineResource,
     referenceColumnOneData1?.offlineResource, resetResourceOnDeleteOffline?.referenceColumnOneData1Reset,
-    resetResourceOnDeleteOffline?.referenceColumnOneData2Reset]);
+    resetResourceOnDeleteOffline?.referenceColumnOneData2Reset, referenceColumnOneData2, referenceColumnOneData1]);
 
+    // referenceColumnOneData2 referenceColumnOneData1
   const CustomNavigation1 = (
     <CustomNavigation
       setNavigation={setNavigation1}
@@ -419,44 +272,46 @@ const SectionPlaceholder1 = ({ editor }) => {
       });
     }
   }, [_obsNavigation1, _obsNavigation2, referenceColumnOneData1, referenceColumnOneData2]);
+
   return (
     <>
       {(layout > 0 && layout <= 2) && (
         <>
           {(openResource1 === false || openResource2 === false) && (
             <div className={`bg-white rounded-md grid gap-2 ${editor === 'audioTranslation' ? 'md:max-h-[64vh] lg:max-h-[70vh]' : 'h-editor'} overflow-x-auto`}>
-              <EditorSection
-                row="1"
-                CustomNavigation={(referenceColumnOneData1.selectedResource).lastIndexOf('obs', 0) === 0 ? ObsNavigation1 : CustomNavigation1}
-                hideAddition={hideAddition}
-                sectionNum={sectionNum}
-                setSectionNum={setSectionNum}
-                title={referenceColumnOneData1.refName}
-                selectedResource={referenceColumnOneData1.selectedResource}
-                languageId={referenceColumnOneData1.languageId}
-                referenceResources={referenceColumnOneData1}
-                setReferenceResources={setReferenceColumnOneData1}
-                setLoadResource={setLoadResource1}
-                loadResource={loadResource1}
-                openResource={openResource1}
-                setOpenResource1={setOpenResource1}
-                setOpenResource2={setOpenResource2}
-                setRemovingSection={setRemovingSection}
-                setAddingSection={setAddingSection}
-              >
-                {
-              (loadResource1 === true)
+              {openResource1 === false && (
+                <EditorSection
+                  row="1"
+                  CustomNavigation={(referenceColumnOneData1.selectedResource).lastIndexOf('obs', 0) === 0 ? ObsNavigation1 : CustomNavigation1}
+                  hideAddition={hideAddition}
+                  sectionNum={sectionNum}
+                  setSectionNum={setSectionNum}
+                  title={referenceColumnOneData1.refName}
+                  selectedResource={referenceColumnOneData1.selectedResource}
+                  languageId={referenceColumnOneData1.languageId}
+                  referenceResources={referenceColumnOneData1}
+                  setReferenceResources={setReferenceColumnOneData1}
+                  setLoadResource={setLoadResource1}
+                  loadResource={loadResource1}
+                  openResource={openResource1}
+                  setOpenResource1={setOpenResource1}
+                  setOpenResource2={setOpenResource2}
+                  setRemovingSection={setRemovingSection}
+                  setAddingSection={setAddingSection}
+                >
+                  {
+                  (loadResource1 === true)
               && ((referenceColumnOneData1.selectedResource === 'bible' && (
                 <>
                   {referenceColumnOneData1?.languageId
                   && (
-                  <ReferenceBible
-                    languageId={referenceColumnOneData1.languageId}
-                    refName={referenceColumnOneData1.refName}
-                    bookId={_bookId1}
-                    chapter={_chapter1}
-                    verse={_verse1}
-                  />
+                    <ReferenceBible
+                      languageId={referenceColumnOneData1.languageId}
+                      refName={referenceColumnOneData1.refName}
+                      bookId={_bookId1}
+                      chapter={_chapter1}
+                      verse={_verse1}
+                    />
                   )}
                 </>
               )) || (referenceColumnOneData1.selectedResource === 'obs' && (
@@ -469,29 +324,30 @@ const SectionPlaceholder1 = ({ editor }) => {
                     )}
                 </>
                 )) || (referenceColumnOneData1.selectedResource === 'audio' && (
-                <ReferenceAudio
-                  languageId={referenceColumnOneData1.languageId}
-                  refName={referenceColumnOneData1.refName}
-                  bookId={_bookId1}
-                  chapter={_chapter1}
-                  verse={_verse1}
-                />
-                )) || (
-                  <TranslationHelps
-                    selectedResource={referenceColumnOneData1.selectedResource}
+                  <ReferenceAudio
                     languageId={referenceColumnOneData1.languageId}
-                    owner={referenceColumnOneData1.owner}
+                    refName={referenceColumnOneData1.refName}
                     bookId={_bookId1}
                     chapter={_chapter1}
                     verse={_verse1}
-                    story={_obsNavigation1}
-                    offlineResource={referenceColumnOneData1.offlineResource}
                   />
-                )
+                  )) || (
+                    <TranslationHelps
+                      selectedResource={referenceColumnOneData1.selectedResource}
+                      languageId={referenceColumnOneData1.languageId}
+                      owner={referenceColumnOneData1.owner}
+                      bookId={_bookId1}
+                      chapter={_chapter1}
+                      verse={_verse1}
+                      story={_obsNavigation1}
+                      offlineResource={referenceColumnOneData1.offlineResource}
+                    />
+                    )
               )
             }
-              </EditorSection>
-
+                </EditorSection>
+          )}
+              {openResource2 === false && (
               <EditorSection
                 row="2"
                 hideAddition={hideAddition}
@@ -558,6 +414,7 @@ const SectionPlaceholder1 = ({ editor }) => {
               )
             }
               </EditorSection>
+          )}
             </div>
         )}
         </>

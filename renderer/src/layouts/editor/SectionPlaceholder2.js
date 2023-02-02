@@ -8,15 +8,16 @@ import EditorSection from '@/layouts/editor/EditorSection';
 import ReferenceBible from '@/components/EditorPage/Reference/ReferenceBible/ReferenceBible';
 import { ProjectContext } from '@/components/context/ProjectContext';
 import CustomNavigation from '@/components/EditorPage/Navigation/CustomNavigation';
-import { saveReferenceResource } from '@/core/projects/updateAgSettings';
 import NavigationObs from '@/components/EditorPage/ObsEditor/NavigationObs';
 import ReferenceObs from '@/components/EditorPage/ObsEditor/ReferenceObs';
 import { isElectron } from '@/core/handleElectron';
 import core from '@/components/EditorPage/ObsEditor/core';
 import ReferenceAudio from '@/components/EditorPage/Reference/Audio/ReferenceAudio';
-import isBackendProjectExist from '@/core/projects/existProjectInBackEnd';
 import { SnackBar } from '@/components/SnackBar';
 import useAddNotification from '@/components/hooks/useAddNotification';
+import { fetchSettingsResourceHistory } from '@/core/editor/fetchSettingsResourceHistory';
+import { saveSettingsResourceHistory } from '@/core/editor/saveSettingsResourceHistory';
+import * as logger from '../../logger';
 
 const TranslationHelps = dynamic(
   () => import('@/components/EditorPage/Reference/TranslationHelps'),
@@ -24,6 +25,7 @@ const TranslationHelps = dynamic(
 );
 
 const SectionPlaceholder2 = ({ editor }) => {
+  const sectionPlaceholderNum = '2';
   const [snackBar, setOpenSnackBar] = useState(false);
   const [snackText, setSnackText] = useState('');
   const [notify, setNotify] = useState();
@@ -112,7 +114,7 @@ const SectionPlaceholder2 = ({ editor }) => {
 
   // reset panes on delete offline contents
   useEffect(() => {
-    if (resetResourceOnDeleteOffline?.referenceColumnTwoData1Reset) {
+    if (resetResourceOnDeleteOffline?.referenceColumnTwoData1Reset || removingSection === '3') {
       setReferenceColumnTwoData1((prev) => ({
         ...prev,
         languageId: '',
@@ -128,8 +130,9 @@ const SectionPlaceholder2 = ({ editor }) => {
         referenceColumnTwoData1Reset: false,
       }
       ));
+      setLoadResource3(false);
     }
-    if (resetResourceOnDeleteOffline?.referenceColumnTwoData2Reset) {
+    if (resetResourceOnDeleteOffline?.referenceColumnTwoData2Reset || removingSection === '4') {
       setReferenceColumnTwoData2((prev) => ({
         ...prev,
         languageId: '',
@@ -145,137 +148,40 @@ const SectionPlaceholder2 = ({ editor }) => {
         referenceColumnTwoData2Reset: false,
       }
       ));
+      setLoadResource4(false);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [resetResourceOnDeleteOffline?.referenceColumnTwoData1Reset, resetResourceOnDeleteOffline?.referenceColumnTwoData2Reset]);
+  }, [resetResourceOnDeleteOffline?.referenceColumnTwoData1Reset, resetResourceOnDeleteOffline?.referenceColumnTwoData2Reset,
+      removingSection]);
 
-  const checkResourceExist = async (ProjectDir) => {
-    if (ProjectDir) {
-      const existResource = await isBackendProjectExist(ProjectDir);
-      return existResource;
-    }
-  };
+  const getReferenceHistoryOnLoad = async () => new Promise((resolve) => {
+    fetchSettingsResourceHistory(
+      setRemovingSection,
+      setReferenceColumnTwoData1,
+      setReferenceColumnTwoData2,
+      referenceColumnTwoData1,
+      referenceColumnTwoData2,
+      setLayout,
+      setLoadResource3,
+      setLoadResource4,
+      setOpenResource3,
+      setOpenResource4,
+      setSectionNum,
+      setNotify,
+      setSnackText,
+      setOpenSnackBar,
+      addNotification,
+      sectionPlaceholderNum,
+      ).then(() => {
+        resolve();
+      });
+    });
 
   // call useEffect on Load resource
   useEffect(() => {
-    const refsHistory = [];
-    const rows = [];
-    localforage.getItem('currentProject').then((projectName) => {
-    const _projectname = projectName?.split('_');
-    localforage.getItem('projectmeta').then((value) => {
-      Object.entries(value).forEach(
-        ([, _value]) => {
-          Object.entries(_value).forEach(
-            ([, resources]) => {
-              if (resources.identification.name.en === _projectname[0]) {
-                refsHistory.push(resources.project[resources.type.flavorType.flavor.name].refResources);
-              }
-            },
-          );
-        },
-      );
-    }).then(() => {
-      if (refsHistory[0]) {
-        Object.entries(refsHistory[0]).forEach(
-          ([_columnnum, _value]) => {
-          if (_columnnum === '1' && _value) {
-            Object.entries(_value).forEach(
-              ([_rownum, _value]) => {
-                rows.push(_rownum);
-                  // check existing the dir of resource in backend
-                  // helps resurce : offline TRUE , others resourceId == obs/bible/audio _value.resouceId
-                  if (_value.offline.offline || ['obs', 'bible', 'audio'].includes(_value.resouceId.toLowerCase())) {
-                    let projectDirName;
-                    if (_value.offline.offline) {
-                      projectDirName = _value.offline.data.projectDir;
-                    } else {
-                      projectDirName = _value.name;
-                    }
-                    // console.log({ projectDirName });
-                    // offline resource exist check fucntion not awaiting always comes false in resouceExistcheck
-                    checkResourceExist(projectDirName)
-                    .then(async (resourceStatus) => {
-                      if (!resourceStatus) {
-                        if (_columnnum === '1' && _rownum === '1') {
-                          setRemovingSection('3');
-                          setReferenceColumnTwoData1((prev) => ({
-                            ...prev,
-                            languageId: '',
-                            selectedResource: '',
-                            refName: '',
-                            header: '',
-                            owner: '',
-                            offlineResource: { offline: false },
-                          }
-                          ));
-                        } else if (_columnnum === '1' && _rownum === '2') {
-                          setRemovingSection('4');
-                          // setOpenResource2(true);
-                          setReferenceColumnTwoData2((prev) => ({
-                            ...prev,
-                            languageId: '',
-                            selectedResource: '',
-                            refName: '',
-                            header: '',
-                            owner: '',
-                            offlineResource: { offline: false },
-                          }
-                          ));
-                        }
-                        setNotify('failure');
-                        setSnackText(`${projectDirName} is no longer available. Please download again.`);
-                        setOpenSnackBar(true);
-                        await addNotification(
-                          'Reference Resource',
-                          `${projectDirName} is no longer available \n. Please download again.`,
-                          'failure',
-                        );
-                      }
-                    });
-                  }
-                  if (_rownum === '1') {
-                      setReferenceColumnTwoData1({
-                        ...referenceColumnTwoData1,
-                        languageId: _value?.language,
-                        selectedResource: _value?.resouceId,
-                        refName: _value?.name,
-                        header: _value?.name,
-                        owner: _value?.owner,
-                        offlineResource: _value?.offline,
-                      });
-                  }
-                  if (_rownum === '2') {
-                      setReferenceColumnTwoData2({
-                        ...referenceColumnTwoData2,
-                        languageId: _value?.language,
-                        selectedResource: _value?.resouceId,
-                        refName: _value?.name,
-                        header: _value?.name,
-                        owner: _value?.owner,
-                        offlineResource: _value?.offline,
-                      });
-                  }
-                // }
-              },
-            );
-          }
-        },
-      );
-      }
-    }).then(() => {
-      if (rows.length > 1) {
-        setLoadResource3(true);
-        setLoadResource4(true);
-        setOpenResource3(false);
-        setOpenResource4(false);
-      }
-      if (rows.length === 1) {
-        setLoadResource3(true);
-        setOpenResource3(false);
-      }
-      setSectionNum(rows.length);
+    getReferenceHistoryOnLoad().then(() => {
+      logger.debug('SectionPlaceholder2.js', 'Getting Resources Reference on Load');
     });
-  });
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -293,81 +199,37 @@ const SectionPlaceholder2 = ({ editor }) => {
     }
   }, [layout, openResource1, openResource2, openResource3, openResource4, sectionNum, setLayout]);
 
+  // call useEffect on Save reference (call on new resource / new pane)
   useEffect(() => {
-    const refsHistory = [];
-    localforage.getItem('currentProject').then((projectName) => {
-      const _projectname = projectName?.split('_');
-    localforage.getItem('projectmeta').then((value) => {
-      Object.entries(value).forEach(
-        ([, _value]) => {
-          Object.entries(_value).forEach(
-            ([, resources]) => {
-              if (resources.identification.name.en === _projectname[0]) {
-                refsHistory.push(resources.project[resources.type.flavorType.flavor.name]);
-                if (sectionNum === 1 || sectionNum === 0) {
-                  if (openResource3
-                    && openResource4) {
-                      resources.project[resources.type.flavorType.flavor.name].refResources.splice(1, 1);
-                    }
-                }
-                if (sectionNum === 1 && layout > 1 && !(openResource3 && openResource4)) {
-                      resources.project[resources.type.flavorType.flavor.name].refResources[1] = {
-                      1: {
-                        resouceId: referenceColumnTwoData1?.selectedResource,
-                        language: referenceColumnTwoData1?.languageId,
-                        name: referenceColumnTwoData1?.refName,
-                        owner: referenceColumnTwoData1?.owner,
-                        navigation: { book: '1TI', chapter: '2' },
-                        offline: referenceColumnTwoData1.offlineResource,
-                      },
-                  };
-                }
-                if (sectionNum === 2 && layout > 1) {
-                  if (referenceColumnTwoData1.refName !== undefined) {
-                  resources.project[resources.type.flavorType.flavor.name].refResources[1] = {
-                    1: {
-                      resouceId: referenceColumnTwoData1?.selectedResource,
-                      language: referenceColumnTwoData1?.languageId,
-                      name: referenceColumnTwoData1?.refName,
-                      owner: referenceColumnTwoData1?.owner,
-                      navigation: { book: '1TI', chapter: '2' },
-                      offline: referenceColumnTwoData1.offlineResource,
-                    },
-                    2: {
-                      resouceId: referenceColumnTwoData2?.selectedResource,
-                      language: referenceColumnTwoData2?.languageId,
-                      name: referenceColumnTwoData2?.refName,
-                      owner: referenceColumnTwoData2?.owner,
-                      navigation: { book: '1TI', chapter: '2' },
-                      offline: referenceColumnTwoData2.offlineResource,
-                    },
-                  };
-                }
-                }
-                if (layout === 0 && openResource1 && openResource2 && openResource3 && openResource4) {
-                  resources.project[resources.type.flavorType.flavor.name].refResources = [];
-                }
-              }
-            },
-          );
-        },
-      );
-      if (addingSection >= 3 || !openResource3 || !openResource4 || removingSection >= 3) {
-        setRemovingSection();
-        setAddingSection();
-        localforage.setItem('projectmeta', value).then(() => {
-          saveReferenceResource();
-        });
-      }
-  });
-  });
-  }, [openResource1, openResource2, openResource3, openResource4, referenceColumnTwoData1?.languageId,
+    (async () => {
+      saveSettingsResourceHistory(
+        sectionNum,
+        openResource3,
+        openResource4,
+        layout,
+        referenceColumnTwoData1,
+        referenceColumnTwoData2,
+        addingSection,
+        removingSection,
+        setAddingSection,
+        setRemovingSection,
+        sectionPlaceholderNum,
+        setReferenceColumnTwoData1,
+        setReferenceColumnTwoData2,
+        setOpenResource3,
+        setOpenResource4,
+    );
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [openResource3, openResource4, referenceColumnTwoData1?.languageId,
     referenceColumnTwoData1.refName, referenceColumnTwoData1?.selectedResource, referenceColumnTwoData2?.languageId,
     referenceColumnTwoData2?.refName, referenceColumnTwoData2?.selectedResource, sectionNum, layout,
     referenceColumnTwoData1?.owner, referenceColumnTwoData2?.owner, removingSection, addingSection,
     referenceColumnTwoData1.offlineResource, referenceColumnTwoData2.offlineResource,
-    resetResourceOnDeleteOffline?.referenceColumnTwoData1Reset, resetResourceOnDeleteOffline?.referenceColumnTwoData2Reset]);
+    resetResourceOnDeleteOffline?.referenceColumnTwoData1Reset, resetResourceOnDeleteOffline?.referenceColumnTwoData2Reset,
+    ]);
 
+    // referenceColumnTwoData1, referenceColumnTwoData2 openResource1, openResource2,
   const CustomNavigation1 = (
     <CustomNavigation
       setNavigation={setNavigation1}
