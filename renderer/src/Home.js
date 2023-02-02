@@ -16,10 +16,12 @@ const Home = () => {
   const [user, setUser] = React.useState();
   React.useEffect(() => {
     logger.debug('Home.js', 'Triggers loadUsers for the users list');
-    const fs = window.require('fs');
-    loadUsers(fs);
+    loadUsers();
   }, []);
   React.useEffect(() => {
+    localForage.getItem('userProfile').then((user) => {
+      setUser(user);
+    });
     if (!states.accessToken) {
       logger.debug('Home.js', 'Triggers getToken to fetch the Token if not available');
       action.getToken();
@@ -33,30 +35,23 @@ const Home = () => {
         setToken(value);
       });
     }
-    localForage.getItem('users').then((user) => {
-      if (user.length !== 0) {
-        const newuser = user[0].username;
-        setUser(newuser);
-      } else {
-        localForage.removeItem('sessionToken');
-      }
-    });
-  }, [setToken, user, setUser, action, states.accessToken]);
+  }, [token, user, setUser, setToken, action, states.accessToken]);
+
   return (
     <>
-      {token && user
-        ? (
-          <AuthenticationContextProvider>
+      {token && user ? (
+        <AuthenticationContextProvider>
+          <AutographaContextProvider>
             <ProjectContextProvider>
               <ReferenceContextProvider>
-                <AutographaContextProvider>
-                  <ProjectList />
-                </AutographaContextProvider>
+                <ProjectList />
               </ReferenceContextProvider>
             </ProjectContextProvider>
-          </AuthenticationContextProvider>
-        )
-        : <Login />}
+          </AutographaContextProvider>
+        </AuthenticationContextProvider>
+      ) : (
+        <Login />
+      )}
     </>
   );
 };

@@ -1,15 +1,15 @@
 import NewProject from '@/modules/projects/NewProject';
 import AuthenticationContextProvider from '@/components/Login/AuthenticationContextProvider';
 import ProjectContextProvider from '@/components/context/ProjectContext';
-import ReferenceContextProvider from '@/components/context/ReferenceContext';
+import AutographaContextProvider from '@/components/context/AutographaContext';
 
 const newproject = () => (
   <AuthenticationContextProvider>
-    <ProjectContextProvider>
-      <ReferenceContextProvider>
+    <AutographaContextProvider>
+      <ProjectContextProvider>
         <NewProject call="new" />
-      </ReferenceContextProvider>
-    </ProjectContextProvider>
+      </ProjectContextProvider>
+    </AutographaContextProvider>
   </AuthenticationContextProvider>
 );
 

@@ -16,7 +16,6 @@ export const loadUsers = async () => {
   const path = require('path');
   const file = path.join(newpath, 'autographa', 'users', 'users.json');
   if (fs.existsSync(file)) {
-  localForage.removeItem('userProfile');
     fs.readFile(file, 'utf8', (err, data) => {
       if (err) {
         logger.error('handleJson.js', 'Failed to read the data from file');

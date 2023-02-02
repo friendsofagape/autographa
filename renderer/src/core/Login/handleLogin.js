@@ -5,7 +5,7 @@ import * as logger from '../../logger';
 export const createUser = (values, fs) => {
   logger.debug('handleLogin.js', 'In createUser to create a new user');
   const obj = {
-    username: values.username,
+    username: values.username.toLowerCase(),
     firstname: '',
     lastname: '',
     email: '',

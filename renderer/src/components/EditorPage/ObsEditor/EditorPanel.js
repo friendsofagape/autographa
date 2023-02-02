@@ -62,6 +62,7 @@ const EditorPanel = ({ obsStory, storyUpdate }) => {
             key={story.id}
           >
             <textarea
+              wrap="off"
               name={story.title}
               onChange={handleChange}
               onKeyDown={avoidEnter}
