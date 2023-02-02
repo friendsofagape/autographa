@@ -51,6 +51,7 @@ const LeftLogin = () => {
   }
   function closeAccountModal() {
     setOpen(false);
+    setValues({});
   }
   function openAccountModal() {
     setOpen(true);
@@ -127,15 +128,19 @@ const LeftLogin = () => {
    * the values from the form, then reset the form values.
    * @param event - the event object
    */
-
+  const displayError = (errorText) => {
+    setNewOpen(true);
+    setTimeout(() => {
+      setNewOpen(false);
+    }, 2000);
+    setText(errorText);
+  };
   function formSubmit(event) {
     event.preventDefault();
-    if (users.length > 0 && users.find((item) => (item.username === values.username))) {
-      setNewOpen(true);
-      setTimeout(() => {
-        setNewOpen(false);
-      }, 2000);
-      setText('User exists. Create a new user');
+    if (values.username.length < 3 || values.username.length > 15) {
+      displayError('The input has to be between 3 and 15 characters long');
+    } else if (users.length > 0 && users.find((item) => (item.username.toLowerCase() === values.username.toLowerCase().trim()))) {
+      displayError('User exists. Create a new user');
     } else {
       handleSubmit(values);
       setValues({});
@@ -375,7 +380,7 @@ const LeftLogin = () => {
                         )}
                       </div>
                       {newOpen && (
-                      <span className="text-red-500">{text}</span>
+                        <span className="text-red-500">{text}</span>
                         )}
                       <div className="mt-8 flex gap-8 justify-end">
                         <button
