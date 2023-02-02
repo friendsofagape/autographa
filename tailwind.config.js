@@ -1,5 +1,5 @@
 /** @type {import('tailwindcss').Config} */
-const colors = require('tailwindcss/colors');
+// const colors = require('tailwindcss/colors');
 
 module.exports = {
   content: ['./pages/**/*.{js,ts,jsx,tsx}',
@@ -9,25 +9,25 @@ module.exports = {
     './renderer/src/core/**/*.{js,ts,jsx,tsx}',
     './renderer/src/modules/**/*.{js,ts,jsx,tsx}'],
   theme: {
-    colors: {
-      transparent: 'transparent',
-      current: 'currentColor',
-      primary: '#0073E5',
-      'primary-50': '#E4F2FF',
-      secondary: '#151515',
-      success: '#40C000',
-      error: '#FF4D4D',
-      validation: '#FFE5E5',
-      white: colors.white,
-      light: '#E4F1FF',
-      gray: colors.slate,
-      dark: '#333333',
-      black: colors.black,
-      green: colors.emerald,
-      yellow: colors.amber,
-      red: colors.red,
-    },
     extend: {
+      colors: {
+        transparent: 'transparent',
+        current: 'currentColor',
+        primary: '#0073E5',
+        'primary-50': '#E4F2FF',
+        secondary: '#151515',
+        success: '#40C000',
+        error: '#FF4D4D',
+        validation: '#FFE5E5',
+        // white: colors.white,
+        light: '#E4F1FF',
+        // gray: colors.slate,
+        dark: '#333333',
+        // black: colors.black,
+        // green: colors.emerald,
+        // yellow: colors.amber,
+        // red: colors.red,
+      },
       fontSize: {
         xxs: '.65rem',
       },
