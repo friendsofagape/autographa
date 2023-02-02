@@ -2,15 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
-
 @font-face {
-	font-family: "Inter";
-	src: url("../renderer/src/assets/fonts/Inter/Inter-Medium.ttf"),
-		url("../renderer/src/assets/fonts/Inter/Inter-Regular.ttf"),
-		url("../renderer/src/assets/fonts/Inter/Inter-SemiBold.ttf"),
-		url("../renderer/src/assets/fonts/Inter/Inter-Thin.ttf"),
-		url("../renderer/src/assets/fonts/Inter/Inter-Light.ttf"),
-		url("../renderer/src/assets/fonts/Inter/Inter-ExtraLight.ttf");
+	font-family: 'Inter';
+	src: url('../renderer/src/assets/fonts/Inter/Inter-Medium.ttf'),
+		url('../renderer/src/assets/fonts/Inter/Inter-Regular.ttf'),
+		url('../renderer/src/assets/fonts/Inter/Inter-SemiBold.ttf'),
+		url('../renderer/src/assets/fonts/Inter/Inter-Thin.ttf'),
+		url('../renderer/src/assets/fonts/Inter/Inter-Light.ttf'),
+		url('../renderer/src/assets/fonts/Inter/Inter-ExtraLight.ttf');
 	font-weight: 100 500;
 }
 
@@ -82,6 +81,18 @@ p.paragraph {
 .perf .graft:before {
 	@apply cursor-pointer font-semibold;
 	content: ' ‡';
+}
+
+.perf .verse:after {
+	visibility: visible;
+	position: absolute;
+	top: 0;
+	left: 0;
+	content: ' ' attr(data-atts-number);
+}
+.perf .verse {
+	visibility: hidden;
+	position: relative;
 }
 
 /* html {
