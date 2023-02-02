@@ -1,5 +1,4 @@
 import { Dialog, Tab, Transition } from '@headlessui/react';
-import { useRouter } from 'next/router';
 import React, {
   Fragment, useContext, useEffect, useState,
 } from 'react';
@@ -15,9 +14,8 @@ const LeftLogin = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [open, setOpen] = useState(false);
   const [values, setValues] = useState({});
-
-  const router = useRouter();
-
+  const [text, setText] = useState('');
+  const [newOpen, setNewOpen] = useState(false);
   const [users, setUsers] = useState([]);
   const {
     action: { generateToken },
@@ -53,6 +51,7 @@ const LeftLogin = () => {
   }
   function closeAccountModal() {
     setOpen(false);
+    setValues({});
   }
   function openAccountModal() {
     setOpen(true);
@@ -73,6 +72,7 @@ const LeftLogin = () => {
     if (values.username) {
       user = true;
       setUserNameError(false);
+      setNewOpen(false);
     } else if (values.username === '') {
       user = false;
       setUserNameError(true);
@@ -82,10 +82,8 @@ const LeftLogin = () => {
     }
     return user;
   };
-
   /* Sorting the users array by the lastSeen property. */
   const sortedUsers = [...users].sort((a, b) => Date.parse(b.lastSeen) - Date.parse(a.lastSeen));
-
   /**
    * Checks if the user is existing or not, if not then it creates a new user and generates a token
    * for the user.
@@ -123,13 +121,6 @@ const LeftLogin = () => {
           generateToken(user);
         }
       }
-    } else {
-      // eslint-disable-next-line no-lonely-if
-      if (isElectron()) {
-        router.push('/projects');
-      } else {
-        router.push('/');
-      }
     }
   };
   /**
@@ -137,10 +128,23 @@ const LeftLogin = () => {
    * the values from the form, then reset the form values.
    * @param event - the event object
    */
-  function handleAdd(event) {
+  const displayError = (errorText) => {
+    setNewOpen(true);
+    setTimeout(() => {
+      setNewOpen(false);
+    }, 2000);
+    setText(errorText);
+  };
+  function formSubmit(event) {
     event.preventDefault();
-    handleSubmit(values);
-    setValues({});
+    if (values.username.length < 3 || values.username.length > 15) {
+      displayError('The input has to be between 3 and 15 characters long');
+    } else if (users.length > 0 && users.find((item) => (item.username.toLowerCase() === values.username.toLowerCase().trim()))) {
+      displayError('User exists. Create a new user');
+    } else {
+      handleSubmit(values);
+      setValues({});
+    }
   }
   function classNames(...classes) {
     return classes.filter(Boolean).join(' ');
@@ -183,14 +187,14 @@ const LeftLogin = () => {
       </p>
       <div className="p-5">
         <div className="relative border-gray-200 rounded-t-[10px] lg:w-72 w-44 sm:w-52 overflow-hidden">
-          {sortedUsers.filter(filterUsers).slice(0, 5).map((user) => (
+          {sortedUsers?.filter(filterUsers).slice(0, 5).map((user) => (
             <div
-              key={user}
+              key={user.username}
               className="p-4 py-2 text-sm cursor-pointer bg-[#F9F9F9] hover:bg-primary hover:text-white border-b-[1px] border-[#E3E3E3] font-semibold"
               tabIndex={0}
               role="button"
               onClick={() => {
-                handleSubmit({ username: user.username });
+                handleSubmit({ username: user?.username });
               }}
             >
               {user.username}
@@ -278,13 +282,11 @@ const LeftLogin = () => {
 
                                   <p className="text-md font-semibold  ">
                                     {user.username}
-
                                   </p>
                                 </div>
                                 <button type="button" className="mx-3" onClick={() => archiveUser(sortedUsers, user)}>
                                   <TrashIcon className="text-gray-500 h-5 w-5" />
                                 </button>
-
                               </div>
                           ))}
                           </div>
@@ -298,10 +300,8 @@ const LeftLogin = () => {
                                   tabIndex={0}
                                   className="w-full p-4 py-3 rounded text-sm cursor-pointer bg-[#F9F9F9] hover:bg-primary hover:text-white border border-[#E3E3E3] font-semibold"
                                 >
-
                                   <p className="text-md font-semibold  ">
                                     {user.username}
-
                                   </p>
                                 </div>
                                 <button type="button" className="mx-3 " onClick={() => restoreUser(sortedUsers, user)}>
@@ -347,7 +347,7 @@ const LeftLogin = () => {
               </Transition.Child>
 
               <div className="fixed inset-0 overflow-y-auto">
-                <form className="flex min-h-full items-center justify-center p-4 text-center" onSubmit={handleAdd}>
+                <form className="flex min-h-full items-center justify-center p-4 text-center" onSubmit={formSubmit}>
                   <Transition.Child
                     as={Fragment}
                     enter="ease-out duration-300"
@@ -368,6 +368,7 @@ const LeftLogin = () => {
                       <div className="mt-4">
                         <input
                           type="text"
+                          value={values.username}
                           onChange={handleChange}
                           className={`flex-shrink flex-grow flex-auto w-full border h-10 ${userNameError ? 'border-red-500' : 'border-primary'} rounded  px-3 self-center relative text-lg  leading-6 text-gray-700 outline-none`}
                           placeholder="Username"
@@ -378,7 +379,9 @@ const LeftLogin = () => {
                           </span>
                         )}
                       </div>
-
+                      {newOpen && (
+                        <span className="text-red-500">{text}</span>
+                        )}
                       <div className="mt-8 flex gap-8 justify-end">
                         <button
                           type="button"
@@ -389,7 +392,7 @@ const LeftLogin = () => {
                         </button>
                         <button
                           type="submit"
-                          className="inline-flex justify-center rounded-md border border-transparent bg-success px-12 py-2 text-sm font-medium text-white hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                          className={`inline-flex justify-center rounded-md border border-transparent ${newOpen ? 'bg-red-500' : 'bg-success'} px-12 py-2 text-sm font-medium text-white hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2`}
                         >
                           CREATE
                         </button>
@@ -416,7 +419,6 @@ const LeftLogin = () => {
           </a>
         </div>
       </div>
-
     </div>
   );
 };
