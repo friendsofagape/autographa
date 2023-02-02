@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
 import { ChevronDownIcon } from '@heroicons/react/24/solid';
-import { ChatAlt2Icon } from '@heroicons/react/24/outline';
+import { ChatBubbleLeftRightIcon } from '@heroicons/react/24/outline';
 
 import EditComment from './EditComment';
 
@@ -128,7 +128,7 @@ export default function Comments() {
                   className="p-1 absolute right-2 bottom-2 rounded bg-primary text-white"
                   onClick={() => setEditComment(true)}
                 >
-                  <ChatAlt2Icon className="w-4 h-4" />
+                  <ChatBubbleLeftRightIcon className="w-4 h-4" />
                 </button>
                 )}
 
