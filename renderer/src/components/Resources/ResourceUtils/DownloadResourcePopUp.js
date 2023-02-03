@@ -285,6 +285,8 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
             );
             // setDownloadCount((prev) => prev + 1);
           }).catch((err) => {
+            setDownloadStarted(false);
+            setTotalDownload(0);
             throw new Error(`Resource download Failed :  ${err}`);
           });
         // console.log('DOWNLOAD FINISHED');
