@@ -100,7 +100,7 @@ export default function ResourcesSidebar({
     },
   ];
   return (
-    <div className="w-[30%] sm:w-[20%] bg-gray-100 h-[85vh] flex flex-col gap-4 p-2">
+    <div className="w-[30%] sm:w-[20%] bg-gray-100 h-[85vh] sm:h-[100%] flex flex-col gap-4 p-2">
       {resourcesList.map((resource, idx) => {
         const { Icon, id, title } = resource;
         return (
