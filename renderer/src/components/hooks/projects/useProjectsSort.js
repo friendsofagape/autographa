@@ -194,7 +194,7 @@ function useProjectsSort() {
                           case 'textTranslation':
                             lastSeen = _project.project?.textTranslation?.lastSeen;
                             description = _project.project?.textTranslation?.description;
-                            isArchived = _project.project.textTranslation.isArchived;
+                            isArchived = _project.project?.textTranslation?.isArchived;
                             flavorType = 'Text Translation';
                             break;
                           case 'textStories':
