@@ -140,7 +140,7 @@ const LeftLogin = () => {
     if (values.username.length < 3 || values.username.length > 15) {
       displayError('The input has to be between 3 and 15 characters long');
     } else if (users.length > 0 && users.find((item) => (item.username.toLowerCase() === values.username.toLowerCase().trim()))) {
-      displayError('User exists. Create a new user');
+      displayError('User exists, check archived and active tab by click on view more.');
     } else {
       handleSubmit(values);
       setValues({});
