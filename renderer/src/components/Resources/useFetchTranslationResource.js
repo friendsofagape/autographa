@@ -6,7 +6,7 @@ function createData(name, language, owner) {
     name, language, owner,
   };
 }
-export const fetchTranslationResource = async (urlpath, setResource, selectResource, selectedPreProd) => {
+export const fetchTranslationResource = async (urlpath, setResource, selectResource, selectedPreProd, snackBarAction) => {
   logger.debug('ResourcesPopUp.js', `fetchTranslationResource :  ${selectResource}`);
   const baseUrl = 'https://git.door43.org/api/catalog/v5/search?';
   let url = `${baseUrl}subject=${urlpath}`;
@@ -27,9 +27,9 @@ export const fetchTranslationResource = async (urlpath, setResource, selectResou
         setResource(resourceData);
       }
     } catch (err) {
-      setOpenSnackBar(true);
-      setError('failure');
-      setSnackText('Load Online resource Failed. Might be due to internet');
+      snackBarAction?.setOpenSnackBar(true);
+      snackBarAction?.setError('failure');
+      snackBarAction?.setSnackText('Load Online resource Failed. Might be due to internet');
       logger.debug('ResourcesPopUp.js', `fetchTranslationResource Error ${selectResource} :  ${err}`);
     }
   }

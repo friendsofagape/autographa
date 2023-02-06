@@ -164,26 +164,36 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
     selectedLangFilter.forEach((langObj) => {
       temp_resource[langObj.lc] = [];
     });
-    const fetchedData = await fetch(url);
-    const fetchedDataJson = await fetchedData.json();
-    logger.debug('DownloadResourcePopUp.js', 'generating language based resources after fetch');
+    // fetch request abort
+    const controller = new AbortController();
+    const signal = controller.signal;
     try {
-      fetchedDataJson.data.forEach((element) => {
-        element.isChecked = false;
-        if (element.language in temp_resource) {
-          temp_resource[element.language].push(element);
+      const fetchedData = await fetch(url, { signal }).catch((err) => {
+        if (err?.message === 'Failed to fetch') {
+          throw new Error('Something went wrong');
         } else {
-          temp_resource[element.language] = [element];
+          throw new Error(err);
         }
       });
-      setresourceData(temp_resource);
-      setLoading(false);
+      const fetchedDataJson = await fetchedData.json();
+      logger.debug('DownloadResourcePopUp.js', 'generating language based resources after fetch');
+        fetchedDataJson.data.forEach((element) => {
+          element.isChecked = false;
+          if (element.language in temp_resource) {
+            temp_resource[element.language].push(element);
+          } else {
+            temp_resource[element.language] = [element];
+          }
+        });
+        setresourceData(temp_resource);
+        setLoading(false);
     } catch (err) {
       logger.debug('DownloadResourcePopUp.js', 'Error on fetch content : ', err);
       setLoading(false);
       setOpenSnackBar(true);
       setNotify('failure');
-      setSnackText(`${err.message || err} , Error might be due to Internet`);
+      setSnackText(`${err.message || err} , Error might be due to NO/ too Slow Internet`);
+      controller.abort();
     }
   };
 
