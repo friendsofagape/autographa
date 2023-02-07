@@ -151,12 +151,15 @@ export const createVersificationUSFM = (
               description: project.description,
               copyright: copyright.title,
               lastSeen: moment().format(),
-              refResources: [],
-              bookMarks: [],
+              refResources: call === 'edit' ? currentBurrito.project?.textTranslation.refResources : [],
+              bookMarks: call === 'edit' ? currentBurrito.project?.textTranslation.bookMarks : [],
             },
           },
           sync: { services: { door43: [] } },
         };
+        if (call === 'edit') {
+          settings.sync = currentBurrito?.sync;
+        }
         logger.debug('createVersificationUSFM.js', 'Creating ag-settings.json file in ingredients');
         await fs.writeFileSync(path.join(folder, 'ag-settings.json'), JSON.stringify(settings));
         const stat = fs.statSync(path.join(folder, 'ag-settings.json'));

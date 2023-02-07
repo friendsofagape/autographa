@@ -217,7 +217,8 @@ function useProjectsSort() {
                           FetchStarred(
                             _project.identification.name.en,
                             _project.languages[0].name.en,
-                            _project.identification.primary.ag[created].timestamp,
+                            // _project.identification.primary.ag[created].timestamp,
+                            _project.meta.dateCreated,
                             lastSeen,
                             description,
                             created,
@@ -228,7 +229,8 @@ function useProjectsSort() {
                           FetchUnstarred(
                             _project.identification.name.en,
                             _project.languages[0].name.en,
-                            _project.identification.primary.ag[created].timestamp,
+                            // _project.identification.primary.ag[created].timestamp,
+                            _project.meta.dateCreated,
                             lastSeen,
                             description,
                             created,

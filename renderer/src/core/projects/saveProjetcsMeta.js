@@ -64,9 +64,9 @@ const saveProjectsMeta = async (projectMetaObj) => {
       let scope;
       if (projectMetaObj.call === 'new') {
         logger.debug('saveProjectsMeta.js', 'Creating a key for the Project');
-      const key = currentUser + projectMetaObj.newProjectFields.projectName + moment().format();
-      id = uuidv5(key, environment.uuidToken);
-      scope = projectMetaObj.canonSpecification.currentScope;
+        const key = currentUser + projectMetaObj.newProjectFields.projectName + moment().format();
+        id = uuidv5(key, environment.uuidToken);
+        scope = projectMetaObj.canonSpecification.currentScope;
       } else {
         logger.debug('saveProjectsMeta.js', 'Fetching the key from the existing Project');
         // from existing metadata
@@ -107,6 +107,7 @@ const saveProjectsMeta = async (projectMetaObj) => {
         );
         if (projectMetaObj.call === 'edit') {
           burritoFile.ingredients = { ...projectMetaObj.project.ingredients, ...ingredient };
+          burritoFile?.sync && delete burritoFile.sync;
         } else {
           burritoFile.ingredients = ingredient;
         }
@@ -162,6 +163,7 @@ const saveProjectsMeta = async (projectMetaObj) => {
       );
       if (projectMetaObj.call === 'edit') {
         burritoFile.ingredients = { ...projectMetaObj.project.ingredients, ...ingredient };
+        burritoFile?.sync && delete burritoFile.sync;
       } else {
       burritoFile.ingredients = ingredient;
       }
@@ -241,6 +243,7 @@ const saveProjectsMeta = async (projectMetaObj) => {
         );
         if (projectMetaObj.call === 'edit') {
           burritoFile.ingredients = { ...projectMetaObj.project.ingredients, ...ingredient };
+          burritoFile?.sync && delete burritoFile.sync;
         } else {
           burritoFile.ingredients = ingredient;
         }

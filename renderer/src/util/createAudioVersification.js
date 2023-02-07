@@ -73,12 +73,15 @@ export const createAudioVersification = (
               description: project.description,
               copyright: copyright.title,
               lastSeen: moment().format(),
-              refResources: [],
-              bookMarks: [],
+              refResources: call === 'edit' ? currentBurrito.project.audioTranslation.refResources : [],
+              bookMarks: call === 'edit' ? currentBurrito.project.audioTranslation.bookMarks : [],
             },
           },
           sync: { services: { door43: [] } },
         };
+        if (call === 'edit') {
+          settings.sync = currentBurrito?.sync;
+        }
         logger.debug('createAudioVersification.js', 'Creating ag-settings.json file in ingredients');
         await fs.writeFileSync(path.join(folder, 'ag-settings.json'), JSON.stringify(settings));
         const stat = fs.statSync(path.join(folder, 'ag-settings.json'));

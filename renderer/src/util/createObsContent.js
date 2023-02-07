@@ -187,6 +187,9 @@ export const createObsContent = (
       },
       sync: { services: { door43: [] } },
     };
+    if (call === 'edit') {
+      settings.sync = currentBurrito?.sync;
+    }
     logger.debug('createObsContent.js', 'Creating ag-settings.json file in content');
     if (!fs.existsSync(folder)) {
       fs.mkdirSync(folder, { recursive: true });
