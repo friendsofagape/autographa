@@ -16,6 +16,8 @@ import MenuDropdown from '../../components/MenuDropdown/MenuDropdown';
 import menuStyles from './MenuBar.module.css';
 import styles from './SubMenuBar.module.css';
 
+import SyncPopup from './SyncPopup';
+
 const activate = () => {
   // console.log('rename');
 };
@@ -243,6 +245,7 @@ export default function SubMenuBar() {
 
             {/* Auto sync button */}
             <AutoSync selectedProject={selectedProject} />
+            <SyncPopup />
 
             <button aria-label="add-panels" title={t('tooltip-editor-layout')} type="button" onClick={() => handleResource()} className={`group ${menuStyles.btn}`}>
               <ColumnsIcon fill="currentColor" className="h-6 w-6" aria-hidden="true" />
