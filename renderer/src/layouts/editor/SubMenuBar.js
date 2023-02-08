@@ -17,6 +17,8 @@ import MenuDropdown from '../../components/MenuDropdown/MenuDropdown';
 import menuStyles from './MenuBar.module.css';
 import styles from './SubMenuBar.module.css';
 
+import SyncPopup from './SyncPopup';
+
 const activate = () => {
   // console.log('rename');
 };
