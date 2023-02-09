@@ -80,11 +80,16 @@ export const createDownloadedResourceSB = async (username, resourceMeta, project
           };
         json.identification.name.en = projectResource.name;
         json.identification.abbreviation.en = '';
-        const code = findCode(languageCode, resourceMeta.dublin_core.language.title);
-        if (code) {
-          json.languages[0].tag = code;
-        } else {
-          json.languages[0].tag = resourceMeta.dublin_core.language.title.substring(0, 3);
+
+        if (resourceMeta.dublin_core.language.identifier) {
+          json.languages[0].tag = resourceMeta.dublin_core.language.identifier;
+        } else if (resourceMeta.dublin_core.language.title) {
+          const code = findCode(languageCode, resourceMeta.dublin_core.language.title);
+          if (code) {
+            json.languages[0].tag = code;
+          } else {
+            json.languages[0].tag = resourceMeta.dublin_core.language.title.substring(0, 3);
+          }
         }
         json.languages[0].name.en = projectResource.language_title;
 
