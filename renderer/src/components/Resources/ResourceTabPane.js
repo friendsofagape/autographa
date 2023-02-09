@@ -36,11 +36,11 @@ export default function ResourceTabPane({
       <Tab.Group>
         <Tab.List className="flex space-x-0 rounded-xl ">
           <Tab className={({ selected }) => classNames(
-            'w-20 rounded-t-lg flex items-center justify-center font-bold py-2 text-xs leading-5 text-blue-700 uppercase',
-            'ring-offset-2 ring-offset-blue-400 focus:outline-none z-50',
+            'w-20 rounded-t-lg flex items-center justify-center font-bold py-2 text-xs leading-5 text-white uppercase',
+            'ring-offset-2 ring-offset-white focus:outline-none z-50',
             selected
               ? 'bg-primary text-white'
-              : 'text-blue-100 bg-gray-200',
+              : 'text-black bg-gray-200',
           )}
           >
             {selectResource}
@@ -51,11 +51,11 @@ export default function ResourceTabPane({
             {({ selected }) => (
               <button
                 className={classNames(
-                  'w-32 rounded-t-lg flex items-center justify-center gap-2 font-bold py-2 text-xs leading-5 text-blue-700 uppercase',
-                  'ring-offset-2 ring-offset-blue-400 focus:outline-nonez-50 ',
+                  'w-32 rounded-t-lg flex items-center justify-center gap-2 font-bold py-2 text-xs leading-5 text-white uppercase',
+                  'ring-offset-2 ring-offset-white focus:outline-nonez-50 ',
                   selected
                     ? 'bg-primary text-white'
-                    : 'text-blue-100 bg-gray-200',
+                    : 'text-black bg-gray-200',
                 )}
                 type="button"
                 onClick={() => { openResourceDialogBox(); setResourceIconClick(!resourceIconClick); }}
@@ -71,11 +71,11 @@ export default function ResourceTabPane({
 )}
           <Tab
             className={({ selected }) => classNames(
-              'w-32 rounded-t-lg flex items-center justify-center gap-2 font-bold py-2 text-xs leading-5 text-blue-700 uppercase',
-              'ring-offset-2 ring-offset-blue-400 focus:outline-none z-50',
+              'w-32 rounded-t-lg flex items-center justify-center gap-2 font-bold py-2 text-xs leading-5 text-white uppercase',
+              'ring-offset-2 ring-offset-white focus:outline-none z-50',
               selected
                 ? 'bg-primary text-white'
-                : 'text-blue-100 bg-gray-200',
+                : 'text-black bg-gray-200',
             )}
             type="button"
             onClick={() => { setOpenImportResourcePopUp(true); setResourceIconClick(!resourceIconClick); }}

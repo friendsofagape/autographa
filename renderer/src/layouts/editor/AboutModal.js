@@ -71,7 +71,7 @@ export default function AboutModal(props) {
 
                   <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                     <Dialog.Title as="h3" className="flex justify-items-center items-center mb-4 text-lg leading-6 text-primary uppercase tracking-wide font-bold">
-                      <div className="flex items-center justify-center rounded-full bg-primary h-10 w-10 mr-5">
+                      <div className="flex items-center justify-center border-current border-2 rounded-full h-10 w-10 mr-5">
                         <LogoIcon
                           className="h-6 w-6 text-white"
                           fill="currentColor"
