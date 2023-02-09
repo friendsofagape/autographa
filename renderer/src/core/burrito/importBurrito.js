@@ -311,6 +311,7 @@ const importBurrito = async (filePath, currentUser, updateBurritoVersion) => {
           setting.version = environment.AG_SETTING_VERSION;
           setting.project[metadata.type.flavorType.flavor.name].scriptDirection = settings.project[metadata.type.flavorType.flavor.name]?.scriptDirection ? settings.project[metadata.type.flavorType.flavor.name]?.scriptDirection : '';
           setting.project[metadata.type.flavorType.flavor.name].starred = settings.project[metadata.type.flavorType.flavor.name]?.starred ? settings.project[metadata.type.flavorType.flavor.name]?.starred : false;
+          setting.project[metadata.type.flavorType.flavor.name].isArchived = settings.project[metadata.type.flavorType.flavor.name]?.isArchived ? settings.project[metadata.type.flavorType.flavor.name]?.isArchived : false;
           setting.project[metadata.type.flavorType.flavor.name].versification = settings.project[metadata.type.flavorType.flavor.name]?.versification ? settings.project[metadata.type.flavorType.flavor.name]?.versification : 'ENG';
           setting.project[metadata.type.flavorType.flavor.name].description = settings.project[metadata.type.flavorType.flavor.name]?.description ? settings.project[metadata.type.flavorType.flavor.name]?.description : '';
           setting.project[metadata.type.flavorType.flavor.name].copyright = settings.project[metadata.type.flavorType.flavor.name]?.copyright ? settings.project[metadata.type.flavorType.flavor.name]?.copyright : { title: 'Custom' };

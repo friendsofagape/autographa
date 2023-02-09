@@ -113,9 +113,11 @@ export default function ProjectList() {
     setCallEditProject(false);
     await FetchProjects();
   };
-
+// checking if isArchived is true show projects in archive tab else project tab
   function filterArchive(project) {
-    if (project.isArchived === showArchived || project.isArchived === undefined) {
+    if (project.isArchived === showArchived) {
+      return true;
+    } if (project.isArchived === undefined && showArchived === false) {
       return true;
     }
     return false;
