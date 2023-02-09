@@ -27,7 +27,12 @@ export const createObsContent = (
   return new Promise((resolve) => {
     const ingredients = {};
     const newpath = localStorage.getItem('userPath');
-    const folder = path.join(newpath, 'autographa', 'users', username, 'projects', `${project.projectName}_${id}`, 'ingredients');
+    let ingredientsDirName = 'ingredients';
+    if (call === 'edit') {
+      ingredientsDirName = Object.keys(currentBurrito.ingredients).filter((key) => key.includes('ag-settings.json'));
+      ingredientsDirName = ingredientsDirName[0].split(/[(\\)?(/)?]/gm).slice(0)[0];
+    }
+    const folder = path.join(newpath, 'autographa', 'users', username, 'projects', `${project.projectName}_${id}`, ingredientsDirName);
     const fs = window.require('fs');
 
     logger.debug('createObsContent.js', 'Creating the story md files');

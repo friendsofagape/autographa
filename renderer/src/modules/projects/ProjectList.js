@@ -367,7 +367,6 @@ export default function ProjectList() {
                                         <td className="px-6 py-4">
                                           <div className="text-sm text-gray-900">{project.type}</div>
                                         </td>
-                                        {console.log('207 : ', { project })}
                                         <td className="px-6 py-4 text-sm text-gray-500">{moment(project.date).format('LL')}</td>
                                         <td className="px-6 py-4 text-sm text-gray-500">{moment(project.view, 'YYYY-MM-DD h:mm:ss').fromNow()}</td>
                                         <td className="px-6 py-4 text-right text-sm font-medium">
