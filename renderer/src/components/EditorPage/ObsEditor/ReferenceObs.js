@@ -21,7 +21,6 @@ const ReferenceObs = ({ stories }) => {
     selectedStory,
     selectedFont,
     fontSize,
-    projectScriptureDir,
   },
   actions: {
     setSelectedStory,
@@ -88,7 +87,6 @@ const { t } = useTranslation();
                       fontFamily: selectedFont || 'sans-serif',
                       fontSize: `${fontSize}rem`,
                       lineHeight: (fontSize > 1.3) ? 1.5 : '',
-                      direction: `${projectScriptureDir === 'RTL' ? 'rtl' : 'auto'}`,
                     }}
                   >
                     {story.text}
