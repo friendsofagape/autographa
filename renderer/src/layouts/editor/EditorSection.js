@@ -151,8 +151,9 @@ export default function EditorSection({
   };
   useEffect(() => {
     // Since we are adding reference resources from different places the data we have are inconsistant.
-    // Looking for flavor because flavor is only available for scripture and gloss(obs), not for Translation resources
-    if (referenceResources.flavor && referenceResources.offlineResource.offline === false && title) {
+    // Looking for flavor from the flavours because flavor is only available for scripture and gloss(obs), not for Translation resources
+    const flavours = ['obs', 'bible', 'audio'];
+    if (referenceResources.offlineResource.offline === false && title && flavours.includes(referenceResources.selectedResource)) {
       logger.debug('EditorSection.js', 'Fetching language direction of this downloaded resource');
       // offline=false->resources are added directly using collection Tab, offline=true-> resources added from door43
       // Fetching the language code from burrito file to get the direction
