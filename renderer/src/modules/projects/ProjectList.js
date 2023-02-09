@@ -128,6 +128,7 @@ export default function ProjectList() {
           <>
             <ProjectsLayout
               title={t('projects-page')}
+              archive="enable"
               isImport
               showArchived={showArchived}
               setShowArchived={setShowArchived}
