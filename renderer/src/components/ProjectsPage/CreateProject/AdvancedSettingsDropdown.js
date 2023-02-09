@@ -66,6 +66,7 @@ export default function AdvancedSettingsDropdown({ call, project, projectType })
   function closeBooks() {
     setBibleNav(false);
   }
+
   const loadScope = (project) => {
     logger.debug('AdvancedSettingsDropdown.js', 'In loadScope for loading a exact scope from burrito');
     const vals = Object.keys(project.type.flavorType.currentScope).map((key) => key);
@@ -83,6 +84,7 @@ export default function AdvancedSettingsDropdown({ call, project, projectType })
       setCurrentScope({ title: t('label-other'), currentScope: vals });
     }
   };
+  // console.log('canon spec : ', { canonSpecification });
   // selectNew variable is used to track whether its a new selection or loading from the list
   const setALicense = (licenceTitle, selectNew) => {
     let title = licenceTitle;
@@ -159,10 +161,12 @@ export default function AdvancedSettingsDropdown({ call, project, projectType })
     openBibleNav('edit');
   };
   useEffect(() => {
-    if (call === 'edit' && !isShow) {
+    if (call === 'edit') {
       loadScope(project);
-      loadLicence(project);
-      setVersificationScheme({ title: project?.project?.textTranslation?.versification ? project?.project?.textTranslation?.versification : 'ENG' });
+      if (!isShow) {
+        loadLicence(project);
+        setVersificationScheme({ title: project?.project?.textTranslation?.versification ? project?.project?.textTranslation?.versification : 'ENG' });
+      }
     }
     if (call === 'edit' && project.type.flavorType.flavor.name === 'textStories') {
       loadLicence(project);

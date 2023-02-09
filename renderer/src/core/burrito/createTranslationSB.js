@@ -42,7 +42,9 @@ update,
     }
     json.meta.generator.userName = username;
     json.meta.generator.softwareVersion = packageInfo.version;
-    json.meta.dateCreated = moment().format();
+    if (call !== 'edit') {
+      json.meta.dateCreated = moment().format();
+    }
     json.identification.primary = {
       ag: {
         [id]: {
