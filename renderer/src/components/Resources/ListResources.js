@@ -86,29 +86,33 @@ export const ListResources = ({
       setSnackText('Download in progress');
     }
   };
-
+  const snackBarAction = {
+    setOpenSnackBar,
+    setError,
+    setSnackText,
+  };
   useEffect(() => {
     (async () => {
       setLoading(true);
       logger.debug('ResourcesPopUp.js', `get available selected resources ${selectResource}`);
       switch (selectResource) {
         case 'tn':
-          await fetchTranslationResource('TSV Translation Notes', setTranslationNote, selectResource, selectedPreProd);
+          await fetchTranslationResource('TSV Translation Notes', setTranslationNote, selectResource, selectedPreProd, snackBarAction);
           break;
         case 'tw':
-          await fetchTranslationResource('Translation Words', settranslationWord, selectResource, selectedPreProd);
+          await fetchTranslationResource('Translation Words', settranslationWord, selectResource, selectedPreProd, snackBarAction);
           break;
         case 'tq':
-          await fetchTranslationResource('Translation Questions', setTranslationQuestion, selectResource, selectedPreProd);
+          await fetchTranslationResource('Translation Questions', setTranslationQuestion, selectResource, selectedPreProd, snackBarAction);
           break;
         case 'obs-tn':
-          await fetchTranslationResource('OBS Translation Notes&subject=tsv obs Translation notes', setObsTranslationNote, selectResource, selectedPreProd);
+          await fetchTranslationResource('OBS Translation Notes&subject=tsv obs Translation notes', setObsTranslationNote, selectResource, selectedPreProd, snackBarAction);
           break;
         case 'obs-tq':
-          await fetchTranslationResource('OBS Translation Questions', setObsTranslationQuestion, selectResource, selectedPreProd);
+          await fetchTranslationResource('OBS Translation Questions', setObsTranslationQuestion, selectResource, selectedPreProd, snackBarAction);
           break;
         case 'ta':
-          await fetchTranslationResource('Translation Academy', setTranslationAcademy, selectResource, selectedPreProd);
+          await fetchTranslationResource('Translation Academy', setTranslationAcademy, selectResource, selectedPreProd, snackBarAction);
           break;
         default:
           break;

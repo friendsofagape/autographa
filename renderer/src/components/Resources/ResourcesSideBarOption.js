@@ -42,7 +42,7 @@ const ResourcesSideBarOption = ({
       )}
     >
       <Icon className="mx-3 h-5 w-5" />
-      <span className="font-semibold text-sm">{resource.title}</span>
+      <span className="font-semibold text-sm text-left">{resource.title}</span>
     </button>
   );
 };

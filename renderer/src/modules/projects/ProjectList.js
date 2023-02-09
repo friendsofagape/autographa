@@ -113,9 +113,11 @@ export default function ProjectList() {
     setCallEditProject(false);
     await FetchProjects();
   };
-
+// checking if isArchived is true show projects in archive tab else project tab
   function filterArchive(project) {
-    if (project.isArchived === showArchived || project.isArchived === undefined) {
+    if (project.isArchived === showArchived) {
+      return true;
+    } if (project.isArchived === undefined && showArchived === false) {
       return true;
     }
     return false;
@@ -128,6 +130,7 @@ export default function ProjectList() {
           <>
             <ProjectsLayout
               title={t('projects-page')}
+              archive="enable"
               isImport
               showArchived={showArchived}
               setShowArchived={setShowArchived}
@@ -208,10 +211,10 @@ export default function ProjectList() {
                                         <td className="px-6 py-4 text-sm text-gray-500">{moment(project.view, 'YYYY-MM-DD h:mm:ss').fromNow()}</td>
 
                                         <td className="px-6 py-4 text-right text-sm font-medium flex justify-end">
-                                          <Disclosure.Button className="flex justify-between w-full px-4 py-2 text-sm font-medium text-left text-purple-900 bg-purple-100 rounded-lg hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75">
+                                          <Disclosure.Button className="flex justify-between w-full px-4 py-2 text-sm font-medium text-left text-gray-200 rounded-lg focus:outline-none focus-visible:ring focus-visible:ring-gray-500 focus-visible:ring-opacity-75">
                                             {open
-                                              ? <ChevronUpIcon className="w-5 h-5 text-purple-500" />
-                                              : <ChevronDownIcon aria-label="star-expand-project" className="w-5 h-5 text-purple-500" />}
+                                              ? <ChevronUpIcon className="w-5 h-5 text-gray-500 hover:text-purple-600" />
+                                              : <ChevronDownIcon aria-label="star-expand-project" className="w-5 h-5 text-gray-500 hover:text-purple-600" />}
                                           </Disclosure.Button>
                                         </td>
                                       </tr>
@@ -367,10 +370,10 @@ export default function ProjectList() {
                                         <td className="px-6 py-4 text-sm text-gray-500">{moment(project.date).format('LL')}</td>
                                         <td className="px-6 py-4 text-sm text-gray-500">{moment(project.view, 'YYYY-MM-DD h:mm:ss').fromNow()}</td>
                                         <td className="px-6 py-4 text-right text-sm font-medium">
-                                          <Disclosure.Button className="flex justify-between w-full px-4 py-2 text-sm font-medium text-left text-purple-900 bg-purple-100 rounded-lg hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75">
+                                          <Disclosure.Button className="flex justify-between w-full px-4 py-2 text-sm font-medium text-left text-gray-500 rounded-lg focus:outline-none focus-visible:ring focus-visible:ring-gray-500 focus-visible:ring-opacity-75">
                                             {open
-                                              ? <ChevronUpIcon className="w-5 h-5 text-purple-500" />
-                                              : <ChevronDownIcon aria-label="unstar-expand-project" className="w-5 h-5 text-purple-500" />}
+                                              ? <ChevronUpIcon className="w-5 h-5 text-gray-500 hover:text-purple-600" />
+                                              : <ChevronDownIcon aria-label="unstar-expand-project" className="w-5 h-5 text-gray-500 hover:text-purple-600" />}
                                           </Disclosure.Button>
                                         </td>
                                       </tr>

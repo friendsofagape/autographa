@@ -231,20 +231,22 @@ export const handleDownloadResources = async (resourceData, selectResource, acti
               logger.debug('passed is checked ---------->');
               if (!update) {
                 // check for duplicate
-                const existingResource = fs.readdirSync(folder, { withFileTypes: true });
+                const existingResource = fs.readdirSync(folder, { withFileTypes: true }).filter((dir) => dir.isDirectory());
                 // eslint-disable-next-line no-loop-func
                 existingResource.forEach((element) => {
-                let filecontentMeta = fs.readFileSync(path.join(folder, element.name, 'metadata.json'), 'utf8');
-                filecontentMeta = JSON.parse(filecontentMeta);
-                if (filecontentMeta?.resourceMeta) {
-                  const storedresourceMeta = filecontentMeta?.resourceMeta;
-                  if (storedresourceMeta?.name === resource?.name && storedresourceMeta?.owner === resource?.owner
-                    && storedresourceMeta?.release?.tag_name === resource?.release?.tag_name) {
-                      logger.debug('DownloadResourcePopUp.js', `In resource download  existing resource ${resource?.name}_${resource?.release?.tag_name}`);
-                      resourceExist = true;
-                      resourceExistCount += 1;
-                    }
-                  }
+                    if (fs.existsSync(path.join(folder, element.name, 'metadata.json'))) {
+                      let filecontentMeta = fs.readFileSync(path.join(folder, element.name, 'metadata.json'), 'utf8');
+                      filecontentMeta = JSON.parse(filecontentMeta);
+                      if (filecontentMeta?.resourceMeta) {
+                        const storedresourceMeta = filecontentMeta?.resourceMeta;
+                        if (storedresourceMeta?.name === resource?.name && storedresourceMeta?.owner === resource?.owner
+                          && storedresourceMeta?.release?.tag_name === resource?.release?.tag_name) {
+                            logger.debug('DownloadResourcePopUp.js', `In resource download  existing resource ${resource?.name}_${resource?.release?.tag_name}`);
+                            resourceExist = true;
+                            resourceExistCount += 1;
+                          }
+                        }
+                      }
                 });
               }
               if (!resourceExist) {
@@ -402,11 +404,13 @@ export const handleDownloadResources = async (resourceData, selectResource, acti
               }
             });
           }
-          resolve({ status: 'success', existing: resourceExistCount });
+          const resp_obj = { status: 'success', existing: resourceExistCount };
           resourceExistCount = 0;
+          resolve(resp_obj);
         }
       } catch (err) {
         logger.debug('DownloadResourcePopUp.js', 'Catching error in dowload resource', err);
+        resourceExistCount = 0;
         reject(err);
       }
   });

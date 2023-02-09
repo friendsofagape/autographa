@@ -37,7 +37,7 @@ const saveProjectsMeta = async (projectMetaObj) => {
       projectNameExists = true;
       // checking for duplicates
       logger.warn('saveProjectsMeta.js', 'Project Name already exists');
-      status.push({ type: 'warning', value: 'projectname exists' });
+      status.push({ type: 'warning', value: 'projectname exists, check you archived or projects tab' });
     }
   });
 

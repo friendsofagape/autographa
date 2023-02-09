@@ -15,6 +15,7 @@ export default function ProjectsLayout(props) {
   const {
     children,
     title,
+    archive,
     header,
     isTwoCol,
     isImport,
@@ -77,7 +78,7 @@ export default function ProjectsLayout(props) {
                     )}
 
                   {/* Archived projects button */}
-                  {title === 'Projects' && (
+                  {archive === 'enable' && (
                     <div>
                       <button
                         className={`flex text-white ml-5 font-bold text-xs px-3 py-2 rounded-full
@@ -131,6 +132,7 @@ export default function ProjectsLayout(props) {
 ProjectsLayout.propTypes = {
   children: PropTypes.any,
   title: PropTypes.string.isRequired,
+  archive: PropTypes.string,
   header: PropTypes.element,
   isTwoCol: PropTypes.bool,
   isImport: PropTypes.bool,
