@@ -23,10 +23,15 @@ export const createVersificationUSFM = (
   logger.debug('createVersificationUSFM.js', 'In createVersificationUSFM');
   const newpath = localStorage.getItem('userPath');
   let folder = path.join(newpath, 'autographa', 'users', username, 'projects', `${project.projectName}_${id}`);
+  let ingredientsDirName = 'ingredients';
+  if (call === 'edit') {
+    ingredientsDirName = Object.keys(currentBurrito.ingredients).filter((key) => key.includes('ag-settings.json'));
+    ingredientsDirName = ingredientsDirName[0].split(/[(\\)?(/)?]/gm).slice(0)[0];
+  }
   if (projectType === 'Audio') {
-    folder = path.join(folder, 'text-1', 'ingredients');
+    folder = path.join(folder, 'text-1', ingredientsDirName);
   } else {
-    folder = path.join(folder, 'ingredients');
+    folder = path.join(folder, ingredientsDirName);
   }
   const schemes = [
     { name: 'eng', file: 'eng.json' },
