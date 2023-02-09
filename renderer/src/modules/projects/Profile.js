@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { classNames } from '@/util/classNames';
 import ProjectsLayout from '@/layouts/projects/Layout';
 import { SnackBar } from '@/components/SnackBar';
+import useValidator from '@/components/hooks/useValidator';
 import i18n from '../../translations/i18n';
 import { isElectron } from '../../core/handleElectron';
 import { saveProfile } from '../../core/projects/handleProfile';
@@ -75,6 +76,14 @@ export default function UserProfile() {
     selectedregion: '',
     organization: '',
   });
+  const [errors, setErrors] = React.useState({
+    firstname: '',
+    lastname: '',
+    email: '',
+    selectedregion: '',
+    organization: '',
+  });
+
   const [appLang, setAppLang] = React.useState(languages[0]);
   const [snackBar, setOpenSnackBar] = React.useState(false);
   const [snackText, setSnackText] = React.useState('');
@@ -107,53 +116,81 @@ export default function UserProfile() {
     setAppLang(currentLang[0]);
   }, []);
 
+  const { action: { validateField, isLengthValidated, isTextValidated } } = useValidator();
+
+  async function checkValidationResp(response, field, resultObj) {
+    if (response && response.length > 0) {
+      for (let x = 0; x < response.length; x++) {
+          resultObj[field] = response[x].message;
+          if (response[x].message !== '') { return; }
+      }
+    } else {
+      resultObj[field] = '';
+    }
+  }
+
+  async function validate() {
+    const resultObj = {};
+    // check name
+    const checkFirstName = values.firstname.length > 0 && await validateField([isLengthValidated(values.firstname, { minLen: 2, maxLen: 15 }), isTextValidated(values.firstname, 'onlyString')]);
+    await checkValidationResp(checkFirstName, 'firstname', resultObj);
+    const checkLastName = values.lastname.length > 0 && await validateField([isLengthValidated(values.lastname, { minLen: 2, maxLen: 15 }), isTextValidated(values.lastname, 'onlyString')]);
+    await checkValidationResp(checkLastName, 'lastname', resultObj);
+    // check email
+    const checkEmail = values.email.length > 0 && await validateField([isTextValidated(values.email, 'email')]);
+    await checkValidationResp(checkEmail, 'email', resultObj);
+    // check org and region
+    const checkOrg = values.organization.length > 0 && await validateField([isLengthValidated(values.organization, { minLen: 2, maxLen: 30 }), isTextValidated(values.organization, 'nonSpecChar')]);
+    await checkValidationResp(checkOrg, 'organization', resultObj);
+    const checkRegion = values.selectedregion.length > 0 && await validateField([isLengthValidated(values.selectedregion, { minLen: 2, maxLen: 15 }), isTextValidated(values.selectedregion, 'nonSpecChar')]);
+    await checkValidationResp(checkRegion, 'selectedregion', resultObj);
+    setErrors(resultObj);
+    return resultObj;
+  }
+
   const handleSave = async (e) => {
     logger.debug('Profile.js', 'In handleSave for Saving profile');
     e.preventDefault();
-    if (i18n.language !== appLang.code) {
-      i18n.changeLanguage(appLang.code);
+    const resultObj = await validate();
+    const haveError = Object.values(resultObj).some((val) => val && val.length > 0);
+    if (haveError === false) {
+      if (i18n.language !== appLang.code) {
+        i18n.changeLanguage(appLang.code);
+      }
+      const status = await saveProfile(values);
+      setNotify(status[0].type);
+      setSnackText(status[0].value);
+      setOpenSnackBar(true);
     }
-    const status = await saveProfile(values);
-    setNotify(status[0].type);
-    setSnackText(status[0].value);
-    setOpenSnackBar(true);
   };
+
+  const validationFileds = ['username', 'firstname', 'lastname', 'email', 'organization', 'region'];
 
   return (
     <>
       <ProjectsLayout title={t('profile-page')}>
         <div className=" bg-gray-100 flex">
           <div className="w-60  bg-secondary ">
-            <div className="grid grid-rows-5 p-8 gap-16 pb-20 mr-20">
-              <div className="grid grid-cols-2">
-                <ProgressCircle isFilled count="1" text={t('label-name')} />
-              </div>
+            <div className="grid grid-rows-5 p-8 gap-16 pb-20 mr-20 capitalize">
 
-              <div className="grid grid-cols-2">
-                <ProgressCircle isFilled={false} count="2" text={t('label-email')} />
-              </div>
-
-              <div className="grid grid-cols-2">
-                <ProgressCircle isFilled={false} count="3" text={t('label-password')} />
-              </div>
-
-              <div className="grid grid-cols-2">
-                <ProgressCircle isFilled={false} count="4" text={t('label-organisation')} />
-              </div>
-
-              <div className="grid grid-cols-2">
-                <ProgressCircle isFilled={false} count="5" text={t('label-region')} />
-              </div>
-
-              {/* <div className="grid grid-cols-2">
-                <ProgressCircle isFilled={false} count="6" text={t('label-sync')} />
-              </div> */}
+              {validationFileds.map((field, indx) => {
+                const inpField = field === 'region' ? 'selectedregion' : field;
+                return (
+                  <div className="grid grid-cols-2" key={inpField}>
+                    <ProgressCircle
+                      isFilled={inpField === 'username' || (values[inpField]?.length > 0 && errors[inpField]?.length <= 0)}
+                      count={indx + 1}
+                      text={t(`label-${field}`)}
+                    />
+                  </div>
+                );
+              })}
 
             </div>
           </div>
           <div className="w-full h-auto bg-white m-2 rounded-lg border">
 
-            <form className="grid gap-12 grid-rows-8 pt-5 pl-5" onSubmit={(e) => handleSave(e)}>
+            <form className="grid gap-8 grid-rows-8 pt-5 pl-5" onSubmit={(e) => handleSave(e)}>
               {(appMode === 'offline')
                 && (
                   <div>
@@ -174,18 +211,18 @@ export default function UserProfile() {
                   <input
                     type="text"
                     name="given-name"
-                    id="name"
+                    id="firstname"
                     autoComplete="given-name"
                     defaultValue={values?.firstname}
                     onChange={(e) => {
-                      setValues({ ...values, firstname: e.target.value });
+                        setValues({ ...values, firstname: e.target.value });
                     }}
                     className="w-44 block rounded shadow-sm sm:text-sm focus:ring-gray-500 focus:border-primary border-gray-200 h-10 font-light"
                   />
                   <input
                     type="text"
                     name="family-name"
-                    id="name"
+                    id="lastname"
                     autoComplete="given-name"
                     defaultValue={values?.lastname}
                     onChange={(e) => {
@@ -194,6 +231,7 @@ export default function UserProfile() {
                     className="w-44 h-10  block rounded  sm:text-sm focus:ring-gray-500 focus:border-primary border-gray-200 font-light "
                   />
                 </div>
+                <span className="text-red-500 ml-2 text-sm">{errors?.firstname || errors?.lastname}</span>
               </div>
               <div>
                 <h4 className="text-xs font-base mb-2 ml-2 text-primary  tracking-wide leading-4  font-light">{t('label-email')}</h4>
@@ -208,6 +246,7 @@ export default function UserProfile() {
                   }}
                   className="w-96 block rounded shadow-sm sm:text-sm focus:ring-gray-500 focus:border-primary border-gray-200 h-10 font-light"
                 />
+                <span className="text-red-500 ml-2 text-sm">{errors?.email}</span>
               </div>
               {(appMode === 'online')
                 && (
@@ -236,18 +275,19 @@ export default function UserProfile() {
                   </div>
                 )}
               <div>
-                <h4 className="text-xs font-base mb-2 ml-2 text-primary  tracking-wide leading-4  font-light">{t('label-organisation')}</h4>
+                <h4 className="text-xs font-base mb-2 ml-2 text-primary  tracking-wide leading-4  font-light">{t('label-organization')}</h4>
                 <input
                   type="text"
-                  name="organisation"
-                  id="organisation"
-                  autoComplete="organisation"
+                  name="organization"
+                  id="organization"
+                  autoComplete="organization"
                   defaultValue={values?.organization}
                   onChange={(e) => {
                     setValues({ ...values, organization: e.target.value });
                   }}
                   className="w-96 block rounded shadow-sm sm:text-sm focus:ring-gray-500 focus:border-primary border-gray-200 h-10 font-light"
                 />
+                <span className="text-red-500 ml-2 text-sm">{errors?.organization}</span>
               </div>
               <div>
                 <h4 className="text-xs font-base mb-2 ml-2 text-primary  tracking-wide leading-4  font-light">{t('label-region')}</h4>
@@ -262,6 +302,7 @@ export default function UserProfile() {
                   }}
                   className="w-96 block rounded shadow-sm sm:text-sm focus:ring-gray-500 focus:border-primary border-gray-200 h-10 font-light"
                 />
+                <span className="text-red-500 ml-2 text-sm">{errors?.selectedregion}</span>
               </div>
 
               {/* <div>
