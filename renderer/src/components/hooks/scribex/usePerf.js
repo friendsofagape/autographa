@@ -34,7 +34,7 @@ export default function usePerf({
 
   useDeepCompareEffect(() => {
     if (epiteleteHtml) {
-      epiteleteHtml.readHtml(bookCode, htmlMap).then((_htmlPerf) => {
+      epiteleteHtml.readHtml(bookCode, { safe: true }, htmlMap).then((_htmlPerf) => {
         // remove htmlMap for default classes
         setHtmlPerf(_htmlPerf);
       });

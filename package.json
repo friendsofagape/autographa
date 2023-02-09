@@ -139,7 +139,7 @@
         "electron-log": "4.4.7",
         "electron-next": "^3.1.5",
         "electron-updater": "^5.0.1",
-        "epitelete-html": "^0.2.10",
+        "epitelete-html": "^0.2.18",
         "eslint-import-resolver-alias": "^1.1.2",
         "font-list": "^1.4.5",
         "fs-extra": "^10.1.0",
