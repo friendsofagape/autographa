@@ -1,5 +1,5 @@
 export const Fa = {
-    'app-name': 'Autographa',
+    'app-name': 'Scripture Scribe',
     'new-project-page': 'New Project',
     'edit-project': 'Edit Project',
     'label-abbreviation': 'Abbreviation',
