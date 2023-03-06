@@ -1,5 +1,5 @@
 export const Ru = {
-    'app-name': 'Автографа',
+    'app-name': 'Scripture Scribe',
     'new-project-page': 'Новый проект',
     'edit-project': 'Изменить проект',
     'label-abbreviation': 'Сокращенное название',

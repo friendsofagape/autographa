@@ -32,7 +32,6 @@ export default function TopMenuBar() {
                   <div className="-ml-4 flex items-baseline space-x-4">
                     <span className="text-white px-3 py-2 text-lg tracking-wide font-bold uppercase">
                       {t('app-name')}
-                      <span className="text-primary font-extrabold"> 2.0</span>
                     </span>
                   </div>
                 </div>
