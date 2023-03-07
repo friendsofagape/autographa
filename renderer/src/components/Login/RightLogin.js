@@ -3,7 +3,7 @@ import GroupIcon from '@/illustrations/group.svg';
 
 import VectorOne from '@/illustrations/vector-one.svg';
 import HalfMoon from '@/illustrations/half-moon.svg';
-import Quote from '@/illustrations/quote.svg';
+// import Quote from '@/illustrations/quote.svg';
 
 export default function RightLogin() {
   return (
