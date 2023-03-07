@@ -113,7 +113,7 @@ export default function AboutModal(props) {
                       {tabNumber === 0
                         && (
                           <p className="text-sm text-gray-500">
-                            This is a standalone desktop application which hopes to aid and be a friendly companion of the Bible Translator. In essence it is a basic USFM editor which is capable of import and export of USFM files. It has handy features like color-coded diffs across imported texts for comparison between revisions, search and replace and export to formatted HTML and autographa will include capabilities for syncing data with online repositories and that this application is licensed differently.
+                            This is a standalone desktop application which hopes to aid and be a friendly companion of the Bible Translator. In essence it is a basic USFM editor which is capable of import and export of USFM files. It has handy features like color-coded diffs across imported texts for comparison between revisions, search and replace and export to formatted HTML and Scripture Scribe will include capabilities for syncing data with online repositories and that this application is licensed differently.
                           </p>
                         )}
                       {tabNumber === 1
