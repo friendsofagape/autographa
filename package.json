@@ -3,7 +3,7 @@
   "productName": "scripture-scribe-editor",
   "description": "A friendly assistant for Bible Translators.",
   "author": "Bible Technology",
-  "version": "2.3.2",
+  "version": "0.1.0",
   "license": "MIT",
   "private": true,
   "main": "main/index.js",
@@ -61,7 +61,7 @@
     },
     "win": {
       "target": "nsis",
-      "icon": "styles/autographa_icon.png",
+      "icon": "styles/Logo.png",
       "publish": [
         "github"
       ]
@@ -74,7 +74,7 @@
       {
         "provider": "github",
         "owner": "vipinpaul",
-        "repo": "autographa"
+        "repo": "scribe-scripture-editor"
       }
     ]
   },

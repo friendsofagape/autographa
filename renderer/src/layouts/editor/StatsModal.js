@@ -114,7 +114,7 @@ export default function StatsModal(props) {
                             USFM editor which is capable of import and export of USFM files. It has
                             handy features like color-coded diffs across imported texts for
                             comparison between revisions, search and replace and export to formatted
-                            HTML and autographa will include capabilities for syncing data with
+                            HTML and Scripture Scribe will include capabilities for syncing data with
                             online repositories and that this application is licensed differently.
                           </p>
                         )}
