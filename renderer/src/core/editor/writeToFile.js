@@ -1,4 +1,5 @@
 import * as logger from '../../logger';
+import packageInfo from '../../../../package.json';
 
 const writeToFile = async ({
     username,
@@ -9,7 +10,7 @@ const writeToFile = async ({
     const fs = window.require('fs');
     const path = require('path');
     const newpath = localStorage.getItem('userPath');
-    const projectsPath = path.join(newpath, 'autographa', 'users', username, 'projects', projectname, filename);
+    const projectsPath = path.join(newpath, packageInfo.name, 'users', username, 'projects', projectname, filename);
     if (fs.existsSync(projectsPath)) {
         // appending to an existing file
         logger.debug('writeToFile.js', 'Appending to the existing file');

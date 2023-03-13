@@ -7,6 +7,7 @@ css_2_col_ltr,
 css_1_col_rtl,
 css_2_col_rtl,
 } from './exportCSS';
+import packageInfo from '../../../../package.json';
 
 const grammar = require('usfm-grammar');
 const path = require('path');
@@ -31,7 +32,7 @@ export const exportHTML = () => {
   const currentBook = 'GEN';
   let contentFlag = false;
   const newpath = localStorage.getItem('userPath');
-  const folder = path.join(newpath, 'autographa', 'users', 'username', 'projects', 'Testing Bible', 'ingredients');
+  const folder = path.join(newpath, packageInfo.name, 'users', 'username', 'projects', 'Testing Bible', 'ingredients');
   if (direction !== 'RTL') {
     let htmlContent = '';
     let inlineData = `<!DOCTYPE html>

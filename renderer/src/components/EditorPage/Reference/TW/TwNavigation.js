@@ -6,6 +6,7 @@ import localForage from 'localforage';
 import { SnackBar } from '@/components/SnackBar';
 import * as logger from '../../../../logger';
 import MultiComboBox from '../MultiComboBox';
+import packageInfo from '../../../../../../package.json';
 
 export default function TwNavigation({ languageId, referenceResources, setReferenceResources }) {
   const [selected, setSelected] = useState('');
@@ -31,7 +32,7 @@ export default function TwNavigation({ languageId, referenceResources, setRefere
         const path = require('path');
         const newpath = localStorage.getItem('userPath');
         const currentUser = user?.username;
-        const folder = path.join(newpath, 'autographa', 'users', `${currentUser}`, 'resources');
+        const folder = path.join(newpath, packageInfo.name, 'users', `${currentUser}`, 'resources');
         const projectName = `${offlineResource?.data?.value?.meta?.name}_${offlineResource?.data?.value?.meta?.owner}_${offlineResource?.data?.value?.meta?.release?.tag_name}`;
         // set Options
         const optionsDir = path.join(folder, projectName, 'bible');

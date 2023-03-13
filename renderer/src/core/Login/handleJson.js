@@ -1,5 +1,6 @@
 import * as localForage from 'localforage';
 import * as logger from '../../logger';
+import packageInfo from '../../../../package.json';
 
 const path = require('path');
 
@@ -14,7 +15,7 @@ export const loadUsers = async () => {
   const newpath = localStorage.getItem('userPath');
   const fs = window.require('fs');
   const path = require('path');
-  const file = path.join(newpath, 'autographa', 'users', 'users.json');
+  const file = path.join(newpath, packageInfo.name, 'users', 'users.json');
   if (fs.existsSync(file)) {
     fs.readFile(file, 'utf8', (err, data) => {
       if (err) {
@@ -44,10 +45,10 @@ export const handleJson = async (values, fs) => {
   const newpath = localStorage.getItem('userPath');
   logger.debug('handleJson.js', 'Inside handleJson');
   //   console.log('global', global.path);
-  fs.mkdirSync(path.join(newpath, 'autographa', 'users'), {
+  fs.mkdirSync(path.join(newpath, packageInfo.name, 'users'), {
     recursive: true,
   });
-  const file = path.join(newpath, 'autographa', 'users', 'users.json');
+  const file = path.join(newpath, packageInfo.name, 'users', 'users.json');
   error = { userExist: false, fetchFile: false };
   if (fs.existsSync(file)) {
     return new Promise((resolve) => {
@@ -67,7 +68,7 @@ export const handleJson = async (values, fs) => {
             try {
               fs.writeFileSync(file, JSON.stringify(json));
               logger.debug('handleJson.js', 'Successfully added new user to the existing list in file');
-              fs.mkdirSync(path.join(newpath, 'autographa', 'users', values.username, 'projects'), {
+              fs.mkdirSync(path.join(newpath, packageInfo.name, 'users', values.username, 'projects'), {
                 recursive: true,
               });
               logger.debug('handleJson.js', 'Successfully created directories for new user');

@@ -28,6 +28,8 @@ import { readFile } from '../../../core/editor/readFile';
 // import writeToParse from '../../../core/editor/writeToParse';
 import { isElectron } from '../../../core/handleElectron';
 import writeToFile from '../../../core/editor/writeToFile';
+import packageInfo from '../../../../../package.json';
+import { environment } from '../../../../environment';
 // import InputSelector from './InputSelector';
 // import fetchFromParse from '../../../core/editor/fetchFromParse';
 // import findBookFromParse from '../../../core/editor/findBookFromParse';
@@ -190,8 +192,8 @@ const UsfmEditor = () => {
         localforage.getItem('currentProject').then((projectName) => {
           const path = require('path');
           const newpath = localStorage.getItem('userPath');
-          const projectsDir = path.join(newpath, 'autographa', 'users', username, 'projects', projectName);
-          const metaPath = path.join(newpath, 'autographa', 'users', username, 'projects', projectName, 'metadata.json');
+          const projectsDir = path.join(newpath, packageInfo.name, 'users', username, 'projects', projectName);
+          const metaPath = path.join(newpath, packageInfo.name, 'users', username, 'projects', projectName, 'metadata.json');
           readRefMeta({
             projectsDir,
           }).then((refs) => {
@@ -347,8 +349,8 @@ const UsfmEditor = () => {
           const path = require('path');
           const fs = window.require('fs');
           const newpath = localStorage.getItem('userPath');
-          const projectsDir = path.join(newpath, 'autographa', 'users', username, 'projects', projectName);
-          const metaPath = path.join(newpath, 'autographa', 'users', username, 'projects', projectName, 'metadata.json');
+          const projectsDir = path.join(newpath, packageInfo.name, 'users', username, 'projects', projectName);
+          const metaPath = path.join(newpath, packageInfo.name, 'users', username, 'projects', projectName, 'metadata.json');
           readRefMeta({
             projectsDir,
           }).then((refs) => {
@@ -357,10 +359,10 @@ const UsfmEditor = () => {
                 metaPath,
               }).then((data) => {
                 if (data) {
-                  const setting = fs.readFileSync(path.join(newpath, 'autographa', 'users', username, 'projects', projectName, 'ingredients', 'ag-settings.json'), 'utf8');
+                  const setting = fs.readFileSync(path.join(newpath, packageInfo.name, 'users', username, 'projects', projectName, 'ingredients', environment.PROJECT_SETTING_FILE), 'utf8');
                   const settings = JSON.parse(setting);
                   settings.project.textTranslation.lastSeen = moment().format();
-                  fs.writeFileSync(path.join(newpath, 'autographa', 'users', username, 'projects', projectName, 'ingredients', 'ag-settings.json'), JSON.stringify(settings));
+                  fs.writeFileSync(path.join(newpath, packageInfo.name, 'users', username, 'projects', projectName, 'ingredients', environment.PROJECT_SETTING_FILE), JSON.stringify(settings));
                   const _data = JSON.parse(data);
                   Object.entries(_data.ingredients).forEach(
                     ([key, _ingredients]) => {

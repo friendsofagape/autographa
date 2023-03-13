@@ -14,7 +14,7 @@ export default function RightLogin() {
           className="h-7 w-7 group-hover:text-primary"
           aria-hidden="true"
         />
-        <div className="text-white uppercase font-bold tracking-wider text-2xl">Scripture Scribe</div>
+        <div className="text-white uppercase font-bold tracking-wider text-2xl">Scribe Scripture</div>
       </div>
 
       <div className="flex flex-col justify-center items-center relative">

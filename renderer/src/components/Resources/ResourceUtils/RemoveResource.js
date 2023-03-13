@@ -8,7 +8,7 @@ import localForage from 'localforage';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import { TrashIcon } from '@heroicons/react/24/outline';
 import * as logger from '../../../logger';
-
+import packageInfo from '../../../../../package.json';
 // import TrashSvg from '@/icons/basil/Outline/Interface/Trash.svg';
 
 const path = require('path');
@@ -50,7 +50,7 @@ const ResourceResetAfterCheckSameOnRefResourceAgSettings = async (setResetResour
           },
         );
         if (resourcePane.length > 0) {
-          // read Ag-settings
+          // read Scribe-settings
         if (resourcePane.includes('01')) {
           logger.debug('RemoveResource.js', 'Referesh pane 01 contains current  deleted resource');
           setResetResourceOnDeleteOffline((prev) => ({
@@ -118,7 +118,7 @@ function RemoveResource({
             logger.debug('DownloadResourcePopUp.js', 'In resource download user fetch - ', user?.username);
             const fs = window.require('fs');
             const newpath = localStorage.getItem('userPath');
-            const folder = path.join(newpath, 'autographa', 'users', `${user?.username}`, 'resources');
+            const folder = path.join(newpath, packageInfo.name, 'users', `${user?.username}`, 'resources');
             let resourceName = null;
             switch (selectResource) {
               case 'obs':
@@ -145,7 +145,7 @@ function RemoveResource({
                 // throw new Error(`Remove Resource failed :  ${err}`);
               }
               // console.log('resource remove success');
-              // read ag-settings of the project
+              // read Scribe-settings of the project
               await ResourceResetAfterCheckSameOnRefResourceAgSettings(setResetResourceOnDeleteOffline, resource);
               // handleRowSelect(null, null, null, null, '');
               setRenderApp(true);

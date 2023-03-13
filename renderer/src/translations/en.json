@@ -1,6 +1,6 @@
 {
   "label-translation": "Translation",
-  "app-name": "Scripture Scribe",
+  "app-name": "Scribe Scripture",
   "btn-switch-off": "OFF",
   "btn-switch-on": "ON",
   "btn-all": "ALL",
@@ -192,7 +192,7 @@
   "ref_name_blank": "Name cannot be blank.",
   "dynamic-msg-save-language": "Successfully saved changes. Restart the application for the changes to take effect.",
   "dynamic-msg-offline": "You do not seem to have a working internet connection to view this.<br /> Please try again after you are online.",
-  "label-auto-update-info": "If enabled this would allow the application to automatically connect to the internet (when available), download and thereafter install updates that are released by the Scripture Scribe team.",
+  "label-auto-update-info": "If enabled this would allow the application to automatically connect to the internet (when available), download and thereafter install updates that are released by the Scribe Scripture team.",
   "label-auto-update": "Auto-update",
   "label-radio-enable": "Enabled",
   "label-radio-disable": "Disabled",

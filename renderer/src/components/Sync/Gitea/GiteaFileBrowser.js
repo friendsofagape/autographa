@@ -21,7 +21,7 @@ import {
 import ProgressBar from '../ProgressBar';
 import ProjectMergePop from './ProjectMergePop';
 import LoadingSpinner from '../LoadingSpinner';
-
+import packageInfo from '../../../../../package.json';
 /* eslint-disable no-console */
 // eslint-disable-next-line react/prop-types
 const GiteaFileBrowser = ({ changeRepo }) => {
@@ -182,13 +182,13 @@ const GiteaFileBrowser = ({ changeRepo }) => {
           await fetchProjects();
           await addNewNotification(
             'Sync',
-            'Project Sync to Ag successfull',
+            'Project Sync to scribe successfull',
             'success',
           );
         });
     };
 
-  // Read gitea folder structure and data after drag (Gitea - AG )
+  // Read gitea folder structure and data after drag (Gitea - scribe )
   const readGiteaFolderData = async (repo, from) => {
     logger.debug('Dropzone.js', 'calling read Gitea Folder Data event');
     // console.log("read folder data : ", from);
@@ -252,7 +252,7 @@ const GiteaFileBrowser = ({ changeRepo }) => {
                     setOpenSnackBar(true);
                     await addNewNotification(
                       'Sync',
-                      'Project Sync to Ag Failed - Burrito Validation Failed',
+                      'Project Sync to scribe Failed - Burrito Validation Failed',
                       'failure',
                     );
                   }
@@ -265,7 +265,7 @@ const GiteaFileBrowser = ({ changeRepo }) => {
                 setOpenSnackBar(true);
                 await addNewNotification(
                   'Sync',
-                  'Project Sync to Ag Failed - Invalid Project , Burrito not found',
+                  'Project Sync to scribe Failed - Invalid Project , Burrito not found',
                   'failure',
                 );
               });
@@ -277,7 +277,7 @@ const GiteaFileBrowser = ({ changeRepo }) => {
             setOpenSnackBar(true);
             await addNewNotification(
               'Sync',
-              'Project Sync to Ag Failed - Invalid Project directory no valid Branch Found',
+              'Project Sync to scribe Failed - Invalid Project directory no valid Branch Found',
               'failure',
             );
           }
@@ -288,7 +288,7 @@ const GiteaFileBrowser = ({ changeRepo }) => {
             setOpenSnackBar(true);
             await addNewNotification(
               'Sync',
-              `Project Sync to Ag Failed - Something Went Wrong .. check internet'- ${error}`,
+              `Project Sync to scribe Failed - Something Went Wrong .. check internet'- ${error}`,
               'failure',
             );
             logger.debug('GiteaFileBrowser.js', 'Something Went Wrong .. check internet', error);
@@ -302,8 +302,8 @@ const GiteaFileBrowser = ({ changeRepo }) => {
   // Drag from Ag - Gitea
   const handleDropFolder = async (data) => {
     logger.debug('Dropzone.js', 'calling handleDropFolder event');
-    if (data?.result?.from === 'autographa') {
-      logger.debug('Dropzone.js', 'data send from Autographa');
+    if (data?.result?.from === packageInfo.name) {
+      logger.debug('Dropzone.js', 'data send from Scribe');
       const projectData = data.result.projectMeta[0];
       const projectId = Object.keys(projectData.identification.primary.ag)[0];
       const projectName = projectData.identification.name.en;
@@ -315,7 +315,7 @@ const GiteaFileBrowser = ({ changeRepo }) => {
         const newpath = localStorage.getItem('userPath');
         const fs = window.require('fs');
         const path = require('path');
-        const projectsMetaPath = path.join(newpath, 'autographa', 'users', user?.username, 'projects', `${projectName}_${projectId}`);
+        const projectsMetaPath = path.join(newpath, packageInfo.name, 'users', user?.username, 'projects', `${projectName}_${projectId}`);
         settotalFilesAg(Object.keys(ingredientsObj).length);
         // Create A REPO for the project
         await handleCreateRepo(repoName.toLowerCase(), auth).then(

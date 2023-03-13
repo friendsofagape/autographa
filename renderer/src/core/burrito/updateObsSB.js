@@ -31,7 +31,7 @@ export const updateVersion = (metadata) => {
 const updateObsSB = async (username, project, updateBurrito) => new Promise((resolve) => {
   logger.debug('updateObsSB.js', 'In updateObsSB for updating the burrito.');
     const newpath = localStorage.getItem('userPath');
-    const folder = path.join(newpath, 'autographa', 'users', username, 'projects', `${project.name}_${project.id[0]}`);
+    const folder = path.join(newpath, packageInfo.name, 'users', username, 'projects', `${project.name}_${project.id[0]}`);
     const fs = window.require('fs');
     const sb = fs.readFileSync(path.join(folder, 'metadata.json'));
     let metadata = JSON.parse(sb);
@@ -54,10 +54,10 @@ const updateObsSB = async (username, project, updateBurrito) => new Promise((res
       metadata.ingredients[key].size = stats.size;
     });
     if (updated === true) {
-      Object.entries(metadata.identification?.primary?.ag).forEach(([key]) => {
+      Object.entries(metadata.identification?.primary?.scribe).forEach(([key]) => {
         logger.debug('importBurrito.js', 'Fetching the key from burrito.');
-        const rev = metadata.identification.primary.ag[key].revision;
-        metadata.identification.primary.ag[key].revision = (parseInt(rev, 10) + 1).toString();
+        const rev = metadata.identification.primary.scribe[key].revision;
+        metadata.identification.primary.scribe[key].revision = (parseInt(rev, 10) + 1).toString();
       });
     }
     if (metadata.copyright.fullStatementPlain) {

@@ -50,7 +50,7 @@ export const createDownloadedResourceSB = async (username, resourceMeta, project
     }
     return new Promise((resolve) => {
         json.meta.generator.userName = username;
-        json.meta.generator.softwareName = 'Autographa';
+        json.meta.generator.softwareName = 'Scribe';
         json.meta.generator.softwareVersion = packageInfo.version;
         json.meta.dateCreated = moment().format();
         json.idAuthorities = {
@@ -62,7 +62,7 @@ export const createDownloadedResourceSB = async (username, resourceMeta, project
           },
         };
         json.identification.primary = {
-            ag: {
+            scribe: {
               [id]: {
               revision: '1',
               timestamp: moment().format(),
@@ -118,7 +118,7 @@ export const createDownloadedResourceSB = async (username, resourceMeta, project
 // export default createDownloadedResourceSB;
 
 export const generateAgSettings = async (metaData, currentResourceMeta, selectResource) => new Promise((resolve) => {
-  logger.debug('DownloadResourcePopUp.js', 'In generate ag-settings for resource downloaded');
+  logger.debug('DownloadResourcePopUp.js', 'In generate scribe-settings for resource downloaded');
   try {
     const settings = {
       version: environment.AG_SETTING_VERSION,
@@ -140,7 +140,7 @@ export const generateAgSettings = async (metaData, currentResourceMeta, selectRe
     }
     resolve(settings);
   } catch (err) {
-    throw new Error(`Generate Ag-settings Failed :  ${err}`);
+    throw new Error(`Generate scribe-settings Failed :  ${err}`);
   }
 });
 
@@ -216,7 +216,7 @@ export const handleDownloadResources = async (resourceData, selectResource, acti
   return new Promise((resolve, reject) => {
   localForage.getItem('userProfile').then(async (user) => {
     logger.debug('DownloadResourcePopUp.js', 'In resource download user fetch - ', user?.username);
-    const folder = path.join(newpath, 'autographa', 'users', `${user?.username}`, 'resources');
+    const folder = path.join(newpath, packageInfo.name, 'users', `${user?.username}`, 'resources');
     const fs = window.require('fs');
     let resourceBurritoFile = {};
     let currentResourceMeta = '';
@@ -273,7 +273,7 @@ export const handleDownloadResources = async (resourceData, selectResource, acti
 
                   logger.debug('DownloadResourcePopUp.js', 'In resource download - basic burrito generated for resource ', `${resource.name}-${resource.owner}`);
 
-                  currentProjectName = `${resource.name}_${Object.keys(resourceBurritoFile.identification.primary.ag)[0]}`;
+                  currentProjectName = `${resource.name}_${Object.keys(resourceBurritoFile.identification.primary.scribe)[0]}`;
                   await fetch(resource.zipball_url)
                     .then((res) => res.arrayBuffer())
                     .then(async (blob) => {
@@ -351,18 +351,18 @@ export const handleDownloadResources = async (resourceData, selectResource, acti
                         }
                       }
 
-                      // ag settings file generation
-                      logger.debug('DownloadResourcePopUp.js', 'generating ag-settings');
+                      // scribe settings file generation
+                      logger.debug('DownloadResourcePopUp.js', 'generating scribe-settings');
                       const settings = await generateAgSettings(resourceBurritoFile, currentResourceMeta, selectResource);
-                      await fs.writeFileSync(path.join(folder, currentResourceProject.name, 'ag-settings.json'), JSON.stringify(settings));
-                      const settingsContent = fs.readFileSync(path.join(folder, currentResourceProject.name, 'ag-settings.json'), 'utf8');
+                      await fs.writeFileSync(path.join(folder, currentResourceProject.name, environment.PROJECT_SETTING_FILE), JSON.stringify(settings));
+                      const settingsContent = fs.readFileSync(path.join(folder, currentResourceProject.name, environment.PROJECT_SETTING_FILE), 'utf8');
                       const checksum = md5(settingsContent);
-                      const stats = fs.statSync(path.join(folder, currentResourceProject.name, 'ag-settings.json'));
-                      resourceBurritoFile.ingredients['./ag-settings.json'] = {
+                      const stats = fs.statSync(path.join(folder, currentResourceProject.name, environment.PROJECT_SETTING_FILE));
+                      resourceBurritoFile.ingredients['./scribe-settings.json'] = {
                         checksum: { md5: checksum },
                         mimeType: 'application/json',
                         size: stats.size,
-                        role: 'x-autographa',
+                        role: 'x-scribe',
                       };
                       // added new section to avoid ingredients issue in meta some times (new user)
                       const ymlPath = currentResourceMeta?.projects[0]?.path.replace('./', '');
@@ -376,10 +376,10 @@ export const handleDownloadResources = async (resourceData, selectResource, acti
                       // write metaData.json
                       await fs.writeFileSync(path.join(folder, currentResourceProject.name, 'metadata.json'), JSON.stringify(resourceBurritoFile));
 
-                      logger.debug('passed ag settings creations ---------->');
+                      logger.debug('passed scribe settings creations ---------->');
 
                       // finally remove zip and rename base folder to projectname_id
-                      logger.debug('DownloadResourcePopUp.js', 'deleting zip file - rename project with project + id in ag format');
+                      logger.debug('DownloadResourcePopUp.js', 'deleting zip file - rename project with project + id in scribe format');
                       if (fs.existsSync(folder)) {
                         fs.renameSync(path.join(folder, currentResourceProject.name), path.join(folder, currentProjectName));
                         fs.unlinkSync(path.join(folder, `${currentProjectName}.zip`), () => {

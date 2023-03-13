@@ -16,6 +16,8 @@ import CloudUploadIcon from '@/icons/basil/Outline/Files/Cloud-upload.svg';
 import CloudCheckIcon from '@/icons/basil/Solid/Files/Cloud-check.svg';
 import ProgressCircle from '../ProgressCircle';
 import Door43Logo from '@/icons/door43.svg';
+import packageInfo from '../../../../../package.json';
+import { environment } from '../../../../environment';
 
 const path = require('path');
 
@@ -60,7 +62,7 @@ function AutoSync({ selectedProject }) {
             localForage.getItem('userProfile').then(async (user) => {
                 const fs = window.require('fs');
                 const newpath = localStorage.getItem('userPath');
-                const file = path.join(newpath, 'autographa', 'users', user?.username, 'ag-user-settings.json');
+                const file = path.join(newpath, packageInfo.name, 'users', user?.username, environment.USER_SETTING_FILE);
                 if (fs.existsSync(file)) {
                     fs.readFile(file, async (err, data) => {
                     if (err) {
@@ -88,7 +90,7 @@ function AutoSync({ selectedProject }) {
            localforage.getItem('projectmeta').then((val) => {
             // eslint-disable-next-line array-callback-return
             const currentProjectMeta = val.projects.filter((project) => {
-              const id = Object.keys(project?.identification?.primary?.ag);
+              const id = Object.keys(project?.identification?.primary?.scribe);
               if (projectname === `${project?.identification?.name?.en}_${id}`) {
                 return project;
               }
@@ -98,12 +100,12 @@ function AutoSync({ selectedProject }) {
             }
           // eslint-disable-next-line array-callback-return
           const settingsIngredientsPath = Object.keys(currentProjectMeta[0]?.ingredients).filter((path) => {
-            if (path.includes('ag-settings.json')) {
+            if (path.includes(environment.PROJECT_SETTING_FILE)) {
               return path;
             }
           });
-          // const settingsPath = path.join(newpath, 'autographa', 'users', currentUser, 'projects', projectname, 'ingredients', 'ag-settings.json');
-          const settingsPath = path.join(newpath, 'autographa', 'users', currentUser, 'projects', projectname, settingsIngredientsPath[0]);
+          // const settingsPath = path.join(newpath, packageInfo.name, 'users', currentUser, 'projects', projectname, 'ingredients', environment.PROJECT_SETTING_FILE);
+          const settingsPath = path.join(newpath, packageInfo.name, 'users', currentUser, 'projects', projectname, settingsIngredientsPath[0]);
 
           let settings = fs.readFileSync(settingsPath);
           settings = JSON.parse(settings);
@@ -129,7 +131,7 @@ function AutoSync({ selectedProject }) {
               element.username = syncUsername;
               element.lastSynced = moment().format();
             });
-            logger.debug('EditorAutoSync.js', 'Upadting the ag settings with sync data');
+            logger.debug('EditorAutoSync.js', 'Upadting the scribe settings with sync data');
             fs.writeFileSync(settingsPath, JSON.stringify(settings));
           }
         });
@@ -146,7 +148,7 @@ function AutoSync({ selectedProject }) {
         // auth params
         const fs = window.require('fs');
         const newpath = localStorage.getItem('userPath');
-        const file = path.join(newpath, 'autographa', 'users', user?.username, 'ag-user-settings.json');
+        const file = path.join(newpath, packageInfo.name, 'users', user?.username, environment.USER_SETTING_FILE);
         if (fs.existsSync(file)) {
             fs.readFile(file, async (err, data) => {
             logger.debug('ProjectContext.js', 'Successfully read the data from file , user : ', user?.username);
@@ -155,12 +157,12 @@ function AutoSync({ selectedProject }) {
             const auth = json?.sync?.services?.door43.filter((item) => item.username === selectedUsername.username);
             const authObj = auth[0].token;
             const projectData = currentProject[0];
-            // const projectId = Object.keys(projectData.identification.primary.ag)[0];
+            // const projectId = Object.keys(projectData.identification.primary.scribe)[0];
             const projectName = projectData.identification.name.en;
             const ingredientsObj = projectData.ingredients;
             const projectCreated = projectData.meta.dateCreated.split('T')[0];
             const repoName = `ag-${projectData.languages[0].tag}-${projectData.type.flavorType.flavor.name}-${projectName.replace(/[\s+ -]/g, '_')}`;
-            const projectsMetaPath = path.join(newpath, 'autographa', 'users', user?.username, 'projects', selectedProject);
+            const projectsMetaPath = path.join(newpath, packageInfo.name, 'users', user?.username, 'projects', selectedProject);
             settotalFiles((Object.keys(ingredientsObj).length) + 1);
 
             await handleCreateRepo(repoName.toLowerCase(), authObj).then(
@@ -212,7 +214,7 @@ function AutoSync({ selectedProject }) {
                         setSnackText(`sync failed - ${err}`);
                         await addNewNotification(
                           'Sync',
-                          `Project Sync to Ag failed - ${err}`,
+                          `Project Sync to scribe failed - ${err}`,
                           'failure',
                         );
                         setOpenSnackBar(true);
@@ -260,7 +262,7 @@ function AutoSync({ selectedProject }) {
                       setSnackText(`sync failed - ${err}`);
                       await addNewNotification(
                         'Sync',
-                        `Project Sync to Ag failed - ${err}`,
+                        `Project Sync to scribe failed - ${err}`,
                         'failure',
                       );
                       setOpenSnackBar(true);
@@ -277,7 +279,7 @@ function AutoSync({ selectedProject }) {
                         }
                         await addNewNotification(
                           'Sync',
-                          'Project Sync to Ag failed - Token Expired , Please login again in SYNC menu',
+                          'Project Sync to scribe failed - Token Expired , Please login again in SYNC menu',
                           'failure',
                         );
                         logger.debug('EditorAutoSync.js', 'calling autosync event - Repo Updation Error : ', error.message);

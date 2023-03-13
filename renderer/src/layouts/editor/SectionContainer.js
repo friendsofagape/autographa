@@ -6,6 +6,7 @@ import AudioEditor from '@/components/EditorPage/AudioEditor/AudioEditor';
 import SectionPlaceholder1 from './SectionPlaceholder1';
 import SectionPlaceholder2 from './SectionPlaceholder2';
 import XelahEditor from '../../components/EditorPage/Scribex/XelahEditor';
+import packageInfo from '../../../../package.json';
 
 const MainPlayer = dynamic(
   () => import('@/components/EditorPage/AudioEditor/MainPlayer'),
@@ -21,7 +22,7 @@ const SectionContainer = () => {
           const path = require('path');
           const fs = window.require('fs');
           const newpath = localStorage.getItem('userPath');
-          const metaPath = path.join(newpath, 'autographa', 'users', username, 'projects', projectName, 'metadata.json');
+          const metaPath = path.join(newpath, packageInfo.name, 'users', username, 'projects', projectName, 'metadata.json');
           const data = fs.readFileSync(metaPath, 'utf-8');
           const metadata = JSON.parse(data);
           setEditor(metadata.type.flavorType.flavor.name);

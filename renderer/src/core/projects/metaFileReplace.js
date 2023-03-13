@@ -1,14 +1,16 @@
+import packageInfo from '../../../../package.json';
+
 const metaFileReplace = ({ userData }) => {
     const newpath = localStorage.getItem('userPath');
     const status = [];
     const fs = window.require('fs');
     const path = require('path');
     const json = JSON.stringify(userData);
-    const projectsMetaPath = path.join(newpath, 'autographa', 'users', 'username', 'projects', 'projects.json');
+    const projectsMetaPath = path.join(newpath, packageInfo.name, 'users', 'username', 'projects', 'projects.json');
     if (fs.existsSync(projectsMetaPath)) {
         fs.writeFileSync(path.join(
             newpath,
-            'autographa',
+            packageInfo.name,
             'users',
             'username',
             'projects',

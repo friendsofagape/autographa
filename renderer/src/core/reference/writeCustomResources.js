@@ -1,4 +1,6 @@
 import localforage from 'localforage';
+import packageInfo from '../../../../package.json';
+import { environment } from '../../../environment';
 
 const path = require('path');
 
@@ -9,7 +11,7 @@ export async function writeCustomResources({ resourceUrl }) {
       await localforage.getItem('userProfile').then((value) => {
         currentUser = value.username;
       });
-      const file = path.join(newpath, 'autographa', 'users', currentUser, 'ag-user-settings.json');
+      const file = path.join(newpath, packageInfo.name, 'users', currentUser, environment.USER_SETTING_FILE);
       return new Promise((resolve) => {
       if (fs.existsSync(file)) {
             fs.readFile(file, (err, data) => {

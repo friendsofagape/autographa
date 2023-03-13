@@ -9,6 +9,7 @@ import createObsSB from '../burrito/createObsSB';
 import * as logger from '../../logger';
 import { environment } from '../../../environment';
 import createAudioSB from '../burrito/createAudioSB';
+import packageInfo from '../../../../package.json';
 
 const bookAvailable = (list, id) => list.some((obj) => obj === id);
 const checker = (arr, target) => target.every((v) => arr.includes(v));
@@ -24,10 +25,10 @@ const saveProjectsMeta = async (projectMetaObj) => {
     logger.debug('saveProjectsMeta.js', 'Fetching the current username');
     currentUser = value?.username;
   });
-  fs.mkdirSync(path.join(newpath, 'autographa', 'users', currentUser, 'projects'), {
+  fs.mkdirSync(path.join(newpath, packageInfo.name, 'users', currentUser, 'projects'), {
     recursive: true,
   });
-  const projectDir = path.join(newpath, 'autographa', 'users', currentUser, 'projects');
+  const projectDir = path.join(newpath, packageInfo.name, 'users', currentUser, 'projects');
   let projectNameExists = false;
   let checkCanon = false;
   const folderList = fs.readdirSync(projectDir);
@@ -72,7 +73,7 @@ const saveProjectsMeta = async (projectMetaObj) => {
         // from existing metadata
         scope = (projectMetaObj.canonSpecification.currentScope)
         .filter((x) => !(Object.keys(projectMetaObj.project.type.flavorType.currentScope)).includes(x));
-        id = Object.keys(projectMetaObj.project?.identification?.primary?.ag);
+        id = Object.keys(projectMetaObj.project?.identification?.primary?.scribe);
         projectMetaObj.importedFiles.forEach((file) => {
           scope.push(file.id);
         });
@@ -135,7 +136,7 @@ const saveProjectsMeta = async (projectMetaObj) => {
     } else {
       logger.debug('saveProjectsMeta.js', 'Fetching the key from the existing Project');
       // from existing metadata
-      id = Object.keys(projectMetaObj.project?.identification?.primary?.ag);
+      id = Object.keys(projectMetaObj.project?.identification?.primary?.scribe);
     }
     // Create New burrito
     // ingredient has the list of created files in the form of SB Ingredients
@@ -210,7 +211,7 @@ const saveProjectsMeta = async (projectMetaObj) => {
         // from existing metadata
         scope = (projectMetaObj.canonSpecification.currentScope)
         .filter((x) => !(Object.keys(projectMetaObj.project.type.flavorType.currentScope)).includes(x));
-        id = Object.keys(projectMetaObj.project?.identification?.primary?.ag);
+        id = Object.keys(projectMetaObj.project?.identification?.primary?.scribe);
         projectMetaObj.importedFiles.forEach((file) => {
           scope.push(file.id);
         });

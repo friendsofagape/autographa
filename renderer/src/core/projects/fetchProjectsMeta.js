@@ -1,11 +1,13 @@
 import * as logger from '../../logger';
+import packageInfo from '../../../../package.json';
+import { environment } from '../../../environment';
 
 const fetchProjectsMeta = async ({ currentUser }) => {
   logger.debug('fetchProjectsMeta.js', 'In fetchProjectsMeta');
   const newpath = localStorage.getItem('userPath');
   const fs = window.require('fs');
   const path = require('path');
-  const projectsMetaPath = path.join(newpath, 'autographa', 'users', currentUser, 'projects');
+  const projectsMetaPath = path.join(newpath, packageInfo.name, 'users', currentUser, 'projects');
   fs.mkdirSync(projectsMetaPath, { recursive: true });
   const arrayItems = fs.readdirSync(projectsMetaPath);
   const burritos = [];
@@ -17,17 +19,17 @@ const fetchProjectsMeta = async ({ currentUser }) => {
         const data = fs.readFileSync(path.join(projectsMetaPath, dir, 'metadata.json'), 'utf8');
         const parseData = JSON.parse(data);
         let setting;
-        const result = Object.keys(parseData.ingredients).filter((key) => key.includes('ag-settings.json'));
+        const result = Object.keys(parseData.ingredients).filter((key) => key.includes(environment.PROJECT_SETTING_FILE));
         if (result[0]) {
           setting = fs.readFileSync(path.join(projectsMetaPath, dir, result[0]), 'utf8');
         } else {
-          logger.error('fetchProjectsMeta.js', 'Unable to find ag-settings for the project');
+          logger.error('fetchProjectsMeta.js', 'Unable to find scribe-settings for the project');
         }
         if (setting) {
-          logger.debug('fetchProjectsMeta.js', 'Found ag-settings for the project, merging ag-settings and burrito');
+          logger.debug('fetchProjectsMeta.js', 'Found scribe-settings for the project, merging scribe-settings and burrito');
           burritos.push({ ...JSON.parse(setting), ...JSON.parse(data) });
         } else {
-          logger.debug('fetchProjectsMeta.js', 'Unable to find ag-settings for the project so pushing only burrito');
+          logger.debug('fetchProjectsMeta.js', 'Unable to find scribe-settings for the project so pushing only burrito');
           burritos.push(JSON.parse(data));
         }
         // resolve({ projects: burritos });

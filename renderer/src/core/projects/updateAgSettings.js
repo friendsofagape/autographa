@@ -1,14 +1,15 @@
 import localforage from 'localforage';
 import * as logger from '../../logger';
 import { environment } from '../../../environment';
+import packageInfo from '../../../../package.json';
 
 export const updateAgSettings = async (username, projectName, data) => {
   logger.debug('updateAgSettings.js', 'In updateAgSettings');
   const newpath = localStorage.getItem('userPath');
   const fs = window.require('fs');
   const path = require('path');
-  const result = Object.keys(data.ingredients).filter((key) => key.includes('ag-settings.json'));
-  const folder = path.join(newpath, 'autographa', 'users', username, 'projects', projectName, result[0]);
+  const result = Object.keys(data.ingredients).filter((key) => key.includes(environment.PROJECT_SETTING_FILE));
+  const folder = path.join(newpath, packageInfo.name, 'users', username, 'projects', projectName, result[0]);
   const settings = await fs.readFileSync(folder, 'utf8');
   const setting = JSON.parse(settings);
   if (settings.version !== environment.AG_SETTING_VERSION) {
@@ -20,7 +21,7 @@ export const updateAgSettings = async (username, projectName, data) => {
   }
 }
   setting.project[data.type.flavorType.flavor.name] = data.project[data.type.flavorType.flavor.name];
-  logger.debug('updateAgSettings.js', 'Updating the ag-settings.json');
+  logger.debug('updateAgSettings.js', `Updating the ${environment.PROJECT_SETTING_FILE}`);
   await fs.writeFileSync(folder, JSON.stringify(setting));
 };
 export const saveReferenceResource = () => {

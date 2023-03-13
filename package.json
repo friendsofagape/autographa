@@ -1,6 +1,6 @@
 {
-  "name": "scripture-scribe",
-  "productName": "scripture-scribe-editor",
+  "name": "scribe",
+  "productName": "scribe-scripture-editor",
   "description": "A friendly assistant for Bible Translators.",
   "author": "Bible Technology",
   "version": "0.1.0",

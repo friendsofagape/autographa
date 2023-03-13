@@ -5,6 +5,7 @@ import parseFileUpdate from '../../core/projects/parseFileUpdate';
 import * as logger from '../../logger';
 import { isUSFM, getId } from '../../core/Sync/handleSync';
 import fetchProjectsMeta from '../../core/projects/fetchProjectsMeta';
+import packageInfo from '../../../../package.json';
 
 function useSync() {
   const projectList = [];
@@ -56,14 +57,14 @@ function useSync() {
     .then((url) => url.text())
     .then((usfmValue) => {
       logger.debug('Dropzone.js', 'sending dragged value');
-      setDragFromAg({ result: { ...result, content: usfmValue, from: 'autographa' } });
+      setDragFromAg({ result: { ...result, content: usfmValue, from: packageInfo.name } });
     });
   };
 
   const onDragEndFolder = async (projectMeta) => {
     logger.debug('Dropzone.js', 'calling onDragEndFolder event');
     // console.log("dropped project name : ", projectMeta);
-    setDragFromAg({ result: { projectMeta, from: 'autographa' } });
+    setDragFromAg({ result: { projectMeta, from: packageInfo.name } });
   };
 
   const handleDropToAg = (data) => {

@@ -1,7 +1,9 @@
+import packageInfo from '../../../../../package.json';
+
 const loadData = (fs, file, projectName, username) => {
   const newpath = localStorage.getItem('userPath');
   const path = require('path');
-  const filePath = path.join(newpath, 'autographa', 'users', username, 'resources', projectName);
+  const filePath = path.join(newpath, packageInfo.name, 'users', username, 'resources', projectName);
   if (fs.existsSync(path.join(filePath))) {
     const data = fs.readFileSync(
       path.join(filePath, 'metadata.json'),

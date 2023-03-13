@@ -15,6 +15,7 @@ import { SnackBar } from '@/components/SnackBar';
 import EmptyScreen from '@/components/Loading/EmptySrceen';
 import ReferenceSelector from '@/components/AudioRecorder/components/ReferenceSelector';
 import { isElectron } from '../../../../core/handleElectron';
+import packageInfo from '../../../../../../package.json';
 
 const grammar = require('usfm-grammar');
 
@@ -83,7 +84,7 @@ const ReferenceAudio = ({
               _books.push(_bookID);
               // Selected book is available in Project or not
               if (_bookID === bookId.toUpperCase() && refName !== null) {
-                const folderPath = path.join(newpath, 'autographa', 'users', username, 'resources', refName);
+                const folderPath = path.join(newpath, packageInfo.name, 'users', username, 'resources', refName);
                 let bookContent = [];
                 const exist = fs.existsSync(path.join(folderPath, 'text-1', 'ingredients', `${bookId.toUpperCase()}.usfm`));
                 // The project has any textTranslation data or not

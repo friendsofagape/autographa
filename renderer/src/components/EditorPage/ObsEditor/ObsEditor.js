@@ -13,6 +13,7 @@ import { saveReferenceResource } from '@/core/projects/updateAgSettings';
 import moment from 'moment';
 import EditorPanel from './EditorPanel';
 import * as logger from '../../../logger';
+import packageInfo from '../../../../../package.json';
 
 export const getDetails = () => new Promise((resolve) => {
   logger.debug('ObsEditor.js', 'In getDetails() for fetching the burrito file of current project');
@@ -21,8 +22,8 @@ export const getDetails = () => new Promise((resolve) => {
     localforage.getItem('currentProject').then((projectName) => {
       const path = require('path');
       const newpath = localStorage.getItem('userPath');
-      const projectsDir = path.join(newpath, 'autographa', 'users', username, 'projects', projectName);
-      const metaPath = path.join(newpath, 'autographa', 'users', username, 'projects', projectName, 'metadata.json');
+      const projectsDir = path.join(newpath, packageInfo.name, 'users', username, 'projects', projectName);
+      const metaPath = path.join(newpath, packageInfo.name, 'users', username, 'projects', projectName, 'metadata.json');
       resolve({
         projectName, username, projectsDir, metaPath, path,
       });
@@ -98,7 +99,7 @@ const ObsEditor = () => {
                         },
                       );
                       localforage.setItem('projectmeta', value);
-                      // This func will update the ag-setting.json file
+                      // This func will update the scribe-setting.json file
                       saveReferenceResource();
                     });
                   });

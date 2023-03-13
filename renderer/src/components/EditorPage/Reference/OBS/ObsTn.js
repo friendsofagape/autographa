@@ -9,6 +9,7 @@ import ObsResourceCard from './ObsResourceCard';
 import * as logger from '../../../../logger';
 import tsvJSON from './TsvToJson';
 import ObsTsvToChapterLevelMd from './ObsTsvToChapterLevel';
+import packageInfo from '../../../../../../package.json';
 
 function ObsTnCard({
   resource,
@@ -50,7 +51,7 @@ function ObsTnCard({
           const path = require('path');
           const newpath = localStorage.getItem('userPath');
           const currentUser = user?.username;
-          const folder = path.join(newpath, 'autographa', 'users', `${currentUser}`, 'resources');
+          const folder = path.join(newpath, packageInfo.name, 'users', `${currentUser}`, 'resources');
           const projectName = `${offlineResource.data?.value?.meta?.name}_${offlineResource.data?.value?.meta?.owner}_${offlineResource.data?.value?.meta?.release?.tag_name}`;
           if (fs.existsSync(path.join(folder, projectName))) {
               if (offlineResource.data?.value?.dublin_core?.format?.toLowerCase() === 'text/tsv') {
