@@ -178,7 +178,6 @@ const importBurrito = async (filePath, currentUser, updateBurritoVersion) => {
         Object.entries(metadata.identification.primary).forEach(([key]) => {
           logger.debug('importBurrito.js', 'Swapping data between primary and upstream');
           const identity = metadata.identification.primary[key];
-          metadata.identification.upstream = [];
           metadata.identification.upstream[key] = [identity];
           delete metadata.identification.primary[key];
           delete metadata.idAuthorities;
@@ -216,7 +215,7 @@ const importBurrito = async (filePath, currentUser, updateBurritoVersion) => {
           logger.debug('importBurrito.js', 'Swapping data between primary and upstream');
           if (key !== 'scribe') {
             const identity = metadata.identification.primary[key];
-            metadata.identification.upstream = [];
+            metadata.identification.upstream = {};
             metadata.identification.upstream[key] = [identity];
             delete metadata.identification.primary[key];
           }
@@ -272,7 +271,7 @@ const importBurrito = async (filePath, currentUser, updateBurritoVersion) => {
         });
       })
       .catch((err) => logger.error('importBurrito.js', `${err}`));
-
+      metadata.meta.generator.softwareName = 'Scribe';
       metadata.meta.generator.userName = currentUser;
       if (!fs.existsSync(path.join(filePath, dirName, environment.PROJECT_SETTING_FILE))) {
         logger.debug('importBurrito.js', `Creating ${environment.PROJECT_SETTING_FILE} file`);
