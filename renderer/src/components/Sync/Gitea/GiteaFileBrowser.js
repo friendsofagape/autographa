@@ -305,7 +305,7 @@ const GiteaFileBrowser = ({ changeRepo }) => {
     if (data?.result?.from === packageInfo.name) {
       logger.debug('Dropzone.js', 'data send from Scribe');
       const projectData = data.result.projectMeta[0];
-      const projectId = Object.keys(projectData.identification.primary.ag)[0];
+      const projectId = Object.keys(projectData.identification.primary?.scribe)[0];
       const projectName = projectData.identification.name.en;
       const ingredientsObj = projectData.ingredients;
       const projectCreated = projectData.meta.dateCreated.split('T')[0];

@@ -25,7 +25,7 @@ export const checkDuplicate = async (metadata, currentUser, resource) => {
       logger.debug('importBurrito.js', 'Fetching the key from Primary.');
       id = key;
     });
-  } else if (metadata.identification.upstream.scribe !== undefined) {
+  } else if (metadata.identification?.upstream?.scribe !== undefined) {
     const list = metadata.identification?.upstream?.scribe;
     logger.debug('importBurrito.js', 'Fetching the latest key from upstream list.');
     const latest = list.reduce((a, b) => (new Date(a.timestamp) > new Date(b.timestamp) ? a : b));
@@ -169,15 +169,16 @@ const importBurrito = async (filePath, currentUser, updateBurritoVersion) => {
       let projectName = metadata.identification?.name?.en;
       let id;
       logger.debug('importBurrito.js', 'Checking for scribe primary key');
-      if (metadata.identification.primary.scribe !== undefined) {
+      if (metadata.identification.primary?.scribe !== undefined) {
         Object.entries(metadata.identification?.primary?.scribe).forEach(([key]) => {
           logger.debug('importBurrito.js', 'Fetching the key from burrito.');
           id = key;
         });
-      } else if (metadata.identification.upstream.scribe !== undefined) {
+      } else if (metadata.identification.upstream?.scribe !== undefined) {
         Object.entries(metadata.identification.primary).forEach(([key]) => {
           logger.debug('importBurrito.js', 'Swapping data between primary and upstream');
           const identity = metadata.identification.primary[key];
+          metadata.identification.upstream = [];
           metadata.identification.upstream[key] = [identity];
           delete metadata.identification.primary[key];
           delete metadata.idAuthorities;
@@ -215,6 +216,7 @@ const importBurrito = async (filePath, currentUser, updateBurritoVersion) => {
           logger.debug('importBurrito.js', 'Swapping data between primary and upstream');
           if (key !== 'scribe') {
             const identity = metadata.identification.primary[key];
+            metadata.identification.upstream = [];
             metadata.identification.upstream[key] = [identity];
             delete metadata.identification.primary[key];
           }
