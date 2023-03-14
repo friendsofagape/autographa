@@ -10,6 +10,22 @@ import packageInfo from '../../../../package.json';
 const md5 = require('md5');
 const path = require('path');
 
+const checkImportDuplicate = async (folderList, projectName, metadata, projectDir, fs) => {
+  // To avoid the duplication of exising project on re-importing
+  // Checking project name, key and Id with the existing project's upstream
+  let upstreamObj; let incomingId; let incomingKey;
+  await folderList.forEach((folder) => {
+    if (folder.split('_')[0].toLowerCase() === projectName.toLowerCase()) {
+      const sb = fs.readFileSync(path.join(projectDir, folder, 'metadata.json'));
+      const metadataExisting = JSON.parse(sb);
+      incomingKey = Object.keys(metadata.identification.primary)[0];
+      incomingId = Object.keys(metadata.identification.primary[incomingKey])[0];
+      upstreamObj = metadataExisting.identification.upstream;
+    }
+  });
+  return { incomingId, incomingKey, upstreamObj };
+};
+
 export const checkDuplicate = async (metadata, currentUser, resource) => {
   logger.debug('importBurrito.js', 'In checkDuplicate');
   const fs = window.require('fs');
@@ -34,9 +50,20 @@ export const checkDuplicate = async (metadata, currentUser, resource) => {
       id = key;
     });
   }
+  // if ID and project name is available
   if (id && projectName) {
     await folderList.forEach((folder) => {
       if (folder === `${projectName}_${id}`) {
+        logger.debug('importBurrito.js', 'Project already exists.');
+        existingProject = true;
+      }
+    });
+  } else if (projectName && resource === 'projects') {
+    // if not get id but project name - to avoid duplicate import
+    await checkImportDuplicate(folderList, projectName, metadata, projectDir, fs)
+    .then((upstreamValue) => {
+      if (Object.keys(upstreamValue.upstreamObj).includes(upstreamValue.incomingKey)
+      && (Object.keys(upstreamValue.upstreamObj[upstreamValue.incomingKey][0])).includes(upstreamValue.incomingId)) {
         logger.debug('importBurrito.js', 'Project already exists.');
         existingProject = true;
       }
@@ -208,6 +235,15 @@ const importBurrito = async (filePath, currentUser, updateBurritoVersion) => {
           delete metadata.identification?.upstream?.scribe;
         }
         metadata.identification.primary.scribe = latest;
+      } else {
+        // if Id is undefined - trying to get id, if project already exist
+        const folderList = await fs.readdirSync(projectDir);
+        await checkImportDuplicate(folderList, projectName, metadata, projectDir, fs)
+        .then((upstreamValue) => {
+          if (upstreamValue.incomingId) {
+            id = upstreamValue.incomingId;
+          }
+        });
       }
 
       if (!id) {
