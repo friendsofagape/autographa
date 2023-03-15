@@ -13,7 +13,7 @@ const path = require('path');
 const checkImportDuplicate = async (folderList, projectName, metadata, projectDir, fs) => {
   // To avoid the duplication of exising project on re-importing
   // Checking project name, key and Id with the existing project's upstream
-  let upstreamObj; let incomingId; let incomingKey;
+  let upstreamObj; let incomingId; let incomingKey; let primaryId;
   await folderList.forEach((folder) => {
     if (folder.split('_')[0].toLowerCase() === projectName.toLowerCase()) {
       const sb = fs.readFileSync(path.join(projectDir, folder, 'metadata.json'));
@@ -21,9 +21,12 @@ const checkImportDuplicate = async (folderList, projectName, metadata, projectDi
       incomingKey = Object.keys(metadata.identification.primary)[0];
       incomingId = Object.keys(metadata.identification.primary[incomingKey])[0];
       upstreamObj = metadataExisting.identification.upstream;
+      primaryId = Object.keys(metadataExisting.identification.primary.scribe)[0];
     }
   });
-  return { incomingId, incomingKey, upstreamObj };
+  return {
+    incomingId, incomingKey, upstreamObj, primaryId,
+  };
 };
 
 export const checkDuplicate = async (metadata, currentUser, resource) => {
@@ -62,7 +65,7 @@ export const checkDuplicate = async (metadata, currentUser, resource) => {
     // if not get id but project name - to avoid duplicate import
     await checkImportDuplicate(folderList, projectName, metadata, projectDir, fs)
     .then((upstreamValue) => {
-      if (Object.keys(upstreamValue.upstreamObj).includes(upstreamValue.incomingKey)
+      if (upstreamValue.incomingKey && Object.keys(upstreamValue.upstreamObj).includes(upstreamValue.incomingKey)
       && (Object.keys(upstreamValue.upstreamObj[upstreamValue.incomingKey][0])).includes(upstreamValue.incomingId)) {
         logger.debug('importBurrito.js', 'Project already exists.');
         existingProject = true;
@@ -194,7 +197,7 @@ const importBurrito = async (filePath, currentUser, updateBurritoVersion) => {
     if (success || metadata.type?.flavorType?.flavor?.name === 'audioTranslation') {
       logger.debug('importBurrito.js', 'Burrito file validated successfully or Audio Project');
       let projectName = metadata.identification?.name?.en;
-      let id;
+      let id; let foundId = false;
       logger.debug('importBurrito.js', 'Checking for scribe primary key');
       if (metadata.identification.primary?.scribe !== undefined) {
         Object.entries(metadata.identification?.primary?.scribe).forEach(([key]) => {
@@ -240,13 +243,15 @@ const importBurrito = async (filePath, currentUser, updateBurritoVersion) => {
         const folderList = await fs.readdirSync(projectDir);
         await checkImportDuplicate(folderList, projectName, metadata, projectDir, fs)
         .then((upstreamValue) => {
-          if (upstreamValue.incomingId) {
-            id = upstreamValue.incomingId;
+          // The ID of the existing project, using it for over wriitting it.
+          if (upstreamValue.primaryId) {
+            id = upstreamValue.primaryId;
+            foundId = true;
           }
         });
       }
 
-      if (!id) {
+      if (!id || foundId === true) {
         Object.entries(metadata.identification.primary).forEach(([key]) => {
           logger.debug('importBurrito.js', 'Swapping data between primary and upstream');
           if (key !== 'scribe') {
@@ -256,9 +261,11 @@ const importBurrito = async (filePath, currentUser, updateBurritoVersion) => {
             delete metadata.identification.primary[key];
           }
         });
-        logger.debug('importBurrito.js', 'Creating a new key.');
-        const key = currentUser + metadata.identification.name.en + moment().format();
-        id = uuidv5(key, environment.uuidToken);
+        if (!id) {
+          logger.debug('importBurrito.js', 'Creating a new key.');
+          const key = currentUser + metadata.identification.name.en + moment().format();
+          id = uuidv5(key, environment.uuidToken);
+        }
         metadata.identification.primary.scribe = {
           [id]: {
           revision: '0',
