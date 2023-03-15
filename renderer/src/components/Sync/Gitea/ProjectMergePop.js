@@ -12,6 +12,7 @@ import burrito from '../../../lib/BurritoTemplete.json';
 import { environment } from '../../../../environment';
 import { VerticalLinearStepper } from '../VerticalStepperProgress';
 import LoadingSpinner from '../LoadingSpinner';
+import packageInfo from '../../../../../package.json';
 
 function ProjectMergePop({ setMerge, projectObj, addNewNotification }) {
     const [isOpen, setIsOpen] = React.useState(false);
@@ -58,7 +59,7 @@ function ProjectMergePop({ setMerge, projectObj, addNewNotification }) {
         description: '',
       },
       {
-        label: 'Updating Ag Project',
+        label: 'Updating scribe Project',
         description: '',
       },
       {
@@ -67,14 +68,13 @@ function ProjectMergePop({ setMerge, projectObj, addNewNotification }) {
       },
     ];
     const path = require('path');
-    // const ignoreFilesPaths = ['ingredients/ag-settings.json', 'metadata.json'];
-    const ignoreFilesPaths = [path.join('ingredients', 'ag-settings.json'), 'metadata.json'];
+    const ignoreFilesPaths = [path.join('ingredients', environment.PROJECT_SETTING_FILE), 'metadata.json'];
 
     const undoMergeOrDeleteOldBackup = async (undo = false) => {
       logger.debug('projectMergePop.js', 'in undo merge or delete old backup');
       const newpath = localStorage.getItem('userPath');
       const fs = window.require('fs');
-      const projectBackupPath = path.join(newpath, 'autographa', 'users', projectObj?.agUsername, 'projects-backups');
+      const projectBackupPath = path.join(newpath, packageInfo.name, 'users', projectObj?.agUsername, 'projects-backups');
       // Sorted files in directory on creation date
       const backupFileList = await fs.readdirSync(projectBackupPath);
       const files = backupFileList.filter((filename) => fs.statSync(`${projectBackupPath}/${filename}`).isDirectory());
@@ -87,9 +87,9 @@ function ProjectMergePop({ setMerge, projectObj, addNewNotification }) {
       if (undo) {
         // replace backup with merged in project
         const fse = window.require('fs-extra');
-        const projectId = Object.keys(projectObj?.metaDataSbRemote?.identification.primary.ag)[0];
+        const projectId = Object.keys(projectObj?.metaDataSbRemote?.identification.primary.scribe)[0];
         const projectName = projectObj?.metaDataSbRemote?.identification.name.en;
-        const projectsMetaPath = path.join(newpath, 'autographa', 'users', projectObj?.agUsername, 'projects');
+        const projectsMetaPath = path.join(newpath, packageInfo.name, 'users', projectObj?.agUsername, 'projects');
         fs.mkdirSync(path.join(projectsMetaPath, `${projectName}_${projectId}`), { recursive: true });
         logger.debug('ProjectMergePop.js', 'Creating undo directory if not exists.');
         await fse.copy(path.join(projectBackupPath, backupName), path.join(projectsMetaPath, `${projectName}_${projectId}`));
@@ -144,15 +144,15 @@ function ProjectMergePop({ setMerge, projectObj, addNewNotification }) {
 
     const backupProjectLocal = async () => {
       setStepCount((prevStepCount) => prevStepCount + 1);
-      const projectId = Object.keys(projectObj?.metaDataSbRemote?.identification.primary.ag)[0];
+      const projectId = Object.keys(projectObj?.metaDataSbRemote?.identification.primary.scribe)[0];
       const projectName = projectObj?.metaDataSbRemote?.identification.name.en;
       logger.debug('projectMergePop.js', 'Stated Backing up the project', projectName);
       const newpath = localStorage.getItem('userPath');
       const fse = window.require('fs-extra');
       const fs = window.require('fs');
       const path = require('path');
-      const projectsMetaPath = path.join(newpath, 'autographa', 'users', projectObj?.agUsername, 'projects', `${projectName}_${projectId}`);
-      const projectBackupPath = path.join(newpath, 'autographa', 'users', projectObj?.agUsername, 'projects-backups');
+      const projectsMetaPath = path.join(newpath, packageInfo.name, 'users', projectObj?.agUsername, 'projects', `${projectName}_${projectId}`);
+      const projectBackupPath = path.join(newpath, packageInfo.name, 'users', projectObj?.agUsername, 'projects-backups');
       fs.mkdirSync(path.join(projectBackupPath), { recursive: true });
       logger.debug('ProjectMergePop.js', 'Creating backup directory if not exists.');
       const backupProjectName = `${projectName}_${projectId}_${new Date().getTime()}`;
@@ -197,7 +197,7 @@ function ProjectMergePop({ setMerge, projectObj, addNewNotification }) {
                     console.log('import project successfull');
                     await addNewNotification(
                       'Sync',
-                      'Project Sync to Ag (merge) successfull',
+                      'Project Sync to scribe (merge) successfull',
                       'success',
                     );
                 });
@@ -302,7 +302,7 @@ function ProjectMergePop({ setMerge, projectObj, addNewNotification }) {
                         });
                         await addNewNotification(
                           'Sync',
-                          'Project Sync to Ag Failed (merge) - Conflict Exist',
+                          'Project Sync to scribe Failed (merge) - Conflict Exist',
                           'failure',
                         );
                         console.log('can not perform merge : conflict exist xxxxxxxxxxx', result);
@@ -325,7 +325,7 @@ function ProjectMergePop({ setMerge, projectObj, addNewNotification }) {
             setMergeStarted(false);
             await addNewNotification(
               'Sync',
-              `Project Sync to Ag Failed (merge) - ${mergeErrorTxt}`,
+              `Project Sync to scribe Failed (merge) - ${mergeErrorTxt}`,
               'failure',
             );
         }

@@ -22,6 +22,8 @@ import AuthenticationContextProvider from '@/components/Login/AuthenticationCont
 import SearchTags from './SearchTags';
 import NewProject from './NewProject';
 import * as logger from '../../logger';
+import packageInfo from '../../../../package.json';
+import { environment } from '../../../environment';
 
 export default function ProjectList() {
   const router = useRouter();
@@ -90,7 +92,7 @@ export default function ProjectList() {
     const fs = window.require('fs');
     const newpath = localStorage.getItem('userPath');
     await localforage.getItem('userProfile').then((value) => {
-      const folder = path.join(newpath, 'autographa', 'users', value.username, 'projects', `${project.name}_${project.id[0]}`);
+      const folder = path.join(newpath, packageInfo.name, 'users', value.username, 'projects', `${project.name}_${project.id[0]}`);
       const data = fs.readFileSync(path.join(folder, 'metadata.json'), 'utf-8');
       let metadata = JSON.parse(data);
       const firstKey = Object.keys(metadata.ingredients)[0];
@@ -99,7 +101,7 @@ export default function ProjectList() {
       folderName.forEach((folder) => {
         dirName = path.join(dirName, folder);
       });
-      const settings = fs.readFileSync(path.join(folder, dirName, 'ag-settings.json'), 'utf-8');
+      const settings = fs.readFileSync(path.join(folder, dirName, environment.PROJECT_SETTING_FILE), 'utf-8');
       const agSetting = JSON.parse(settings);
       metadata = { ...metadata, ...agSetting };
       logger.debug('ProjectList.js', 'Loading current project metadata');

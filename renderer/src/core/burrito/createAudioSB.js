@@ -46,7 +46,7 @@ update,
       json.meta.dateCreated = moment().format();
     }
     json.identification.primary = {
-      ag: {
+      scribe: {
         [id]: {
         revision: '1',
         timestamp: moment().format(),

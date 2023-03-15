@@ -17,7 +17,7 @@ import LoadingScreen from '@/components/Loading/LoadingScreen';
 import { SnackBar } from '@/components/SnackBar';
 import EmptyScreen from '@/components/Loading/EmptySrceen';
 import { isElectron } from '../../../../core/handleElectron';
-
+import packageInfo from '../../../../../../package.json';
 // General scroll to element function
 
 const ReferenceBible = ({
@@ -87,7 +87,7 @@ const ReferenceBible = ({
                   const _bookID = Object.entries(_ingredients.scope)[0][0];
                   _books.push(_bookID);
                   if (_bookID.split('-').pop() === bookId.toUpperCase() && refName !== null) {
-                    const filePath = path.join(newpath, 'autographa', 'users', username, 'resources', refName, key);
+                    const filePath = path.join(newpath, packageInfo.name, 'users', username, 'resources', refName, key);
                     readIngredients({
                       filePath,
                     }).then((res) => {
@@ -107,7 +107,7 @@ const ReferenceBible = ({
                       setCounter(4);
                     });
 
-                    const commonResourcePath = path.join(newpath, 'autographa', 'common', 'resources', refName, key);
+                    const commonResourcePath = path.join(newpath, packageInfo.name, 'common', 'resources', refName, key);
                     readIngredients({
                       filePath: commonResourcePath,
                     }).then((res) => {

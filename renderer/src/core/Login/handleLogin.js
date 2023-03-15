@@ -1,6 +1,7 @@
 import * as localforage from 'localforage';
 import { handleJson } from './handleJson';
 import * as logger from '../../logger';
+import packageInfo from '../../../../package.json';
 
 export const createUser = (values, fs) => {
   logger.debug('handleLogin.js', 'In createUser to create a new user');
@@ -25,7 +26,7 @@ export const writeToFile = (users) => {
   const newpath = localStorage.getItem('userPath');
   const fs = window.require('fs');
   const path = require('path');
-  const file = path.join(newpath, 'autographa', 'users', 'users.json');
+  const file = path.join(newpath, packageInfo.name, 'users', 'users.json');
   fs.writeFileSync(file, JSON.stringify(users), (err) => {
     if (err) {
       logger.debug('handleLogin.js', 'Error saving users to disk');

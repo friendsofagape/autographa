@@ -4,7 +4,7 @@
 		"version": "1.0.0-rc2",
 		"category": "source",
 		"generator": {
-			"softwareName": "Autographa",
+			"softwareName": "Scribe",
 			"softwareVersion": "",
 			"userName": ""
 		},
@@ -12,10 +12,10 @@
 		"dateCreated": ""
 	},
 	"idAuthorities": {
-		"ag": {
+		"scribe": {
 			"id": "http://www.autographa.org",
 			"name": {
-				"en": "Autographa application"
+				"en": "Scribe application"
 			}
 		}
 	},

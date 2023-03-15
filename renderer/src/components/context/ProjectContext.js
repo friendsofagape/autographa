@@ -6,6 +6,7 @@ import { isElectron } from '../../core/handleElectron';
 import * as logger from '../../logger';
 import saveProjectsMeta from '../../core/projects/saveProjetcsMeta';
 import { environment } from '../../../environment';
+import packageInfo from '../../../../package.json';
 
 const path = require('path');
 const advanceSettings = require('../../lib/AdvanceSettings.json');
@@ -80,7 +81,10 @@ const ProjectContextProvider = ({ children }) => {
         },
         sync: { services: { door43: [] } },
       };
-      logger.debug('ProjectContext.js', 'Creating a ag-user-settings.json file');
+      logger.debug('ProjectContext.js', `Creating a ${environment.USER_SETTING_FILE} file`);
+      if (!fs.existsSync(file.replace(environment.USER_SETTING_FILE, ''))) {
+        fs.mkdirSync(file.replace(environment.USER_SETTING_FILE, ''));
+      }
       fs.writeFileSync(file, JSON.stringify(json));
     };
 
@@ -97,7 +101,7 @@ const ProjectContextProvider = ({ children }) => {
         return;
       }
       const fs = window.require('fs');
-      const file = path.join(newpath, 'autographa', 'users', currentUser, 'ag-user-settings.json');
+      const file = path.join(newpath, packageInfo.name, 'users', currentUser, environment.USER_SETTING_FILE);
       if (fs.existsSync(file)) {
         fs.readFile(file, (err, data) => {
           logger.debug('ProjectContext.js', 'Successfully read the data from file');
@@ -145,7 +149,7 @@ const ProjectContextProvider = ({ children }) => {
         setUsername(value.username);
       });
       const fs = window.require('fs');
-      const file = path.join(newpath, 'autographa', 'users', currentUser, 'ag-user-settings.json');
+      const file = path.join(newpath, packageInfo.name, 'users', currentUser, environment.USER_SETTING_FILE);
       if (fs.existsSync(file)) {
         fs.readFile(file, 'utf8', (err, data) => {
           if (err) {

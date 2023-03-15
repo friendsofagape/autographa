@@ -1,13 +1,14 @@
 import * as localForage from 'localforage';
 import { loadUsers } from '../Login/handleJson';
 import * as logger from '../../logger';
+import packageInfo from '../../../../package.json';
 
 const updateJson = async (userdata) => {
   logger.error('handleProfile.js', 'In UpdateJson, for updating the current user details');
   const newpath = localStorage.getItem('userPath');
   const fs = window.require('fs');
   const path = require('path');
-  const file = path.join(newpath, 'autographa', 'users', 'users.json');
+  const file = path.join(newpath, packageInfo.name, 'users', 'users.json');
   const status = [];
   try {
     const data = fs.readFileSync(file);

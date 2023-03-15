@@ -10,6 +10,7 @@ import { ProjectContext } from '../../context/ProjectContext';
 import CustomCanonSpecification from './CustomCanonSpecification';
 import LicencePopover from './LicencePopover';
 import * as logger from '../../../logger';
+import packageInfo from '../../../../../package.json';
 
 function BookNumberTag(props) {
   const { children } = props;
@@ -102,10 +103,10 @@ export default function AdvancedSettingsDropdown({ call, project, projectType })
       } else {
         const path = require('path');
         const newpath = localStorage.getItem('userPath');
-        const id = Object.keys(project.identification.primary.ag);
+        const id = Object.keys(project.identification.primary.scribe);
         localforage.getItem('userProfile').then((value) => {
           logger.debug('AdvancedSettingsDropdown.js', 'Fetching the current username');
-          const folder = path.join(newpath, 'autographa', 'users', value?.username, 'projects', `${project.identification.name.en}_${id[0]}`, 'ingredients', 'license.md');
+          const folder = path.join(newpath, packageInfo.name, 'users', value?.username, 'projects', `${project.identification.name.en}_${id[0]}`, 'ingredients', 'license.md');
           if (fs.existsSync(folder)) {
             fs.readFile(folder, 'utf8', (err, data) => {
               myLicence.licence = data;

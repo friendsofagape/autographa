@@ -86,9 +86,9 @@ function useProjectsSort() {
         .then(() => {
           projectArrayTemp[0].projects.forEach((_project) => {
             if (_project.identification.name.en === name) {
-              const id = Object.keys(_project.identification.primary.ag);
+              const id = Object.keys(_project.identification.primary.scribe);
               const projectName = `${name}_${id}`;
-              logger.debug('useProjectsSort.js', `Updating star/unstar in AG settings for ${name}`);
+              logger.debug('useProjectsSort.js', `Updating star/unstar in Scribe settings for ${name}`);
               updateAgSettings(currentUser, projectName, _project);
             }
           });
@@ -185,7 +185,7 @@ function useProjectsSort() {
                   .then((value) => {
                     if (value) {
                       value.projects.forEach((_project) => {
-                        const created = Object.keys(_project.identification.primary.ag);
+                        const created = Object.keys(_project.identification.primary.scribe);
                         let lastSeen;
                         let description;
                         let flavorType;
@@ -217,7 +217,7 @@ function useProjectsSort() {
                           FetchStarred(
                             _project.identification.name.en,
                             _project.languages[0].name.en,
-                            // _project.identification.primary.ag[created].timestamp,
+                            // _project.identification.primary.scribe[created].timestamp,
                             _project.meta.dateCreated,
                             lastSeen,
                             description,
@@ -229,7 +229,7 @@ function useProjectsSort() {
                           FetchUnstarred(
                             _project.identification.name.en,
                             _project.languages[0].name.en,
-                            // _project.identification.primary.ag[created].timestamp,
+                            // _project.identification.primary.scribe[created].timestamp,
                             _project.meta.dateCreated,
                             lastSeen,
                             description,
@@ -329,9 +329,9 @@ function useProjectsSort() {
 
       projectArrayTemp.projects.forEach((_project) => {
         if (_project.identification.name.en === name) {
-          const id = Object.keys(_project.identification.primary.ag);
+          const id = Object.keys(_project.identification.primary.scribe);
           const projectName = `${name}_${id}`;
-          logger.debug('useProjectsSort.js', `Updating archive/restore in AG settings for ${name}`);
+          logger.debug('useProjectsSort.js', `Updating archive/restore in scribe settings for ${name}`);
           updateAgSettings(currentUser, projectName, _project);
         }
       });
