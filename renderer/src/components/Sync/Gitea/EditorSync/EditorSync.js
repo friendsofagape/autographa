@@ -217,7 +217,7 @@ function EditorSync({ selectedProject }) {
                           don&apos;t find username, please login on
                           {' '}
                           <b className="text-primary underline">
-                            <Link href="/sync2">sync</Link>
+                            <Link href="/sync">sync</Link>
                           </b>
                         </p>
                       </div>
@@ -254,7 +254,7 @@ function EditorSync({ selectedProject }) {
                     type="button"
                     className="w-20 h-10 bg-success leading-loose rounded shadow text-xs font-base  text-white tracking-wide  font-light uppercase"
                   >
-                    <Link href="/sync2">Login</Link>
+                    <Link href="/sync">Login</Link>
                   </button>
                 )}
 

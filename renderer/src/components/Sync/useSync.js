@@ -1,137 +1,81 @@
-import React from 'react';
-// import parseFetchProjects from '../../core/projects/parseFetchProjects';
+import { useState, useEffect } from 'react';
 import * as localForage from 'localforage';
-import parseFileUpdate from '../../core/projects/parseFileUpdate';
 import * as logger from '../../logger';
-import { isUSFM, getId } from '../../core/Sync/handleSync';
 import fetchProjectsMeta from '../../core/projects/fetchProjectsMeta';
+import { getOrPutLastSyncInAgSettings } from './Ag/SyncToGiteaUtils';
 
 function useSync() {
   const projectList = [];
-  const [agProjects, setAgProjects] = React.useState([]);
-  const [agProjectsMeta, setAgProjectsMeta] = React.useState([]);
-  const [dragFromAg, setDragFromAg] = React.useState();
-  const [dropToAg, setDropToAg] = React.useState();
-
-  const [totalUploadedAg, setTotalUploadedAg] = React.useState(0);
-  const [uploadStartAg, setUploadstartAg] = React.useState(false);
-  const [totalFilesAg, settotalFilesAg] = React.useState(0);
+  const projectMetaData = [];
+  const [agProjects, setAgProjects] = useState([]);
+  const [agProjectsMeta, setAgProjectsMeta] = useState([]);
+  const [selectedAgProject, setSelectedAgProject] = useState(undefined);
+  const [selectedGiteaProject, setSelectedGiteaProject] = useState({
+    repo: null,
+    branch: null,
+    metaDataSB: null,
+    localUsername: null,
+    auth: null,
+    mergeStatus: false,
+  });
+  const [syncProgress, setSyncProgress] = useState({
+    syncStarted: false,
+    totalFiles: 0,
+    completedFiles: 0,
+  });
+  const [refreshGiteaListUI, setRefreshGiteaListUI] = useState({ triger: false, timeOut: false });
 
   const fetchProjects = async () => {
-    logger.debug('Dropzone.js', 'calling fetchProjects event');
+    logger.debug('UseSync.js', 'calling fetchProjects event');
     localForage.getItem('userProfile').then(async (user) => {
       await fetchProjectsMeta({ currentUser: user?.username })
-      .then((value) => {
-      // console.log("value :  " ,value.projects);
-      setAgProjectsMeta(value.projects);
-      value.projects.forEach((project) => {
-        projectList.push(project.identification.name.en);
-        // console.log("project name :  " ,project.identification.name.en);
-      });
+      .then(async (value) => {
+        for (let i = 0; i < value.projects.length; i++) {
+          projectList.push(value.projects[i].identification.name.en);
+          // find the lastSync data
+          // eslint-disable-next-line no-await-in-loop
+          const syncObj = await getOrPutLastSyncInAgSettings('get', value.projects[i]);
+          value.projects[i].lastSync = syncObj;
+          projectMetaData.push(value.projects[i]);
+        }
     }).finally(() => {
-      logger.debug('Dropzone.js', 'Updating project List');
+      logger.debug('UseSync.js', 'Updating project List');
+      setAgProjectsMeta(projectMetaData);
       setAgProjects(projectList);
-      // console.log("value agproject :  " ,agProjects);
     });
     });
-
-    // await parseFetchProjects(username)
-    // .then((res) => {
-    //   res.forEach((project) => {
-    //     // eslint-disable-next-line prefer-const
-    //     let file = [];
-    //     project.get('canoncontent').forEach((val, i) => {
-    //       file.push({ filename: val, meta: project.get(`file${i + 1}`) });
-    //     });
-    //     projectList.push(project.get('projectName'));
-    //   });
-    // }).finally(() => {
-    //   logger.debug('Dropzone.js', 'Updating project List');
-    //   setAgProjects(projectList);
-    // });
-  };
-  const onDragEnd = async (result) => {
-    logger.debug('Dropzone.js', 'calling onDragEnd event');
-    await fetch(result.filedataURL)
-    .then((url) => url.text())
-    .then((usfmValue) => {
-      logger.debug('Dropzone.js', 'sending dragged value');
-      setDragFromAg({ result: { ...result, content: usfmValue, from: 'autographa' } });
-    });
   };
 
-  const onDragEndFolder = async (projectMeta) => {
-    logger.debug('Dropzone.js', 'calling onDragEndFolder event');
-    // console.log("dropped project name : ", projectMeta);
-    setDragFromAg({ result: { projectMeta, from: 'autographa' } });
-  };
-
-  const handleDropToAg = (data) => {
-    setDropToAg(data);
-    setDragFromAg(null);
-    // console.log('drop start --> ', data);
-  };
-
-  const handleDropFolderAg = () => {
-    // console.log('drop end --> ', dropToAg);
-    if (dropToAg !== null) {
-      dropToAg?.result?.readGiteaFolderData(dropToAg.result.repo, dropToAg.result.from);
+  // to refresh both sides on completion of sync to update UI
+  useEffect(() => {
+    if (syncProgress.syncStarted && !refreshGiteaListUI.triger) {
+      setRefreshGiteaListUI({ ...refreshGiteaListUI, triger: true });
     }
-    setDragFromAg(null);
-  };
-
-  const handleDrop = async ({ index, username }) => {
-    const data = dropToAg;
-    logger.debug('Dropzone.js', 'calling dropHere event');
-    if (data.result.from === 'gitea') {
-      const checkFile = isUSFM(data.result.name);
-      if (checkFile) {
-        fetch(data.result.download_url)
-        .then((url) => url.text())
-        .then((usfmValue) => {
-          const lines = usfmValue.trim().split(/\s*[\r\n]+\s*/g);
-          const bookCode = getId(lines);
-          parseFileUpdate({
-            username,
-            projectName: agProjects[index],
-            filename: bookCode,
-            data: usfmValue,
-            filenameAlias: data.result.name,
-          })
-          // eslint-disable-next-line no-unused-vars
-          .then((response) => {
-            handleDropToAg();
-            // alert(response);
-          });
-        });
-      } else {
-        logger.debug('Dropzone.js', 'Not a USFM file.');
-        handleDropToAg();
-        // alert('Not a USFM file.');
-      }
+    if (!syncProgress.syncProgress && refreshGiteaListUI.triger) {
+      setRefreshGiteaListUI({ ...refreshGiteaListUI, timeOut: true });
+      setTimeout(async () => {
+        setRefreshGiteaListUI({ ...refreshGiteaListUI, triger: false, timeOut: false });
+        await fetchProjects();
+      }, 500);
     }
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [syncProgress.syncStarted]);
+
   const response = {
     state: {
       agProjects,
       agProjectsMeta,
-      dragFromAg,
-      dropToAg,
-      totalFilesAg,
-      totalUploadedAg,
-      uploadStartAg,
+      selectedAgProject,
+      syncProgress,
+      selectedGiteaProject,
+      refreshGiteaListUI,
     },
     actions: {
       fetchProjects,
-      onDragEnd,
-      onDragEndFolder,
-      setDragFromAg,
-      handleDropToAg,
-      handleDrop,
-      setTotalUploadedAg,
-      setUploadstartAg,
-      settotalFilesAg,
-      handleDropFolderAg,
+      setSelectedAgProject,
+      setSyncProgress,
+      setSelectedGiteaProject,
+      setRefreshGiteaListUI,
     },
   };
   return response;

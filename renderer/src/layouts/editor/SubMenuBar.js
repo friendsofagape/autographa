@@ -7,9 +7,8 @@ import CustomUsfmToolbar from '@/components/EditorPage/UsfmEditor/CustomUsfmTool
 import { ProjectContext } from '@/components/context/ProjectContext';
 import CustomNofications from '@/components/Notification/CustomNofications';
 // import { handleAutoSync } from '@/components/Sync/Gitea/EditorAutoSync';
-import AutoSync from '@/components/Sync/Gitea/EditorAutoSync';
 import localforage from 'localforage';
-import EditorSync from '@/components/Sync2/Gitea/EditorSync/EditorSync';
+import EditorSync from '@/components/Sync/Gitea/EditorSync/EditorSync';
 import Font from '@/icons/font.svg';
 import ColumnsIcon from '@/icons/basil/Outline/Interface/Columns.svg';
 import AboutModal from './AboutModal';
@@ -242,8 +241,6 @@ export default function SubMenuBar() {
               </span>
             </div>
 
-            {/* Auto sync button */}
-            <AutoSync selectedProject={selectedProject} />
             {/* Editor sync 2 new one */}
             <EditorSync selectedProject={selectedProject} />
 

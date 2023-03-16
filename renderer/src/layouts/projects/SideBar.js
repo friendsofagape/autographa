@@ -70,18 +70,6 @@ export default function SideBar() {
 
           </Link>
         </li>
-        <li className="text-gray-900 font-medium hover:text-white hover:bg-primary cursor-pointer py-5">
-          <Link href="/sync2" className="flex flex-col items-center">
-
-            <SyncIcon
-              fill="none"
-              strokecurrent="none"
-              className="h-7 w-7 text-dark group-hover:text-white"
-            />
-            <div className="text-xs mt-3 uppercase">{`${t('label-sync')}2`}</div>
-
-          </Link>
-        </li>
         {/* {(appMode === 'online')
           && (
           <li className="text-gray-900 font-medium hover:text-white hover:bg-primary cursor-pointer py-5">
