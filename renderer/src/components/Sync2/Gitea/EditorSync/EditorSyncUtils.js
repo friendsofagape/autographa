@@ -1,8 +1,10 @@
 import * as localForage from 'localforage';
+import { environment } from '../../../../../environment';
 import * as logger from '../../../../logger';
 import {
  createFiletoServer, getOrPutLastSyncInAgSettings, handleCreateRepo, updateFiletoServer,
 } from '../../Ag/SyncToGiteaUtils';
+import packageInfo from '../../../../../../package.json';
 
 export async function getGiteaUsersList() {
   let usersList = [];
@@ -10,7 +12,7 @@ export async function getGiteaUsersList() {
     const fs = window.require('fs');
     const path = require('path');
     const newpath = localStorage.getItem('userPath');
-    const file = path.join(newpath, 'autographa', 'users', user?.username, 'ag-user-settings.json');
+    const file = path.join(newpath, packageInfo.name, 'users', user?.username, environment.USER_SETTING_FILE);
     if (await fs.existsSync(file)) {
       const data = await fs.readFileSync(file);
       logger.debug('EditorSyncUtils.js', 'Successfully read the data from file , user : ', user?.username);
@@ -32,7 +34,7 @@ export async function handleEditorSync(selectedProject, projectData, syncObj, ac
   const ingredientsObj = projectData.ingredients;
   const projectCreated = projectData.meta.dateCreated.split('T')[0];
   const repoName = `ag-${projectData.languages[0].tag}-${projectData.type.flavorType.flavor.name}-${projectName.replace(/[\s+ -]/g, '_')}`;
-  const projectsMetaPath = path.join(newpath, 'autographa', 'users', localUser?.username, 'projects', selectedProject);
+  const projectsMetaPath = path.join(newpath, packageInfo.name, 'users', localUser?.username, 'projects', selectedProject);
   actions?.settotalFiles((Object.keys(ingredientsObj).length) + 1);
 
   try {

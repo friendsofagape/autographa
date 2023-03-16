@@ -1,5 +1,6 @@
 import { createFiletoServer } from '../../Ag/SyncToGiteaUtils';
 import * as logger from '../../../../logger';
+import packageInfo from '../../../../../../package.json';
 
 // upload project to a branch on exsting repo
 export const uploadProjectToBranchRepoExist = async (selectedGiteaProject, ignoreFilesPaths = []) => {
@@ -14,7 +15,7 @@ export const uploadProjectToBranchRepoExist = async (selectedGiteaProject, ignor
     const projectId = Object.keys(metaDataSB.identification.primary.ag)[0];
     const projectName = metaDataSB.identification.name.en;
     // const projectCreated = metaDataSB.meta.dateCreated.split('T')[0];
-    const projectsMetaPath = path.join(newpath, 'autographa', 'users', localUsername, 'projects', `${projectName}_${projectId}`);
+    const projectsMetaPath = path.join(newpath, packageInfo.name, 'users', localUsername, 'projects', `${projectName}_${projectId}`);
     const MetadataLocal = fs.readFileSync(path.join(projectsMetaPath, 'metadata.json'));
     const localSB = JSON.parse(MetadataLocal);
     if (!ignoreFilesPaths.includes('metadata.json')) {
@@ -74,8 +75,8 @@ export const backupLocalProject = async (selectedGiteaProject, actions) => {
     const fse = window.require('fs-extra');
     const fs = window.require('fs');
     const path = require('path');
-    const projectsMetaPath = path.join(newpath, 'autographa', 'users', selectedGiteaProject?.localUsername, 'projects', `${projectName}_${projectId}`);
-    const projectBackupPath = path.join(newpath, 'autographa', 'users', selectedGiteaProject?.localUsername, 'projects-backups');
+    const projectsMetaPath = path.join(newpath, packageInfo.name, 'users', selectedGiteaProject?.localUsername, 'projects', `${projectName}_${projectId}`);
+    const projectBackupPath = path.join(newpath, packageInfo.name, 'users', selectedGiteaProject?.localUsername, 'projects-backups');
     fs.mkdirSync(path.join(projectBackupPath), { recursive: true });
     logger.debug('ProjectMErgeUtils.js', 'Creating backup directory if not exists.');
     const backupProjectName = `${projectName}_${projectId}_${new Date().getTime()}`;
@@ -93,7 +94,7 @@ export const undoMergeOrDeleteOldBackup = async (selectedGiteaProject, backupNam
   const newpath = localStorage.getItem('userPath');
   const fs = window.require('fs');
   const path = require('path');
-  const projectBackupPath = path.join(newpath, 'autographa', 'users', selectedGiteaProject?.localUsername, 'projects-backups');
+  const projectBackupPath = path.join(newpath, packageInfo.name, 'users', selectedGiteaProject?.localUsername, 'projects-backups');
   // Sorted files in directory on creation date
   const backupFileList = await fs.readdirSync(projectBackupPath);
   const files = backupFileList.filter((filename) => fs.statSync(`${projectBackupPath}/${filename}`).isDirectory());
@@ -108,7 +109,7 @@ export const undoMergeOrDeleteOldBackup = async (selectedGiteaProject, backupNam
     const fse = window.require('fs-extra');
     const projectId = Object.keys(selectedGiteaProject?.metaDataSB?.identification.primary.ag)[0];
     const projectName = selectedGiteaProject?.metaDataSB?.identification.name.en;
-    const projectsMetaPath = path.join(newpath, 'autographa', 'users', selectedGiteaProject?.localUsername, 'projects');
+    const projectsMetaPath = path.join(newpath, packageInfo.name, 'users', selectedGiteaProject?.localUsername, 'projects');
     fs.mkdirSync(path.join(projectsMetaPath, `${projectName}_${projectId}`), { recursive: true });
     logger.debug('ProjectMErgeUtils.js', 'Creating undo directory if not exists.');
     await fse.copy(path.join(projectBackupPath, backupName), path.join(projectsMetaPath, `${projectName}_${projectId}`));

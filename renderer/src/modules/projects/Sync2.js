@@ -19,6 +19,7 @@ import { downloadFromGitea } from '@/components/Sync2/Gitea/SyncFromGitea';
 import useAddNotification from '@/components/hooks/useAddNotification';
 import Door43Logo from '@/icons/door43.svg';
 import * as logger from '../../logger';
+import packageInfo from '../../../../package.json';
 
  export default function Sync2() {
   const { t } = useTranslation();
@@ -90,7 +91,9 @@ import * as logger from '../../logger';
 
                  <div className="flex justify-between items-center h-14 px-5 tracking-wide shadow-sm border-b border-gray-200">
                    <div className="font-bold ">
-                     Autographa Project
+                     `$
+                     {packageInfo.name}
+                     ` Project
                    </div>
                    <div className="text-xs font-semibold uppercase">
                      Last Sync

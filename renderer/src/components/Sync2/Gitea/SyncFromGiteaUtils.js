@@ -6,6 +6,7 @@ import {
 } from 'gitea-react-toolkit';
 import * as logger from '../../../logger';
 import { environment } from '../../../../environment';
+import packageInfo from '../../../../../package.json';
 
 const md5 = require('md5');
 const path = require('path');
@@ -77,8 +78,8 @@ async function createOrUpdateAgSettings(sbDataObject, currentUser, projectName, 
   logger.debug('SyncFromGiteaUtils.js', 'Inside create/update, write Ag settings');
   // ag settings file
   sbDataObject.meta.generator.userName = currentUser;
-  if (!fs.existsSync(path.join(projectDir, `${projectName}_${id}`, dirName, 'ag-settings.json'))) {
-    logger.debug('SyncFromGiteaUtils', 'Creating ag-settings.json file');
+  if (!fs.existsSync(path.join(projectDir, `${projectName}_${id}`, dirName, environment.PROJECT_SETTING_FILE))) {
+    logger.debug(`SyncFromGiteaUtils', 'Creating ${environment.PROJECT_SETTING_FILE} file`);
     const settings = {
       version: environment.AG_SETTING_VERSION,
       project: {
@@ -96,20 +97,20 @@ async function createOrUpdateAgSettings(sbDataObject, currentUser, projectName, 
       },
       sync: { services: { door43: [] } },
     };
-    logger.debug('SyncFromGiteaUtils', 'Creating the ag-settings.json file.');
-    await fs.writeFileSync(path.join(projectDir, `${projectName}_${id}`, dirName, 'ag-settings.json'), JSON.stringify(settings));
-    const stat = fs.statSync(path.join(projectDir, `${projectName}_${id}`, dirName, 'ag-settings.json'));
-    sbDataObject.ingredients[path.join(dirName, 'ag-settings.json')] = {
+    logger.debug('SyncFromGiteaUtils', `Creating the ${environment.PROJECT_SETTING_FILE} file.`);
+    await fs.writeFileSync(path.join(projectDir, `${projectName}_${id}`, dirName, environment.PROJECT_SETTING_FILE), JSON.stringify(settings));
+    const stat = fs.statSync(path.join(projectDir, `${projectName}_${id}`, dirName, environment.PROJECT_SETTING_FILE));
+    sbDataObject.ingredients[path.join(dirName, environment.PROJECT_SETTING_FILE)] = {
       checksum: {
         md5: md5(settings),
       },
       mimeType: 'application/json',
       size: stat.size,
-      role: 'x-autographa',
+      role: `x-${packageInfo.name}`,
     };
   } else {
-    logger.debug('SyncFromGiteaUtils', 'Updating ag-settings.json file');
-    const ag = fs.readFileSync(path.join(projectDir, `${projectName}_${id}`, dirName, 'ag-settings.json'));
+    logger.debug('SyncFromGiteaUtils', `Updating ${environment.PROJECT_SETTING_FILE} file`);
+    const ag = fs.readFileSync(path.join(projectDir, `${projectName}_${id}`, dirName, environment.PROJECT_SETTING_FILE));
     let settings = JSON.parse(ag);
     if (settings.version !== environment.AG_SETTING_VERSION) {
       // eslint-disable-next-line prefer-const
@@ -132,7 +133,7 @@ async function createOrUpdateAgSettings(sbDataObject, currentUser, projectName, 
       settings = setting;
     }
     settings.project[sbDataObject.type.flavorType.flavor.name].lastSeen = moment().format();
-    await fs.writeFileSync(path.join(projectDir, `${projectName}_${id}`, dirName, 'ag-settings.json'), JSON.stringify(settings));
+    await fs.writeFileSync(path.join(projectDir, `${projectName}_${id}`, dirName, environment.PROJECT_SETTING_FILE), JSON.stringify(settings));
   }
 }
 
@@ -143,7 +144,7 @@ export const importServerProject = async (updateBurrito, repo, sbData, auth, use
     const fs = window.require('fs');
     const newpath = localStorage.getItem('userPath');
     let sbDataObject = { ...sbData };
-    const projectDir = path.join(newpath, 'autographa', 'users', currentUser, 'projects');
+    const projectDir = path.join(newpath, packageInfo.name, 'users', currentUser, 'projects');
     fs.mkdirSync(projectDir, { recursive: true });
     // updating the created timestamp if not exist
     if (!sbData?.meta?.dateCreated && sbDataObject?.identification?.primary?.ag) {

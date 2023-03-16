@@ -3,6 +3,7 @@ import * as logger from '../../../logger';
 import {
  handleCreateRepo, createFiletoServer, updateFiletoServer, getOrPutLastSyncInAgSettings,
 } from './SyncToGiteaUtils';
+import packageInfo from '../../../../../package.json';
 
 // upload project to gitea main function
 export async function uploadToGitea(projectDataAg, auth, setSyncProgress, notifyStatus, addNotification) {
@@ -18,7 +19,7 @@ export async function uploadToGitea(projectDataAg, auth, setSyncProgress, notify
         const newpath = localStorage.getItem('userPath');
         const fs = window.require('fs');
         const path = require('path');
-        const projectsMetaPath = path.join(newpath, 'autographa', 'users', user?.username, 'projects', `${projectName}_${projectId}`);
+        const projectsMetaPath = path.join(newpath, packageInfo.name, 'users', user?.username, 'projects', `${projectName}_${projectId}`);
         setSyncProgress((prev) => (
           {
             ...prev,

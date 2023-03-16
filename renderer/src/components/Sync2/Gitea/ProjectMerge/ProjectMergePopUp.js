@@ -32,7 +32,7 @@ export default function ProjectMergePop({ selectedGiteaProject, setSelectedGitea
   const [backupName, setBackupName] = React.useState('');
 
   const path = require('path');
-  const ignoreFilesPaths = [path.join('ingredients', 'ag-settings.json'), 'metadata.json'];
+  const ignoreFilesPaths = [path.join('ingredients', environment.PROJECT_SETTING_FILE), 'metadata.json'];
 
   const callFunction = async () => {
     let updateBurrito = null;
@@ -132,11 +132,9 @@ export default function ProjectMergePop({ selectedGiteaProject, setSelectedGitea
   };
 
   const handleClickUndo = async () => {
-    console.log('in handle click undo ');
     await undoMergeOrDeleteOldBackup(selectedGiteaProject, backupName, environment.SYNC_BACKUP_COUNT, true);
     setMergeDone(false);
     setSelectedGiteaProject((prev) => ({ ...prev, mergeStatus: false }));
-    console.log('in handle click undo finsihed deleted old backup ');
   };
 
   return (

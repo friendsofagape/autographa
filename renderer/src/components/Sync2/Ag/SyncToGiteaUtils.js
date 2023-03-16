@@ -4,6 +4,8 @@ import {
 import moment from 'moment';
 import * as localForage from 'localforage';
 import * as logger from '../../../logger';
+import packageInfo from '../../../../../package.json';
+import { environment } from '../../../../environment';
 
 // create repo for new project sync
 export const handleCreateRepo = async (repoName, auth, description) => {
@@ -102,7 +104,7 @@ export const createSyncProfile = async (auth) => {
   await localForage.getItem('userProfile').then(async (user) => {
     const currentUser = user?.username;
     const newpath = localStorage.getItem('userPath');
-    const file = path.join(newpath, 'autographa', 'users', currentUser, 'ag-user-settings.json');
+    const file = path.join(newpath, packageInfo.name, 'users', currentUser, environment.USER_SETTING_FILE);
     if (fs.existsSync(file)) {
       await fs.readFile(file, async (err, data) => {
         if (err) {
@@ -177,12 +179,12 @@ export const getOrPutLastSyncInAgSettings = async (method, projectMeta, syncUser
     const projectName = `${projectMeta?.identification?.name?.en}_${id}`;
     // eslint-disable-next-line array-callback-return
     const settingsIngredientsPath = Object.keys(projectMeta?.ingredients).filter((path) => {
-      if (path.includes('ag-settings.json')) {
+      if (path.includes(environment.PROJECT_SETTING_FILE)) {
         return path;
       }
     });
     if (settingsIngredientsPath) {
-      const settingsPath = path.join(newpath, 'autographa', 'users', currentUser, 'projects', projectName, settingsIngredientsPath[0]);
+      const settingsPath = path.join(newpath, packageInfo.name, 'users', currentUser, 'projects', projectName, settingsIngredientsPath[0]);
 
       let settings = await fs.readFileSync(settingsPath);
       settings = JSON.parse(settings);
