@@ -9,7 +9,6 @@ export async function tryMergeProjects(selectedGiteaProject, ignoreFilesPaths, a
     // uplaod local project to merge branch
     uploadResp = await uploadProjectToBranchRepoExist(selectedGiteaProject, ignoreFilesPaths);
     if (uploadResp) {
-      console.log('upload true ----');
       logger.debug('MergeActions.js', 'Try Merge Project - Local project upload success, send PR');
       // local project uploaded successfully and send PR
       actions.setStepCount((prevStepCount) => prevStepCount + 1);
@@ -28,7 +27,6 @@ export async function tryMergeProjects(selectedGiteaProject, ignoreFilesPaths, a
         body: payloadPr,
         redirect: 'follow',
       };
-      console.log('before fetch for PR ===');
       // check merge possible or not
       let returnData = null;
       await fetch(urlPr, requestOptions).then((resp) => resp.json().then((data) => ({ resposne: resp, body: data })))
@@ -48,7 +46,6 @@ export async function tryMergeProjects(selectedGiteaProject, ignoreFilesPaths, a
             await fetch(urlMerge, requestOptions).then((response) => response)
             .then(async (mergeResult) => {
               if (mergeResult.status === 200) {
-                console.log('fetch 2 Merge : ', mergeResult?.status);
                 logger.debug('MergeActions.js', 'Successfully Merged');
                 returnData = { status: 'success', message: 'Merge Success' };
               } if (mergeResult.status === 405) {

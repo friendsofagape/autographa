@@ -12,7 +12,6 @@ export default function useGetCurrentProjectMeta() {
           .then(async (value) => {
             const projectName = (currentProjectName.slice(0, currentProjectName.lastIndexOf('_'))).toLowerCase();
             meta = value.projects.filter((val) => val.identification.name.en.toLowerCase() === projectName.toLowerCase());
-            // console.log({ projectName, meta });
           }).finally(() => {
             if (meta && meta?.length > 0) {
               setCurrentProjectMeta(meta[0]);

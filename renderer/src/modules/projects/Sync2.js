@@ -1,6 +1,5 @@
-import { useState, Fragment, useContext } from 'react';
+import { useState, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Dialog, Transition } from '@headlessui/react';
 
 import ProjectsLayout from '@/layouts/projects/Layout';
 // import Gitea from '@/components/Sync/Gitea/Gitea';
@@ -19,6 +18,7 @@ import { uploadToGitea } from '@/components/Sync2/Ag/SyncToGitea';
 import { downloadFromGitea } from '@/components/Sync2/Gitea/SyncFromGitea';
 import useAddNotification from '@/components/hooks/useAddNotification';
 import Door43Logo from '@/icons/door43.svg';
+import * as logger from '../../logger';
 
  export default function Sync2() {
   const { t } = useTranslation();
@@ -58,10 +58,11 @@ import Door43Logo from '@/icons/door43.svg';
 
   const handleOfflineSync = async (currentRepo, currentAuth) => {
     if (currentAuth && currentRepo) {
-      console.log('Call Function to download Gitea - Ag', { currentAuth, currentRepo });
+      logger.debug('Sync.js', 'in offlineSync Started');
       await downloadFromGitea(currentRepo, currentAuth, setSyncProgress, notifyStatus, setSelectedGiteaProject, addNotification);
-      console.log('Call Function to download done ------------->');
+      logger.debug('Sync.js', 'in offlineSync Finished');
     } else {
+      logger.debug('Sync.js', 'in offlineSync Sync Failed , Something Wrong, may be internet issue');
       notifyStatus('failure', 'Something went wrong! , login and try again');
     }
   };

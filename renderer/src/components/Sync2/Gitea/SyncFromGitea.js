@@ -18,7 +18,6 @@ export async function downloadFromGitea(repo, auth, setSyncProgress, notifyStatu
       const regex = /.+\/\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01]).1/;
       const foundSyncBranch = branchData.find((value) => regex.test(value.name));
       if (foundSyncBranch) {
-        // console.log({ branchData, foundSyncBranch });
         logger.debug('SyncFromGitea.js', 'in SyncFromGiea : fetch content branch success');
         const readMetaData = await readContent(
             {
@@ -29,17 +28,13 @@ export async function downloadFromGitea(repo, auth, setSyncProgress, notifyStatu
             filepath: 'metadata.json',
             },
         );
-        // console.log({ readMetaData });
         await fetch(readMetaData.download_url).then((resp) => resp.json())
         .then(async (metaFile) => {
           const sb = Buffer.from(metaFile.data);
           const metaDataSB = JSON.parse(sb);
-          console.log('metadata : ', { metaDataSB });
           logger.debug('SyncFromGitea.js', 'in SyncFromGiea : fetch and parse metaData Success');
-          // console.log({ metaDataSB });
           // Validate the burrito
           const success = await validate('metadata', 'gitea/metadata.json', sb, metaDataSB.meta.version);
-          console.log('success : ', success);
           // if success proceed else raise error
           if (success) {
             logger.debug('SyncFromGitea.js', 'in SyncFromGiea : metaData SB validated');
@@ -60,17 +55,14 @@ export async function downloadFromGitea(repo, auth, setSyncProgress, notifyStatu
             });
             // check for project exising - true/ undefined
             const duplicate = await checkDuplicate(metaDataSB, currentUser?.username, 'projects');
-            // console.log({ currentUser, duplicate });
             if (duplicate) {
               logger.debug('SyncFromGitea.js', 'in SyncFromGiea : project exist and merge action');
               // save all data and trigger merge
               setSelectedGiteaProject((prev) => ({ ...prev, mergeStatus: true }));
-              console.log('inside duplicate ');
             } else {
               // import call
               logger.debug('SyncFromGitea.js', 'in SyncFromGiea : new project and import called');
               await importServerProject(false, repo, metaDataSB, auth, foundSyncBranch, { setSyncProgress, notifyStatus }, currentUser.username);
-              console.log('back to SyncFromGitea after import function ----');
               notifyStatus('success', 'Project Sync to AG successfull');
               await addNotification('Sync', 'Project Sync Successfull', 'success');
             }
@@ -86,7 +78,6 @@ export async function downloadFromGitea(repo, auth, setSyncProgress, notifyStatu
     });
   } catch (err) {
     logger.debug('SyncFromGitea.js', `In error : ${err}`);
-    console.log(err);
     setSelectedGiteaProject({
       repo: null, branch: null, metaDataSB: null, localUsername: null, auth: null, mergeStatus: false,
     });

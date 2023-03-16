@@ -14,12 +14,10 @@ async function readAndCreateIngredients(action, sbDataObject, ignoreFilesPaths, 
   logger.debug('SyncFromGiteaUtils.js', 'in read and write ingredients function');
   // eslint-disable-next-line no-restricted-syntax, guard-for-in
   for (const key in sbDataObject.ingredients) {
-    // action?.setTotalUploaded((prev) => prev + 1); ------------------- update status progress
     action?.setSyncProgress((prev) => ({
       ...prev,
       completedFiles: prev.completedFiles + 1,
     }));
-    // console.log(key);
     if (!ignoreFilesPaths.includes(key)) {
     // eslint-disable-next-line no-await-in-loop
     await readContent(
@@ -43,7 +41,6 @@ async function readAndCreateIngredients(action, sbDataObject, ignoreFilesPaths, 
                   logger.debug('SyncFromGiteaUtisl import.js', `Write File success ${key}`);
                 } catch (err) {
                   logger.debug('syncFromGiteaUtils import.js', `Error write file ${key} : `, err);
-                  console.error(err);
                   throw new Error(`File write failed : ${err}`);
                 }
           });
@@ -271,7 +268,6 @@ export const importServerProject = async (updateBurrito, repo, sbData, auth, use
         completedFiles: prev.completedFiles + 1,
       }));
       logger.debug('SyncFromGiteaUtils.js', 'Finished Importing project from Gitea to Ag');
-      console.log('finished import project');
     }
   } catch (err) {
     logger.debug('SyncFromGiteaUtils.js', `error called in import server project : ${err}`);

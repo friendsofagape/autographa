@@ -44,7 +44,6 @@ export default function ProjectMergePop({ selectedGiteaProject, setSelectedGitea
     // backing up project
     const backupProjectName = await backupLocalProject(selectedGiteaProject, { setBackupName, setStepCount });
     // Import Project to local
-    console.log('in call function : ', { updateBurrito, backupProjectName });
     if (backupProjectName) {
       setStepCount((prevStepCount) => prevStepCount + 1);
       await importServerProject(
@@ -59,7 +58,6 @@ export default function ProjectMergePop({ selectedGiteaProject, setSelectedGitea
         );
       setStepCount((prevStepCount) => prevStepCount + 1);
       setMergeDone(true);
-      console.log('import project merged Finish -------xxxxx---');
     }
   };
 
@@ -82,7 +80,6 @@ export default function ProjectMergePop({ selectedGiteaProject, setSelectedGitea
     async () => {
       try {
         const mergeResp = await tryMergeProjects(selectedGiteaProject, ignoreFilesPaths, { setStepCount, setModel });
-        console.log('try merge Projects finsihed -------------', { mergeResp });
         setNotify(mergeResp.status);
         setSnackText(mergeResp.message);
         await addNotification('Sync', mergeResp?.message, mergeResp?.status);

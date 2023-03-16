@@ -3,7 +3,7 @@ import * as logger from '../../../../logger';
 
 // upload project to a branch on exsting repo
 export const uploadProjectToBranchRepoExist = async (selectedGiteaProject, ignoreFilesPaths = []) => {
-  logger.debug('giteaUitils.js', 'Upload project to tempory branch for merge');
+  logger.debug('ProjectMErgeUtils.js', 'Upload project to tempory branch for merge');
   try {
     const {
       repo, branch, metaDataSB, localUsername, auth,
@@ -31,16 +31,16 @@ export const uploadProjectToBranchRepoExist = async (selectedGiteaProject, ignor
         }
       }
     }
-    logger.debug('giteaUitils.js', 'Upload project to tempory branch for merge finished');
+    logger.debug('ProjectMErgeUtils.js', 'Upload project to tempory branch for merge finished');
     return true;
   } catch (err) {
-    logger.debug('giteaUitils.js', 'Upload project to tempory branch for merge Error', err);
+    logger.debug('ProjectMErgeUtils.js', 'Upload project to tempory branch for merge Error', err);
     throw new Error(err);
   }
 };
 
 export const deleteCreatedMergeBranch = async (selectedGiteaProject, actions, GITEA_BASE_API_URL) => {
-  logger.debug('giteaUitils.js', 'IN delete created merge branch - local project ');
+  logger.debug('ProjectMErgeUtils.js', 'IN delete created merge branch - local project ');
   const myHeaders = new Headers();
   myHeaders.append('Authorization', `Bearer ${selectedGiteaProject.auth.token.sha1}`);
   myHeaders.append('Content-Type', 'application/json');
@@ -56,13 +56,12 @@ export const deleteCreatedMergeBranch = async (selectedGiteaProject, actions, GI
   .then((result) => {
     if (result.ok) {
       actions.setStepCount((prevStepCount) => prevStepCount + 1);
-      console.log('deleted temp branch---------------------');
-      logger.debug('giteaUitils.js', 'Deleted Temp Branch Successfully');
+      logger.debug('ProjectMErgeUtils.js', 'Deleted Temp Branch Successfully');
     } else {
       throw new Error(result.statusText);
     }
   })
-  .catch((error) => logger.debug('giteaUitils.js', 'Project Temporary branch deletion Error - ', error));
+  .catch((error) => logger.debug('ProjectMErgeUtils.js', 'Project Temporary branch deletion Error - ', error));
 };
 
 export const backupLocalProject = async (selectedGiteaProject, actions) => {
@@ -70,7 +69,7 @@ export const backupLocalProject = async (selectedGiteaProject, actions) => {
     actions.setStepCount((prevStepCount) => prevStepCount + 1);
     const projectId = Object.keys(selectedGiteaProject?.metaDataSB?.identification.primary.ag)[0];
     const projectName = selectedGiteaProject?.metaDataSB?.identification.name.en;
-    logger.debug('giteaUitils.js', 'Stated Backing up the project', projectName);
+    logger.debug('ProjectMErgeUtils.js', 'Stated Backing up the project', projectName);
     const newpath = localStorage.getItem('userPath');
     const fse = window.require('fs-extra');
     const fs = window.require('fs');
@@ -78,12 +77,11 @@ export const backupLocalProject = async (selectedGiteaProject, actions) => {
     const projectsMetaPath = path.join(newpath, 'autographa', 'users', selectedGiteaProject?.localUsername, 'projects', `${projectName}_${projectId}`);
     const projectBackupPath = path.join(newpath, 'autographa', 'users', selectedGiteaProject?.localUsername, 'projects-backups');
     fs.mkdirSync(path.join(projectBackupPath), { recursive: true });
-    logger.debug('giteaUitils.js', 'Creating backup directory if not exists.');
+    logger.debug('ProjectMErgeUtils.js', 'Creating backup directory if not exists.');
     const backupProjectName = `${projectName}_${projectId}_${new Date().getTime()}`;
     actions.setBackupName(backupProjectName);
     await fse.copy(projectsMetaPath, path.join(projectBackupPath, backupProjectName));
-    logger.debug('giteaUitils.js', 'Finished Backing up the project', projectName);
-    console.log('finished backups creation');
+    logger.debug('ProjectMErgeUtils.js', 'Finished Backing up the project', projectName);
     return backupProjectName;
   } catch (err) {
     throw new Error(err);
@@ -91,7 +89,7 @@ export const backupLocalProject = async (selectedGiteaProject, actions) => {
 };
 
 export const undoMergeOrDeleteOldBackup = async (selectedGiteaProject, backupName, SYNC_BACKUP_COUNT, undo = false) => {
-  logger.debug('giteaUitils.js', 'in undo merge or delete old backup');
+  logger.debug('ProjectMErgeUtils.js', 'in undo merge or delete old backup');
   const newpath = localStorage.getItem('userPath');
   const fs = window.require('fs');
   const path = require('path');
@@ -112,14 +110,14 @@ export const undoMergeOrDeleteOldBackup = async (selectedGiteaProject, backupNam
     const projectName = selectedGiteaProject?.metaDataSB?.identification.name.en;
     const projectsMetaPath = path.join(newpath, 'autographa', 'users', selectedGiteaProject?.localUsername, 'projects');
     fs.mkdirSync(path.join(projectsMetaPath, `${projectName}_${projectId}`), { recursive: true });
-    logger.debug('giteaUitils.js', 'Creating undo directory if not exists.');
+    logger.debug('ProjectMErgeUtils.js', 'Creating undo directory if not exists.');
     await fse.copy(path.join(projectBackupPath, backupName), path.join(projectsMetaPath, `${projectName}_${projectId}`));
     // delete the backup created
     await fs.rmdir(path.join(projectBackupPath, backupFileListSorted[0]), { recursive: true }, (err) => {
       if (err) {
         throw new Error(err);
       } else {
-        console.log('backup undo!');
+        logger.debug('ProjectMErgeUtils.js', 'Deleted');
       }
     });
   } else if (!undo) {
@@ -129,7 +127,7 @@ export const undoMergeOrDeleteOldBackup = async (selectedGiteaProject, backupNam
         if (err) {
           throw new Error(err);
         } else {
-          console.log('deleted!');
+          logger.debug('ProjectMErgeUtils.js', 'Undo done ');
         }
       });
     }

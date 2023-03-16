@@ -15,7 +15,6 @@ export async function getGiteaUsersList() {
       const data = await fs.readFileSync(file);
       logger.debug('EditorSyncUtils.js', 'Successfully read the data from file , user : ', user?.username);
       const json = JSON.parse(data);
-      // console.log('user json : ', json.sync?.services?.door43);
       usersList = json.sync?.services?.door43 || [];
     }
   });
@@ -29,20 +28,17 @@ export async function handleEditorSync(selectedProject, projectData, syncObj, ac
   const path = require('path');
   const newpath = localStorage.getItem('userPath');
   const authObj = syncObj?.token;
-  // console.log({ projectData, authObj, localUser });
   const projectName = projectData.identification.name.en;
   const ingredientsObj = projectData.ingredients;
   const projectCreated = projectData.meta.dateCreated.split('T')[0];
   const repoName = `ag-${projectData.languages[0].tag}-${projectData.type.flavorType.flavor.name}-${projectName.replace(/[\s+ -]/g, '_')}`;
   const projectsMetaPath = path.join(newpath, 'autographa', 'users', localUser?.username, 'projects', selectedProject);
   actions?.settotalFiles((Object.keys(ingredientsObj).length) + 1);
-  // -----------------------------------------------------------------------
 
   try {
     const createResult = await handleCreateRepo(repoName.toLowerCase(), authObj);
     if (createResult.id) {
       logger.debug('EditorSyncUtils.js', 'repo created success : starting sync');
-      console.log('start uploading');
       actions?.setUploadstart(true);
       // read metadata
       const Metadata = await fs.readFileSync(path.join(projectsMetaPath, 'metadata.json'));
@@ -65,7 +61,6 @@ export async function handleEditorSync(selectedProject, projectData, syncObj, ac
       logger.debug('EditorSyncUtils.js', 'Auto Sync finished create project and upload');
     } else if (createResult.message.includes('409')) {
       logger.debug('EditorSyncUtils.js', 'repo exist update section : 409 error');
-      console.log('started update project ');
       actions?.setUploadstart(true);
       const metadataContent = fs.readFileSync(path.join(projectsMetaPath, 'metadata.json'));
       await updateFiletoServer(JSON.stringify(metadataContent), 'metadata.json', `${localUser?.username}/${projectCreated}.1`, repoName, authObj);
@@ -89,7 +84,6 @@ export async function handleEditorSync(selectedProject, projectData, syncObj, ac
     }
   } catch (err) {
     logger.debug('SyncToGitea.js', 'Error on Sync create/update : ', err);
-    // console.log('error in sync Ag - Gitea : ', err);
     throw new Error(err?.message || err);
   } finally {
     actions?.setUploadstart(false);

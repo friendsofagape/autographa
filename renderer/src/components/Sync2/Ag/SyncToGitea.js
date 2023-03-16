@@ -30,7 +30,6 @@ export async function uploadToGitea(projectDataAg, auth, setSyncProgress, notify
         const createResult = await handleCreateRepo(repoName.toLowerCase(), auth);
         if (createResult.id) {
           logger.debug('SyncToGitea.js', 'repo created success : starting sync');
-          console.log('start uploading');
           setSyncProgress((prev) => ({
               ...prev,
               syncStarted: true,
@@ -38,6 +37,7 @@ export async function uploadToGitea(projectDataAg, auth, setSyncProgress, notify
           // read metadata
           const Metadata = await fs.readFileSync(path.join(projectsMetaPath, 'metadata.json'));
           await createFiletoServer(JSON.stringify(Metadata), 'metadata.json', `${user?.username}/${projectCreated}.1`, createResult.name, auth);
+          logger.debug('SyncToGitea.js', 'read and uploaded metaData to repo');
           // Read ingredients
           /* eslint-disable no-await-in-loop */
           /* eslint-disable no-restricted-syntax */
@@ -50,6 +50,7 @@ export async function uploadToGitea(projectDataAg, auth, setSyncProgress, notify
               // setTotalUploadedAg((prev) => prev + 1);
               const Metadata1 = fs.readFileSync(path.join(projectsMetaPath, key), 'utf8');
               await createFiletoServer(Metadata1, key, `${user?.username}/${projectCreated}.1`, createResult.name, auth);
+              logger.debug('SyncToGitea.js', `Read and uploaded ${key} to repo`);
             }
           }
           // update the Ag-settings - sync
@@ -59,13 +60,13 @@ export async function uploadToGitea(projectDataAg, auth, setSyncProgress, notify
           logger.debug('SyncToGitea.js', 'sync successfull - first time');
         } else if (createResult.message.includes('409')) {
           logger.debug('SyncToGitea.js', 'repo exist update section : 409 error');
-          console.log('started update project ');
           setSyncProgress((prev) => ({
             ...prev,
             syncStarted: true,
           }));
           const metadataContent = fs.readFileSync(path.join(projectsMetaPath, 'metadata.json'));
           await updateFiletoServer(JSON.stringify(metadataContent), 'metadata.json', `${user?.username}/${projectCreated}.1`, repoName, auth);
+          logger.debug('SyncToGitea.js', 'read and updated metaData to repo');
           // Read ingredients and update
           for (const key in ingredientsObj) {
             if (Object.prototype.hasOwnProperty.call(ingredientsObj, key)) {
@@ -76,10 +77,12 @@ export async function uploadToGitea(projectDataAg, auth, setSyncProgress, notify
               const metadata1 = await fs.readFileSync(path.join(projectsMetaPath, key), 'utf8');
               // setTotalUploadedAg((prev) => prev + 1);
               await updateFiletoServer(metadata1, key, `${user?.username}/${projectCreated}.1`, repoName, auth);
+              logger.debug('SyncToGitea.js', `Read and updated ${key} to repo`);
             }
           }
           // update the Ag-settings - sync update
           await getOrPutLastSyncInAgSettings('put', projectData, auth?.user?.username);
+          logger.debug('SyncToGitea.js', 'Updated last Sync data');
           notifyStatus('success', 'Sync completed successfully !!');
           await addNotification('Sync', 'Project Sync Successfull', 'success');
           logger.debug('SyncToGitea.js', 'sync successfull - update sync');
@@ -89,8 +92,7 @@ export async function uploadToGitea(projectDataAg, auth, setSyncProgress, notify
           logger.debug('SyncToGitea.js', 'sync failed - may be due to internet');
         }
       } catch (err) {
-        logger.debug('SyncToGitea.js', 'Error on Sync create/update : ', err);
-        console.log('error in sync Ag - Gitea : ', err);
+        logger.debug('SyncToGitea.js', `Error on Sync create/update : ${err}`);
         notifyStatus('failure', `Sync failed : ${err}`);
         await addNotification('Sync', err?.message || err, 'failure');
       } finally {

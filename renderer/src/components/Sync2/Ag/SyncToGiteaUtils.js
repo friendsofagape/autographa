@@ -53,9 +53,7 @@ export const createFiletoServer = async (fileContent, filePath, branch, repoName
     })
     .catch((err) => {
       logger.debug('SyncToGiteaUtils.js', `failed to upload file to Gitea ${filePath} ${err}`);
-      console.log(`path : ${filePath}`, ' , : error : ', err);
-      // eslint-disable-next-line no-throw-literal
-      throw { error: err };
+      throw new Error(err);
     });
   };
 
@@ -66,15 +64,13 @@ export const updateFiletoServer = async (fileContent, filePath, branch, repoName
       config: auth.config,
       owner: auth.user.login,
       repo: repoName.toLowerCase(),
-      // ref: `${username}/${created}.1`,
       ref: branch,
       filepath: filePath,
     },
   ).then(async (result) => {
     logger.debug('Dropzone.js', 'sending the data from Gitea with content');
     if (result === null) {
-      // eslint-disable-next-line no-throw-literal
-      throw 'can not read repo';
+      throw new Error('can not read repo');
     }
     await updateContent({
       config: auth.config,
@@ -91,12 +87,10 @@ export const updateFiletoServer = async (fileContent, filePath, branch, repoName
       sha: result.sha,
     // eslint-disable-next-line no-unused-vars
     }).then((res) => {
-      logger.debug('Dropzone.js', 'file uploaded to Gitea \'metadata.json\'');
-      // console.log('RESPONSE :', res);
+      logger.debug('SyncTOGiteaUtils.js', 'file uploaded to Gitea \'metadata.json\'');
     })
     .catch((err) => {
-      logger.debug('Dropzone.js', 'failed to upload file to Gitea \'metadata.json\'', err);
-      console.log(filePath, ' : error : ', err);
+      logger.debug('SyncTOGiteaUtils.js', `failed to upload file to Gitea metadata.json : ${err}`);
     });
   });
 };
@@ -116,7 +110,6 @@ export const createSyncProfile = async (auth) => {
         } else {
         logger.debug('SyncToGiteaUtils.js', 'Successfully read the data from file');
         const json = JSON.parse(data);
-        // console.log("user json : ",json);
         if (!json.sync && !json.sync?.services) {
           // first time sync
           json.sync = {
@@ -188,7 +181,6 @@ export const getOrPutLastSyncInAgSettings = async (method, projectMeta, syncUser
         return path;
       }
     });
-    // console.log({ projectName, settingsIngredientsPath, currentUser });
     if (settingsIngredientsPath) {
       const settingsPath = path.join(newpath, 'autographa', 'users', currentUser, 'projects', projectName, settingsIngredientsPath[0]);
 
@@ -206,7 +198,6 @@ export const getOrPutLastSyncInAgSettings = async (method, projectMeta, syncUser
         return lastSyncedObj;
       }
       if (method.toLowerCase() === 'put') {
-        console.log('inside PUT =====');
         if (!settings.sync && !settings.sync?.services) {
           // first time sync - no sync in settings old projects
           settings.sync = {
@@ -251,7 +242,6 @@ export const getOrPutLastSyncInAgSettings = async (method, projectMeta, syncUser
       }
     }
   } else {
-    // eslint-disable-next-line no-throw-literal
-    throw { message: 'unknown operation' };
+    throw new Error('unknown Operation');
   }
 };
