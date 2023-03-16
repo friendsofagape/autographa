@@ -80,7 +80,10 @@ const ProjectContextProvider = ({ children }) => {
         },
         sync: { services: { door43: [] } },
       };
-      logger.debug('ProjectContext.js', 'Creating a ag-user-settings.json file');
+      logger.debug('ProjectContext.js', 'Creating a ag-user-settings.json file and Dir if not exist');
+      if (!fs.existsSync(file.replace('ag-user-settings.json', ''))) {
+        fs.mkdirSync(file.replace('ag-user-settings.json', ''));
+      }
       fs.writeFileSync(file, JSON.stringify(json));
     };
 

@@ -7,6 +7,7 @@ export const environment = {
     SERVER_URL: 'http://dev.autographa.org:1337/parse',
     GITEA_SERVER: 'https://git.door43.org',
     GITEA_TOKEN: 'Gitea AG Testing',
+    GITEA_API_ENDPOINT: 'https://git.door43.org/api/v1',
     uuidToken: '6223f833-3e59-429c-bec9-16910442b599',
     SYNC_BACKUP_COUNT: 5,
     AG_MINIMUM_BURRITO_VERSION: '0.3.0',

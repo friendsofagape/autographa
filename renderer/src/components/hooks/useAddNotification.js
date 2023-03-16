@@ -10,8 +10,8 @@ export default function useAddNotification() {
         },
       } = useContext(AutographaContext);
 
-    const addNotification = async (title, text, type) => {
-        localforage.getItem('notification').then((value) => {
+    async function addNotification(title, text, type) {
+        await localforage.getItem('notification').then((value) => {
           const temp = [...value];
           temp.push({
               title,
@@ -22,7 +22,7 @@ export default function useAddNotification() {
           });
           setNotifications(temp);
         });
-      };
+      }
 
     return { addNotification };
 }
