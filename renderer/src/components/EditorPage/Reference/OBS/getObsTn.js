@@ -21,6 +21,7 @@ export const getObsTn = async (owner, repo, path) => {
             .then((tnNotes) => tnNotes.text())
             .then((tnNote) => {
               file.push({
+                  name: (content.name).replace('.md', ''),
                   OccurrenceNote: tnNote,
               });
               // resolve(file);

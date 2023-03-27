@@ -1,9 +1,12 @@
 /* eslint-disable react/prop-types */
 import React, {
-    useEffect,
-   useState,
+  useContext,
+  useEffect,
+  useState,
 } from 'react';
 import localForage from 'localforage';
+import { ReferenceContext } from '@/components/context/ReferenceContext';
+import { ProjectContext } from '@/components/context/ProjectContext';
 import { getObsTn } from './getObsTn';
 import ObsResourceCard from './ObsResourceCard';
 import * as logger from '../../../../logger';
@@ -27,9 +30,30 @@ function ObsTnCard({
   const [items, setItems] = useState([]);
   const [markdown, setMarkdown] = useState();
 
+  const {
+    state: {
+      selectedStory,
+    },
+  } = useContext(ReferenceContext);
+  const {
+    states: {
+      scrollLock,
+    },
+  } = useContext(ProjectContext);
+  useEffect(() => {
+    if (selectedStory && scrollLock === false) {
+      const i = items.findIndex((e) => (e.name)?.toString().padStart(2, '0') === (selectedStory - 1)?.toString().padStart(2, '0'));
+      if (i > -1) {
+        setIndex(i);
+      } else {
+        setIndex(-1);
+      }
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedStory]);
   useEffect(() => {
     if (items.length !== 0) {
-      setMarkdown(items[index].OccurrenceNote);
+      setMarkdown(items[index]?.OccurrenceNote);
     } else {
       setMarkdown('');
     }
@@ -76,7 +100,7 @@ function ObsTnCard({
                   // listing all files using forEach
                   await files.forEach(async (file) => {
                     const filecontent = await fs.readFileSync(path.join(notesDir, file), 'utf8');
-                    items.push({ OccurrenceNote: filecontent });
+                    items.push({ name: (file).replace('.md', ''), OccurrenceNote: filecontent });
                   });
                   if (items.length === files.length) {
                     logger.debug('OfflineResourceFetch.js', 'reading offline obs-tn finished ');
