@@ -6,6 +6,7 @@ import { isElectron } from '../../core/handleElectron';
 import * as logger from '../../logger';
 import saveProjectsMeta from '../../core/projects/saveProjetcsMeta';
 import { environment } from '../../../environment';
+import langNames from '../../lib/lang/langNames.json';
 
 const path = require('path');
 const advanceSettings = require('../../lib/AdvanceSettings.json');
@@ -17,8 +18,8 @@ const ProjectContextProvider = ({ children }) => {
     const [drawer, setDrawer] = React.useState(false);
     const [scrollLock, setScrollLock] = React.useState(false);
     const [sideTabTitle, setSideTabTitle] = React.useState('New');
-    const [languages, setLanguages] = React.useState(advanceSettings.languages);
-    const [language, setLanguage] = React.useState(advanceSettings.languages[0]);
+    const [languages, setLanguages] = React.useState();
+    const [language, setLanguage] = React.useState();
     const [licenceList, setLicenseList] = React.useState(advanceSettings.copyright);
     const [copyright, setCopyRight] = React.useState(advanceSettings.copyright[0]);
     const [canonList, setCanonList] = React.useState(advanceSettings.canonSpecification);
@@ -44,6 +45,17 @@ const ProjectContextProvider = ({ children }) => {
       setNewProjectFields({ ...newProjectFields, [prop]: event.target.value });
     };
 
+    const languageData = () => {
+      langNames.forEach((item) => {
+        if (item.ang === 'English') {
+          setLanguage(item);
+        } else if (item.ang === '') {
+          setLanguages(item);
+        }
+        return item;
+      });
+    };
+
     const uniqueId = (list, id) => list.some((obj) => obj.id === id);
 
     const createSettingJson = (fs, file) => {
@@ -52,7 +64,7 @@ const ProjectContextProvider = ({ children }) => {
       setLicenseList((advanceSettings.copyright).push({
         id: 'Other', title: 'Custom', licence: '', locked: false,
       }));
-      setLanguages(advanceSettings.languages);
+      setLanguages(langNames);
       const json = {
         version: environment.AG_USER_SETTING_VERSION,
         history: {
@@ -123,10 +135,23 @@ const ProjectContextProvider = ({ children }) => {
               ? (advanceSettings.canonSpecification)
               .concat(json.history?.textTranslation.canonSpecification)
               : advanceSettings.canonSpecification);
-            setLanguages(json.history?.languages
-              ? (advanceSettings.languages)
-              .concat(json.history?.languages)
-              : advanceSettings.languages);
+            const userlanguages = [];
+            json.history?.languages?.forEach((userLang) => {
+              const obj = {};
+              obj.ang = userLang.title;
+              obj.ld = userLang.scriptDirection;
+              obj.custom = userLang?.custom || true;
+              obj.lc = userLang?.langCode || '';
+              userlanguages.push(obj);
+            });
+            setLanguages(userlanguages.length > 0
+              ? (langNames)
+              .concat(userlanguages)
+              : langNames);
+            // setLanguages(json.history?.languages
+            //   ? (advanceSettings.languages)
+            //   .concat(json.history?.languages)
+            //   : advanceSettings.languages);
           } else {
             createSettingJson(fs, file);
           }
@@ -177,6 +202,7 @@ const ProjectContextProvider = ({ children }) => {
             logger.debug('ProjectContext.js', 'Upadting the settings in existing file');
             fs.writeFileSync(file, JSON.stringify(json));
             logger.debug('ProjectContext.js', 'Loading new settings from file');
+            console.log(JSON.stringify(json), 'hello');
             loadSettings();
           }
         });
@@ -187,11 +213,12 @@ const ProjectContextProvider = ({ children }) => {
     const createProjectCommonUtils = async () => {
       logger.debug('ProjectContext.js', 'In createProject common utils');
       // Add / update language into current list.
-      if (uniqueId(languages, language.id)) {
+      console.log(uniqueId(languages, language.pk), language);
+      if (uniqueId(languages, language.pk)) {
         languages.forEach((lang) => {
-          if (lang.id === language.id) {
-            if (lang.title !== language.title
-              || lang.scriptDirection !== language.scriptDirection) {
+          if (lang.pk === language.pk) {
+            if (lang.ang !== language.ang
+              || lang.ld !== language.ld || lang.lc !== language.lc) {
               updateJson('languages');
             }
           }
@@ -261,6 +288,7 @@ const ProjectContextProvider = ({ children }) => {
 
     React.useEffect(() => {
       if (isElectron()) {
+        languageData();
         loadSettings();
         localforage.getItem('userProfile').then((value) => {
           setUsername(value?.username);

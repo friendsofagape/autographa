@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'react-i18next';
@@ -11,6 +11,8 @@ import PopoverProjectType from '@/layouts/editor/PopoverProjectType';
 import { SnackBar } from '@/components/SnackBar';
 import useValidator from '@/components/hooks/useValidator';
 import ConfirmationModal from '@/layouts/editor/ConfirmationModal';
+// import CustomMultiComboBox from '@/components/Resources/ResourceUtils/CustomMultiComboBox';
+import CustomSearchBox from '@/components/Resources/ResourceUtils/CustomSearchBox';
 import LayoutIcon from '@/icons/basil/Outline/Interface/Layout.svg';
 import BullhornIcon from '@/icons/basil/Outline/Communication/Bullhorn.svg';
 // import ProcessorIcon from '@/icons/basil/Outline/Devices/Processor.svg';
@@ -19,8 +21,9 @@ import ImageIcon from '@/icons/basil/Outline/Files/Image.svg';
 import { classNames } from '../../util/classNames';
 import * as logger from '../../logger';
 import ImportPopUp from './ImportPopUp';
-import CustomList from './CustomList';
+// import CustomList from './CustomList';
 import burrito from '../../lib/BurritoTemplete.json';
+// import langNames from '../../lib/lang/langNames.json';
 // eslint-disable-next-line no-unused-vars
 const solutions = [
   {
@@ -110,6 +113,7 @@ export default function NewProject({ call, project, closeEdit }) {
   const [loading, setLoading] = React.useState(false);
   const [metadata, setMetadata] = React.useState();
   const [openModal, setOpenModal] = React.useState(false);
+  const [selectLangs, setSelectLangs] = useState([]);
   const [error, setError] = React.useState({
     projectName: {},
     abbr: {},
@@ -139,10 +143,10 @@ export default function NewProject({ call, project, closeEdit }) {
   };
 
   const setValue = async (value) => {
-    if (value.title) {
+    if (value.ang) {
       setLanguage(value);
-      languages.forEach((l) => {
-        if (l.title !== value.title) {
+      languages?.forEach((l) => {
+        if (l.ang !== value.ang) {
           setLanguages(languages.concat(value));
         }
       });
@@ -237,7 +241,8 @@ export default function NewProject({ call, project, closeEdit }) {
       abbreviation: project.identification.abbreviation.en,
       description: project.project[project.type.flavorType.flavor.name].description,
     });
-    setValue({ title: project.languages[0].name.en, scriptDirection: project.project[project.type.flavorType.flavor.name].scriptDirection });
+    console.log(project, 'project');
+    setValue({ ang: project.languages[0].name.en, ld: project.project[project.type.flavorType.flavor.name].scriptDirection });
     setMetadata(project);
     // set dropdown to the project type
     switch (project.type.flavorType.flavor.name) {
@@ -264,6 +269,7 @@ export default function NewProject({ call, project, closeEdit }) {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [call]);
 
+  console.log(languages);
   return (
     <ProjectsLayout
       title={call === 'new' ? t('new-project-page') : t('edit-project')}
@@ -339,7 +345,7 @@ export default function NewProject({ call, project, closeEdit }) {
                       && (
                       <div className="absolute">
                         <TargetLanguageTag>
-                          {language.scriptDirection ? language.scriptDirection : 'LTR'}
+                          {language?.ld ? language.ld : 'LTR'}
                         </TargetLanguageTag>
                       </div>
                     )}
@@ -347,13 +353,26 @@ export default function NewProject({ call, project, closeEdit }) {
                       {t('label-target-language')}
                       <span className="text-error">*</span>
                     </h4>
-                    <CustomList
+                    {/* <CustomList
                       selected={language}
                       setSelected={setLanguage}
-                      // options={languages}
                       options={languages.filter((v, i, a) => a.findIndex((v2) => ['title', 'scriptDirection'].every((k) => v2[k] === v[k])) === i)}
                       show
+                    /> */}
+                    <CustomSearchBox
+                      customData={languages}
+                      selectedList={selectLangs}
+                      setSelectedList={setSelectLangs}
+                      selected={language}
+                      setSelected={setLanguage}
+                      filterParams="ang"
                     />
+                    {/* <CustomMultiComboBox
+                    selectedList={selectLangs}
+                    setSelectedList={setSelectLangs}
+                    customData={languages}
+                    filterParams="ang"
+                  /> */}
                   </div>
                   <div className="mt-5">
                     <TargetLanguagePopover projectType={headerDropDown} />
