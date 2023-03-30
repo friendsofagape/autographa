@@ -37,7 +37,7 @@ function ObsResourceCard({
       />
       <CardContent
         item={[]}
-        items={[]}
+        items={items}
         filters={filters}
         markdown={markdown}
         languageId={languageId}
