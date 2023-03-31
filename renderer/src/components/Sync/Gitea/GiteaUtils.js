@@ -41,6 +41,7 @@ export const importServerProject = async (updateBurrito, repo, sbData, auth, use
         logger.debug('dropzone giteaUtils import.js', 'Swapping data between primary and upstream');
         const identity = sbDataObject.identification.primary[key];
         sbDataObject.identification.upstream[key] = [identity];
+        sbDataObject.identification.upstream = [];
         delete sbDataObject.identification.primary[key];
         delete sbDataObject.idAuthorities;
         });
@@ -61,7 +62,7 @@ export const importServerProject = async (updateBurrito, repo, sbData, auth, use
         id = key;
         });
         if (list.length > 1) {
-        (sbDataObject.identification.upstream.ag).forEach((e, i) => {
+        (sbDataObject.identification.upstream?.ag).forEach((e, i) => {
             if (e === latest) {
             (sbDataObject.identification?.upstream?.ag)?.splice(i, 1);
             }
@@ -78,6 +79,7 @@ export const importServerProject = async (updateBurrito, repo, sbData, auth, use
         if (key !== 'ag') {
             const identity = sbDataObject.identification.primary[key];
             sbDataObject.identification.upstream[key] = [identity];
+            sbDataObject.identification.upstream = [];
             delete sbDataObject.identification.primary[key];
         }
         });
