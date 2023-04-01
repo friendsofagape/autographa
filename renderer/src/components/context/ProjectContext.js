@@ -15,10 +15,8 @@ export const ProjectContext = React.createContext();
 
 const ProjectContextProvider = ({ children }) => {
     const [editorSave, setEditorSave] = React.useState('');
-    const [drawer, setDrawer] = React.useState(false);
     const [scrollLock, setScrollLock] = React.useState(false);
-    const [sideTabTitle, setSideTabTitle] = React.useState('New');
-    const [languages, setLanguages] = React.useState();
+    const [languages, setLanguages] = React.useState([]);
     const [language, setLanguage] = React.useState();
     const [licenceList, setLicenseList] = React.useState(advanceSettings.copyright);
     const [copyright, setCopyRight] = React.useState(advanceSettings.copyright[0]);
@@ -45,20 +43,22 @@ const ProjectContextProvider = ({ children }) => {
       setNewProjectFields({ ...newProjectFields, [prop]: event.target.value });
     };
 
-    const languageData = () => {
-      langNames.forEach((item) => {
-        if (item.ang === 'English') {
-          setLanguage(item);
-        } else if (item.ang === '') {
-          setLanguages(item);
-        }
-        return item;
-      });
+    const languageData = async (languages) => {
+      if (!language?.ang) {
+        await languages.filter((item) => {
+          if (item.lc === 'en') {
+            setLanguage(item);
+          }
+          if (item.ang !== '') { return item; }
+        });
+      }
+
+      // setLanguages(langs);
     };
 
     const uniqueId = (list, id) => list.some((obj) => obj.id === id);
 
-    const createSettingJson = (fs, file) => {
+    const createSettingJson = async (fs, file) => {
       logger.debug('ProjectContext.js', 'Loading data from AdvanceSetting.json file');
       setCanonList(advanceSettings.canonSpecification);
       setLicenseList((advanceSettings.copyright).push({
@@ -111,7 +111,7 @@ const ProjectContextProvider = ({ children }) => {
       const fs = window.require('fs');
       const file = path.join(newpath, 'autographa', 'users', currentUser, 'ag-user-settings.json');
       if (fs.existsSync(file)) {
-        fs.readFile(file, (err, data) => {
+        await fs.readFile(file, async (err, data) => {
           logger.debug('ProjectContext.js', 'Successfully read the data from file');
           const json = JSON.parse(data);
           if (json.version === environment.AG_USER_SETTING_VERSION) {
@@ -144,20 +144,24 @@ const ProjectContextProvider = ({ children }) => {
               obj.lc = userLang?.langCode || '';
               userlanguages.push(obj);
             });
-            setLanguages(userlanguages.length > 0
-              ? (langNames)
-              .concat(userlanguages)
-              : langNames);
+            const langFilter = userlanguages.length > 0
+            ? (langNames)
+            .concat(userlanguages)
+            : langNames;
+            if (!language?.ang) {
+              languageData(langFilter);
+            }
+            setLanguages([...langFilter]);
             // setLanguages(json.history?.languages
             //   ? (advanceSettings.languages)
             //   .concat(json.history?.languages)
             //   : advanceSettings.languages);
           } else {
-            createSettingJson(fs, file);
+            await createSettingJson(fs, file);
           }
         });
       } else {
-        createSettingJson(fs, file);
+        await createSettingJson(fs, file);
       }
     };
     // Json for storing advance settings
@@ -202,7 +206,6 @@ const ProjectContextProvider = ({ children }) => {
             logger.debug('ProjectContext.js', 'Upadting the settings in existing file');
             fs.writeFileSync(file, JSON.stringify(json));
             logger.debug('ProjectContext.js', 'Loading new settings from file');
-            console.log(JSON.stringify(json), 'hello');
             loadSettings();
           }
         });
@@ -213,7 +216,6 @@ const ProjectContextProvider = ({ children }) => {
     const createProjectCommonUtils = async () => {
       logger.debug('ProjectContext.js', 'In createProject common utils');
       // Add / update language into current list.
-      console.log(uniqueId(languages, language.pk), language);
       if (uniqueId(languages, language.pk)) {
         languages.forEach((lang) => {
           if (lang.pk === language.pk) {
@@ -287,28 +289,28 @@ const ProjectContextProvider = ({ children }) => {
     };
 
     React.useEffect(() => {
-      if (isElectron()) {
-        languageData();
-        loadSettings();
-        localforage.getItem('userProfile').then((value) => {
-          setUsername(value?.username);
-        });
-          localforage.getItem('currentProject').then((projectName) => {
-            setSelectedProject(projectName);
+      (async () => {
+        if (isElectron()) {
+          await loadSettings();
+          localforage.getItem('userProfile').then((value) => {
+            setUsername(value?.username);
           });
-      }
+            localforage.getItem('currentProject').then((projectName) => {
+              setSelectedProject(projectName);
+            });
+        }
+      })();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const context = {
         states: {
             newProjectFields,
-            drawer,
             copyright,
             canonSpecification,
             versification,
             versificationScheme,
-            sideTabTitle,
             selectedProject,
             canonList,
             licenceList,
@@ -321,13 +323,11 @@ const ProjectContextProvider = ({ children }) => {
             sideBarTab,
         },
         actions: {
-            setDrawer,
             setCopyRight,
             setcanonSpecification,
             setVersificationScheme,
             handleProjectFields,
             resetProjectStates,
-            setSideTabTitle,
             setSelectedProject,
             createProject,
             setLanguage,

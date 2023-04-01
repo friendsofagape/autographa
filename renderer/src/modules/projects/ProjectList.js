@@ -101,6 +101,7 @@ export default function ProjectList() {
       });
       const settings = fs.readFileSync(path.join(folder, dirName, 'ag-settings.json'), 'utf-8');
       const agSetting = JSON.parse(settings);
+      console.log(agSetting, metadata);
       metadata = { ...metadata, ...agSetting };
       logger.debug('ProjectList.js', 'Loading current project metadata');
       setCurrentProject(metadata);

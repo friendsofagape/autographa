@@ -341,6 +341,7 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
             setSelectedList={setSelectedLangFilter}
             customData={langJson}
             filterParams="ang"
+            multiSelect
           />
           <div className="flex flex-wrap gap-2 mt-2 mb-2">
             {selectedLangFilter.map((language, idx) => (
@@ -362,6 +363,7 @@ function DownloadResourcePopUp({ selectResource, isOpenDonwloadPopUp, setIsOpenD
           <CustomMultiComboBox
             selectedList={selectedTypeFilter}
             setSelectedList={setSelectedTypeFilter}
+            multiSelect
             customData={selectResource === 'bible' ? subjectTypeArray.bible : subjectTypeArray.obs}
           />
         </div>

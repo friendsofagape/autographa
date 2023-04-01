@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import { Combobox } from '@headlessui/react';
 import PropTypes from 'prop-types';
+import { ChevronUpDownIcon } from '@heroicons/react/24/solid';
 
 function CustomMultiComboBox({
-  selectedList, setSelectedList, customData, filterParams = 'name',
+  selectedList, setSelectedList, customData, multiSelect, filterParams = 'name',
 }) {
   let filteredData = [];
   const [query, setQuery] = useState('');
   // eslint-disable-next-line no-unused-vars
   const [isActive, setIsActive] = useState(false);
+
   if (customData.length === 1) {
     setSelectedList(customData);
   } else if (customData.length > 1) {
@@ -16,25 +18,32 @@ function CustomMultiComboBox({
     filteredData = (query === '')
       ? customData.slice(0, 100).concat(selectedList.filter((item) => customData.slice(0, 100).indexOf(item) === -1)) // showing initial 100
       : (query.length >= 3)
-        ? customData.filter((data) => data[filterParams].toLowerCase().includes(query.toLowerCase()))
+        ? customData.filter((data) => data[filterParams]?.toLowerCase().includes(query.toLowerCase()))
         : [];
   }
 
   return (
       customData.length > 1 ? (
-        <Combobox value={selectedList} onChange={setSelectedList} multiple>
+        <Combobox value={selectedList} onChange={setSelectedList} multiple={multiSelect}>
           {({ open }) => (
-            <div className="relative">
+            <div className="relative mt-1 ">
               <div className="relative w-full border border-gray-200 cursor-default overflow-hidden rounded-lg bg-white text-left shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 sm:text-sm">
 
                 <Combobox.Input
-                  className="w-full border-none py-2 pl-3 pr-10 text-sm leading-5 text-gray-900 focus:ring-0"
+                  className={`w-full border-none py-2 pl-3 pr-10 text-sm leading-5 focus:ring-0 ${multiSelect ? 'text-gray-900' : 'text-black'}`}
                   displayValue={(language) => language?.ang}
-                  placeholder={`${selectedList.length > 0 ? `${selectedList[0][filterParams]}... click for more` : 'Select Language'}`}
+                  placeholder={`${(selectedList.length > 0 && multiSelect) ? `${selectedList[0][filterParams]}... click for more` : !multiSelect && selectedList.length === 1 ? `${`${selectedList[0][filterParams] } ( ${selectedList[0]?.lc} )` }` : 'Select Language'}`}
                   onFocus={() => !open && setIsActive(true)}
                   onBlur={() => setIsActive(false)}
                   onChange={(event) => setQuery(event.target.value)}
                 />
+                <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-2">
+                  <ChevronUpDownIcon
+                    className="h-5 w-5 text-gray-400"
+                    aria-hidden="true"
+                  />
+                </Combobox.Button>
+
               </div>
 
               <Combobox.Options className="absolute w-full z-40 mt-1 max-h-48 scrollbars-width overflow-auto rounded-md bg-white py-1 px-2 text-base shadow-sm ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm cursor-pointer">
@@ -43,8 +52,10 @@ function CustomMultiComboBox({
                     {selectedList.length > 0 && !query.length > 0 && <div className="mt-1 mb-2 h-[.1rem] w-full bg-secondary" />}
                     {filteredData.map((data) => (
                       // <Combobox.Option key={data?.id || data?.pk} className={`${selectedList.includes(data) ? 'bg-gray-400' : ''} hover:bg-gray-300 p-1`} value={data}>
-                      <Combobox.Option key={data?.id || data?.pk} className=" hover:bg-gray-300 p-1" value={data}>
-                        {data[filterParams]}
+                      <Combobox.Option key={data?.id || data?.pk} className="hover:bg-gray-600 p-1" value={data}>
+                        {/* {data[filterParams]} */}
+                        {`${data[filterParams]} ${multiSelect === false ? `(${data.lc})` : ''}`}
+
                       </Combobox.Option>
                     ))}
                   </div>

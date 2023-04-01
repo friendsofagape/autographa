@@ -1,9 +1,10 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { PlusIcon, PencilSquareIcon } from '@heroicons/react/24/outline';
 import { useTranslation } from 'react-i18next';
 import { SnackBar } from '@/components/SnackBar';
 import PropTypes from 'prop-types';
+import useValidator from '@/components/hooks/useValidator';
 import * as logger from '../../../logger';
 import { ProjectContext } from '../../context/ProjectContext';
 
@@ -17,7 +18,6 @@ export default function TargetLanguagePopover({ projectType }) {
   const [snackBar, setOpenSnackBar] = React.useState(false);
   const [snackText, setSnackText] = React.useState('');
   const [notify, setNotify] = React.useState();
-  const [maxLength, setMaxLength] = React.useState();
   const [lock, setLock] = useState();
   const {
     states: {
@@ -27,25 +27,53 @@ export default function TargetLanguagePopover({ projectType }) {
       setLanguage,
     },
   } = React.useContext(ProjectContext);
-
   const { t } = useTranslation();
+
+  const [errors, setErrors] = React.useState({
+    lang: '',
+    code: '',
+  });
+
+  const { action: { validateField, isLengthValidated, isTextValidated } } = useValidator();
+
+  async function checkValidationResp(response, field, resultObj) {
+    if (response && response.length > 0) {
+      for (let x = 0; x < response.length; x++) {
+          resultObj[field] = response[x].message;
+          if (response[x].message !== '') { return; }
+      }
+    } else {
+      resultObj[field] = '';
+    }
+  }
+
+  async function validate() {
+    const resultObj = {};
+    // check language
+    const langName = lang.length > 0 && await validateField([isLengthValidated(lang, { minLen: 2, maxLen: 40 }), isTextValidated(lang, 'onlyString')]);
+    await checkValidationResp(langName, 'language', resultObj);
+    // check Code
+    const langCodeName = langCode.length > 0 && await validateField([isLengthValidated(langCode, { minLen: 2, maxLen: 10 }), isTextValidated(langCode, 'onlyString')]);
+    await checkValidationResp(langCodeName, 'code', resultObj);
+    setErrors(resultObj);
+    return resultObj;
+  }
+
   const openLanguageNav = (nav) => {
     logger.debug('TargetLanguagePopover.js', 'In openLanguageNav');
     if (nav === 'edit') {
-      console.log(language, 'language');
       logger.debug('TargetLanguagePopover.js', 'Selected a language which can be edited');
       setLock(language?.custom);
       setEdit(true);
       languages.forEach((item) => {
-        if (item.pk === language.pk) {
-         setId(item.pk);
+        if (item?.id === language?.id) {
+         setId(item.id);
         }
       });
-
       setLang(language.ang);
       setDirection(language.ld ? language.ld : t('label-rtl'));
       setLangCode(language.lc);
-    } else {
+    } else if (nav === 'add') {
       logger.debug('TargetLanguagePopover.js', 'Selected the Pre-defined language which can\'t be edited');
       setLock();
       setEdit(false);
@@ -60,14 +88,16 @@ export default function TargetLanguagePopover({ projectType }) {
   function closeModal() {
     setIsOpen(false);
   }
-  const addLanguage = () => {
+
+  const addLanguage = async () => {
     logger.debug('TargetLanguagePopover.js', 'Adding a new language');
-    const result = languages.filter((l) => l?.title?.toLowerCase() === lang.toLowerCase() && l?.scriptDirection?.toLowerCase() === direction.toLowerCase() && l.langCode?.toLowerCase() === langCode.toLowerCase());
+    // const resultObj = await validate();
+    const result = languages.filter((l) => l?.title?.toLowerCase() === lang?.toLowerCase() && l?.scriptDirection?.toLowerCase() === direction.toLowerCase() && l.langCode?.toLowerCase() === langCode?.toLowerCase());
     if (result.length === 0) {
       setLanguage({
- id: languages.length + 1, title: lang, scriptDirection: direction, langCode, custom: true,
+ id: languages.length + 1, ang: lang, ld: direction, lc: langCode, custom: true,
 });
-      closeModal();
+      openModal();
     } else {
       setNotify('warning');
       setSnackText('Language trying to add is already present');
@@ -77,7 +107,7 @@ export default function TargetLanguagePopover({ projectType }) {
   const editLanguage = () => {
     logger.debug('TargetLanguagePopover.js', 'Editing the language');
     setLanguage({
- id, title: lang, scriptDirection: direction, langCode, custom: true,
+ id, ang: lang, ld: direction, lc: langCode, custom: true,
 });
     closeModal();
   };
@@ -96,16 +126,18 @@ export default function TargetLanguagePopover({ projectType }) {
           />
 
         </button>
-        <button
-          type="button"
-          className="focus:outline-none bg-primary h-8 w-8 flex items-center justify-center rounded-full"
-          onClick={() => { openLanguageNav('edit'); openModal(); }}
-        >
-          <PencilSquareIcon
-            className="h-5 w-5 text-white"
-            aria-hidden="true"
-          />
-        </button>
+        {language?.custom === true && (
+          <button
+            type="button"
+            className="focus:outline-none bg-primary h-8 w-8 flex items-center justify-center rounded-full"
+            onClick={() => { openLanguageNav('edit'); openModal(); }}
+          >
+            <PencilSquareIcon
+              className="h-5 w-5 text-white"
+              aria-hidden="true"
+            />
+          </button>
+        )}
       </div>
       <Transition appear show={isOpen} as={Fragment}>
 
@@ -139,38 +171,40 @@ export default function TargetLanguagePopover({ projectType }) {
           >
 
             <div className="fixed inset-0 flex items-center justify-center">
-              <div className="h-80 rounded shadow border border-gray-200 bg-white">
+              <div className="h-90 w-[26rem] rounded shadow border border-gray-200 bg-white">
                 <div className="grid grid-rows-1 gap-5 m-6">
                   <div>
                     <h2 className="uppercase font-bold leading-5 tracking-widest mb-2 ">{edit === true ? t('label-edit-langauge') : t('label-new-langauge')}</h2>
                     <div>
-                      <h3 className="mb-1 text-xs font-base  text-primary tracking-wide leading-4 font-light">{t('language-name')}</h3>
+                      <h3 className="mb-1 text-xs font-base  text-primary tracking-wide leading-4 font-light">{t('label-language')}</h3>
                       <input
                         type="text"
-                        name="search_box"
-                        id="search_box"
+                        name="given-name"
+                        id="language"
                         autoComplete="given-name"
                         value={lang}
-                        onChange={(e) => { setLang(e.target.value); }}
-                        disabled={!lock}
+                        onChange={(e) => {
+                          setLang(e.target.value);
+                        }}
+                        disabled={!lock && edit}
                         className="bg-gray-200 w-80 block rounded shadow-sm sm:text-sm focus:border-primary border-gray-300"
                       />
+                      <span className="text-red-500 ml-2 text-sm">{errors?.lang || errors?.code}</span>
+
                     </div>
                     <div className="mt-1">
-                      <h3 className="mb-1 text-xs font-base  text-primary tracking-wide leading-4 font-light">{t('language-code')}</h3>
+                      <h3 className="mb-1 text-xs font-base  text-primary tracking-wide leading-4 font-light">{t('label-language-code')}</h3>
                       <input
                         type="text"
-                        name="search_box"
-                        id="lang_box"
+                        name="given-code"
+                        id="code"
                         autoComplete="given-code"
                         value={langCode}
-                        maxLength={maxLength}
                         onChange={(e) => {
- setLangCode(e.target.value);
-                          setMaxLength(2);
+                          setLangCode(e.target.value);
 }}
-                        disabled={!lock}
-                        className="bg-gray-200 w-16 block rounded shadow-sm sm:text-sm focus:border-primary border-gray-300"
+                        disabled={!lock && edit}
+                        className="bg-gray-200 w-24 block rounded shadow-sm sm:text-sm focus:border-primary border-gray-300"
                       />
                     </div>
                   </div>
@@ -184,9 +218,9 @@ export default function TargetLanguagePopover({ projectType }) {
                             type="radio"
                             className="form-radio h-4 w-4 text-primary"
                             value={t('label-ltr')}
-                            checked={direction === t('label-ltr')}
+                            checked={direction?.toUpperCase() === t('label-ltr')}
                             onChange={() => setDirection(t('label-ltr'))}
-                            disabled={!lock}
+                            disabled={!lock && edit}
                           />
                           <span className="ml-2 text-xs font-bold">{t('label-ltr')}</span>
                         </div>
@@ -195,9 +229,9 @@ export default function TargetLanguagePopover({ projectType }) {
                             type="radio"
                             className="form-radio h-4 w-4 text-primary ml-10"
                             value={t('label-rtl')}
-                            checked={direction === t('label-rtl')}
+                            checked={direction?.toUpperCase() === t('label-rtl')}
                             onChange={() => setDirection(t('label-rtl'))}
-                            disabled={!lock}
+                            disabled={!lock && edit}
                           />
                           <span className="ml-2 text-xs font-bold">{t('label-rtl')}</span>
                         </div>
@@ -214,7 +248,7 @@ export default function TargetLanguagePopover({ projectType }) {
                     >
                       {t('btn-cancel')}
                     </button>
-                    {!lock ? <div />
+                    {!lock && edit ? <div />
                     : (
                       <button
                         type="button"

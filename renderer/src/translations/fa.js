@@ -31,6 +31,7 @@ export const Fa = {
     'label-project-type': 'Type',
     'label-project-name': 'Project Name',
     'label-language': 'Language',
+    'label-language-code': 'Language Code',
     'label-all': 'All Books',
     'label-other': 'Other',
     'label-Gitea': 'Gitea',
