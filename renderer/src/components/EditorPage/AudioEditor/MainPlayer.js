@@ -24,6 +24,9 @@ const MainPlayer = () => {
     },
   } = useContext(ReferenceContext);
   const [currentUrl, setCurrentUrl] = useState('');
+  // currentUrl is an object with full details of the verse with takes etc
+  // newBlob is used for storing recorded blobURL, to play instantly after the re-record and delete-record to avoid the caching issue of play()
+  const [newBlob, setNewBlob] = useState();
   const [take, setTake] = useState('take1');
   const [trigger, setTrigger] = useState('');
   const [model, setModel] = useState({
@@ -42,7 +45,6 @@ const MainPlayer = () => {
     });
   };
   const fetchUrl = () => {
-    setCurrentUrl();
     Object.entries(audioContent).forEach(
       ([key]) => {
         if (audioContent[key].verseNumber === verse) {
@@ -158,6 +160,7 @@ const MainPlayer = () => {
   };
   const playRecordingFeedback = useCallback(
     async (blobUrl, blob) => {
+      setNewBlob(blobUrl);
       saveAudio(blob);
     },
     [bookId, chapter, verse, take, audioCurrentChapter],
@@ -167,14 +170,12 @@ const MainPlayer = () => {
     stopRecording,
     pauseRecording,
     resumeRecording,
-    clearBlobUrl,
   } = useReactMediaRecorder({
-      audio: {},
+      audio: true,
       onStop: playRecordingFeedback,
       blobPropertyBag: { type: 'audio/mp3' },
   });
   const handleFunction = () => {
-    setCurrentUrl();
     // We have used trigger to identify whether the call is from DeleteAudio or Re-record
     if (trigger === 'delete') {
       const fs = window.require('fs');
@@ -219,7 +220,7 @@ const MainPlayer = () => {
       setAudioContent(audioCurrentChapter.bookContent[chapter - 1].contents);
       setTrigger();
       setUpdateWave(!updateWave);
-      clearBlobUrl();
+      setNewBlob();
       loadChapter();
     } else {
       setTrigger('record');
@@ -231,6 +232,7 @@ const MainPlayer = () => {
       fetchUrl();
       setTrigger();
       setTake('take1');
+      setNewBlob();
     }
   }, [audioContent, bookId, verse, chapter]);
 
@@ -238,6 +240,8 @@ const MainPlayer = () => {
     <>
       <Player
         url={currentUrl || {}}
+        blobUrl={newBlob}
+        setBlobUrl={setNewBlob}
         startRecording={startRecording}
         stopRecording={stopRecording}
         pauseRecording={pauseRecording}

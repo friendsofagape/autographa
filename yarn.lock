@@ -19485,10 +19485,10 @@
     "glob-to-regexp" "^0.4.1"
     "graceful-fs" "^4.1.2"
 
-"wavesurfer.js@^6.2.0":
-  "integrity" "sha512-x7efObHMHY3nwqWzIC0yeZTo0u/aC9T5Av6KhSdhTlsgtKdTG7JAE3mNqnYBXUjq0yGYfTB9F85/pks9830Vjw=="
-  "resolved" "https://registry.npmjs.org/wavesurfer.js/-/wavesurfer.js-6.3.0.tgz"
-  "version" "6.3.0"
+"wavesurfer.js@^6.6.2":
+  "integrity" "sha512-aPAU4OADQsyH8mIw2nXmoni8KHo8s1f1bd5ZUrxhN4P/VMWd+oPDqEwA01XPSEfasAJW6mZ/EHQ2bZ9nOWRrNw=="
+  "resolved" "https://registry.npmjs.org/wavesurfer.js/-/wavesurfer.js-6.6.2.tgz"
+  "version" "6.6.2"
 
 "wbuf@^1.1.0", "wbuf@^1.7.3":
   "integrity" "sha512-O84QOnr0icsbFGLS0O3bI5FswxzRr8/gHwWkDlQFskhSPryQXvrTMxjxGP4+iWYoauLoBvfDpkrOauZ+0iZpDA=="
