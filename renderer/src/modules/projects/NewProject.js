@@ -240,7 +240,7 @@ export default function NewProject({ call, project, closeEdit }) {
       abbreviation: project.identification.abbreviation.en,
       description: project.project[project.type.flavorType.flavor.name].description,
     });
-    setValue({ ang: project.languages[0].name.en, ld: project.project[project.type.flavorType.flavor.name].scriptDirection });
+    setValue({ ang: project.languages[0].name.en, ld: project.project[project.type.flavorType.flavor.name].scriptDirection, lc: project.project[project.type.flavorType.flavor.name].languageCode });
     setMetadata(project);
     // set dropdown to the project type
     switch (project.type.flavorType.flavor.name) {
@@ -268,7 +268,7 @@ export default function NewProject({ call, project, closeEdit }) {
   }, [call]);
   // useEffect(() => {
   //   if (languages.length > 0) {
-  //     setValue({ ang: project.languages[0].name.en, ld: project.project[project.type.flavorType.flavor.name].scriptDirection });
+  //     setValue({ ang: project.languages[0].name.en, ld: project.project[project.type.flavorType.flavor.name].scriptDirection, lc: project.project[project.type.flavorType.flavor.name].languageCode });
   //   }
   // // eslint-disable-next-line react-hooks/exhaustive-deps
   // }, [languages]);
@@ -373,7 +373,7 @@ export default function NewProject({ call, project, closeEdit }) {
 
                   </div>
                   <div className="mt-5">
-                    <TargetLanguagePopover projectType={headerDropDown} />
+                    <TargetLanguagePopover call={call} projectType={headerDropDown} />
                   </div>
                 </div>
                 <div className="mt-5">

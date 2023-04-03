@@ -8,11 +8,11 @@ import useValidator from '@/components/hooks/useValidator';
 import * as logger from '../../../logger';
 import { ProjectContext } from '../../context/ProjectContext';
 
-export default function TargetLanguagePopover({ projectType }) {
+export default function TargetLanguagePopover({ projectType, call }) {
   const [id, setId] = React.useState();
   const [lang, setLang] = React.useState();
   const [direction, setDirection] = React.useState();
-  const [langCode, setLangCode] = React.useState();
+  const [languageCode, setLanguageCode] = React.useState();
   const [edit, setEdit] = React.useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [snackBar, setOpenSnackBar] = React.useState(false);
@@ -53,7 +53,7 @@ export default function TargetLanguagePopover({ projectType }) {
     const langName = lang.length > 0 && await validateField([isLengthValidated(lang, { minLen: 2, maxLen: 40 }), isTextValidated(lang, 'onlyString')]);
     await checkValidationResp(langName, 'language', resultObj);
     // check Code
-    const langCodeName = langCode.length > 0 && await validateField([isLengthValidated(langCode, { minLen: 2, maxLen: 10 }), isTextValidated(langCode, 'onlyString')]);
+    const langCodeName = languageCode.length > 0 && await validateField([isLengthValidated(languageCode, { minLen: 2, maxLen: 10 }), isTextValidated(languageCode, 'onlyString')]);
     await checkValidationResp(langCodeName, 'code', resultObj);
     setErrors(resultObj);
     return resultObj;
@@ -72,14 +72,14 @@ export default function TargetLanguagePopover({ projectType }) {
       });
       setLang(language.ang);
       setDirection(language.ld ? language.ld : t('label-rtl'));
-      setLangCode(language.lc);
+      setLanguageCode(language.lc);
     } else if (nav === 'add') {
       logger.debug('TargetLanguagePopover.js', 'Selected the Pre-defined language which can\'t be edited');
       setLock();
       setEdit(false);
       setLang();
       setDirection(t('label-ltr'));
-      setLangCode();
+      setLanguageCode();
     }
   };
   function openModal() {
@@ -92,10 +92,10 @@ export default function TargetLanguagePopover({ projectType }) {
   const addLanguage = async () => {
     logger.debug('TargetLanguagePopover.js', 'Adding a new language');
     // const resultObj = await validate();
-    const result = languages.filter((l) => l?.title?.toLowerCase() === lang?.toLowerCase() && l?.scriptDirection?.toLowerCase() === direction.toLowerCase() && l.langCode?.toLowerCase() === langCode?.toLowerCase());
+    const result = languages.filter((l) => l?.title?.toLowerCase() === lang?.toLowerCase() && l?.scriptDirection?.toLowerCase() === direction.toLowerCase() && l.languageCode?.toLowerCase() === languageCode?.toLowerCase());
     if (result.length === 0) {
       setLanguage({
- id: languages.length + 1, ang: lang, ld: direction, lc: langCode, custom: true,
+ id: languages.length + 1, ang: lang, ld: direction, lc: languageCode, custom: true,
 });
       openModal();
     } else {
@@ -107,7 +107,7 @@ export default function TargetLanguagePopover({ projectType }) {
   const editLanguage = () => {
     logger.debug('TargetLanguagePopover.js', 'Editing the language');
     setLanguage({
- id, ang: lang, ld: direction, lc: langCode, custom: true,
+ id, ang: lang, ld: direction, lc: languageCode, custom: true,
 });
     closeModal();
   };
@@ -126,7 +126,7 @@ export default function TargetLanguagePopover({ projectType }) {
           />
 
         </button>
-        {language?.custom === true && (
+        {(language?.custom === true && language?.lc === languageCode) && (
           <button
             type="button"
             className="focus:outline-none bg-primary h-8 w-8 flex items-center justify-center rounded-full"
@@ -199,9 +199,9 @@ export default function TargetLanguagePopover({ projectType }) {
                         name="given-code"
                         id="code"
                         autoComplete="given-code"
-                        value={langCode}
+                        value={languageCode}
                         onChange={(e) => {
-                          setLangCode(e.target.value);
+                          setLanguageCode(e.target.value);
 }}
                         disabled={!lock && edit}
                         className="bg-gray-200 w-24 block rounded shadow-sm sm:text-sm focus:border-primary border-gray-300"
