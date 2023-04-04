@@ -10,7 +10,7 @@ import { SnackBar } from '@/components/SnackBar';
 import useValidator from '@/components/hooks/useValidator';
 import i18n from '../../translations/i18n';
 import { isElectron } from '../../core/handleElectron';
-import { saveProfile } from '../../core/projects/handleProfile';
+import { getorPutAppLangage, saveProfile } from '../../core/projects/handleProfile';
 import CustomList from './CustomList';
 import * as logger from '../../logger';
 
@@ -84,7 +84,7 @@ export default function UserProfile() {
     organization: '',
   });
 
-  const [appLang, setAppLang] = React.useState(languages[0]);
+  const [appLang, setAppLang] = React.useState();
   const [snackBar, setOpenSnackBar] = React.useState(false);
   const [snackText, setSnackText] = React.useState('');
   const [notify, setNotify] = React.useState();
@@ -94,13 +94,21 @@ export default function UserProfile() {
   React.useEffect(() => {
     if (!username && isElectron()) {
       localForage.getItem('userProfile')
-        .then((value) => {
+        .then(async (value) => {
           setUsername(value.username);
           const keys = Object.keys(values);
           keys.forEach((key) => {
             values[key] = value[key];
           });
           setValues(values);
+          // get saved app language
+          const savedLangCode = await getorPutAppLangage('get', value.username);
+          if (savedLangCode) {
+            const filetredLang = languages.filter((lang) => lang.code.toLowerCase() === savedLangCode.toLowerCase());
+            setAppLang(filetredLang[0]);
+          } else {
+            setAppLang(languages[0]);
+          }
         });
       localForage.getItem('appMode')
         .then((value) => {
@@ -157,7 +165,7 @@ export default function UserProfile() {
       if (i18n.language !== appLang.code) {
         i18n.changeLanguage(appLang.code);
       }
-      const status = await saveProfile(values);
+      const status = await saveProfile(values, appLang);
       setNotify(status[0].type);
       setSnackText(status[0].value);
       setOpenSnackBar(true);
@@ -304,29 +312,6 @@ export default function UserProfile() {
                 />
                 <span className="text-red-500 ml-2 text-sm">{errors?.selectedregion}</span>
               </div>
-
-              {/* <div>
-                <h4 className="text-xs font-base mb-2 ml-2 text-primary  tracking-wide leading-4  font-light">
-                  Auto
-                  {' '}
-                  {t('label-sync')}
-                </h4>
-                <Switch
-                  checked={enabled}
-                  name="autosync"
-                  id="autosync"
-                  onChange={() => { setEnabled(!enabled); setValues({ ...values, autosync: !enabled }); }}
-                  className={`${
-                  enabled ? 'bg-success' : 'bg-gray-200'
-                } relative inline-flex h-6 w-12 items-center rounded-full`}
-                >
-                  <span
-                    className={`${
-                    enabled ? 'translate-x-7' : 'translate-x-1'
-                  } inline-block h-4 w-4 transform rounded-full bg-gray-400`}
-                  />
-                </Switch>
-              </div> */}
 
               <div className="relative">
                 <h4 className="text-xs font-base mb-2 ml-2 text-primary  tracking-wide leading-4  font-light">
