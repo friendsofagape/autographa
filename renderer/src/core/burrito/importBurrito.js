@@ -9,6 +9,25 @@ import { updateVersion } from './updateTranslationSB';
 const md5 = require('md5');
 const path = require('path');
 
+const checkImportDuplicate = async (folderList, projectName, metadata, projectDir, fs) => {
+  // To avoid the duplication of exising project on re-importing
+  // Checking project name, key and Id with the existing project's upstream
+  let upstreamObj; let incomingId; let incomingKey; let primaryId;
+  await folderList.forEach((folder) => {
+    if (folder.split('_')[0].toLowerCase() === projectName.toLowerCase()) {
+      const sb = fs.readFileSync(path.join(projectDir, folder, 'metadata.json'));
+      const metadataExisting = JSON.parse(sb);
+      incomingKey = Object.keys(metadata.identification.primary)[0];
+      incomingId = Object.keys(metadata.identification.primary[incomingKey])[0];
+      upstreamObj = metadataExisting.identification.upstream;
+      primaryId = Object.keys(metadataExisting.identification.primary.ag)[0];
+    }
+  });
+  return {
+ incomingId, incomingKey, upstreamObj, primaryId,
+};
+};
+
 export const checkDuplicate = async (metadata, currentUser, resource) => {
   logger.debug('importBurrito.js', 'In checkDuplicate');
   const fs = window.require('fs');
@@ -24,7 +43,7 @@ export const checkDuplicate = async (metadata, currentUser, resource) => {
       logger.debug('importBurrito.js', 'Fetching the key from Primary.');
       id = key;
     });
-  } else if (metadata.identification.upstream.ag !== undefined) {
+  } else if (metadata.identification.upstream?.ag !== undefined) {
     const list = metadata.identification?.upstream?.ag;
     logger.debug('importBurrito.js', 'Fetching the latest key from upstream list.');
     const latest = list.reduce((a, b) => (new Date(a.timestamp) > new Date(b.timestamp) ? a : b));
@@ -33,9 +52,21 @@ export const checkDuplicate = async (metadata, currentUser, resource) => {
       id = key;
     });
   }
+  // if ID and project name is available
   if (id && projectName) {
     await folderList.forEach((folder) => {
       if (folder === `${projectName}_${id}`) {
+        logger.debug('importBurrito.js', 'Project already exists.');
+        existingProject = true;
+      }
+    });
+  } else if (projectName && resource === 'projects') {
+    // if not get id but project name - to avoid duplicate import
+    await checkImportDuplicate(folderList, projectName, metadata, projectDir, fs)
+    .then((upstreamValue) => {
+      if (upstreamValue.incomingKey
+        && Object.keys(upstreamValue.upstreamObj).includes(upstreamValue.incomingKey)
+      && (Object.keys(upstreamValue.upstreamObj[upstreamValue.incomingKey][0])).includes(upstreamValue.incomingId)) {
         logger.debug('importBurrito.js', 'Project already exists.');
         existingProject = true;
       }
@@ -166,14 +197,14 @@ const importBurrito = async (filePath, currentUser, updateBurritoVersion) => {
     if (success || metadata.type?.flavorType?.flavor?.name === 'audioTranslation') {
       logger.debug('importBurrito.js', 'Burrito file validated successfully or Audio Project');
       let projectName = metadata.identification?.name?.en;
-      let id;
+      let id; let foundId = false;
       logger.debug('importBurrito.js', 'Checking for AG primary key');
-      if (metadata.identification.primary.ag !== undefined) {
+      if (metadata.identification.primary?.ag !== undefined) {
         Object.entries(metadata.identification?.primary?.ag).forEach(([key]) => {
           logger.debug('importBurrito.js', 'Fetching the key from burrito.');
           id = key;
         });
-      } else if (metadata.identification.upstream.ag !== undefined) {
+      } else if (metadata.identification.upstream?.ag !== undefined) {
         Object.entries(metadata.identification.primary).forEach(([key]) => {
           logger.debug('importBurrito.js', 'Swapping data between primary and upstream');
           const identity = metadata.identification.primary[key];
@@ -207,20 +238,34 @@ const importBurrito = async (filePath, currentUser, updateBurritoVersion) => {
           delete metadata.identification?.upstream?.ag;
         }
         metadata.identification.primary.ag = latest;
+      } else {
+        // if Id is undefined - trying to get id, if project already exist
+        const folderList = await fs.readdirSync(projectDir);
+        await checkImportDuplicate(folderList, projectName, metadata, projectDir, fs)
+        .then((upstreamValue) => {
+          // The ID of the existing project, using it for over wriitting it.
+          if (upstreamValue.primaryId) {
+            id = upstreamValue.primaryId;
+            foundId = true;
+          }
+        });
       }
 
-      if (!id) {
+      if (!id || foundId === true) {
         Object.entries(metadata.identification.primary).forEach(([key]) => {
           logger.debug('importBurrito.js', 'Swapping data between primary and upstream');
           if (key !== 'ag') {
             const identity = metadata.identification.primary[key];
+            metadata.identification.upstream = {};
             metadata.identification.upstream[key] = [identity];
             delete metadata.identification.primary[key];
           }
         });
-        logger.debug('importBurrito.js', 'Creating a new key.');
-        const key = currentUser + metadata.identification.name.en + moment().format();
-        id = uuidv5(key, environment.uuidToken);
+        if (!id) {
+          logger.debug('importBurrito.js', 'Creating a new key.');
+          const key = currentUser + metadata.identification.name.en + moment().format();
+          id = uuidv5(key, environment.uuidToken);
+        }
         metadata.identification.primary.ag = {
           [id]: {
           revision: '0',
