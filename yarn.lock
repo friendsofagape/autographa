@@ -18643,9 +18643,9 @@
   "version" "0.0.0"
 
 "translation-helps-rcl@^3.3.7":
-  "integrity" "sha512-sxdPpJZOFxfU2pAy9EAkrN7iEvaFX0Oh3hCJoOXtpW/j/5PWk1iNyCJwvqB4C+oKuQekmxCrNOs4+GRohRNb4w=="
-  "resolved" "https://registry.npmjs.org/translation-helps-rcl/-/translation-helps-rcl-3.3.8.tgz"
-  "version" "3.3.8"
+  "integrity" "sha512-K5DRCHehRibclGObzV0A1o44d399z5/R4WLZEfFOjdq6w1lhKfWDrr68qG3o+AI2r74/UBqxF3rpQVxYlwqCMA=="
+  "resolved" "https://registry.npmjs.org/translation-helps-rcl/-/translation-helps-rcl-3.3.7.tgz"
+  "version" "3.3.7"
   dependencies:
     "@gwdevs/extensible-rcl" "^1.0.1"
     "@mui/styled-engine" "npm:@mui/styled-engine-sc@latest"
@@ -19486,9 +19486,9 @@
     "graceful-fs" "^4.1.2"
 
 "wavesurfer.js@^6.6.2":
-  "integrity" "sha512-aPAU4OADQsyH8mIw2nXmoni8KHo8s1f1bd5ZUrxhN4P/VMWd+oPDqEwA01XPSEfasAJW6mZ/EHQ2bZ9nOWRrNw=="
-  "resolved" "https://registry.npmjs.org/wavesurfer.js/-/wavesurfer.js-6.6.2.tgz"
-  "version" "6.6.2"
+  "integrity" "sha512-XqUOXe8+SOTe8uKCHaqW0vJ5etCCQvq/NgaPycn9HAX/nUi+2zoWD+w9i7H5vBT9UCDNawOia+vS5Ct3kZGQzA=="
+  "resolved" "https://registry.npmjs.org/wavesurfer.js/-/wavesurfer.js-6.6.3.tgz"
+  "version" "6.6.3"
 
 "wbuf@^1.1.0", "wbuf@^1.7.3":
   "integrity" "sha512-O84QOnr0icsbFGLS0O3bI5FswxzRr8/gHwWkDlQFskhSPryQXvrTMxjxGP4+iWYoauLoBvfDpkrOauZ+0iZpDA=="
