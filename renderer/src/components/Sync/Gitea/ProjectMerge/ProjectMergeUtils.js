@@ -52,7 +52,7 @@ export const deleteCreatedMergeBranch = async (selectedGiteaProject, actions, GI
     redirect: 'follow',
   };
   const urlDeleteBranch = `${GITEA_BASE_API_URL}/repos/${selectedGiteaProject?.repo?.owner?.username}/${selectedGiteaProject?.repo?.name}/branches/${selectedGiteaProject.branch.name}-merge`;
-  await fetch(urlDeleteBranch, requestOptions)
+  fetch(urlDeleteBranch, requestOptions)
   .then((response) => response)
   .then((result) => {
     if (result.ok) {

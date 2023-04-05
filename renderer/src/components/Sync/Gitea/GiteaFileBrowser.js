@@ -103,7 +103,7 @@ const GiteaFileBrowser = ({ changeRepo }) => {
   //   }
   // // eslint-disable-next-line react-hooks/exhaustive-deps
   // }, [updateGitea]);
-  console.log({ selectedGiteaProject });
+  // console.log({ selectedGiteaProject });
   return (
     (!auth && authComponent)
     || (!repo && (

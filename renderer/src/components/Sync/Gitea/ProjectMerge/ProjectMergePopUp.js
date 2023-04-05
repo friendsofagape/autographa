@@ -80,14 +80,16 @@ export default function ProjectMergePop({ selectedGiteaProject, setSelectedGitea
     async () => {
       try {
         const mergeResp = await tryMergeProjects(selectedGiteaProject, ignoreFilesPaths, { setStepCount, setModel });
-        setNotify(mergeResp.status);
-        setSnackText(mergeResp.message);
-        await addNotification('Sync', mergeResp?.message, mergeResp?.status);
-        if (mergeResp.status === 'failure' && mergeResp?.conflictHtml) {
-          setMergeConflict(true);
-          setConflictHtml(mergeResp.conflictHtml);
-        } else {
-          await checkBurritoVersion();
+        if (mergeResp && mergeResp?.status) {
+          setNotify(mergeResp.status);
+          setSnackText(mergeResp.message);
+          await addNotification('Sync', mergeResp?.message, mergeResp?.status);
+          if (mergeResp.status === 'failure' && mergeResp?.conflictHtml) {
+            setMergeConflict(true);
+            setConflictHtml(mergeResp.conflictHtml);
+          } else {
+            await checkBurritoVersion();
+          }
         }
       } catch (err) {
         setMergeError(true);
@@ -96,9 +98,9 @@ export default function ProjectMergePop({ selectedGiteaProject, setSelectedGitea
         await addNotification('Sync', `Merge failed : ${err?.message || err}`, 'failure');
         setMergeDone(false);
       } finally {
-        await deleteCreatedMergeBranch(selectedGiteaProject, { setModel }, environment.GITEA_API_ENDPOINT);
-        setOpenSnackBar(true);
-        setStepCount(0);
+          await deleteCreatedMergeBranch(selectedGiteaProject, { setModel, setStepCount }, environment.GITEA_API_ENDPOINT);
+          setOpenSnackBar(true);
+          setStepCount(0);
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps

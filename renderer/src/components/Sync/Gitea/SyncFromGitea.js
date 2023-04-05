@@ -12,24 +12,25 @@ export async function downloadFromGitea(repo, auth, setSyncProgress, notifyStatu
   logger.debug('SyncFromGitea.js', 'in SyncFromGiea : onClick offline sync');
   try {
     const currentUser = await localForage.getItem('userProfile');
-    await fetch(`${environment.GITEA_API_ENDPOINT}/repos/${repo.owner.username}/${repo.name}/branches`)
-    .then((response) => response.json())
-    .then(async (branchData) => {
+    const fetchBranch = await fetch(`${environment.GITEA_API_ENDPOINT}/repos/${repo.owner.username}/${repo.name}/branches`);
+    const branchData = await fetchBranch.json();
+    if (branchData) {
       const regex = /.+\/\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01]).1/;
       const foundSyncBranch = branchData.find((value) => regex.test(value.name));
       if (foundSyncBranch) {
         logger.debug('SyncFromGitea.js', 'in SyncFromGiea : fetch content branch success');
         const readMetaData = await readContent(
-            {
-            config: auth.config,
-            owner: auth.user.login,
-            repo: repo.name,
-            ref: foundSyncBranch?.name,
-            filepath: 'metadata.json',
-            },
+          {
+          config: auth.config,
+          owner: auth.user.login,
+          repo: repo.name,
+          ref: foundSyncBranch?.name,
+          filepath: 'metadata.json',
+          },
         );
-        await fetch(readMetaData.download_url).then((resp) => resp.json())
-        .then(async (metaFile) => {
+        const fetchMetaData = await fetch(readMetaData.download_url);
+        const metaFile = await fetchMetaData.json();
+          if (metaFile) {
           const sb = Buffer.from(metaFile.data);
           const metaDataSB = JSON.parse(sb);
           logger.debug('SyncFromGitea.js', 'in SyncFromGiea : fetch and parse metaData Success');
@@ -39,11 +40,11 @@ export async function downloadFromGitea(repo, auth, setSyncProgress, notifyStatu
           if (success) {
             logger.debug('SyncFromGitea.js', 'in SyncFromGiea : metaData SB validated');
             setSyncProgress((prev) => ({
-                ...prev,
-                syncStarted: true,
-                totalFiles: Object.keys(metaDataSB?.ingredients).length + 2,
-                completedFiles: 1,
-              }));
+              ...prev,
+              syncStarted: true,
+              totalFiles: Object.keys(metaDataSB?.ingredients).length + 2,
+              completedFiles: 1,
+            }));
             // setProjectData
             setSelectedGiteaProject({
               repo,
@@ -63,19 +64,19 @@ export async function downloadFromGitea(repo, auth, setSyncProgress, notifyStatu
               // import call
               logger.debug('SyncFromGitea.js', 'in SyncFromGiea : new project and import called');
               await importServerProject(false, repo, metaDataSB, auth, foundSyncBranch, { setSyncProgress, notifyStatus }, currentUser.username);
-              notifyStatus('success', 'Project Sync to AG successfull');
+              await notifyStatus('success', 'Project Sync to AG successfull');
               await addNotification('Sync', 'Project Sync Successfull', 'success');
             }
           } else {
             logger.debug('SyncFromGitea.js', 'Burrito Validation Failed');
             throw new Error('Burrito Validation Failed');
           }
-        });
+        } else { throw new Error('Failed to read MetaData'); }
       } else {
           logger.debug('SyncFromGitea.js', 'Invalid Project , No Valid Branch');
           throw new Error('Invalid Project, No Valid Branch');
       }
-    });
+    } else { throw new Error('branch not found'); }
   } catch (err) {
     logger.debug('SyncFromGitea.js', `In error : ${err}`);
     setSelectedGiteaProject({

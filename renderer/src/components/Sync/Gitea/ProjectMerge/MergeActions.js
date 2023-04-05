@@ -27,50 +27,48 @@ export async function tryMergeProjects(selectedGiteaProject, ignoreFilesPaths, a
         body: payloadPr,
         redirect: 'follow',
       };
-      // check merge possible or not
-      let returnData = null;
-      await fetch(urlPr, requestOptions).then((resp) => resp.json().then((data) => ({ resposne: resp, body: data })))
-      .then((async (result) => {
-        if (result.resposne.ok) {
-          if (result.body.mergeable) {
-            // mergeable
-            logger.debug('MergeActions.js', 'PR success - continue Merge operations');
-            actions.setStepCount((prevStepCount) => prevStepCount + 1);
-            const mergePayload = JSON.stringify({
-              Do: 'merge',
-              delete_branch_after_merge: false,
-              });
-            requestOptions.body = mergePayload;
-            const urlMerge = `${environment.GITEA_API_ENDPOINT}/repos/${selectedGiteaProject?.repo?.owner?.username}/${selectedGiteaProject?.repo?.name}/pulls/${result.body.number}/merge`;
-            // perform merge action
-            await fetch(urlMerge, requestOptions).then((response) => response)
-            .then(async (mergeResult) => {
-              if (mergeResult.status === 200) {
-                logger.debug('MergeActions.js', 'Successfully Merged');
-                returnData = { status: 'success', message: 'Merge Success' };
-              } if (mergeResult.status === 405) {
-                logger.debug('MergeActions.js', 'Can not merge - nothing to merge or error ', mergeResult.resposne.statusText);
-                throw new Error(mergeResult.resposne.statusText);
-              }
+      const fetchResult = await fetch(urlPr, requestOptions);
+      const result = await fetchResult.json();
+      if (fetchResult.ok) {
+        if (result.mergeable) {
+          // mergeable
+          logger.debug('MergeActions.js', 'PR success - continue Merge operations');
+          actions.setStepCount((prevStepCount) => prevStepCount + 1);
+          const mergePayload = JSON.stringify({
+            Do: 'merge',
+            delete_branch_after_merge: false,
             });
-          } else {
-            // merge is not possible - conflict , Display Conflict Message
-            let htmlPart = '<div></div>';
-            await fetch(result.body.html_url).then((response) => response.text())
-            .then(async (resultDiff) => {
-              const parser = new DOMParser();
-              const doc = parser.parseFromString(resultDiff, 'text/html');
-              htmlPart = doc.getElementsByClassName('merge-section');
-            });
-            returnData = { status: 'failure', message: 'Conflict Exist - Can not perform Merge , Need to fix manually', conflictHtml: htmlPart[0].innerHTML };
+          requestOptions.body = mergePayload;
+          const urlMerge = `${environment.GITEA_API_ENDPOINT}/repos/${selectedGiteaProject?.repo?.owner?.username}/${selectedGiteaProject?.repo?.name}/pulls/${result.number}/merge`;
+          const mergeResult = await fetch(urlMerge, requestOptions);
+
+          if (mergeResult.status === 200) {
+            logger.debug('MergeActions.js', 'Successfully Merged');
+            // returnData = { status: 'success', message: 'Merge Success' };
+            return { status: 'success', message: 'Merge Success' };
+          } if (mergeResult.status === 405) {
+            logger.debug('MergeActions.js', 'Can not merge - nothing to merge or error ', mergeResult.resposne.statusText);
+            throw new Error(mergeResult.resposne.statusText);
+          } if (mergeResult.status === 404) {
+            logger.debug('MergeActions.js', 'File not found on server ', mergeResult.resposne.statusText);
+            throw new Error(mergeResult.resposne.statusText);
           }
         } else {
-          throw new Error(result?.resposne?.statusText);
+          // merge is not possible - conflict , Display Conflict Message
+          let htmlPart = '<div></div>';
+          const fetchConflict = await fetch(result.html_url);
+          const resultDiff = await fetchConflict.text();
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(resultDiff, 'text/html');
+          htmlPart = doc.getElementsByClassName('merge-section');
+          return { status: 'failure', message: 'Conflict Exist - Can not perform Merge , Need to fix manually', conflictHtml: htmlPart[0].innerHTML };
         }
-      }));
-      return returnData;
+      } else {
+        throw new Error(result?.resposne?.statusText);
+      }
     }
   } catch (err) {
       logger.debug('MergeActions.js', `failed Merge Action ${err}`);
+      throw new Error(err?.message || err);
   }
 }

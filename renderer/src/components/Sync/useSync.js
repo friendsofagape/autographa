@@ -27,8 +27,8 @@ function useSync() {
 
   const fetchProjects = async () => {
     logger.debug('UseSync.js', 'calling fetchProjects event');
-    localForage.getItem('userProfile').then(async (user) => {
-      await fetchProjectsMeta({ currentUser: user?.username })
+    localForage.getItem('userProfile').then((user) => {
+      fetchProjectsMeta({ currentUser: user?.username })
       .then(async (value) => {
         for (let i = 0; i < value.projects.length; i++) {
           projectList.push(value.projects[i].identification.name.en);

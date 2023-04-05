@@ -15,26 +15,26 @@ export async function uploadToGitea(projectDataAg, auth, setSyncProgress, notify
     const projectCreated = projectData.meta.dateCreated.split('T')[0];
     const repoName = `ag-${projectData.languages[0].tag}-${projectData.type.flavorType.flavor.name}-${projectName.replace(/[\s+ -]/g, '_')}`;
 
-    await localForage.getItem('userProfile').then(async (user) => {
-        const newpath = localStorage.getItem('userPath');
-        const fs = window.require('fs');
-        const path = require('path');
-        const projectsMetaPath = path.join(newpath, packageInfo.name, 'users', user?.username, 'projects', `${projectName}_${projectId}`);
-        setSyncProgress((prev) => (
-          {
-            ...prev,
-            totalFiles: Object.keys(ingredientsObj).length,
-          }
-        ));
-        // Create A REPO for the project
-        try {
+    localForage.getItem('userProfile').then(async (user) => {
+      const newpath = localStorage.getItem('userPath');
+      const fs = window.require('fs');
+      const path = require('path');
+      const projectsMetaPath = path.join(newpath, packageInfo.name, 'users', user?.username, 'projects', `${projectName}_${projectId}`);
+      setSyncProgress((prev) => (
+        {
+          ...prev,
+          totalFiles: Object.keys(ingredientsObj).length,
+        }
+      ));
+      // Create A REPO for the project
+      try {
         const createResult = await handleCreateRepo(repoName.toLowerCase(), auth);
         if (createResult.id) {
           logger.debug('SyncToGitea.js', 'repo created success : starting sync');
           setSyncProgress((prev) => ({
-              ...prev,
-              syncStarted: true,
-            }));
+            ...prev,
+            syncStarted: true,
+          }));
           // read metadata
           const Metadata = await fs.readFileSync(path.join(projectsMetaPath, 'metadata.json'));
           await createFiletoServer(JSON.stringify(Metadata), 'metadata.json', `${user?.username}/${projectCreated}.1`, createResult.name, auth);
@@ -92,16 +92,16 @@ export async function uploadToGitea(projectDataAg, auth, setSyncProgress, notify
           notifyStatus('failure', 'Something went wrong, sync failed, check internet');
           logger.debug('SyncToGitea.js', 'sync failed - may be due to internet');
         }
-      } catch (err) {
-        logger.debug('SyncToGitea.js', `Error on Sync create/update : ${err}`);
-        notifyStatus('failure', `Sync failed : ${err}`);
-        await addNotification('Sync', err?.message || err, 'failure');
-      } finally {
-        setSyncProgress({
-          syncStarted: false,
-          totalFiles: 0,
-          completedFiles: 0,
-        });
-      }
-    });
+    } catch (err) {
+      logger.debug('SyncToGitea.js', `Error on Sync create/update : ${err}`);
+      notifyStatus('failure', `Sync failed : ${err}`);
+      await addNotification('Sync', err?.message || err, 'failure');
+    } finally {
+      setSyncProgress({
+        syncStarted: false,
+        totalFiles: 0,
+        completedFiles: 0,
+      });
+    }
+  });
 }

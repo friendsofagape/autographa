@@ -16,7 +16,7 @@ export const handleCreateRepo = async (repoName, auth, description) => {
     };
     // eslint-disable-next-line no-async-promise-executor
     return new Promise(async (resolve) => {
-      await createRepository(
+      createRepository(
         {
           config: auth.config,
           repo: settings?.name,
@@ -24,11 +24,9 @@ export const handleCreateRepo = async (repoName, auth, description) => {
         },
       ).then((result) => {
         logger.debug('Dropzone.js', 'call to create repo from Gitea');
-        // console.log("create repo : ", result);
         resolve(result);
       }).catch((err) => {
         logger.debug('Dropzone.js', 'call to create repo from Gitea Error : ', err);
-        // console.log("create repo : ", result);
         resolve(err);
       });
     });
@@ -36,65 +34,60 @@ export const handleCreateRepo = async (repoName, auth, description) => {
 
 // upload file to gitea
 export const createFiletoServer = async (fileContent, filePath, branch, repoName, auth) => {
-    await createContent({
-      config: auth.config,
-      owner: auth.user.login,
-      // repo: repo.name,
-      repo: repoName,
-      branch,
-      filepath: filePath,
-      content: fileContent,
-      message: `commit ${filePath}`,
-      author: {
-        email: auth.user.email,
-        username: auth.user.username,
-      },
-    }).then(() => {
-      logger.debug('SyncToGiteaUtils.js', `file uploaded to Gitea ${filePath}`);
-    //   console.log('RESPONSE :', res);
-    })
-    .catch((err) => {
-      logger.debug('SyncToGiteaUtils.js', `failed to upload file to Gitea ${filePath} ${err}`);
-      throw new Error(err);
-    });
+    try {
+      await createContent({
+        config: auth.config,
+        owner: auth.user.login,
+        // repo: repo.name,
+        repo: repoName,
+        branch,
+        filepath: filePath,
+        content: fileContent,
+        message: `commit ${filePath}`,
+        author: {
+          email: auth.user.email,
+          username: auth.user.username,
+        },
+      });
+    } catch (err) {
+      throw new Error(err?.message || err);
+    }
   };
 
 // update file in gitea
 export const updateFiletoServer = async (fileContent, filePath, branch, repoName, auth) => {
-  await readContent(
-    {
-      config: auth.config,
-      owner: auth.user.login,
-      repo: repoName.toLowerCase(),
-      ref: branch,
-      filepath: filePath,
-    },
-  ).then(async (result) => {
-    logger.debug('Dropzone.js', 'sending the data from Gitea with content');
-    if (result === null) {
-      throw new Error('can not read repo');
-    }
-    await updateContent({
-      config: auth.config,
-      owner: auth.user.login,
-      repo: repoName.toLowerCase(),
-      branch,
-      filepath: result.path,
-      content: fileContent,
-      message: `updated ${filePath}`,
-      author: {
-        email: auth.user.email,
-        username: auth.user.username,
+  try {
+    const readResult = await readContent(
+      {
+        config: auth.config,
+        owner: auth.user.login,
+        repo: repoName.toLowerCase(),
+        ref: branch,
+        filepath: filePath,
       },
-      sha: result.sha,
-    // eslint-disable-next-line no-unused-vars
-    }).then((res) => {
-      logger.debug('SyncTOGiteaUtils.js', 'file uploaded to Gitea \'metadata.json\'');
-    })
-    .catch((err) => {
-      logger.debug('SyncTOGiteaUtils.js', `failed to upload file to Gitea metadata.json : ${err}`);
-    });
-  });
+      );
+      if (readResult === null) {
+        throw new Error('can not read repo');
+      } else {
+        await updateContent({
+          config: auth.config,
+          owner: auth.user.login,
+          repo: repoName.toLowerCase(),
+          branch,
+          filepath: readResult.path,
+          content: fileContent,
+          message: `updated ${filePath}`,
+          author: {
+            email: auth.user.email,
+            username: auth.user.username,
+          },
+          sha: readResult.sha,
+          // eslint-disable-next-line no-unused-vars
+        });
+      }
+  } catch (err) {
+    throw new Error(err?.message || err);
+  }
 };
 
 // sync profile updation

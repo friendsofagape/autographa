@@ -13,45 +13,44 @@ const path = require('path');
 
 async function readAndCreateIngredients(action, sbDataObject, ignoreFilesPaths, projectDir, projectName, id, auth, repo, userBranch, fs) {
   logger.debug('SyncFromGiteaUtils.js', 'in read and write ingredients function');
-  // eslint-disable-next-line no-restricted-syntax, guard-for-in
-  for (const key in sbDataObject.ingredients) {
-    action?.setSyncProgress((prev) => ({
-      ...prev,
-      completedFiles: prev.completedFiles + 1,
-    }));
-    if (!ignoreFilesPaths.includes(key)) {
-    // eslint-disable-next-line no-await-in-loop
-    await readContent(
-        {
-          config: auth.config,
-          owner: auth.user.login,
-          repo: repo.name,
-          ref: userBranch?.name,
-          filepath: key,
-        },
-      // eslint-disable-next-line no-loop-func
-      ).then(async (result) => {
-        logger.debug('giteaUtils import.js', 'sending the data from Gitea with content');
-        // console.log('file from server : ', result.name);
-        if (result !== null) {
-          await fetch(result.download_url)
-              .then((resposne) => resposne.text())
-              .then(async (ingredient) => {
-              try {
-                  await fs.writeFileSync(path.join(projectDir, `${projectName}_${id}`, key), ingredient);
-                  logger.debug('SyncFromGiteaUtisl import.js', `Write File success ${key}`);
-                } catch (err) {
-                  logger.debug('syncFromGiteaUtils import.js', `Error write file ${key} : `, err);
-                  throw new Error(`File write failed : ${err}`);
-                }
-          });
-        } else {
-          logger.debug('SyncFrom giteaUtils import.js', `Error in read ${key} from Server `);
-        }
-      }).catch((err) => {
-        throw new Error(`Read file failed : ${err}`);
-      });
+  try {
+    // eslint-disable-next-line no-restricted-syntax, guard-for-in
+    for (const key in sbDataObject.ingredients) {
+      action?.setSyncProgress((prev) => ({
+        ...prev,
+        completedFiles: prev.completedFiles + 1,
+      }));
+      if (!ignoreFilesPaths.includes(key)) {
+        // eslint-disable-next-line no-await-in-loop
+        const readResult = await readContent(
+          {
+            config: auth.config,
+            owner: auth.user.login,
+            repo: repo.name,
+            ref: userBranch?.name,
+            filepath: key,
+          },
+          // eslint-disable-next-line no-loop-func
+          );
+          if (readResult) {
+            logger.debug('giteaUtils import.js', 'sending the data from Gitea with content');
+            if (readResult !== null) {
+              // eslint-disable-next-line no-await-in-loop
+              const rep1 = await fetch(readResult.download_url);
+              // eslint-disable-next-line no-await-in-loop
+              const ingredient = await rep1.text();
+              // eslint-disable-next-line no-await-in-loop
+              await fs.writeFileSync(path.join(projectDir, `${projectName}_${id}`, key), ingredient);
+              logger.debug('SyncFromGiteaUtisl import.js', `Write File success ${key}`);
+            } else {
+              logger.debug('SyncFrom giteaUtils import.js', `Error in read ${key} from Server `);
+              throw new Error(`Error in read ${key} from Server `);
+            }
+          }
+      }
     }
+} catch (err) {
+    throw new Error(err?.message || err);
   }
 }
 

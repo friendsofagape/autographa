@@ -11,7 +11,7 @@ export default function useAddNotification() {
       } = useContext(AutographaContext);
 
     async function addNotification(title, text, type) {
-        await localforage.getItem('notification').then((value) => {
+        localforage.getItem('notification').then((value) => {
           const temp = [...value];
           temp.push({
               title,
