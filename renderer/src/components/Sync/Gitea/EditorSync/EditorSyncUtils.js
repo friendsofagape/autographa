@@ -8,7 +8,7 @@ import packageInfo from '../../../../../../package.json';
 
 export async function getGiteaUsersList() {
   let usersList = [];
-  await localForage.getItem('userProfile').then(async (user) => {
+  localForage.getItem('userProfile').then(async (user) => {
     const fs = window.require('fs');
     const path = require('path');
     const newpath = localStorage.getItem('userPath');
