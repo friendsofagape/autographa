@@ -24,7 +24,7 @@ function CircularProgressWithLabel({ value, circleSize }) {
         <CircularProgress
           variant="determinate"
           value={value}
-          color="secondary"
+          color="primary"
           size={circleSize || '2.2rem'}
         />
         <Box
