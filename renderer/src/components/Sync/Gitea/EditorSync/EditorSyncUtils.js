@@ -8,18 +8,17 @@ import packageInfo from '../../../../../../package.json';
 
 export async function getGiteaUsersList() {
   let usersList = [];
-  localForage.getItem('userProfile').then(async (user) => {
-    const fs = window.require('fs');
-    const path = require('path');
-    const newpath = localStorage.getItem('userPath');
-    const file = path.join(newpath, packageInfo.name, 'users', user?.username, environment.USER_SETTING_FILE);
-    if (await fs.existsSync(file)) {
-      const data = await fs.readFileSync(file);
-      logger.debug('EditorSyncUtils.js', 'Successfully read the data from file , user : ', user?.username);
-      const json = JSON.parse(data);
-      usersList = json.sync?.services?.door43 || [];
-    }
-  });
+  const userData = await localForage.getItem('userProfile');
+  const fs = window.require('fs');
+  const path = require('path');
+  const newpath = localStorage.getItem('userPath');
+  const file = path.join(newpath, packageInfo.name, 'users', userData?.username, environment.USER_SETTING_FILE);
+  if (await fs.existsSync(file)) {
+    const data = await fs.readFileSync(file);
+    logger.debug('EditorSyncUtils.js', 'Successfully read the data from file , user : ', userData?.username);
+    const json = JSON.parse(data);
+    usersList = json.sync?.services?.door43 || [];
+  }
   return usersList;
 }
 

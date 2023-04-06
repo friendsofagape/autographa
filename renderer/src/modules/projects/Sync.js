@@ -32,7 +32,7 @@ import packageInfo from '../../../../package.json';
 
   const {
     states: {
-    selectedAgProject,
+    selectedAgProject, syncProgress,
   },
     action: {
       setSyncProgress, setSelectedGiteaProject,
@@ -83,6 +83,7 @@ import packageInfo from '../../../../package.json';
                      type="button"
                      className="text-white bg-primary hover:bg-primary focus:ring-4 focus:outline-none focus:ring-primary font-medium text-xs px-3 py-1.5 text-center inline-flex items-center rounded-full gap-2 uppercase tracking-wider"
                      onClick={() => handleCloudSync(selectedAgProject, auth, setSyncProgress)}
+                     disabled={syncProgress.syncStarted}
                    >
                      <CloudArrowUpIcon className="h-5 w-5" />
                      Cloud Sync
@@ -145,6 +146,7 @@ import packageInfo from '../../../../package.json';
                      type="button"
                      className="text-white bg-primary hover:bg-primary focus:ring-4 focus:outline-none focus:ring-primary font-medium text-xs px-3 py-1.5 text-center inline-flex items-center rounded-full gap-2 uppercase tracking-wider"
                      onClick={() => handleOfflineSync(repo, auth)}
+                     disabled={syncProgress.syncStarted}
                    >
                      <CloudArrowDownIcon className="h-5 w-5" />
                      Offline Sync
