@@ -210,7 +210,7 @@ const AudioEditor = ({ editor }) => {
       {((isLoading || !audioContent) && displyScreen) && <EmptyScreen />}
       {isLoading && !displyScreen && <LoadingScreen /> }
       {audioContent && isLoading === false
-      && <EditorPage content={audioContent} onChangeVerse={onChangeVerse} verse={verse} location={audioPath} />}
+      && <EditorPage content={audioContent} onChangeVerse={onChangeVerse} verse={verse} location={audioPath} updateWave={updateWave} />}
       <SnackBar
         openSnackBar={snackBar}
         snackText={snackText}

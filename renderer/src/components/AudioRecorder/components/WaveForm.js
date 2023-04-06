@@ -94,6 +94,10 @@ const AudioWaveForm = (props) => {
   }, [url]);
   useEffect(() => {
     if (call === 'record') {
+      if (wavesurfer.current) {
+        wavesurfer.current.destroy();
+        wavesurfer.current.microphone.destroy();
+      }
       createRecForm();
 
       return () => {
@@ -125,6 +129,7 @@ const AudioWaveForm = (props) => {
   const handlePlay = () => {
     if (url) {
       try {
+        wavesurfer.current?.setVolume(volume);
         wavesurfer.current?.play();
       } catch {
         createForm(url);

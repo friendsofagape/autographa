@@ -1530,10 +1530,10 @@
   dependencies:
     "tslib" "^2.4.0"
 
-"@gwdevs/extensible-rcl@^1.0.0":
-  "integrity" "sha512-SryCMnRaviW0CKJpGkFF5acS/B8zsf1kwVYzeLu0+NGooNVFe1oCIVCtOgt6A7nYINGM9qOnWrxFlUe0O8FTww=="
-  "resolved" "https://registry.npmjs.org/@gwdevs/extensible-rcl/-/extensible-rcl-1.0.0.tgz"
-  "version" "1.0.0"
+"@gwdevs/extensible-rcl@^1.0.1":
+  "integrity" "sha512-bvRUJFbf8Z96Y9vWqasYMFNvo2+DiMOFBnXHSAK8UKM5kYXb/QVyHhNPn4GwRHnet2iJ7Yf+o9CVvj0wBZYGpg=="
+  "resolved" "https://registry.npmjs.org/@gwdevs/extensible-rcl/-/extensible-rcl-1.0.1.tgz"
+  "version" "1.0.1"
 
 "@headlessui/react@^1.7.8":
   "integrity" "sha512-zcwb0kd7L05hxmoAMIioEaOn235Dg0fUO+iGbLPgLVSjzl/l39V6DTpC2Df49PE5aG5/f5q0PZ9ZHZ78ENNV+A=="
@@ -18642,12 +18642,12 @@
   "resolved" "https://registry.npmjs.org/transform-runtime/-/transform-runtime-0.0.0.tgz"
   "version" "0.0.0"
 
-"translation-helps-rcl@^3.3.4-rc.3":
-  "integrity" "sha512-ZK7D0nB/fMxBUJNQQ9QP5qpVIpPZ8VIPgCvxeML2dQI7mn5g3TafS3qHuAEoYKGQTCTKPu+Ux9UpM1aiC362GQ=="
-  "resolved" "https://registry.npmjs.org/translation-helps-rcl/-/translation-helps-rcl-3.3.4-rc.3.tgz"
-  "version" "3.3.4-rc.3"
+"translation-helps-rcl@^3.3.7":
+  "integrity" "sha512-K5DRCHehRibclGObzV0A1o44d399z5/R4WLZEfFOjdq6w1lhKfWDrr68qG3o+AI2r74/UBqxF3rpQVxYlwqCMA=="
+  "resolved" "https://registry.npmjs.org/translation-helps-rcl/-/translation-helps-rcl-3.3.7.tgz"
+  "version" "3.3.7"
   dependencies:
-    "@gwdevs/extensible-rcl" "^1.0.0"
+    "@gwdevs/extensible-rcl" "^1.0.1"
     "@mui/styled-engine" "npm:@mui/styled-engine-sc@latest"
     "axios" "^0.27.2"
     "deep-equal" "^2.0.5"
@@ -19485,10 +19485,10 @@
     "glob-to-regexp" "^0.4.1"
     "graceful-fs" "^4.1.2"
 
-"wavesurfer.js@^6.2.0":
-  "integrity" "sha512-x7efObHMHY3nwqWzIC0yeZTo0u/aC9T5Av6KhSdhTlsgtKdTG7JAE3mNqnYBXUjq0yGYfTB9F85/pks9830Vjw=="
-  "resolved" "https://registry.npmjs.org/wavesurfer.js/-/wavesurfer.js-6.3.0.tgz"
-  "version" "6.3.0"
+"wavesurfer.js@^6.6.2":
+  "integrity" "sha512-XqUOXe8+SOTe8uKCHaqW0vJ5etCCQvq/NgaPycn9HAX/nUi+2zoWD+w9i7H5vBT9UCDNawOia+vS5Ct3kZGQzA=="
+  "resolved" "https://registry.npmjs.org/wavesurfer.js/-/wavesurfer.js-6.6.3.tgz"
+  "version" "6.6.3"
 
 "wbuf@^1.1.0", "wbuf@^1.7.3":
   "integrity" "sha512-O84QOnr0icsbFGLS0O3bI5FswxzRr8/gHwWkDlQFskhSPryQXvrTMxjxGP4+iWYoauLoBvfDpkrOauZ+0iZpDA=="
