@@ -14,15 +14,17 @@ export const getorPutAppLangage = async (method, currentUser, appLang) => {
     throw new Error('Not getting current logged user');
   }
   try {
-    const data = await fs.readFileSync(file);
-    const json = JSON.parse(data);
-    if (method.toLowerCase() === 'get') {
-      return json.appLanguage;
-    } if (method.toLowerCase() === 'put') {
-      // save lang code
-    json.appLanguage = appLang.code;
-    logger.debug('handleProfile.js', 'Updating the app lang details in existing file');
-    await fs.writeFileSync(file, JSON.stringify(json));
+    if (fs.existsSync(file)) {
+      const data = await fs.readFileSync(file);
+      const json = JSON.parse(data);
+      if (method.toLowerCase() === 'get') {
+        return json.appLanguage;
+      } if (method.toLowerCase() === 'put') {
+        // save lang code
+      json.appLanguage = appLang.code;
+      logger.debug('handleProfile.js', 'Updating the app lang details in existing file');
+      await fs.writeFileSync(file, JSON.stringify(json));
+      }
     }
   } catch (err) {
     logger.error('handleProfile.js', 'Failed to read the data from file');
