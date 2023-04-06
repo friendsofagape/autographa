@@ -21,7 +21,6 @@ function CustomMultiComboBox({
         ? customData.filter((data) => data[filterParams]?.toLowerCase().includes(query.toLowerCase()))
         : [];
   }
-
   return (
       customData.length > 1 ? (
         <Combobox value={selectedList} onChange={setSelectedList} multiple={multiSelect}>

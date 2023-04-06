@@ -240,7 +240,11 @@ export default function NewProject({ call, project, closeEdit }) {
       abbreviation: project.identification.abbreviation.en,
       description: project.project[project.type.flavorType.flavor.name].description,
     });
-    setValue({ ang: project.languages[0].name.en, ld: project.project[project.type.flavorType.flavor.name].scriptDirection, lc: project.project[project.type.flavorType.flavor.name].languageCode });
+    setValue({
+      ang: project.languages[0].name.en,
+      ld: project.project[project.type.flavorType.flavor.name].scriptDirection,
+      lc: project.project[project.type.flavorType.flavor.name].languageCode,
+    });
     setMetadata(project);
     // set dropdown to the project type
     switch (project.type.flavorType.flavor.name) {
@@ -266,12 +270,12 @@ export default function NewProject({ call, project, closeEdit }) {
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [call]);
-  // useEffect(() => {
-  //   if (languages.length > 0) {
-  //     setValue({ ang: project.languages[0].name.en, ld: project.project[project.type.flavorType.flavor.name].scriptDirection, lc: project.project[project.type.flavorType.flavor.name].languageCode });
-  //   }
-  // // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [languages]);
+//  useEffect(() => {
+//     if (languages.length > 0) {
+//       setValue({ ang: project.languages[0].name.en, ld: project.project[project.type.flavorType.flavor.name].scriptDirection, lc: project.project[project.type.flavorType.flavor.name].languageCode });
+//     }
+//   // eslint-disable-next-line react-hooks/exhaustive-deps
+//   }, [languages]);
   return (
     <ProjectsLayout
       title={call === 'new' ? t('new-project-page') : t('edit-project')}
@@ -355,12 +359,6 @@ export default function NewProject({ call, project, closeEdit }) {
                       {t('label-target-language')}
                       <span className="text-error">*</span>
                     </h4>
-                    {/* <CustomList
-                      selected={language}
-                      setSelected={setLanguage}
-                      options={languages.filter((v, i, a) => a.findIndex((v2) => ['title', 'scriptDirection'].every((k) => v2[k] === v[k])) === i)}
-                      show
-                    /> */}
                     {languages.length > 0 && (
                       <CustomMultiComboBox
                         customData={languages}
@@ -368,6 +366,7 @@ export default function NewProject({ call, project, closeEdit }) {
                         setSelectedList={setLanguage}
                         filterParams="ang"
                         multiSelect={false}
+                        call="edit"
                       />
                     )}
 
