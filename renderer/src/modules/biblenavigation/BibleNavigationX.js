@@ -12,7 +12,9 @@ import ChevronDownIcon from '@/icons/Common/ChevronDown.svg';
 import XMarkIcon from '@/icons/Common/XMark.svg';
 
 export default function BibleNavigationX(props) {
-  const { showVerse } = props;
+  const {
+ showVerse, chapterNumber, setChapterNumber, verseNumber, setVerseNumber,
+} = props;
   const supportedBooks = null; // if empty array or null then all books available
 
   const {
@@ -119,7 +121,7 @@ export default function BibleNavigationX(props) {
           >
             <ChevronDownIcon className="inline h-4 w-4 mx-1 text-white" aria-hidden="true" />
           </span>
-          <span className="px-3">{chapter}</span>
+          <span className="px-3">{chapterNumber}</span>
           <span
             aria-label="open-chapter"
             className="focus:outline-none bg-white py-3 bg-opacity-10"
@@ -129,6 +131,7 @@ export default function BibleNavigationX(props) {
           >
             <ChevronDownIcon className="inline h-4 w-4 mx-1 text-white" aria-hidden="true" />
           </span>
+          <span className="px-3">{verseNumber}</span>
           {showVerse
             && (
               <span className="px-3">
@@ -224,6 +227,8 @@ export default function BibleNavigationX(props) {
                 setSelectedVerses={setSelectedVerses}
                 verselectActive={verselectActive}
                 setVerseSelectActive={setVerseSelectActive}
+                setChapterNumber={setChapterNumber}
+                setVerseNumber={setVerseNumber}
               >
                 <button
                   type="button"

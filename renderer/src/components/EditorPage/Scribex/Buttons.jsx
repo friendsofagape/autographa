@@ -25,6 +25,7 @@ export default function Buttons(props) {
     setEditable,
     setPreview,
     exportUsfm,
+    setTriggerVerseInsert
   } = props;
 
   const onSectionable = () => {
@@ -49,22 +50,22 @@ export default function Buttons(props) {
       <RectangleStackIcon
         aria-label="Collection-Icon"
         className={classNames(
-            sectionable ? 'fill-current' : '',
-            'h-5 mr-2 w-5 text-white cursor-pointer',
-          )}
+          sectionable ? 'fill-current' : '',
+          'h-5 mr-2 w-5 text-white cursor-pointer',
+        )}
         aria-hidden="true"
         onClick={onSectionable}
         title={
-            sectionable ? 'Expand all Chapters' : 'Collapse Chapters'
-          }
+          sectionable ? 'Expand all Chapters' : 'Collapse Chapters'
+        }
       />
 
       <PencilIcon
         aria-label="Pencil-Icon"
         className={classNames(
-            editable ? 'fill-current' : '',
-            'h-5 mr-2 w-5 text-white cursor-pointer',
-          )}
+          editable ? 'fill-current' : '',
+          'h-5 mr-2 w-5 text-white cursor-pointer',
+        )}
         aria-hidden="true"
         onClick={onEditable}
         title={editable ? 'Disable Edit' : 'Enable Edit'}
@@ -77,7 +78,8 @@ export default function Buttons(props) {
           onClick={onBlockable}
           title="Collapse blocks"
         />
-        ) : (
+      )
+        : (
           <Bars4Icon
             aria-label="List-Icon"
             className="h-5 mr-2 w-5 text-white cursor-pointer"

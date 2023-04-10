@@ -10,12 +10,12 @@ export default function readLocalResources(username, setSubMenuItems) {
   fs.mkdirSync(path.join(newpath, 'autographa', 'users', username, 'resources'), {
     recursive: true,
   });
-  readResourceMetadata(projectsDir, userResourceMetaPath, setSubMenuItems, parseData,'user');
+  readResourceMetadata(projectsDir, userResourceMetaPath, setSubMenuItems, parseData, 'user');
 
   const commonResourceDir = path.join(newpath, 'autographa', 'common', 'resources');// Read common resources
   const commonResourceMetaPath = path.join(newpath, 'autographa', 'common', 'resources');
   fs.mkdirSync(path.join(newpath, 'autographa', 'common', 'resources'), {
     recursive: true,
   });
-  readResourceMetadata(commonResourceDir, commonResourceMetaPath, setSubMenuItems, parseData,'common');
+  readResourceMetadata(commonResourceDir, commonResourceMetaPath, setSubMenuItems, parseData, 'common');
 }
