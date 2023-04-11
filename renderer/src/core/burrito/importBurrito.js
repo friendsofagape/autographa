@@ -5,6 +5,7 @@ import { environment } from '../../../environment';
 import * as logger from '../../logger';
 import { validate } from '../../util/validate';
 import { updateVersion } from './updateTranslationSB';
+import packageInfo from '../../../../package.json';
 
 const md5 = require('md5');
 const path = require('path');
@@ -20,12 +21,12 @@ const checkImportDuplicate = async (folderList, projectName, metadata, projectDi
       incomingKey = Object.keys(metadata.identification.primary)[0];
       incomingId = Object.keys(metadata.identification.primary[incomingKey])[0];
       upstreamObj = metadataExisting.identification.upstream;
-      primaryId = Object.keys(metadataExisting.identification.primary.ag)[0];
+      primaryId = Object.keys(metadataExisting.identification.primary.scribe)[0];
     }
   });
   return {
- incomingId, incomingKey, upstreamObj, primaryId,
-};
+    incomingId, incomingKey, upstreamObj, primaryId,
+  };
 };
 
 export const checkDuplicate = async (metadata, currentUser, resource) => {
@@ -35,16 +36,16 @@ export const checkDuplicate = async (metadata, currentUser, resource) => {
   let existingProject;
   let id;
   const newpath = localStorage.getItem('userPath');
-  const projectDir = path.join(newpath, 'autographa', 'users', currentUser, resource);
+  const projectDir = path.join(newpath, packageInfo.name, 'users', currentUser, resource);
   const folderList = fs.readdirSync(projectDir);
-  logger.debug('importBurrito.js', 'Checking for AG key in burrito');
-  if (metadata.identification.primary.ag !== undefined) {
-    Object.entries(metadata.identification?.primary?.ag).forEach(([key]) => {
+  logger.debug('importBurrito.js', 'Checking for scribe key in burrito');
+  if (metadata.identification.primary.scribe !== undefined) {
+    Object.entries(metadata.identification?.primary?.scribe).forEach(([key]) => {
       logger.debug('importBurrito.js', 'Fetching the key from Primary.');
       id = key;
     });
-  } else if (metadata.identification.upstream?.ag !== undefined) {
-    const list = metadata.identification?.upstream?.ag;
+  } else if (metadata.identification?.upstream?.scribe !== undefined) {
+    const list = metadata.identification?.upstream?.scribe;
     logger.debug('importBurrito.js', 'Fetching the latest key from upstream list.');
     const latest = list.reduce((a, b) => (new Date(a.timestamp) > new Date(b.timestamp) ? a : b));
     Object.entries(latest).forEach(([key]) => {
@@ -64,8 +65,7 @@ export const checkDuplicate = async (metadata, currentUser, resource) => {
     // if not get id but project name - to avoid duplicate import
     await checkImportDuplicate(folderList, projectName, metadata, projectDir, fs)
     .then((upstreamValue) => {
-      if (upstreamValue.incomingKey
-        && Object.keys(upstreamValue.upstreamObj).includes(upstreamValue.incomingKey)
+      if (upstreamValue.incomingKey && Object.keys(upstreamValue.upstreamObj).includes(upstreamValue.incomingKey)
       && (Object.keys(upstreamValue.upstreamObj[upstreamValue.incomingKey][0])).includes(upstreamValue.incomingId)) {
         logger.debug('importBurrito.js', 'Project already exists.');
         existingProject = true;
@@ -90,8 +90,8 @@ export const viewBurrito = async (filePath, currentUser, resource) => {
     const metadata = JSON.parse(sb);
     // Fixing the issue of previous version of AG. The dateCreated was left empty and it will fail the validation.
     if (!metadata?.meta?.dateCreated) {
-      const agId = Object.keys(metadata?.identification?.primary?.ag);
-      metadata.meta.dateCreated = metadata?.identification?.primary?.ag[agId[0]].timestamp;
+      const agId = Object.keys(metadata?.identification?.primary?.scribe);
+      metadata.meta.dateCreated = metadata?.identification?.primary?.scribe[agId[0]].timestamp;
       sb = JSON.stringify(metadata);
     }
     const success = await validate('metadata', path.join(filePath, 'metadata.json'), sb, metadata.meta.version);
@@ -179,7 +179,7 @@ const importBurrito = async (filePath, currentUser, updateBurritoVersion) => {
   const fse = window.require('fs-extra');
   const status = [];
   const newpath = localStorage.getItem('userPath');
-  const projectDir = path.join(newpath, 'autographa', 'users', currentUser, 'projects');
+  const projectDir = path.join(newpath, packageInfo.name, 'users', currentUser, 'projects');
   fs.mkdirSync(projectDir, { recursive: true });
   // Importing the project
   if (fs.existsSync(path.join(filePath, 'metadata.json'))) {
@@ -188,8 +188,8 @@ const importBurrito = async (filePath, currentUser, updateBurritoVersion) => {
     let metadata = JSON.parse(sb);
     // Fixing the issue of previous version of AG. The dateCreated was left empty and it will fail the validation.
     if (!metadata?.meta?.dateCreated) {
-      const agId = Object.keys(metadata?.identification?.primary?.ag);
-      metadata.meta.dateCreated = metadata?.identification?.primary?.ag[agId[0]].timestamp;
+      const agId = Object.keys(metadata?.identification?.primary?.scribe);
+      metadata.meta.dateCreated = metadata?.identification?.primary?.scribe[agId[0]].timestamp;
       sb = JSON.stringify(metadata);
     }
     const success = validate('metadata', path.join(filePath, 'metadata.json'), sb, metadata.meta.version);
@@ -198,13 +198,13 @@ const importBurrito = async (filePath, currentUser, updateBurritoVersion) => {
       logger.debug('importBurrito.js', 'Burrito file validated successfully or Audio Project');
       let projectName = metadata.identification?.name?.en;
       let id; let foundId = false;
-      logger.debug('importBurrito.js', 'Checking for AG primary key');
-      if (metadata.identification.primary?.ag !== undefined) {
-        Object.entries(metadata.identification?.primary?.ag).forEach(([key]) => {
+      logger.debug('importBurrito.js', 'Checking for scribe primary key');
+      if (metadata.identification.primary?.scribe !== undefined) {
+        Object.entries(metadata.identification?.primary?.scribe).forEach(([key]) => {
           logger.debug('importBurrito.js', 'Fetching the key from burrito.');
           id = key;
         });
-      } else if (metadata.identification.upstream?.ag !== undefined) {
+      } else if (metadata.identification.upstream?.scribe !== undefined) {
         Object.entries(metadata.identification.primary).forEach(([key]) => {
           logger.debug('importBurrito.js', 'Swapping data between primary and upstream');
           const identity = metadata.identification.primary[key];
@@ -213,14 +213,14 @@ const importBurrito = async (filePath, currentUser, updateBurritoVersion) => {
           delete metadata.idAuthorities;
         });
         metadata.idAuthorities = {
-          ag: {
+          scribe: {
             id: 'http://www.autographa.org',
             name: {
-              en: 'Autographa application',
+              en: 'Scribe application',
             },
           },
         };
-        const list = metadata.identification?.upstream?.ag;
+        const list = metadata.identification?.upstream?.scribe;
         logger.debug('importBurrito.js', 'Fetching the latest key from list.');
         // eslint-disable-next-line max-len
         const latest = list.reduce((a, b) => (new Date(a.timestamp) > new Date(b.timestamp) ? a : b));
@@ -229,15 +229,15 @@ const importBurrito = async (filePath, currentUser, updateBurritoVersion) => {
           id = key;
         });
         if (list.length > 1) {
-          (metadata.identification.upstream.ag).forEach((e, i) => {
+          (metadata.identification.upstream.scribe).forEach((e, i) => {
             if (e === latest) {
-              (metadata.identification?.upstream?.ag)?.splice(i, 1);
+              (metadata.identification?.upstream?.scribe)?.splice(i, 1);
             }
           });
         } else {
-          delete metadata.identification?.upstream?.ag;
+          delete metadata.identification?.upstream?.scribe;
         }
-        metadata.identification.primary.ag = latest;
+        metadata.identification.primary.scribe = latest;
       } else {
         // if Id is undefined - trying to get id, if project already exist
         const folderList = await fs.readdirSync(projectDir);
@@ -254,7 +254,7 @@ const importBurrito = async (filePath, currentUser, updateBurritoVersion) => {
       if (!id || foundId === true) {
         Object.entries(metadata.identification.primary).forEach(([key]) => {
           logger.debug('importBurrito.js', 'Swapping data between primary and upstream');
-          if (key !== 'ag') {
+          if (key !== 'scribe') {
             const identity = metadata.identification.primary[key];
             metadata.identification.upstream = {};
             metadata.identification.upstream[key] = [identity];
@@ -266,7 +266,7 @@ const importBurrito = async (filePath, currentUser, updateBurritoVersion) => {
           const key = currentUser + metadata.identification.name.en + moment().format();
           id = uuidv5(key, environment.uuidToken);
         }
-        metadata.identification.primary.ag = {
+        metadata.identification.primary.scribe = {
           [id]: {
           revision: '0',
           timestamp: moment().format(),
@@ -314,10 +314,10 @@ const importBurrito = async (filePath, currentUser, updateBurritoVersion) => {
         });
       })
       .catch((err) => logger.error('importBurrito.js', `${err}`));
-
+      metadata.meta.generator.softwareName = 'Scribe';
       metadata.meta.generator.userName = currentUser;
-      if (!fs.existsSync(path.join(filePath, dirName, 'ag-settings.json'))) {
-        logger.debug('importBurrito.js', 'Creating ag-settings.json file');
+      if (!fs.existsSync(path.join(filePath, dirName, environment.PROJECT_SETTING_FILE))) {
+        logger.debug('importBurrito.js', `Creating ${environment.PROJECT_SETTING_FILE} file`);
         const settings = {
           version: environment.AG_SETTING_VERSION,
           project: {
@@ -335,20 +335,20 @@ const importBurrito = async (filePath, currentUser, updateBurritoVersion) => {
           },
           sync: { services: { door43: [] } },
         };
-        logger.debug('importBurrito.js', 'Creating the ag-settings.json file.');
-        await fs.writeFileSync(path.join(audioDir, dirName, 'ag-settings.json'), JSON.stringify(settings));
-        const stat = fs.statSync(path.join(audioDir, dirName, 'ag-settings.json'));
-        metadata.ingredients[path.join(dirName, 'ag-settings.json')] = {
+        logger.debug('importBurrito.js', `Creating the ${environment.PROJECT_SETTING_FILE} file.`);
+        await fs.writeFileSync(path.join(audioDir, dirName, environment.PROJECT_SETTING_FILE), JSON.stringify(settings));
+        const stat = fs.statSync(path.join(audioDir, dirName, environment.PROJECT_SETTING_FILE));
+        metadata.ingredients[path.join(dirName, environment.PROJECT_SETTING_FILE)] = {
           checksum: {
             md5: md5(settings),
           },
           mimeType: 'application/json',
           size: stat.size,
-          role: 'x-autographa',
+          role: 'x-scribe',
         };
       } else {
-        logger.debug('importBurrito.js', 'Updating ag-settings.json file');
-        const ag = fs.readFileSync(path.join(audioDir, dirName, 'ag-settings.json'));
+        logger.debug('importBurrito.js', `Updating ${environment.PROJECT_SETTING_FILE} file`);
+        const ag = fs.readFileSync(path.join(audioDir, dirName, environment.PROJECT_SETTING_FILE));
         let settings = JSON.parse(ag);
         if (settings.version !== environment.AG_SETTING_VERSION) {
           // eslint-disable-next-line prefer-const
@@ -371,7 +371,7 @@ const importBurrito = async (filePath, currentUser, updateBurritoVersion) => {
           settings = setting;
         }
         settings.project[metadata.type.flavorType.flavor.name].lastSeen = moment().format();
-        await fs.writeFileSync(path.join(audioDir, dirName, 'ag-settings.json'), JSON.stringify(settings));
+        await fs.writeFileSync(path.join(audioDir, dirName, environment.PROJECT_SETTING_FILE), JSON.stringify(settings));
       }
       if (metadata.copyright.fullStatementPlain) {
         const newLicence1 = (metadata.copyright.fullStatementPlain.en).replace(/\\n/gm, '\n');
