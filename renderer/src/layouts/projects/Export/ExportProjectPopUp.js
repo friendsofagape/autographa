@@ -18,6 +18,7 @@ import burrito from '../../../lib/BurritoTemplete.json';
 import ConfirmationModal from '../../editor/ConfirmationModal';
 import ProgressCircle from '../../../components/Sync/ProgressCircle';
 import { exportDefaultAudio, exportFullAudio } from './ExportUtils';
+import packageInfo from '../../../../../package.json';
 
 export default function ExportProjectPopUp(props) {
   const {
@@ -134,7 +135,7 @@ export default function ExportProjectPopUp(props) {
       await localforage.getItem('userProfile').then((value) => {
         const path = require('path');
         const newpath = localStorage.getItem('userPath');
-        const folder = path.join(newpath, 'autographa', 'users', value.username, 'projects', `${project.name}_${project.id[0]}`);
+        const folder = path.join(newpath, packageInfo.name, 'users', value.username, 'projects', `${project.name}_${project.id[0]}`);
         const data = fs.readFileSync(path.join(folder, 'metadata.json'), 'utf-8');
         const metadata = JSON.parse(data);
         const { username } = value;

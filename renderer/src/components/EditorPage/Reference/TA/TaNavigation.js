@@ -6,6 +6,7 @@ import { ReferenceContext } from '@/components/context/ReferenceContext';
 import localForage from 'localforage';
 import * as logger from '../../../../logger';
 import MultiComboBox from '../MultiComboBox';
+import packageInfo from '../../../../../../package.json';
 
 export default function TaNavigation({ languageId, referenceResources }) {
   const [selected, setSelected] = useState('');
@@ -46,7 +47,7 @@ export default function TaNavigation({ languageId, referenceResources }) {
           const path = require('path');
           const newpath = localStorage.getItem('userPath');
           const currentUser = user?.username;
-          const folder = path.join(newpath, 'autographa', 'users', `${currentUser}`, 'resources');
+          const folder = path.join(newpath, packageInfo.name, 'users', `${currentUser}`, 'resources');
           const projectName = `${offlineResource?.data?.value?.meta?.name}_${offlineResource?.data?.value?.meta?.owner}_${offlineResource?.data?.value?.meta?.release?.tag_name}`;
           // multiple books or options
           if (offlineResource?.data?.value?.books.length > 0) {

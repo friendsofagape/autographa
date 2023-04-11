@@ -1,4 +1,5 @@
 import localforage from 'localforage';
+import packageInfo from '../../../../package.json';
 
 function isBackendProjectExist(ProjectDir) {
     const newpath = localStorage.getItem('userPath');
@@ -10,7 +11,7 @@ function isBackendProjectExist(ProjectDir) {
         // let checkStatus = false;
         localforage.getItem('userProfile').then((value) => {
             if (value?.username) {
-                const resourcePath = path.join(newpath, 'autographa', 'users', value.username, 'resources', ProjectDir);
+                const resourcePath = path.join(newpath, packageInfo.name, 'users', value.username, 'resources', ProjectDir);
                 // check for path exist or not and resolve true or false will work for pane 1 now add for other panes
                 if (fs.existsSync(resourcePath) && fs.existsSync(path.join(resourcePath, 'metadata.json'))) {
                     resolve(true);

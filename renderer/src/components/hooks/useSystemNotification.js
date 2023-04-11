@@ -13,7 +13,7 @@ export default function useSystemNotification() {
         title,
         body,
         silent: false,
-        icon: path.join(window.process.cwd(), '/styles/autographa_icon.png'),
+        icon: path.join(window.process.cwd(), '/styles/Logo.png'),
         timeoutType: 'default',
         urgency: 'critical',
         closeButtonText: 'Close Button',

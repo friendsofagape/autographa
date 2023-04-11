@@ -1,4 +1,6 @@
 import localforage from 'localforage';
+import packageInfo from '../../../../package.json';
+import { environment } from '../../../environment';
 
 const path = require('path');
 
@@ -16,7 +18,7 @@ export async function readCustomResources({ resourceId, translationData }) {
   const newpath = localStorage.getItem('userPath');
   const userProfile = await localforage.getItem('userProfile');
   const currentUser = userProfile.username;
-  const file = path.join(newpath, 'autographa', 'users', currentUser, 'ag-user-settings.json');
+  const file = path.join(newpath, packageInfo.name, 'users', currentUser, environment.USER_SETTING_FILE);
   const currentResourceType = resourceMapObject.find((resource) => resource.id === resourceId)?.resourceType;
   // eslint-disable-next-line no-console
   console.log({ resourceId, currentResourceType });

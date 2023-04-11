@@ -3,7 +3,7 @@ import localforage from 'localforage';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import { readRefBurrito } from '../../../core/reference/readRefBurrito';
 import { readFile } from '../../../core/editor/readFile';
-
+import packageInfo from '../../../../../package.json';
 //  hook to fetch usfmfile from system drive
 export const useReadUsfmFile = () => {
   const [usfmData, setUsfmData] = useState([]);
@@ -21,7 +21,7 @@ export const useReadUsfmFile = () => {
         const projectName = await localforage.getItem('currentProject');
         const path = require('path');
         const newpath = localStorage.getItem('userPath');
-        const metaPath = path.join(newpath, 'autographa', 'users', userName, 'projects', projectName, 'metadata.json');
+        const metaPath = path.join(newpath, packageInfo.name, 'users', userName, 'projects', projectName, 'metadata.json');
         const metaData = JSON.parse(await readRefBurrito({ metaPath }));
         const _books = [];
         Object.entries(metaData.ingredients).forEach(async ([key, _ingredients]) => {

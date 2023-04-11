@@ -14,7 +14,7 @@ export default async function ObsTsvToChapterLevelMd(tsvJSON, chapter) {
             if (tsvObj.Reference.split(':')[1] in notesObj) {
                 notesObj[tsvObj.Reference.split(':')[1]].OccurrenceNote += mdstring;
             } else {
-                notesObj[tsvObj.Reference.split(':')[1]] = { OccurrenceNote: mdstring };
+                notesObj[tsvObj.Reference.split(':')[1]] = { name: ((tsvObj.Reference.split(':')[1]).toString()).padStart(2, 0), OccurrenceNote: mdstring };
             }
         });
         Object.values(notesObj).forEach((value) => {

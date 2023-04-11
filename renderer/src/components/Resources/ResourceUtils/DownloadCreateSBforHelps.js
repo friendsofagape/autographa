@@ -1,6 +1,7 @@
 import localForage from 'localforage';
 import moment from 'moment';
 import * as logger from '../../../logger';
+import packageInfo from '../../../../../package.json';
 
 const JSZip = require('jszip');
 
@@ -14,7 +15,7 @@ const DownloadCreateSBforHelps = async (projectResource, setLoading, update = fa
             const fs = window.require('fs');
             const path = require('path');
             const newpath = localStorage.getItem('userPath');
-            const folder = path.join(newpath, 'autographa', 'users', `${user?.username}`, 'resources');
+            const folder = path.join(newpath, packageInfo.name, 'users', `${user?.username}`, 'resources');
             // const currentUser = user?.username;
             // const key = currentUser + projectResource.name + projectResource.owner + moment().format();
             // const id = uuidv5(key, environment.uuidToken);
@@ -91,7 +92,7 @@ const DownloadCreateSBforHelps = async (projectResource, setLoading, update = fa
                             });
 
                         // finally remove zip and rename base folder to projectname_id
-                        logger.debug('DownloadCreateSBforHelps.js', 'deleting zip file - rename project with project + id in ag format');
+                        logger.debug('DownloadCreateSBforHelps.js', 'deleting zip file - rename project with project + id in scribe format');
                         if (fs.existsSync(folder)) {
                             fs.renameSync(path.join(folder, projectResource?.name), path.join(folder, `${projectResource?.name}_${projectResource?.owner}_${projectResource?.release?.tag_name}`));
                             fs.unlinkSync(path.join(folder, `${projectResource?.name}.zip`), (err) => {

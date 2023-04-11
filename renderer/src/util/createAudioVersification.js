@@ -1,6 +1,7 @@
 import moment from 'moment';
 import { environment } from '../../environment';
 import * as logger from '../logger';
+import packageInfo from '../../../package.json';
 
 const path = require('path');
 const md5 = require('md5');
@@ -16,7 +17,7 @@ export const createAudioVersification = (
 ) => {
   logger.debug('createAudioVersification.js', 'In createAudioVersification');
   const newpath = localStorage.getItem('userPath');
-  const folder = path.join(newpath, 'autographa', 'users', username, 'projects', `${project.projectName}_${id}`, 'audio', 'ingredients');
+  const folder = path.join(newpath, packageInfo.name, 'users', username, 'projects', `${project.projectName}_${id}`, 'audio', 'ingredients');
   const schemes = [
     { name: 'eng', file: 'eng.json' },
     { name: 'lxx', file: 'lxx.json' },
@@ -82,16 +83,16 @@ export const createAudioVersification = (
         if (call === 'edit') {
           settings.sync = currentBurrito?.sync;
         }
-        logger.debug('createAudioVersification.js', 'Creating ag-settings.json file in ingredients');
-        await fs.writeFileSync(path.join(folder, 'ag-settings.json'), JSON.stringify(settings));
-        const stat = fs.statSync(path.join(folder, 'ag-settings.json'));
-        ingredients[path.join('audio', 'ingredients', 'ag-settings.json')] = {
+        logger.debug('createAudioVersification.js', `Creating ${environment.PROJECT_SETTING_FILE} file in ingredients`);
+        await fs.writeFileSync(path.join(folder, environment.PROJECT_SETTING_FILE), JSON.stringify(settings));
+        const stat = fs.statSync(path.join(folder, environment.PROJECT_SETTING_FILE));
+        ingredients[path.join('audio', 'ingredients', environment.PROJECT_SETTING_FILE)] = {
           checksum: {
             md5: md5(settings),
           },
           mimeType: 'application/json',
           size: stat.size,
-          role: 'x-autographa',
+          role: 'x-scribe',
         };
         logger.debug('createAudioVersification.js', 'Returning the ingredients data');
         resolve(ingredients);

@@ -114,7 +114,7 @@ export default function StatsModal(props) {
                             USFM editor which is capable of import and export of USFM files. It has
                             handy features like color-coded diffs across imported texts for
                             comparison between revisions, search and replace and export to formatted
-                            HTML and autographa will include capabilities for syncing data with
+                            HTML and Scribe Scripture will include capabilities for syncing data with
                             online repositories and that this application is licensed differently.
                           </p>
                         )}
@@ -175,7 +175,7 @@ export default function StatsModal(props) {
                 </button>
                 <a
                   // type="button"
-                  href="https://github.com/friendsofagape/autographa"
+                  href="https://github.com/bible-technology/scribe-scripture-editor"
                   target="_blank"
                   className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
                   rel="noreferrer"

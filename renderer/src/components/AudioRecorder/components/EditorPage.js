@@ -1,13 +1,14 @@
 import dynamic from 'next/dynamic';
 import PropTypes from 'prop-types';
+import { useEffect, useState } from 'react';
 
 const AudioWaveform = dynamic(() => import('./WaveForm'), { ssr: false });
 
 const EditorPage = ({
- content, onChangeVerse, verse, location,
+ content, onChangeVerse, verse, location, updateWave,
 }) => {
   const path = require('path');
-  // const [selectedverse, setSelectedVerse] = useState();
+  const [waveUpdate, setWaveUpdate] = useState(false);
   const selectVerse = (value) => {
     // For opening and closing the verse tab
     // if (selectedverse === value) {
@@ -16,6 +17,13 @@ const EditorPage = ({
       // setSelectedVerse(value);
       onChangeVerse(value.toString(), verse);
   };
+  // To update the wave after deleting the default take (Re-render this component)
+  useEffect(() => {
+    if (updateWave) {
+      setWaveUpdate(!waveUpdate);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [updateWave]);
   return (
     <div className="bg-white rounded-md overflow-hidden">
       {content?.map((mainChunk) => (

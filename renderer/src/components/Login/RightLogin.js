@@ -3,7 +3,7 @@ import GroupIcon from '@/illustrations/group.svg';
 
 import VectorOne from '@/illustrations/vector-one.svg';
 import HalfMoon from '@/illustrations/half-moon.svg';
-import Quote from '@/illustrations/quote.svg';
+// import Quote from '@/illustrations/quote.svg';
 
 export default function RightLogin() {
   return (
@@ -11,12 +11,10 @@ export default function RightLogin() {
 
       <div className="my-5 ml-28 mt-10 flex gap-3 items-center">
         <LogoIcon
-          fill="#0073E6"
           className="h-7 w-7 group-hover:text-primary"
           aria-hidden="true"
         />
-        <div className="text-white uppercase font-bold tracking-wider text-2xl">Autographa</div>
-        <div className="text-primary font-bold text-2xl">2.0</div>
+        <div className="text-white uppercase font-bold tracking-wider text-2xl">Scribe Scripture</div>
       </div>
 
       <div className="flex flex-col justify-center items-center relative">
@@ -31,7 +29,7 @@ export default function RightLogin() {
 
         <div className="mx-10 md:mx-20 lg:mx-32 text-xl text-white leading-9 relative">
           <div className="absolute top-0 left-0">
-            <Quote height={26} fill="#0068E2" />
+            {/* <Quote height={26} fill="#FF4A4A" /> */}
           </div>
 
           <div className="py-10">

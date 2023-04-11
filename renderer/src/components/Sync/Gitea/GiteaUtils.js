@@ -8,7 +8,7 @@ import {
   } from 'gitea-react-toolkit';
 import * as logger from '../../../logger';
 import { environment } from '../../../../environment';
-
+import packageInfo from '../../../../../package.json';
 const md5 = require('md5');
 const path = require('path');
 
@@ -22,37 +22,38 @@ export const importServerProject = async (updateBurrito, repo, sbData, auth, use
     const newpath = localStorage.getItem('userPath');
     let sbDataObject = sbData;
     console.log("sbdataObje : ", sbDataObject);
-    const projectDir = path.join(newpath, 'autographa', 'users', currentUser, 'projects');
+    const projectDir = path.join(newpath, packageInfo.name, 'users', currentUser, 'projects');
     fs.mkdirSync(projectDir, { recursive: true });
-    if (!sbData?.meta?.dateCreated && sbDataObject?.identification?.primary?.ag) {
-        const agId = Object.keys(sbDataObject?.identification?.primary?.ag);
-        sbDataObject.meta.dateCreated = sbDataObject?.identification?.primary?.ag[agId[0]].timestamp;
+    if (!sbData?.meta?.dateCreated && sbDataObject?.identification?.primary?.scribe) {
+        const agId = Object.keys(sbDataObject?.identification?.primary?.scribe);
+        sbDataObject.meta.dateCreated = sbDataObject?.identification?.primary?.scribe[agId[0]].timestamp;
     }
     let projectName = sbDataObject.identification?.name?.en;
     let id;
     logger.debug('dropzone giteaUtils import.js', 'Checking for AG primary key');
-    if (sbDataObject?.identification?.primary?.ag !== undefined) {
-        Object.entries(sbDataObject.identification?.primary?.ag).forEach(([key]) => {
+    if (sbDataObject?.identification?.primary?.scribe !== undefined) {
+        Object.entries(sbDataObject.identification?.primary?.scribe).forEach(([key]) => {
         logger.debug('dropzone giteaUtils import.js', 'Fetching the key from burrito.');
         id = key;
         });
-    } else if (sbDataObject?.identification?.upstream?.ag !== undefined) {
+    } else if (sbDataObject?.identification?.upstream?.scribe !== undefined) {
         Object.entries(sbDataObject.identification.primary).forEach(([key]) => {
         logger.debug('dropzone giteaUtils import.js', 'Swapping data between primary and upstream');
         const identity = sbDataObject.identification.primary[key];
         sbDataObject.identification.upstream[key] = [identity];
+        // sbDataObject.identification.upstream = [];
         delete sbDataObject.identification.primary[key];
         delete sbDataObject.idAuthorities;
         });
         sbDataObject.idAuthorities = {
-        ag: {
+        scribe: {
             id: 'http://www.autographa.org',
             name: {
-            en: 'Autographa application',
+            en: 'Scribe application',
             },
         },
         };
-        const list = sbDataObject.identification?.upstream?.ag;
+        const list = sbDataObject.identification?.upstream?.scribe;
         logger.debug('dropzone giteaUtils import.js', 'Fetching the latest key from list.');
         // eslint-disable-next-line max-len
         const latest = list.reduce((a, b) => (new Date(a.timestamp) > new Date(b.timestamp) ? a : b));
@@ -61,22 +62,23 @@ export const importServerProject = async (updateBurrito, repo, sbData, auth, use
         id = key;
         });
         if (list.length > 1) {
-        (sbDataObject.identification.upstream.ag).forEach((e, i) => {
+        (sbDataObject.identification.upstream?.scribe).forEach((e, i) => {
             if (e === latest) {
-            (sbDataObject.identification?.upstream?.ag)?.splice(i, 1);
+            (sbDataObject.identification?.upstream?.scribe)?.splice(i, 1);
             }
         });
         } else {
-        delete sbDataObject.identification?.upstream?.ag;
+        delete sbDataObject.identification?.upstream?.scribe;
         }
-        sbDataObject.identification.primary.ag = latest;
+        sbDataObject.identification.primary.scribe = latest;
     }
 
     if (!id && sbDataObject?.identification?.primary) {
         Object.entries(sbDataObject?.identification?.primary).forEach(([key]) => {
         logger.debug('dropzone giteaUtils import.js', 'Swapping data between primary and upstream');
-        if (key !== 'ag') {
+        if (key !== 'scribe') {
             const identity = sbDataObject.identification.primary[key];
+            // sbDataObject.identification.upstream = [];
             sbDataObject.identification.upstream[key] = [identity];
             delete sbDataObject.identification.primary[key];
         }
@@ -84,7 +86,7 @@ export const importServerProject = async (updateBurrito, repo, sbData, auth, use
         logger.debug('dropzone giteaUtils import.js', 'Creating a new key.');
         const key = currentUser + sbDataObject.identification.name.en + moment().format();
         id = uuidv5(key, environment.uuidToken);
-        sbDataObject.identification.primary.ag = {
+        sbDataObject.identification.primary.scribe = {
         [id]: {
         revision: '0',
         timestamp: moment().format(),
@@ -154,8 +156,8 @@ export const importServerProject = async (updateBurrito, repo, sbData, auth, use
       });
     // ag settings file
     sbDataObject.meta.generator.userName = currentUser;
-      if (!fs.existsSync(path.join(projectDir, `${projectName}_${id}`, dirName, 'ag-settings.json'))) {
-        logger.debug('dropzone giteaUtils import.js', 'Creating ag-settings.json file');
+      if (!fs.existsSync(path.join(projectDir, `${projectName}_${id}`, dirName, environment.PROJECT_SETTING_FILE))) {
+        logger.debug('dropzone giteaUtils import.js', `Creating ${environment.PROJECT_SETTING_FILE} file`);
         const settings = {
           version: environment.AG_SETTING_VERSION,
           project: {
@@ -173,20 +175,20 @@ export const importServerProject = async (updateBurrito, repo, sbData, auth, use
           },
           sync : { services: { door43 : [] } },
         };
-        logger.debug('dropzone giteaUtils import.js', 'Creating the ag-settings.json file.');
-        await fs.writeFileSync(path.join(projectDir, `${projectName}_${id}`, dirName, 'ag-settings.json'), JSON.stringify(settings));
-        const stat = fs.statSync(path.join(projectDir, `${projectName}_${id}`, dirName, 'ag-settings.json'));
-        sbDataObject.ingredients[path.join(dirName, 'ag-settings.json')] = {
+        logger.debug('dropzone giteaUtils import.js', `Creating the ${environment.PROJECT_SETTING_FILE} file.`);
+        await fs.writeFileSync(path.join(projectDir, `${projectName}_${id}`, dirName, environment.PROJECT_SETTING_FILE), JSON.stringify(settings));
+        const stat = fs.statSync(path.join(projectDir, `${projectName}_${id}`, dirName, environment.PROJECT_SETTING_FILE));
+        sbDataObject.ingredients[path.join(dirName, environment.PROJECT_SETTING_FILE)] = {
           checksum: {
             md5: md5(settings),
           },
           mimeType: 'application/json',
           size: stat.size,
-          role: 'x-autographa',
+          role: 'x-scribe',
         };
       } else {
-        logger.debug('dropzone giteaUtils import.js', 'Updating ag-settings.json file');
-        const ag = fs.readFileSync(path.join(projectDir, `${projectName}_${id}`, dirName, 'ag-settings.json'));
+        logger.debug('dropzone giteaUtils import.js', `Updating ${environment.PROJECT_SETTING_FILE} file`);
+        const ag = fs.readFileSync(path.join(projectDir, `${projectName}_${id}`, dirName, environment.PROJECT_SETTING_FILE));
         let settings = JSON.parse(ag);
         if (settings.version !== environment.AG_SETTING_VERSION) {
           // eslint-disable-next-line prefer-const
@@ -209,7 +211,7 @@ export const importServerProject = async (updateBurrito, repo, sbData, auth, use
           settings = setting;
         }
         settings.project[sbDataObject.type.flavorType.flavor.name].lastSeen = moment().format();
-        await fs.writeFileSync(path.join(projectDir, `${projectName}_${id}`, dirName, 'ag-settings.json'), JSON.stringify(settings));
+        await fs.writeFileSync(path.join(projectDir, `${projectName}_${id}`, dirName, environment.PROJECT_SETTING_FILE), JSON.stringify(settings));
       }
       if (sbDataObject.copyright.fullStatementPlain) {
         const newLicence1 = (sbDataObject.copyright.fullStatementPlain.en).replace(/\\n/gm, '\n');
@@ -251,7 +253,7 @@ export const createSyncProfile = async (auth) => {
   await localForage.getItem('userProfile').then((user) => {
     const currentUser = user?.username;
     const newpath = localStorage.getItem('userPath');
-    const file = path.join(newpath, 'autographa', 'users', currentUser, 'ag-user-settings.json');
+    const file = path.join(newpath, packageInfo.name, 'users', currentUser, environment.USER_SETTING_FILE);
     if (fs.existsSync(file)) {
       fs.readFile(file, (err, data) => {
         if (err) {
@@ -417,10 +419,10 @@ export const uploadProjectToBranchRepoExist = async ({repo, userProjectBranch, m
     const newpath = localStorage.getItem('userPath');
     const fs = window.require('fs');
     const path = require('path');
-    const projectId = Object.keys(metaDataSbRemote.identification.primary.ag)[0];
+    const projectId = Object.keys(metaDataSbRemote.identification.primary.scribe)[0];
     const projectName = metaDataSbRemote.identification.name.en;
     // const projectCreated = metaDataSbRemote.meta.dateCreated.split('T')[0];
-    const projectsMetaPath = path.join(newpath, 'autographa', 'users', agUsername, 'projects', `${projectName}_${projectId}`);
+    const projectsMetaPath = path.join(newpath, packageInfo.name, 'users', agUsername, 'projects', `${projectName}_${projectId}`);
     const MetadataLocal = fs.readFileSync(path.join(projectsMetaPath, 'metadata.json'));
     const localSB = JSON.parse(MetadataLocal);
     if (!ignoreFilesPaths.includes('metadata.json')) {

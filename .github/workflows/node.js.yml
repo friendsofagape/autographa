@@ -54,7 +54,7 @@ jobs:
             - name: Upload artifacts
               uses: actions/upload-artifact@v1
               with:
-                  name: Autographa
+                  name: Scribe
                   path: dist
 
     build-windows:
@@ -110,7 +110,7 @@ jobs:
             - name: Upload artifacts ${{ env.ARTIFACT_X64 }}
               uses: actions/upload-artifact@v1
               with:
-                  name: Autographa
+                  name: Scribe
                   path: artifacts
 
     build-mac:
@@ -161,5 +161,5 @@ jobs:
             - name: Upload artifacts
               uses: actions/upload-artifact@v1
               with:
-                  name: Autographa
+                  name: Scribe
                   path: dist

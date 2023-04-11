@@ -1,5 +1,5 @@
 export const Hi = {
-    'app-name': 'ऑटोग्राफा',
+    'app-name': 'Scribe Scripture',
     'new-project-page': 'नया प्रोजेक्ट',
     'edit-project': 'प्रोजेक्ट संपादित करें',
     'label-abbreviation': 'संक्षेपाक्षर',

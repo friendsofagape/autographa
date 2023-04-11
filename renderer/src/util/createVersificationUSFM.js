@@ -1,6 +1,7 @@
 import moment from 'moment';
 import { environment } from '../../environment';
 import * as logger from '../logger';
+import packageInfo from '../../../package.json';
 
 const grammar = require('usfm-grammar');
 const path = require('path');
@@ -22,10 +23,10 @@ export const createVersificationUSFM = (
 ) => {
   logger.debug('createVersificationUSFM.js', 'In createVersificationUSFM');
   const newpath = localStorage.getItem('userPath');
-  let folder = path.join(newpath, 'autographa', 'users', username, 'projects', `${project.projectName}_${id}`);
+  let folder = path.join(newpath, packageInfo.name, 'users', username, 'projects', `${project.projectName}_${id}`);
   let ingredientsDirName = 'ingredients';
   if (call === 'edit') {
-    ingredientsDirName = Object.keys(currentBurrito.ingredients).filter((key) => key.includes('ag-settings.json'));
+    ingredientsDirName = Object.keys(currentBurrito.ingredients).filter((key) => key.includes(environment.PROJECT_SETTING_FILE));
     ingredientsDirName = ingredientsDirName[0].split(/[(\\)?(/)?]/gm).slice(0)[0];
   }
   if (projectType === 'Audio') {
@@ -165,16 +166,16 @@ export const createVersificationUSFM = (
         if (call === 'edit') {
           settings.sync = currentBurrito?.sync;
         }
-        logger.debug('createVersificationUSFM.js', 'Creating ag-settings.json file in ingredients');
-        await fs.writeFileSync(path.join(folder, 'ag-settings.json'), JSON.stringify(settings));
-        const stat = fs.statSync(path.join(folder, 'ag-settings.json'));
-        ingredients[path.join('ingredients', 'ag-settings.json')] = {
+        logger.debug('createVersificationUSFM.js', `Creating ${environment.PROJECT_SETTING_FILE} file in ingredients`);
+        await fs.writeFileSync(path.join(folder, environment.PROJECT_SETTING_FILE), JSON.stringify(settings));
+        const stat = fs.statSync(path.join(folder, environment.PROJECT_SETTING_FILE));
+        ingredients[path.join('ingredients', environment.PROJECT_SETTING_FILE)] = {
           checksum: {
             md5: md5(settings),
           },
           mimeType: 'application/json',
           size: stat.size,
-          role: 'x-autographa',
+          role: 'x-scribe',
         };
         logger.debug('createVersificationUSFM.js', 'Returning the ingredients data');
         resolve(ingredients);

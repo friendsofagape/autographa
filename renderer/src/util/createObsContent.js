@@ -6,6 +6,7 @@ import OBSFront from '../lib/OBSfront.md';
 import OBSBack from '../lib/OBSback.md';
 import OBSLicense from '../lib/OBSLicense.md';
 import JsonToMd from '../obsRcl/JsonToMd/JsonToMd';
+import packageInfo from '../../../package.json';
 
 const path = require('path');
 const md5 = require('md5');
@@ -29,10 +30,10 @@ export const createObsContent = (
     const newpath = localStorage.getItem('userPath');
     let ingredientsDirName = 'ingredients';
     if (call === 'edit') {
-      ingredientsDirName = Object.keys(currentBurrito.ingredients).filter((key) => key.includes('ag-settings.json'));
+      ingredientsDirName = Object.keys(currentBurrito.ingredients).filter((key) => key.includes(environment.PROJECT_SETTING_FILE));
       ingredientsDirName = ingredientsDirName[0].split(/[(\\)?(/)?]/gm).slice(0)[0];
     }
-    const folder = path.join(newpath, 'autographa', 'users', username, 'projects', `${project.projectName}_${id}`, ingredientsDirName);
+    const folder = path.join(newpath, packageInfo.name, 'users', username, 'projects', `${project.projectName}_${id}`, ingredientsDirName);
     const fs = window.require('fs');
 
     logger.debug('createObsContent.js', 'Creating the story md files');
@@ -175,7 +176,7 @@ export const createObsContent = (
       }
     });
   }
-    // ag setting creation
+    // scribe setting creation
     const settings = {
       version: environment.AG_SETTING_VERSION,
       project: {
@@ -195,19 +196,19 @@ export const createObsContent = (
     if (call === 'edit') {
       settings.sync = currentBurrito?.sync;
     }
-    logger.debug('createObsContent.js', 'Creating ag-settings.json file in content');
+    logger.debug('createObsContent.js', `Creating ${environment.PROJECT_SETTING_FILE} file in content`);
     if (!fs.existsSync(folder)) {
       fs.mkdirSync(folder, { recursive: true });
     }
-    fs.writeFileSync(path.join(folder, 'ag-settings.json'), JSON.stringify(settings));
-    const stat = fs.statSync(path.join(folder, 'ag-settings.json'));
-    ingredients[path.join('ingredients', 'ag-settings.json')] = {
+    fs.writeFileSync(path.join(folder, environment.PROJECT_SETTING_FILE), JSON.stringify(settings));
+    const stat = fs.statSync(path.join(folder, environment.PROJECT_SETTING_FILE));
+    ingredients[path.join('ingredients', environment.PROJECT_SETTING_FILE)] = {
       checksum: {
         md5: md5(settings),
       },
       mimeType: 'application/json',
       size: stat.size,
-      role: 'x-autographa',
+      role: 'x-scribe',
     };
 
       resolve(ingredients);

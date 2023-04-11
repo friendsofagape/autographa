@@ -8,6 +8,7 @@ import localForage from 'localforage';
 import ReferenceCard from './ReferenceCard';
 import TranslationhelpsNav from './TranslationhelpsNav';
 import * as logger from '../../../logger';
+import packageInfo from '../../../../../package.json';
 
 export default function TranslationHelpsCard({
   title,
@@ -66,7 +67,7 @@ export default function TranslationHelpsCard({
           const path = require('path');
           const newpath = localStorage.getItem('userPath');
           const currentUser = user?.username;
-          const folder = path.join(newpath, 'autographa', 'users', `${currentUser}`, 'resources');
+          const folder = path.join(newpath, packageInfo.name, 'users', `${currentUser}`, 'resources');
           const projectName = `${offlineResource?.data?.value?.meta?.name}_${offlineResource?.data?.value?.meta?.owner}_${offlineResource?.data?.value?.meta?.release?.tag_name}`;
 
           // switch resources

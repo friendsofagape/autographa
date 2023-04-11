@@ -11,6 +11,7 @@ import { ReferenceContext } from '@/components/context/ReferenceContext';
 import ConfirmationModal from '@/layouts/editor/ConfirmationModal';
 import * as logger from '../../logger';
 import { viewBurrito } from '../../core/burrito/importBurrito';
+import packageInfo from '../../../../package.json';
 
 export default function ImportResource({
   closePopUp, setOpenResourcePopUp, setLoading,
@@ -73,10 +74,10 @@ export default function ImportResource({
     try {
       const user = await localforage.getItem('userProfile');
       const newpath = localStorage.getItem('userPath');
-      fs.mkdirSync(path.join(newpath, 'autographa', 'users', user?.username, 'resources'), {
+      fs.mkdirSync(path.join(newpath, packageInfo.name, 'users', user?.username, 'resources'), {
         recursive: true,
       });
-      const projectsDir = path.join(newpath, 'autographa', 'users', user?.username, 'resources');
+      const projectsDir = path.join(newpath, packageInfo.name, 'users', user?.username, 'resources');
       // Adding 'resources' to check the duplication in the user reference list
       const result = await viewBurrito(folderPath, user?.username, 'resources');
       if (result.fileExist === false) {

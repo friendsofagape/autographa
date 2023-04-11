@@ -2,7 +2,7 @@ import localforage from 'localforage';
 // import { readRefMeta } from '../../../core/reference/readRefMeta';
 import { readRefBurrito } from '../../../core/reference/readRefBurrito';
 import writeToFile from '../../../core/editor/writeToFile';
-
+import packageInfo from '../../../../../package.json';
 // function to save to file.
 export const saveToFile = async (usfmText, bookCode) => {
   try {
@@ -11,8 +11,8 @@ export const saveToFile = async (usfmText, bookCode) => {
     const projectName = await localforage.getItem('currentProject');
     const path = require('path');
     const newpath = localStorage.getItem('userPath');
-    // const projectsDir = path.join(newpath, 'autographa', 'users', userName, 'projects', projectName);
-    const metaPath = path.join(newpath, 'autographa', 'users', userName, 'projects', projectName, 'metadata.json');
+    // const projectsDir = path.join(newpath, packageInfo.name, 'users', userName, 'projects', projectName);
+    const metaPath = path.join(newpath, packageInfo.name, 'users', userName, 'projects', projectName, 'metadata.json');
     // const refs = await readRefMeta({ projectsDir })
     const metaData = JSON.parse(await readRefBurrito({ metaPath }));
     Object.entries(metaData.ingredients).forEach(async ([key, _ingredients]) => {
