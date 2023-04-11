@@ -125,6 +125,7 @@ const AudioWaveForm = (props) => {
   const handlePlay = () => {
     if (url) {
       try {
+        wavesurfer.current?.setVolume(volume);
         wavesurfer.current?.play();
       } catch {
         createForm(url);

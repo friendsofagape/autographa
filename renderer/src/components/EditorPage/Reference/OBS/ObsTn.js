@@ -61,7 +61,7 @@ function ObsTnCard({
   }, [items, index]);
   useEffect(() => {
     async function fetchData() {
-      await getObsTn(owner, `${languageId}_${resourceId}`, `content/${chapter.toString().padStart(2, 0)}`)
+      await getObsTn(owner, `${languageId}_${resourceId}`, `content/${chapter.toString().padStart(2, 0)}`, chapter)
       .then((data) => {
         setItems(data);
       });
