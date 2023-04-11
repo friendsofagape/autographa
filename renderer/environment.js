@@ -1,6 +1,6 @@
 export const environment = {
-    PROJECT_SETTING_FILE: 'ag-settings.json',
-    USER_SETTING_FILE: 'ag-user-settings.json',
+    PROJECT_SETTING_FILE: 'scribe-settings.json',
+    USER_SETTING_FILE: 'scribe-user-settings.json',
     production: false,
     AG_SETTING_VERSION: '1.2.1',
     AG_USER_SETTING_VERSION: '1.2.0',
