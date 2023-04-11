@@ -20,6 +20,8 @@ const AudioWaveform = dynamic(() => import('./WaveForm'), { ssr: false });
 
 const Player = ({
   url,
+  blobUrl,
+  setBlobUrl,
   startRecording,
   stopRecording,
   pauseRecording,
@@ -65,6 +67,7 @@ const Player = ({
   const changeTake = (value) => {
     setTake(value);
     setTrigger();
+    setBlobUrl();
   };
   const micSettings = () => {
     const { shell } = window.require('electron');
@@ -384,15 +387,13 @@ const Player = ({
             waveColor="#ffffff"
             btnColor="text-white"
         // url={(location && Object.keys(url).length !== 0) && (take ? (url[take] ? url[take] : '') : url[url?.default])}
-            url={
-          location
+            url={blobUrl || (location
           && Object.keys(url).length !== 0
           && (take
             ? url[take]
               ? path.join(location, url[take])
               : ''
-            : path.join(location, url[url?.default]))
-        }
+            : path.join(location, url[url?.default])))}
             call={trigger}
             startRecording={startRecording}
             stopRecording={stopRecording}
@@ -411,6 +412,8 @@ const Player = ({
 export default Player;
 Player.propTypes = {
 url: PropTypes.object,
+blobUrl: PropTypes.string,
+setBlobUrl: PropTypes.any,
 startRecording: PropTypes.any,
 stopRecording: PropTypes.any,
 pauseRecording: PropTypes.any,
