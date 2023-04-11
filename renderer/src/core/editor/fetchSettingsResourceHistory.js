@@ -85,7 +85,7 @@ export async function fetchSettingsResourceHistory(
                     rows.push(_rownum);
                       // check existing the dir of resource in backend
                       // helps resurce : offline TRUE , others resourceId == obs/bible/audio _value.resouceId
-                        if (_value.offline.offline || ['obs', 'bible', 'audio'].includes(_value.resouceId.toLowerCase())) {
+                        if (_value.offline?.offline || ['obs', 'bible', 'audio'].includes(_value.resouceId.toLowerCase())) {
                           logger.debug('fetchSettingsResourceHistory.js', 'exist check for the loading resource');
                           let projectDirName;
                           if (_value.offline.offline) {
