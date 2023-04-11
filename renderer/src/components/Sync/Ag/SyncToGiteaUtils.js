@@ -40,7 +40,7 @@ export const createFiletoServer = async (fileContent, filePath, branch, repoName
         owner: auth.user.login,
         // repo: repo.name,
         repo: repoName,
-        branch,
+        branch: branch.replace(/ /g, '_'), // removing space to avoid error
         filepath: filePath,
         content: fileContent,
         message: `commit ${filePath}`,
@@ -62,7 +62,7 @@ export const updateFiletoServer = async (fileContent, filePath, branch, repoName
         config: auth.config,
         owner: auth.user.login,
         repo: repoName.toLowerCase(),
-        ref: branch,
+        ref: branch.replace(/ /g, '_'),
         filepath: filePath,
       },
       );
@@ -73,7 +73,7 @@ export const updateFiletoServer = async (fileContent, filePath, branch, repoName
           config: auth.config,
           owner: auth.user.login,
           repo: repoName.toLowerCase(),
-          branch,
+          branch: branch.replace(/ /g, '_'),
           filepath: readResult.path,
           content: fileContent,
           message: `updated ${filePath}`,
@@ -160,7 +160,7 @@ export const createSyncProfile = async (auth) => {
   });
 };
 
-// get or update last sync details in ag settings
+// get or update last sync details in scribe settings
 export const getOrPutLastSyncInAgSettings = async (method, projectMeta, syncUsername) => {
   if (method === 'get' || method === 'put') {
     let currentUser = await localForage.getItem('userProfile');
@@ -168,7 +168,7 @@ export const getOrPutLastSyncInAgSettings = async (method, projectMeta, syncUser
     const fs = window.require('fs');
     const path = require('path');
     const newpath = localStorage.getItem('userPath');
-    const id = Object.keys(projectMeta?.identification?.primary?.ag);
+    const id = Object.keys(projectMeta?.identification?.primary?.scribe);
     const projectName = `${projectMeta?.identification?.name?.en}_${id}`;
     // eslint-disable-next-line array-callback-return
     const settingsIngredientsPath = Object.keys(projectMeta?.ingredients).filter((path) => {
@@ -232,7 +232,7 @@ export const getOrPutLastSyncInAgSettings = async (method, projectMeta, syncUser
         });
         }
 
-        logger.debug('SyncToGiteaUtils.js', 'Upadting the ag settings with sync data');
+        logger.debug('SyncToGiteaUtils.js', 'Upadting the scribe settings with sync data');
         await fs.writeFileSync(settingsPath, JSON.stringify(settings));
       }
     }

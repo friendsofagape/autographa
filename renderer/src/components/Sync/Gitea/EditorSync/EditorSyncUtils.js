@@ -32,7 +32,7 @@ export async function handleEditorSync(selectedProject, projectData, syncObj, ac
   const projectName = projectData.identification.name.en;
   const ingredientsObj = projectData.ingredients;
   const projectCreated = projectData.meta.dateCreated.split('T')[0];
-  const repoName = `ag-${projectData.languages[0].tag}-${projectData.type.flavorType.flavor.name}-${projectName.replace(/[\s+ -]/g, '_')}`;
+  const repoName = `${packageInfo.name}-${projectData.languages[0].tag}-${projectData.type.flavorType.flavor.name}-${projectName.replace(/[\s+ -]/g, '_')}`;
   const projectsMetaPath = path.join(newpath, packageInfo.name, 'users', localUser?.username, 'projects', selectedProject);
   actions?.settotalFiles((Object.keys(ingredientsObj).length) + 1);
 
@@ -56,7 +56,7 @@ export async function handleEditorSync(selectedProject, projectData, syncObj, ac
           await createFiletoServer(Metadata1, key, `${localUser?.username}/${projectCreated}.1`, createResult.name, authObj);
         }
       }
-      // update the Ag-settings - sync
+      // update the Scribe-settings - sync
       await getOrPutLastSyncInAgSettings('put', projectData, authObj?.user?.username);
       actions?.setUploadDone(true);
       logger.debug('EditorSyncUtils.js', 'Auto Sync finished create project and upload');
@@ -75,7 +75,7 @@ export async function handleEditorSync(selectedProject, projectData, syncObj, ac
           await updateFiletoServer(metadata1, key, `${localUser?.username}/${projectCreated}.1`, repoName, authObj);
         }
       }
-      // update the Ag-settings - sync update
+      // update the Scribe-settings - sync update
       await getOrPutLastSyncInAgSettings('put', projectData, authObj?.user?.username);
       actions?.setUploadDone(true);
       logger.debug('SyncToGitea.js', 'sync successfull - update sync');

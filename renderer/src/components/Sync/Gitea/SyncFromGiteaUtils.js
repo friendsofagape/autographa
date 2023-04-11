@@ -74,8 +74,8 @@ async function checkIngredientsMd5Values(sbDataObject, projectDir, projectName, 
 }
 
 async function createOrUpdateAgSettings(sbDataObject, currentUser, projectName, id, dirName, projectDir, fs) {
-  logger.debug('SyncFromGiteaUtils.js', 'Inside create/update, write Ag settings');
-  // ag settings file
+  logger.debug('SyncFromGiteaUtils.js', 'Inside create/update, write scribe settings');
+  // scribe settings file
   sbDataObject.meta.generator.userName = currentUser;
   if (!fs.existsSync(path.join(projectDir, `${projectName}_${id}`, dirName, environment.PROJECT_SETTING_FILE))) {
     logger.debug(`SyncFromGiteaUtils', 'Creating ${environment.PROJECT_SETTING_FILE} file`);
@@ -109,8 +109,8 @@ async function createOrUpdateAgSettings(sbDataObject, currentUser, projectName, 
     };
   } else {
     logger.debug('SyncFromGiteaUtils', `Updating ${environment.PROJECT_SETTING_FILE} file`);
-    const ag = fs.readFileSync(path.join(projectDir, `${projectName}_${id}`, dirName, environment.PROJECT_SETTING_FILE));
-    let settings = JSON.parse(ag);
+    const scribe = fs.readFileSync(path.join(projectDir, `${projectName}_${id}`, dirName, environment.PROJECT_SETTING_FILE));
+    let settings = JSON.parse(scribe);
     if (settings.version !== environment.AG_SETTING_VERSION) {
       // eslint-disable-next-line prefer-const
       let setting = settings;
@@ -146,20 +146,20 @@ export const importServerProject = async (updateBurrito, repo, sbData, auth, use
     const projectDir = path.join(newpath, packageInfo.name, 'users', currentUser, 'projects');
     fs.mkdirSync(projectDir, { recursive: true });
     // updating the created timestamp if not exist
-    if (!sbData?.meta?.dateCreated && sbDataObject?.identification?.primary?.ag) {
-      const agId = Object.keys(sbDataObject?.identification?.primary?.ag);
-      sbDataObject.meta.dateCreated = sbDataObject?.identification?.primary?.ag[agId[0]].timestamp;
+    if (!sbData?.meta?.dateCreated && sbDataObject?.identification?.primary?.scribe) {
+      const scribeId = Object.keys(sbDataObject?.identification?.primary?.scribe);
+      sbDataObject.meta.dateCreated = sbDataObject?.identification?.primary?.scribe[scribeId[0]].timestamp;
     }
     let projectName = sbDataObject.identification?.name?.en;
     let id;
-    logger.debug('SyncFromGiteaUtils.js', 'Checking for AG primary key');
+    logger.debug('SyncFromGiteaUtils.js', 'Checking for scribe primary key');
     // getting unique project ID
-    if (sbDataObject?.identification?.primary?.ag !== undefined) {
-      Object.entries(sbDataObject.identification?.primary?.ag).forEach(([key]) => {
+    if (sbDataObject?.identification?.primary?.scribe !== undefined) {
+      Object.entries(sbDataObject.identification?.primary?.scribe).forEach(([key]) => {
       logger.debug('SyncFromGiteaUtils.js', 'Fetching the key from burrito.');
       id = key;
       });
-    } else if (sbDataObject?.identification?.upstream?.ag !== undefined) {
+    } else if (sbDataObject?.identification?.upstream?.scribe !== undefined) {
       Object.entries(sbDataObject.identification.primary).forEach(([key]) => {
       logger.debug('SyncFromGiteaUtils.js', 'Swapping data between primary and upstream');
       const identity = sbDataObject.identification.primary[key];
@@ -168,14 +168,14 @@ export const importServerProject = async (updateBurrito, repo, sbData, auth, use
       delete sbDataObject.idAuthorities;
       });
       sbDataObject.idAuthorities = {
-      ag: {
+      scribe: {
           id: 'http://www.autographa.org',
           name: {
-          en: 'Autographa application',
+          en: 'Scribe application',
           },
       },
       };
-      const list = sbDataObject.identification?.upstream?.ag;
+      const list = sbDataObject.identification?.upstream?.scribe;
       logger.debug('SyncFromGiteaUtils.js', 'Fetching the latest key from list.');
       // eslint-disable-next-line max-len
       const latest = list.reduce((a, b) => (new Date(a.timestamp) > new Date(b.timestamp) ? a : b));
@@ -184,22 +184,22 @@ export const importServerProject = async (updateBurrito, repo, sbData, auth, use
       id = key;
       });
       if (list.length > 1) {
-        (sbDataObject.identification.upstream.ag).forEach((e, i) => {
+        (sbDataObject.identification.upstream.scribe).forEach((e, i) => {
           if (e === latest) {
-            (sbDataObject.identification?.upstream?.ag)?.splice(i, 1);
+            (sbDataObject.identification?.upstream?.scribe)?.splice(i, 1);
           }
         });
       } else {
-        delete sbDataObject.identification?.upstream?.ag;
+        delete sbDataObject.identification?.upstream?.scribe;
       }
-      sbDataObject.identification.primary.ag = latest;
+      sbDataObject.identification.primary.scribe = latest;
     }
 
     // generating unique key if not exist or get
     if (!id && sbDataObject?.identification?.primary) {
       Object.entries(sbDataObject?.identification?.primary).forEach(([key]) => {
       logger.debug('SyncFromGiteaUtils.js', 'Swapping data between primary and upstream');
-      if (key !== 'ag') {
+      if (key !== 'scribe') {
         const identity = sbDataObject.identification.primary[key];
         sbDataObject.identification.upstream[key] = [identity];
         delete sbDataObject.identification.primary[key];
@@ -208,7 +208,7 @@ export const importServerProject = async (updateBurrito, repo, sbData, auth, use
       logger.debug('SyncFromGiteaUtils.js', 'Creating a new key.');
       const key = currentUser + sbDataObject.identification.name.en + moment().format();
       id = uuidv5(key, environment.uuidToken);
-      sbDataObject.identification.primary.ag = {
+      sbDataObject.identification.primary.scribe = {
         [id]: {
           revision: '0',
           timestamp: moment().format(),
@@ -233,7 +233,7 @@ export const importServerProject = async (updateBurrito, repo, sbData, auth, use
       await readAndCreateIngredients(action, sbDataObject, ignoreFilesPaths, projectDir, projectName, id, auth, repo, userBranch, fs);
       // check and update Md5 of created files
       await checkIngredientsMd5Values(sbDataObject, projectDir, projectName, id, fs);
-      // Ag-Settings File create / Update
+      // scribe-Settings File create / Update
       await createOrUpdateAgSettings(sbDataObject, currentUser, projectName, id, dirName, projectDir, fs);
 
       // update copyright
@@ -267,7 +267,7 @@ export const importServerProject = async (updateBurrito, repo, sbData, auth, use
         ...prev,
         completedFiles: prev.completedFiles + 1,
       }));
-      logger.debug('SyncFromGiteaUtils.js', 'Finished Importing project from Gitea to Ag');
+      logger.debug('SyncFromGiteaUtils.js', 'Finished Importing project from Gitea to Scribe');
     }
   } catch (err) {
     logger.debug('SyncFromGiteaUtils.js', `error called in import server project : ${err}`);

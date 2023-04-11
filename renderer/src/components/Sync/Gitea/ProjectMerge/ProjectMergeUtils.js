@@ -12,7 +12,7 @@ export const uploadProjectToBranchRepoExist = async (selectedGiteaProject, ignor
     const newpath = localStorage.getItem('userPath');
     const fs = window.require('fs');
     const path = require('path');
-    const projectId = Object.keys(metaDataSB.identification.primary.ag)[0];
+    const projectId = Object.keys(metaDataSB.identification.primary.scribe)[0];
     const projectName = metaDataSB.identification.name.en;
     // const projectCreated = metaDataSB.meta.dateCreated.split('T')[0];
     const projectsMetaPath = path.join(newpath, packageInfo.name, 'users', localUsername, 'projects', `${projectName}_${projectId}`);
@@ -68,7 +68,7 @@ export const deleteCreatedMergeBranch = async (selectedGiteaProject, actions, GI
 export const backupLocalProject = async (selectedGiteaProject, actions) => {
   try {
     actions.setStepCount((prevStepCount) => prevStepCount + 1);
-    const projectId = Object.keys(selectedGiteaProject?.metaDataSB?.identification.primary.ag)[0];
+    const projectId = Object.keys(selectedGiteaProject?.metaDataSB?.identification.primary.scribe)[0];
     const projectName = selectedGiteaProject?.metaDataSB?.identification.name.en;
     logger.debug('ProjectMErgeUtils.js', 'Stated Backing up the project', projectName);
     const newpath = localStorage.getItem('userPath');
@@ -107,7 +107,7 @@ export const undoMergeOrDeleteOldBackup = async (selectedGiteaProject, backupNam
   if (undo) {
     // replace backup with merged in project
     const fse = window.require('fs-extra');
-    const projectId = Object.keys(selectedGiteaProject?.metaDataSB?.identification.primary.ag)[0];
+    const projectId = Object.keys(selectedGiteaProject?.metaDataSB?.identification.primary.scribe)[0];
     const projectName = selectedGiteaProject?.metaDataSB?.identification.name.en;
     const projectsMetaPath = path.join(newpath, packageInfo.name, 'users', selectedGiteaProject?.localUsername, 'projects');
     fs.mkdirSync(path.join(projectsMetaPath, `${projectName}_${projectId}`), { recursive: true });

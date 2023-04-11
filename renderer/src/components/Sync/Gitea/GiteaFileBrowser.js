@@ -90,20 +90,6 @@ const GiteaFileBrowser = ({ changeRepo }) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [repo?.tree_url]);
 
-  // Auto refresh for gitea side after upload from Ag move to context
-  // React.useEffect(() => {
-  //   if (updateGitea && !refreshGiteaListUI.triger) {
-  //     setRefreshGiteaListUI({ ...refreshGiteaListUI, triger: true });
-  //   }
-  //   if (!updateGitea && refreshGiteaListUI.triger) {
-  //     setRefreshGiteaListUI({ ...refreshGiteaListUI, timeOut: true });
-  //     setTimeout(() => {
-  //       setRefreshGiteaListUI({ ...refreshGiteaListUI, triger: false, timeOut: false });
-  //     }, 500);
-  //   }
-  // // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [updateGitea]);
-  // console.log({ selectedGiteaProject });
   return (
     (!auth && authComponent)
     || (!repo && (

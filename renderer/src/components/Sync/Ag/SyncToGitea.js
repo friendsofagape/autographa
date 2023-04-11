@@ -9,11 +9,11 @@ import packageInfo from '../../../../../package.json';
 export async function uploadToGitea(projectDataAg, auth, setSyncProgress, notifyStatus, addNotification) {
     logger.debug('ToGiteaUtils.js', 'in uploadTOGitea');
     const projectData = projectDataAg.projectMeta;
-    const projectId = Object.keys(projectData.identification.primary.ag)[0];
+    const projectId = Object.keys(projectData.identification.primary[packageInfo.name])[0];
     const projectName = projectData.identification.name.en;
     const ingredientsObj = projectData.ingredients;
     const projectCreated = projectData.meta.dateCreated.split('T')[0];
-    const repoName = `ag-${projectData.languages[0].tag}-${projectData.type.flavorType.flavor.name}-${projectName.replace(/[\s+ -]/g, '_')}`;
+    const repoName = `${packageInfo.name}-${projectData.languages[0].tag}-${projectData.type.flavorType.flavor.name}-${projectName.replace(/[\s+ -]/g, '_')}`;
 
     localForage.getItem('userProfile').then(async (user) => {
       const newpath = localStorage.getItem('userPath');
@@ -54,7 +54,7 @@ export async function uploadToGitea(projectDataAg, auth, setSyncProgress, notify
               logger.debug('SyncToGitea.js', `Read and uploaded ${key} to repo`);
             }
           }
-          // update the Ag-settings - sync
+          // update the scribe-settings - sync
           await getOrPutLastSyncInAgSettings('put', projectData, auth?.user?.username);
           notifyStatus('success', 'Sync completed successfully !!');
           await addNotification('Sync', 'Project Sync Successfull', 'success');
@@ -81,7 +81,7 @@ export async function uploadToGitea(projectDataAg, auth, setSyncProgress, notify
               logger.debug('SyncToGitea.js', `Read and updated ${key} to repo`);
             }
           }
-          // update the Ag-settings - sync update
+          // update the scribe-settings - sync update
           await getOrPutLastSyncInAgSettings('put', projectData, auth?.user?.username);
           logger.debug('SyncToGitea.js', 'Updated last Sync data');
           notifyStatus('success', 'Sync completed successfully !!');

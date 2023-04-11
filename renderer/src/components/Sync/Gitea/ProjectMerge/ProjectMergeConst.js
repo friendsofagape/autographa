@@ -16,7 +16,7 @@ export const mergeProgressSteps = [
       description: '',
     },
     {
-      label: 'Updating Ag Project',
+      label: 'Updating Scribe Project',
       description: '',
     },
     {

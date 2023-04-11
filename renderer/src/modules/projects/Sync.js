@@ -1,126 +1,173 @@
-import { useState, Fragment } from 'react';
+import { useState, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Dialog, Transition } from '@headlessui/react';
 
 import ProjectsLayout from '@/layouts/projects/Layout';
+// import Gitea from '@/components/Sync/Gitea/Gitea';
+import AuthenticationContextProvider from '@/components/Login/AuthenticationContextProvider';
+import ProjectContextProvider from '@/components/context/ProjectContext';
+import ReferenceContextProvider from '@/components/context/ReferenceContext';
+import {
+  CloudArrowDownIcon,
+  CloudArrowUpIcon,
+} from '@heroicons/react/24/outline';
+import ProjectFileBrowser from '@/components/Sync/Ag/ProjectFileBrowser';
 import Gitea from '@/components/Sync/Gitea/Gitea';
-import ProjectFileBrowser from '@/components/Sync/ProjectFileBrowser';
+import { SyncContext } from '@/components/Sync/SyncContextProvider';
+import { SnackBar } from '@/components/SnackBar';
+import { uploadToGitea } from '@/components/Sync/Ag/SyncToGitea';
+import { downloadFromGitea } from '@/components/Sync/Gitea/SyncFromGitea';
+import useAddNotification from '@/components/hooks/useAddNotification';
 import Door43Logo from '@/icons/door43.svg';
+import * as logger from '../../logger';
+import packageInfo from '../../../../package.json';
 
-export default function Sync() {
-  const [isOpen, setIsOpen] = useState(false);
+ export default function Sync() {
   const { t } = useTranslation();
-  return (
-    <ProjectsLayout
-      title="Sync"
-      isTwoCol
-      colOne={(
-        <form action="#" className="flex flex-row mx-5">
-          <div className="flex items-center h-5">
-            {/* <input
-              id="comments"
-              name="comments"
-              type="checkbox"
-              onClick={() => setIsOpen(true)}
-              className="focus:ring-indigo-500 h-4 w-4 text-primary border-gray-300 rounded"
-            /> */}
-          </div>
-          <div className="ml-3 text-sm">
-            {/* eslint jsx-a11y/label-has-associated-control: ["error", { assert: "either" } ] */}
-            {/* <label htmlFor="comments" className="font-medium text-gray-700">
-              {t('label-show-hidden-file')}
-            </label> */}
-          </div>
-        </form>
+  const [auth, setAuth] = useState(undefined);
+  const [repo, setRepo] = useState(undefined);
 
-      )}
-      colTwo={(
-        <ul className="list-none p-0 flex">
-          <li className="mr-2">
-            <a className="bg-secondary text-white inline-block rounded-t py-2 px-6 text-sm uppercase" href="#a">
-              {/* <img className="inline mr-2 w-4" src="/brands/door43.png" alt="" /> */}
-              <Door43Logo className="inline mr-2 w-4" fill="#9bc300" />
-              {/* <img className="inline mr-2 w-4" src="/brands/door43.png" alt="Door 43 Logo" /> */}
-              {t('label-door43')}
-            </a>
-          </li>
-          {/* <li className="mr-2">
-            <a className="bg-gray-200 inline-block rounded-t py-2 px-6 hover:text-white hover:bg-black text-sm uppercase" href="#b">
-              <img className="inline mr-2 w-5" src="/brands/paratext.png" width="18" alt="Paratext Logo" />
-              {t('label-paratext')}
-            </a>
-          </li>
-          <li className="mr-2">
-            <a className="bg-gray-200 inline-block rounded-t py-2 px-6 hover:text-white hover:bg-black text-sm uppercase" href="#c">
-              <img className="inline mr-2 w-5" src="/brands/gitea.png" width="18" alt="Gitea Logo" />
-              {t('label-Gitea')}
-            </a>
-          </li> */}
-        </ul>
-      )}
-    >
+  const [snackBar, setOpenSnackBar] = useState(false);
+  const [snackText, setSnackText] = useState('');
+  const [notify, setNotify] = useState();
 
-      <Transition
-        show={isOpen}
-        as={Fragment}
-        enter="transition duration-100 ease-out"
-        enterFrom="transform scale-95 opacity-0"
-        enterTo="transform scale-100 opacity-100"
-        leave="transition duration-75 ease-out"
-        leaveFrom="transform scale-100 opacity-100"
-        leaveTo="transform scale-95 opacity-0"
-      >
+  const {
+    states: {
+    selectedAgProject, syncProgress,
+  },
+    action: {
+      setSyncProgress, setSelectedGiteaProject,
+    },
+  } = useContext(SyncContext);
 
-        <Dialog
-          as="div"
-          className="fixed inset-0 z-10 overflow-y-auto"
-          static
-          open={isOpen}
-          onClose={() => setIsOpen(false)}
-        >
-          <Dialog.Overlay className="fixed inset-0 bg-black opacity-30" />
+  const { addNotification } = useAddNotification();
 
-          <div className="flex items-center justify-center h-screen">
+  function notifyStatus(status, message) {
+    setNotify(status);
+    setSnackText(message);
+    setOpenSnackBar(true);
+  }
 
-            <div className="bg-white w-5/12 p-10 m-auto z-50 shadow overflow-hidden sm:rounded-lg">
+  const handleCloudSync = async (projectData, authData, setSyncProgress) => {
+    if (!auth) {
+      notifyStatus('failure', 'Authentication Failed! , login and try again');
+    } else if (!projectData?.projectName) {
+      notifyStatus('warning', 'select a project to sync');
+    } else {
+      await uploadToGitea(projectData, authData, setSyncProgress, notifyStatus, addNotification);
+    }
+  };
 
-              <Dialog.Title className="text-lg">{t('label-deactivate-account')}</Dialog.Title>
-              <Dialog.Description className="text-sm py-4">
-                {t('dynamic-msg-deactivate-account')}
-              </Dialog.Description>
+  const handleOfflineSync = async (currentRepo, currentAuth) => {
+    if (currentAuth && currentRepo) {
+      logger.debug('Sync.js', 'in offlineSync Started');
+      await downloadFromGitea(currentRepo, currentAuth, setSyncProgress, notifyStatus, setSelectedGiteaProject, addNotification);
+      logger.debug('Sync.js', 'in offlineSync Finished');
+    } else {
+      logger.debug('Sync.js', 'in offlineSync Sync Failed , Something Wrong, may be internet issue');
+      notifyStatus('failure', 'Something went wrong! , login and try again');
+    }
+  };
 
-              <button
-                type="button"
-                className="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-error hover:bg-error-700"
-                onClick={() => setIsOpen(false)}
-              >
-                {t('btn-deactivate')}
-              </button>
-              <button
-                type="button"
-                className="inline-flex items-center justify-center px-4 py-2 mx-2 border border-transparent text-sm font-medium rounded-md text-white bg-primary hover:bg-primary-300"
-                onClick={() => setIsOpen(false)}
-              >
-                {t('btn-cancel')}
-              </button>
+   return (
+     <AuthenticationContextProvider>
+       <ProjectContextProvider>
+         <ReferenceContextProvider>
+           <ProjectsLayout>
+             <div className="grid grid-cols-2 gap-2 bg-gray-50 h-full">
+               {/* local projecr side */}
+               <div className="bg-white border-x border-gray-200 h-full">
+                 <div className="flex justify-between items-center p-3 px-5 uppercase tracking-wider shadow-sm border-b border-gray-200">
+                   {/* <span className="font-semibold">Local Projects</span> */}
+                   <span className="font-semibold">Sync</span>
+                   <button
+                     type="button"
+                     className="text-white bg-primary hover:bg-primary focus:ring-4 focus:outline-none focus:ring-primary font-medium text-xs px-3 py-1.5 text-center inline-flex items-center rounded-full gap-2 uppercase tracking-wider"
+                     onClick={() => handleCloudSync(selectedAgProject, auth, setSyncProgress)}
+                     disabled={syncProgress.syncStarted}
+                   >
+                     <CloudArrowUpIcon className="h-5 w-5" />
+                     Cloud Sync
+                   </button>
+                 </div>
 
-            </div>
+                 <div className="flex justify-between items-center h-14 px-5 tracking-wide shadow-sm border-b border-gray-200">
+                   <div className="font-bold ">
+                     {packageInfo.name}
+                     {' '}
+                     Project
+                   </div>
+                   <div className="text-xs font-semibold uppercase">
+                     Last Sync
+                   </div>
+                 </div>
 
-          </div>
-        </Dialog>
+                 <div>
+                   <ProjectFileBrowser />
+                 </div>
+               </div>
 
-      </Transition>
+               {/* cloud project side */}
+               <div className="bg-white border-x border-gray-200">
+                 <div className="flex justify-between items-center px-5 uppercase tracking-wider shadow-sm border-b border-gray-200">
+                   <span className="font-semibold">Cloud PROJECTS</span>
 
-      <div className="grid grid-cols-2 gap-2 py-6 sm:px-6 lg:px-6">
-        <div className="shadow rounded h-full">
-          <ProjectFileBrowser />
-        </div>
-        <div className="shadow rounded">
-          <Gitea />
-        </div>
-      </div>
+                   <ul class="flex flex-wrap text-xs font-medium text-center text-gray-500">
+                     <li class="mr-2">
+                       <a
+                         href="#door43"
+                         aria-current="page"
+                         class="inline-block p-3 px-5 mt-4 text-white bg-black rounded-t-lg active border-primary border-b-4"
+                       >
+                         <Door43Logo className="inline mr-2 w-4" fill="#9bc300" />
+                         {t('label-door43')}
+                       </a>
+                     </li>
+                     {/* will use other syncs in future */}
+                     {/* <li class="mr-2">
+                       <a
+                         href="#paratext"
+                         class="inline-block p-3 px-5 mt-4 bg-gray-200 rounded-t-lg hover:text-white hover:bg-black"
+                       >
+                         ParaText
+                       </a>
+                     </li>
+                     <li class="mr-2">
+                       <a
+                         href="#gitea"
+                         class="inline-block p-3 px-5 mt-4 bg-gray-200 rounded-t-lg hover:text-white hover:bg-black"
+                       >
+                         Gitea
+                       </a>
+                     </li> */}
+                   </ul>
 
-    </ProjectsLayout>
+                   {auth && repo && (
+                   <button
+                     type="button"
+                     className="text-white bg-primary hover:bg-primary focus:ring-4 focus:outline-none focus:ring-primary font-medium text-xs px-3 py-1.5 text-center inline-flex items-center rounded-full gap-2 uppercase tracking-wider"
+                     onClick={() => handleOfflineSync(repo, auth)}
+                     disabled={syncProgress.syncStarted}
+                   >
+                     <CloudArrowDownIcon className="h-5 w-5" />
+                     Offline Sync
+                   </button>
+                   )}
 
-  );
-}
+                 </div>
+                 <Gitea setAuth={setAuth} setRepo={setRepo} />
+               </div>
+             </div>
+
+             <SnackBar
+               openSnackBar={snackBar}
+               snackText={snackText}
+               setOpenSnackBar={setOpenSnackBar}
+               setSnackText={setSnackText}
+               error={notify}
+             />
+           </ProjectsLayout>
+         </ReferenceContextProvider>
+       </ProjectContextProvider>
+     </AuthenticationContextProvider>
+   );
+ }
