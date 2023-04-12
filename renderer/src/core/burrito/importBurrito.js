@@ -348,8 +348,8 @@ const importBurrito = async (filePath, currentUser, updateBurritoVersion) => {
         };
       } else {
         logger.debug('importBurrito.js', `Updating ${environment.PROJECT_SETTING_FILE} file`);
-        const ag = fs.readFileSync(path.join(audioDir, dirName, environment.PROJECT_SETTING_FILE));
-        let settings = JSON.parse(ag);
+        const scribe = fs.readFileSync(path.join(audioDir, dirName, environment.PROJECT_SETTING_FILE));
+        let settings = JSON.parse(scribe);
         if (settings.version !== environment.AG_SETTING_VERSION) {
           // eslint-disable-next-line prefer-const
           let setting = settings;

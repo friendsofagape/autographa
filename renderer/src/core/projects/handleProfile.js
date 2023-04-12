@@ -1,4 +1,5 @@
 import * as localForage from 'localforage';
+import { environment } from '../../../environment';
 import { loadUsers } from '../Login/handleJson';
 import * as logger from '../../logger';
 import packageInfo from '../../../../package.json';
@@ -10,7 +11,7 @@ export const getorPutAppLangage = async (method, currentUser, appLang) => {
   const path = require('path');
   let file;
   if (currentUser) {
-    file = path.join(newpath, 'autographa', 'users', currentUser, 'ag-user-settings.json');
+    file = path.join(newpath, packageInfo.name, 'users', currentUser, environment.USER_SETTING_FILE);
   } else {
     throw new Error('Not getting current logged user');
   }

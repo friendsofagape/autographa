@@ -5295,6 +5295,11 @@
     "hoopy" "^0.1.4"
     "tryer" "^1.0.1"
 
+"bible-reference-range@^1.1.0":
+  "integrity" "sha512-EVPhDLSY/hmeW6reO9XLst1SKAAf6Opyfy6l2MZSna9kE6DqEiFW/eWOrkPq5g40Hs+Xe8odPGJuIpdysokQpg=="
+  "resolved" "https://registry.npmjs.org/bible-reference-range/-/bible-reference-range-1.1.0.tgz"
+  "version" "1.1.0"
+
 "bible-reference-rcl@^1.1.0":
   "integrity" "sha512-kUrJrTaPmzU7ih8pOjXdOKjBZngVE+NiDnS9SxtSRnpJbKGZqtsmstk3Ld4wIQZvmWfedlbGVx5/R7lG4DeVgw=="
   "resolved" "https://registry.npmjs.org/bible-reference-rcl/-/bible-reference-rcl-1.1.0.tgz"
@@ -18633,13 +18638,14 @@
   "version" "0.0.0"
 
 "translation-helps-rcl@^3.3.7":
-  "integrity" "sha512-sxdPpJZOFxfU2pAy9EAkrN7iEvaFX0Oh3hCJoOXtpW/j/5PWk1iNyCJwvqB4C+oKuQekmxCrNOs4+GRohRNb4w=="
-  "resolved" "https://registry.npmjs.org/translation-helps-rcl/-/translation-helps-rcl-3.3.8.tgz"
-  "version" "3.3.8"
+  "integrity" "sha512-WulLZVAGexhSHo/j97vx3tkmKrD5usNaCHhlEW1lMPXugxGcYCw83dh3Mih2IMJkIZ2vPcx6SUwHLqWsjxArbA=="
+  "resolved" "https://registry.npmjs.org/translation-helps-rcl/-/translation-helps-rcl-3.3.9.tgz"
+  "version" "3.3.9"
   dependencies:
     "@gwdevs/extensible-rcl" "^1.0.1"
     "@mui/styled-engine" "npm:@mui/styled-engine-sc@latest"
     "axios" "^0.27.2"
+    "bible-reference-range" "^1.1.0"
     "deep-equal" "^2.0.5"
     "react-draggable" "^4.4.3"
     "styled-components" "^5.2.1"
@@ -19476,9 +19482,9 @@
     "graceful-fs" "^4.1.2"
 
 "wavesurfer.js@^6.6.2":
-  "integrity" "sha512-aPAU4OADQsyH8mIw2nXmoni8KHo8s1f1bd5ZUrxhN4P/VMWd+oPDqEwA01XPSEfasAJW6mZ/EHQ2bZ9nOWRrNw=="
-  "resolved" "https://registry.npmjs.org/wavesurfer.js/-/wavesurfer.js-6.6.2.tgz"
-  "version" "6.6.2"
+  "integrity" "sha512-XqUOXe8+SOTe8uKCHaqW0vJ5etCCQvq/NgaPycn9HAX/nUi+2zoWD+w9i7H5vBT9UCDNawOia+vS5Ct3kZGQzA=="
+  "resolved" "https://registry.npmjs.org/wavesurfer.js/-/wavesurfer.js-6.6.3.tgz"
+  "version" "6.6.3"
 
 "wbuf@^1.1.0", "wbuf@^1.7.3":
   "integrity" "sha512-O84QOnr0icsbFGLS0O3bI5FswxzRr8/gHwWkDlQFskhSPryQXvrTMxjxGP4+iWYoauLoBvfDpkrOauZ+0iZpDA=="
