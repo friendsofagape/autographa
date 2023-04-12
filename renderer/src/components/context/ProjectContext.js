@@ -184,7 +184,14 @@ const ProjectContextProvider = ({ children }) => {
             const json = JSON.parse(data);
             // eslint-disable-next-line no-nested-ternary
             const currentSetting = (currentSettings === 'copyright' ? copyright
-            : (currentSettings === 'languages' ? language : canonSpecification));
+            : (currentSettings === 'languages' ? {
+              title: language.ang,
+              id: language.id,
+              scriptDirection: language.ld,
+              langCode: language.lc,
+              custom: true,
+            }
+           : canonSpecification));
             if (currentSettings === 'canonSpecification') {
               (json.history?.textTranslation[currentSettings])?.push(currentSetting);
             } else if (json.history[currentSettings]
@@ -216,18 +223,15 @@ const ProjectContextProvider = ({ children }) => {
     const createProjectCommonUtils = async () => {
       logger.debug('ProjectContext.js', 'In createProject common utils');
       // Add / update language into current list.
-      if (uniqueId(languages, language.pk)) {
+      console.log(languages);
         languages.forEach((lang) => {
-          if (lang.pk === language.pk) {
+          if (lang.lc.toLowerCase() === language.lc.toLowerCase()) {
             if (lang.ang !== language.ang
               || lang.ld !== language.ld || lang.lc !== language.lc) {
               updateJson('languages');
             }
           }
         });
-      } else {
-        updateJson('languages');
-      }
       // Update Custom licence into current list.
       if (copyright.title === 'Custom') {
         updateJson('copyright');
@@ -289,9 +293,8 @@ const ProjectContextProvider = ({ children }) => {
     };
 
     React.useEffect(() => {
-      (async () => {
         if (isElectron()) {
-          await loadSettings();
+          loadSettings();
           localforage.getItem('userProfile').then((value) => {
             setUsername(value?.username);
           });
@@ -299,8 +302,6 @@ const ProjectContextProvider = ({ children }) => {
               setSelectedProject(projectName);
             });
         }
-      })();
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 

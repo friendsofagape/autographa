@@ -366,7 +366,6 @@ export default function NewProject({ call, project, closeEdit }) {
                         setSelectedList={setLanguage}
                         filterParams="ang"
                         multiSelect={false}
-                        call="edit"
                       />
                     )}
 

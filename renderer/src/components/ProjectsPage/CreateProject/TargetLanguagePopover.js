@@ -101,9 +101,9 @@ export default function TargetLanguagePopover({ projectType, call }) {
       } else {
         setNotify('warning');
         languages.filter((item) => {
-          if (item.ang.toLowerCase() === lang.toLowerCase()) {
+          if (item?.ang?.toLowerCase() === lang?.toLowerCase()) {
             setSnackText(`The Language (${lang}) is trying to add is already there and the language code is (${item.lc})`);
-          } else if (item?.lc.toLowerCase() === langCode?.toLowerCase()) {
+          } else if (item?.lc?.toLowerCase() === langCode?.toLowerCase()) {
             setSnackText(`The Language Code (${langCode}) is trying to add is already there and the language name is (${item.ang})`);
           }
         });
