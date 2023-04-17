@@ -1,9 +1,10 @@
 import React, {
  Fragment, useEffect, useState,
 } from 'react';
-import { XMarkIcon } from '@heroicons/react/24/outline';
+
 import { Popover, Transition } from '@headlessui/react';
 import PropTypes from 'prop-types';
+import XMarkIcon from '@/icons/Common/XMark.svg';
 
 const colors = { success: '#82E0AA', failure: '#F5B7B1', warning: '#F8C471' };
 const SnackBar = ({

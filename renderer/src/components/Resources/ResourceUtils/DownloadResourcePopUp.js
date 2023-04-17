@@ -12,9 +12,11 @@ import { SnackBar } from '@/components/SnackBar';
 import { Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import LoadingScreen from '@/components/Loading/LoadingScreen';
-import { XMarkIcon, ArrowDownTrayIcon } from '@heroicons/react/24/solid';
 import { AutographaContext } from '@/components/context/AutographaContext';
-import { TrashIcon } from '@heroicons/react/24/outline';
+import TrashIcon from '@/icons/Common/Trash.svg';
+import XMarkIcon from '@/icons/Common/XMark.svg';
+import ArrowDownTrayIcon from '@/icons/Download/ArrowDownTray.svg';
+
 import CustomMultiComboBox from './CustomMultiComboBox';
 import langJson from '../../../lib/lang/langNames.json';
 import { handleDownloadResources } from './createDownloadedResourceSB';

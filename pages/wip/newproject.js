@@ -4,13 +4,11 @@ import ProjectsLayout from '@/layouts/projects/Layout';
 import AuthenticationContextProvider from '@/components/Login/AuthenticationContextProvider';
 import ProjectContextProvider from '@/components/context/ProjectContext';
 import ReferenceContextProvider from '@/components/context/ReferenceContext';
-
-import {
-  CloudArrowDownIcon,
-  CloudArrowUpIcon,
-  MagnifyingGlassIcon,
-} from '@heroicons/react/24/outline';
 import { classNames } from '@/util/classNames';
+import CloudArrowDownIcon from '@/icons/Download/CloudArrowDown.svg';
+import CloudArrowUpIcon from '@/icons/Download/CloudArrowUp.svg';
+import MagnifyingGlassIcon from '@/icons/Download/MagnifyingGlass.svg';
+
 import FolderIcon from './folder.svg';
 
 function GridRow({

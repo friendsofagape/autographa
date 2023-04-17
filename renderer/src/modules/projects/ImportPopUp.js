@@ -4,9 +4,10 @@ import React, {
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { Dialog, Transition } from '@headlessui/react';
-import { DocumentTextIcon, FolderOpenIcon } from '@heroicons/react/24/outline';
 import { SnackBar } from '@/components/SnackBar';
 import { ProjectContext } from '@/components/context/ProjectContext';
+import DocumentTextIcon from '@/icons/Book/DocumentText.svg';
+import FolderOpenIcon from '@/icons/Gallery/FolderOpen.svg';
 import styles from './ImportPopUp.module.css';
 import * as logger from '../../logger';
 import CloseIcon from '@/illustrations/close-button-black.svg';

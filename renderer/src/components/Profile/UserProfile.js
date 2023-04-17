@@ -4,12 +4,10 @@ import { useTranslation } from 'react-i18next';
 import {
   Menu, Transition,
 } from '@headlessui/react';
-import {
-  UserIcon,
-} from '@heroicons/react/24/outline';
 import { classNames } from '@/util/classNames';
 import { AuthenticationContext } from '@/components/Login/AuthenticationContextProvider';
 import { useGetUserName } from '@/components/hooks/useGetUserName';
+import UserIcon from '@/icons/Gallery/User.svg';
 
 const UserProfile = (_username) => {
   const { action: { logout } } = React.useContext(AuthenticationContext);

@@ -1,7 +1,5 @@
-import {
-  ChevronDownIcon,
-  ChevronUpIcon,
-} from '@heroicons/react/24/solid';
+import ChevronDownIcon from '@/icons/Common/ChevronDown.svg';
+import ChevronUpIcon from '@/icons/Common/ChevronUp.svg';
 
 export default function SearchSideBar() {
   return (

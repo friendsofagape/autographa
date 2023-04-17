@@ -1,11 +1,9 @@
-import {
-    BellIcon,
-  } from '@heroicons/react/24/outline';
 import React, { useContext, useEffect, useState } from 'react';
 import localforage from 'localforage';
 import moment from 'moment';
 import { t } from 'i18next';
 import Notifications from '@/modules/notifications/Notifications';
+import BellIcon from '@/icons/Audio/Bell.svg';
 import menuStyles from '../../layouts/editor/MenuBar.module.css';
 import { AutographaContext } from '../context/AutographaContext';
 

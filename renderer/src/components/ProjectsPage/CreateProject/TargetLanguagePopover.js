@@ -1,9 +1,10 @@
 import React, { Fragment, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
-import { PlusIcon, PencilSquareIcon } from '@heroicons/react/24/outline';
 import { useTranslation } from 'react-i18next';
 import { SnackBar } from '@/components/SnackBar';
 import PropTypes from 'prop-types';
+import PencilSquareIcon from '@/icons/Common/PencilSquare.svg';
+import PlusIcon from '@/icons/Common/Plus.svg';
 import * as logger from '../../../logger';
 import { ProjectContext } from '../../context/ProjectContext';
 

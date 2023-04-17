@@ -6,10 +6,6 @@ import ProjectsLayout from '@/layouts/projects/Layout';
 import AuthenticationContextProvider from '@/components/Login/AuthenticationContextProvider';
 import ProjectContextProvider from '@/components/context/ProjectContext';
 import ReferenceContextProvider from '@/components/context/ReferenceContext';
-import {
-  CloudArrowDownIcon,
-  CloudArrowUpIcon,
-} from '@heroicons/react/24/outline';
 import ProjectFileBrowser from '@/components/Sync/Ag/ProjectFileBrowser';
 import Gitea from '@/components/Sync/Gitea/Gitea';
 import { SyncContext } from '@/components/Sync/SyncContextProvider';
@@ -17,6 +13,8 @@ import { SnackBar } from '@/components/SnackBar';
 import { uploadToGitea } from '@/components/Sync/Ag/SyncToGitea';
 import { downloadFromGitea } from '@/components/Sync/Gitea/SyncFromGitea';
 import useAddNotification from '@/components/hooks/useAddNotification';
+import CloudArrowUpIcon from '@/icons/Download/CloudArrowUp.svg';
+import CloudArrowDownIcon from '@/icons/Download/CloudArrowDown.svg';
 import Door43Logo from '@/icons/door43.svg';
 import * as logger from '../../logger';
 import packageInfo from '../../../../package.json';

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 
-import { EyeIcon, EyeOffIcon } from '@heroicons/react/24/outline';
 import AuthenticationContextProvider from '@/components/Login/AuthenticationContextProvider';
 import ProjectContextProvider from '@/components/context/ProjectContext';
 import ReferenceContextProvider from '@/components/context/ReferenceContext';
@@ -10,6 +9,8 @@ import AutographaContextProvider from '@/components/context/AutographaContext';
 import EditorLayout from '@/layouts/editor/Layout';
 import Editor from '@/modules/editor/Editor';
 import { classNames } from '@/util/classNames';
+import EyeOffIcon from '@/icons/Gallery/EyeOff.svg';
+import EyeIcon from '@/icons/Gallery/Eye.svg';
 import RowSection from './RowSection';
 
 const stories = [

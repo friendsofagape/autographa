@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import React, { useCallback } from 'react';
 
-import { MagnifyingGlassIcon } from '@heroicons/react/24/solid';
 import { useTranslation } from 'react-i18next';
+import MagnifyingGlassIcon from '@/icons/Common/MagnifyingGlass.svg';
 
 export default function SearchTags({
   defaultQuery,

@@ -8,15 +8,10 @@ import {
   Dialog, Transition,
 } from '@headlessui/react';
 
-import {
-  XMarkIcon,
-} from '@heroicons/react/24/solid';
-
-import {
-  ChatBubbleBottomCenterTextIcon,
-  MagnifyingGlassIcon,
-  BookmarkIcon,
-} from '@heroicons/react/24/outline';
+import XMarkIcon from '@/icons/Common/XMark.svg';
+import BookmarkIcon from '@/icons/Book/Bookmark.svg';
+import MagnifyingGlassIcon from '@/icons/Common/MagnifyingGlass.svg';
+import ChatBubbleBottomCenterTextIcon from '@/icons/Book/ChatBubbleBottomCenterText.svg';
 
 import PinIcon from '@/icons/basil/Outline/Status/Pin.svg';
 import CrossReferenceIcon from '@/icons/crossreference.svg';

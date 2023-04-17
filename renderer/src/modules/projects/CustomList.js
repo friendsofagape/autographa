@@ -1,7 +1,9 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Listbox, Transition } from '@headlessui/react';
-import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/24/solid';
+import ChevronUpDownIcon from '@/icons/Common/ChevronUpDown.svg';
+import CheckIcon from '@/icons/Common/Check.svg';
+
 import { classNames } from '../../util/classNames';
 
 export default function CustomList({
