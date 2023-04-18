@@ -1,18 +1,13 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
-
-import {
-  RectangleStackIcon,
-  PencilIcon,
-  ArrowDownOnSquareIcon,
-  Bars2Icon,
-  Bars4Icon,
-  ArrowUturnLeftIcon,
-  ArrowUturnRightIcon,
-
-} from '@heroicons/react/24/outline';
-
 import { ArrowClockwise, ArrowCounterClockwise } from 'phosphor-react';
+import RectangleStackIcon from '@/icons/Xelah/RectangleStack.svg';
+import ArrowDownOnSquareIcon from '@/icons/Xelah/ArrowDownOnSquare.svg';
+import Bars2Icon from '@/icons/Xelah/Bars2.svg';
+import Bars4Icon from '@/icons/Xelah/Bars4.svg';
+import ArrowUturnLeftIcon from '@/icons/Xelah/ArrowUturnLeft.svg';
+import ArrowUturnRightIcon from '@/icons/Xelah/ArrowUturnRight.svg';
+import PencilIcon from '@/icons/Common/Pencil.svg';
 
 export const classNames = (...classes) => classes.filter(Boolean).join(' ');
 
@@ -54,20 +49,22 @@ export default function Buttons(props) {
       <RectangleStackIcon
         aria-label="Collection-Icon"
         className={classNames(
-          sectionable ? 'fill-current' : '',
-          'h-5 mr-2 w-5 text-white cursor-pointer',
-        )}
+            sectionable ? 'fill-current' : '',
+            'h-5 mr-2 w-5 text-white cursor-pointer',
+          )}
         aria-hidden="true"
         onClick={onSectionable}
-        title={sectionable ? 'Expand all Chapters' : 'Collapse Chapters'}
+        title={
+            sectionable ? 'Expand all Chapters' : 'Collapse Chapters'
+          }
       />
 
       <PencilIcon
         aria-label="Pencil-Icon"
         className={classNames(
-          editable ? 'fill-current' : '',
-          'h-5 mr-2 w-5 text-white cursor-pointer',
-        )}
+            editable ? 'fill-current' : '',
+            'h-5 mr-2 w-5 text-white cursor-pointer',
+          )}
         aria-hidden="true"
         onClick={onEditable}
         title={editable ? 'Disable Edit' : 'Enable Edit'}
@@ -80,8 +77,7 @@ export default function Buttons(props) {
           onClick={onBlockable}
           title="Collapse blocks"
         />
-        )
-        : (
+        ) : (
           <Bars4Icon
             aria-label="List-Icon"
             className="h-5 mr-2 w-5 text-white cursor-pointer"
@@ -89,7 +85,7 @@ export default function Buttons(props) {
             onClick={onBlockable}
             title="Split into blocks"
           />
-      )}
+        )}
 
       <ArrowUturnLeftIcon
         aria-label="Undo-Icon"

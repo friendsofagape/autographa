@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import { SquaresPlusIcon } from '@heroicons/react/24/outline';
 import { classNames } from '@/util/classNames';
+import SquaresPlusIcon from '@/icons/Common/SquaresPlus.svg';
 
 export default function ColumnOne(props) {
   const {

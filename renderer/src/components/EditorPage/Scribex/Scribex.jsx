@@ -1,7 +1,6 @@
 import { useEffect, useState, useContext } from 'react';
 import { useProskomma, useImport, useCatalog } from 'proskomma-react-hooks';
 import { useDeepCompareEffect } from 'use-deep-compare';
-import { LockClosedIcon, BookmarkIcon } from '@heroicons/react/24/outline';
 import BibleNavigationX from '@/modules/biblenavigation/BibleNavigationX';
 import usePerf from '@/components/hooks/scribex/usePerf';
 import htmlMap from '@/components/hooks/scribex/htmlmap';
@@ -10,6 +9,8 @@ import { ReferenceContext } from '@/components/context/ReferenceContext';
 import { ProjectContext } from '@/components/context/ProjectContext';
 import { useReadUsfmFile } from '@/components/hooks/scribex/useReadUsfmFile';
 import EditorSideBar from '@/modules/editorsidebar/EditorSideBar';
+import BookmarkIcon from '@/icons/Book/Bookmark.svg';
+import LockClosedIcon from '@/icons/Gallery/LockClosed.svg';
 import Buttons from './Buttons';
 import Editor from './Editor';
 
@@ -31,11 +32,7 @@ export default function Scribex() {
 
   const {
     state: {
-      bookId,
-      selectedFont,
-      fontSize,
-      projectScriptureDir,
-
+      bookId, selectedFont, fontSize, projectScriptureDir,
     },
   } = useContext(ReferenceContext);
 
@@ -100,7 +97,7 @@ export default function Scribex() {
       <div className="flex flex-col bg-white border-b-2 border-secondary h-editor rounded-md shadow scrollbar-width">
         <div className="flex flex-wrap items-center mt-1 justify-between bg-secondary ">
           {/* <div className="bg-white border-b-2 border-secondary rounded-md shadow h-editor overflow-hidden">
-        <div className="flex items-center justify-between bg-secondary rounded-t-md overflow-hidden sticky top-0 left-0 right-0"> */}
+          <div className="flex items-center justify-between bg-secondary rounded-t-md overflow-hidden sticky top-0 left-0 right-0"> */}
           <BibleNavigationX />
           <div
             aria-label="editor-pane"
@@ -139,8 +136,10 @@ export default function Scribex() {
           style={{
             fontFamily: selectedFont || 'sans-serif',
             fontSize: `${fontSize}rem`,
-            lineHeight: (fontSize > 1.3) ? 1.5 : '',
-            direction: `${projectScriptureDir === 'RTL' ? 'rtl' : 'auto'}`,
+            lineHeight: fontSize > 1.3 ? 1.5 : '',
+            direction: `${
+              projectScriptureDir === 'RTL' ? 'rtl' : 'auto'
+            }`,
           }}
           className="border-l-2 border-r-2 border-secondary pb-16 prose-sm max-w-none overflow-auto h-full scrollbars-width"
         >

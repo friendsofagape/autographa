@@ -2,7 +2,7 @@
 import React, {
  useRef, useState, useContext, Fragment,
 } from 'react';
-import { XMarkIcon } from '@heroicons/react/24/solid';
+
 import ResourcesSidebar from '@/components/Resources/ResourcesSideBar';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import ResourceTabPane from '@/components/Resources/ResourceTabPane';
@@ -11,6 +11,7 @@ import { Dialog, Transition } from '@headlessui/react';
 import { ListResources } from '@/components/Resources/ListResources';
 import { SnackBar } from '@/components/SnackBar';
 import SearchBar from '@/components/Resources/SearchBar';
+import XMarkIcon from '@/icons/Common/XMark.svg';
 import * as logger from '../../logger';
 
 export default function ResourcesPopUp(

@@ -3,8 +3,9 @@ import React, {
   Fragment, useContext, useEffect, useState,
 } from 'react';
 import * as localForage from 'localforage';
-import { TrashIcon } from '@heroicons/react/24/outline';
 import { Restore } from '@material-ui/icons';
+import TrashIcon from '@/icons/Common/Trash.svg';
+
 import { createUser, handleLogin, writeToFile } from '../../core/Login/handleLogin';
 import { isElectron } from '../../core/handleElectron';
 import * as logger from '../../logger';

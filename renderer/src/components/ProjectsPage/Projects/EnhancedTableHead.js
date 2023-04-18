@@ -4,9 +4,8 @@ import {
   TableSortLabel,
   TableCell,
 } from '@material-ui/core';
-import {
-  StarIcon,
-} from '@heroicons/react/24/outline';
+import StarIcon from '@/icons/Gallery/Star.svg';
+
 import i18n from '../../../translations/i18n';
 
 // import { Menu, Transition } from '@headlessui/react';

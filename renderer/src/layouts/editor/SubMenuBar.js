@@ -1,6 +1,6 @@
 import { useState, useContext, useEffect } from 'react';
-import { BookmarkIcon } from '@heroicons/react/24/solid';
 import { useTranslation } from 'react-i18next';
+
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import MenuBar from '@/components/Menubar/MenuBar';
 import CustomUsfmToolbar from '@/components/EditorPage/UsfmEditor/CustomUsfmToolbar';
@@ -9,6 +9,7 @@ import CustomNofications from '@/components/Notification/CustomNofications';
 // import { handleAutoSync } from '@/components/Sync/Gitea/EditorAutoSync';
 import localforage from 'localforage';
 import EditorSync from '@/components/Sync/Gitea/EditorSync/EditorSync';
+import BookmarkIcon from '@/icons/Book/Bookmark.svg';
 import Font from '@/icons/font.svg';
 import ColumnsIcon from '@/icons/basil/Outline/Interface/Columns.svg';
 import AboutModal from './AboutModal';

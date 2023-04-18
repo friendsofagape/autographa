@@ -1,7 +1,8 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Combobox, Transition } from '@headlessui/react';
-import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/24/solid';
+import CheckIcon from '@/icons/Common/Check.svg';
+import ChevronUpDownIcon from '@/icons/Common/ChevronUpDown.svg';
 import CheckSvg from '@/icons/basil/Outline/Interface/Check.svg';
 
 function MultiComboBox({

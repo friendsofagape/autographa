@@ -3,12 +3,13 @@ import { Dialog, Transition } from '@headlessui/react';
 import {
  Fragment, useContext, useEffect, useRef, useState,
 } from 'react';
-import { XMarkIcon, ChevronDownIcon } from '@heroicons/react/24/solid';
 import * as localforage from 'localforage';
 import SelectBook from '@/components/EditorPage/Navigation/reference/SelectBook';
 import SelectVerse from '@/components/EditorPage/Navigation/reference/SelectVerse';
 
 import { ReferenceContext } from '@/components/context/ReferenceContext';
+import ChevronDownIcon from '@/icons/Common/ChevronDown.svg';
+import XMarkIcon from '@/icons/Common/XMark.svg';
 
 export default function BibleNavigationX(props) {
   const { showVerse } = props;

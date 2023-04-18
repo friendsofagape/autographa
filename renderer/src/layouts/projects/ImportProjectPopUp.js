@@ -3,9 +3,11 @@ import React, {
   useRef, Fragment,
 } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
-import {
- FolderOpenIcon, InformationCircleIcon, CheckIcon, XMarkIcon,
-} from '@heroicons/react/24/outline';
+import XMarkIcon from '@/icons/Common/XMark.svg';
+import CheckIcon from '@/icons/Common/Check.svg';
+import FolderOpenIcon from '@/icons/Gallery/FolderOpen.svg';
+import InformationCircleIcon from '@/icons/Common/InformationCircle.svg';
+
 import { useRouter } from 'next/router';
 import localforage from 'localforage';
 import { useTranslation } from 'react-i18next';

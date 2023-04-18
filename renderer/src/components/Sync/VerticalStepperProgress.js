@@ -1,9 +1,9 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import { CheckIcon } from '@heroicons/react/24/outline';
 import {
     Box, Paper, Step, StepContent, StepLabel, Stepper, Typography,
 } from '@material-ui/core';
+import CheckIcon from '@/icons/Common/Check.svg';
 
 export function VerticalLinearStepper({ stepCount, steps, successMsg }) {
     const [activeStep, setActiveStep] = React.useState(0);

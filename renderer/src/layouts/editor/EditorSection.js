@@ -1,9 +1,6 @@
 /* eslint-disable react/jsx-no-useless-fragment */
 import PropTypes from 'prop-types';
 import React, { useContext, useEffect, useState } from 'react';
-import {
-  SquaresPlusIcon, XMarkIcon, AdjustmentsVerticalIcon,
-} from '@heroicons/react/24/outline';
 import { useTranslation } from 'react-i18next';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import { ProjectContext } from '@/components/context/ProjectContext';
@@ -12,6 +9,9 @@ import { classNames } from '@/util/classNames';
 import TaNavigation from '@/components/EditorPage/Reference/TA/TaNavigation';
 import TwNavigation from '@/components/EditorPage/Reference/TW/TwNavigation';
 import { getScriptureDirection } from '@/core/projects/languageUtil';
+import AdjustmentsVerticalIcon from '@/icons/Common/AdjustmentsVertical.svg';
+import XMarkIcon from '@/icons/Common/XMark.svg';
+import SquaresPlusIcon from '@/icons/Common/SquaresPlus.svg';
 import ConfirmationModal from './ConfirmationModal';
 import * as logger from '../../logger';
 
