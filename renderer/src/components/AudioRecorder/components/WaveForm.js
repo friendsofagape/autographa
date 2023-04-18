@@ -4,11 +4,10 @@ import {
 } from 'react';
 import PropTypes from 'prop-types';
 import WaveSurfer from 'wavesurfer.js';
+// eslint-disable-next-line import/extensions
 import MicrophonePlugin from 'wavesurfer.js/dist/plugin/wavesurfer.microphone.js';
 import PlayIcon from '@/icons/Audio/Play.svg';
 import PauseIcon from '@/icons/Audio/Pause.svg';
-
-// eslint-disable-next-line import/extensions
 
 // eslint-disable-next-line prefer-const
 let microphone = MicrophonePlugin.create();
