@@ -1,13 +1,14 @@
 import { PropTypes } from 'prop-types';
 import React from 'react';
 import * as localForage from 'localforage';
-import { XMarkIcon } from '@heroicons/react/24/solid';
-import { PencilIcon, CheckIcon } from '@heroicons/react/24/outline';
 import { useTranslation } from 'react-i18next';
 import { classNames } from '@/util/classNames';
 import ProjectsLayout from '@/layouts/projects/Layout';
 import { SnackBar } from '@/components/SnackBar';
 import useValidator from '@/components/hooks/useValidator';
+import CheckIcon from '@/icons/Common/Check.svg';
+import PencilIcon from '@/icons/Common/Pencil.svg';
+import XMarkIcon from '@/icons/Common/XMark.svg';
 import i18n from '../../translations/i18n';
 import { isElectron } from '../../core/handleElectron';
 import { getorPutAppLangage, saveProfile } from '../../core/projects/handleProfile';

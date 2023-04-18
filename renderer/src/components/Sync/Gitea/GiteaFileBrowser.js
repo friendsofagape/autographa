@@ -5,7 +5,7 @@ import {
   get,
 } from 'gitea-react-toolkit';
 import { useTranslation } from 'react-i18next';
-import { ChevronRightIcon } from '@heroicons/react/24/solid';
+import ChevronRightIcon from '@/icons/Common/ChevronRight.svg';
 import { SyncContext } from '../SyncContextProvider';
 import * as logger from '../../../logger';
 import LoadingSpinner from '../LoadingSpinner';

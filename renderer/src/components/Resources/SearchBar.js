@@ -1,5 +1,5 @@
-import { MagnifyingGlassIcon } from '@heroicons/react/24/solid';
 import { useTranslation } from 'react-i18next';
+import MagnifyingGlassIcon from '@/icons/Common/MagnifyingGlass.svg';
 
 import handleChangeQuery from './useHandleChangeQuery';
 

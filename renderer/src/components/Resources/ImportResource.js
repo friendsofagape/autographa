@@ -2,13 +2,13 @@ import React, {
   Fragment, useContext, useState,
 } from 'react';
 import PropTypes from 'prop-types';
-
-import { FolderOpenIcon, InformationCircleIcon } from '@heroicons/react/24/outline';
 import * as localforage from 'localforage';
 import { useTranslation } from 'react-i18next';
 import { SnackBar } from '@/components/SnackBar';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import ConfirmationModal from '@/layouts/editor/ConfirmationModal';
+import InformationCircleIcon from '@/icons/Common/InformationCircle.svg';
+import FolderOpenIcon from '@/icons/Gallery/FolderOpen.svg';
 import * as logger from '../../logger';
 import { viewBurrito } from '../../core/burrito/importBurrito';
 

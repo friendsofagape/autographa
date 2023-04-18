@@ -4,10 +4,8 @@ import { Disclosure, Dialog, Transition } from '@headlessui/react';
 import {
   Fragment, useRef, useState,
 } from 'react';
-import {
-  XMarkIcon,
-  ChevronDownIcon,
-} from '@heroicons/react/24/solid';
+import ChevronDownIcon from '@/icons/Common/ChevronDown.svg';
+import XMarkIcon from '@/icons/Common/XMark.svg';
 
 import styles from '../Navigation/reference/SelectReference.module.css';
 

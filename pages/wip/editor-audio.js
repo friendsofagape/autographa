@@ -1,20 +1,12 @@
 import dynamic from 'next/dynamic';
 
 import {
-  TrashIcon,
-  MicrophoneIcon,
   ChatIcon,
   RefreshIcon,
-  ChevronDownIcon,
-  CogIcon,
-  MinusIcon,
-  PlusIcon,
   ChatBubbleBottomCenterTextIcon,
   SpeakerphoneIcon,
   ArrowNarrowRightIcon,
-  CheckIcon,
-  XMarkIcon,
-  PencilIcon,
+
 } from '@heroicons/react/24/outline';
 
 import AuthenticationContextProvider from '@/components/Login/AuthenticationContextProvider';
@@ -27,9 +19,17 @@ import Editor from '@/modules/editor/Editor';
 import BibleNavigation from '@/modules/biblenavigation/BibleNavigation';
 
 import { classNames } from '@/util/classNames';
-
-import PlayIcon from '@/icons/basil/Outline/Media/Play.svg';
-import PauseIcon from '@/icons/basil/Outline/Media/Pause.svg';
+import PlusIcon from '@/icons/Common/Plus.svg';
+import MinusIcon from '@/icons/Common/Minus.svg';
+import CogIcon from '@/icons/Common/Cog.svg';
+import ChevronDownIcon from '@/icons/Common/ChevronDown.svg';
+import TrashIcon from '@/icons/Common/Trash.svg';
+import MicrophoneIcon from '@/icons/Audio/Microphone.svg';
+import PlayIcon from '@/icons/Audio/Play.svg';
+import PauseIcon from '@/icons/Audio/Pause.svg';
+import CheckIcon from '@/icons/Common/Check.svg';
+import XMarkIcon from '@/icons/Common/XMark.svg';
+import PencilIcon from '@/icons/Common/Pencil.svg';
 
 const AudioWaveform = dynamic(() => import('./WaveForm'), { ssr: false });
 

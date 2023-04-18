@@ -1,9 +1,5 @@
 import PropTypes from 'prop-types';
-import {
-  LockOpenIcon,
-  LockClosedIcon,
-  BookmarkIcon,
-} from '@heroicons/react/24/outline';
+
 import * as localforage from 'localforage';
 import {
   useContext, useEffect, useState,
@@ -14,6 +10,9 @@ import NavigationObs from '@/components/EditorPage/ObsEditor/NavigationObs';
 import BibleNavigation from '@/modules/biblenavigation/BibleNavigation';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import { ProjectContext } from '@/components/context/ProjectContext';
+import LockClosedIcon from '@/icons/Gallery/LockClosed.svg';
+import LockOpenIcon from '@/icons/Gallery/LockOpen.svg';
+import BookmarkIcon from '@/icons/Book/Bookmark.svg';
 import * as logger from '../../logger';
 
 export default function Editor({

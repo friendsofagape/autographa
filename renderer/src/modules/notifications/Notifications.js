@@ -5,7 +5,7 @@ import {
 
 import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
-import { XMarkIcon } from '@heroicons/react/24/solid';
+import XMarkIcon from '@/icons/Common/XMark.svg';
 
 export default function Notifications(props) {
   const {

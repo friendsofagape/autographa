@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { SquaresPlusIcon, CogIcon, XMarkIcon } from '@heroicons/react/24/outline';
-
 import { classNames } from '@/util/classNames';
+import SquaresPlusIcon from '@/icons/Common/SquaresPlus.svg';
+import CogIcon from '@/icons/Common/Cog.svg';
+import XMarkIcon from '@/icons/Common/XMark.svg';
 
 export default function ColumnOne(props) {
   const {

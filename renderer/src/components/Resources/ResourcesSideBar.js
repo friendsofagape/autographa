@@ -1,16 +1,13 @@
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable no-unused-vars */
-import {
-  DocumentTextIcon,
-  PhotoIcon,
-  ChatBubbleLeftEllipsisIcon,
-  MicrophoneIcon,
-  BookOpenIcon,
-  QuestionMarkCircleIcon,
-} from '@heroicons/react/24/outline';
-
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import DocumentTextIcon from '@/icons/Book/DocumentText.svg';
+import MicrophoneIcon from '@/icons/Audio/Microphone.svg';
+import QuestionMarkCircleIcon from '@/icons/Common/QuestionMarkCircle.svg';
+import PhotoIcon from '@/icons/Gallery/Photo.svg';
+import BookOpenIcon from '@/icons/Book/BookOpen.svg';
+import ChatBubbleLeftEllipsisIcon from '@/icons/Book/ChatBubbleLeftEllipsis.svg';
 
 import ResourcesSideBarOption from './ResourcesSideBarOption';
 

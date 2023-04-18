@@ -1,9 +1,7 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-
-import {
-  ChevronDownIcon, PencilSquareIcon,
-} from '@heroicons/react/24/solid';
+import ChevronDownIcon from '@/icons/Common/ChevronDown.svg';
+import PencilSquareIcon from '@/icons/Common/PencilSquare.svg';
 
 import EditFootnote from './EditFootnote';
 

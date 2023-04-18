@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
-
-import { PlayIcon, PauseIcon } from '@heroicons/react/24/solid';
+import PlayIcon from '@/icons/Audio/Play.svg';
+import PauseIcon from '@/icons/Audio/Pause.svg';
 
 export default function AudioWaveForm(props) {
   const {

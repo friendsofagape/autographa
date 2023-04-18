@@ -3,13 +3,11 @@ import { Dialog, Transition } from '@headlessui/react';
 import {
   Fragment, useEffect, useRef, useState,
 } from 'react';
-import {
-  XMarkIcon,
-  ChevronDownIcon,
-} from '@heroicons/react/24/solid';
 import { useBibleReference } from 'bible-reference-rcl';
 import SelectBook from '@/components/EditorPage/Navigation/reference/SelectBook';
 import SelectVerse from '@/components/EditorPage/Navigation/reference/SelectVerse';
+import ChevronDownIcon from '@/icons/Common/ChevronDown.svg';
+import XMarkIcon from '@/icons/Common/XMark.svg';
 
 export default function CustomNavigation({
   initialBook,

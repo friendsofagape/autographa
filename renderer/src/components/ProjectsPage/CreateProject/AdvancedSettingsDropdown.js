@@ -1,10 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/solid';
 import localforage from 'localforage';
 import { useTranslation } from 'react-i18next';
 import CustomList from '@/modules/projects/CustomList';
+import ChevronUpIcon from '@/icons/Common/ChevronUp.svg';
+import ChevronDownIcon from '@/icons/Common/ChevronDown.svg';
 import { OT, NT } from '../../../lib/CanonSpecification';
 import { ProjectContext } from '../../context/ProjectContext';
 import CustomCanonSpecification from './CustomCanonSpecification';

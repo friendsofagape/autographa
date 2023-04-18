@@ -2,7 +2,7 @@ import React, { Fragment, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 import { Dialog, Transition } from '@headlessui/react';
-import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
+import ExclamationTriangleIcon from '@/icons/Common/ExclamationTriangle.svg';
 
 export default function ConfirmationModal({
   openModal,

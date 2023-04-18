@@ -2,9 +2,7 @@ import React, { useContext } from 'react';
 import {
   Disclosure,
 } from '@headlessui/react';
-import {
-  ArrowLeftIcon,
-} from '@heroicons/react/24/outline';
+
 import router from 'next/router';
 import { useTranslation } from 'react-i18next';
 import EditorSideBar from '@/modules/editorsidebar/EditorSideBar';
@@ -12,6 +10,7 @@ import { ReferenceContext } from '@/components/context/ReferenceContext';
 import { ProjectContext } from '@/components/context/ProjectContext';
 import { saveReferenceResource } from '@/core/projects/updateAgSettings';
 import UserProfile from '@/components/Profile/UserProfile';
+import ArrowLeftIcon from '@/icons/Common/ArrowLeft.svg';
 import styles from './MenuBar.module.css';
 import LogoIcon from '@/icons/logo.svg';
 
