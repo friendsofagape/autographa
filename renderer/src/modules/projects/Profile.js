@@ -8,7 +8,6 @@ import { SnackBar } from '@/components/SnackBar';
 import useValidator from '@/components/hooks/useValidator';
 import CheckIcon from '@/icons/Common/Check.svg';
 import PencilIcon from '@/icons/Common/Pencil.svg';
-import XMarkIcon from '@/icons/Common/XMark.svg';
 import i18n from '../../translations/i18n';
 import { isElectron } from '../../core/handleElectron';
 import { getorPutAppLangage, saveProfile } from '../../core/projects/handleProfile';
