@@ -8,18 +8,17 @@
 <br />
 <p align="center">
   <a href="">
-    <img src="https://github.com/friendsofagape/autographa/blob/main/resources/agicon.png" alt="Logo" width="80" height="80">
+    <img src="https://github.com/bible-technology/scribe-scripture-editor/blob/development/styles/Logo.png" alt="Logo" width="80" height="80">
   </a>
 
-  <h3 align="center">Autographa</h3>
+  <h3 align="center">Scribe Scripture Editor (Scribe SE)</h3>
 
   <p align="center">
     A Bible translation editor for everyone.
     <br />
+    <a href="https://github.com/friendsofagape/autographa/issues">Report Issue</a>
     ·
-    <a href="https://github.com/friendsofagape/autographa/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/friendsofagape/autographa/issues">Request Feature</a>
+    <a href="https://github.com/bible-technology/scribe-scripture-editor/issues">Feature Request</a>
   </p>
 </p>
 
@@ -42,13 +41,13 @@
 
 ## About The Project
 
-This is a standalone desktop application which hopes to aid and be a friendly companion of the Bible Translator. In essence it is a basic USFM editor which is capable of import and export of USFM files. It has handy features like color-coded diffs across imported texts for comparison between revisions, search and replace and export to formatted HTML and autographa will include capabilities for syncing data with online repositories and that this application is licensed differently.
+Scribe SE is a standalone desktop application which aims to aid and be a friendly companion for the Bible Translator. It is composed of modes which support focus on specific use-cases e.g. text translation (USFM-based editor), Oral Bible translation (audio recorder) and Open Bible Story (in Markdown format) drafting mode. It supports syncing with online repositories for data backup and other such helpful features. 
 
 ### Built With
 
 -   [ReactJS](https://reactjs.org/)
 -   [Electron](https://www.electronjs.org/)
--   [MaterialUI](https://material-ui.com/)
+-   [Tailwind CSS](https://tailwindcss.com/)
 
 <!-- GETTING STARTED -->
 
@@ -76,13 +75,13 @@ This is an example of how to list things you need to use the software and how to
 
 ## Roadmap
 
-See the [autogrpaha projects](https://github.com/friendsofagape/autographa/projects/1) for a list of proposed features (and known issues).
+See the [projects page](https://github.com/orgs/bible-technology/projects/1/views/1) for a list of proposed features and known issues we are working on.
 
 <!-- CONTRIBUTING -->
 
 ## Contributing
 
-If you'd like to contribute, please fork the repository and make changes as you'd like. Pull requests are warmly welcome.
+If you'd like to contribute, please fork the repository and commit changes in your fork. Pull requests are warmly welcome.
 
 We really value our contributors whether they helped fix a bug, built a feature, tested out the app or contributed in some other way.
 
@@ -118,27 +117,26 @@ Usage: logger.[level]("<filename>, <message>")
 
 ## License
 
-This project is licensed under the MIT License. See [LICENSE](https://github.com/friendsofagape/autographa/blob/main/LICENSE) for more details.
+This project is licensed under the MIT License. See [LICENSE](https://github.com/bible-technology/scribe-scripture-editor/blob/development/LICENSE) for more details.
 
 <!-- CONTACT -->
 
 ## Contact
 
-Let us know if you face any bugs/problems by opening an [issue](https://github.com/friendsofagape/autographa/issues) on GitHub. We'll do our best to be prompt in our response.
+Let us know if you face any bugs/problems by opening an [issue](https://github.com/bible-technology/scribe-scripture-editor/issues) on GitHub. We'll do our best to be prompt in our response.
 
 <!-- ACKNOWLEDGEMENTS -->
 
 ## Acknowledgements
-
--   [Friends of Agape](http://friendsofagape.org/), for their support and contributions.
--   Developed by [Bridgeconn](https://bridgeconn.com/)
+- Supported by the Open Components Ecosystem.
+- Developed and maintained by [Bridgeconn](https://bridgeconn.com/)
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 
-[contributors-shield]: https://img.shields.io/github/contributors/friendsofagape/autographa.svg?style=flat-square
-[contributors-url]: https://github.com/friendsofagape/autographa/graphs/contributors
-[issues-shield]: https://img.shields.io/github/issues/friendsofagape/autographa.svg?style=flat-square
-[issues-url]: https://github.com/friendsofagape/autographa/issues
-[license-shield]: https://img.shields.io/github/license/friendsofagape/autographa.svg?style=flat-square
-[license-url]: https://github.com/friendsofagape/autographa/blob/main/LICENSE
+[contributors-shield]: https://img.shields.io/github/contributors/bible-technology/scribe-scripture-editor.svg?style=flat-square
+[contributors-url]: https://github.com/bible-technology/scribe-scripture-editor/graphs/contributors
+[issues-shield]: https://img.shields.io/github/contributors/bible-technology/scribe-scripture-editor.svg?style=flat-square
+[issues-url]: https://github.com/bible-technology/scribe-scripture-editor/issues
+[license-shield]: https://img.shields.io/github/contributors/bible-technology/scribe-scripture-editor.svg?style=flat-square
+[license-url]: https://github.com/bible-technology/scribe-scripture-editor/blob/development/LICENSE
