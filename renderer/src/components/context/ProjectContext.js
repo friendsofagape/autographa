@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-no-constructed-context-values */
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import * as localforage from 'localforage';
 import { isElectron } from '../../core/handleElectron';
@@ -14,7 +14,6 @@ const advanceSettings = require('../../lib/AdvanceSettings.json');
 export const ProjectContext = React.createContext();
 
 const ProjectContextProvider = ({ children }) => {
-<<<<<<< HEAD
     const [editorSave, setEditorSave] = React.useState('');
     const [drawer, setDrawer] = React.useState(false);
     const [scrollLock, setScrollLock] = React.useState(false);
@@ -27,33 +26,21 @@ const ProjectContextProvider = ({ children }) => {
     const [copyright, setCopyRight] = React.useState(advanceSettings.copyright[0]);
     const [canonList, setCanonList] = React.useState(advanceSettings.canonSpecification);
     const [canonSpecification, setcanonSpecification] = React.useState(
-=======
-    const [editorSave, setEditorSave] = useState('');
-    const [drawer, setDrawer] = useState(false);
-    const [scrollLock, setScrollLock] = useState(false);
-    const [sideTabTitle, setSideTabTitle] = useState('New');
-    const [languages, setLanguages] = useState(advanceSettings.languages);
-    const [language, setLanguage] = useState(advanceSettings.languages[0]);
-    const [licenceList, setLicenseList] = useState(advanceSettings.copyright);
-    const [copyright, setCopyRight] = useState(advanceSettings.copyright[0]);
-    const [canonList, setCanonList] = useState(advanceSettings.canonSpecification);
-    const [canonSpecification, setcanonSpecification] = useState(
->>>>>>> 1d8fe853... verse,chapter insert,partial scroll lock, update on click and scroll
       advanceSettings.canonSpecification[0],
     );
-    const [versification] = useState(advanceSettings.versification);
-    const [versificationScheme, setVersificationScheme] = useState(
+    const [versification] = React.useState(advanceSettings.versification);
+    const [versificationScheme, setVersificationScheme] = React.useState(
       advanceSettings.versification[0],
     );
-    const [openSideBar, setOpenSideBar] = useState(false);
-    const [newProjectFields, setNewProjectFields] = useState({
+    const [openSideBar, setOpenSideBar] = React.useState(false);
+    const [newProjectFields, setNewProjectFields] = React.useState({
       projectName: '',
       description: '',
       abbreviation: '',
     });
-    const [username, setUsername] = useState();
-    const [selectedProject, setSelectedProject] = useState();
-    const [importedFiles, setImportedFiles] = useState([]);
+    const [username, setUsername] = React.useState();
+    const [selectedProject, setSelectedProject] = React.useState();
+    const [importedFiles, setImportedFiles] = React.useState([]);
     const [sideBarTab, setSideBarTab] = useState('');
 
     const handleProjectFields = (prop) => (event) => {
@@ -307,7 +294,7 @@ const ProjectContextProvider = ({ children }) => {
         setVersificationScheme('kjv');
     };
 
-    useEffect(() => {
+    React.useEffect(() => {
       if (isElectron()) {
         loadSettings();
         localforage.getItem('userProfile').then((value) => {
