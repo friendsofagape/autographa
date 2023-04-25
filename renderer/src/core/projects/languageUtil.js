@@ -24,3 +24,18 @@ export const getScriptureDirection = async (projectName) => {
   }
   return scriptureDirection;
 };
+
+// check language code or language name exist in the array of object and return the status
+export const checkLangNameAndCodeExist = async (languages, lang, langcode, langKey, codeKey) => {
+  const check = { name: { status: false, message: '' }, code: { status: false, message: '' } };
+  await languages.forEach((l) => {
+        if (l[langKey].toLowerCase() === lang.toLowerCase()) {
+          check.name = { status: true, message: 'Language Name is existing' };
+        } if (l[codeKey] === langcode.toLowerCase()) {
+          check.code = { status: true, message: 'Language Code is existing' };
+        }
+      });
+  if (check) {
+    return check;
+  }
+};
