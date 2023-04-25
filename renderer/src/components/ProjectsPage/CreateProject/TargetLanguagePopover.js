@@ -127,7 +127,6 @@ export default function TargetLanguagePopover({ projectType }) {
     if (errors.code.length === 0 && errors.language.length === 0 && validate) {
       // check for name and code exist or not
       const result = await checkLangNameAndCodeExist(languages, lang.toLowerCase().trim(), langcode.toLowerCase().trim(), 'ang', 'lc');
-      console.log({ result });
       if (!result.name.status && !result.code.status) {
         const key = lang + langcode + moment().format();
         const id = uuidv5(key, environment.uuidToken);
@@ -144,7 +143,6 @@ export default function TargetLanguagePopover({ projectType }) {
   };
 
   const editLanguage = async () => {
-    console.log('in edit Lang : ', { lang, langcode, direction });
     logger.debug('TargetLanguagePopover.js', 'Editing the language');
     let validate = true;
     // basic validation for direct create click
@@ -167,7 +165,6 @@ export default function TargetLanguagePopover({ projectType }) {
     if (errors.code.length === 0 && errors.language.length === 0 && validate) {
       // check exist name and code
       const result = await checkLangNameAndCodeExist(languages, lang.toLowerCase().trim(), langcode.toLowerCase().trim(), 'ang', 'lc');
-      console.log({ result });
       let proceed = true;
       if (language.ang.toLowerCase().trim() !== lang.toLowerCase().trim()) {
         setSnackText(result.name.message);
