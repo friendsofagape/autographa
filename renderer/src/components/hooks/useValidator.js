@@ -4,6 +4,20 @@ import * as logger from '../../logger';
 
 export default function useValidator() {
   const { t } = useTranslation();
+
+  const isRequiered = (data, fieldName) => {
+    logger.debug('useValidator.js', 'In isLengthValidated for validating the length of a string');
+    const errors = { };
+    if (data?.trim().length === 0) {
+      errors.message = `${fieldName} is Requiered`;
+      errors.isValid = false;
+    } else {
+      errors.message = '';
+      errors.isValid = true;
+    }
+    return errors;
+  };
+
   const isLengthValidated = (data, len) => {
     logger.debug('useValidator.js', 'In isLengthValidated for validating the length of a string');
     const errors = { };
@@ -44,6 +58,10 @@ export default function useValidator() {
         errors.message = validEmailRegex.test(data) ? '' : t('dynamic-msg-validate-hook-email');
         errors.isValid = !!validEmailRegex.test(data);
         break;
+      case 'alphaNumHiphen':
+        errors.message = /^[a-zA-Z]+(?:-?[a-zA-Z0-9]+)+$/.test(data) ? '' : 'Only Allowed Alphanum and single hiphen between character.Code should start and end with letter.';
+        errors.isValid = !!/^[a-zA-Z]+(?:-?[a-zA-Z0-9]+)+$/.test(data);
+        break;
       default:
         break;
     }
@@ -56,6 +74,7 @@ export default function useValidator() {
       validateField,
       isLengthValidated,
       isTextValidated,
+      isRequiered,
     },
   };
 }

@@ -1,24 +1,15 @@
 import moment from 'moment';
 import burrito from '../../lib/OBSTemplete.json';
-import languageCode from '../../lib/LanguageCode.json';
 import * as logger from '../../logger';
 import packageInfo from '../../../../package.json';
 import { updateVersion } from './updateObsSB';
 
-const findCode = (list, id) => {
-  logger.debug('createObsSB.js', 'In findCode for getting the language code');
-  let code = '';
-  list.forEach((obj) => {
-    if ((obj.name).toLowerCase() === id.toLowerCase()) {
-      code = obj.lang_code;
-    }
-  });
-  return code;
-};
 const createObsSB = (
 username,
 projectFields,
 language,
+langCode,
+direction,
 copyright,
 id,
 project,
@@ -51,12 +42,8 @@ update,
         },
       },
     };
-    const code = findCode(languageCode, language);
-    if (code) {
-      json.languages[0].tag = code;
-    } else {
-      json.languages[0].tag = language.substring(0, 3);
-    }
+    json.languages[0].tag = langCode;
+    json.languages[0].scriptDirection = direction?.toLowerCase();
     json.identification.name.en = projectFields.projectName;
     json.identification.abbreviation.en = projectFields.abbreviation;
     json.languages[0].name.en = language;
