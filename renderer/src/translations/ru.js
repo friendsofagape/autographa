@@ -31,6 +31,7 @@ export const Ru = {
     'label-project-type': 'Тип проекта',
     'label-project-name': 'Название проекта',
     'label-language': 'Язык интерфейса',
+    'label-language-code': 'Код языка',
     'label-all': 'Все книги',
     'label-other': 'Другой',
     'label-Gitea': 'Gitea',

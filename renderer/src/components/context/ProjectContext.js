@@ -6,6 +6,7 @@ import { isElectron } from '../../core/handleElectron';
 import * as logger from '../../logger';
 import saveProjectsMeta from '../../core/projects/saveProjetcsMeta';
 import { environment } from '../../../environment';
+import staicLangJson from '../../lib/lang/langNames.json';
 
 const path = require('path');
 const advanceSettings = require('../../lib/AdvanceSettings.json');
@@ -17,8 +18,10 @@ const ProjectContextProvider = ({ children }) => {
     const [drawer, setDrawer] = React.useState(false);
     const [scrollLock, setScrollLock] = React.useState(false);
     const [sideTabTitle, setSideTabTitle] = React.useState('New');
-    const [languages, setLanguages] = React.useState(advanceSettings.languages);
-    const [language, setLanguage] = React.useState(advanceSettings.languages[0]);
+    const [languages, setLanguages] = React.useState(staicLangJson);
+    const [language, setLanguage] = React.useState({});
+    const [customLanguages, setCustomLanguages] = React.useState([]);
+
     const [licenceList, setLicenseList] = React.useState(advanceSettings.copyright);
     const [copyright, setCopyRight] = React.useState(advanceSettings.copyright[0]);
     const [canonList, setCanonList] = React.useState(advanceSettings.canonSpecification);
@@ -52,7 +55,7 @@ const ProjectContextProvider = ({ children }) => {
       setLicenseList((advanceSettings.copyright).push({
         id: 'Other', title: 'Custom', licence: '', locked: false,
       }));
-      setLanguages(advanceSettings.languages);
+      // setLanguages([advanceSettings.languages]);
       const json = {
         version: environment.AG_USER_SETTING_VERSION,
         history: {
@@ -87,9 +90,28 @@ const ProjectContextProvider = ({ children }) => {
       fs.writeFileSync(file, JSON.stringify(json));
     };
 
+    const concatLanguages = async (json, staicLangJson) => {
+      logger.debug('ProjectContext.js', 'In concat languages');
+      const userlanguages = [];
+      json.history?.languages?.forEach((userLang) => {
+        const obj = {};
+        obj.id = userLang?.id || null;
+        obj.ang = userLang.title;
+        obj.ld = userLang.scriptDirection;
+        obj.custom = userLang?.custom || true;
+        obj.lc = userLang?.langCode || '';
+        userlanguages.push(obj);
+      });
+      const concatedLang = userlanguages.length > 0
+      ? (staicLangJson)
+      .concat(userlanguages)
+      : staicLangJson;
+      return { concatedLang, userlanguages };
+    };
+
     const loadSettings = async () => {
       logger.debug('ProjectContext.js', 'In loadSettings');
-      const newpath = localStorage.getItem('userPath');
+      const newpath = await localStorage.getItem('userPath');
       let currentUser;
       await localforage.getItem('userProfile').then((value) => {
         currentUser = value?.username;
@@ -102,38 +124,40 @@ const ProjectContextProvider = ({ children }) => {
       const fs = window.require('fs');
       const file = path.join(newpath, 'autographa', 'users', currentUser, 'ag-user-settings.json');
       if (fs.existsSync(file)) {
-        fs.readFile(file, (err, data) => {
+        const agUserSettings = await fs.readFileSync(file);
+        if (agUserSettings) {
           logger.debug('ProjectContext.js', 'Successfully read the data from file');
-          const json = JSON.parse(data);
-          if (json.version === environment.AG_USER_SETTING_VERSION) {
-            // Checking whether any custom copyright id available (as expected else will
-            // create a new one) or not
-            if (json.history?.copyright) {
-              if (json.history?.copyright?.licence) {
-                setLicenseList((advanceSettings.copyright)
-                  .concat(json.history?.copyright));
+          const json = JSON.parse(agUserSettings);
+
+            if (json.version === environment.AG_USER_SETTING_VERSION) {
+              // Checking whether any custom copyright id available (as expected else will
+              // create a new one) or not
+              if (json.history?.copyright) {
+                if (json.history?.copyright?.licence) {
+                  setLicenseList((advanceSettings.copyright)
+                    .concat(json.history?.copyright));
+                } else {
+                  const newObj = (advanceSettings.copyright).filter((item) => item.Id !== 'Other');
+                  newObj.push({
+                    id: 'Other', title: 'Custom', licence: '', locked: false,
+                  });
+                  setLicenseList(newObj);
+                }
               } else {
-                const newObj = (advanceSettings.copyright).filter((item) => item.Id !== 'Other');
-                newObj.push({
-                  id: 'Other', title: 'Custom', licence: '', locked: false,
-                });
-                setLicenseList(newObj);
+                setLicenseList(advanceSettings.copyright);
               }
+              setCanonList(json.history?.textTranslation.canonSpecification
+                ? (advanceSettings.canonSpecification)
+                .concat(json.history?.textTranslation.canonSpecification)
+                : advanceSettings.canonSpecification);
+              // concat static and custom languages
+              const langFilter = await concatLanguages(json, staicLangJson);
+              setLanguages([...langFilter.concatedLang]);
+              setCustomLanguages(langFilter.userlanguages);
             } else {
-              setLicenseList(advanceSettings.copyright);
+              createSettingJson(fs, file);
             }
-            setCanonList(json.history?.textTranslation.canonSpecification
-              ? (advanceSettings.canonSpecification)
-              .concat(json.history?.textTranslation.canonSpecification)
-              : advanceSettings.canonSpecification);
-            setLanguages(json.history?.languages
-              ? (advanceSettings.languages)
-              .concat(json.history?.languages)
-              : advanceSettings.languages);
-          } else {
-            createSettingJson(fs, file);
-          }
-        });
+        }
       } else {
         createSettingJson(fs, file);
       }
@@ -141,7 +165,7 @@ const ProjectContextProvider = ({ children }) => {
     // Json for storing advance settings
     const updateJson = async (currentSettings) => {
       logger.debug('ProjectContext.js', 'In updateJson');
-      const newpath = localStorage.getItem('userPath');
+      const newpath = await localStorage.getItem('userPath');
       let currentUser;
       await localforage.getItem('userProfile').then((value) => {
         currentUser = value.username;
@@ -150,15 +174,20 @@ const ProjectContextProvider = ({ children }) => {
       const fs = window.require('fs');
       const file = path.join(newpath, 'autographa', 'users', currentUser, 'ag-user-settings.json');
       if (fs.existsSync(file)) {
-        fs.readFile(file, 'utf8', (err, data) => {
-          if (err) {
-            logger.error('ProjectContext.js', 'Failed to read the data from file');
-          } else {
-            logger.debug('ProjectContext.js', 'Successfully read the data from file');
-            const json = JSON.parse(data);
+        const agUserSettings = await fs.readFileSync(file);
+        if (agUserSettings) {
+          logger.debug('ProjectContext.js', 'Successfully read the data from file');
+            const json = JSON.parse(agUserSettings);
             // eslint-disable-next-line no-nested-ternary
             const currentSetting = (currentSettings === 'copyright' ? copyright
-            : (currentSettings === 'languages' ? language : canonSpecification));
+            : (currentSettings === 'languages' ? {
+              title: language.ang,
+              id: language.id,
+              scriptDirection: language.ld,
+              langCode: language.lc,
+              custom: true,
+            }
+             : canonSpecification));
             if (currentSettings === 'canonSpecification') {
               (json.history?.textTranslation[currentSettings])?.push(currentSetting);
             } else if (json.history[currentSettings]
@@ -172,36 +201,39 @@ const ProjectContextProvider = ({ children }) => {
                   }
                 });
               } else {
-                // updating the canon
+                // updating the canon or pushing new language
                 (json.history[currentSettings]).push(currentSetting);
               }
             json.version = environment.AG_USER_SETTING_VERSION;
             json.sync.services.door43 = json?.sync?.services?.door43 ? json?.sync?.services?.door43 : [];
             logger.debug('ProjectContext.js', 'Upadting the settings in existing file');
-            fs.writeFileSync(file, JSON.stringify(json));
+            await fs.writeFileSync(file, JSON.stringify(json));
             logger.debug('ProjectContext.js', 'Loading new settings from file');
-            loadSettings();
-          }
-        });
+            await loadSettings();
+        } else {
+          logger.error('ProjectContext.js', 'Failed to read the data from file');
+        }
       }
     };
-
     // common functions for create projects
     const createProjectCommonUtils = async () => {
       logger.debug('ProjectContext.js', 'In createProject common utils');
-      // Add / update language into current list.
-      if (uniqueId(languages, language.id)) {
-        languages.forEach((lang) => {
-          if (lang.id === language.id) {
-            if (lang.title !== language.title
-              || lang.scriptDirection !== language.scriptDirection) {
-              updateJson('languages');
-            }
+      if (language?.id) {
+        // /check lang exist in backend and check any field value changed
+        if (uniqueId(customLanguages, language.id)) {
+          customLanguages.forEach(async (lang) => {
+            if (lang.id === language.id) {
+              if (lang.ang !== language.ang
+                || lang.ld !== language.ld || lang.lc !== language.lc) {
+                  await updateJson('languages');
+                }
+              }
+            });
+          } else {
+            // add language to custom
+            await updateJson('languages');
           }
-        });
-      } else {
-        updateJson('languages');
-      }
+        }
       // Update Custom licence into current list.
       if (copyright.title === 'Custom') {
         updateJson('copyright');
@@ -219,13 +251,13 @@ const ProjectContextProvider = ({ children }) => {
       logger.debug('ProjectContext.js', 'In createProject Translation utils');
       // Update Custom canon into current list.
       if (canonSpecification.title === 'Other') {
-        updateJson('canonSpecification');
+        await updateJson('canonSpecification');
       }
     };
 
     const createProject = async (call, project, update, projectType) => {
       logger.debug('ProjectContext.js', 'In createProject');
-      createProjectCommonUtils();
+      await createProjectCommonUtils();
       // common props pass for all project type
       const projectMetaObj = {
         newProjectFields,

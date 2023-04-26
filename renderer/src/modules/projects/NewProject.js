@@ -10,16 +10,17 @@ import PopoverProjectType from '@/layouts/editor/PopoverProjectType';
 import { SnackBar } from '@/components/SnackBar';
 import useValidator from '@/components/hooks/useValidator';
 import ConfirmationModal from '@/layouts/editor/ConfirmationModal';
+import CustomMultiComboBox from '@/components/Resources/ResourceUtils/CustomMultiComboBox';
+import moment from 'moment';
+import { v5 as uuidv5 } from 'uuid';
+import { environment } from '../../../environment';
 import ChevronDownIcon from '@/icons/Common/ChevronDown.svg';
 import LayoutIcon from '@/icons/basil/Outline/Interface/Layout.svg';
 import BullhornIcon from '@/icons/basil/Outline/Communication/Bullhorn.svg';
-// import ProcessorIcon from '@/icons/basil/Outline/Devices/Processor.svg';
-// import CheckIcon from '@/icons/basil/Outline/Interface/Check.svg';
 import ImageIcon from '@/icons/basil/Outline/Files/Image.svg';
 import { classNames } from '../../util/classNames';
 import * as logger from '../../logger';
 import ImportPopUp from './ImportPopUp';
-import CustomList from './CustomList';
 import burrito from '../../lib/BurritoTemplete.json';
 // eslint-disable-next-line no-unused-vars
 const solutions = [
@@ -98,7 +99,6 @@ export default function NewProject({ call, project, closeEdit }) {
       setLanguage,
       createProject,
       setNewProjectFields,
-      setLanguages,
     },
   } = React.useContext(ProjectContext);
   const { t } = useTranslation();
@@ -110,6 +110,7 @@ export default function NewProject({ call, project, closeEdit }) {
   const [loading, setLoading] = React.useState(false);
   const [metadata, setMetadata] = React.useState();
   const [openModal, setOpenModal] = React.useState(false);
+  const [projectLangData, setProjectLangData] = React.useState({});
   const [error, setError] = React.useState({
     projectName: {},
     abbr: {},
@@ -138,15 +139,26 @@ export default function NewProject({ call, project, closeEdit }) {
     setNewProjectFields({ ...newProjectFields, projectName: e.target.value, abbreviation });
   };
 
-  const setValue = async (value) => {
-    if (value.title) {
-      setLanguage(value);
-      languages.forEach((l) => {
-        if (l.title !== value.title) {
-          setLanguages(languages.concat(value));
+  const setEditLanguage = async (value) => {
+    // check the language already in the list or set a new one which create on save project
+    if (value.ang) {
+        const editLang = languages.filter((l) => l.ang?.toLowerCase() === value.ang?.toLowerCase());
+        if (editLang.length > 0) {
+          setLanguage(editLang[0]);
+        } else {
+          const key = value.ang + +moment().format();
+          const id = uuidv5(key, environment.uuidToken);
+          setLanguage(
+            {
+              id,
+              ang: value.ang,
+              ld: value?.ld || 'LTR',
+              lc: value?.lc,
+              custom: true,
+            },
+          );
         }
-      });
-    }
+      }
   };
   const createTheProject = (update) => {
     logger.debug('NewProject.js', 'Creating new project.');
@@ -237,7 +249,11 @@ export default function NewProject({ call, project, closeEdit }) {
       abbreviation: project.identification.abbreviation.en,
       description: project.project[project.type.flavorType.flavor.name].description,
     });
-    setValue({ title: project.languages[0].name.en, scriptDirection: project.project[project.type.flavorType.flavor.name].scriptDirection });
+    setProjectLangData({
+        ang: project.languages[0].name.en,
+        ld: project.project[project.type.flavorType.flavor.name].scriptDirection,
+        lc: project.languages[0]?.tag ? project.languages[0].tag : project.languages[0].name.en.substring(0, 3),
+      });
     setMetadata(project);
     // set dropdown to the project type
     switch (project.type.flavorType.flavor.name) {
@@ -257,9 +273,19 @@ export default function NewProject({ call, project, closeEdit }) {
         break;
     }
   };
+
+  useEffect(() => {
+    setEditLanguage(projectLangData);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [languages.length, projectLangData]);
+
   useEffect(() => {
     if (call === 'edit') {
       loadData(project);
+    } else if (call === 'new') {
+      // set englsh as default lang
+      const defaulLang = languages.filter((lang) => lang.lc === 'en');
+      setLanguage(defaulLang[0]);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [call]);
@@ -339,20 +365,22 @@ export default function NewProject({ call, project, closeEdit }) {
                       && (
                       <div className="absolute">
                         <TargetLanguageTag>
-                          {language.scriptDirection ? language.scriptDirection : 'LTR'}
+                          {language?.ld ? language.ld : 'LTR'}
                         </TargetLanguageTag>
                       </div>
                     )}
-                    <h4 className="text-xs font-base mb-2 text-primary  tracking-wide leading-4  font-light">
+                    <h4 className="text-xs font-base mb-3 text-primary  tracking-wide leading-4  font-light">
                       {t('label-target-language')}
                       <span className="text-error">*</span>
                     </h4>
-                    <CustomList
-                      selected={language}
-                      setSelected={setLanguage}
-                      // options={languages}
-                      options={languages.filter((v, i, a) => a.findIndex((v2) => ['title', 'scriptDirection'].every((k) => v2[k] === v[k])) === i)}
-                      show
+
+                    <CustomMultiComboBox
+                      selectedList={[language]}
+                      setSelectedList={setLanguage}
+                      customData={languages}
+                      filterParams="ang"
+                      dropArrow
+                      showLangCode={{ show: true, langkey: 'lc' }}
                     />
                   </div>
                   <div className="mt-5">
