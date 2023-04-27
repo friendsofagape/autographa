@@ -121,7 +121,8 @@ export default function AboutModal(props) {
                           <>
                             <p className="text-sm text-gray-500">MIT License</p>
 
-                            <p className="text-sm text-gray-500">Copyright &copy; 2020 Friends of Agape</p>
+                            <p className="text-sm text-gray-500">Copyright &copy; 2023 Contributors</p>
+                            <p className="text-sm text-gray-500">Copyright &copy; 2020-2022 Friends of Agape</p>
 
                             <p className="text-sm text-gray-500">
                               Permission is hereby granted, free of charge, to any person obtaining a copy
