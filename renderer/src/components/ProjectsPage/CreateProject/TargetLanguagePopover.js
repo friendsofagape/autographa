@@ -85,7 +85,7 @@ export default function TargetLanguagePopover({ projectType }) {
         break;
       case 'code':
         if (value.length > 0) {
-          const check = await validateField([isLengthValidated(value.trim(), { minLen: 2, maxLen: 40 }), isTextValidated(value.trim(), 'alphaNumHiphen')]);
+          const check = await validateField([isLengthValidated(value.trim(), { minLen: 2, maxLen: 20 }), isTextValidated(value.trim(), 'bcp47Language')]);
           if (!check[0].isValid) {
             errorText = check[0].message;
           } else if (!check[1].isValid) {

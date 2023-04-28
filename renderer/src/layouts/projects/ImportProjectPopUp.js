@@ -13,6 +13,7 @@ import localforage from 'localforage';
 import { useTranslation } from 'react-i18next';
 import { SnackBar } from '@/components/SnackBar';
 import { AutographaContext } from '@/components/context/AutographaContext';
+import { ProjectContext } from '@/components/context/ProjectContext';
 import CloseIcon from '@/illustrations/close-button-black.svg';
 import importBurrito, { viewBurrito } from '../../core/burrito/importBurrito';
 import * as logger from '../../logger';
@@ -41,6 +42,11 @@ export default function ImportProjectPopUp(props) {
     buttonName: '',
     });
   const { action: { FetchProjects } } = React.useContext(AutographaContext);
+  const {
+    states: {
+      languages,
+    }, actions: {},
+  } = React.useContext(ProjectContext);
   function close() {
     logger.debug('ImportProjectPopUp.js', 'Closing the Dialog box');
     setValid(false);
@@ -72,7 +78,7 @@ export default function ImportProjectPopUp(props) {
     modelClose();
     logger.debug('ImportProjectPopUp.js', 'Inside callImport');
     await localforage.getItem('userProfile').then(async (value) => {
-      const status = await importBurrito(folderPath, value.username, updateBurriot);
+      const status = await importBurrito(folderPath, value.username, updateBurriot, languages);
       setOpenSnackBar(true);
       closePopUp(false);
       setNotify(status[0].type);

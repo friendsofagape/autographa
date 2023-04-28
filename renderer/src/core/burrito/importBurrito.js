@@ -5,6 +5,7 @@ import { environment } from '../../../environment';
 import * as logger from '../../logger';
 import { validate } from '../../util/validate';
 import { updateVersion } from './updateTranslationSB';
+import { checkAndAddLanguageToCustom } from '../projects/languageUtil';
 
 const md5 = require('md5');
 const path = require('path');
@@ -173,7 +174,7 @@ const updateAudioDir = async (dir, path, fs, status) => {
 };
 
 // Core Function Handle Burrito Import for all type of Projects
-const importBurrito = async (filePath, currentUser, updateBurritoVersion) => {
+const importBurrito = async (filePath, currentUser, updateBurritoVersion, concatedLangs = []) => {
   logger.debug('importBurrito.js', 'Inside importBurrito');
   const fs = window.require('fs');
   const fse = window.require('fs-extra');
@@ -405,6 +406,8 @@ const importBurrito = async (filePath, currentUser, updateBurritoVersion) => {
         }
         updateAudioDir(proDir, path, fs, status);
       }
+      // Check and create project Language if not exist in lang json / user custom list
+      await checkAndAddLanguageToCustom(metadata, concatedLangs);
       status.push({ type: 'success', value: 'Project Imported Successfully' });
     } else {
       logger.error('importBurrito.js', 'Invalid burrito file (metadata.json).');
