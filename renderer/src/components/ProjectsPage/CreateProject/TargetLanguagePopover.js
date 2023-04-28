@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useContext } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { useTranslation } from 'react-i18next';
 import { SnackBar } from '@/components/SnackBar';
@@ -14,17 +14,17 @@ import { ProjectContext } from '../../context/ProjectContext';
 import { environment } from '../../../../environment';
 
 export default function TargetLanguagePopover({ projectType }) {
-  const [id, setId] = React.useState();
-  const [lang, setLang] = React.useState('');
-  const [direction, setDirection] = React.useState();
-  const [langcode, setLangCode] = React.useState('');
-  const [edit, setEdit] = React.useState(false);
+  const [id, setId] = useState();
+  const [lang, setLang] = useState('');
+  const [direction, setDirection] = useState();
+  const [langcode, setLangCode] = useState('');
+  const [edit, setEdit] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-  const [snackBar, setOpenSnackBar] = React.useState(false);
-  const [snackText, setSnackText] = React.useState('');
-  const [notify, setNotify] = React.useState();
+  const [snackBar, setOpenSnackBar] = useState(false);
+  const [snackText, setSnackText] = useState('');
+  const [notify, setNotify] = useState();
   const [lock, setLock] = useState();
-  const [errors, setErrors] = React.useState({
+  const [errors, setErrors] = useState({
     language: '',
     code: '',
   });
@@ -35,7 +35,7 @@ export default function TargetLanguagePopover({ projectType }) {
     }, actions: {
       setLanguage,
     },
-  } = React.useContext(ProjectContext);
+  } = useContext(ProjectContext);
   const {
  action: {
  validateField, isLengthValidated, isTextValidated, isRequiered,
