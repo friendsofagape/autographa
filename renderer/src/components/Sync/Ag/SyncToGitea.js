@@ -12,9 +12,11 @@ export async function uploadToGitea(projectDataAg, auth, setSyncProgress, notify
     const projectId = Object.keys(projectData.identification.primary[packageInfo.name])[0];
     const projectName = projectData.identification.name.en;
     const ingredientsObj = projectData.ingredients;
-    const projectCreated = projectData.meta.dateCreated.split('T')[0];
-    const repoName = `${packageInfo.name}-${projectData.languages[0].tag}-${projectData.type.flavorType.flavor.name}-${projectName.replace(/[\s+ -]/g, '_')}`;
-
+    // const projectCreated = projectData.meta.dateCreated.split('T')[0];
+    // const repoName = `${packageInfo.name}-${projectData.languages[0].tag}-${projectData.type.flavorType.flavor.name}-${projectName.replace(/[\s+ -]/g, '_')}`;
+    const repoName = `${projectData.languages[0].tag}-${projectData.type.flavorType.flavor.name}-${projectName.replace(/[\s+ -]/g, '_')}`;
+    // const branch= `${user?.username}/${projectCreated}.1`
+    const branch = `${auth?.user?.username}/${packageInfo.name}`;
     localForage.getItem('userProfile').then(async (user) => {
       const newpath = localStorage.getItem('userPath');
       const fs = window.require('fs');
@@ -37,7 +39,7 @@ export async function uploadToGitea(projectDataAg, auth, setSyncProgress, notify
           }));
           // read metadata
           const Metadata = await fs.readFileSync(path.join(projectsMetaPath, 'metadata.json'));
-          await createFiletoServer(JSON.stringify(Metadata), 'metadata.json', `${user?.username}/${projectCreated}.1`, createResult.name, auth);
+          await createFiletoServer(JSON.stringify(Metadata), 'metadata.json', branch, createResult.name, auth);
           logger.debug('SyncToGitea.js', 'read and uploaded metaData to repo');
           // Read ingredients
           /* eslint-disable no-await-in-loop */
@@ -50,7 +52,7 @@ export async function uploadToGitea(projectDataAg, auth, setSyncProgress, notify
               }));
               // setTotalUploadedAg((prev) => prev + 1);
               const Metadata1 = fs.readFileSync(path.join(projectsMetaPath, key), 'utf8');
-              await createFiletoServer(Metadata1, key, `${user?.username}/${projectCreated}.1`, createResult.name, auth);
+              await createFiletoServer(Metadata1, key, branch, createResult.name, auth);
               logger.debug('SyncToGitea.js', `Read and uploaded ${key} to repo`);
             }
           }
@@ -66,7 +68,7 @@ export async function uploadToGitea(projectDataAg, auth, setSyncProgress, notify
             syncStarted: true,
           }));
           const metadataContent = fs.readFileSync(path.join(projectsMetaPath, 'metadata.json'));
-          await updateFiletoServer(JSON.stringify(metadataContent), 'metadata.json', `${user?.username}/${projectCreated}.1`, repoName, auth);
+          await updateFiletoServer(JSON.stringify(metadataContent), 'metadata.json', branch, repoName, auth);
           logger.debug('SyncToGitea.js', 'read and updated metaData to repo');
           // Read ingredients and update
           for (const key in ingredientsObj) {
@@ -77,7 +79,7 @@ export async function uploadToGitea(projectDataAg, auth, setSyncProgress, notify
               }));
               const metadata1 = await fs.readFileSync(path.join(projectsMetaPath, key), 'utf8');
               // setTotalUploadedAg((prev) => prev + 1);
-              await updateFiletoServer(metadata1, key, `${user?.username}/${projectCreated}.1`, repoName, auth);
+              await updateFiletoServer(metadata1, key, branch, repoName, auth);
               logger.debug('SyncToGitea.js', `Read and updated ${key} to repo`);
             }
           }

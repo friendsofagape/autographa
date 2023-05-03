@@ -67,7 +67,9 @@ export const updateFiletoServer = async (fileContent, filePath, branch, repoName
       },
       );
       if (readResult === null) {
-        throw new Error('can not read repo');
+        // throw new Error('can not read repo');
+        // Unable to find the branch or file so creating new.
+        await createFiletoServer(fileContent, filePath, branch, repoName, auth);
       } else {
         await updateContent({
           config: auth.config,
