@@ -31,6 +31,7 @@ export const Hi = {
     'label-project-type': 'प्रकार',
     'label-project-name': 'प्रोजेक्ट का नाम',
     'label-language': 'भाषा',
+    'label-language-code': 'भाषा संकेत-लिपि',
     'label-all': 'सभी पुस्तकें',
     'label-other': 'अन्य',
     'label-Gitea': 'Gitea',
