@@ -44,19 +44,6 @@ test('Click user and Navigate projects', async () => {
 	expect(title).toBe('Projects');
 });
 
-// test('Create Audio project', async () => {
-// 	await window.getByRole('link', {name: 'new'}).click()
-// 	await window.click('[aria-label=open-popover]')
-// 	await window.getByRole('link', {name: 'Audio'}).click()
-// 	await window.fill('#project_name', 'Audio project');
-// 	await window.fill('#project_description', 'test version');
-// 	await window.fill('#version_abbreviated', 'ap');
-// 	await window.click('#open-advancesettings');
-// 	await window.click('[aria-label=new-testament]');
-// 	await window.click('[aria-label=close-custombiblenavigation]');
-// 	await window.click('[aria-label=create]');
-// })
-
 // test('Create OBS project', async () => {
 // 	await window.getByRole('link', {name: 'new'}).click()
 // 	await window.click('[aria-label=open-popover]')
@@ -85,25 +72,24 @@ test('Click user and Navigate projects', async () => {
 // 	expect(projectname).toBe('translation project');
 // });
 
-test('Export the project Audio ', async () => {
-	const table = window.getByTestId('tablelayout')
-	const rows = table.locator('tbody tr')
-	const cols = rows.first().locator('td')
-	for(let i = 0; i < await rows.count(); i++){
-		const row = rows.nth(i)
-		const tds = row.locator('td')
-
-		console.log(row)
-		console.log(tds)
-	}
-	// await expect(window.getByText('OBS project')).toBeVisible();
-	// await window.click('[aria-label=unstar-expand-project]')
-	// await window.click('[aria-label=unstar-menu-project]')
-	// await window.getByRole('menuitem', {name: "Export"}).click()
-	// await window.getByRole('button', {name: "open folder location"}).click()
-	// await window.locator('input[name="location"]').fill('/home/bobby/Downloads')
-	// await window.getByRole('button', {name: "Export"}).click()
-});
+// test('Export the project Audio ', async () => {
+// 	const table = window.getByTestId('tablelayout')
+// 	const rows = table.locator('tbody tr')
+// 	const cols = rows.first().locator('td')
+// 	for(let i = 0; i < await rows.count(); i++){
+// 		const row = rows.nth(i)
+// 		const tds = row.locator('td')
+// 		console.log(row)
+// 		console.log(tds)
+// 	}
+// 	// await expect(window.getByText('OBS project')).toBeVisible();
+// 	// await window.click('[aria-label=unstar-expand-project]')
+// 	// await window.click('[aria-label=unstar-menu-project]')
+// 	// await window.getByRole('menuitem', {name: "Export"}).click()
+// 	// await window.getByRole('button', {name: "open folder location"}).click()
+// 	// await window.locator('input[name="location"]').fill('/home/bobby/Downloads')
+// 	// await window.getByRole('button', {name: "Export"}).click()
+// });
 
 // test('Export the project', async () => {
 // 	await window.click('[aria-label=unstar-expand-project]')
