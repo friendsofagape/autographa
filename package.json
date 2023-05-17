@@ -97,7 +97,7 @@
     "buffer-loader": "^0.1.0",
     "canvas": "^2.9.1",
     "electron": "21.0.1",
-    "electron-builder": "^23.6.0",
+    "electron-builder": "^24.4.0",
     "eslint": "^8.17.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-next": "^13.0.0",
