@@ -7,24 +7,59 @@ let electronApp;
 let appPath;
 let window;
 
-test('Check for autographa app render', async () => {
+test('Check for Scribe Scripture app render', async () => {
 	electronApp = await electron.launch({ args: ['main/index.js'] });
 	appPath = await electronApp.evaluate(async ({ app }) => app.getAppPath());
 	window = await electronApp.firstWindow();
-	expect(await window.title()).toBe('Autographa');
+	expect(await window.title()).toBe('Scribe Scripture');
 	//   await electronApp.close();
 });
 
-test('Click user and Navigate projects', async () => {
-	await window.click('#bobby');
+test('Create a new user and Navigate the projects page', async () => {
+	await window.getByRole('button', {name: 'Create New Account'}).click()
+	await window.getByPlaceholder('Username').fill('testing')
+	await window.click('[type=submit]');
 	const title = await window.textContent('[aria-label=projects]');
 	expect(title).toBe('Projects');
-	// await electronApp.close();
+});
+test('Create OBS project', async () => {
+	await window.getByRole('link', {name: 'new'}).click()
+	await window.click('[aria-label=open-popover]')
+	await window.getByRole('link', {name: 'OBS'}).click()
+	await window.fill('#project_name', 'Obs project');
+	await window.fill('#project_description', 'test version');
+	await window.fill('#version_abbreviated', 'op');
+	await window.click('[aria-label=create]');
+})
+
+test('Star the obs project', async () => {
+	await window.getByRole('button', {name: 'unstar-project'}).click()
+	
 });
 
-/* Translation Editor */
+test('Untar the obs project', async () => {
+	await window.getByRole('button', {name: 'star-project'}).click()
+});
+
+test('Search and test audio for resulting project', async () => {
+	await window.fill('#search_box', 'obs');
+	const projectname = await window.innerText(
+		'[aria-label=unstar-project-name]',
+	);
+	expect(projectname).toBe('Obs project');
+});
+
+
+// test('Click user and Navigate projects', async () => {
+// 	await window.click('#bobby');
+// 	const title = await window.textContent('[aria-label=projects]');
+// 	expect(title).toBe('Projects');
+// 	// await electronApp.close();
+// });
+
+/* OBS Editor */
 test('Click on project to open editor page', async () => {
-	await window.click('id=obs project');
+	await window.click('id=Obs project');
 	const editorpane = await window.innerText('[aria-label=editor-pane]');
 	expect(editorpane).toBe('EDITOR');
 });
@@ -45,9 +80,11 @@ test('Testing Notificaton', async () => {
 
 test('Increase font size', async () => {
 	await window.click('[aria-label=increase-font]');
+	await window.click('[aria-label=increase-font]');
 });
 
 test('Decrease font size', async () => {
+	await window.click('[aria-label=decrease-font]');
 	await window.click('[aria-label=decrease-font]');
 });
 

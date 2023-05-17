@@ -18,13 +18,13 @@ test('Check for Scribe Scripture app render', async () => {
 	//   await electronApp.close();
 });
 
-// test('Create a new user and Navigate the projects page', async () => {
-// 	await window.getByRole('button', {name: 'Create New Account'}).click()
-// 	await window.getByPlaceholder('Username').fill('testing')
-// 	await window.click('[type=submit]');
-// 	const title = await window.textContent('[aria-label=projects]');
-// 	expect(title).toBe('Projects');
-// });
+test('Create a new user and Navigate the projects page', async () => {
+	await window.getByRole('button', {name: 'Create New Account'}).click()
+	await window.getByPlaceholder('Username').fill('testing')
+	await window.click('[type=submit]');
+	const title = await window.textContent('[aria-label=projects]');
+	expect(title).toBe('Projects');
+});
 
 // // /* Translation Project    */
 // test('Click New and Fill translation project page details to creating a new project', async () => {
@@ -38,23 +38,12 @@ test('Check for Scribe Scripture app render', async () => {
 // 	await window.click('[aria-label=create]');
 // });
 
-test('Click user and Navigate projects', async () => {
-	await window.getByRole('button', {name: "testing"}).click()
-	const title = await window.textContent('[aria-label=projects]');
-	expect(title).toBe('Projects');
-});
+// test('Click user and Navigate projects', async () => {
+// 	await window.getByRole('button', {name: "testing"}).click()
+// 	const title = await window.textContent('[aria-label=projects]');
+// 	expect(title).toBe('Projects');
+// });
 
-// test('Create OBS project', async () => {
-// 	await window.getByRole('link', {name: 'new'}).click()
-// 	await window.click('[aria-label=open-popover]')
-// 	await window.getByRole('link', {name: 'OBS'}).click()
-// 	await window.fill('#project_name', 'OBS project');
-// 	await window.fill('#project_description', 'test version');
-// 	await window.fill('#version_abbreviated', 'op');
-// 	await window.getByRole('button', {name: 'CC BY-SA'}).click()
-// 	await window.getByRole('option', {name: 'CC BY'}).click()
-// 	await window.click('[aria-label=create]');
-// })
 
 // test('Star the project', async () => {
 // 	await window.getByRole('button', {name: 'unstar-project'}).click()
