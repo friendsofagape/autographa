@@ -123,6 +123,13 @@ test('Saving bookmark for the book and check the all bookmarks', async ()=>{
 // 	   expect(editorpane).toBe('EDITOR');
 // });
 
+test('Lock/Unlock the editor', async () => {
+	await window.click('[aria-label=close-lock]');
+	await window.click('[aria-label=open-lock]');
+	const editorpane = await window.innerText('[aria-label=editor-pane]');
+	expect(editorpane).toBe('EDITOR');
+});
+
 test('Change font-family', async () => {
     await window.getByRole('button', {name: "select-menu-file"}).click()
     await window.getByRole('none', {name: "selected-font"}).click()

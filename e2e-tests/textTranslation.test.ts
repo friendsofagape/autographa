@@ -15,11 +15,12 @@ test('Check for autographa app render', async () => {
 	//   await electronApp.close();
 });
 
-test('Click user and Navigate projects', async () => {
-	await window.click('#bobby');
+test('Create a new user and Navigate the projects page', async () => {
+	await window.getByRole('button', {name: 'Create New Account'}).click()
+	await window.getByPlaceholder('Username').fill('obs user')
+	await window.click('[type=submit]');
 	const title = await window.textContent('[aria-label=projects]');
 	expect(title).toBe('Projects');
-	// await electronApp.close();
 });
 
 /* Translation Editor */

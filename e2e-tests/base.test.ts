@@ -18,13 +18,13 @@ test('Check for Scribe Scripture app render', async () => {
 	//   await electronApp.close();
 });
 
-test('Create a new user and Navigate the projects page', async () => {
-	await window.getByRole('button', {name: 'Create New Account'}).click()
-	await window.getByPlaceholder('Username').fill('testing')
-	await window.click('[type=submit]');
-	const title = await window.textContent('[aria-label=projects]');
-	expect(title).toBe('Projects');
-});
+// test('Create a new user and Navigate the projects page', async () => {
+// 	await window.getByRole('button', {name: 'Create New Account'}).click()
+// 	await window.getByPlaceholder('Username').fill('testing')
+// 	await window.click('[type=submit]');
+// 	const title = await window.textContent('[aria-label=projects]');
+// 	expect(title).toBe('Projects');
+// });
 
 // // /* Translation Project    */
 // test('Click New and Fill translation project page details to creating a new project', async () => {
@@ -45,11 +45,11 @@ test('Create a new user and Navigate the projects page', async () => {
 // });
 
 
-// test('Star the project', async () => {
+// test('Star the textTranslation project', async () => {
 // 	await window.getByRole('button', {name: 'unstar-project'}).click()
 // });
 
-// test('Untar the project', async () => {
+// test('Unstar the textTranslation project', async () => {
 // 	await window.getByRole('button', {name: 'star-project'}).click()
 // });
 
@@ -60,6 +60,328 @@ test('Create a new user and Navigate the projects page', async () => {
 // 	);
 // 	expect(projectname).toBe('translation project');
 // });
+
+// //text editor
+// test('Click on project to open editor page for textTranslation', async () => {
+// 	await window.click('id=translation project');
+// 	const editorpane = await window.innerText('[aria-label=editor-pane]');
+// 	expect(editorpane).toBe('EDITOR');
+// });
+
+// test('Check textTranslation project name', async () => {
+// 	const projectname = await window.innerText(
+// 		'[aria-label=editor-project-name]',
+// 	);
+// 	expect(projectname).toBe('TRANSLATION PROJECT');
+// });
+
+// test('Increase font size of textTranslation project', async () => {
+// 	await window.click('[aria-label=increase-font]');
+// 	await window.click('[aria-label=increase-font]');
+// });
+
+// test('Decrease font size textTranslation project', async () => {
+// 	await window.click('[aria-label=decrease-font]');
+// 	await window.click('[aria-label=decrease-font]');
+// });
+
+// test('Check TextTranslation project Notifications', async () => {
+//     await window.getByRole('button', {name: "notification-button"}).click()
+//     const title = await window.innerText('[aria-label=notification-title]');
+//     expect(title).toBe('NOTIFICATIONS');
+//     await window.getByRole('button', {name: "close-notification"}).click()
+
+// });
+
+// test('About and Licence of textTranslation Scribe Scripture', async () => {
+// 	await window.click('[aria-label=about-button]');
+// 	const developedby = await window.innerText('[aria-label=developed-by]');
+// 	expect(developedby).toBe('Developed by Bridge Connectivity Solutions');
+// 	await window.click('[aria-label=license-button]');
+// 	await window.click('[aria-label=close-about]');
+// });
+
+// test('Write full name book MAT of textTranslation Scribe Scripture', async () => {
+// 	await window.locator('p:has-text("MAT")').fill("MATTHEW")
+// 	const editorpane = await window.innerText('[aria-label=editor-pane]');
+// 	expect(editorpane).toBe('EDITOR');
+// });
+
+// test('Add verse in the book of MAT of textTranslation Scribe Scripture', async () => {
+// 	await window.locator('#ch1v1').fill("MATTHEWThis is the genealogy[a] of Jesus the Messiah[b] the son of David")
+// 	const editorpane = await window.innerText('[aria-label=editor-pane]');
+// 	expect(editorpane).toBe('EDITOR');
+// });
+
+// test('Return to projects page', async () => {
+// 	await window.getByRole('button', {name: "Back"}).click();
+// 	const title = await window.textContent('[aria-label=projects]');
+// 	expect(title).toBe('Projects');
+// });
+
+// ///Obs translation project
+// test('Create English OBS project', async () => {
+// 	await window.getByRole('link', {name: 'new'}).click()
+// 	await window.click('[aria-label=open-popover]')
+// 	await window.getByRole('link', {name: 'OBS'}).click()
+// 	await window.fill('#project_name', 'Obs project');
+// 	await window.fill('#project_description', 'test version');
+// 	await window.fill('#version_abbreviated', 'op');
+// 	await window.click('[aria-label=create]');
+// })
+
+// // test('Star the obs project', async () => {
+// // 	await window.getByRole('button', {name: 'unstar-project'}).click()
+// // });
+
+// // test('Untar the obs project', async () => {
+// // 	await window.getByRole('button', {name: 'star-project'}).click()
+// // });
+
+// test('Search and test obs project for resulting project', async () => {
+// 	await window.fill('#search_box', 'obs');
+// 	const projectname = await window.innerText(
+// 		'[aria-label=unstar-project-name]',
+// 	);
+// 	expect(projectname).toBe('Obs project');
+// });
+
+// test('Click on project to open OBS editor page', async () => {
+// 	await window.click('id=Obs project');
+// 	const editorpane = await window.innerText('[aria-label=editor-pane]');
+// 	expect(editorpane).toBe('EDITOR');
+// });
+
+// test('Check OBS project name', async () => {
+// 	const projectname = await window.innerText(
+// 		'[aria-label=editor-project-name]',
+// 	);
+// 	expect(projectname).toBe('OBS PROJECT');
+// });
+
+// test('Testing OBS Notificaton', async () => {
+// 	await window.click('[aria-label=notification-button]');
+// 	const title = await window.innerText('[aria-label=notification-title]');
+// 	expect(title).toBe('NOTIFICATIONS');
+// 	await window.click('[aria-label=close-notification]');
+// });
+
+// test('Increase font size of OBS project', async () => {
+// 	await window.click('[aria-label=increase-font]');
+// 	await window.click('[aria-label=increase-font]');
+// });
+
+// test('Decrease font size of OBS project', async () => {
+// 	await window.click('[aria-label=decrease-font]');
+// 	await window.click('[aria-label=decrease-font]');
+// });
+
+// test('Check OBS project Notifications', async () => {
+//     await window.getByRole('button', {name: "notification-button"}).click()
+//     const title = await window.innerText('[aria-label=notification-title]');
+//     expect(title).toBe('NOTIFICATIONS');
+//     await window.getByRole('button', {name: "close-notification"}).click()
+
+// });
+
+// test('About and Licence of OBS Scribe Scripture', async () => {
+// 	await window.click('[aria-label=about-button]');
+// 	const developedby = await window.innerText('[aria-label=developed-by]');
+// 	expect(developedby).toBe('Developed by Bridge Connectivity Solutions');
+// 	await window.click('[aria-label=license-button]');
+// 	await window.click('[aria-label=close-about]');
+// });
+
+// test('Edit the OBS editor heading tilte ', async () => {
+// 	await window.getByText('1. The Creation').fill("1. The Creation edit");
+// 	const editorpane = await window.innerText('[aria-label=editor-pane]');
+// 	expect(editorpane).toBe('EDITOR');
+// });
+// test('Add content in the verse 1 and 2 OBS editor ', async () => {
+// 	await window.locator('div:nth-child(2) > .flex-grow').fill("god created heavens and earth");
+// 	await window.locator('div:nth-child(3) > .flex-grow').fill("story content added in verse 3");
+// 	const editorpane = await window.innerText('[aria-label=editor-pane]');
+// 	expect(editorpane).toBe('EDITOR');
+// });
+// test('change OBS editor footer ', async () => {
+// 	await window.getByText('text=A Bible story from: Genesis 1-2').fill("text=A Bible story from: Genesis 1-2 edit footer");
+// 	const editorpane = await window.innerText('[aria-label=editor-pane]');
+// 	expect(editorpane).toBe('EDITOR');
+// });
+
+// test('Change obs navigation story  from 1 to 12 and edit the title', async () => {
+// 	await window.getByRole('button', {name:"obs-navigation"}).click();
+// 	await window.getByRole('button', {name:"12"}).click();
+// 	await window.getByText('12. The Exodus').fill("12. The Exodus edit");
+// 	const editorpane = await window.innerText('[aria-label=editor-pane]');
+// 	expect(editorpane).toBe('EDITOR');
+// });
+
+// test('Lock/Unlock the OBS editor', async () => {
+// 	await window.click('[aria-label=close-lock]');
+// 	await window.click('[aria-label=open-lock]');
+// 	const editorpane = await window.innerText('[aria-label=editor-pane]');
+// 	expect(editorpane).toBe('EDITOR');
+// });
+
+// test('Change the OBS font-family', async () => {
+// 	await window.getByRole('button', {name: "select-menu-file"}).click()
+//     await window.getByRole('none', {name: "selected-font"}).click()
+//     await window.getByRole('option', {name: "aakar"}).click()  
+//     const editorpane = await window.innerText('[aria-label=editor-pane]');
+// 	expect(editorpane).toBe('EDITOR');  
+// });
+
+// test('Return to projects page to see all projects has been created already', async () => {
+// 	await window.getByRole('button', {name: "Back"}).click();
+// 	const title = await window.textContent('[aria-label=projects]');
+// 	expect(title).toBe('Projects');
+// });
+
+// test('Create OBS project with urdu language and licence', async () => {
+// 	await window.getByRole('link', {name: 'new'}).click()
+// 	await window.click('[aria-label=open-popover]')
+// 	await window.getByRole('link', {name: 'OBS'}).click()
+// 	await window.fill('#project_name', 'urdu project');
+// 	await window.fill('#project_description', 'test version');
+// 	await window.fill('#version_abbreviated', 'up');
+// 	//adding a urdu language
+// 	await window.getByRole('button', {name: 'add-language'}).click()
+// 	await window.locator('input[name="search_box"]').fill('urdu')
+// 	await window.locator('input[type="radio"]').nth(1).click()
+// 	await window.getByRole('button', {name: 'edit-language'}).click()
+// 	//select a new license
+// 	await window.getByRole('button', {name: 'CC BY-SA'}).click()
+// 	await window.getByRole('option', {name: 'CC BY'}).click()
+// 	await window.click('[aria-label=create]');
+// })
+
+test('Update the Urdu project', async () => {
+	const table =  window.getByTestId('tablelayout')
+	const headers = table.locator('thead')
+	const rows = table.locator('tbody tr')
+	// const cols = rows.first().locator('td')
+	for (let i = 0; i < await rows.count(); i++) {
+		const row = rows.nth(i);
+		const tds = row.locator('td');
+		for (let j = 0; j < await tds.count(); j++) {
+			if (await tds.nth(j).textContent() === "urdu project") {
+				 console.log(await tds.nth(1).textContent())
+				await tds.last().locator('[aria-label=unstar-expand-project]').hover().click()
+			}
+			
+		}
+		await window.locator('[aria-label=unstar-menu-project]').click()
+	await window.getByRole('menuitem', {name: "edit-project"}).click()
+	}
+	
+		await window.getByText('test version').fill('edit test version')
+		await window.locator('input[name="version_abbreviated"]').fill('ep')
+		await window.getByRole('button', {name:"save-edit-project"}).click();
+		const title = await window.textContent('[aria-label=projects]');
+		expect(title).toBe('Projects');
+})
+
+// ///Audio project
+// test('Create Audio project', async () => {
+// 	await window.getByRole('link', {name: 'new'}).click()
+// 	await window.click('[aria-label=open-popover]')
+// 	await window.getByRole('link', {name: 'Audio'}).click()
+// 	await window.fill('#project_name', 'Audio project');
+// 	await window.fill('#project_description', 'test version');
+// 	await window.fill('#version_abbreviated', 'ap');
+// 	await window.click('#open-advancesettings');
+// 	await window.click('[aria-label=new-testament]');
+// 	await window.click('[aria-label=close-custombiblenavigation]');
+// 	await window.click('[aria-label=create]');
+// })
+
+// // test('Star the audio project', async () => {
+// // 	await window.getByRole('button', {name: 'unstar-project'}).click()
+// // });
+
+// // test('Untar the audio project', async () => {
+// // 	await window.getByRole('button', {name: 'star-project'}).click()
+// // });
+
+// test('Search and test audio for resulting project', async () => {
+// 	await window.fill('#search_box', 'audio');
+// 	const projectname = await window.innerText(
+// 		'[aria-label=unstar-project-name]',
+// 	);
+// 	expect(projectname).toBe('Audio project');
+// });
+
+// test('Click on Audio project to open editor page', async () => {
+// 	await window.click('id=Audio project');
+// 	const editorpane = await window.innerText('[aria-label=editor-pane]');
+// 	expect(editorpane).toBe('EDITOR');
+// });
+
+// test('Check Audio project name', async () => {
+// 	const projectname = await window.innerText(
+// 		'[aria-label=editor-project-name]',
+// 	);
+// 	expect(projectname).toBe('AUDIO PROJECT');
+// });
+
+// test('Increase font size Audio project', async () => {
+// 	await window.click('[aria-label=increase-font]');
+// 	await window.click('[aria-label=increase-font]');
+// });
+
+// test('Decrease font size of Audio project', async () => {
+// 	await window.click('[aria-label=decrease-font]');
+// 	await window.click('[aria-label=decrease-font]');
+// });
+
+// test('Check Audio projects Notifications', async () => {
+//     await window.getByRole('button', {name: "notification-button"}).click()
+//     const title = await window.innerText('[aria-label=notification-title]');
+//     expect(title).toBe('NOTIFICATIONS');
+//     await window.getByRole('button', {name: "close-notification"}).click()
+
+// });
+
+// test('About and Licence of Audio Scribe Scripture', async () => {
+//     await window.getByRole('button', {name: "about-button"}).click()
+//     const developedby = await window.innerText('[aria-label=developed-by]');
+// 	expect(developedby).toBe('Developed by Bridge Connectivity Solutions');
+//     await window.getByRole('button', {name: "license-button"}).click()
+//     await window.getByRole('button', {name: "close-about"}).click()
+// });
+
+// test('Check Audio book bookmarks and close', async () => {
+//     await window.getByRole('button', {name: "select-menu-file"}).click()
+//     await window.getByRole('button', {name: "select-bookmarks"}).click()
+//     await window.getByRole('button', {name: "close-button"}).click()    
+// });
+
+// test('Saving bookmark for the Audio book and check the all bookmarks', async ()=>{
+// 	await window.getByRole('button', {name: "save-bookmark"}).click()
+// 	await window.getByRole('button', {name: "select-menu-file"}).click()
+//     await window.getByRole('button', {name: "select-bookmarks"}).click()
+// 	await window.getByRole('button', {name: "close-button"}).click()
+// 	const editorpane = await window.innerText('[aria-label=editor-pane]');
+// 		expect(editorpane).toBe('EDITOR');  
+// } )
+// test('Lock/Unlock the Audio editor', async () => {
+// 	await window.click('[aria-label=close-lock]');
+// 	await window.click('[aria-label=open-lock]');
+// 	const editorpane = await window.innerText('[aria-label=editor-pane]');
+// 	expect(editorpane).toBe('EDITOR');
+// });
+
+// test('Change Audio font-family', async () => {
+//     await window.getByRole('button', {name: "select-menu-file"}).click()
+//     await window.getByRole('none', {name: "selected-font"}).click()
+//     await window.getByRole('option', {name: "aakar"}).click()  
+//     const editorpane = await window.innerText('[aria-label=editor-pane]');
+// 	expect(editorpane).toBe('EDITOR');  
+// });
+
+///////------/>
+
 
 // test('Export the project Audio ', async () => {
 // 	const table = window.getByTestId('tablelayout')
@@ -190,43 +512,3 @@ test('Create a new user and Navigate the projects page', async () => {
 // 	const archive = await window.getByRole('tab').allInnerTexts()
 // 	expect(archive[1]).toBe('Archived')
 // })
-
-
-
-
-
-//OBS
-// test('Click New and Fill OBS project page details to creating a new project', async () => {
-// 	// await window.click('#bobby');
-// 	await window.click('[aria-label=new]');
-// 	await window.click('#headlessui-popover-button-13');
-// 	await window.click('[data-id=OBS]');
-// 	await window.fill('#project_name', 'obs testing');
-// 	await window.fill('#project_description', 'obs version');
-// 	await window.fill('#version_abbreviated', 'ot');
-// 	await window.click('[aria-label=create]');
-// });
-
-// test('Search and OBS for resulting project', async () => {
-// 	await window.fill('#search_box', 'obs');
-// 	const projectname = await window.innerText(
-// 		'[aria-label=unstar-project-name]',
-// 	);
-// 	expect(projectname).toBe('obs testing');
-// });
-
-// test('Update User profile and Navigate projects', async () => {
-// 	await window.click('text=Open user menu');
-// 	await window.click('id=profile');
-// 	await window.fill('#organisation', 'The vidya');
-// 	await window.click('button:text("Save")');
-// 	await window.click('[aria-label=projectList]');
-// });
-
-
-
-// test.afterAll(async () => {
-// 	await window.context().close();
-
-// 	await window.close();
-// });
