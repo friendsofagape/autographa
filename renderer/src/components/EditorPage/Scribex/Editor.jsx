@@ -10,7 +10,6 @@ import { ProjectContext } from '@/components/context/ProjectContext';
 import EmptyScreen from '@/components/Loading/EmptySrceen';
 import { insertVerseNumber, insertChapterNumber, insertFootnote } from '@/util/cursorUtils';
 import RecursiveBlock from './RecursiveBlock';
-// import ContextWrapper from './ContextWrapper';
 
 export default function Editor(props) {
   const {
@@ -163,7 +162,7 @@ export default function Editor(props) {
   };
 
   return (
-    <div className="editor" id="editor" style={style}>
+    <div className="editor" id="editor" style={style} >
       {!bookAvailable && <EmptyScreen />}
       {bookAvailable && (!sequenceId || bookChange) && <LoadingScreen />}
       {bookAvailable && sequenceId && !bookChange && (

@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
-import { ArrowClockwise, ArrowCounterClockwise } from 'phosphor-react';
 import RectangleStackIcon from '@/icons/Xelah/RectangleStack.svg';
 import ArrowDownOnSquareIcon from '@/icons/Xelah/ArrowDownOnSquare.svg';
 import Bars2Icon from '@/icons/Xelah/Bars2.svg';

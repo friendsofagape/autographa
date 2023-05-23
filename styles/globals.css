@@ -49,9 +49,9 @@
 	@apply my-2;
 }
 
-.sectionHeading {
+/* .sectionHeading {
 	@apply w-20 text-right uppercase tracking-wider text-xs font-semibold after:content-['_:'];
-}
+} */
 
 .title .mt,
 .heading .ms {
