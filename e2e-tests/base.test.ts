@@ -27,7 +27,7 @@ test('Check for Scribe Scripture app render', async () => {
 // });
 
 // /* Translation Project    */
-// test('Click New and Fill translation project page details to creating a new project', async () => {
+// test('Click New and Fill translation project page details to create a new project', async () => {
 // 	await window.getByRole('link', {name : 'new'}).click()
 // 	await window.fill('#project_name', 'translation project');
 // 	await window.fill('#project_description', 'test version');
@@ -61,7 +61,7 @@ test('Check for Scribe Scripture app render', async () => {
 // 	expect(projectname).toBe('translation project');
 // });
 
-// test('Click on project to open editor page for textTranslation', async () => {
+// test('Click on a project to open the editor page for textTranslation', async () => {
 // 	await window.click('id=translation project');
 // 	const editorpane = await window.innerText('[aria-label=editor-pane]');
 // 	expect(editorpane).toBe('EDITOR');
@@ -106,11 +106,11 @@ test('Check for Scribe Scripture app render', async () => {
 // 	expect(editorpane).toBe('EDITOR');
 // });
 
-// test('Add verse in the book of MAT of textTranslation Scribe Scripture', async () => {
-// 	await window.locator('#ch1v1').click()("MATTHEWThis is the genealogy[a] of Jesus the Messiah[b] the son of David")
-// 	const editorpane = await window.innerText('[aria-label=editor-pane]');
-// 	expect(editorpane).toBe('EDITOR');
-// });
+// // test('Add verse in the book of MAT of textTranslation Scribe Scripture', async () => {
+// // 	await window.locator('#ch1v1').click()("MATTHEWThis is the genealogy[a] of Jesus the Messiah[b] the son of David")
+// // 	const editorpane = await window.innerText('[aria-label=editor-pane]');
+// // 	expect(editorpane).toBe('EDITOR');
+// // });
 
 // test('Return to projects page', async () => {
 // 	await window.getByRole('button', {name: "Back"}).click();
@@ -118,8 +118,8 @@ test('Check for Scribe Scripture app render', async () => {
 // 	expect(title).toBe('Projects');
 // });
 
-///Obs translation project
-// test('Create English OBS project', async () => {
+// ///Obs translation project
+// test('Click New and Fill OBS project page details to create a new project.', async () => {
 // 	await window.getByRole('link', {name: 'new'}).click()
 // 	await window.click('[aria-label=open-popover]')
 // 	await window.getByRole('link', {name: 'OBS'}).click()
@@ -129,7 +129,7 @@ test('Check for Scribe Scripture app render', async () => {
 // 	await window.click('[aria-label=create]');
 // })
 
-// test('Create OBS project with urdu language and licence', async () => {
+// test('Create an OBS project with Urdu language and license.', async () => {
 // 	await window.getByRole('link', {name: 'new'}).click()
 // 	await window.click('[aria-label=open-popover]')
 // 	await window.getByRole('link', {name: 'OBS'}).click()
@@ -225,32 +225,25 @@ test('Check for Scribe Scripture app render', async () => {
 // 	expect(projectname).toBe('Obs project');
 // });
 
-// test('Click on project to open OBS editor page', async () => {
+// test('Click on the project to open the OBS editor page', async () => {
 // 	await window.click('id=Obs project');
 // 	const editorpane = await window.innerText('[aria-label=editor-pane]');
 // 	expect(editorpane).toBe('EDITOR');
 // });
 
-// test('Check OBS project name', async () => {
+// test('Check the OBS project name', async () => {
 // 	const projectname = await window.innerText(
 // 		'[aria-label=editor-project-name]',
 // 	);
 // 	expect(projectname).toBe('OBS PROJECT');
 // });
 
-// test('Testing OBS Notificaton', async () => {
-// 	await window.click('[aria-label=notification-button]');
-// 	const title = await window.innerText('[aria-label=notification-title]');
-// 	expect(title).toBe('NOTIFICATIONS');
-// 	await window.click('[aria-label=close-notification]');
-// });
-
-// test('Increase font size of OBS project', async () => {
+// test('Increase the font size of the OBS project.', async () => {
 // 	await window.click('[aria-label=increase-font]');
 // 	await window.click('[aria-label=increase-font]');
 // });
 
-// test('Decrease font size of OBS project', async () => {
+// test('Decrease the font size of the OBS project.', async () => {
 // 	await window.click('[aria-label=decrease-font]');
 // 	await window.click('[aria-label=decrease-font]');
 // });
@@ -271,19 +264,19 @@ test('Check for Scribe Scripture app render', async () => {
 // 	await window.click('[aria-label=close-about]');
 // });
 
-// test('Edit the OBS editor heading tilte ', async () => {
+// test('Edit the OBS editor heading title ', async () => {
 // 	await window.getByText('1. The Creation').fill("1. The Creation edit");
 // 	const editorpane = await window.innerText('[aria-label=editor-pane]');
 // 	expect(editorpane).toBe('EDITOR');
 // });
-// test('Add content in the verse 1 and 2 OBS editor ', async () => {
+// test('Add content in verses 1 and 2 OBS editor.', async () => {
 // 	await window.locator('div:nth-child(2) > .flex-grow').fill("god created heavens and earth");
 // 	await window.locator('div:nth-child(3) > .flex-grow').fill("story content added in verse 3");
 // 	const editorpane = await window.innerText('[aria-label=editor-pane]');
 // 	expect(editorpane).toBe('EDITOR');
 // });
 
-// test('Change obs navigation story  from 1 to 12 and edit the title', async () => {
+// test('Change the obs navigation story  from 1 to 12 and edit the title', async () => {
 // 	await window.getByRole('button', {name:"obs-navigation"}).click();
 // 	await window.getByRole('button', {name:"12"}).click();
 // 	await window.getByText('12. The Exodus').fill("12. The Exodus edit");
@@ -319,7 +312,7 @@ test('Check for Scribe Scripture app render', async () => {
 // 	// expect(title).toBe('0');
 // })
 
-// test('Return to projects page to see all projects has been created already', async () => {
+// test('Return to the projects page to see all projects have been created already.', async () => {
 // 	await window.getByRole('button', {name: "Back"}).click();
 // 	const title = await window.textContent('[aria-label=projects]');
 // 	expect(title).toBe('Projects');
@@ -349,7 +342,7 @@ test('Check for Scribe Scripture app render', async () => {
 // 	}
 // });
 
-// test('Restore the OBS project from archive tab and return to projects', async () => {
+// test('Restore the OBS project from the archive tab and return to the projects', async () => {
 // 	await window.getByRole('button', {name: "Archived"}).click()
 // 	await window.click('[aria-label=unstar-expand-project]')
 // 	await window.click('[aria-label=unstar-menu-project]')
@@ -358,8 +351,8 @@ test('Check for Scribe Scripture app render', async () => {
 // });
 
 
-// ///Audio project
-// test('Create Audio project', async () => {
+///Audio project
+// test('Click New and Fill Audio project page details to create a new project', async () => {
 // 	await window.getByRole('link', {name: 'new'}).click()
 // 	await window.click('[aria-label=open-popover]')
 // 	await window.getByRole('link', {name: 'Audio'}).click()
@@ -372,169 +365,162 @@ test('Check for Scribe Scripture app render', async () => {
 // 	await window.click('[aria-label=create]');
 // })
 
-// test('Star the audio project', async () => {
-// 	const table =  window.locator('table#tablelayout')
-// 	const headers = table.locator('thead')
-// 	console.log(await headers.allTextContents());
+test('Star the audio project', async () => {
+	const table =  window.locator('table#tablelayout')
+	const headers = table.locator('thead')
+	console.log(await headers.allTextContents());
 	
-// 	const rows = table.locator('tbody tr')
-// 	for (let i = 0; i < await rows.count(); i++) {
-// 		const row = rows.nth(i);
-// 		const tds = row.locator('td');
-// 		for (let j = 0; j < await tds.count(); j++) {
-// 			if (await tds.nth(j).textContent() === "Audio project") {
-// 				 console.log(await tds.nth(1).textContent())
-// 				await tds.first().locator('[aria-label=unstar-project]').click()
-// 				// expect(await tds.nth(1).textContent()).toBe("Obs project")
-// 			}
+	const rows = table.locator('tbody tr')
+	for (let i = 0; i < await rows.count(); i++) {
+		const row = rows.nth(i);
+		const tds = row.locator('td');
+		for (let j = 0; j < await tds.count(); j++) {
+			if (await tds.nth(j).textContent() === "Audio project") {
+				 console.log(await tds.nth(1).textContent())
+				await tds.first().locator('[aria-label=unstar-project]').click()
+				// expect(await tds.nth(1).textContent()).toBe("Obs project")
+			}
 			
-// 		}
+		}
 
-// 	}
-// });
+	}
+});
 
-// test('Untar the audio project', async () => {
-// 	const table =  window.locator('table#tablelayout')
-// 	const headers = table.locator('thead')
-// 	console.log(await headers.allTextContents());
+test('Untar the audio project', async () => {
+	const table =  window.locator('table#tablelayout')
+	const headers = table.locator('thead')
+	console.log(await headers.allTextContents());
 	
-// 	const rows = table.locator('tbody tr')
-// 	for (let i = 0; i < await rows.count(); i++) {
-// 		const row = rows.nth(i);
-// 		const tds = row.locator('td');
-// 		for (let j = 0; j < await tds.count(); j++) {
-// 			if (await tds.nth(j).textContent() === "Audio project") {
-// 				 console.log(await tds.nth(1).textContent())
-// 				await tds.first().locator('[aria-label=star-project]').click()
-// 				// expect(await tds.nth(1).textContent()).toBe("Obs project")
-// 			}
+	const rows = table.locator('tbody tr')
+	for (let i = 0; i < await rows.count(); i++) {
+		const row = rows.nth(i);
+		const tds = row.locator('td');
+		for (let j = 0; j < await tds.count(); j++) {
+			if (await tds.nth(j).textContent() === "Audio project") {
+				 console.log(await tds.nth(1).textContent())
+				await tds.first().locator('[aria-label=star-project]').click()
+				// expect(await tds.nth(1).textContent()).toBe("Obs project")
+			}
 			
-// 		}
+		}
 
-// 	}
+	}
 	
-// });
+});
 
-// test('Search and test audio for resulting project', async () => {
-// 	await window.fill('#search_box', 'audio');
-// 	const projectname = await window.innerText(
-// 		'[aria-label=unstar-project-name]',
-// 	);
-// 	expect(projectname).toBe('Audio project');
-// });
+test('Search and test audio for resulting project', async () => {
+	await window.fill('#search_box', 'audio');
+	const projectname = await window.innerText(
+		'[aria-label=unstar-project-name]',
+	);
+	expect(projectname).toBe('Audio project');
+});
 
-test('Click on Audio project to open editor page', async () => {
+test('Click on the Audio project to open the editor page.', async () => {
 	await window.click('id=Audio project');
 	const editorpane = await window.innerText('[aria-label=editor-pane]');
 	expect(editorpane).toBe('EDITOR');
 });
 
-// test('Check Audio project name', async () => {
-// 	const projectname = await window.innerText(
-// 		'[aria-label=editor-project-name]',
-// 	);
-// 	expect(projectname).toBe('AUDIO PROJECT');
-// });
+test('Check the Audio project name', async () => {
+	const projectname = await window.innerText(
+		'[aria-label=editor-project-name]',
+	);
+	expect(projectname).toBe('AUDIO PROJECT');
+});
 
-// test('Increase font size Audio project', async () => {
-// 	await window.click('[aria-label=increase-font]');
-// 	await window.click('[aria-label=increase-font]');
-// });
+test('Increase font size Audio project', async () => {
+	await window.click('[aria-label=increase-font]');
+	await window.click('[aria-label=increase-font]');
+});
 
-// test('Decrease font size of Audio project', async () => {
-// 	await window.click('[aria-label=decrease-font]');
-// 	await window.click('[aria-label=decrease-font]');
-// });
+test('Decrease font size of Audio project', async () => {
+	await window.click('[aria-label=decrease-font]');
+	await window.click('[aria-label=decrease-font]');
+});
 
-// test('Check Audio projects Notifications', async () => {
-//     await window.getByRole('button', {name: "notification-button"}).click()
-//     const title = await window.innerText('[aria-label=notification-title]');
-//     expect(title).toBe('NOTIFICATIONS');
-//     await window.getByRole('button', {name: "close-notification"}).click()
+test('Check Audio projects Notifications', async () => {
+    await window.getByRole('button', {name: "notification-button"}).click()
+    const title = await window.innerText('[aria-label=notification-title]');
+    expect(title).toBe('NOTIFICATIONS');
+    await window.getByRole('button', {name: "close-notification"}).click()
 
-// });
+});
 
-// test('About and Licence of Audio Scribe Scripture', async () => {
-//     await window.getByRole('button', {name: "about-button"}).click()
-//     const developedby = await window.innerText('[aria-label=developed-by]');
-// 	expect(developedby).toBe('Developed by Bridge Connectivity Solutions');
-//     await window.getByRole('button', {name: "license-button"}).click()
-//     await window.getByRole('button', {name: "close-about"}).click()
-// });
+test('About and Licence of Audio Scribe Scripture', async () => {
+    await window.getByRole('button', {name: "about-button"}).click()
+    const developedby = await window.innerText('[aria-label=developed-by]');
+	expect(developedby).toBe('Developed by Bridge Connectivity Solutions');
+    await window.getByRole('button', {name: "license-button"}).click()
+    await window.getByRole('button', {name: "close-about"}).click()
+});
 
-// test('Check Audio book bookmarks and close', async () => {
-//     await window.getByRole('button', {name: "select-menu-file"}).click()
+test('Check Audio book bookmarks and close', async () => {
+    await window.getByRole('button', {name: "select-menu-file"}).click()
+    await window.getByRole('button', {name: "select-bookmarks"}).click()
+    await window.getByRole('button', {name: "close-button"}).click()    
+});
+
+// test('Saving bookmark for the Audio book and check the all bookmarks', async ()=>{
+// 	await window.getByRole('button', {name: "save-bookmark"}).click()
+// 	await window.getByRole('button', {name: "select-menu-file"}).click()
 //     await window.getByRole('button', {name: "select-bookmarks"}).click()
-//     await window.getByRole('button', {name: "close-button"}).click()    
-// });
-
-// // test('Saving bookmark for the Audio book and check the all bookmarks', async ()=>{
-// // 	await window.getByRole('button', {name: "save-bookmark"}).click()
-// // 	await window.getByRole('button', {name: "select-menu-file"}).click()
-// //     await window.getByRole('button', {name: "select-bookmarks"}).click()
-// // 	await window.getByRole('button', {name: "close-button"}).click()
-// // 	const editorpane = await window.innerText('[aria-label=editor-pane]');
-// // 		expect(editorpane).toBe('EDITOR');  
-// // } )
-
-// test('Lock/Unlock the Audio editor', async () => {
-// 	await window.click('[aria-label=close-lock]');
-// 	await window.click('[aria-label=open-lock]');
+// 	await window.getByRole('button', {name: "close-button"}).click()
 // 	const editorpane = await window.innerText('[aria-label=editor-pane]');
-// 	expect(editorpane).toBe('EDITOR');
-// });
+// 		expect(editorpane).toBe('EDITOR');  
+// } )
 
-// test('Change Audio font-family', async () => {
-//     await window.getByRole('button', {name: "select-menu-file"}).click()
-//     await window.getByRole('none', {name: "selected-font"}).click()
-//     await window.getByRole('option', {name: "aakar"}).click()  
-//     const editorpane = await window.innerText('[aria-label=editor-pane]');
-// 	expect(editorpane).toBe('EDITOR');  
-// });
+test('Lock/Unlock the Audio editor', async () => {
+	await window.click('[aria-label=close-lock]');
+	await window.click('[aria-label=open-lock]');
+	const editorpane = await window.innerText('[aria-label=editor-pane]');
+	expect(editorpane).toBe('EDITOR');
+});
 
-// test('Play the audio for verse 1', async () => {
-//     await window.getByRole('button', {name: "1"}).first().click()  
-// 	await window.locator('.flex > div > .p-2').first().click()
-// 	await window.waitForTimeout(4000)
-// 	await window.locator('div:nth-child(2) > .p-2').first().click()
-// 	const editorpane = await window.innerText('[aria-label=editor-pane]');
-// 	expect(editorpane).toBe('EDITOR');  
-// })
+test('Lock/Unlock the Audio editor', async () => {
+    await window.getByRole('button', {name: "select-menu-file"}).click()
+    await window.getByRole('none', {name: "selected-font"}).click()
+    await window.getByRole('option', {name: "aakar"}).click()  
+    const editorpane = await window.innerText('[aria-label=editor-pane]');
+	expect(editorpane).toBe('EDITOR');  
+});
 
-// test('Rewind the audio verse 1', async () => {
-//     await window.getByRole('button', {name: "1"}).first().click()  
-// 	await window.locator('div:nth-child(4) > div > .p-2').first().click()
-// 	await window.waitForTimeout(4000)
-// 	const editorpane = await window.innerText('[aria-label=editor-pane]');
-// 	expect(editorpane).toBe('EDITOR');  
-// })
-// test('playing the audio verse 1', async () => {
-//     await window.getByRole('button', {name: "1"}).first().click()  
-// 	await window.locator('div:nth-child(4) > div:nth-child(2) > .p-2').first().click()
-// 	await window.waitForTimeout(4000)
-// 	// const editorpane = await window.innerText('[aria-label=editor-pane]');
-// 	// expect(editorpane).toBe('EDITOR');
-// })
+test('Record the audio for verse 1', async () => {
+    await window.getByRole('button', {name: "1"}).first().click()  
+	await window.locator('.flex > div > .p-2').first().click()
+	await window.waitForTimeout(4000)
+	await window.locator('div:nth-child(2) > .p-2').first().click()
+	const editorpane = await window.innerText('[aria-label=editor-pane]');
+	expect(editorpane).toBe('EDITOR');  
+})
 
-// test('stop the audio verse 1', async () => {
-// 	await window.locator('div:nth-child(3) > .p-2').first().click()
-// 	const editorpane = await window.innerText('[aria-label=editor-pane]');
-// 	expect(editorpane).toBe('EDITOR');
-// })
-
-// test('Delete the audio verse 1', async () => {
-//     await window.getByRole('button', {name: "1"}).first().click()  
-// 	await window.locator('.flex div:nth-child(4) > div:nth(2) > .p-2').first().click()
-// 	const editorpane = await window.innerText('[aria-label=editor-pane]');
-// 	expect(editorpane).toBe('EDITOR');
-// })
-
-test('Increase/Decrease volume the audio verse 1', async () => {
-    await window.getByRole('button', {name: "1"}).first().click();
+test('Rewind the audio verse 1', async () => {
+    await window.getByRole('button', {name: "1"}).first().click()  
+	await window.locator('div:nth-child(4) > div > .p-2').first().click()
+	await window.waitForTimeout(4000)
+	const editorpane = await window.innerText('[aria-label=editor-pane]');
+	expect(editorpane).toBe('EDITOR');  
+})
+test('Playing the audio verse 1', async () => {
+    await window.getByRole('button', {name: "1"}).first().click()  
 	await window.locator('div:nth-child(4) > div:nth-child(2) > .p-2').first().click()
+	await window.waitForTimeout(4000)
+	// const editorpane = await window.innerText('[aria-label=editor-pane]');
+	// expect(editorpane).toBe('EDITOR');
+})
+
+test('Stop the audio verse 1', async () => {
+	await window.locator('div:nth-child(3) > .p-2').first().click()
+	const editorpane = await window.innerText('[aria-label=editor-pane]');
+	expect(editorpane).toBe('EDITOR');
+})
+
+test('Increase/Decrease the volume of the audio verse 1', async () => {
+    await window.getByRole('button', {name: "1"}).first().click();
+	// await window.locator('div:nth-child(4) > div:nth-child(2) > .p-2').first().click()
 	//decrease volume
-	await window.locator('.flex div:nth-child(4) > div:nth(5) > .flex > button').first().click()
-	await window.locator('.flex div:nth-child(4) > div:nth(5) > .flex > button').first().click()
+	await window.locator('div:nth-child(4) > div:nth-child(5) > .flex > button').first().click()
+	await window.locator('div:nth-child(4) > div:nth-child(5) > .flex > button').first().click()
 	await window.waitForTimeout(1000)
 	// increase volume
 	await window.locator('.flex button:nth-child(3)').first().click()
@@ -543,46 +529,57 @@ test('Increase/Decrease volume the audio verse 1', async () => {
 	expect(editorpane).toBe('EDITOR');
 })
 
-// test('Return and see created projects in projects page', async () => {
-// 	await window.getByRole('button', {name: "Back"}).click();
-// 	const title = await window.textContent('[aria-label=projects]');
-// 	expect(title).toBe('Projects');
-// });
+test('Delete the audio verse 1', async () => {
+    await window.getByRole('button', {name: "1"}).first().click()  
+	await window.locator('.flex div:nth-child(4) > div:nth(2) > .p-2').first().click()
+	const editorpane = await window.innerText('[aria-label=editor-pane]');
+	expect(editorpane).toBe('EDITOR');
+})
+
+
+
+test('Return and see created projects in projects page', async () => {
+	await window.getByRole('button', {name: "Back"}).click();
+	const title = await window.textContent('[aria-label=projects]');
+	expect(title).toBe('Projects');
+});
 
 /////------/>
 
-// test('Export the project', async () => {
-// 	await window.click('[aria-label=unstar-expand-project]')
-// 	await window.click('[aria-label=unstar-menu-project]')
-// 	await window.getByRole('menuitem', {name: "Export"}).click()
-// 	await window.getByRole('button', {name: "open folder location"}).click()
-// 	await window.locator('input[name="location"]').fill('/home/bobby/Downloads')
-// 	await window.getByRole('button', {name: "Export"}).click()
-// });
+test('Export the project', async () => {
+	await window.click('[aria-label=unstar-expand-project]')
+	await window.click('[aria-label=unstar-menu-project]')
+	await window.getByRole('menuitem', {name: "Export"}).click()
+	await window.getByRole('button', {name: "open folder location"}).click()
+	await window.locator('input[name="location"]').fill('/home/bobby/Downloads')
+	await window.getByRole('button', {name: "Export"}).click()
+});
 
-// test('Cancel the export project', async () => {
-// 	// await window.click('[aria-label=unstar-expand-project]')
-// 	await window.click('[aria-label=unstar-menu-project]')
-// 	await window.getByRole('menuitem', {name: "Export"}).click()
-// 	await window.getByRole('button', {name: "open folder location"}).click()
-// 	// await window.locator('input[name="location"]').fill('/home/bobby/Downloads')
-// 	await window.getByRole('button', {name: "Cancel"}).click()
-// });
+test('Cancel the export project', async () => {
+	// await window.click('[aria-label=unstar-expand-project]')
+	await window.click('[aria-label=unstar-menu-project]')
+	await window.getByRole('menuitem', {name: "Export"}).click()
+	await window.getByRole('button', {name: "open folder location"}).click()
+	// await window.locator('input[name="location"]').fill('/home/bobby/Downloads')
+	await window.getByRole('button', {name: "Cancel"}).click()
+});
 
-// test('Archive the project', async () => {
-// 	// await window.click('[aria-label=unstar-expand-project]')
-// 	await window.click('[aria-label=unstar-menu-project]')
-// 	await window.getByRole('menuitem', {name: "Archive"}).click()
-// });
+test('Archive the project', async () => {
+	// await window.click('[aria-label=unstar-expand-project]')
+	await window.click('[aria-label=unstar-menu-project]')
+	await window.getByRole('menuitem', {name: "Archive"}).click()
+});
 
-// test('Restore the project from archive tab and return to projects', async () => {
-// 	await window.getByRole('button', {name: "Archived"}).click()
-// 	await window.click('[aria-label=unstar-expand-project]')
-// 	await window.click('[aria-label=unstar-menu-project]')
-// 	await window.getByRole('menuitem', {name: "Restore"}).click()
-// 	await window.getByRole('button', {name: 'Active'}).click()
-// });
+test('Restore the project from archive tab and return to projects', async () => {
+	await window.getByRole('button', {name: "Archived"}).click()
+	await window.click('[aria-label=unstar-expand-project]')
+	await window.click('[aria-label=unstar-menu-project]')
+	await window.getByRole('menuitem', {name: "Restore"}).click()
+	await window.getByRole('button', {name: 'Active'}).click()
+});
 
+
+///update the user profile
 // test('Update user profile', async () => {
 // 	await window.getByRole('button', {name: "Open user menu"}).click()
 // 	await window.getByRole('menuitem', {name: "Your Profile"}).click()
@@ -611,6 +608,8 @@ test('Increase/Decrease volume the audio verse 1', async () => {
 // 	// expect(await window.title()).toBe('Scribe Scripture');
 // });
 
+
+///Login page
 // test('Click the View More button, see active users in the tab, and click See the project. ',async () => {
 // 	await window.getByRole('button', {name: "View More"}).click()
 // 	const active = await window.getByRole('tab').allInnerTexts()
@@ -639,4 +638,8 @@ test('Increase/Decrease volume the audio verse 1', async () => {
 // 	await window.getByRole('tabpanel', {name: "Archived"}).locator('button').click()
 // 	const archive = await window.getByRole('tab').allInnerTexts()
 // 	expect(archive[1]).toBe('Archived')
+// })
+
+// test('Deleting the created user', async () => {
+// 	await window.
 // })
