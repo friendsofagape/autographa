@@ -6,6 +6,7 @@ import React, {
 import PropTypes from 'prop-types';
 
 import * as localforage from 'localforage';
+import { splitStringByLastOccurance } from '@/util/splitStringByLastMarker';
 import { isElectron } from '../../core/handleElectron';
 import * as logger from '../../logger';
 
@@ -77,9 +78,10 @@ export default function ReferenceContextProvider({ children }) {
   };
 
   useEffect(() => {
-    localforage.getItem('currentProject').then((projectName) => {
+    localforage.getItem('currentProject').then(async (projectName) => {
       if (projectName) {
-        const _projectname = projectName?.split('_');
+        // const _projectname = projectName?.split('_');
+        const _projectname = await splitStringByLastOccurance(projectName, '_');
         localforage.getItem('projectmeta').then((val) => {
           Object?.entries(val).forEach(
             ([, _value]) => {

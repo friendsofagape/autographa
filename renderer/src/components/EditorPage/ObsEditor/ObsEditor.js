@@ -11,6 +11,7 @@ import { ReferenceContext } from '@/components/context/ReferenceContext';
 import writeToFile from '@/core/editor/writeToFile';
 import { saveReferenceResource } from '@/core/projects/updateAgSettings';
 import moment from 'moment';
+import { splitStringByLastOccurance } from '@/util/splitStringByLastMarker';
 import EditorPanel from './EditorPanel';
 import * as logger from '../../../logger';
 import packageInfo from '../../../../../package.json';
@@ -74,7 +75,7 @@ const ObsEditor = () => {
         refs.forEach(() => {
           readRefBurrito({
             metaPath,
-          }).then((data) => {
+          }).then(async (data) => {
             if (data) {
               const _data = JSON.parse(data);
               Object.entries(_data.ingredients).forEach(
@@ -83,8 +84,9 @@ const ObsEditor = () => {
                   const dirName = folderName[0];
                   setDirectoryName(dirName);
                   // Fetching data from projectmeta and updating the navigation and lastSeen back
-                  localforage.getItem('currentProject').then((projectName) => {
-                    const _projectname = projectName?.split('_');
+                  localforage.getItem('currentProject').then(async (projectName) => {
+                    const _projectname = await splitStringByLastOccurance(projectName, '_');
+                    // const _projectname = projectName?.split('_');
                     localforage.getItem('projectmeta').then((value) => {
                       Object.entries(value).forEach(
                         ([, _value]) => {
