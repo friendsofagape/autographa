@@ -20,6 +20,7 @@ export default function ResourcesPopUp(
     selectedResource,
     setReferenceResources,
     header,
+    selectedProjectMeta,
   },
 ) {
   const cancelButtonRef = useRef(null);
@@ -110,7 +111,7 @@ export default function ResourcesPopUp(
               </button>
             </div>
             <div className="flex border bg-white">
-              <ResourcesSidebar selectResource={selectResource} setSelectResource={setSelectResource} setShowInput={setShowInput} setTitle={setTitle} />
+              <ResourcesSidebar selectResource={selectResource} setSelectResource={setSelectResource} setShowInput={setShowInput} setTitle={setTitle} selectedProjectMeta={selectedProjectMeta} />
               <div className="h-[85vh] w-full overflow-x-scroll bg-gray-50 items-center p-3 justify-between">
                 <SearchBar
                   currentFullResources={currentFullResources}

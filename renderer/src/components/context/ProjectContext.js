@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import * as localforage from 'localforage';
+import { splitStringByLastOccurance } from '@/util/splitStringByLastMarker';
 import { isElectron } from '../../core/handleElectron';
 import * as logger from '../../logger';
 import saveProjectsMeta from '../../core/projects/saveProjetcsMeta';
@@ -41,6 +42,7 @@ const ProjectContextProvider = ({ children }) => {
     });
     const [username, setUsername] = React.useState();
     const [selectedProject, setSelectedProject] = React.useState();
+    const [selectedProjectMeta, setSelectedProjectMeta] = React.useState();
     const [importedFiles, setImportedFiles] = React.useState([]);
     const [sideBarTab, setSideBarTab] = useState('');
 
@@ -301,8 +303,23 @@ const ProjectContextProvider = ({ children }) => {
         localforage.getItem('userProfile').then((value) => {
           setUsername(value?.username);
         });
-          localforage.getItem('currentProject').then((projectName) => {
+        localforage.getItem('currentProject').then((projectName) => {
             setSelectedProject(projectName);
+            // setProjectMeta in a var
+            localforage.getItem('projectmeta').then((projectMeta) => {
+              setSelectedProject(projectName);
+              // setProjectMeta in a var
+              projectMeta?.projects.forEach((meta) => {
+                const currentprojectId = Object.keys(meta.identification.primary[packageInfo.name])[0];
+                const currentprojectName = meta.identification.name.en;
+                splitStringByLastOccurance(projectName, '_').then((arr) => {
+                  if (arr.length > 0 && arr[0].toLowerCase() === currentprojectName.toLowerCase()
+                   && arr[1].toLowerCase() === currentprojectId.toLocaleLowerCase()) {
+                    setSelectedProjectMeta(meta);
+                   }
+                });
+              });
+            });
           });
       }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -327,6 +344,7 @@ const ProjectContextProvider = ({ children }) => {
             openSideBar,
             editorSave,
             sideBarTab,
+            selectedProjectMeta,
         },
         actions: {
             setDrawer,
@@ -347,6 +365,7 @@ const ProjectContextProvider = ({ children }) => {
             setLanguages,
             setEditorSave,
             setSideBarTab,
+            setSelectedProjectMeta,
         },
     };
 

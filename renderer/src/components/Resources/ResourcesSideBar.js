@@ -19,6 +19,7 @@ export default function ResourcesSidebar({
   setSelectResource,
   setShowInput,
   setTitle,
+  selectedProjectMeta,
 }) {
   const { t } = useTranslation();
 
@@ -27,11 +28,24 @@ export default function ResourcesSidebar({
   };
   useEffect(() => {
     if (!selectResource) {
-      setSelectResource('bible');
+      switch (selectedProjectMeta.type.flavorType.flavor.name) {
+        case 'textTranslation':
+          setSelectResource('bible');
+          break;
+        case 'textStories':
+          setSelectResource('obs');
+          break;
+        case 'audioTranslation':
+          setSelectResource('audio');
+          break;
+        default:
+        setSelectResource('bible');
+        break;
+      }
       setTitle('Bible');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [selectedProjectMeta]);
   const resourcesList = [
     {
       id: 'bible',
