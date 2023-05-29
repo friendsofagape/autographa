@@ -509,6 +509,96 @@ test('Return and see created projects in projects page', async () => {
 	expect(title).toBe('Projects');
 });
 
+////Export all the project
+test('Export the text Translation project in Downloads folder', async () => {
+	const table =  window.getByTestId('tablelayout')
+	const headers = table.locator('thead')
+	console.log(await headers.allTextContents());
+	
+	const rows = table.locator('tbody tr')
+	// const cols = rows.first().locator('td')
+	for (let i = 0; i < await rows.count(); i++) {
+		const row = rows.nth(i);
+		const tds = row.locator('td');
+		for (let j = 0; j < await tds.count(); j++) {
+			if (await tds.nth(j).textContent() === "translation project") {
+				 console.log(await tds.nth(1).textContent())
+				await tds.last().locator('[aria-label=unstar-expand-project]').click()
+				await window.locator('.pl-5 > div > div').click()
+				await window.getByRole('menuitem', {name: "Export"}).click()
+				await window.locator('input[name="location"]').fill('/home/bobby/Downloads')
+				await window.getByRole('button', {name: "Export"}).click()
+				await window.waitForTimeout(1500)
+				await window.locator('[aria-label=unstar-arrow-up]').click()
+				const title = await window.textContent('[aria-label=projects]');
+				expect(title).toBe('Projects');
+			}
+			
+		}
+
+	}
+})
+
+test('Export the OBS Translation project in Downloads folder', async () => {
+	const table =  window.getByTestId('tablelayout')
+	const headers = table.locator('thead')
+	console.log(await headers.allTextContents());
+	
+	const rows = table.locator('tbody tr')
+	// const cols = rows.first().locator('td')
+	for (let i = 0; i < await rows.count(); i++) {
+		const row = rows.nth(i);
+		const tds = row.locator('td');
+		for (let j = 0; j < await tds.count(); j++) {
+			if (await tds.nth(j).textContent() === "Obs project") {
+				 console.log(await tds.nth(1).textContent())
+				await tds.last().locator('[aria-label=unstar-expand-project]').click()
+				await window.locator('.pl-5 > div > div').click()
+				await window.getByRole('menuitem', {name: "Export"}).click()
+				await window.locator('input[name="location"]').fill('/home/bobby/Downloads')
+				await window.getByRole('button', {name: "Export"}).click()
+				await window.locator('[aria-label=unstar-arrow-up]').click()
+				await window.waitForTimeout(1500)
+				const title = await window.textContent('[aria-label=projects]');
+				expect(title).toBe('Projects');
+			}
+			
+		}
+
+	}
+})
+
+test('Export the Audio Translation project Downloads folder', async () => {
+	const table =  window.getByTestId('tablelayout')
+	const headers = table.locator('thead')
+	console.log(await headers.allTextContents());
+	
+	const rows = table.locator('tbody tr')
+	// const cols = rows.first().locator('td')
+	for (let i = 0; i < await rows.count(); i++) {
+		const row = rows.nth(i);
+		const tds = row.locator('td');
+		for (let j = 0; j < await tds.count(); j++) {
+			if (await tds.nth(j).textContent() === "Audio project") {
+				 console.log(await tds.nth(1).textContent())
+				await tds.last().locator('[aria-label=unstar-expand-project]').click()
+				await window.locator('.pl-5 > div > div').click()
+				await window.getByRole('menuitem', {name: "Export"}).click()
+				await window.locator('input[name="location"]').fill('/home/bobby/Downloads')
+				await window.getByRole('button', {name: "Export"}).click()
+				await window.locator('[aria-label=unstar-arrow-up]').click()
+				await window.waitForTimeout(1500)
+				const title = await window.textContent('[aria-label=projects]');
+				expect(title).toBe('Projects');
+			}
+			
+		}
+
+	}
+})
+
+
+
 
 ///Archive and Restore the project
 ///texttranslation
@@ -581,6 +671,7 @@ test('Archive the OBS project', async () => {
 				await tds.last().locator('[aria-label=unstar-expand-project]').click()
 				await window.locator('.pl-5 > div > div').click()
 				await window.getByRole('menuitem', {name: "Archive"}).click()
+				await window.locator('[aria-label=unstar-arrow-up]').click()
 				const title = await window.textContent('[aria-label=projects]');
 				expect(title).toBe('Projects');
 			}
@@ -633,6 +724,7 @@ test('Archive the Audio project', async () => {
 				await tds.last().locator('[aria-label=unstar-expand-project]').click()
 				await window.locator('.pl-5 > div > div').click()
 				await window.getByRole('menuitem', {name: "Archive"}).click()
+				await window.locator('[aria-label=unstar-arrow-up]').click()
 				const title = await window.textContent('[aria-label=projects]');
 				expect(title).toBe('Projects');
 			}
