@@ -1,3 +1,4 @@
+import * as localForage from 'localforage';
 import { test, expect } from '@playwright/test';
 
 const fs = require('fs');
@@ -25,7 +26,7 @@ test('Check for Scribe Scripture app render', async () => {
 
 // test('Click New and Fill translation project page details to create a new project', async () => {
 // 	await window.getByRole('link', {name : 'new'}).click()
-// 	await window.fill('#project_name', 'translation');
+// 	await window.fill('#project_name', 'audio project');
 // 	await window.fill('#project_description', 'test version');
 // 	await window.fill('#version_abbreviated', 'test');
 // 	await window.click('#open-advancesettings');
@@ -35,7 +36,7 @@ test('Check for Scribe Scripture app render', async () => {
 // });
 
 // test('Archive the textTranslation project', async () => {
-// 	const table =  window.getByTestId('tablelayout')
+// 	const table =  window.locator('table#tablelayout')
 // 	const headers = table.locator('thead')
 // 	console.log(await headers.allTextContents());
 	
@@ -59,8 +60,33 @@ test('Check for Scribe Scripture app render', async () => {
 // 	}
 // });
 
-test('Restore the textTranslation project from the archive tab and return to the projects', async () => {
-	await window.getByRole('button', {name: "Archived"}).click()
+// test('Restore the textTranslation project from the archive tab and return to the projects', async () => {
+// 	await window.getByRole('button', {name: "Archived"}).click()
+// 	const table =  window.locator('table#tablelayout')
+// 	const headers = table.locator('thead')
+// 	console.log(await headers.allTextContents());
+	
+// 	const rows = table.locator('tbody tr')
+// 	// const cols = rows.first().locator('td')
+// 	for (let i = 0; i < await rows.count(); i++) {
+// 		const row = rows.nth(i);
+// 		const tds = row.locator('td');
+// 		for (let j = 0; j < await tds.count(); j++) {
+// 			if (await tds.nth(j).textContent() === "translation") {
+// 				 console.log(await tds.nth(1).textContent())
+// 				await tds.last().locator('[aria-label=unstar-expand-project]').click()
+// 				await window.locator('.pl-5 > div > div').click()
+// 				await window.getByRole('menuitem', {name: "Restore"}).click()
+// 				expect(await window.locator('[id="__next"] div:has-text("Archived Projects") >> nth=4'));
+// 			}
+			
+// 		}
+
+// 	}
+// 	await window.getByRole('button', {name: 'Active'}).click()
+// });
+
+test('Export the text Translation project in Downloads folder', async () => {
 	const table =  window.getByTestId('tablelayout')
 	const headers = table.locator('thead')
 	console.log(await headers.allTextContents());
@@ -71,19 +97,69 @@ test('Restore the textTranslation project from the archive tab and return to the
 		const row = rows.nth(i);
 		const tds = row.locator('td');
 		for (let j = 0; j < await tds.count(); j++) {
-			if (await tds.nth(j).textContent() === "translation") {
+			if (await tds.nth(j).textContent() === "audio project") {
 				 console.log(await tds.nth(1).textContent())
 				await tds.last().locator('[aria-label=unstar-expand-project]').click()
 				await window.locator('.pl-5 > div > div').click()
-				await window.getByRole('menuitem', {name: "Restore"}).click()
-				expect(await window.locator('[id="__next"] div:has-text("Archived Projects") >> nth=4'));
+				await window.getByRole('menuitem', {name: "Export"}).click()
+				await window.locator('input[name="location"]').fill('/home/bobby/Downloads')
+				await window.getByRole('button', {name: "Export"}).click()
 			}
 			
 		}
 
 	}
-	await window.getByRole('button', {name: 'Active'}).click()
-});
+})
+
+// test('Export the OBS Translation project in Downloads folder', async () => {
+// 	const table =  window.getByTestId('tablelayout')
+// 	const headers = table.locator('thead')
+// 	console.log(await headers.allTextContents());
+	
+// 	const rows = table.locator('tbody tr')
+// 	// const cols = rows.first().locator('td')
+// 	for (let i = 0; i < await rows.count(); i++) {
+// 		const row = rows.nth(i);
+// 		const tds = row.locator('td');
+// 		for (let j = 0; j < await tds.count(); j++) {
+// 			if (await tds.nth(j).textContent() === "Obs project") {
+// 				 console.log(await tds.nth(1).textContent())
+// 				await tds.last().locator('[aria-label=unstar-expand-project]').click()
+// 				await window.locator('.pl-5 > div > div').click()
+// 				await window.getByRole('menuitem', {name: "Export"}).click()
+// 				await window.locator('input[name="location"]').fill('/home/bobby/Downloads')
+// 				await window.getByRole('button', {name: "Export"}).click()
+// 			}
+			
+// 		}
+
+// 	}
+// })
+
+// test('Export the Audio Translation project Downloads folder', async () => {
+// 	const table =  window.getByTestId('tablelayout')
+// 	const headers = table.locator('thead')
+// 	console.log(await headers.allTextContents());
+	
+// 	const rows = table.locator('tbody tr')
+// 	// const cols = rows.first().locator('td')
+// 	for (let i = 0; i < await rows.count(); i++) {
+// 		const row = rows.nth(i);
+// 		const tds = row.locator('td');
+// 		for (let j = 0; j < await tds.count(); j++) {
+// 			if (await tds.nth(j).textContent() === "Obs project") {
+// 				 console.log(await tds.nth(1).textContent())
+// 				await tds.last().locator('[aria-label=unstar-expand-project]').click()
+// 				await window.locator('.pl-5 > div > div').click()
+// 				await window.getByRole('menuitem', {name: "Export"}).click()
+// 				await window.locator('input[name="location"]').fill('/home/bobby/Downloads')
+// 				await window.getByRole('button', {name: "Export"}).click()
+// 			}
+			
+// 		}
+
+// 	}
+// })
 
 // test('Click user and Navigate projects', async () => {
 // 	await window.click('#bobby');
@@ -91,6 +167,7 @@ test('Restore the textTranslation project from the archive tab and return to the
 // 	expect(title).toBe('Projects');
 // 	// await electronApp.close();
 // });
+
 
 /* Translation Editor */
 // test('Click on project to open editor page', async () => {

@@ -549,7 +549,7 @@ test('Restore the textTranslation project from the archive tab and return to the
 		const row = rows.nth(i);
 		const tds = row.locator('td');
 		for (let j = 0; j < await tds.count(); j++) {
-			if (await tds.nth(j).textContent() === "translation") {
+			if (await tds.nth(j).textContent() === "translation project") {
 				 console.log(await tds.nth(1).textContent())
 				await tds.last().locator('[aria-label=unstar-expand-project]').click()
 				await window.locator('.pl-5 > div > div').click()
@@ -576,7 +576,7 @@ test('Archive the OBS project', async () => {
 		const row = rows.nth(i);
 		const tds = row.locator('td');
 		for (let j = 0; j < await tds.count(); j++) {
-			if (await tds.nth(j).textContent() === "translation project") {
+			if (await tds.nth(j).textContent() === "Obs project") {
 				 console.log(await tds.nth(1).textContent())
 				await tds.last().locator('[aria-label=unstar-expand-project]').click()
 				await window.locator('.pl-5 > div > div').click()
@@ -602,7 +602,7 @@ test('Restore the OBS project from the archive tab and return to the projects', 
 		const row = rows.nth(i);
 		const tds = row.locator('td');
 		for (let j = 0; j < await tds.count(); j++) {
-			if (await tds.nth(j).textContent() === "urdu project") {
+			if (await tds.nth(j).textContent() === "Obs project") {
 				 console.log(await tds.nth(1).textContent())
 				await tds.last().locator('[aria-label=unstar-expand-project]').click()
 				await window.locator('.pl-5 > div > div').click()
@@ -617,7 +617,7 @@ test('Restore the OBS project from the archive tab and return to the projects', 
 });
 
 ///audio
-test('Archive the textTranslation project', async () => {
+test('Archive the Audio project', async () => {
 	const table =  window.getByTestId('tablelayout')
 	const headers = table.locator('thead')
 	console.log(await headers.allTextContents());
@@ -643,7 +643,6 @@ test('Archive the textTranslation project', async () => {
 });
 
 test('Restore the Audio project from the archive tab and return to the projects', async () => {
-	await window.getByRole('button', {name: "Archived"}).click()
 	const table =  window.getByTestId('tablelayout')
 	const headers = table.locator('thead')
 	console.log(await headers.allTextContents());
