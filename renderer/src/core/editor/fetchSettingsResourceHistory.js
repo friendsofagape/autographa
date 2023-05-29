@@ -1,6 +1,5 @@
 import localforage from 'localforage';
 import { splitStringByLastOccurance } from '@/util/splitStringByLastMarker';
-import { async } from 'translation-helps-rcl/dist/hooks/useUserBranch';
 import isBackendProjectExist from '../projects/existProjectInBackEnd';
 import * as logger from '../../logger';
 
