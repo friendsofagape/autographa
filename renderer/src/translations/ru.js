@@ -84,6 +84,7 @@ export const Ru = {
     'label-resource-name': 'Название ресурса',
     'label-footnotes': 'Примечания',
     'label-location': 'расположение',
+    'label-resource-obs-twl': 'ОБС Список слов',
     'placeholder-resource-name': 'Введите имя ресурса',
     'placeholder-license-name': 'Название лицензии',
     'placeholder-search': 'Поиск…',
