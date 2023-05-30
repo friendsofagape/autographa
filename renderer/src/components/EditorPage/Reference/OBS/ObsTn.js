@@ -62,7 +62,7 @@ function ObsTnCard({
   }, [items, index]);
   useEffect(() => {
     async function fetchData() {
-      await getObsTn(owner, `${languageId}_${resourceId}`, `content/${chapter.toString().padStart(2, 0)}`, chapter, languageId)
+      await getObsTn(owner, `${languageId}_${resourceId}`, `content/${chapter.toString().padStart(2, 0)}`, chapter, languageId, scrollLock)
       .then((data) => {
         setItems(data);
       });
@@ -124,7 +124,7 @@ function ObsTnCard({
     } else if (offlineResource && offlineResource.offline) {
       fetchOfflineData();
     }
-  }, [chapter, languageId, owner, resourceId, offlineResource]);
+  }, [chapter, languageId, owner, resourceId, offlineResource, scrollLock]);
 
   return (
     markdown ? (

@@ -51,6 +51,9 @@ function ObsTwlCard({
         setStory([]);
         setIndex(-1);
       }
+    } else if (scrollLock === true && items.length !== 0) {
+      setStory(items);
+      setIndex(0);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedStory, items]);
@@ -64,7 +67,7 @@ function ObsTwlCard({
   }, [index]);
   useEffect(() => {
     async function fetchData() {
-      await getObsTn(owner, `${languageId}_${resourceId}`, `content/${chapter.toString().padStart(2, 0)}`, chapter, languageId)
+      await getObsTn(owner, `${languageId}_${resourceId}`, `content/${chapter.toString().padStart(2, 0)}`, chapter, languageId, scrollLock)
       .then((data) => {
         setItems(data);
       });
@@ -75,7 +78,7 @@ function ObsTwlCard({
     if (offlineResource && !offlineResource.offline) {
       fetchData();
     }
-  }, [chapter, languageId, owner, resourceId, offlineResource]);
+  }, [chapter, languageId, owner, resourceId, offlineResource, scrollLock]);
   return (
     markdown ? (
       <ObsResourceCard
