@@ -12,6 +12,7 @@ import AboutModal from '../editor/AboutModal';
 
 export default function SideBar() {
   const [open, setOpen] = useState(false);
+  // eslint-disable-next-line no-unused-vars
   const [appMode, setAppMode] = useState();
   const { t } = useTranslation();
   useEffect(() => {

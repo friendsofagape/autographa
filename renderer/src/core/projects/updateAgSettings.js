@@ -1,4 +1,5 @@
 import localforage from 'localforage';
+import { splitStringByLastOccurance } from '@/util/splitStringByLastMarker';
 import * as logger from '../../logger';
 import { environment } from '../../../environment';
 
@@ -25,8 +26,8 @@ export const updateAgSettings = async (username, projectName, data) => {
 };
 export const saveReferenceResource = () => {
   logger.debug('updateAgSettings.js', 'In saveReferenceResource for saving the reference data');
-  localforage.getItem('currentProject').then((projectName) => {
-    const _projectname = projectName?.split('_');
+  localforage.getItem('currentProject').then(async (projectName) => {
+    const _projectname = await splitStringByLastOccurance(projectName, '_');
     localforage.getItem('projectmeta').then((value) => {
       Object.entries(value).forEach(
         ([, _value]) => {

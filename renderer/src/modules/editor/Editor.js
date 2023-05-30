@@ -9,6 +9,7 @@ import { useTranslation } from 'react-i18next';
 import NavigationObs from '@/components/EditorPage/ObsEditor/NavigationObs';
 import BibleNavigation from '@/modules/biblenavigation/BibleNavigation';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
+import { splitStringByLastOccurance } from '@/util/splitStringByLastMarker';
 import { ProjectContext } from '@/components/context/ProjectContext';
 import LockClosedIcon from '@/icons/Gallery/LockClosed.svg';
 import LockOpenIcon from '@/icons/Gallery/LockOpen.svg';
@@ -58,8 +59,8 @@ export default function Editor({
   }, [bookName, bookmarksVerses, chapter]);
 
   const updateBookMarksDB = (bookmarksVerses) => {
-    localforage.getItem('currentProject').then((projectName) => {
-      const _projectname = projectName?.split('_');
+    localforage.getItem('currentProject').then(async (projectName) => {
+      const _projectname = await splitStringByLastOccurance(projectName, '_');
       localforage.getItem('projectmeta').then((value) => {
         Object?.entries(value).forEach(
           ([, _value]) => {

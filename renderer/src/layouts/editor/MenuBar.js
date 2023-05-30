@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Disclosure,
 } from '@headlessui/react';
@@ -10,6 +10,7 @@ import { ReferenceContext } from '@/components/context/ReferenceContext';
 import { ProjectContext } from '@/components/context/ProjectContext';
 import { saveReferenceResource } from '@/core/projects/updateAgSettings';
 import UserProfile from '@/components/Profile/UserProfile';
+import { splitStringByLastOccurance } from '@/util/splitStringByLastMarker';
 import ArrowLeftIcon from '@/icons/Common/ArrowLeft.svg';
 import styles from './MenuBar.module.css';
 import LogoIcon from '@/icons/logo.svg';
@@ -33,9 +34,18 @@ export default function TopMenuBar() {
     },
   } = useContext(ReferenceContext);
 
+  const [projectname, setprojectname] = useState(undefined);
+
   const { t } = useTranslation();
-  const _projectnamewithId = selectedProject;
-  const projectname = _projectnamewithId?.split('_');
+
+  useEffect(() => {
+    (async () => {
+      if (selectedProject && !projectname) {
+        const splitProjectName = await splitStringByLastOccurance(selectedProject, '_');
+        setprojectname(splitProjectName);
+      }
+    })();
+  }, [selectedProject, projectname]);
 
   function closeSideBar(open) {
     setOpenSideBar(open);
