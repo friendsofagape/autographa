@@ -3,7 +3,7 @@ import * as logger from '../../../../logger';
 import ObsTsvToChapterLevelMd from './ObsTsvToChapterLevel';
 import tsvJSON from './TsvToJson';
 
-export const getObsTn = async (owner, repo, path, chapter) => {
+export const getObsTn = async (owner, repo, path, chapter, languageId, scrollLock) => {
   logger.debug('getObsTn.js', 'Fetch Tn content of OBS');
   const BaseUrl = 'https://git.door43.org/api/v1/repos/';
   const error = {};
@@ -44,7 +44,7 @@ export const getObsTn = async (owner, repo, path, chapter) => {
           if (tsvfetchResp.ok) {
             const tsvData = await tsvfetchResp.text();
             const obsTsvJson = tsvData && await tsvJSON(tsvData);
-            await ObsTsvToChapterLevelMd(obsTsvJson, chapter).then((chapterTsvData) => {
+            await ObsTsvToChapterLevelMd(obsTsvJson, chapter, `${BaseUrl}${owner}/${languageId}_tw/contents`, repo, scrollLock).then((chapterTsvData) => {
               logger.debug('inside OBS TN online  TSV resource : generated chapter Md level occurencenot Array');
               error.status = false;
               resolve(chapterTsvData);

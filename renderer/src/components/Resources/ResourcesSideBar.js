@@ -89,6 +89,12 @@ export default function ResourcesSidebar({
           resourceType: 'obsTranslationQuestion',
           Icon: QuestionMarkCircleIcon,
         },
+        {
+          id: 'obs-twlm',
+          title: t('label-resource-obs-twl'),
+          resourceType: 'obsTranslationWordList',
+          Icon: PhotoIcon,
+        },
       ],
     },
     {

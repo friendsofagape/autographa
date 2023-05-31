@@ -7,6 +7,7 @@ import React, {
 import localForage from 'localforage';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import { ProjectContext } from '@/components/context/ProjectContext';
+import LoadingScreen from '@/components/Loading/LoadingScreen';
 import { getObsTn } from './getObsTn';
 import ObsResourceCard from './ObsResourceCard';
 import * as logger from '../../../../logger';
@@ -54,14 +55,14 @@ function ObsTnCard({
   }, [selectedStory]);
   useEffect(() => {
     if (items.length !== 0) {
-      setMarkdown(items[index]?.OccurrenceNote);
+      setMarkdown(items[index]?.OccurrenceNote ? items[index]?.OccurrenceNote : 'No Content Available for the selected Line');
     } else {
       setMarkdown('');
     }
   }, [items, index]);
   useEffect(() => {
     async function fetchData() {
-      await getObsTn(owner, `${languageId}_${resourceId}`, `content/${chapter.toString().padStart(2, 0)}`, chapter)
+      await getObsTn(owner, `${languageId}_${resourceId}`, `content/${chapter.toString().padStart(2, 0)}`, chapter, languageId, scrollLock)
       .then((data) => {
         setItems(data);
       });
@@ -123,7 +124,7 @@ function ObsTnCard({
     } else if (offlineResource && offlineResource.offline) {
       fetchOfflineData();
     }
-  }, [chapter, languageId, owner, resourceId, offlineResource]);
+  }, [chapter, languageId, owner, resourceId, offlineResource, scrollLock]);
 
   return (
     markdown ? (
@@ -141,7 +142,7 @@ function ObsTnCard({
         index={index}
         setIndex={(v) => setIndex(v)}
       />
-) : ''
+    ) : <LoadingScreen />
   );
 }
 

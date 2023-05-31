@@ -85,6 +85,7 @@ export const Hi = {
     'label-resource-name': 'संसाधन का नाम',
     'label-footnotes': 'फुट नोट्स',
     'label-location': 'स्थान',
+    'label-resource-obs-twl': 'OBS अनुवाद शब्द सूची',
     'placeholder-resource-name': 'संसाधन का नाम दर्ज करें',
     'placeholder-license-name': 'लाइसेंस का नाम',
     'placeholder-search': 'खोजें…',

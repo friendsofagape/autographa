@@ -86,6 +86,7 @@ export const En = {
     'label-footnotes': 'Foot Notes',
     'label-location': 'location',
     'label-audio-bible': 'Audio',
+    'label-resource-obs-twl': 'OBS Translation Words List',
     'placeholder-resource-name': 'Enter resource name',
     'placeholder-license-name': 'License Name',
     'placeholder-search': 'Search…',

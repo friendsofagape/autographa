@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import TranslationHelpsCard from './TranslationHelpsCard';
 import ObsTnCard from './OBS/ObsTn';
+import ObsTwlCard from './OBS/ObsTwlCard';
 
 const TranslationHelps = ({
  selectedResource, languageId, refName, bookId, chapter, verse, owner, story, offlineResource,
@@ -165,6 +166,21 @@ const TranslationHelps = ({
               viewMode="default"
               languageId={languageId}
               resourceId="obs-tq"
+              owner={owner}
+              server="https://git.door43.org"
+              offlineResource={offlineResource}
+            />
+          );
+          case 'obs-twlm':
+          return (
+            <ObsTwlCard
+              title={t('label-resource-obs-twl')}
+              chapter={story}
+              verse="1"
+              branch={branch}
+              viewMode="default"
+              languageId={languageId}
+              resourceId="obs-twl"
               owner={owner}
               server="https://git.door43.org"
               offlineResource={offlineResource}

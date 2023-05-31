@@ -42,26 +42,26 @@ export const ListResources = ({
     },
   } = useContext(ProjectContext);
 
-  function createData(name, language, owner) {
-    return {
-      name, language, owner,
-    };
-  }
-
-  const translationWordLists = [
-    createData('English', 'en', 'Door43-catalog'),
-    createData('Spanish', 'es-419', 'es-419_gl'),
-  ];
+  // For loading Static data
+  // function createData(name, language, owner) {
+  //   return {
+  //     name, language, owner,
+  //   };
+  // }
+  // const translationWordLists = [
+  //   createData('English', 'en', 'Door43-catalog'),
+  //   createData('Spanish', 'es-419', 'es-419_gl'),
+  // ];
 
   const { t } = useTranslation();
-  // eslint-disable-next-line no-unused-vars
-  const [translationWordList, settranslationWordList] = useState(translationWordLists);
+  const [translationWordList, settranslationWordList] = useState([]);
   const [translationNote, setTranslationNote] = useState([]);
   const [translationQuestion, setTranslationQuestion] = useState([]);
   const [translationWord, settranslationWord] = useState([]);
   const [translationAcademy, setTranslationAcademy] = useState([]);
   const [obsTranslationNote, setObsTranslationNote] = useState([]);
   const [obsTranslationQuestion, setObsTranslationQuestion] = useState([]);
+  const [obsTranslationWordList, setObsTranslationWordList] = useState([]);
   const [renderApp, setRenderApp] = useState(false);
   const handleDownloadHelpsResources = async (event, reference, offlineResource) => {
     if (!downloading) {
@@ -102,6 +102,9 @@ export const ListResources = ({
         case 'tw':
           await fetchTranslationResource('Translation Words', settranslationWord, selectResource, selectedPreProd, snackBarAction);
           break;
+        case 'twlm':
+          await fetchTranslationResource('TSV Translation Words Links', settranslationWordList, selectResource, selectedPreProd, snackBarAction);
+          break;
         case 'tq':
           await fetchTranslationResource('Translation Questions', setTranslationQuestion, selectResource, selectedPreProd, snackBarAction);
           break;
@@ -110,6 +113,9 @@ export const ListResources = ({
           break;
         case 'obs-tq':
           await fetchTranslationResource('OBS Translation Questions', setObsTranslationQuestion, selectResource, selectedPreProd, snackBarAction);
+          break;
+        case 'obs-twlm':
+          await fetchTranslationResource('TSV OBS Translation Words Links', setObsTranslationWordList, selectResource, selectedPreProd, snackBarAction);
           break;
         case 'ta':
           await fetchTranslationResource('Translation Academy', setTranslationAcademy, selectResource, selectedPreProd, snackBarAction);
@@ -131,7 +137,8 @@ export const ListResources = ({
         { id: 'tq', title: t('label-resource-tq'), resource: translationQuestion },
         { id: 'ta', title: t('label-resource-ta'), resource: translationAcademy },
         { id: 'obs-tn', title: t('label-resource-obs-tn'), resource: obsTranslationNote },
-        { id: 'obs-tq', title: t('label-resource-obs-tq'), resource: obsTranslationQuestion }];
+        { id: 'obs-tq', title: t('label-resource-obs-tq'), resource: obsTranslationQuestion },
+        { id: 'obs-twlm', title: t('label-resource-obs-twl'), resource: obsTranslationWordList }];
       const reference = resources.find((r) => r.id === selectResource);
       const offlineResource = subMenuItems ? subMenuItems?.filter((item) => item?.value?.agOffline && item?.value?.dublin_core?.identifier === selectResource) : [];
       return { reference, offlineResource };
@@ -298,7 +305,7 @@ export const ListResources = ({
                     </div>
                   </td>
                   <td className="p-2">
-                    {filteredResources?.onlineResource?.id !== 'twlm' && (
+                    {(filteredResources?.onlineResource?.id !== 'twlm' && filteredResources?.onlineResource?.id !== 'obs-twlm') && (
                       <div
                         className="cursor-pointer focus:outline-none flex justify-center items-center"
                         role="button"
