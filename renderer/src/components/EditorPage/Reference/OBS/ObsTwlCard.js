@@ -51,9 +51,15 @@ function ObsTwlCard({
         setStory([]);
         setIndex(-1);
       }
-    } else if (scrollLock === true && items.length !== 0) {
-      setStory(items);
-      setIndex(0);
+    } else if (items.length !== 0) {
+      if (scrollLock === true) {
+        setStory(items);
+        setIndex(0);
+      } else {
+        setMarkdown('No Content Available for the selected Line');
+        setStory([]);
+        setIndex(-1);
+      }
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedStory, items]);
