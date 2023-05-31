@@ -14,6 +14,7 @@ import NavigationObs from '@/components/EditorPage/ObsEditor/NavigationObs';
 import BibleNavigation from '@/modules/biblenavigation/BibleNavigation';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import { ProjectContext } from '@/components/context/ProjectContext';
+import { splitStringByLastOccurance } from '@/util/splitStringByLastMarker';
 import * as logger from '../../logger';
 
 export default function Editor({
@@ -59,8 +60,9 @@ export default function Editor({
   }, [bookName, bookmarksVerses, chapter]);
 
   const updateBookMarksDB = (bookmarksVerses) => {
-    localforage.getItem('currentProject').then((projectName) => {
-      const _projectname = projectName?.split('_');
+    localforage.getItem('currentProject').then(async (projectName) => {
+      const _projectname = await splitStringByLastOccurance(projectName, '_');
+      // const _projectname = projectName?.split('_');
       localforage.getItem('projectmeta').then((value) => {
         Object?.entries(value).forEach(
           ([, _value]) => {

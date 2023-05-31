@@ -7,6 +7,7 @@ import ConfirmationModal from '@/layouts/editor/ConfirmationModal';
 import localForage from 'localforage';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import { TrashIcon } from '@heroicons/react/24/outline';
+import { splitStringByLastOccurance } from '@/util/splitStringByLastMarker';
 import * as logger from '../../../logger';
 import packageInfo from '../../../../../package.json';
 // import TrashSvg from '@/icons/basil/Outline/Interface/Trash.svg';
@@ -17,8 +18,9 @@ const path = require('path');
 const ResourceResetAfterCheckSameOnRefResourceAgSettings = async (setResetResourceOnDeleteOffline, resource) => {
   logger.debug('RemoveResource.js', 'Search for multiple pane open same resource before download');
   const refsHistory = [];
-    localForage.getItem('currentProject').then((projectName) => {
-    const _projectname = projectName?.split('_');
+    localForage.getItem('currentProject').then(async (projectName) => {
+      const _projectname = await splitStringByLastOccurance(projectName, '_');
+    // const _projectname = projectName?.split('_');
     localForage.getItem('projectmeta').then((value) => {
       Object.entries(value).forEach(
         ([, _value]) => {
