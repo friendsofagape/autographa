@@ -136,7 +136,6 @@ export function insertChapterNumber(caretPosition, chapterNumber) {
 }
 
 export function insertFootnote(caretPosition, footNote) {
-  console.log('insertFootnote', footNote);
   if (footNote && caretPosition) {
     const footnoteTag = `<span class="graft footnote" data-type="graft" data-subtype="footnote"  data-previewtext="${footNote}"></span>`;
     pasteHtmlAtCaret(footnoteTag, false, caretPosition);

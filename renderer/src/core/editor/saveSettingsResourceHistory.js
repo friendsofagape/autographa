@@ -1,4 +1,5 @@
 import localforage from 'localforage';
+import { splitStringByLastOccurance } from '@/util/splitStringByLastMarker';
 import { saveReferenceResource } from '../projects/updateAgSettings';
 import * as logger from '../../logger';
 
@@ -31,8 +32,9 @@ export async function saveSettingsResourceHistory(
     return new Promise((resolve) => {
     logger.debug('SaveSettingsResourceHistory.js', `call from placeholder : ${sectionPlaceholderNum}`);
     const refsHistory = [];
-    localforage.getItem('currentProject').then((projectName) => {
-    const _projectname = projectName?.split('_');
+    localforage.getItem('currentProject').then(async (projectName) => {
+    const _projectname = await splitStringByLastOccurance(projectName, '_');
+    // const _projectname = projectName?.split('_');
     localforage.getItem('projectmeta').then((value) => {
       Object?.entries(value).forEach(
         ([, _value]) => {

@@ -1,4 +1,5 @@
 import localforage from 'localforage';
+import { splitStringByLastOccurance } from '@/util/splitStringByLastMarker';
 import isBackendProjectExist from '../projects/existProjectInBackEnd';
 import * as logger from '../../logger';
 
@@ -57,8 +58,8 @@ export async function fetchSettingsResourceHistory(
         logger.debug('fetchSettingsResourceHistory.js', `call from placeholder : ${sectionPlaceholderNum}`);
         const refsHistory = [];
         const rows = [];
-        localforage.getItem('currentProject').then((projectName) => {
-        const _projectname = projectName?.split('_');
+        localforage.getItem('currentProject').then(async (projectName) => {
+          const _projectname = await splitStringByLastOccurance(projectName, '_');
         // looping through all projects to get the history
         localforage.getItem('projectmeta').then((value) => {
           Object.entries(value).forEach(
