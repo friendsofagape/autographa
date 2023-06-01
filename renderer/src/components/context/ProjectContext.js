@@ -304,23 +304,23 @@ const ProjectContextProvider = ({ children }) => {
           setUsername(value?.username);
         });
         localforage.getItem('currentProject').then((projectName) => {
+          setSelectedProject(projectName);
+          // setProjectMeta in a var
+          localforage.getItem('projectmeta').then((projectMeta) => {
             setSelectedProject(projectName);
             // setProjectMeta in a var
-            localforage.getItem('projectmeta').then((projectMeta) => {
-              setSelectedProject(projectName);
-              // setProjectMeta in a var
-              projectMeta?.projects.forEach((meta) => {
-                const currentprojectId = Object.keys(meta.identification.primary[packageInfo.name])[0];
-                const currentprojectName = meta.identification.name.en;
-                splitStringByLastOccurance(projectName, '_').then((arr) => {
-                  if (arr.length > 0 && arr[0].toLowerCase() === currentprojectName.toLowerCase()
-                   && arr[1].toLowerCase() === currentprojectId.toLocaleLowerCase()) {
-                    setSelectedProjectMeta(meta);
-                   }
-                });
+            projectMeta?.projects.forEach((meta) => {
+              const currentprojectId = Object.keys(meta.identification.primary[packageInfo.name])[0];
+              const currentprojectName = meta.identification.name.en;
+              splitStringByLastOccurance(projectName, '_').then((arr) => {
+                if (arr.length > 0 && arr[0].toLowerCase() === currentprojectName.toLowerCase()
+                  && arr[1].toLowerCase() === currentprojectId.toLocaleLowerCase()) {
+                  setSelectedProjectMeta(meta);
+                  }
               });
             });
           });
+        });
       }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
