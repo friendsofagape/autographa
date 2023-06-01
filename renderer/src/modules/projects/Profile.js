@@ -19,6 +19,7 @@ const languages = [
   { title: 'Hindi', code: 'hi' },
   { title: 'Russian', code: 'ru' },
   { title: 'Farsi', code: 'fa' },
+  { title: 'French', code: 'fr' },
 ];
 
 function ProgressCircle({ isFilled, count, text }) {
