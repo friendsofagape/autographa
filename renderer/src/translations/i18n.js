@@ -5,6 +5,8 @@ import { En } from './en';
 import { Hi } from './hi';
 import { Ru } from './ru';
 import { Fa } from './fa';
+import { Fr } from './fr';
+import { Ne } from './ne';
 
 i18n
   .use(initReactI18next)
@@ -22,6 +24,12 @@ i18n
       },
       fa: {
         translation: Fa,
+      },
+      fr: {
+        translation: Fr,
+      },
+      ne: {
+        translation: Ne,
       },
     },
 });
