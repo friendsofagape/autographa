@@ -128,10 +128,11 @@ export const useReadReferenceUsfmFile = ({
           });
           setNotifications(temp);
         });
-        return console.log(err);
+        return err;
       }
     }
     readLocalFile();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [bookId, refName, scrollLock]);
   return { usfmData, bookAvailable };
 };
