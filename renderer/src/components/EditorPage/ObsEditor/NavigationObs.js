@@ -71,6 +71,7 @@ export default function NavigationObs({ onChangeNumber, number }) {
             onClick={selectBook}
             role="button"
             tabIndex="-1"
+            aria-label="obs-navigation"
           >
             <ChevronDownIcon className="focus:outline-none inline h-4 w-4 mx-1 text-white" aria-hidden="true" />
           </span>
