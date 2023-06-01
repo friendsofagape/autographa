@@ -32,32 +32,34 @@ export default function PopoverProjectType(props) {
             leaveTo="opacity-0 translate-y-1"
           >
             <Popover.Panel className="absolute z-10 w-screen max-w-xs mt-3 transform -translate-x-1/2 left-1/2 sm:px-0">
-              <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
-                <div className="relative grid gap-0 bg-black p-4 grid-cols-2">
-                  {items.map((item) => (
-                    <a
-                      key={item.name}
-                      href={item.href}
-                      data-id={item.name}
-                      onClick={() => { handleDropDown(item.name); }}
-                      className="flex text-white hover:text-primary items-center justify-center flex-col py-3 transition duration-150 ease-in-out rounded-lg hover:bg-white focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
-                    >
+              {({ close }) => (
+                <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
+                  <div className="relative grid gap-0 bg-black p-4 grid-cols-2">
+                    {items.map((item) => (
+                      <a
+                        key={item.name}
+                        href={item.href}
+                        data-id={item.name}
+                        onClick={() => { handleDropDown(item.name); close(); }}
+                        className="flex text-white hover:text-primary items-center justify-center flex-col py-3 transition duration-150 ease-in-out rounded-lg hover:bg-white focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
+                      >
 
-                      <item.icon
-                        fill="currentColor"
-                        className="w-6 h-6 "
-                        aria-hidden="true"
-                      />
+                        <item.icon
+                          fill="currentColor"
+                          className="w-6 h-6 "
+                          aria-hidden="true"
+                        />
 
-                      <p className="mt-3 text-sm tracking-wider">
-                        {item.name}
-                      </p>
+                        <p className="mt-3 text-sm tracking-wider">
+                          {item.name}
+                        </p>
 
-                    </a>
+                      </a>
                   ))}
-                </div>
+                  </div>
 
-              </div>
+                </div>
+              )}
             </Popover.Panel>
           </Transition>
         </>
