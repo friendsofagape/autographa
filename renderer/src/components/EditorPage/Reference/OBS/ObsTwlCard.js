@@ -37,9 +37,11 @@ function ObsTwlCard({
   const {
     states: {
       scrollLock,
+      selectedProjectMeta,
     },
   } = useContext(ProjectContext);
   useEffect(() => {
+    const flavor = selectedProjectMeta.type.flavorType.flavor.name;
     if (selectedStory && scrollLock === false) {
       const i = items.findIndex((e) => (e[0].name)?.toString().padStart(2, '0') === (selectedStory - 1)?.toString().padStart(2, '0'));
       if (i > -1) {
@@ -51,7 +53,7 @@ function ObsTwlCard({
         setStory([]);
         setIndex(-1);
       }
-    } else if (items.length !== 0 && scrollLock === true) {
+    } else if (items.length !== 0 && ((scrollLock === true && flavor === 'textStories') || flavor !== 'textStories')) {
       setStory(items);
       setIndex(0);
     } else {
@@ -72,7 +74,8 @@ function ObsTwlCard({
   }, [index]);
   useEffect(() => {
     async function fetchData() {
-      await getObsTn(owner, `${languageId}_${resourceId}`, `content/${chapter.toString().padStart(2, 0)}`, chapter, languageId, scrollLock)
+      const flavor = selectedProjectMeta?.type?.flavorType?.flavor?.name;
+      await getObsTn(owner, `${languageId}_${resourceId}`, `content/${chapter.toString().padStart(2, 0)}`, chapter, languageId, scrollLock, flavor)
       .then((data) => {
         setItems(data);
       });
@@ -83,7 +86,7 @@ function ObsTwlCard({
     if (offlineResource && !offlineResource.offline) {
       fetchData();
     }
-  }, [chapter, languageId, owner, resourceId, offlineResource, scrollLock]);
+  }, [chapter, languageId, owner, resourceId, offlineResource, scrollLock, selectedProjectMeta?.type?.flavorType?.flavor?.name]);
   return (
     markdown ? (
       <ObsResourceCard
