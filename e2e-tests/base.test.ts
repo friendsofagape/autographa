@@ -1,6 +1,7 @@
 // @ts-check
 
 // import { _electron as electron } from 'playwright';
+import { removeUser } from '../renderer/src/core/Login/removeUser';
 import { test, expect } from '@playwright/test';
 
 const fs = require('fs');
@@ -31,7 +32,7 @@ test('Click New and Fill translation project page details to create a new projec
 	await window.getByRole('link', {name : 'new'}).click()
 	await window.fill('#project_name', 'translation project');
 	await window.fill('#project_description', 'test version');
-	await window.fill('#version_abbreviated', 'test');
+	await window.fill('#version_abbreviated', 'tv');
 	await window.click('#open-advancesettings');
 	await window.click('[aria-label=new-testament]');
 	await window.click('[aria-label=close-custombiblenavigation]');
@@ -118,6 +119,33 @@ test('Return to projects page', async () => {
 	expect(title).toBe('Projects');
 });
 
+test('Edit the text translation project along with change target project', async () => {
+	const table =  window.getByTestId('tablelayout')
+	const headers = table.locator('thead')
+	console.log(await headers.allTextContents());
+	const rows = table.locator('tbody tr')
+	// const cols = rows.first().locator('td')
+	for (let i = 0; i < await rows.count(); i++) {
+		const row = rows.nth(i);
+		const tds = row.locator('td');
+		for (let j = 0; j < await tds.count(); j++) {
+			if (await tds.nth(j).textContent() === "translation project") {
+				 console.log(await tds.nth(1).textContent())
+				await tds.last().locator('[aria-label=unstar-expand-project]').click()
+				await window.locator('[aria-label=unstar-menu-project]').click()
+				await window.getByRole('menuitem', {name: "edit-project"}).click()
+				await window.getByText('test version').fill('edit test version')
+				await window.locator('input[name="version_abbreviated"]').fill('tvs')
+				await window.getByRole('button', {name:"save-edit-project"}).click();
+				const title = await window.textContent('[aria-label=projects]');
+				expect(title).toBe('Projects')
+			}
+			
+		}
+		
+	}
+})
+
 
 ///Obs translation project
 test('Click New and Fill OBS project page details to create a new project.', async () => {
@@ -162,18 +190,19 @@ test('Update the Urdu project', async () => {
 			if (await tds.nth(j).textContent() === "urdu project") {
 				 console.log(await tds.nth(1).textContent())
 				await tds.last().locator('[aria-label=unstar-expand-project]').click()
+				await window.locator('[aria-label=unstar-menu-project]').click()
+				await window.getByRole('menuitem', {name: "edit-project"}).click()
+				await window.getByText('test version').fill('edit test version')
+				await window.locator('input[name="version_abbreviated"]').fill('ep')
+				await window.getByRole('button', {name:"save-edit-project"}).click();
+				const title = await window.textContent('[aria-label=projects]');
+				expect(title).toBe('Projects');
 			}
 			
 		}
 		
 	}
-		await window.locator('[aria-label=unstar-menu-project]').click()
-		await window.getByRole('menuitem', {name: "edit-project"}).click()
-		await window.getByText('test version').fill('edit test version')
-		await window.locator('input[name="version_abbreviated"]').fill('ep')
-		await window.getByRole('button', {name:"save-edit-project"}).click();
-		const title = await window.textContent('[aria-label=projects]');
-		expect(title).toBe('Projects');
+		
 })
 
 test('Star the obs project', async () => {
@@ -319,6 +348,34 @@ test('Return to the projects page to see all projects have been created already.
 	const title = await window.textContent('[aria-label=projects]');
 	expect(title).toBe('Projects');
 });
+
+test('Edit the Obs project', async () => {
+	const table =  window.getByTestId('tablelayout')
+	const headers = table.locator('thead')
+	console.log(await headers.allTextContents());
+	const rows = table.locator('tbody tr')
+	// const cols = rows.first().locator('td')
+	for (let i = 0; i < await rows.count(); i++) {
+		const row = rows.nth(i);
+		const tds = row.locator('td');
+		for (let j = 0; j < await tds.count(); j++) {
+			if (await tds.nth(j).textContent() === "Obs project") {
+				 console.log(await tds.nth(1).textContent())
+				await tds.last().locator('[aria-label=unstar-expand-project]').click()
+				await window.locator('[aria-label=unstar-menu-project]').click()
+				await window.getByRole('menuitem', {name: "edit-project"}).click()
+				await window.getByText('test version').fill('edit test version for obs')
+				await window.locator('input[name="version_abbreviated"]').fill('ep')
+				await window.getByRole('button', {name:"save-edit-project"}).click();
+				const title = await window.textContent('[aria-label=projects]');
+				expect(title).toBe('Projects');
+			}
+			
+		}
+		
+	}
+		
+})
 
 
 /////Audio project
@@ -509,7 +566,35 @@ test('Return and see created projects in projects page', async () => {
 	expect(title).toBe('Projects');
 });
 
-////Export all the project
+test('Edit the Audio project', async () => {
+	const table =  window.getByTestId('tablelayout')
+	const headers = table.locator('thead')
+	console.log(await headers.allTextContents());
+	const rows = table.locator('tbody tr')
+	// const cols = rows.first().locator('td')
+	for (let i = 0; i < await rows.count(); i++) {
+		const row = rows.nth(i);
+		const tds = row.locator('td');
+		for (let j = 0; j < await tds.count(); j++) {
+			if (await tds.nth(j).textContent() === "Audio project") {
+				 console.log(await tds.nth(1).textContent())
+				await tds.last().locator('[aria-label=unstar-expand-project]').click()
+				await window.locator('[aria-label=unstar-menu-project]').click()
+				await window.getByRole('menuitem', {name: "edit-project"}).click()
+				await window.getByText('test version').fill('edit test version for audio')
+				await window.locator('input[name="version_abbreviated"]').fill('ep')
+				await window.getByRole('button', {name:"save-edit-project"}).click();
+				const title = await window.textContent('[aria-label=projects]');
+				expect(title).toBe('Projects');
+			}
+			
+		}
+		
+	}
+		
+})
+
+//Export all the project
 test('Export the text Translation project in Downloads folder', async () => {
 	const table =  window.getByTestId('tablelayout')
 	const headers = table.locator('thead')
@@ -528,7 +613,7 @@ test('Export the text Translation project in Downloads folder', async () => {
 				await window.getByRole('menuitem', {name: "Export"}).click()
 				await window.locator('input[name="location"]').fill('/home/bobby/Downloads')
 				await window.getByRole('button', {name: "Export"}).click()
-				await window.waitForTimeout(1500)
+				await window.waitForTimeout(1000)
 				await window.locator('[aria-label=unstar-arrow-up]').click()
 				const title = await window.textContent('[aria-label=projects]');
 				expect(title).toBe('Projects');
@@ -558,7 +643,7 @@ test('Export the OBS Translation project in Downloads folder', async () => {
 				await window.locator('input[name="location"]').fill('/home/bobby/Downloads')
 				await window.getByRole('button', {name: "Export"}).click()
 				await window.locator('[aria-label=unstar-arrow-up]').click()
-				await window.waitForTimeout(1500)
+				await window.waitForTimeout(1000)
 				const title = await window.textContent('[aria-label=projects]');
 				expect(title).toBe('Projects');
 			}
@@ -587,7 +672,7 @@ test('Export the Audio Translation project Downloads folder', async () => {
 				await window.locator('input[name="location"]').fill('/home/bobby/Downloads')
 				await window.getByRole('button', {name: "Export"}).click()
 				await window.locator('[aria-label=unstar-arrow-up]').click()
-				await window.waitForTimeout(1500)
+				await window.waitForTimeout(1000)
 				const title = await window.textContent('[aria-label=projects]');
 				expect(title).toBe('Projects');
 			}
@@ -598,10 +683,8 @@ test('Export the Audio Translation project Downloads folder', async () => {
 })
 
 
-
-
-///Archive and Restore the project
-///texttranslation
+/////Archive projects
+/////texttranslation
 test('Archive the textTranslation project', async () => {
 	const table =  window.getByTestId('tablelayout')
 	const headers = table.locator('thead')
@@ -627,32 +710,6 @@ test('Archive the textTranslation project', async () => {
 	}
 });
 
-test('Restore the textTranslation project from the archive tab and return to the projects', async () => {
-	await window.getByRole('button', {name: "Archived"}).click()
-	const table =  window.getByTestId('tablelayout')
-	const headers = table.locator('thead')
-	console.log(await headers.allTextContents());
-	
-	const rows = table.locator('tbody tr')
-	// const cols = rows.first().locator('td')
-	for (let i = 0; i < await rows.count(); i++) {
-		const row = rows.nth(i);
-		const tds = row.locator('td');
-		for (let j = 0; j < await tds.count(); j++) {
-			if (await tds.nth(j).textContent() === "translation project") {
-				 console.log(await tds.nth(1).textContent())
-				await tds.last().locator('[aria-label=unstar-expand-project]').click()
-				await window.locator('.pl-5 > div > div').click()
-				await window.getByRole('menuitem', {name: "Restore"}).click()
-				expect(await window.locator('[id="__next"] div:has-text("Archived Projects") >> nth=4'));
-			}
-			
-		}
-
-	}
-	await window.getByRole('button', {name: 'Active'}).click()
-});
-
 
 ////OBS
 test('Archive the OBS project', async () => {
@@ -671,7 +728,6 @@ test('Archive the OBS project', async () => {
 				await tds.last().locator('[aria-label=unstar-expand-project]').click()
 				await window.locator('.pl-5 > div > div').click()
 				await window.getByRole('menuitem', {name: "Archive"}).click()
-				await window.locator('[aria-label=unstar-arrow-up]').click()
 				const title = await window.textContent('[aria-label=projects]');
 				expect(title).toBe('Projects');
 			}
@@ -681,31 +737,6 @@ test('Archive the OBS project', async () => {
 	}
 });
 
-test('Restore the OBS project from the archive tab and return to the projects', async () => {
-	await window.getByRole('button', {name: "Archived"}).click()
-	const table =  window.getByTestId('tablelayout')
-	const headers = table.locator('thead')
-	console.log(await headers.allTextContents());
-	
-	const rows = table.locator('tbody tr')
-	// const cols = rows.first().locator('td')
-	for (let i = 0; i < await rows.count(); i++) {
-		const row = rows.nth(i);
-		const tds = row.locator('td');
-		for (let j = 0; j < await tds.count(); j++) {
-			if (await tds.nth(j).textContent() === "Obs project") {
-				 console.log(await tds.nth(1).textContent())
-				await tds.last().locator('[aria-label=unstar-expand-project]').click()
-				await window.locator('.pl-5 > div > div').click()
-				await window.getByRole('menuitem', {name: "Restore"}).click()
-				expect(await window.locator('[id="__next"] div:has-text("Archived Projects") >> nth=4'));
-			}
-			
-		}
-
-	}
-	await window.getByRole('button', {name: 'Active'}).click()
-});
 
 ///audio
 test('Archive the Audio project', async () => {
@@ -724,9 +755,60 @@ test('Archive the Audio project', async () => {
 				await tds.last().locator('[aria-label=unstar-expand-project]').click()
 				await window.locator('.pl-5 > div > div').click()
 				await window.getByRole('menuitem', {name: "Archive"}).click()
-				await window.locator('[aria-label=unstar-arrow-up]').click()
 				const title = await window.textContent('[aria-label=projects]');
 				expect(title).toBe('Projects');
+			}
+			
+		}
+
+	}
+});
+
+/////Restore the project from archived
+test('Restore the textTranslation project from the archive tab and return to the projects', async () => {
+	await window.getByRole('button', {name: "Archived"}).click()
+	const table =  window.getByTestId('tablelayout')
+	const headers = table.locator('thead')
+	console.log(await headers.allTextContents());
+	
+	const rows = table.locator('tbody tr')
+	// const cols = rows.first().locator('td')
+	for (let i = 0; i < await rows.count(); i++) {
+		const row = rows.nth(i);
+		const tds = row.locator('td');
+		for (let j = 0; j < await tds.count(); j++) {
+			if (await tds.nth(j).textContent() === "translation project") {
+				 console.log(await tds.nth(1).textContent())
+				await tds.last().locator('[aria-label=unstar-expand-project]').click()
+				await window.locator('.pl-5 > div > div').click()
+				await window.getByRole('menuitem', {name: "Restore"}).click()
+				const title = await window.textContent('[aria-label=projects]');
+				expect(title).toBe('Archived Projects');
+			}
+			
+		}
+
+	}
+});
+
+test('Restore the OBS project from the archive tab and return to the projects', async () => {
+	const table =  window.getByTestId('tablelayout')
+	const headers = table.locator('thead')
+	console.log(await headers.allTextContents());
+	
+	const rows = table.locator('tbody tr')
+	// const cols = rows.first().locator('td')
+	for (let i = 0; i < await rows.count(); i++) {
+		const row = rows.nth(i);
+		const tds = row.locator('td');
+		for (let j = 0; j < await tds.count(); j++) {
+			if (await tds.nth(j).textContent() === "Obs project") {
+				 console.log(await tds.nth(1).textContent())
+				await tds.last().locator('[aria-label=unstar-expand-project]').click()
+				await window.locator('.pl-5 > div > div').click()
+				await window.getByRole('menuitem', {name: "Restore"}).click()
+				const title = await window.textContent('[aria-label=projects]');
+				expect(title).toBe('Archived Projects');
 			}
 			
 		}
@@ -750,49 +832,17 @@ test('Restore the Audio project from the archive tab and return to the projects'
 				await tds.last().locator('[aria-label=unstar-expand-project]').click()
 				await window.locator('.pl-5 > div > div').click()
 				await window.getByRole('menuitem', {name: "Restore"}).click()
-				expect(await window.locator('[id="__next"] div:has-text("Archived Projects") >> nth=4'));
+				await window.getByRole('button', {name: 'Active'}).click()
+
+				const title = await window.textContent('[aria-label=projects]');
+				expect(title).toBe('Projects');
+				
 			}
 			
 		}
 
 	}
-	await window.getByRole('button', {name: 'Active'}).click()
 });
-
-/////------/>
-
-test('Export the project', async () => {
-	await window.click('[aria-label=unstar-expand-project]')
-	await window.click('[aria-label=unstar-menu-project]')
-	await window.getByRole('menuitem', {name: "Export"}).click()
-	await window.getByRole('button', {name: "open folder location"}).click()
-	await window.locator('input[name="location"]').fill('/home/bobby/Downloads')
-	await window.getByRole('button', {name: "Export"}).click()
-});
-
-test('Cancel the export project', async () => {
-	// await window.click('[aria-label=unstar-expand-project]')
-	await window.click('[aria-label=unstar-menu-project]')
-	await window.getByRole('menuitem', {name: "Export"}).click()
-	await window.getByRole('button', {name: "open folder location"}).click()
-	// await window.locator('input[name="location"]').fill('/home/bobby/Downloads')
-	await window.getByRole('button', {name: "Cancel"}).click()
-});
-
-test('Archive the project', async () => {
-	// await window.click('[aria-label=unstar-expand-project]')
-	await window.click('[aria-label=unstar-menu-project]')
-	await window.getByRole('menuitem', {name: "Archive"}).click()
-});
-
-// test('Restore the project from archive tab and return to projects', async () => {
-// 	await window.getByRole('button', {name: "Archived"}).click()
-// 	await window.click('[aria-label=unstar-expand-project]')
-// 	await window.click('[aria-label=unstar-menu-project]')
-// 	await window.getByRole('menuitem', {name: "Restore"}).click()
-// 	await window.getByRole('button', {name: 'Active'}).click()
-// });
-
 
 /////update the user profile
 test('Update user profile', async () => {
@@ -820,7 +870,7 @@ test("Update the app language for the user english to hindi and than hindi to en
 test('Sign out and return to Autographa app', async () => {
 	await window.getByRole('button', {name: "Open user menu"}).click()
 	await window.getByRole('menuitem', {name: "Sign out"}).click()
-	// expect(await window.title()).toBe('Scribe Scripture');
+	expect(await window.title()).toBe('Scribe Scripture');
 });
 
 
@@ -855,6 +905,8 @@ test('Restore the deleted user from Archive tab',async () => {
 	expect(archive[1]).toBe('Archived')
 })
 
-// test('Deleting the created user', async () => {
-// 	await window.
+// test('Removing user from backend', async () => {
+//     // const newpath = await localStorage.getItem('userPath');
+// 	await removeUser('playwright user')
+	
 // })
