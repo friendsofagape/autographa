@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-syntax */
 /* eslint-disable no-unused-vars */
 import { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -104,6 +105,7 @@ export default function Editor(props) {
     if (insertVerseRChapter === 'Footnote') {
       insertFootnote(caretPosition, newVerChapNumber);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [triggerVerseInsert]);
 
   const scrollReference = (chapterNumber) => {
@@ -120,7 +122,6 @@ export default function Editor(props) {
   const onIntersection = (entries) => {
     for (const entry of entries) {
       if (entry.isIntersecting) {
-        console.log({ entry })
         setChapterNumber(entry.target.dataset.attsNumber);
         scrollLock === false ? scrollReference(entry.target.dataset.attsNumber) : {};
       }

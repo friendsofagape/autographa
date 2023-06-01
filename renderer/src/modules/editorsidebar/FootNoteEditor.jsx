@@ -21,9 +21,11 @@ export default function FootNoteEditor(props) {
   const style = isLoading || !sequenceId ? { cursor: 'progress' } : {};
 
   const handlers = {
+    // eslint-disable-next-line no-unused-vars
     onBlockClick: ({ content: _content, element }) => {
       const _sequenceId = element.dataset.target;
       const { tagName } = element;
+      // eslint-disable-next-line no-unused-vars
       const isInline = tagName === 'SPAN';
       // if (_sequenceId && !isInline) addSequenceId(_sequenceId);
       if (_sequenceId) { setGraftSequenceId(_sequenceId); }

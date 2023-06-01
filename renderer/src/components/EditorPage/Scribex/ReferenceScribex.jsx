@@ -8,10 +8,11 @@ import { ScribexContext } from '@/components/context/ScribexContext';
 import ReferenceEditor from './ReferenceEditor';
 
 export default function ReferenceScribex(props) {
-
   const { state, actions } = useContext(ScribexContext);
   const { verbose } = state;
-  const { usfmData, bookAvailable, refName, bookId, scrollLock } = props;
+  const {
+ usfmData, bookAvailable, refName, bookId, scrollLock,
+} = props;
   const [selectedBook, setSelectedBook] = useState();
   const [bookChange, setBookChange] = useState(false);
   let selectedDocument;
@@ -60,7 +61,8 @@ export default function ReferenceScribex(props) {
 
   useEffect(() => {
     actions.setSequenceIds([]);
-  }, [refName, bookId, scrollLock])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [refName, bookId, scrollLock]);
 
   const { htmlPerf } = perfState;
   useDeepCompareEffect(() => {
@@ -80,17 +82,15 @@ export default function ReferenceScribex(props) {
     setBookChange,
   };
   return (
-    <>
-      <div
-        style={{
+    <div
+      style={{
           fontFamily: selectedFont || 'sans-serif',
           fontSize: `${fontSize}rem`,
           lineHeight: (fontSize > 1.3) ? 1.5 : '',
           direction: `${projectScriptureDir === 'RTL' ? 'rtl' : 'auto'}`,
         }}
-      >
-        <ReferenceEditor {..._props} />
-      </div>
-    </>
+    >
+      <ReferenceEditor {..._props} />
+    </div>
   );
 }

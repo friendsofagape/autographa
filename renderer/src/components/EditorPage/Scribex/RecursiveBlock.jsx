@@ -1,13 +1,14 @@
+/* eslint-disable no-console */
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
-import React, { useEffect, useState } from 'react'
-import { HtmlPerfEditor } from '@xelah/type-perf-html'
-import { EditableContextMenu } from '@xelah/core'
-import { getCurrentVerse, getCurrentChapter } from './getReferences'
+import React, { useEffect, useState } from 'react';
+import { HtmlPerfEditor } from '@xelah/type-perf-html';
+// import { EditableContextMenu } from '@xelah/core';
 import { getCurrentCursorPosition, setCurrentCursorPosition, pasteHtmlAtCaret } from '@/util/cursorUtils';
+import { getCurrentVerse, getCurrentChapter } from './getReferences';
 
 const getTarget = ({ content }) => {
-  const div = document.createElement("div");
+  const div = document.createElement('div');
   div.innerHTML = content;
 
   const { target } = div.firstChild?.dataset || {};
@@ -32,65 +33,64 @@ export default function RecursiveBlock({
   setCaretPosition,
   ...props
 }) {
-  const [currentVerse, setCurrentVerse] = useState(null)
+  const [currentVerse, setCurrentVerse] = useState(null);
   useEffect(() => {
-    if (verbose) console.log("Block: Mount/First Render", index);
+    if (verbose) { console.log('Block: Mount/First Render', index); }
     return () => {
-
-      if (verbose) console.log("Block: UnMount/Destroyed", index);
+      if (verbose) { console.log('Block: UnMount/Destroyed', index); }
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const updateCursorPosition = () => {
+    const cursorPosition = getCurrentCursorPosition('editor');
+    setCaretPosition(cursorPosition);
+  };
+
   const checkReturnKeyPress = (event) => {
-    let activeTextArea = document.activeElement;
-    if (event.key === "Enter") {
+    const activeTextArea = document.activeElement;
+    if (event.key === 'Enter') {
       if (activeTextArea.children.length > 1) {
         const lineBreak = activeTextArea.children[1]?.outerHTML;
-        activeTextArea.children[1].outerHTML = lineBreak.replace(/<br\s*\/?>/gi, "&nbsp");
+        activeTextArea.children[1].outerHTML = lineBreak.replace(/<br\s*\/?>/gi, '&nbsp');
       }
     }
-    //BACKSPACE DISABLE
-    if (event.keyCode == 8) {
+    // BACKSPACE DISABLE
+    if (event.keyCode === 8) {
       // console.log({ activeTextArea })
-      const range = document.getSelection().getRangeAt(0)
+      const range = document.getSelection().getRangeAt(0);
       // console.log({ range })
-      const selectedNode = range.startContainer
-      console.log({ selectedNode })
+      const selectedNode = range.startContainer;
+      console.log({ selectedNode });
       const prevNode = selectedNode.previousSibling;
-      console.log({ prevNode })
+      console.log({ prevNode });
       if (prevNode && prevNode.dataset.attsNumber !== currentVerse) {
-        console.log("crossing a verse")
+        console.log('crossing a verse');
         // setCurrentVerse(0)
         event.preventDefault();
       }
       prevNode ? setCurrentVerse(prevNode.dataset.attsNumber) : {};
-      console.log({ currentVerse })
-      const verse = getCurrentVerse(selectedNode)
-      const chapter = getCurrentChapter(selectedNode)
+      console.log({ currentVerse });
+      const verse = getCurrentVerse(selectedNode);
+      const chapter = getCurrentChapter(selectedNode);
     }
     updateCursorPosition();
   };
 
   const checkCurrentVerse = () => {
     if (document.getSelection().rangeCount >= 1 && onReferenceSelected) {
-      const range = document.getSelection().getRangeAt(0)
-      console.log({ range })
-      const selectedNode = range.startContainer
-      console.log({ selectedNode })
-      const verse = getCurrentVerse(selectedNode)
-      const chapter = getCurrentChapter(selectedNode)
+      const range = document.getSelection().getRangeAt(0);
+      console.log({ range });
+      const selectedNode = range.startContainer;
+      console.log({ selectedNode });
+      const verse = getCurrentVerse(selectedNode);
+      const chapter = getCurrentChapter(selectedNode);
       // if (onReferenceSelected) {
-      onReferenceSelected({ bookId, chapter, verse })
+      onReferenceSelected({ bookId, chapter, verse });
       // }
     }
+  };
 
-  }
-
-  const updateCursorPosition = () => {
-    let cursorPosition = getCurrentCursorPosition('editor');
-    setCaretPosition(cursorPosition)
-  }
   // const updateVerseNumber = () => {
   //   const selectedNode = document.getSelection().getRangeAt(0).startContainer
   //   console.log({ selectedNode })
@@ -108,12 +108,13 @@ export default function RecursiveBlock({
   // }
   let component;
 
-  let editable = !!content.match(/data-type="paragraph"/);
+  const editable = !!content.match(/data-type="paragraph"/);
 
   if (editable) {
     component = (
+      // eslint-disable-next-line jsx-a11y/no-static-element-interactions
       <div
-        className='editor-paragraph'
+        className="editor-paragraph"
         contentEditable={contentEditable}
         onKeyDown={checkReturnKeyPress}
         onMouseUp={checkCurrentVerse}
@@ -138,5 +139,6 @@ export default function RecursiveBlock({
     component ||= <div {...props} contentEditable={false} />;
   }
 
+  // eslint-disable-next-line react/jsx-no-useless-fragment
   return <>{component}</>;
 }

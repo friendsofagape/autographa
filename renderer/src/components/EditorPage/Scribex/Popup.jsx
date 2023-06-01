@@ -6,7 +6,7 @@ const Popup = ({
   handleClose, handleButtonClick, title, isPopupOpen,
 }) => {
   const [number, setNumber] = useState('');
-  console.log({ title });
+  // console.log({ title });
   const handleInputChange = (event) => {
     setNumber(event.target.value);
   };
@@ -57,7 +57,7 @@ const Popup = ({
               >
                 {title}
                 {' '}
-                {title === 'Verse' || 'Chapter' ? Number : ''}
+                {(title === 'Verse' || title === 'Chapter') ? Number : ''}
               </Dialog.Title>
               <div className="mt-2">
                 {title === ('Verse' || 'Chapter')

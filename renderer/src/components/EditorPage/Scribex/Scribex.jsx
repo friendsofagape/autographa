@@ -29,9 +29,9 @@ export default function Scribex(props) {
   const [newVerChapNumber, setInsertNumber] = useState('');
   const [insertVerseRChapter, setInsertVerseRChapter] = useState('');
 
-  const handleChange = (event) => {
-    setVerseInsert(event.target.value);
-  };
+  // const handleChange = (event) => {
+  //   setVerseInsert(event.target.value);
+  // };
 
   const handleClick = (number, title) => {
     setInsertNumber(number);
