@@ -57,6 +57,7 @@ export default function EditorSection({
   const {
     states: {
       scrollLock,
+      selectedProjectMeta,
     },
   } = useContext(ProjectContext);
 
@@ -297,6 +298,7 @@ export default function EditorSection({
         openResourcePopUp={openResourcePopUp}
         setOpenResourcePopUp={setOpenResourcePopUp}
         referenceResources={referenceResources}
+        selectedProjectMeta={selectedProjectMeta}
       />
 
     </div>
