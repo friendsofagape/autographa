@@ -2,7 +2,7 @@
 // based on reference of tsv
 import * as logger from '../../../../logger';
 
-const getValue = async (filteredData, twURL, repoName, scrollLock) => {
+const getValue = async (filteredData, twURL, repoName, scrollLock, flavor = '') => {
   const chapterTsvData = [];
   const notesObj = {};
   await Promise.all(filteredData.map(async (tsvObj) => {
@@ -16,7 +16,7 @@ const getValue = async (filteredData, twURL, repoName, scrollLock) => {
       const tsvfetchResp = await fetch(data?.download_url);
       if (tsvfetchResp.ok) {
         const tsvData = await tsvfetchResp.text();
-        if (scrollLock === false) {
+        if (scrollLock === false && flavor === 'textStories') {
           let mdstring = '';
           mdstring += `${ tsvData }\n`;
           if (tsvObj.Reference.split(':')[1] in notesObj) {
@@ -53,9 +53,9 @@ const getValue = async (filteredData, twURL, repoName, scrollLock) => {
     return chapterTsvData;
   }
 };
-export default async function ObsTsvToChapterLevelMd(tsvJSON, chapter, twURL, repoName, scrollLock) {
+export default async function ObsTsvToChapterLevelMd(tsvJSON, chapter, twURL, repoName, scrollLock, flavor) {
   logger.debug('in ObsTsvToChapterLevel.js : in promise');
   const filteredData = tsvJSON.filter((data) => data.Reference.split(':')[0].toString() === chapter.toString());
-  const notesObj = await getValue(filteredData, twURL, repoName, scrollLock);
+  const notesObj = await getValue(filteredData, twURL, repoName, scrollLock, flavor);
   return notesObj;
 }
