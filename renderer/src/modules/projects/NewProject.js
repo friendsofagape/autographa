@@ -25,7 +25,7 @@ import burrito from '../../lib/BurritoTemplete.json';
 // eslint-disable-next-line no-unused-vars
 const solutions = [
   {
-    name: 'Translation',
+    name: 'Bible Translation',
     href: '##',
     icon: LayoutIcon,
   },
