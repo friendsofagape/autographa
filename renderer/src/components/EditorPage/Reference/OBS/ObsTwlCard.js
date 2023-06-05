@@ -41,7 +41,7 @@ function ObsTwlCard({
     },
   } = useContext(ProjectContext);
   useEffect(() => {
-    const flavor = selectedProjectMeta.type.flavorType.flavor.name;
+    const flavor = selectedProjectMeta?.type?.flavorType?.flavor?.name;
     if (selectedStory && scrollLock === false) {
       const i = items.findIndex((e) => (e[0].name)?.toString().padStart(2, '0') === (selectedStory - 1)?.toString().padStart(2, '0'));
       if (i > -1) {
