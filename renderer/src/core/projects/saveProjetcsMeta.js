@@ -32,6 +32,8 @@ const saveProjectsMeta = async (projectMetaObj) => {
   let projectNameExists = false;
   let checkCanon = false;
   const folderList = fs.readdirSync(projectDir);
+  // handle spaces
+  projectMetaObj.newProjectFields.projectName = projectMetaObj.newProjectFields.projectName.trim();
   folderList.forEach((folder) => {
     const name = folder.split('_');
     if (name[0] === projectMetaObj.newProjectFields.projectName && projectMetaObj.call === 'new') {
