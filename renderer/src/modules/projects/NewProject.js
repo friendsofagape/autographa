@@ -82,7 +82,7 @@ function BibleHeaderTagDropDown(headerDropDown, handleDropDown, call) {
         className="flex justify-center items-center px-3 py-2 text-white ml-5
           font-bold text-xs rounded-full leading-3 tracking-wider uppercase bg-primary"
       >
-        <div className="">{headerDropDown}</div>
+        <div className="">{headerDropDown === 'Translation' ? `Bible ${headerDropDown}` : headerDropDown}</div>
       </button>
     )
 
