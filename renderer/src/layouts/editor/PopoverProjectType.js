@@ -51,7 +51,7 @@ export default function PopoverProjectType(props) {
                         />
 
                         <p className="mt-3 text-sm tracking-wider">
-                          {item.name}
+                          {item.name === 'Translation' ? `Bible ${item.name}` : item.name}
                         </p>
 
                       </a>
