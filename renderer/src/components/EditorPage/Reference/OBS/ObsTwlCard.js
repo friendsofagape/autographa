@@ -83,7 +83,7 @@ function ObsTwlCard({
 
     setItems([]);
     setIndex(1);
-    if (offlineResource && !offlineResource.offline) {
+    if (offlineResource && !offlineResource.offline && selectedProjectMeta?.type?.flavorType?.flavor?.name) {
       fetchData();
     }
   }, [chapter, languageId, owner, resourceId, offlineResource, scrollLock, selectedProjectMeta?.type?.flavorType?.flavor?.name]);
