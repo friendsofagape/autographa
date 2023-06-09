@@ -1,20 +1,18 @@
 /* eslint-disable no-nested-ternary */
-import {
-  TrashIcon,
-  MicrophoneIcon,
-  ArrowPathIcon,
-  ChevronDownIcon,
-  CogIcon,
-  MinusIcon,
-  PlusIcon,
-  StopIcon,
-} from '@heroicons/react/24/outline';
 import { Listbox } from '@headlessui/react';
 import dynamic from 'next/dynamic';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
-import PlayIcon from '@/icons/basil/Outline/Media/Play.svg';
-import PauseIcon from '@/icons/basil/Outline/Media/Pause.svg';
+import PauseIcon from '@/icons/Audio/Pause.svg';
+import PlayIcon from '@/icons/Audio/Play.svg';
+import MicrophoneIcon from '@/icons/Audio/Microphone.svg';
+import TrashIcon from '@/icons/Common/Trash.svg';
+import ArrowPathIcon from '@/icons/Common/ArrowPath.svg';
+import ChevronDownIcon from '@/icons/Common/ChevronDown.svg';
+import CogIcon from '@/icons/Common/Cog.svg';
+import MinusIcon from '@/icons/Common/Minus.svg';
+import PlusIcon from '@/icons/Common/Plus.svg';
+import StopIcon from '@/icons/Audio/Stop.svg';
 
 const AudioWaveform = dynamic(() => import('./WaveForm'), { ssr: false });
 

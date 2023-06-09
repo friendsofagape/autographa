@@ -1,17 +1,19 @@
 /* eslint-disable */
 import React, {
-  useRef, Fragment,
+  useRef, Fragment, useContext, useEffect, useState,
 } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
-import {
- FolderOpenIcon, InformationCircleIcon, CheckIcon, XMarkIcon,
-} from '@heroicons/react/24/outline';
+
 import { useRouter } from 'next/router';
 import localforage from 'localforage';
 import { useTranslation } from 'react-i18next';
 import { SnackBar } from '@/components/SnackBar';
 import { AutographaContext } from '@/components/context/AutographaContext';
 import { ProjectContext } from '@/components/context/ProjectContext';
+import InformationCircleIcon from '@/icons/Common/InformationCircle.svg';
+import FolderOpenIcon from '@/icons/Gallery/FolderOpen.svg';
+import CheckIcon from '@/icons/Common/Check.svg';
+import XMarkIcon from '@/icons/Common/XMark.svg';
 import CloseIcon from '@/illustrations/close-button-black.svg';
 import importBurrito, { viewBurrito } from '../../core/burrito/importBurrito';
 import * as logger from '../../logger';
@@ -26,25 +28,22 @@ export default function ImportProjectPopUp(props) {
   const router = useRouter();
   const { t } = useTranslation();
   const cancelButtonRef = useRef(null);
-  const [folderPath, setFolderPath] = React.useState();
-  const [valid, setValid] = React.useState(false);
-  const [snackBar, setOpenSnackBar] = React.useState(false);
-  const [snackText, setSnackText] = React.useState('');
-  const [notify, setNotify] = React.useState();
-  const [show, setShow] = React.useState(false);
-  const [sbData, setSbData] = React.useState({});
-  const [model, setModel] = React.useState({
+  const [folderPath, setFolderPath] = useState();
+  const [valid, setValid] = useState(false);
+  const [snackBar, setOpenSnackBar] = useState(false);
+  const [snackText, setSnackText] = useState('');
+  const [notify, setNotify] = useState();
+  const [show, setShow] = useState(false);
+  const [sbData, setSbData] = useState({});
+  const [model, setModel] = useState({
     openModel: false,
     title: '',
     confirmMessage: '',
     buttonName: '',
     });
-  const { action: { FetchProjects } } = React.useContext(AutographaContext);
-  const {
-    states: {
-      languages,
-    }, actions: {},
-  } = React.useContext(ProjectContext);
+  const { action: { FetchProjects } } = useContext(AutographaContext);
+  const { states: { languages } } = useContext(ProjectContext);
+
   function close() {
     logger.debug('ImportProjectPopUp.js', 'Closing the Dialog box');
     setValid(false);
@@ -72,6 +71,16 @@ export default function ImportProjectPopUp(props) {
     }
     setFolderPath(chosenFolder.filePaths[0]);
   };
+
+  const modelClose = () => {
+    setModel({
+      openModel: false,
+      title: '',
+      confirmMessage: '',
+      buttonName: '',
+    });
+  };
+
   const callImport = async (updateBurriot) => {
     modelClose();
     logger.debug('ImportProjectPopUp.js', 'Inside callImport');
@@ -133,16 +142,8 @@ export default function ImportProjectPopUp(props) {
       setOpenSnackBar(true);
     }
   };
-  const modelClose = () => {
-    setModel({
-      openModel: false,
-      title: '',
-      confirmMessage: '',
-      buttonName: '',
-    });
-  };
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (open) {
       openFileDialogSettingData();
     }

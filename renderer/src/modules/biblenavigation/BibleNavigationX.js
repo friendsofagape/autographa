@@ -3,15 +3,18 @@ import { Dialog, Transition } from '@headlessui/react';
 import {
  Fragment, useContext, useEffect, useRef, useState,
 } from 'react';
-import { XMarkIcon, ChevronDownIcon } from '@heroicons/react/24/solid';
 import * as localforage from 'localforage';
 import SelectBook from '@/components/EditorPage/Navigation/reference/SelectBook';
 import SelectVerse from '@/components/EditorPage/Navigation/reference/SelectVerse';
 
 import { ReferenceContext } from '@/components/context/ReferenceContext';
+import ChevronDownIcon from '@/icons/Common/ChevronDown.svg';
+import XMarkIcon from '@/icons/Common/XMark.svg';
 
 export default function BibleNavigationX(props) {
-  const { showVerse } = props;
+  const {
+ showVerse, chapterNumber, setChapterNumber, verseNumber, setVerseNumber,
+} = props;
   const supportedBooks = null; // if empty array or null then all books available
 
   const {
@@ -106,28 +109,29 @@ export default function BibleNavigationX(props) {
 
   return (
     <>
-      <div className="flex">
-        <div className="bg-primary text-white py-2 uppercase tracking-wider text-xs font-semibold">
+      <div className="flex flex-nowrap">
+        <div className="bg-primary max-h-[40px] flex items-center justify-center text-white uppercase tracking-wider text-xs font-semibold">
           <span aria-label="editor-bookname" className="px-3">{bookName}</span>
           <span
             aria-label="open-book"
-            className="focus:outline-none bg-white py-3 bg-opacity-10"
+            className="focus:outline-none min-h-full bg-white py-2 bg-opacity-10"
             onClick={openBooks}
             role="button"
             tabIndex="-2"
           >
-            <ChevronDownIcon className="inline h-4 w-4 mx-1 text-white" aria-hidden="true" />
+            <ChevronDownIcon className=" h-4 w-4 mx-1 text-white" aria-hidden="true" />
           </span>
-          <span className="px-3">{chapter}</span>
+          <span className="px-3">{chapterNumber}</span>
           <span
             aria-label="open-chapter"
-            className="focus:outline-none bg-white py-3 bg-opacity-10"
+            className="focus:outline-none bg-white py-2 bg-opacity-10"
             onClick={selectBook}
             role="button"
             tabIndex="-1"
           >
-            <ChevronDownIcon className="inline h-4 w-4 mx-1 text-white" aria-hidden="true" />
+            <ChevronDownIcon className="\ h-4 w-4 mx-1 text-white" aria-hidden="true" />
           </span>
+          <span className="px-3">{verseNumber}</span>
           {showVerse
             && (
               <span className="px-3">
@@ -223,6 +227,8 @@ export default function BibleNavigationX(props) {
                 setSelectedVerses={setSelectedVerses}
                 verselectActive={verselectActive}
                 setVerseSelectActive={setVerseSelectActive}
+                setChapterNumber={setChapterNumber}
+                setVerseNumber={setVerseNumber}
               >
                 <button
                   type="button"

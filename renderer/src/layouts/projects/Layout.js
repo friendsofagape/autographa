@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import {
-  ArchiveBoxIcon,
-  ArrowDownTrayIcon,
-  ComputerDesktopIcon,
-
-} from '@heroicons/react/24/outline';
 import { useTranslation } from 'react-i18next';
+import ArchiveBoxIcon from '@/icons/Common/ArchiveBox.svg';
+import ArrowDownTrayIcon from '@/icons/Download/ArrowDownTray.svg';
+import ComputerDesktopIcon from '@/icons/Common/ComputerDesktop.svg';
+
 import SideBar from './SideBar';
 import TopMenuBar from './TopMenuBar';
 import ImportProjectPopUp from './ImportProjectPopUp';

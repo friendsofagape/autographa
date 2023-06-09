@@ -1,9 +1,10 @@
 import React, { Fragment, useState } from 'react';
 import { Tab } from '@headlessui/react';
 import { classNames } from '@/util/classNames';
-import { PlusIcon } from '@heroicons/react/24/outline';
+
 import DownloadResourcePopUp from '@/components/Resources/ResourceUtils/DownloadResourcePopUp';
 import ImportResource from '@/components/Resources/ImportResource';
+import PlusIcon from '@/icons/Common/Plus.svg';
 import ObsBibleAudioTab from './ObsBibleAudioTab';
 import * as logger from '../../logger';
 

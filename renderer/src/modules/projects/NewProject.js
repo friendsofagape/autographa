@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'react-i18next';
-import { ChevronDownIcon } from '@heroicons/react/24/solid';
 import ProjectsLayout from '@/layouts/projects/Layout';
 import AdvancedSettingsDropdown from '@/components/ProjectsPage/CreateProject/AdvancedSettingsDropdown';
 import { ProjectContext } from '@/components/context/ProjectContext';
@@ -15,6 +14,7 @@ import CustomMultiComboBox from '@/components/Resources/ResourceUtils/CustomMult
 import moment from 'moment';
 import { v5 as uuidv5 } from 'uuid';
 import { environment } from '../../../environment';
+import ChevronDownIcon from '@/icons/Common/ChevronDown.svg';
 import LayoutIcon from '@/icons/basil/Outline/Interface/Layout.svg';
 import BullhornIcon from '@/icons/basil/Outline/Communication/Bullhorn.svg';
 import ImageIcon from '@/icons/basil/Outline/Files/Image.svg';
@@ -275,6 +275,12 @@ export default function NewProject({ call, project, closeEdit }) {
         break;
     }
   };
+
+  useEffect(() => {
+    setEditLanguage(projectLangData);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [languages.length, projectLangData]);
+
   useEffect(() => {
     setEditLanguage(projectLangData);
   // eslint-disable-next-line react-hooks/exhaustive-deps

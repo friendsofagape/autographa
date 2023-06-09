@@ -1,12 +1,9 @@
 import React, { Fragment, useState } from 'react';
 import PropTypes from 'prop-types';
-
 import { Dialog, Transition, Switch } from '@headlessui/react';
-
-import { PencilSquareIcon } from '@heroicons/react/24/outline';
-
 import { BlockEditable } from 'markdown-translatable/dist/components';
 import { useTranslation } from 'react-i18next';
+import PencilSquareIcon from '@/icons/Common/PencilSquare.svg';
 import { ProjectContext } from '../../context/ProjectContext';
 
 export default function LicencePopover({ call }) {

@@ -2,14 +2,8 @@
 import React, { Fragment, useState } from 'react';
 import { useRouter } from 'next/router';
 import moment from 'moment';
-
 import { Disclosure, Transition, Menu } from '@headlessui/react';
-import { ChevronUpIcon, ChevronDownIcon } from '@heroicons/react/24/solid';
-import {
-  StarIcon, EllipsisVerticalIcon,
-} from '@heroicons/react/24/outline';
 import localforage from 'localforage';
-
 import { useTranslation } from 'react-i18next';
 import ProjectsLayout from '@/layouts/projects/Layout';
 import EnhancedTableHead from '@/components/ProjectsPage/Projects/EnhancedTableHead';
@@ -19,6 +13,10 @@ import { getComparator, stableSort } from '@/components/ProjectsPage/Projects/So
 import ExportProjectPopUp from '@/layouts/projects/Export/ExportProjectPopUp';
 import ProjectContextProvider from '@/components/context/ProjectContext';
 import AuthenticationContextProvider from '@/components/Login/AuthenticationContextProvider';
+import EllipsisVerticalIcon from '@/icons/Common/EllipsisVertical.svg';
+import StarIcon from '@/icons/Gallery/Star.svg';
+import ChevronUpIcon from '@/icons/Common/ChevronUp.svg';
+import ChevronDownIcon from '@/icons/Common/ChevronDown.svg';
 import SearchTags from './SearchTags';
 import NewProject from './NewProject';
 import * as logger from '../../logger';

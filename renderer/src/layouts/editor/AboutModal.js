@@ -7,11 +7,9 @@ import {
   Dialog, Transition,
 } from '@headlessui/react';
 
-import {
-  InformationCircleIcon,
-  DocumentTextIcon,
-} from '@heroicons/react/24/outline';
 import { useTranslation } from 'react-i18next';
+import InformationCircleIcon from '@/icons/Common/InformationCircle.svg';
+import DocumentTextIcon from '@/icons/Book/DocumentText.svg';
 import LogoIcon from '@/icons/logo.svg';
 import packageInfo from '../../../../package.json';
 

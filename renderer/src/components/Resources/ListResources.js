@@ -6,8 +6,9 @@ import {
 import { useTranslation } from 'react-i18next';
 import CheckHelpsUpdatePopUp from '@/components/Resources/ResourceUtils/CheckHelpsUpdatePopUp';
 import RemoveResource from '@/components/Resources/ResourceUtils/RemoveResource';
-import { ArrowDownTrayIcon } from '@heroicons/react/24/solid';
 import { ProjectContext } from '@/components/context/ProjectContext';
+import ArrowDownTrayIcon from '@/icons/Download/ArrowDownTray.svg';
+
 import * as logger from '../../logger';
 import LoadingScreen from '../Loading/LoadingScreen';
 

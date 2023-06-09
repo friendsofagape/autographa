@@ -4,10 +4,6 @@ import { useTranslation } from 'react-i18next';
 import {
   Disclosure,
 } from '@headlessui/react';
-// import {
-//   MenuIcon,
-//   XMarkIcon,
-// } from '@heroicons/react/24/outline';
 import Notifications from '@/modules/notifications/Notifications';
 import UserProfile from '@/components/Profile/UserProfile';
 

@@ -2,7 +2,7 @@
 import React, {
  useRef, useState, useContext, Fragment,
 } from 'react';
-import { XMarkIcon } from '@heroicons/react/24/solid';
+
 import ResourcesSidebar from '@/components/Resources/ResourcesSideBar';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
 import ResourceTabPane from '@/components/Resources/ResourceTabPane';
@@ -11,6 +11,7 @@ import { Dialog, Transition } from '@headlessui/react';
 import { ListResources } from '@/components/Resources/ListResources';
 import { SnackBar } from '@/components/SnackBar';
 import SearchBar from '@/components/Resources/SearchBar';
+import XMarkIcon from '@/icons/Common/XMark.svg';
 import * as logger from '../../logger';
 
 export default function ResourcesPopUp(
@@ -21,6 +22,7 @@ export default function ResourcesPopUp(
     setReferenceResources,
     header,
     selectedProjectMeta,
+    referenceResources,
   },
 ) {
   const cancelButtonRef = useRef(null);
@@ -55,7 +57,7 @@ export default function ResourcesPopUp(
     },
   } = useContext(ReferenceContext);
 
-  const handleRowSelect = (e, row, name, owner, flavorname, offline = false) => {
+  const handleRowSelect = (e, row, name, owner, flavorname, userOrCommon, offline = false) => {
     const offlineResource = offline
       ? { offline: true, data: offline }
       : { offline: false };
@@ -67,6 +69,7 @@ export default function ResourcesPopUp(
       owner,
       offlineResource,
       flavor: flavorname,
+      ownership: userOrCommon,
     });
     removeSection();
   };
@@ -140,6 +143,7 @@ export default function ResourcesPopUp(
                       subMenuItems={subMenuItems}
                       setSubMenuItems={setSubMenuItems}
                       setfilteredBibleObsAudio={setfilteredBibleObsAudio}
+                      referenceResources={referenceResources}
                     />
                   )
                   : (

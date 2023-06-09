@@ -3,8 +3,10 @@ import {
  Fragment, useContext, useEffect, useState,
 } from 'react';
 import { Listbox, Transition } from '@headlessui/react';
-import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/24/solid';
 import localforage from 'localforage';
+import CheckIcon from '@/icons/Common/Check.svg';
+import ChevronUpDownIcon from '@/icons/Common/ChevronUpDown.svg';
+
 import { ReferenceContext } from '../context/ReferenceContext';
 import * as logger from '../../logger';
 

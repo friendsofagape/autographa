@@ -1,11 +1,8 @@
 import { useState } from 'react';
-
-import {
-  ChevronDownIcon, PlusIcon,
-} from '@heroicons/react/24/solid';
 import { useTranslation } from 'react-i18next';
-
-import { PencilSquareIcon } from '@heroicons/react/24/outline';
+import ChevronDownIcon from '@/icons/Common/ChevronDown.svg';
+import PlusIcon from '@/icons/Common/Plus.svg';
+import PencilSquareIcon from '@/icons/Common/PencilSquare.svg';
 
 import EditCrossReference from './EditCrossReference';
 

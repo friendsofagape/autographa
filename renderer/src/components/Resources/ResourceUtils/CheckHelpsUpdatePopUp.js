@@ -5,7 +5,7 @@ import { Dialog, Transition } from '@headlessui/react';
 import { useTranslation } from 'react-i18next';
 import { SnackBar } from '@/components/SnackBar';
 import LoadingScreen from '@/components/Loading/LoadingScreen';
-import { ArrowPathIcon } from '@heroicons/react/24/outline';
+import ArrowPathIcon from '@/icons/Common/ArrowPath.svg';
 import * as logger from '../../../logger';
 
 import DownloadCreateSBforHelps from './DownloadCreateSBforHelps';

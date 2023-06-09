@@ -17,6 +17,8 @@ import { SnackBar } from '@/components/SnackBar';
 import { uploadToGitea } from '@/components/Sync/Ag/SyncToGitea';
 import { downloadFromGitea } from '@/components/Sync/Gitea/SyncFromGitea';
 import useAddNotification from '@/components/hooks/useAddNotification';
+import CloudArrowUpIcon from '@/icons/Download/CloudArrowUp.svg';
+import CloudArrowDownIcon from '@/icons/Download/CloudArrowDown.svg';
 import Door43Logo from '@/icons/door43.svg';
 import * as logger from '../../logger';
 import packageInfo from '../../../../package.json';

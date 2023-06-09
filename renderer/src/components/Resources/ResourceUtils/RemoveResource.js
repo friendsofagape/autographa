@@ -6,8 +6,9 @@ import { SnackBar } from '@/components/SnackBar';
 import ConfirmationModal from '@/layouts/editor/ConfirmationModal';
 import localForage from 'localforage';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
-import { TrashIcon } from '@heroicons/react/24/outline';
 import { splitStringByLastOccurance } from '@/util/splitStringByLastMarker';
+import TrashIcon from '@/icons/Common/Trash.svg';
+
 import * as logger from '../../../logger';
 import packageInfo from '../../../../../package.json';
 // import TrashSvg from '@/icons/basil/Outline/Interface/Trash.svg';

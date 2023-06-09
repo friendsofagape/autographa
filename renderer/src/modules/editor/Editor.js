@@ -1,9 +1,5 @@
 import PropTypes from 'prop-types';
-import {
-  LockOpenIcon,
-  LockClosedIcon,
-  BookmarkIcon,
-} from '@heroicons/react/24/outline';
+
 import * as localforage from 'localforage';
 import {
   useContext, useEffect, useState,
@@ -13,8 +9,12 @@ import { useTranslation } from 'react-i18next';
 import NavigationObs from '@/components/EditorPage/ObsEditor/NavigationObs';
 import BibleNavigation from '@/modules/biblenavigation/BibleNavigation';
 import { ReferenceContext } from '@/components/context/ReferenceContext';
+import { splitStringByLastOccurance } from '@/util/splitStringByLastMarker';
 import { ProjectContext } from '@/components/context/ProjectContext';
 import { splitStringByLastOccurance } from '@/util/splitStringByLastMarker';
+import LockClosedIcon from '@/icons/Gallery/LockClosed.svg';
+import LockOpenIcon from '@/icons/Gallery/LockOpen.svg';
+import BookmarkIcon from '@/icons/Book/Bookmark.svg';
 import * as logger from '../../logger';
 
 export default function Editor({
@@ -179,9 +179,9 @@ export default function Editor({
           fontFamily: selectedFont || 'sans-serif',
           fontSize: `${fontSize}rem`,
           lineHeight: (fontSize > 1.3) ? 1.5 : '',
-          direction: `${projectScriptureDir === 'RTL' ? 'rtl' : 'auto'}`,
+          direction: `${projectScriptureDir?.toUpperCase() === 'RTL' ? 'rtl' : 'auto'}`,
         }}
-        className="border-l-2 border-r-2 border-secondary pb-16 prose-sm max-w-none overflow-auto h-full scrollbars-width"
+        className="border-l-2 border-r-2 border-secondary pb-16 max-w-none overflow-auto h-full scrollbars-width"
       >
         {children}
 

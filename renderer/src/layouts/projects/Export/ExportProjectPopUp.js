@@ -4,12 +4,13 @@ import React, {
 } from 'react';
 import PropTypes from 'prop-types';
 import { Dialog, Transition } from '@headlessui/react';
-import { FolderOpenIcon } from '@heroicons/react/24/outline';
+
 import * as localforage from 'localforage';
 import { useTranslation } from 'react-i18next';
 import updateTranslationSB from '@/core/burrito/updateTranslationSB';
 import updateObsSB from '@/core/burrito/updateObsSB';
 import { SnackBar } from '@/components/SnackBar';
+import FolderOpenIcon from '@/icons/Gallery/FolderOpen.svg';
 // import useSystemNotification from '@/components/hooks/useSystemNotification';
 import CloseIcon from '@/illustrations/close-button-black.svg';
 import { validate } from '../../../util/validate';
