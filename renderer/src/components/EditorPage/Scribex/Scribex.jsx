@@ -16,6 +16,7 @@ import Buttons from './Buttons';
 import Editor from './Editor';
 import PopupButton from './PopupButton';
 import PlusIcon from '@/icons/Xelah/Plus.svg';
+import MenuDropdown from '@/components/MenuDropdown/MenuDropdown';
 
 export default function Scribex(props) {
   const { state, actions } = useContext(ScribexContext);
@@ -52,7 +53,9 @@ export default function Scribex(props) {
     state: {
       bookId, selectedFont, fontSize, projectScriptureDir,
     },
+    actions: { setSelectedFont }
   } = useContext(ReferenceContext);
+
   const {
     states: { scrollLock },
     actions: { setScrollLock },
@@ -172,6 +175,7 @@ export default function Scribex(props) {
               <Buttons {..._props} />
             </div>
             <div className="flex ml-auto">
+              <MenuDropdown selectedFont={selectedFont} setSelectedFont={setSelectedFont} buttonStyle={"h-6 mr-2 w-6 text-white cursor-pointer"} />
               <Menu as="div" className="relative flex flex-col">
                 <Menu.Button>
                   <PlusIcon
