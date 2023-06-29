@@ -25,7 +25,7 @@ import burrito from '../../lib/BurritoTemplete.json';
 // eslint-disable-next-line no-unused-vars
 const solutions = [
   {
-    name: 'Bible Translation',
+    name: 'Translation',
     href: '##',
     icon: LayoutIcon,
   },
@@ -67,7 +67,7 @@ function BibleHeaderTagDropDown(headerDropDown, handleDropDown, call) {
           className="flex justify-center items-center px-3 py-2 text-white ml-5
           font-bold text-xs rounded-full leading-3 tracking-wider uppercase bg-primary"
         >
-          <div className="">{headerDropDown}</div>
+          <div className="">{headerDropDown === 'Translation' ? `Bible ${headerDropDown}` : headerDropDown}</div>
           <ChevronDownIcon
             className="w-5 h-5 ml-2"
             aria-hidden="true"
@@ -81,7 +81,7 @@ function BibleHeaderTagDropDown(headerDropDown, handleDropDown, call) {
         className="flex justify-center items-center px-3 py-2 text-white ml-5
           font-bold text-xs rounded-full leading-3 tracking-wider uppercase bg-primary"
       >
-        <div className="">{headerDropDown}</div>
+        <div className="">{headerDropDown === 'Translation' ? `Bible ${headerDropDown}` : headerDropDown}</div>
       </button>
     )
 
