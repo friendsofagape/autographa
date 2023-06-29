@@ -22,6 +22,7 @@ export default function ResourcesPopUp(
     setReferenceResources,
     header,
     referenceResources,
+    selectedProjectMeta,
   },
 ) {
   const cancelButtonRef = useRef(null);
