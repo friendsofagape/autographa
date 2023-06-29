@@ -41,6 +41,11 @@ export default function ImportProjectPopUp(props) {
     confirmMessage: '',
     buttonName: '',
     });
+  const [importProgress, setImportProgress] = useState({
+    importStarted: false,
+    totalSteps: 4,
+    completedSteps: 0,
+  });
   const { action: { FetchProjects } } = useContext(AutographaContext);
   const { states: { languages } } = useContext(ProjectContext);
 
@@ -50,6 +55,7 @@ export default function ImportProjectPopUp(props) {
     closePopUp(false);
     setShow(false);
     setSbData({});
+    setImportProgress((prev)=>({...prev, importStarted:false, completedSteps: 0, totalSteps: 4}))
   }
 
   const openFileDialogSettingData = async () => {
@@ -79,17 +85,21 @@ export default function ImportProjectPopUp(props) {
       confirmMessage: '',
       buttonName: '',
     });
+    setImportProgress((prev)=>({...prev, importStarted:false, completedSteps: 0, totalSteps: 4}))
   };
 
   const callImport = async (updateBurriot) => {
     modelClose();
+    setImportProgress((prev)=>({...prev, importStarted:true, completedSteps: prev.completedSteps + 1 }))
     logger.debug('ImportProjectPopUp.js', 'Inside callImport');
     await localforage.getItem('userProfile').then(async (value) => {
       const status = await importBurrito(folderPath, value.username, updateBurriot, languages);
+      setImportProgress((prev)=>({...prev, importStarted:true, completedSteps: prev.completedSteps + 1 }))
       setOpenSnackBar(true);
       closePopUp(false);
       setNotify(status[0].type);
       setSnackText(status[0].value);
+      setImportProgress((prev)=>({...prev, importStarted:true, completedSteps: 0, totalSteps: 0}))
       if (status[0].type === 'success') {
         close();
         FetchProjects();
@@ -100,6 +110,7 @@ export default function ImportProjectPopUp(props) {
 
   const checkBurritoVersion = () => {
     logger.debug('ImportProjectPopUp.js', 'Checking the burrito version');
+    setImportProgress((prev)=>({...prev, importStarted:true, completedSteps: prev.completedSteps + 1 }))
     if (burrito?.meta?.version !== sbData?.version) {
       setModel({
         openModel: true,
@@ -121,6 +132,7 @@ export default function ImportProjectPopUp(props) {
   const importProject = async () => {
     logger.debug('ImportProjectPopUp.js', 'Inside importProject');
     if (folderPath) {
+      setImportProgress((prev)=>({...prev, importStarted:true, completedSteps: prev.completedSteps + 1 }))
       setValid(false);
       if (sbData.duplicate === true) {
         logger.warn('ImportProjectPopUp.js', 'Project already available');
@@ -143,8 +155,11 @@ export default function ImportProjectPopUp(props) {
     }
   };
 
+  console.log({importProgress}, (importProgress.completedSteps * 100) / importProgress.totalSteps);
+
   useEffect(() => {
     if (open) {
+      setImportProgress((prev)=>({...prev, importStarted:false, completedSteps: 0, totalSteps: 4}))
       openFileDialogSettingData();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -188,6 +203,15 @@ export default function ImportProjectPopUp(props) {
                     />
                   </button>
                 </div>
+                {/* progress */}
+                {importProgress.importStarted && (
+                  <div className="w-full bg-gray-200 h-1">
+                    <div
+                      className="bg-primary h-2"
+                      style={{ width: `${(importProgress.completedSteps * 100) / importProgress.totalSteps}%` }}
+                    />
+                  </div>
+                )}
                 <div className="relative w-full h-full">
 
                   <div className="p-8 overflow-auto w-full h-full scrollbars-width flex flex-col justify-between">
